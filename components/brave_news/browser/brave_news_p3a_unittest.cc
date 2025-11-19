@@ -32,6 +32,8 @@ class BraveNewsP3ATest : public testing::Test {
     task_environment_.AdvanceClock(base::Days(2));
     PrefRegistrySimple* registry = pref_service_.registry();
     ::brave_news::prefs::RegisterProfilePrefs(registry);
+    ::brave_news::p3a::prefs::RegisterProfileNewsMetricsPrefsForMigration(
+        registry);
     registry->RegisterBooleanPref(brave_rewards::prefs::kEnabled, false);
 
     pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
@@ -110,37 +112,6 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 0, 1);
 
   EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklySessionCount), 0);
-}
-
-TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
-  metrics_->RecordAtInit();
-  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 1);
-  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 0, 1);
-
-  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
-  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
-
-  task_environment_.AdvanceClock(base::Days(2));
-  metrics_->RecordWeeklyDisplayAdsViewedCount(true);
-
-  EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyDisplayAdViewedCount), 3);
-
-  task_environment_.AdvanceClock(base::Days(2));
-  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 5);
-  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 2, 3);
-
-  task_environment_.AdvanceClock(base::Days(3));
-  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 6);
-  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 1, 2);
-
-  task_environment_.AdvanceClock(base::Days(2));
-  metrics_->RecordWeeklyDisplayAdsViewedCount(false);
-  histogram_tester_.ExpectTotalCount(kNonRewardsAdsViewsHistogramName, 7);
-  histogram_tester_.ExpectBucketCount(kNonRewardsAdsViewsHistogramName, 0, 2);
-
-  EXPECT_EQ(GetWeeklySum(prefs::kBraveNewsWeeklyDisplayAdViewedCount), 0);
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
