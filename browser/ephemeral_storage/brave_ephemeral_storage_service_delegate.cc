@@ -33,7 +33,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #else
-#include "brave/browser/brave_shields/android/ephemeral_storage_utils.h"
+#include "brave/browser/ephemeral_storage/android/ephemeral_storage_utils.h"
 #endif
 
 namespace ephemeral_storage {

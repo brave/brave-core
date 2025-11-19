@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_shields/android/ephemeral_storage_utils.h"
+#include "brave/browser/ephemeral_storage/android/ephemeral_storage_utils.h"
 
 #include <cstddef>
 
