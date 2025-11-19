@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/rbe.gni b/build/toolchain/rbe.gni
+index 46cd247e432fdb759e4c955a3f3919bed3914322..2f55cd928fe1eefd1c62a550ffaea22cafaa78a9 100644
+--- a/build/toolchain/rbe.gni
++++ b/build/toolchain/rbe.gni
+@@ -144,7 +144,7 @@ declare_args() {
+ 
+ if (use_reclient) {
+   rewrapper_path = "${reclient_bin_dir}/rewrapper"
+-  if (is_win) {
++  if (host_os == "win") {
+     rewrapper_path = "${reclient_bin_dir}/rewrapper.exe"
+   }
+   assert(path_exists(rewrapper_path),
