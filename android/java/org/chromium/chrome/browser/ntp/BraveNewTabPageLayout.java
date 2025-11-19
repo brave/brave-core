@@ -139,6 +139,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private FetchWallpaperWorkerTask mWorkerTask;
     private boolean mIsFromBottomSheet;
+    // Whether to show sponsored image on NTP based on experiment variant
+    private boolean mShouldShowSponsoredImage;
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private ViewGroup mMainLayout;
     private final DatabaseHelper mDatabaseHelper;
@@ -190,6 +192,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         super(context, attrs);
 
         mDatabaseHelper = DatabaseHelper.getInstance();
+        // Default to show sponsored image on NTP
+        // This will be overridden in onAttachedToWindow if the experiment variant is D
+        mShouldShowSponsoredImage = true;
     }
 
     protected void updateTileGridPlaceholderVisibility() {
@@ -258,6 +263,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
+        mShouldShowSponsoredImage = shouldShowSponsoredImage();
         if (mSponsoredTab == null) {
             initilizeSponsoredTab();
         }
@@ -282,7 +288,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
         setNtpViews();
 
-        // Show recent tabs dialog for variants B and C if NTP was shown after inactivity
+        // Show recent tabs dialog for variants B, C, and D if NTP was shown after inactivity
         maybeShowRecentTabsDialog();
     }
 
@@ -928,7 +934,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             return;
         }
         if (mSponsoredTab != null && NTPImageUtil.shouldEnableNTPFeature()) {
-            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false);
+            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false, mShouldShowSponsoredImage);
             if (ntpImage == null) {
                 mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             } else if (ntpImage instanceof Wallpaper) {
@@ -1334,8 +1340,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         observer.addOnGlobalLayoutListener(mBgImageViewOnGlobalLayoutListener);
     }
 
+    // Determine if the sponsored image should be shown on NTP based on experiment variant
+    private boolean shouldShowSponsoredImage() {
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            return true;
+        }
+        boolean shouldShowSnackbar =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+        String variant = BraveFreshNtpHelper.getVariant();
+        return variant == null || !variant.equals("D") || !shouldShowSnackbar;
+    }
+
     private void checkAndShowNTPImage(boolean isReset) {
-        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset);
+        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset, mShouldShowSponsoredImage);
         if (ntpImage == null) {
             mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
         } else if (ntpImage instanceof Wallpaper) {
@@ -1349,7 +1367,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
-            SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
+            SponsoredTab sponsoredTab =
+                    new SponsoredTab(mNTPBackgroundImagesBridge, mShouldShowSponsoredImage);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
         mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
@@ -1436,18 +1455,19 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     /**
-     * Shows the recent tabs snackbar if variant B or C is active, and either OPTION_NEW_TAB or
+     * Shows the recent tabs snackbar if variant B, C, or D is active, and either OPTION_NEW_TAB or
      * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
      * when app was returned from background after inactivity threshold.
      */
     private void maybeShowRecentTabsDialog() {
-        // Check if feature is enabled and variant is B or C
+        // Check if feature is enabled and variant is B, C, or D
         if (!BraveFreshNtpHelper.isEnabled()) {
             return;
         }
 
         String variant = BraveFreshNtpHelper.getVariant();
-        if (variant == null || (!variant.equals("B") && !variant.equals("C"))) {
+        if (variant == null
+                || (!variant.equals("B") && !variant.equals("C") && !variant.equals("D"))) {
             return;
         }
 

@@ -74,7 +74,8 @@ class ViewCounterService : public KeyedService,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
 
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
-  std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
+  std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay(
+      bool allow_sponsored_image = true);
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdsService()
