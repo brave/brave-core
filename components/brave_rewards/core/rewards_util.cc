@@ -8,10 +8,10 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/no_destructor.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "base/strings/string_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "build/build_config.h"
+#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -46,12 +46,16 @@ bool IsDisabledByFeature() {
   return false;
 }
 
-bool IsOFACSanctionedRegion(const std::string& country_code) {
-  return brave_l10n::IsISOCountryCodeOFACSanctioned(country_code);
+const std::string GetCurrentCountryCode() {
+  const country_codes::CountryId country_id =
+      country_codes::GetCurrentCountryID();
+  const std::string_view country_code =
+      country_id.IsValid() ? country_id.CountryCode() : "US";
+  return base::ToUpperASCII(country_code);
 }
 
-const std::string GetCountryCode() {
-  return brave_l10n::GetDefaultISOCountryCodeString();
+bool IsSupportedCountryCode() {
+  return !brave_l10n::IsISOCountryCodeOFACSanctioned(GetCurrentCountryCode());
 }
 
 }  // namespace
@@ -59,17 +63,9 @@ const std::string GetCountryCode() {
 bool IsSupported(PrefService* prefs, IsSupportedOptions options) {
   bool is_supported = !IsDisabledByPolicy(prefs) && !IsDisabledByFeature();
   if (is_supported && options != IsSupportedOptions::kSkipRegionCheck) {
-    return !IsUnsupportedRegion();
+    return IsSupportedCountryCode();
   }
   return is_supported;
-}
-
-bool IsUnsupportedRegion() {
-  return IsOFACSanctionedRegion(GetCountryCode());
-}
-
-bool IsAutoContributeSupportedForCountry(std::string_view country_code) {
-  return country_code != "JP" && country_code != "IN";
 }
 
 }  // namespace brave_rewards

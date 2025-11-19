@@ -48,7 +48,6 @@ class BraveRewardsOFACTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, IsBraveRewardsDisabled) {
   {
     const brave_l10n::test::ScopedDefaultLocale locale("en_CA");  // "Canada"
-    EXPECT_FALSE(IsUnsupportedRegion());
     EXPECT_TRUE(brave_rewards::IsSupported(prefs()));
     EXPECT_TRUE(brave_rewards::IsSupported(
         prefs(), brave_rewards::IsSupportedOptions::kSkipRegionCheck));
@@ -58,7 +57,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, IsBraveRewardsDisabled) {
   }
   {
     const brave_l10n::test::ScopedDefaultLocale locale("es_CU");  // "Cuba"
-    EXPECT_TRUE(IsUnsupportedRegion());
     EXPECT_FALSE(brave_rewards::IsSupported(prefs()));
     EXPECT_TRUE(brave_rewards::IsSupported(
         prefs(), brave_rewards::IsSupportedOptions::kSkipRegionCheck));

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
+#include <string_view>
+
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/locale/language_code.h"
@@ -26,8 +28,9 @@ std::string& MutableCurrentCountryCode() {
   static base::NoDestructor<std::string> country_code([]() {
     const country_codes::CountryId country_id =
         country_codes::GetCurrentCountryID();
-    return country_id.IsValid() ? base::ToUpperASCII(country_id.CountryCode())
-                                : kDefaultCountryCode;
+    const std::string_view country_code =
+        country_id.IsValid() ? country_id.CountryCode() : kDefaultCountryCode;
+    return base::ToUpperASCII(country_code);
   }());
   return *country_code;
 }
