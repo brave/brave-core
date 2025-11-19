@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
-
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
@@ -24,8 +23,9 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
     ChromeViewsTestBase::SetUp();
 
     controller_ = new FakeBaseTabStripController;
-    tab_strip_ = new TabStrip(std::unique_ptr<TabStripController>(controller_));
-    controller_->set_tab_strip(tab_strip_);
+    auto unique_tab_strip = std::make_unique<TabStrip>(
+        std::unique_ptr<TabStripController>(controller_));
+    controller_->set_tab_strip(unique_tab_strip.get());
     // Do this to force TabStrip to create the buttons.
     auto tab_strip_parent = std::make_unique<views::View>();
     views::FlexLayout* layout_manager = tab_strip_parent->SetLayoutManager(
@@ -37,7 +37,8 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
             views::kFlexBehaviorKey,
             views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                      views::MaximumFlexSizeRule::kPreferred));
-    tab_strip_parent->AddChildViewRaw(tab_strip_.get());
+    tab_strip_ = tab_strip_parent->AddChildView(std::move(unique_tab_strip));
+
     // The tab strip is free to use all of the space in its parent view, since
     // there are no sibling controls such as the NTB in the test context.
     tab_strip_->SetAvailableWidthCallback(base::BindRepeating(
@@ -46,8 +47,7 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
         },
         tab_strip_parent.get()));
 
-    widget_ =
-        CreateTestWidget(views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET);
+    widget_ = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
     tab_strip_parent_ = widget_->SetContentsView(std::move(tab_strip_parent));
 
     // Prevent hover cards from appearing when the mouse is over the tab. Tests
@@ -57,18 +57,22 @@ class BraveTabStripUnitTest : public ChromeViewsTestBase {
   }
 
   void TearDown() override {
+    // Clear out raw_ptrs to prevent use-after-free detections.
+    controller_ = nullptr;
+    tab_strip_ = nullptr;
+    tab_strip_parent_ = nullptr;
     widget_.reset();
     ChromeViewsTestBase::TearDown();
   }
 
  protected:
   // Owned by TabStrip.
-  raw_ptr<FakeBaseTabStripController, DanglingUntriaged> controller_;
+  raw_ptr<FakeBaseTabStripController> controller_;
 
-  raw_ptr<TabStrip, DanglingUntriaged> tab_strip_;
+  raw_ptr<TabStrip> tab_strip_;
 
  private:
-  raw_ptr<views::View, DanglingUntriaged> tab_strip_parent_;
+  raw_ptr<views::View> tab_strip_parent_;
   std::unique_ptr<views::Widget> widget_;
   gfx::AnimationTestApi::RenderModeResetter animation_mode_reset_;
 };
