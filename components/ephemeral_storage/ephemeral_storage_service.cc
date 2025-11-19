@@ -224,20 +224,26 @@ void EphemeralStorageService::TLDEphemeralLifetimeCreated(
 void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig& storage_partition_config,
-    bool shields_disabled_on_one_of_hosts) {
+    bool shields_disabled_on_one_of_hosts,
+    const bool ephemeral_storage_clean_enforced) {
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-  const bool cleanup_tld_ephemeral_area = !shields_disabled_on_one_of_hosts;
+  const bool cleanup_tld_ephemeral_area =
+      !shields_disabled_on_one_of_hosts || ephemeral_storage_clean_enforced;
   const bool cleanup_first_party_storage_area =
       FirstPartyStorageAreaNotInUse(ephemeral_domain, storage_partition_config,
-                                    shields_disabled_on_one_of_hosts);
+                                    shields_disabled_on_one_of_hosts) ||
+      ephemeral_storage_clean_enforced;
 
-  if (base::FeatureList::IsEnabled(
+  if (ephemeral_storage_clean_enforced ||
+      base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive)) {
     auto cleanup_timer = std::make_unique<base::OneShotTimer>();
     cleanup_timer->Start(
-        FROM_HERE, tld_ephemeral_area_keep_alive_,
+        FROM_HERE,
+        ephemeral_storage_clean_enforced ? base::Milliseconds(500)
+                                         : tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,
@@ -279,26 +285,7 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
 
   const auto ephemeral_domain =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-  delegate_->CloseTabsForDomainAndSubdomains(
-      std::move(ephemeral_domain),
-      base::BindOnce(&EphemeralStorageService::OnDomainAndSubdomainTabsClosed,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(key)));
-}
-
-void EphemeralStorageService::OnDomainAndSubdomainTabsClosed(
-    const TLDEphemeralAreaKey& key,
-    const bool result) {
-  if (!result) {
-    LOG(ERROR) << "Failed to close tabs for domain and subdomains.";
-    return;
-  }
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralArea,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     key, true, true),
-      base::Milliseconds(500));
+  delegate_->CloseTabsForDomainAndSubdomains(std::move(ephemeral_domain));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

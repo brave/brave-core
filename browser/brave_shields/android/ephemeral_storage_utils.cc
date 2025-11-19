@@ -5,12 +5,18 @@
 
 #include "brave/browser/brave_shields/android/ephemeral_storage_utils.h"
 
+#include <cstddef>
+
 #include "base/android/jni_android.h"
+#include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/android/scoped_java_ref.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/android/chrome_jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
+#include "content/public/browser/web_contents_user_data.h"
 
 namespace ephemeral_storage {
 
@@ -41,8 +47,42 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 
-bool CloseTabsWithTLD(const std::string tld) {
-  return Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
+static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorageCallback(
+    JNIEnv* env,
+    const jni_zero::JavaRef<jobjectArray>& tab_array) {
+  // Get array length
+  size_t len = base::android::SafeGetArrayLength(env, tab_array);
+
+  // Iterate through the array
+  for (size_t i = 0; i < len; ++i) {
+    auto tab_object = jni_zero::ScopedJavaLocalRef<jobject>::Adopt(
+        env, static_cast<jobject>(env->GetObjectArrayElement(
+                 tab_array.obj(), base::checked_cast<jsize>(i))));
+    if (!tab_object.obj()) {
+      continue;
+    }
+
+    TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab_object);
+    if (!tab_android) {
+      return;
+    }
+
+    content::WebContents* web_contents = tab_android->web_contents();
+    if (!web_contents) {
+      return;
+    }
+
+    if (auto* ephemeral_storage_tab_helper =
+            ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+                web_contents);
+        ephemeral_storage_tab_helper) {
+      ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+    }
+  }
+}
+
+void CloseTabsWithTLD(const std::string tld) {
+  Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
       base::android::AttachCurrentThread(),
       base::android::ConvertUTF8ToJavaString(
           base::android::AttachCurrentThread(), std::move(tld)));
