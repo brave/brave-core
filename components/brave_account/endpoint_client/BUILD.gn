@@ -9,12 +9,14 @@ source_set("endpoint_client") {
     "is_endpoint.h",
     "is_request.h",
     "is_request_body.h",
+    "is_response.h",
     "is_response_body.h",
     "maybe_strip_with_headers.h",
     "request.h",
     "request_handle.cc",
     "request_handle.h",
     "request_types.h",
+    "response.h",
     "with_headers.h",
   ]
 
@@ -36,6 +38,7 @@ source_set("unit_tests") {
     "is_request_body_unittest.cc",
     "is_request_unittest.cc",
     "is_response_body_unittest.cc",
+    "is_response_unittest.cc",
     "maybe_strip_with_headers_unittest.cc",
   ]
 

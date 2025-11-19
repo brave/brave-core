@@ -32,6 +32,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -46,13 +47,14 @@
 #include "url/gurl.h"
 
 namespace {
+
 template <const char* Key>
-struct Message {
+struct Body {
   base::Value::Dict ToValue() const {
     return base::Value::Dict().Set(Key, text);
   }
 
-  static std::optional<Message> FromValue(const base::Value& value) {
+  static std::optional<Body> FromValue(const base::Value& value) {
     const auto* dict = value.GetIfDict();
     if (!dict) {
       return std::nullopt;
@@ -63,25 +65,34 @@ struct Message {
       return std::nullopt;
     }
 
-    return Message(*found);
+    return Body(*found);
   }
 
-  bool operator==(const Message& other) const { return text == other.text; }
+  bool operator==(const Body& other) const { return text == other.text; }
 
   std::string text;
 };
 
 inline constexpr char kRequestKey[] = "request";
-inline constexpr char kResponseKey[] = "response";
+inline constexpr char kSuccessKey[] = "success";
 inline constexpr char kErrorKey[] = "error";
+
 }  // namespace
 
 namespace brave_account::endpoint_client {
 
-using TestRequestBody = Message<kRequestKey>;
+template <typename T, typename E>
+bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
+  return lhs.net_error == rhs.net_error && lhs.status_code == rhs.status_code &&
+         lhs.body == rhs.body;
+}
+
+using TestRequestBody = Body<kRequestKey>;
 using TestRequest = POST<TestRequestBody>;
-using TestResponse = Message<kResponseKey>;
-using TestError = Message<kErrorKey>;
+
+using TestSuccessBody = Body<kSuccessKey>;
+using TestErrorBody = Body<kErrorKey>;
+using TestResponse = Response<TestSuccessBody, TestErrorBody>;
 
 // Requests look like this:
 // POST https://example.com/api/query
@@ -89,9 +100,9 @@ using TestError = Message<kErrorKey>;
 //   "request": "what the client wants"
 // }
 
-// Responses look like this:
+// Successful responses look like this:
 // {
-//   "response": "the answer is 42"
+//   "success": "the answer is 42"
 // }
 
 // Errors look like this:
@@ -101,19 +112,16 @@ using TestError = Message<kErrorKey>;
 struct TestEndpoint {
   using Request = TestRequest;
   using Response = TestResponse;
-  using Error = TestError;
+
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
-using Expected =
-    base::expected<std::optional<TestResponse>, std::optional<TestError>>;
-
 struct TestCase {
-  TestRequest request;
+  TestEndpoint::Request request;
   bool with_headers;
-  net::HttpStatusCode status_code;
-  std::string server_reply;
-  Expected expected_reply;
+  net::HttpStatusCode http_status_code;
+  std::string raw_response_body;
+  TestEndpoint::Response expected_response;
 };
 
 class ClientTest : public testing::TestWithParam<TestCase> {
@@ -130,8 +138,8 @@ TEST_P(ClientTest, Send) {
         // Always add a response immediately so the request does not hang,
         // even if validations below fail early with ADD_FAILURE().
         test_url_loader_factory_.AddResponse(resource_request.url.spec(),
-                                             test_case.server_reply,
-                                             test_case.status_code);
+                                             test_case.raw_response_body,
+                                             test_case.http_status_code);
 
         // Method
         EXPECT_EQ(resource_request.method, "POST");
@@ -168,9 +176,9 @@ TEST_P(ClientTest, Send) {
         }
       }));
 
-  base::test::TestFuture<int, Expected> future;
+  base::test::TestFuture<TestEndpoint::Response> future;
   if (test_case.with_headers) {
-    WithHeaders<TestRequest> request{test_case.request};
+    WithHeaders<TestEndpoint::Request> request{test_case.request};
     request.headers.SetHeader("Authorization", "Bearer 12345");
     Client<TestEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
                                std::move(request), future.GetCallback());
@@ -179,45 +187,61 @@ TEST_P(ClientTest, Send) {
                                test_case.request, future.GetCallback());
   }
 
-  EXPECT_EQ(future.Take(),
-            std::tie(test_case.status_code, test_case.expected_reply));
+  EXPECT_EQ(future.Take(), test_case.expected_response);
 }
 
 INSTANTIATE_TEST_SUITE_P(
     ClientTestCases,
     ClientTest,
     testing::Values(
-        TestCase{.request = TestRequest{{"valid response"}},
+        TestCase{
+            .request = TestEndpoint::Request{{"valid response"}},
+            .with_headers = false,
+            .http_status_code = net::HTTP_OK,
+            .raw_response_body = R"({"success": "some response"})",
+            .expected_response = {.net_error = net::OK,
+                                  .status_code = net::HTTP_OK,
+                                  .body = TestEndpoint::Response::SuccessBody(
+                                      "some response")}},
+        TestCase{.request = TestEndpoint::Request{{"invalid response"}},
                  .with_headers = false,
-                 .status_code = net::HTTP_OK,
-                 .server_reply = R"({"response": "some response"})",
-                 .expected_reply = TestResponse("some response")},
-        TestCase{.request = TestRequest{{"invalid response"}},
+                 .http_status_code = net::HTTP_CREATED,
+                 .raw_response_body = R"({"invalid": response})",
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_CREATED,
+                                       .body = std::nullopt}},
+        TestCase{.request = TestEndpoint::Request{{"valid error"}},
                  .with_headers = false,
-                 .status_code = net::HTTP_CREATED,
-                 .server_reply = R"({"invalid": response})",
-                 .expected_reply = Expected(std::nullopt)},
-        TestCase{.request = TestRequest{{"valid error"}},
+                 .http_status_code = net::HTTP_BAD_REQUEST,
+                 .raw_response_body = R"({"error": "some error"})",
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_BAD_REQUEST,
+                                       .body = base::unexpected(
+                                           TestEndpoint::Response::ErrorBody(
+                                               "some error"))}},
+        TestCase{.request = TestEndpoint::Request{{"invalid error"}},
                  .with_headers = false,
-                 .status_code = net::HTTP_BAD_REQUEST,
-                 .server_reply = R"({"error": "some error"})",
-                 .expected_reply = base::unexpected(TestError("some error"))},
-        TestCase{.request = TestRequest{{"invalid error"}},
-                 .with_headers = false,
-                 .status_code = net::HTTP_UNAUTHORIZED,
-                 .server_reply = R"({"invalid": error})",
-                 .expected_reply = base::unexpected(std::nullopt)},
-        TestCase{.request = TestRequest{{"request with headers"}},
-                 .with_headers = true,
-                 .status_code = net::HTTP_OK,
-                 .server_reply = R"({"response": "some response"})",
-                 .expected_reply = TestResponse("some response")}),
+                 .http_status_code = net::HTTP_UNAUTHORIZED,
+                 .raw_response_body = R"({"invalid": error})",
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_UNAUTHORIZED,
+                                       .body = std::nullopt}},
+        TestCase{
+            .request = TestEndpoint::Request{{"request with headers"}},
+            .with_headers = true,
+            .http_status_code = net::HTTP_OK,
+            .raw_response_body = R"({"success": "some response"})",
+            .expected_response = {.net_error = net::OK,
+                                  .status_code = net::HTTP_OK,
+                                  .body = TestEndpoint::Response::SuccessBody(
+                                      "some response")}}),
     [](const auto& info) {
       std::string name;
-      base::ReplaceChars(info.param.request.text + "_HTTP_" +
-                             base::ToString(info.param.status_code) + "_" +
-                             net::GetHttpReasonPhrase(info.param.status_code),
-                         " ", "_", &name);
+      base::ReplaceChars(
+          info.param.request.text + "_HTTP_" +
+              base::ToString(info.param.http_status_code) + "_" +
+              net::GetHttpReasonPhrase(info.param.http_status_code),
+          " ", "_", &name);
       return name;
     });
 
@@ -234,11 +258,11 @@ class ClientCancelTest : public testing::TestWithParam<CancelRequestOn> {
 }  // namespace
 
 TEST_P(ClientCancelTest, Cancel) {
-  base::test::TestFuture<int, Expected> future;
+  base::test::TestFuture<TestEndpoint::Response> future;
   RequestHandle request_handle =
       Client<TestEndpoint>::Send<RequestCancelability::kCancelable>(
           test_url_loader_factory_.GetSafeWeakWrapper(),
-          TestRequest{{"cancel me"}}, future.GetCallback());
+          TestEndpoint::Request{{"cancel me"}}, future.GetCallback());
 
   auto weak_simple_url_loader =
       CHECK_DEREF(static_cast<network::SimpleURLLoader*>(request_handle.get()))

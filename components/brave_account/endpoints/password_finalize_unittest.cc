@@ -16,8 +16,8 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const PasswordFinalize::Response& lhs,
-                const PasswordFinalize::Response& rhs) {
+bool operator==(const PasswordFinalize::Response::SuccessBody& lhs,
+                const PasswordFinalize::Response::SuccessBody& rhs) {
   return true;
 }
 
@@ -29,11 +29,15 @@ const PasswordFinalizeTestCase* Success() {
   static const base::NoDestructor<PasswordFinalizeTestCase> kSuccess(
       {.test_name = "success",
        .http_status_code = net::HTTP_OK,
-       .raw_reply = R"({ "authToken": null,
-                         "requiresEmailVerification": true,
-                         "requiresTwoFA": false,
-                         "sessionsInvalidated": false })",
-       .reply = PasswordFinalize::Response()});
+       .raw_response_body = R"({ "authToken": null,
+                                 "requiresEmailVerification": true,
+                                 "requiresTwoFA": false,
+                                 "sessionsInvalidated": false })",
+       .expected_response = {
+           .net_error = net::OK,
+           .status_code = net::HTTP_OK,
+           .body = PasswordFinalize::Response::SuccessBody()}});
+
   return kSuccess.get();
 }
 
@@ -53,18 +57,20 @@ const PasswordFinalizeTestCase* Success() {
 // clang-format on
 const PasswordFinalizeTestCase* ApplicationJsonError() {
   static const base::NoDestructor<PasswordFinalizeTestCase>
-      kApplicationJsonError({.test_name = "application_json_error",
-                             .http_status_code = net::HTTP_BAD_REQUEST,
-                             .raw_reply = R"(
-                               { "code": 14002,
-                                 "error": "interim password state has expired",
-                                 "status": 400 }
-                              )",
-                             .reply = base::unexpected([] {
-                               PasswordFinalize::Error error;
-                               error.code = base::Value(14002);
-                               return error;
-                             }())});
+      kApplicationJsonError(
+          {.test_name = "application_json_error",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": 14002,
+                    "error": "interim password state has expired",
+                    "status": 400 })",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody error;
+                                   error.code = base::Value(14002);
+                                   return error;
+                                 }())}});
   return kApplicationJsonError.get();
 }
 
@@ -76,8 +82,10 @@ const PasswordFinalizeTestCase* NonApplicationJsonError() {
       kNonApplicationJsonError(
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .raw_reply = "non-application/json error",
-           .reply = base::unexpected(std::nullopt)});
+           .raw_response_body = "non-application/json error",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

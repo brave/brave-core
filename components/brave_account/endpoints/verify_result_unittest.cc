@@ -15,8 +15,8 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const VerifyResult::Response& lhs,
-                const VerifyResult::Response& rhs) {
+bool operator==(const VerifyResult::Response::SuccessBody& lhs,
+                const VerifyResult::Response::SuccessBody& rhs) {
   return lhs.auth_token == rhs.auth_token;
 }
 
@@ -28,15 +28,16 @@ const VerifyResultTestCase* SuccessAuthTokenIsNull() {
   static const base::NoDestructor<VerifyResultTestCase> kSuccessAuthTokenIsNull(
       {.test_name = "success_auth_token_is_null",
        .http_status_code = net::HTTP_OK,
-       .raw_reply = R"({ "authToken": null,
-                         "email": "email",
-                         "service": "accounts",
-                         "verified": false })",
-       .reply = [] {
-         VerifyResult::Response response;
-         response.auth_token = base::Value();
-         return response;
-       }()});
+       .raw_response_body = R"({ "authToken": null,
+                                 "email": "email",
+                                 "service": "accounts",
+                                 "verified": false })",
+       .expected_response = {
+           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+             VerifyResult::Response::SuccessBody body;
+             body.auth_token = base::Value();
+             return body;
+           }()}});
   return kSuccessAuthTokenIsNull.get();
 }
 
@@ -45,15 +46,16 @@ const VerifyResultTestCase* SuccessAuthTokenIsNotNull() {
       kSuccessAuthTokenIsNotNull(
           {.test_name = "success_auth_token_is_not_null",
            .http_status_code = net::HTTP_OK,
-           .raw_reply = R"({ "authToken": "34c375d933e3c",
-                             "email": "email",
-                             "service": "accounts",
-                             "verified": true })",
-           .reply = [] {
-             VerifyResult::Response response;
-             response.auth_token = base::Value("34c375d933e3c");
-             return response;
-           }()});
+           .raw_response_body = R"({ "authToken": "34c375d933e3c",
+                                     "email": "email",
+                                     "service": "accounts",
+                                     "verified": true })",
+           .expected_response = {
+               .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+                 VerifyResult::Response::SuccessBody body;
+                 body.auth_token = base::Value("34c375d933e3c");
+                 return body;
+               }()}});
   return kSuccessAuthTokenIsNotNull.get();
 }
 
@@ -72,15 +74,17 @@ const VerifyResultTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<VerifyResultTestCase> kApplicationJsonError(
       {.test_name = "application_json_error_code_is_null",
        .http_status_code = net::HTTP_BAD_REQUEST,
-       .raw_reply =
+       .raw_response_body =
            R"({ "code": null,
                 "error": "Bad Request",
                 "status": 400 })",
-       .reply = base::unexpected([] {
-         VerifyResult::Error error;
-         error.code = base::Value();
-         return error;
-       }())});
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_BAD_REQUEST,
+                             .body = base::unexpected([] {
+                               VerifyResult::Response::ErrorBody error;
+                               error.code = base::Value();
+                               return error;
+                             }())}});
   return kApplicationJsonError.get();
 }
 
@@ -88,15 +92,17 @@ const VerifyResultTestCase* ApplicationJsonErrorCodeIsNotNull() {
   static const base::NoDestructor<VerifyResultTestCase> kApplicationJsonError(
       {.test_name = "application_json_error_code_is_not_null",
        .http_status_code = net::HTTP_NOT_FOUND,
-       .raw_reply =
+       .raw_response_body =
            R"({ "code": 13002,
                 "error": "verification not found or invalid id/code",
                 "status": 404 })",
-       .reply = base::unexpected([] {
-         VerifyResult::Error error;
-         error.code = base::Value(13002);
-         return error;
-       }())});
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_NOT_FOUND,
+                             .body = base::unexpected([] {
+                               VerifyResult::Response::ErrorBody error;
+                               error.code = base::Value(13002);
+                               return error;
+                             }())}});
   return kApplicationJsonError.get();
 }
 
@@ -108,8 +114,10 @@ const VerifyResultTestCase* NonApplicationJsonError() {
       kNonApplicationJsonError(
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .raw_reply = "non-application/json error",
-           .reply = base::unexpected(std::nullopt)});
+           .raw_response_body = "non-application/json error",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 
