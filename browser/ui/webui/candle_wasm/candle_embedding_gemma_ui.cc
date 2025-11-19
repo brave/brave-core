@@ -44,7 +44,7 @@ UntrustedCandleEmbeddingGemmaUI::UntrustedCandleEmbeddingGemmaUI(
                   "'self' 'wasm-unsafe-eval';"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string("style-src 'self' 'unsafe-inline';"));
+      std::string("style-src 'self';"));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc,
       "connect-src chrome://resources chrome-untrusted://resources 'self' "
