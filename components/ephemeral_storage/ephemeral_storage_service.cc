@@ -293,7 +293,12 @@ void EphemeralStorageService::OnDomainAndSubdomainTabsClosed(
     LOG(ERROR) << "Failed to close tabs for domain and subdomains.";
     return;
   }
-  CleanupTLDEphemeralArea(key, true, true);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralArea,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     key, true, true),
+      base::Milliseconds(500));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
