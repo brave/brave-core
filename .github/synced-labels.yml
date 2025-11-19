@@ -1,6 +1,10 @@
-# only-docs label skips CI (including noplatform) and is for docs/md file changes
-only-docs:
+# Skips CI (including noplatform)
+no-browser-changes:
   - changed-files:
     - any-glob-to-all-files: 
       - "**/*.md"
+      - ".github/**/*"
+      - LICENSE
+      - LICENSE.html
       - "docs/**/*"
+      - snapcraft.yaml
