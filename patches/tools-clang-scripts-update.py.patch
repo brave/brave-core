@@ -1,21 +1,146 @@
 diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
-index bcf4c9b192234aa1d470662e4036ac7a23ce2262..65968f81d29e9f8c2120d02bfce5f3ef061b0a1a 100755
+index bcf4c9b192234aa1d470662e4036ac7a23ce2262..0783452ecb7547ad23a46e0632fc8cf900e86c51 100755
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
-@@ -195,12 +195,16 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
+@@ -31,6 +31,119 @@ import urllib.error
+ import zipfile
+ import zlib
+ 
++import ctypes
++from pathlib import Path
++
++# Windows file attribute constants
++FILE_ATTRIBUTE_MAP = {
++    0x0001: "READONLY",
++    0x0002: "HIDDEN",
++    0x0004: "SYSTEM",
++    0x0010: "DIRECTORY",
++    0x0020: "ARCHIVE",
++    0x0040: "DEVICE",
++    0x0080: "NORMAL",
++    0x0100: "TEMPORARY",
++    0x0200: "SPARSE_FILE",
++    0x0400: "REPARSE_POINT",
++    0x0800: "COMPRESSED",
++    0x1000: "OFFLINE",
++    0x2000: "NOT_CONTENT_INDEXED",
++    0x4000: "ENCRYPTED",
++    0x80000: "INTEGRITY_STREAM",
++    0x100000: "VIRTUAL",
++    0x200000: "NO_SCRUB_DATA",
++}
++
++# Load WinAPI function
++GetFileAttributes = ctypes.windll.kernel32.GetFileAttributesW
++GetFileAttributes.restype = ctypes.c_uint32
++
++def get_windows_file_attributes(path: str):
++    p = Path(path)
++    attr = GetFileAttributes(str(p))
++
++    if attr == 0xFFFFFFFF:
++        raise FileNotFoundError(f"Cannot access file: {path}")
++
++    print('-------------- WINDOWS file attributes --------------')
++    print(f"Raw attribute bitmask: {attr:#010x}")
++
++    print("Flags:")
++    for flag, name in FILE_ATTRIBUTE_MAP.items():
++        if attr & flag:
++            print(f"  - {name}")
++    print('----------- END OF WINDOWS file attributes -----------')
++
++
++def decode_st_mode(mode):
++    print('------------ STAT st_mode file attributes ------------')
++    print(f"Raw st_mode: {mode:#06o} ({mode} decimal)")
++
++    # ---- FILE TYPE ----
++    print("File type flags:")
++    file_type_flags = [
++        (stat.S_IFDIR, "Directory"),
++        (stat.S_IFREG, "Regular file"),
++        (stat.S_IFLNK, "Symbolic link"),
++        (stat.S_IFCHR, "Character device"),
++        (stat.S_IFBLK, "Block device"),
++        (stat.S_IFIFO, "FIFO/pipe"),
++        (stat.S_IFSOCK, "Socket"),
++    ]
++
++    matched_type = False
++    for flag, name in file_type_flags:
++        if stat.S_IFMT(mode) == flag:
++            print(f"  - {name}")
++            matched_type = True
++    if not matched_type:
++        print("  - Unknown type")
++
++    # ---- PERMISSIONS ----
++    print("\nPermission bits:")
++    perm_flags = [
++        (stat.S_IRUSR, "Owner read"),
++        (stat.S_IWUSR, "Owner write"),
++        (stat.S_IXUSR, "Owner execute"),
++        (stat.S_IRGRP, "Group read"),
++        (stat.S_IWGRP, "Group write"),
++        (stat.S_IXGRP, "Group execute"),
++        (stat.S_IROTH, "Others read"),
++        (stat.S_IWOTH, "Others write"),
++        (stat.S_IXOTH, "Others execute"),
++    ]
++
++    for flag, name in perm_flags:
++        if mode & flag:
++            print(f"  - {name}")
++
++    # ---- SPECIAL BITS ----
++    print("\nSpecial mode bits:")
++    special_flags = [
++        (stat.S_ISUID, "Set UID"),
++        (stat.S_ISGID, "Set GID"),
++        (stat.S_ISVTX, "Sticky bit"),
++    ]
++
++    found_special = False
++    for flag, name in special_flags:
++        if mode & flag:
++            print(f"  - {name}")
++            found_special = True
++    if not found_special:
++        print("  - (none)")
++
++    print('--------- END OF STAT st_mode file attributes ---------')
++
++
++def show_file_mode(path):
++    p = Path(path)
++    stat_info = os.stat(p)
++
++    print(f"File: {p.resolve()}")
++    decode_st_mode(stat_info.st_mode)
++
+ 
+ # Do NOT CHANGE this if you don't know what you're doing -- see
+ # https://chromium.googlesource.com/chromium/src/+/main/docs/updating_clang.md
+@@ -195,12 +308,21 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
        if path_prefixes is not None:
          members = [m for m in t.getmembers()
                     if any(m.name.startswith(p) for p in path_prefixes)]
-+      print('------------ MEMBERS ------------')
-+      print(*members, sep='\n')
-+      print('---------------------------------')
++      #print('------------ MEMBERS ------------')
++      #print(*members, sep='\n')
++      #print('---------------------------------')
        t.extractall(path=output_dir, members=members)
  
        # Don't set mtime based on the archive metadata; see crbug.com/450551220
        # The nicest way to do this would be by passing a filter to extractall,
        # but that functionality is not available in macOS system Python (3.9.6).
++      if os.utime in os.supports_follow_symlinks:
++          print('!!!!!!!!!!!!!!!!! supports_follow_symlinks = TRUE !!!!!!!!!!!')
        for m in members:
 +        print(f'Updating utime for {m.name}, type = {m.type}')
++        if m.type == tarfile.SYMTYPE:
++            show_file_mode(os.path.join(output_dir, m.name))
++            get_windows_file_attributes(os.path.join(output_dir, m.name))
          # Confusingly, this checks if you're allowed to _not_ follow symlinks.
          if os.utime in os.supports_follow_symlinks:
            os.utime(os.path.join(output_dir, m.name), follow_symlinks=False)
