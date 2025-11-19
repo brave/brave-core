@@ -530,5 +530,33 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     XCTAssertEqual(domain.shield_shredLevel, SiteShredLevel.appExit.rawValue)
   }
 
-  // TODO: Test AutoShred via content settings brave-browser#47753
+  func testShredLevelContentSetting() {
+    var autoShredMode: BraveShields.AutoShredMode = .never
+
+    let testBraveShieldsSettings = TestBraveShieldsSettings()
+    testBraveShieldsSettings._autoShredMode = { url in
+      XCTAssertEqual(url, self.url)
+      return autoShredMode
+    }
+    testBraveShieldsSettings._setAutoShredMode = { mode, url in
+      XCTAssertEqual(url, self.url)
+      XCTAssertEqual(mode, .appExit)
+      autoShredMode = mode
+    }
+
+    let tabState = TabStateFactory.create(with: .init(braveCore: nil))
+    // Test with `isBraveShieldsContentSettingsEnabled` enabled
+    let braveShieldsTabHelper = BraveShieldsTabHelper(
+      tab: tabState,
+      braveShieldsSettings: testBraveShieldsSettings,
+      isBraveShieldsContentSettingsEnabled: true
+    )
+
+    // Verify initial values
+    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .never)
+    // Update value
+    braveShieldsTabHelper.setShredLevel(.appExit, for: url)
+    // Verify updated value
+    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .appExit)
+  }
 }
