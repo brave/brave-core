@@ -120,6 +120,9 @@ std::optional<ConfirmationInfo> ParseConfirmation(
 
   // Ad type
   if (const auto* const value = dict.FindString(kConfirmationAdTypeKey)) {
+    if (*value == "inline_content_ad" || *value == "promoted_content_ad") {
+      return std::nullopt;
+    }
     confirmation.ad_type = ToMojomAdType(*value);
   } else {
     return std::nullopt;

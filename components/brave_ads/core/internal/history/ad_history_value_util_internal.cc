@@ -66,6 +66,9 @@ void ParseAdContent(const base::Value::Dict& dict,
   }
 
   if (const auto* const type = content_dict->FindString(kType)) {
+    if (*type == "inline_content_ad" || *type == "promoted_content_ad") {
+      return;
+    }
     ad_history_item.type = ToMojomAdType(*type);
   }
 
