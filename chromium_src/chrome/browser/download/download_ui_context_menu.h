@@ -16,8 +16,15 @@
   DetachFromDownloadItem();      \
   friend class DownloadBubbleTest
 
+// Add a decorator around upstream's GetMenuModel to insert Brave-specific
+// commands.
+#define GetMenuModel       \
+  GetMenuModel_Chromium(); \
+  ui::SimpleMenuModel* GetMenuModel
+
 #include <chrome/browser/download/download_ui_context_menu.h>  // IWYU pragma: export
 
+#undef GetMenuModel
 #undef DetachFromDownloadItem
 #undef RecordCommandsEnabled
 

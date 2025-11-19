@@ -56,12 +56,16 @@ void InsertBraveSpecificCommandsToModel(
   case DownloadCommands::REMOVE_FROM_LIST: \
   case DownloadCommands::DELETE_LOCAL_FILE
 
-// Add Brave-specific commands to menu model in GetMenuModel().
-#define BRAVE_DOWNLOAD_UI_CONTEXT_MENU_GET_MENU_MODEL \
-  InsertBraveSpecificCommandsToModel(download_, model);
+#define GetMenuModel GetMenuModel_Chromium
 
 #include <chrome/browser/download/download_ui_context_menu.cc>
 
-#undef BRAVE_DOWNLOAD_UI_CONTEXT_MENU_GET_MENU_MODEL
+#undef GetMenuModel
 #undef EDIT_WITH_MEDIA_APP
 #undef RecordCommandsEnabled
+
+ui::SimpleMenuModel* DownloadUiContextMenu::GetMenuModel() {
+  auto* model = GetMenuModel_Chromium();
+  InsertBraveSpecificCommandsToModel(download_, model);
+  return model;
+}
