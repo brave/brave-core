@@ -11,6 +11,8 @@
 
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
+#include "base/timer/wall_clock_timer.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
@@ -20,6 +22,8 @@ class FilterListCatalogEntry;
 
 inline constexpr char kFilterListUsageHistogramName[] =
     "Brave.Shields.FilterLists";
+inline constexpr char kAdBlockOnlyModeEnabledHistogramName[] =
+    "Brave.Shields.AdBlockOnlyModeEnabled";
 
 class AdBlockListP3A {
  public:
@@ -35,8 +39,12 @@ class AdBlockListP3A {
       const std::vector<FilterListCatalogEntry>& entries);
 
  private:
+  void ReportAdBlockOnlyEnabled();
+
   raw_ptr<PrefService> local_state_;
   base::flat_set<std::string> default_filter_list_uuids_;
+  base::WallClockTimer adblock_only_mode_report_timer_;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace brave_shields
