@@ -110,6 +110,10 @@ AdBlockOnlyModePolicies AdBlockOnlyModePolicyManager::GetPoliciesImpl() const {
   policies.emplace(policy::key::kDefaultBraveRemember1PStorageSetting,
                    base::Value(CONTENT_SETTING_ALLOW));
 
+  // Set Adblock functionality to `Block ads`.
+  policies.emplace(policy::key::kDefaultBraveAdblockSetting,
+                   base::Value(CONTENT_SETTING_BLOCK));
+
   // Disable language fingerprinting reduction.
   policies.emplace(policy::key::kBraveReduceLanguageEnabled,
                    base::Value(false));
