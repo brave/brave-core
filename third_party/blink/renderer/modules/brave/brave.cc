@@ -10,13 +10,13 @@
 
 namespace blink {
 
-Brave::Brave(NavigatorBase& navigator) : Supplement<NavigatorBase>(navigator) {}
+Brave::Brave(NavigatorBase& navigator) : navigator_base_(navigator) {}
 
 Brave* Brave::brave(NavigatorBase& navigator) {
-  auto* supplement = Supplement<NavigatorBase>::From<Brave>(navigator);
+  auto supplement = navigator.GetBraveNavigator();
   if (!supplement) {
     supplement = MakeGarbageCollected<Brave>(navigator);
-    Supplement<NavigatorBase>::ProvideTo(navigator, supplement);
+    navigator.SetBraveNavigator(supplement);
   }
   return supplement;
 }
@@ -31,7 +31,7 @@ ScriptPromise<IDLBoolean> Brave::isBrave(ScriptState* script_state) {
 
 void Brave::Trace(Visitor* visitor) const {
   ScriptWrappable::Trace(visitor);
-  Supplement<NavigatorBase>::Trace(visitor);
+  visitor->Trace(navigator_base_);
 }
 
 }  // namespace blink
