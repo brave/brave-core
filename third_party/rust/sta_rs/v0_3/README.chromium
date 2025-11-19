@@ -2,7 +2,7 @@ Name: sta-rs
 URL: https://crates.io/crates/sta-rs
 Version: 0.3.2
 Revision: 54973c88e45f9080a614c4713db2e8e6e601b930
-License: Mozilla-Public-License-2.0
+License: MPL-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/sta-rs-v0_3/LICENSE
 Shipped: yes
 Security Critical: yes
