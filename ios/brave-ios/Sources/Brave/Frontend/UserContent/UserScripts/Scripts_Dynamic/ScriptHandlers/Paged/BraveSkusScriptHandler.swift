@@ -118,7 +118,7 @@ class BraveSkusScriptHandler: TabContentScript {
           let product = BraveStoreProduct(rawValue: vpnSubscriptionProductId)
         {
           let storageKey = product.localStorageKey
-          let receipt = try BraveSkusSDK.receipt(for: product)
+          let receipt = try AppStoreReceipt.receipt(for: product)
           return ["key": storageKey, "data": receipt]
         }
       }
@@ -129,7 +129,7 @@ class BraveSkusScriptHandler: TabContentScript {
           let product = BraveStoreProduct(rawValue: aiChatSubscriptionProductId)
         {
           let storageKey = product.localStorageKey
-          let receipt = try BraveSkusSDK.receipt(for: product)
+          let receipt = try AppStoreReceipt.receipt(for: product)
           return ["key": storageKey, "data": receipt, "braveLeo.orderId": orderId]
         }
       }

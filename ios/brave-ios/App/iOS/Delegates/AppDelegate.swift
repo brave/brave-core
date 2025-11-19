@@ -137,9 +137,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       await BraveVPN.hideActiveStorePromotion()
     }
 
-    // Brave Store SDK - Initialization
-    BraveStoreSDK.shared.refreshAllSkusOrders()
-
     // Override point for customization after application launch.
     var shouldPerformAdditionalDelegateHandling = true
     AdblockEngine.setDomainResolver()

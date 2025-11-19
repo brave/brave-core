@@ -410,6 +410,7 @@ var package = Package(
     .target(
       name: "BraveVPN",
       dependencies: [
+        "BraveCore",
         "BraveStore",
         "BraveStrings",
         "SnapKit",

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStore
 import Foundation
 import Preferences
@@ -55,20 +56,24 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   @MainActor
   func fetchCredentialSummary() async {
     self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
 
     if storeSDK.leoSubscriptionStatus != nil {
-      self.isLoading = false
+      return
+    }
+
+    guard let skusService = Skus.SkusServiceFactory.get(privateMode: false) else {
       return
     }
 
     do {
-      let credentialSummary = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
+      let credentialSummary = try await skusService.credentialsSummary(for: .leo)
       self.credentialSummary = credentialSummary
     } catch {
       Logger.module.error("Error Fetching Skus Credential Summary: \(error)")
     }
-
-    self.isLoading = false
   }
 
   var skuOrderExpirationDate: Date? {

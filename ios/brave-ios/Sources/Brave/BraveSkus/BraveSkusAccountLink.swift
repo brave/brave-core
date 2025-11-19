@@ -90,7 +90,7 @@ class BraveSkusAccountLink {
     do {
       // Retrieve the LocalStorage Key and Receipt to inject
       let storageKey = product.localStorageKey
-      let receipt = try BraveSkusSDK.receipt(for: product)
+      let receipt = try AppStoreReceipt.receipt(for: product)
 
       // Inject the receipt into LocalStorage
       try await tab.evaluateJavaScript(

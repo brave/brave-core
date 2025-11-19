@@ -645,8 +645,10 @@ public struct AIChatView: View {
         // Purchased via AppStore
         AIChatBusyErrorView {
           Task { @MainActor in
-            if let orderId = Preferences.AIChat.subscriptionOrderId.value {
-              try? await BraveSkusSDK.shared.fetchCredentials(orderId: orderId, for: .leo)
+            if let skusService = Skus.SkusServiceFactory.get(privateMode: false),
+              let orderId = Preferences.AIChat.subscriptionOrderId.value
+            {
+              try? await skusService.fetchCredentials(orderId: orderId, for: .leo)
             }
 
             model.retryLastRequest()

@@ -60,13 +60,16 @@ public struct AIChatLeoSkusLogsView: View {
 
   @MainActor
   private func getSkusState() async -> String {
+    guard let skusService = Skus.SkusServiceFactory.get(privateMode: false) else {
+      return ""
+    }
     var result = ""
     let orderId = Preferences.AIChat.subscriptionOrderId.value ?? "None"
 
     result += "OrderId: \(orderId)\n"
 
     do {
-      let credentials = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
+      let credentials = try await skusService.credentialsSummary(for: .leo)
       if let jsonData = try? jsonEncoder.encode(credentials),
         let credentialsJSON = String(data: jsonData, encoding: .utf8)
       {
