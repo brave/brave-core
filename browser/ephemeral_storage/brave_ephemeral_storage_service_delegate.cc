@@ -158,7 +158,7 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 #endif
 
 void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
-    const std::string ephemeral_domain) {
+    const std::string& ephemeral_domain) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
