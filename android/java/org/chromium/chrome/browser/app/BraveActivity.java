@@ -247,6 +247,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
@@ -262,6 +263,7 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
                 OnSharedPreferenceChangeListener {
+    public static final String TAG = "BraveActivity";
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -1945,19 +1947,18 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /** Close all tabs whose domain matches with a given TLD. */
-    public boolean closeTabsWithTLD(@NonNull final String tld) {
-        boolean result = false;
+    public void closeTabsWithTLD(@NonNull final String tld, @Nullable Consumer<Tab[]> callback) {
         // Process all TabModels from all windows
         for (TabModelSelector selector :
                 TabWindowManagerSingleton.getInstance().getAllTabModelSelectors()) {
             for (TabModel tabModel : selector.getModels()) {
-                result = closeTabsByTldInModel(tabModel, tld) || result;
+                closeTabsByTldInModel(tabModel, tld, callback);
             }
         }
-        return result;
     }
 
-    private boolean closeTabsByTldInModel(@NonNull TabModel tabModel, @NonNull String tld) {
+    private void closeTabsByTldInModel(
+            @NonNull TabModel tabModel, @NonNull String tld, @Nullable Consumer<Tab[]> callback) {
         final int count = tabModel.getCount();
         final List<Tab> tabsToClose = new ArrayList<>();
 
@@ -1982,16 +1983,17 @@ public abstract class BraveActivity extends ChromeActivity
         // Close all matching tabs in a single operation
         if (!tabsToClose.isEmpty()) {
             try {
+                if (callback != null) {
+                    callback.accept(tabsToClose.toArray(new Tab[tabsToClose.size()]));
+                }
                 tabModel.getTabRemover()
                         .closeTabs(
                                 TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
                                 false);
-                return true; // Successfully initiated tab closure
             } catch (Exception e) {
-                return false; // Failed to close tabs
+                Log.e(TAG, "Error closing tabs with TLD: " + tld, e);
             }
         }
-        return false;
     }
 
     /**

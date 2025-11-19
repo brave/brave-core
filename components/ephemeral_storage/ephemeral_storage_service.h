@@ -78,7 +78,8 @@ class EphemeralStorageService : public KeyedService {
   void TLDEphemeralLifetimeDestroyed(
       const std::string& ephemeral_domain,
       const content::StoragePartitionConfig& storage_partition_config,
-      bool shields_disabled_on_one_of_hosts);
+      bool shields_disabled_on_one_of_hosts,
+      const bool ephemeral_storage_clean_enforced);
 
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
@@ -122,8 +123,6 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   size_t FireCleanupTimersForTesting();
-  void OnDomainAndSubdomainTabsClosed(const TLDEphemeralAreaKey& key,
-                                      const bool result);
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;

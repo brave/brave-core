@@ -154,25 +154,25 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 #endif
 
 void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
-    const std::string ephemeral_domain,
-    CloseTabsForDomainAndSubdomainsCallback callback) {
-  bool result = false;
+    const std::string ephemeral_domain) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
   for (Browser* browser : *BrowserList::GetInstance()) {
     if (!profile->IsSameOrParent(browser->profile())) {
-      return;
+      continue;
     }
     BraveTabStripModel* tab_strip =
         static_cast<BraveTabStripModel*>(browser->tab_strip_model());
-    result =
-        (tab_strip && tab_strip->CloseTabsWithTLD(ephemeral_domain)) || result;
+    if (!tab_strip) {
+      continue;
+    }
+
+    tab_strip->CloseTabsWithTLD(ephemeral_domain);
   }
 #else
-  result = CloseTabsWithTLD(ephemeral_domain);
+  CloseTabsWithTLD(ephemeral_domain);
 #endif
-  std::move(callback).Run(result);
 }
 
 bool BraveEphemeralStorageServiceDelegate::

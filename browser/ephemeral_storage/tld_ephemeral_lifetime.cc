@@ -49,10 +49,14 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
         shields_state_on_hosts_, [](const auto& v) { return !v.second; });
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
         key_.storage_domain, key_.storage_partition_config,
-        shields_disabled_on_one_of_hosts);
+        shields_disabled_on_one_of_hosts, ephemeral_storage_clean_enforced_);
   }
 
   ActiveTLDStorageAreas().erase(key_);
+}
+
+void TLDEphemeralLifetime::EnforceEphemeralStorageClean() {
+  ephemeral_storage_clean_enforced_ = true;
 }
 
 // static
