@@ -158,7 +158,12 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
     CloseTabsForDomainAndSubdomainsCallback callback) {
   bool result = false;
 #if !BUILDFLAG(IS_ANDROID)
+  auto* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
   for (Browser* browser : *BrowserList::GetInstance()) {
+    if (!profile->IsSameOrParent(browser->profile())) {
+      return;
+    }
     BraveTabStripModel* tab_strip =
         static_cast<BraveTabStripModel*>(browser->tab_strip_model());
     result =
