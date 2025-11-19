@@ -1,0 +1,132 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.imageBackground {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--leo-spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.agentModeLink {
+  --leo-icon-color: var(
+    --Gradient-Icons-active,
+    linear-gradient(314deg, #fa7250 8.49%, #ff1893 43.72%, #a78aff 99.51%)
+  );
+  --leo-icon-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(50px);
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  font: var(--leo-font-default-semibold);
+  border-radius: var(--leo-radius-full);
+  color: var(--leo-color-white);
+  background:
+    linear-gradient(
+        var(--leo-color-material-regular),
+        var(--leo-color-material-regular)
+      )
+      padding-box,
+    linear-gradient(314deg, #fa7250 8.49%, #ff1893 43.72%, #a78aff 99.51%)
+      border-box;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-l);
+  max-width: 940px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  backdrop-filter: blur(50px);
+  background: var(--leo-color-material-thin);
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-xl);
+  flex: 1;
+  min-width: 270px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  width: 100%;
+}
+
+.cardIcon {
+  --leo-icon-color: var(--leo-color-white);
+  --leo-icon-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--leo-radius-m);
+  background: linear-gradient(
+    314deg,
+    #fa7250 8.49%,
+    #ff1893 43.72%,
+    #a78aff 99.51%
+  );
+  box-shadow:
+    0 1px 2px -1px rgba(0, 0, 0, 0.33),
+    0 1px 3px 0 rgba(0, 0, 0, 0.33);
+}
+
+.cardTitle {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-white);
+}
+
+.cardDescription {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-white);
+  opacity: 0.9;
+}
+
+@media (max-width: 560px) {
+  .cardsContainer {
+    flex-direction: column;
+  }
+
+  .card {
+    min-width: auto;
+    max-width: 100%;
+  }
+}
