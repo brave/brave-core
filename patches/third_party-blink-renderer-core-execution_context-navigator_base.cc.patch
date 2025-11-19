@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.cc b/third_party/blink/renderer/core/execution_context/navigator_base.cc
+index 0910e68f91b9090655f054976e34bffc1dbdc549..dfaa5cca797427dc6719334d4424d706ed92be5a 100644
+--- a/third_party/blink/renderer/core/execution_context/navigator_base.cc
++++ b/third_party/blink/renderer/core/execution_context/navigator_base.cc
+@@ -94,6 +94,7 @@ void NavigatorBase::Trace(Visitor* visitor) const {
+   visitor->Trace(storage_bucket_manager_);
+   visitor->Trace(usb_);
+   visitor->Trace(wake_lock_);
++  visitor->Trace(brave_navigator_);
+ }
+ 
+ unsigned int NavigatorBase::hardwareConcurrency() const {
