@@ -110,6 +110,7 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -190,6 +191,7 @@ import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDeleg
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -1944,7 +1946,18 @@ public abstract class BraveActivity extends ChromeActivity
 
     /** Close all tabs whose domain matches with a given TLD. */
     public boolean closeTabsWithTLD(@NonNull final String tld) {
-        final TabModel tabModel = getCurrentTabModel();
+        boolean result = false;
+        // Process all TabModels from all windows
+        for (TabModelSelector selector :
+                TabWindowManagerSingleton.getInstance().getAllTabModelSelectors()) {
+            for (TabModel tabModel : selector.getModels()) {
+                result = closeTabsByTldInModel(tabModel, tld) || result;
+            }
+        }
+        return result;
+    }
+
+    private boolean closeTabsByTldInModel(@NonNull TabModel tabModel, @NonNull String tld) {
         final int count = tabModel.getCount();
         final List<Tab> tabsToClose = new ArrayList<>();
 
