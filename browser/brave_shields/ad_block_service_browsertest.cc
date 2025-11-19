@@ -216,13 +216,15 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
                                      bool first_party_protections) {
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
       rules, first_party_protections, permission_mask);
-  source_providers_.push_back(std::move(source_provider));
-
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  auto* engine = first_party_protections
-                     ? ad_block_service->default_engine_.get()
-                     : ad_block_service->additional_filters_engine_.get();
+  source_provider->RegisterAsSourceProvider(ad_block_service);
+  source_providers_.push_back(std::move(source_provider));
+
+  brave_shields::AdBlockEngine* engine =
+      first_party_protections
+          ? ad_block_service->default_engine_.get()
+          : ad_block_service->additional_filters_engine_.get();
   EngineTestObserver engine_observer(engine);
   engine_observer.Wait();
 }

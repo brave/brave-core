@@ -21,7 +21,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_localhost_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
@@ -470,31 +469,6 @@ void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return default_resource_provider_.get();
-}
-
-void AdBlockService::UseSourceProviderForTest(
-    TestFiltersProvider* source_provider) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  source_provider->RegisterToFiltersProviderManager(
-      filters_provider_manager_.get());
-  default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(),
-      static_cast<AdBlockFiltersProvider*>(source_provider),
-      resource_provider_.get(), filters_provider_manager_.get(),
-      GetTaskRunner());
-}
-
-void AdBlockService::UseCustomSourceProviderForTest(
-    TestFiltersProvider* source_provider) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  source_provider->RegisterToFiltersProviderManager(
-      filters_provider_manager_.get());
-  additional_filters_service_observer_ =
-      std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_.get(),
-          static_cast<AdBlockFiltersProvider*>(source_provider),
-          resource_provider_.get(), filters_provider_manager_.get(),
-          GetTaskRunner());
 }
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(

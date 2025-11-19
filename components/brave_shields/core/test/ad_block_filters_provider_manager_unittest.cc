@@ -21,17 +21,15 @@ class FiltersProviderManagerTestObserver
 
 TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
   FiltersProviderManagerTestObserver test_observer;
-  brave_shields::AdBlockFiltersProviderManager::GetInstance()->AddObserver(
-      &test_observer);
+  brave_shields::AdBlockFiltersProviderManager m;
+  m.AddObserver(&test_observer);
 
-  brave_shields::TestFiltersProvider provider1("", true, 0, false);
-  brave_shields::TestFiltersProvider provider2("", true, 0, false);
-  brave_shields::TestFiltersProvider provider3("", true, 0, false);
-
-  provider1.Initialize();
+  brave_shields::TestFiltersProvider provider1("", true, 0);
   EXPECT_EQ(test_observer.changed_count, 0);
-  provider2.Initialize();
-  EXPECT_EQ(test_observer.changed_count, 0);
-  provider3.Initialize();
+  provider1.RegisterAsSourceProvider(&m);
   EXPECT_EQ(test_observer.changed_count, 1);
+  brave_shields::TestFiltersProvider provider2("", true, 0);
+  EXPECT_EQ(test_observer.changed_count, 1);
+  provider2.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(test_observer.changed_count, 2);
 }

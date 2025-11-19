@@ -16,17 +16,18 @@
 namespace brave_shields {
 
 class AdBlockFiltersProviderManager;
+class AdBlockService;
 
 class TestFiltersProvider : public AdBlockFiltersProvider {
  public:
   explicit TestFiltersProvider(const std::string& rules);
   TestFiltersProvider(const std::string& rules,
                       bool engine_is_default,
-                      uint8_t permission_mask = 0,
-                      bool is_initialized = true);
+                      uint8_t permission_mask = 0);
   ~TestFiltersProvider() override;
 
-  void RegisterToFiltersProviderManager(AdBlockFiltersProviderManager* manager);
+  void RegisterAsSourceProvider(AdBlockService* ad_block_service);
+  void RegisterAsSourceProvider(AdBlockFiltersProviderManager* manager);
 
   void LoadFilterSet(
       base::OnceCallback<void(

@@ -151,15 +151,13 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  void UseSourceProviderForTest(TestFiltersProvider* source_provider);
-  void UseCustomSourceProviderForTest(TestFiltersProvider* source_provider);
-
  private:
   friend class ::AdBlockServiceTest;
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
   friend class brave_shields::CosmeticResourceMergeTest;
   friend class brave_shields::StripProceduralFiltersTest;
+  friend class brave_shields::TestFiltersProvider;
 
   static std::string g_ad_block_dat_file_version_;
 
@@ -167,6 +165,11 @@ class AdBlockService {
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
+  }
+
+  AdBlockFiltersProviderManager* filters_provider_manager() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return filters_provider_manager_.get();
   }
 
   void OnGetDebugInfoFromDefaultEngine(
