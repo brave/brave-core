@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -43,7 +44,8 @@ class EngineConsumer {
 
   struct GenerationResultData {
     GenerationResultData(mojom::ConversationEntryEventPtr event,
-                         std::optional<std::string>&& model_key);
+                         std::optional<std::string>&& model_key,
+                         std::optional<bool> is_near_verified = std::nullopt);
     ~GenerationResultData();
 
     GenerationResultData(GenerationResultData&&);
@@ -55,6 +57,7 @@ class EngineConsumer {
 
     mojom::ConversationEntryEventPtr event;
     std::optional<std::string> model_key;
+    std::optional<bool> is_near_verified;
   };
 
   using GenerationResult =

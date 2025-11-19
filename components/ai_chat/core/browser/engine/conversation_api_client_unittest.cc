@@ -582,6 +582,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
                       mojom::ConversationEntryEvent::NewCompletionEvent(
                           mojom::CompletionEvent::New("")),
                       std::nullopt));
+        EXPECT_FALSE(result->is_near_verified.has_value());
       });
 
   // Begin request
@@ -1342,6 +1343,70 @@ TEST_F(ConversationAPIUnitTest,
                           base::BindOnce(&MockCallbacks::OnCompleted,
                                          base::Unretained(&mock_callbacks)),
                           override_model_name);
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+}
+
+TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
+  std::string expected_completion_response = "Verified response";
+  auto events_and_body = GetMockEventsAndExpectedEventsBody();
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      std::move(events_and_body.first);
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        base::Value result(base::Value::Type::DICT);
+        result.GetDict().Set("type", "completion");
+        result.GetDict().Set("model", "llama-3-8b-instruct");
+        result.GetDict().Set("completion", expected_completion_response);
+        data_received_callback.Run(base::ok(std::move(result)));
+
+        base::flat_map<std::string, std::string> response_headers;
+        response_headers[kBraveNearVerifiedHeader] = "true";
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, response_headers,
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        EXPECT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  expected_completion_response);
+        EXPECT_FALSE(result.is_near_verified);
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([](EngineConsumer::GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_TRUE(result.value().is_near_verified.has_value());
+        EXPECT_TRUE(result.value().is_near_verified.value());
+      });
+
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CONTENT_AGENT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client_.get());

@@ -11,9 +11,11 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
@@ -251,6 +253,33 @@ SkBitmap ScaleDownBitmap(const SkBitmap& bitmap) {
   canvas.drawImageRect(bitmap.asImage(), dst_rect, sampling_options);
 
   return scaled_bitmap;
+}
+
+GURL GetEndpointUrl(bool premium, const std::string& path) {
+  CHECK(!path.starts_with("/"));
+
+#if !defined(OFFICIAL_BUILD)
+  // If a runtime AI Chat URL is provided, use it.
+  std::string ai_chat_url =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          "ai-chat-server-url");
+  if (!ai_chat_url.empty()) {
+    GURL url = GURL(base::StrCat({ai_chat_url, "/", path}));
+    CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
+    return url;
+  }
+#endif
+
+  auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
+  auto hostname = brave_domains::GetServicesDomain(
+      prefix, brave_domains::ServicesEnvironment::DEV);
+
+  GURL url{base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname, "/", path})};
+
+  CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
+
+  return url;
 }
 
 }  // namespace ai_chat

@@ -17,8 +17,11 @@ namespace ai_chat {
 
 EngineConsumer::GenerationResultData::GenerationResultData(
     mojom::ConversationEntryEventPtr event,
-    std::optional<std::string>&& model_key)
-    : event(std::move(event)), model_key(std::move(model_key)) {}
+    std::optional<std::string>&& model_key,
+    std::optional<bool> is_near_verified)
+    : event(std::move(event)),
+      model_key(std::move(model_key)),
+      is_near_verified(is_near_verified) {}
 
 EngineConsumer::GenerationResultData::GenerationResultData(
     GenerationResultData&& other) = default;

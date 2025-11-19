@@ -379,6 +379,9 @@ function ConversationEntries() {
                         <ContextActionsAssistant
                           turnUuid={firstEntryEdit.uuid}
                           turnModelKey={turnModelKey}
+                          turnNEARVerified={
+                            group.at(-1)?.nearVerificationStatus?.verified
+                          }
                           onEditAnswerClicked={
                             canEditEntry
                               ? () => setEditInputId(index)
