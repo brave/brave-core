@@ -748,7 +748,7 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 void ModelService::InitModels() {
   // Get leo and custom models
   const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-  std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
+  const std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
   models_.clear();

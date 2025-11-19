@@ -56,6 +56,10 @@ class OllamaModelFetcher {
       const std::string& model_name,
       std::optional<OllamaService::ModelDetails> details);
 
+  // TODO(https://github.com/brave/brave-browser/issues/49828): display_name is
+  // currently identical to model_name but will be used for proper name
+  // formatting when we reland the formatting patch
+  // (https://github.com/brave/brave-core/commit/dadaf97432efd7d64289bd92b7d31cc6e16722f0)
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
   std::unique_ptr<OllamaService> ollama_service_;
