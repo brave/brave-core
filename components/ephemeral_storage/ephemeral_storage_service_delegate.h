@@ -33,7 +33,6 @@ class EphemeralStorageServiceDelegate {
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
   virtual void CloseTabsForDomainAndSubdomains(
-      content::WebContents* contents,
       const std::string ephemeral_domain,
       CloseTabsForDomainAndSubdomainsCallback callback) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(

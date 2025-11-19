@@ -281,7 +281,7 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   delegate_->CloseTabsForDomainAndSubdomains(
-      contents, std::move(ephemeral_domain),
+      std::move(ephemeral_domain),
       base::BindOnce(&EphemeralStorageService::OnDomainAndSubdomainTabsClosed,
                      weak_ptr_factory_.GetWeakPtr(), std::move(key)));
 }
