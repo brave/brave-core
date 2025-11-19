@@ -20,12 +20,7 @@ constexpr char kHandwritingDisabledError[] =
 
 HandwritingRecognitionService::HandwritingRecognitionService(
     Navigator& navigator)
-    : Supplement<Navigator>(navigator),
-      remote_service_(navigator.GetExecutionContext()) {}
-
-// static
-// HandwritingRecognitionService&
-// HandwritingRecognitionService::From(Navigator&) {}
+    : navigator_(navigator), remote_service_(navigator.GetExecutionContext()) {}
 
 // IDL Interface:
 // static
@@ -54,7 +49,7 @@ HandwritingRecognitionService::queryHandwritingRecognizer(
 
 void HandwritingRecognitionService::Trace(Visitor* visitor) const {
   visitor->Trace(remote_service_);
-  Supplement<Navigator>::Trace(visitor);
+  visitor->Trace(navigator_);
 }
 
 }  // namespace blink
