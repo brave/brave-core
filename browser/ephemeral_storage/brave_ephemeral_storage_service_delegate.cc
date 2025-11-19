@@ -40,13 +40,16 @@ namespace ephemeral_storage {
 BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> cookie_settings)
+    scoped_refptr<content_settings::CookieSettings> cookie_settings,
+    brave_shields::BraveShieldsSettingsService* shields_settings_service)
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
-      cookie_settings_(std::move(cookie_settings)) {
+      cookie_settings_(std::move(cookie_settings)),
+      shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
+  CHECK(shields_settings_service_);
 }
 
 BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() {
@@ -177,12 +180,8 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
 
 bool BraveEphemeralStorageServiceDelegate::
     IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
-  Profile* profile = Profile::FromBrowserContext(context_);
-  CHECK(profile);
-  auto* settings_service =
-      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
-  CHECK(settings_service);
-  return settings_service->IsShieldsDisabledOnAnyHostMatchingDomainOf(url);
+  return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      url);
 }
 
 }  // namespace ephemeral_storage
