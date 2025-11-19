@@ -16,7 +16,9 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/android/chrome_jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
+#include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace ephemeral_storage {
 
@@ -81,11 +83,19 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorageCallback(
   }
 }
 
-void CloseTabsWithTLD(const std::string tld) {
+void CloseTabsWithTLD(const std::string& etldplusone) {
+  if (etldplusone.empty() ||
+      !net::registry_controlled_domains::HostHasRegistryControlledDomain(
+          etldplusone,
+          net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return;
+  }
+
   Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
       base::android::AttachCurrentThread(),
       base::android::ConvertUTF8ToJavaString(
-          base::android::AttachCurrentThread(), std::move(tld)));
+          base::android::AttachCurrentThread(), std::move(etldplusone)));
 }
 
 }  // namespace ephemeral_storage

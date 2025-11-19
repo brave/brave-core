@@ -28,12 +28,13 @@ public class BraveEphemeralStorageUtils {
     }
 
     @CalledByNative
-    public static void closeTabsWithTLD(String tld) {
+    public static void closeTabsWithTLD(String etldplusone) {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity != null) {
                 braveActivity.closeTabsWithTLD(
-                        tld, BraveEphemeralStorageUtils::cleanupTLDEphemeralStorageCallback);
+                        etldplusone,
+                        BraveEphemeralStorageUtils::cleanupTLDEphemeralStorageCallback);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "closeTabsWithTLD error" + e);

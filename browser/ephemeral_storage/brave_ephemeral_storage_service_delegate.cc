@@ -9,9 +9,10 @@
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -171,7 +172,28 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
       continue;
     }
 
-    tab_strip->CloseTabsWithTLD(ephemeral_domain);
+    std::vector<int> closing_tab_indices;
+    for (auto tab_itr = tab_strip->begin(); tab_itr != tab_strip->end();
+         ++tab_itr) {
+      content::WebContents* contents = tab_itr->GetContents();
+      if (!contents) {
+        continue;
+      }
+      const auto tab_tld = net::URLToEphemeralStorageDomain(contents->GetURL());
+      if (tab_tld.empty()) {
+        continue;
+      }
+
+      if (auto* ephemeral_storage_tab_helper =
+              ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+                  contents);
+          ephemeral_storage_tab_helper && tab_tld == ephemeral_domain) {
+        closing_tab_indices.push_back(
+            tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
+        ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+      }
+    }
+    tab_strip->CloseTabs(base::span<int>(closing_tab_indices));
   }
 #else
   CloseTabsWithTLD(ephemeral_domain);
