@@ -33,7 +33,7 @@ const PasswordInitTestCase* Success() {
        .raw_response_body = R"({ "serializedResponse": "34c375d933e3c",
                                  "verificationToken": "eyJhbGciOiJFUz" })",
        .expected_response = {
-           .error = net::OK, .status = net::HTTP_OK, .body = [] {
+           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              PasswordInit::Response::SuccessBody body;
              body.serialized_response = "34c375d933e3c";
              body.verification_token = "eyJhbGciOiJFUz";
@@ -63,8 +63,8 @@ const PasswordInitTestCase* ApplicationJsonError() {
            R"({ "code": 13004,
                 "error": "account already exists",
                 "status": 400 })",
-       .expected_response = {.error = net::OK,
-                             .status = net::HTTP_BAD_REQUEST,
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_BAD_REQUEST,
                              .body = base::unexpected([] {
                                PasswordInit::Response::ErrorBody error;
                                error.code = base::Value(13004);
@@ -82,8 +82,8 @@ const PasswordInitTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.error = net::OK,
-                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }

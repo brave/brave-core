@@ -34,8 +34,8 @@ const PasswordFinalizeTestCase* Success() {
                                  "requiresTwoFA": false,
                                  "sessionsInvalidated": false })",
        .expected_response = {
-           .error = net::OK,
-           .status = net::HTTP_OK,
+           .net_error = net::OK,
+           .status_code = net::HTTP_OK,
            .body = PasswordFinalize::Response::SuccessBody()}});
 
   return kSuccess.get();
@@ -64,8 +64,8 @@ const PasswordFinalizeTestCase* ApplicationJsonError() {
                R"({ "code": 14002,
                     "error": "interim password state has expired",
                     "status": 400 })",
-           .expected_response = {.error = net::OK,
-                                 .status = net::HTTP_BAD_REQUEST,
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
                                  .body = base::unexpected([] {
                                    PasswordFinalize::Response::ErrorBody error;
                                    error.code = base::Value(14002);
@@ -83,8 +83,8 @@ const PasswordFinalizeTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.error = net::OK,
-                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }

@@ -83,7 +83,7 @@ namespace brave_account::endpoint_client {
 
 template <typename T, typename E>
 bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
-  return lhs.error == rhs.error && lhs.status == rhs.status &&
+  return lhs.net_error == rhs.net_error && lhs.status_code == rhs.status_code &&
          lhs.body == rhs.body;
 }
 
@@ -199,23 +199,23 @@ INSTANTIATE_TEST_SUITE_P(
             .with_headers = false,
             .http_status_code = net::HTTP_OK,
             .raw_response_body = R"({"success": "some response"})",
-            .expected_response = {.error = net::OK,
-                                  .status = net::HTTP_OK,
+            .expected_response = {.net_error = net::OK,
+                                  .status_code = net::HTTP_OK,
                                   .body = TestEndpoint::Response::SuccessBody(
                                       "some response")}},
         TestCase{.request = TestEndpoint::Request{{"invalid response"}},
                  .with_headers = false,
                  .http_status_code = net::HTTP_CREATED,
                  .raw_response_body = R"({"invalid": response})",
-                 .expected_response = {.error = net::OK,
-                                       .status = net::HTTP_CREATED,
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_CREATED,
                                        .body = std::nullopt}},
         TestCase{.request = TestEndpoint::Request{{"valid error"}},
                  .with_headers = false,
                  .http_status_code = net::HTTP_BAD_REQUEST,
                  .raw_response_body = R"({"error": "some error"})",
-                 .expected_response = {.error = net::OK,
-                                       .status = net::HTTP_BAD_REQUEST,
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_BAD_REQUEST,
                                        .body = base::unexpected(
                                            TestEndpoint::Response::ErrorBody(
                                                "some error"))}},
@@ -223,16 +223,16 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = false,
                  .http_status_code = net::HTTP_UNAUTHORIZED,
                  .raw_response_body = R"({"invalid": error})",
-                 .expected_response = {.error = net::OK,
-                                       .status = net::HTTP_UNAUTHORIZED,
+                 .expected_response = {.net_error = net::OK,
+                                       .status_code = net::HTTP_UNAUTHORIZED,
                                        .body = std::nullopt}},
         TestCase{
             .request = TestEndpoint::Request{{"request with headers"}},
             .with_headers = true,
             .http_status_code = net::HTTP_OK,
             .raw_response_body = R"({"success": "some response"})",
-            .expected_response = {.error = net::OK,
-                                  .status = net::HTTP_OK,
+            .expected_response = {.net_error = net::OK,
+                                  .status_code = net::HTTP_OK,
                                   .body = TestEndpoint::Response::SuccessBody(
                                       "some response")}}),
     [](const auto& info) {

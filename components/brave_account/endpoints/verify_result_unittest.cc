@@ -33,7 +33,7 @@ const VerifyResultTestCase* SuccessAuthTokenIsNull() {
                                  "service": "accounts",
                                  "verified": false })",
        .expected_response = {
-           .error = net::OK, .status = net::HTTP_OK, .body = [] {
+           .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
              VerifyResult::Response::SuccessBody body;
              body.auth_token = base::Value();
              return body;
@@ -51,7 +51,7 @@ const VerifyResultTestCase* SuccessAuthTokenIsNotNull() {
                                      "service": "accounts",
                                      "verified": true })",
            .expected_response = {
-               .error = net::OK, .status = net::HTTP_OK, .body = [] {
+               .net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
                  VerifyResult::Response::SuccessBody body;
                  body.auth_token = base::Value("34c375d933e3c");
                  return body;
@@ -78,8 +78,8 @@ const VerifyResultTestCase* ApplicationJsonErrorCodeIsNull() {
            R"({ "code": null,
                 "error": "Bad Request",
                 "status": 400 })",
-       .expected_response = {.error = net::OK,
-                             .status = net::HTTP_BAD_REQUEST,
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_BAD_REQUEST,
                              .body = base::unexpected([] {
                                VerifyResult::Response::ErrorBody error;
                                error.code = base::Value();
@@ -96,8 +96,8 @@ const VerifyResultTestCase* ApplicationJsonErrorCodeIsNotNull() {
            R"({ "code": 13002,
                 "error": "verification not found or invalid id/code",
                 "status": 404 })",
-       .expected_response = {.error = net::OK,
-                             .status = net::HTTP_NOT_FOUND,
+       .expected_response = {.net_error = net::OK,
+                             .status_code = net::HTTP_NOT_FOUND,
                              .body = base::unexpected([] {
                                VerifyResult::Response::ErrorBody error;
                                error.code = base::Value(13002);
@@ -115,8 +115,8 @@ const VerifyResultTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_response_body = "non-application/json error",
-           .expected_response = {.error = net::OK,
-                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }

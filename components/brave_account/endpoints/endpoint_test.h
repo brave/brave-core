@@ -35,7 +35,7 @@ inline bool operator==(const Error& lhs, const Error& rhs) {
 template <typename T, typename E>
 bool operator==(const endpoint_client::Response<T, E>& lhs,
                 const endpoint_client::Response<T, E>& rhs) {
-  return lhs.error == rhs.error && lhs.status == rhs.status &&
+  return lhs.net_error == rhs.net_error && lhs.status_code == rhs.status_code &&
          lhs.body == rhs.body;
 }
 

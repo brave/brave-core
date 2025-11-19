@@ -65,9 +65,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (requires { typename TestCase::Endpoint; }) {
       if (test_case.endpoint_response) {
-        const auto& endpoint_response_status =
-            test_case.endpoint_response->status;
-        CHECK(endpoint_response_status);
+        const auto& endpoint_response_status_code =
+            test_case.endpoint_response->status_code;
+        CHECK(endpoint_response_status_code);
 
         const auto& endpoint_response_body = test_case.endpoint_response->body;
         base::Value value(endpoint_response_body
@@ -80,7 +80,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
         test_url_loader_factory_.AddResponse(
             TestCase::Endpoint::URL().spec(), *body,
-            static_cast<net::HttpStatusCode>(*endpoint_response_status));
+            static_cast<net::HttpStatusCode>(*endpoint_response_status_code));
       }
     }
 
