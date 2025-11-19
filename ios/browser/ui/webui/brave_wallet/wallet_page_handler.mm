@@ -6,6 +6,8 @@
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 
 #include "base/notimplemented.h"
+#include "brave/components/brave_wallet/ios/browser/wallet_page_handler_bridge.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "ios/web/public/web_state.h"
 
 WalletPageHandler::WalletPageHandler(
@@ -20,13 +22,15 @@ void WalletPageHandler::ShowApprovePanelUI() {
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {
-  // TODO(https://github.com/brave/brave-browser/issues/50283):
-  // Create wallet handler bridge
-  NOTIMPLEMENTED();
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
+          ->bridge();
+  [bridge showWalletBackupUI];
 }
 
 void WalletPageHandler::UnlockWalletUI() {
-  // TODO(https://github.com/brave/brave-browser/issues/50283):
-  // Create wallet handler bridge
-  NOTIMPLEMENTED();
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
+          ->bridge();
+  [bridge unlockWalletUI];
 }
