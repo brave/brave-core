@@ -116,13 +116,13 @@ TEST(ZCashTransaction, Value) {
 
   ZCashTransaction::TxOutput output1;
   output1.address = kAddress1;
-  output1.script_pubkey = ZCashAddressToScriptPubkey(kAddress1, true).value();
+  output1.script_pubkey = ZCashAddressToScriptPubkey(kAddress1, false).value();
   output1.amount = 5;
   tx.transparent_part().outputs.push_back(std::move(output1));
 
   ZCashTransaction::TxOutput output2;
   output2.address = kAddress2;
-  output2.script_pubkey = ZCashAddressToScriptPubkey(kAddress2, true).value();
+  output2.script_pubkey = ZCashAddressToScriptPubkey(kAddress2, false).value();
   output2.amount = 50;
   tx.transparent_part().outputs.push_back(std::move(output2));
 
