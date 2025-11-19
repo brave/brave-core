@@ -62,11 +62,13 @@ public class BraveLeoSettingsLauncherHelper {
     @CalledByNative
     private static void handleShowSoftKeyboard(WebContents webContents) {
         WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
-        if (windowAndroid == null) {
+        if (windowAndroid == null || windowAndroid.getActivity() == null) {
             return;
         }
         Activity activity = windowAndroid.getActivity().get();
-        if (activity == null) {
+        if (activity == null
+                || activity.getWindow() == null
+                || activity.getWindow().getCurrentFocus() == null) {
             return;
         }
         InputMethodManager imm =
