@@ -8,10 +8,10 @@ on:
 concurrency: set-bb-issues-milestone
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   issues: write
-  repository-projects: write # required for "gh pr edit": https://github.com/cli/cli/issues/6274
+  repository-projects: read # required for "gh pr edit": https://github.com/cli/cli/issues/6274
 
 jobs:
   set-pr-milestone:
