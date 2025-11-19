@@ -194,12 +194,11 @@ export const AccountDetailsHeader = (props: Props) => {
     }
     // We are not able to fetch Private Keys for
     // a Hardware account so we filter out this option.
-    // BTC, ZEC, ADA and DOT are not yet supported.
+    // BTC, ZEC and ADA are not yet supported.
     if (
       account.accountId.coin === BraveWallet.CoinType.BTC
       || account.accountId.coin === BraveWallet.CoinType.ZEC
       || account.accountId.coin === BraveWallet.CoinType.ADA
-      || account.accountId.coin === BraveWallet.CoinType.DOT
       || account.accountId.kind === BraveWallet.AccountKind.kHardware
     ) {
       options = options.filter(

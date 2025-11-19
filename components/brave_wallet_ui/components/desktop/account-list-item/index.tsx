@@ -323,13 +323,14 @@ export const AccountListItem = ({
       account.accountId.kind !== BraveWallet.AccountKind.kDerived
 
     // We are not able to fetch Private Keys for a Hardware account so we filter
-    // out this option. Also PK export is allowed only for ETH, SOL and FIL.
+    // out this option. Also PK export is allowed only for ETH, SOL, FIL and DOT.
     const canExportPrivateKey =
       [
         // TODO(apaymyshev): support BTC and ZEC
         BraveWallet.CoinType.ETH,
         BraveWallet.CoinType.SOL,
         BraveWallet.CoinType.FIL,
+        BraveWallet.CoinType.DOT,
       ].includes(account.accountId.coin)
       && account.accountId.kind !== BraveWallet.AccountKind.kHardware
 

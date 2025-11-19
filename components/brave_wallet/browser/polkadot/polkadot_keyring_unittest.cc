@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -353,6 +354,100 @@ TEST(PolkadotKeyring, VerifyMessage) {
     verified =
         keyring.VerifyMessage(ToSignature(wrong_signature_hex), message, 0);
     EXPECT_FALSE(verified);
+  }
+}
+
+// Test cases could be verified via importing to Talisman wallet.
+TEST(PolkadotKeyring, EncodePrivateKeyForExport) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+  keyring.SetRandBytesForTesting(std::vector<uint8_t>(32, 1),
+                                 std::vector<uint8_t>(24, 2));
+
+  // Test account 0
+  {
+    auto private_key_0 = keyring.EncodePrivateKeyForExport(0, kPassword);
+    std::optional<base::Value> json_value =
+        base::JSONReader::Read(*private_key_0, 5);
+    constexpr const char kExpectedJson[] =
+        R"({
+            "address":"5Fc3qszVcAXHAmjjm61KcxqvV1kh91jpydE476NjjnJneNdP",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgJwZYie6q9xdZXp0Tp0awNekjcrjm4Ge+Vh5Lwh9XlJ3sEQ6F4cJUGsR6Kx5IcNP7LBci3ArjzqlJ7/qOSQzS/rJ45+1kPakLVG2YZXQWW3LAzdc6CkDXzrzYnrUF3DyhY6sm59VLHwd6azVzFxqAMd+NJYVWxAxUlESkQlJafdg/4z3wmY",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    std::optional<base::Value> expected_json_value =
+        base::JSONReader::Read(kExpectedJson, 5);
+    EXPECT_EQ(*json_value, *expected_json_value);
+  }
+
+  // Test account 1
+  {
+    auto private_key_1 = keyring.EncodePrivateKeyForExport(1, kPassword);
+    std::optional<base::Value> json_value_1 =
+        base::JSONReader::Read(*private_key_1, 5);
+    constexpr const char kExpectedJsonAccount1[] =
+        R"({
+            "address":"5FUag6Xjkr2TMgejpdsvQo3c1FSrZqEeZoHh173StGbME4XF",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgI35vhV4Hb3Cr04X+unU7qckjcrjm4Ge+Vh5Lwh9XlJ3tSn4/Z3n+oAn5X+MByi6HOHjolX4w2S+vHn7qX2ExTqqMqygndQ5qbu68HgGm326rq2dZ8nZ9n6VnS1dX88/MQ6sm59VLuGiKa4uQ4KX1JrUFoTxhgvl83I4WrM1y+1/nbb1yyn",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+
+    std::optional<base::Value> expected_json_value_1 =
+        base::JSONReader::Read(kExpectedJsonAccount1, 5);
+    EXPECT_EQ(*json_value_1, *expected_json_value_1);
+  }
+
+  // Test with empty password (should fail)
+  {
+    auto empty_password_result = keyring.EncodePrivateKeyForExport(0, "");
+    EXPECT_FALSE(empty_password_result.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, EncodePrivateKeyForExport_Testnet) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotTestnet);
+  keyring.SetRandBytesForTesting(std::vector<uint8_t>(32, 1),
+                                 std::vector<uint8_t>(24, 2));
+
+  // Test account 0
+  {
+    auto private_key_0 = keyring.EncodePrivateKeyForExport(0, kPassword);
+    std::optional<base::Value> json_value =
+        base::JSONReader::Read(*private_key_0, 5);
+    constexpr const char kExpectedJson[] =
+        R"({
+            "address":"5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgK8fiV6lGVSFewy6uxsU1C4kjcrjm4Ge+Vh5Lwh9XlJ3vAbQs+/0vSBKGe71ik2n/owjXKi9/fBCOIbIDIttGbopozlHDAyPEOrftWc4aiMZfTHRTh/Hb0kJ4C79LBJ84Y6sm59VMs51zUalbzBwa9c75OqlTCtqRouH8891IU51jczQkHY",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    std::optional<base::Value> expected_json_value =
+        base::JSONReader::Read(kExpectedJson, 5);
+    EXPECT_EQ(*json_value, *expected_json_value);
+  }
+
+  // Test account 1
+  {
+    auto private_key_1 = keyring.EncodePrivateKeyForExport(1, kPassword);
+    std::optional<base::Value> json_value_1 =
+        base::JSONReader::Read(*private_key_1, 5);
+    constexpr const char kExpectedJsonAccount1[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    std::optional<base::Value> expected_json_value_1 =
+        base::JSONReader::Read(kExpectedJsonAccount1, 5);
+    EXPECT_EQ(*json_value_1, *expected_json_value_1);
+  }
+
+  // Test with empty password (should fail)
+  {
+    auto empty_password_result = keyring.EncodePrivateKeyForExport(0, "");
+    EXPECT_FALSE(empty_password_result.has_value());
   }
 }
 

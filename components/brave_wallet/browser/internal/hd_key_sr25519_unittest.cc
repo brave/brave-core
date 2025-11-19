@@ -9,8 +9,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -325,6 +327,31 @@ TEST(HDKeySr25519, DeterministicSignatures) {
 
   EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
   EXPECT_TRUE(keypair.VerifyMessage(sig2, message));
+}
+
+TEST(HDKeySr25519, GetExportKeyPkcs8) {
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+
+  EXPECT_EQ(ToHex(keypair.GetExportKeyPkcs8()),
+            "0x3053020101300506032b657004220420866fd0f00965665948cf251e582180a7"
+            "ffff042d1b1078b41404de00b229fd099b4f0afe280b746a778684e75442502057"
+            "b7473a03f08f96f5a38e9287e01f8fa12303210044a996beb1eef7bdcab976ab6d"
+            "2ca26104834164ecf28fb375600576fcc6eb0f");
+
+  std::vector<uint8_t> data(5 + 16 + 32 + 64);
+  base::SpanWriter span_writer = base::SpanWriter(base::span(data));
+
+  std::vector<uint8_t> pair_div({161, 35, 3, 33, 0});
+  std::vector<uint8_t> pair_hrd(
+      {48, 83, 2, 1, 1, 48, 5, 6, 3, 43, 101, 112, 4, 34, 4, 32});
+
+  // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L19
+  span_writer.Write(pair_hrd);
+  span_writer.Write(keypair.GetSecretKey());
+  span_writer.Write(pair_div);
+  span_writer.Write(keypair.GetPublicKey());
+
+  EXPECT_EQ(ToHex(keypair.GetExportKeyPkcs8()), ToHex(data));
 }
 
 }  // namespace brave_wallet

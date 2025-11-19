@@ -1584,6 +1584,12 @@ void KeyringService::EncodePrivateKeyForExport(
     return;
   }
 
+  if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
+    std::move(callback).Run(keyring->EncodePrivateKeyForExport(
+        account_id->account_index, password));
+    return;
+  }
+
   std::move(callback).Run(std::nullopt);
 }
 
