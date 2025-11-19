@@ -63,10 +63,10 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
   friend class RefCounted<TLDEphemeralLifetime>;
   virtual ~TLDEphemeralLifetime();
 
-  bool ephemeral_storage_clean_enforced_{false};
   TLDEphemeralLifetimeKey key_;
   base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
   absl::flat_hash_map<std::string, bool> shields_state_on_hosts_;
+  bool ephemeral_storage_clean_enforced_{false};
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };
