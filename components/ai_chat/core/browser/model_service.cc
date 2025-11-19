@@ -207,7 +207,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Llama 3.1 8B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->is_suggested_model = true;
+      model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -231,7 +231,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Qwen 14B";
       model->vision_support = false;
       model->supports_tools = false;
-      model->is_suggested_model = false;
+      model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
