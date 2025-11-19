@@ -76,7 +76,9 @@ class TabGroupTabCollection : public TabCollection {
   // OWNS the TabGroup metadata
   std::unique_ptr<TabGroup> group_;
 };
+
 ```
+
 
 [**TabGroup**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group.h;drc=fcc336e81a365fd858cae859059b29be8f995427) contains all group-related metadata:
 
@@ -97,6 +99,19 @@ The important point here is that **TabGroupTabCollection** is not exposed to
 UI components except **TabStripModel**. Instead, UI components access group 
 metadata through **TabGroupModel**.
 
+[**BrowserTabStripController**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=757;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68) demonstrates how UI components access group metadata:
+
+```cpp
+bool BrowserTabStripController::IsGroupCollapsed(
+    const tab_groups::TabGroupId& group) const {
+  return model_->group_model()->ContainsTabGroup(group) &&
+         model_->group_model()
+             ->GetTabGroup(group)
+             ->visual_data()
+             ->is_collapsed();
+}
+```
+
 #### 4. TabGroupModel as Registry
 
 [**TabGroupModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_group_model.h;drc=fb8950cdd1c1de2b7d7fcc92ebbc5c84c03107a9) only contains TabGroup references for access. [**TabGroupModel**
@@ -114,9 +129,62 @@ class TabGroupModel {
 };
 ```
 
+**Example: How TabStripModel creates a group**  
+When a user creates a new tab group, [TabStripModel::AddToNewGroup](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.cc;l=4138;drc=0fe57d75274de3140505b20e948a6d9fca1ffb68) demonstrates the integration pattern:
+
+```cpp
+void TabStripModel::AddToNewGroup(const std::vector<int>& indices) {
+  ...
+
+  // 1. Create TabGroupTabCollection with metadata
+    std::unique_ptr<tabs::TabGroupTabCollection> group_collection =
+      std::make_unique<tabs::TabGroupTabCollection>(
+          factory, new_group,
+          tab_groups::TabGroupVisualData(
+              std::u16string(),
+              group_model_->GetNextColor(base::PassKey<TabStripModel>())));
+
+  // 2. Register in TabGroupModel for UI access
+  group_model_->AddTabGroup(group_collection->GetTabGroup(),
+                            base::PassKey<TabStripModel>());
+
+  // 3. Move group collection into the collection
+  contents_data_->CreateTabGroup(std::move(group_collection));
+
+  ...
+}
+```
+
+This pattern shows how ownership flows: TabCollection → TabGroup → TabGroupModel registry.
+
 **Critical Access Pattern**: 
 - **TabCollection system** manages ownership
 - **UI components** (except TabStripModel) must access **TabGroup** via **TabGroupModel**, never **TabGroupTabCollection** directly
+
+**Example: UI accessing group metadata**  
+[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=723;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates proper access through TabGroupModel:
+
+```cpp
+TabGroup* BrowserTabStripController::GetTabGroup(
+    const tab_groups::TabGroupId& group_id) const {
+  // It's getting title through TabGroupModel, not TabGroupTabCollection.
+  return model_->group_model()->GetTabGroup(group_id);
+}
+
+std::u16string BrowserTabStripController::GetGroupTitle(
+    const tab_groups::TabGroupId& group) const {
+  // Convenient accessor for group title
+  return model_->group_model()->GetTabGroup(group)->visual_data()->title();
+}
+
+void BrowserTabStripController::SetVisualDataForGroup(
+    const tab_groups::TabGroupId& group,
+    const tab_groups::TabGroupVisualData& visual_data) {
+  // In case of updating group visuals, TabStripModel provides the setter. But
+  // TabStripModel also access the group via TabGroupModel.
+  model_->ChangeTabGroupVisuals(group, visual_data);
+}
+```
 
 #### 5. TabGroupChanged Notifications
 All changes to tab groups will be [notified through **TabStripModelObserver**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=549;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
@@ -151,6 +219,43 @@ struct TabGroupChange {
   struct CreateChange : public Delta { ...  };
 ```
 
+**Example: UI observing group changes**  
+[BrowserTabStripController](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc;l=922;drc=b2ea91862833a9b13ff555010327c6b65e1820e1) demonstrates how UI components react to group changes:
+
+```cpp
+void BrowserTabStripController::OnTabGroupChanged(
+    const TabGroupChange& change) {
+  // BrowserTabStripController is a central controller in favor of MVC model.
+  // That means it's responsible for delivering model update requests from TabStrip(View)
+  // to TabStripModel and propagating model changes back to TabStrip.
+  // In this case, you can see that the controller is propagating group changes to the TabStrip
+  // by calling proper methods
+  switch (change.type) {
+    case TabGroupChange::kCreated: {
+      tabstrip_->OnGroupCreated(change.group);
+      ...
+      break;
+    }
+    case TabGroupChange::kEditorOpened: {
+      tabstrip_->OnGroupEditorOpened(change.group);
+      break;
+    }
+    case TabGroupChange::kVisualsChanged: {
+      ...
+      tabstrip_->OnGroupVisualsChanged(change.group, old_visuals, new_visuals);
+      break;
+    }
+    case TabGroupChange::kMoved: {
+      tabstrip_->OnGroupMoved(change.group);
+      break;
+    }
+    case TabGroupChange::kClosed: {
+      tabstrip_->OnGroupClosed(change.group);
+      break;
+    }
+  }
+}
+```
 
 ## Tree Tabs Implementation
 
@@ -262,6 +367,16 @@ while the actual tree metadata is stored in a separate **TreeTabNode** class.
   **TabStripModel**.
 * Only **TabStripModel** can directly manipulate **TreeTabNodeTabCollection**.
 * UI components access tree metadata through **TreeTabNode**.
+
+**Following the Group Pattern**: So this mirrors how tab group classes are organized:
+
+```cpp
+// Group Pattern (existing):
+TabGroupTabCollection owns TabGroup → TabGroupModel provides UI access
+
+// Tree Pattern (proposed):
+TreeTabNodeTabCollection owns TreeTabNode → TreeTabModel provides UI access
+```
 
 ### Mode-Specific Behavior via Delegate Pattern
 Currently, we have complicated conditionals scattered throughout the tab UI
@@ -396,4 +511,50 @@ class TabStripModelObserver {
   // Extended observer interface
   virtual void OnTreeTabChanged(const TreeTabChange& change);
 };
+```
+
+**Following the TabGroupChange pattern**: This mirrors the existing **TabGroupChange notification system** mentioned earlier
+and tree related changes also would be notified via BrowserTabStripController:
+
+```cpp
+// Existing pattern for groups:
+void TabStripModel::NotifyTabGroupCreated(const tab_groups::TabGroupId& group) {
+  TabGroupChange change(
+      this, group,
+      TabGroupChange::CreateChange(
+          TabGroupChange::TabGroupCreationReason::kNewGroupCreated, nullptr));
+  for (auto& observer : observers_) {
+    observer.OnTabGroupChanged(change);
+  }
+}
+
+// Proposed pattern for tree tabs:
+void TabStripModel::NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node) {
+  auto change = TreeTabChange(node.id(), TreeTabChange::CreatedChange(node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+```
+
+**Example: UI responding to tree changes**  
+Similar to how **BrowserTabStripController** reacts to tab group changes, tree tab UI would be handled:
+
+```cpp
+void BraveBrowserTabStripController::OnTreeTabChanged(
+    const TreeTabChange& change) {
+  switch (change.type) {
+    case TreeTabChange::Type::kNodeCreated: {
+      ...
+      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+      break;
+    }
+    case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      ...
+      tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+      break;
+    }
+    ...
+  }
+}
 ```
