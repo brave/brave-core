@@ -1946,23 +1946,26 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    /** Close all tabs whose domain matches with a given TLD. */
-    public void closeTabsWithTLD(@NonNull final String tld, @Nullable Consumer<Tab[]> callback) {
+    /** Close all tabs whose domain matches with a given eTLD+1. */
+    public void closeTabsWithTLD(
+            @NonNull final String etldplusone, @Nullable Consumer<Tab[]> callback) {
         // Process all TabModels from all windows
         for (TabModelSelector selector :
                 TabWindowManagerSingleton.getInstance().getAllTabModelSelectors()) {
             for (TabModel tabModel : selector.getModels()) {
-                closeTabsByTldInModel(tabModel, tld, callback);
+                closeTabsByTldInModel(tabModel, etldplusone, callback);
             }
         }
     }
 
     private void closeTabsByTldInModel(
-            @NonNull TabModel tabModel, @NonNull String tld, @Nullable Consumer<Tab[]> callback) {
+            @NonNull TabModel tabModel,
+            @NonNull String etldplusone,
+            @Nullable Consumer<Tab[]> callback) {
         final int count = tabModel.getCount();
         final List<Tab> tabsToClose = new ArrayList<>();
 
-        // Collect all tabs that match the TLD
+        // Collect all tabs that match the eTLD+1
         for (int i = 0; i < count; i++) {
             Tab tab = tabModel.getTabAt(i);
             if (tab != null) {
@@ -1974,7 +1977,7 @@ public abstract class BraveActivity extends ChromeActivity
                     continue;
                 }
 
-                if (domain.equals(tld)) {
+                if (domain.equals(etldplusone)) {
                     tabsToClose.add(tab);
                 }
             }
@@ -1991,7 +1994,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
                                 false);
             } catch (Exception e) {
-                Log.e(TAG, "Error closing tabs with TLD: " + tld, e);
+                Log.e(TAG, "Error closing tabs with eTLD+1: " + etldplusone, e);
             }
         }
     }

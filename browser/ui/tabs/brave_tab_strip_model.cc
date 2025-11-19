@@ -13,7 +13,6 @@
 #include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
@@ -31,7 +30,6 @@
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/url_util.h"
 
 BraveTabStripModel::BraveTabStripModel(
     TabStripModelDelegate* delegate,
@@ -131,25 +129,6 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
     contentses.push_back(GetWebContentsAt(index));
   }
   TabStripModel::CloseTabs(contentses, close_types);
-}
-
-void BraveTabStripModel::CloseTabsWithTLD(std::string_view ephemeral_domain) {
-  std::vector<content::WebContents*> closing_tabs;
-  for (std::vector<tabs::TabInterface*> tabs =
-           contents_data_->GetTabsRecursive();
-       const tabs::TabInterface* tab : base::Reversed(tabs)) {
-    const auto tab_tld =
-        net::URLToEphemeralStorageDomain(tab->GetContents()->GetURL());
-    if (auto* ephemeral_storage_tab_helper =
-            ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-                tab->GetContents());
-        ephemeral_storage_tab_helper && tab_tld == ephemeral_domain) {
-      closing_tabs.push_back(tab->GetContents());
-      ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
-    }
-  }
-  TabStripModel::CloseTabs(closing_tabs,
-                           TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 }
 
 void BraveTabStripModel::SetCustomTitleForTab(
