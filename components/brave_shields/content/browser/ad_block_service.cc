@@ -40,24 +40,20 @@
 namespace brave_shields {
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
-    AdBlockEngine* adblock_engine,
-    AdBlockFiltersProvider* filters_provider,
-    AdBlockResourceProvider* resource_provider,
-    AdBlockFiltersProviderManager* filters_provider_manager,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-    bool is_filter_provider_manager)
-    : adblock_engine_(adblock_engine),
-      filters_provider_(filters_provider),
-      resource_provider_(resource_provider),
-      filters_provider_manager_(filters_provider_manager),
-      task_runner_(task_runner),
-      is_filter_provider_manager_(is_filter_provider_manager) {
-  filters_provider_->AddObserver(this);
-  OnChanged(adblock_engine->IsDefaultEngine());
+    AdBlockService* owner,
+    bool engine_is_default)
+    : adblock_engine_(engine_is_default
+                          ? owner->default_engine_.get()
+                          : owner->additional_filters_engine_.get()),
+      resource_provider_(owner->resource_provider_.get()),
+      filters_provider_manager_(owner->filters_provider_manager()),
+      task_runner_(owner->GetTaskRunner()) {
+  filters_provider_manager_->AddObserver(this);
+  OnChanged(engine_is_default);
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
-  filters_provider_->RemoveObserver(this);
+  filters_provider_manager_->RemoveObserver(this);
   resource_provider_->RemoveObserver(this);
 }
 
@@ -69,12 +65,8 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
   auto on_loaded_cb = base::BindOnce(
       &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
       weak_factory_.GetWeakPtr());
-  if (is_filter_provider_manager_) {
-    static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
-        ->LoadFilterSetForEngine(is_default_engine, std::move(on_loaded_cb));
-  } else {
-    filters_provider_->LoadFilterSet(std::move(on_loaded_cb));
-  }
+  filters_provider_manager_->LoadFilterSetForEngine(is_default_engine,
+                                                    std::move(on_loaded_cb));
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
@@ -365,16 +357,10 @@ AdBlockService::AdBlockService(
             filters_provider_manager_.get());
   }
 
-  default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(), filters_provider_manager_.get(),
-      resource_provider_.get(), filters_provider_manager_.get(),
-      GetTaskRunner(), true);
-
+  default_service_observer_ =
+      std::make_unique<SourceProviderObserver>(this, true);
   additional_filters_service_observer_ =
-      std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_.get(), filters_provider_manager_.get(),
-          resource_provider_.get(), filters_provider_manager_.get(),
-          GetTaskRunner(), true);
+      std::make_unique<SourceProviderObserver>(this, false);
 }
 
 AdBlockService::~AdBlockService() = default;
