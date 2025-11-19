@@ -17,12 +17,13 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.url.GURL;
 
 @NullMarked
 public final class BraveReturnToChromeUtil {
 
-    // Inactivity threshold for variant B: 1 hour in milliseconds
-    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_B = 60 * 60 * 1000L; // 1 hour
+    // Inactivity threshold for variants B and D: 1 hour in milliseconds
+    private static final long INACTIVITY_THRESHOLD_MS_VARIANT_B_D = 60 * 60 * 1000L; // 1 hour
     // Inactivity threshold for variant C: 2 hours in milliseconds
     private static final long INACTIVITY_THRESHOLD_MS_VARIANT_C = 2 * 60 * 60 * 1000L; // 2 hours
 
@@ -35,26 +36,37 @@ public final class BraveReturnToChromeUtil {
         }
 
         String variant = BraveFreshNtpHelper.getVariant();
+        boolean shouldShow = false;
         switch (variant) {
             case "A":
                 // Variant A: Brave's default behavior (no NTP at startup)
-                return false;
+                shouldShow = false;
+                break;
             case "B":
-                // Variant B: Show NTP if app has been backgrounded for ≥ 1 hour
+            case "D":
+                // Variants B and D: Show NTP if app has been backgrounded for ≥ 1 hour
                 // and OPTION_NEW_TAB_AFTER_INACTIVITY is selected
-                return shouldShowNtpForInactivityVariant(
-                        inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_B);
+                shouldShow =
+                        shouldShowNtpForInactivityVariant(
+                                inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_B_D);
+                break;
             case "C":
                 // Variant C: Show NTP if app has been backgrounded for ≥ 2 hours
                 // and OPTION_NEW_TAB_AFTER_INACTIVITY is selected
-                return shouldShowNtpForInactivityVariant(
-                        inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_C);
-            default:
-                // All other variants: fallback to upstream behavior
-                // return ReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup(
-                //        intent, bundle, inactivityTracker);
+                shouldShow =
+                        shouldShowNtpForInactivityVariant(
+                                inactivityTracker, INACTIVITY_THRESHOLD_MS_VARIANT_C);
+                break;
         }
-        return false;
+
+        // Set flag only when shouldShowNtpAsHomeSurfaceAtStartup returns true
+        // This ensures maybeShowRecentTabsDialog only executes when this method was called
+        if (shouldShow) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, true);
+        }
+
+        return shouldShow;
     }
 
     /**
@@ -73,9 +85,6 @@ public final class BraveReturnToChromeUtil {
 
         // If user has selected "New Tab" option, return true without checking timer
         if (openingScreenOption == BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB) {
-            // Set a flag to indicate NTP was shown, so snackbar can be displayed
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, true);
             return true;
         }
 
@@ -88,16 +97,7 @@ public final class BraveReturnToChromeUtil {
 
         // Check if app has been backgrounded for ≥ threshold
         long timeSinceLastBackgroundedMs = inactivityTracker.getTimeSinceLastBackgroundedMs();
-        boolean shouldShow = timeSinceLastBackgroundedMs >= inactivityThresholdMs;
-
-        // Set a flag to indicate NTP was shown after returning from background
-        // This flag will be checked in BraveNewTabPageLayout to show the snackbar
-        if (shouldShow) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, true);
-        }
-
-        return shouldShow;
+        return timeSinceLastBackgroundedMs >= inactivityThresholdMs;
     }
 
     /**
@@ -112,9 +112,18 @@ public final class BraveReturnToChromeUtil {
             @Nullable Tab lastActiveTab) {
         // Store the last active tab URL if provided. This is used to restore the correct tab
         // when the app is returned from background in BraveRecentTabsSnackbarHelper.
-        if (lastActiveTabUrl != null && !lastActiveTabUrl.isEmpty()) {
+        String urlToStore = lastActiveTabUrl;
+        // If URL is not provided, try to get it from lastActiveTab
+        if ((urlToStore == null || urlToStore.isEmpty()) && lastActiveTab != null) {
+            GURL url = lastActiveTab.getUrl();
+            if (url != null && !url.isEmpty()) {
+                urlToStore = url.getSpec();
+            }
+        }
+
+        if (urlToStore != null && !urlToStore.isEmpty()) {
             ChromeSharedPreferences.getInstance()
-                    .writeString(BravePreferenceKeys.BRAVE_LAST_ACTIVE_TAB_URL, lastActiveTabUrl);
+                    .writeString(BravePreferenceKeys.BRAVE_LAST_ACTIVE_TAB_URL, urlToStore);
         }
 
         // Call the upstream method to create the NTP

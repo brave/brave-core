@@ -71,11 +71,14 @@ public class NTPBackgroundImagesBridge {
     }
 
     @Nullable
-    public NTPImage getCurrentWallpaper() {
+    public NTPImage getCurrentWallpaper(boolean allowSponsoredImage) {
         ThreadUtils.assertOnUiThread();
         if (enableSponsoredImages()) {
-            return NTPBackgroundImagesBridgeJni.get().getCurrentWallpaper(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+            return NTPBackgroundImagesBridgeJni.get()
+                    .getCurrentWallpaper(
+                            mNativeNTPBackgroundImagesBridge,
+                            NTPBackgroundImagesBridge.this,
+                            allowSponsoredImage);
         } else {
             return null;
         }
@@ -135,7 +138,9 @@ public class NTPBackgroundImagesBridge {
         NTPBackgroundImagesBridge getInstance(Profile profile);
 
         NTPImage getCurrentWallpaper(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
+                long nativeNTPBackgroundImagesBridge,
+                NTPBackgroundImagesBridge caller,
+                boolean allowSponsoredImage);
 
         void wallpaperLogoClicked(
                 long nativeNTPBackgroundImagesBridge,

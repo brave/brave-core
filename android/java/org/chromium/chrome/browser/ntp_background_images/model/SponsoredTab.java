@@ -14,17 +14,18 @@ public class SponsoredTab {
     private NTPImage mNtpImage;
     private int mTabIndex;
 
-    public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
+    public SponsoredTab(
+            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredImage) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
         if (NTPImageUtil.shouldEnableNTPFeature()) {
-            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge, allowSponsoredImage);
             mTabIndex = SponsoredImageUtil.getTabIndex();
         }
     }
 
-    public NTPImage getTabNTPImage(boolean isReset) {
+    public NTPImage getTabNTPImage(boolean isReset, boolean allowSponsoredImage) {
         if (mNtpImage == null || isReset) {
-            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge, allowSponsoredImage);
         }
         return mNtpImage;
     }
