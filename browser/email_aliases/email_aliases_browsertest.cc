@@ -48,11 +48,12 @@ constexpr char kFailEmail[] = "fail@domain.com";
 std::unique_ptr<net::test_server::HttpResponse> AuthenticationHandler(
     const net::test_server::HttpRequest& request) {
   if (!request.GetURL().has_path() ||
-      !request.GetURL().path_piece().starts_with("/v2/verify/init")) {
+      !request.GetURL().path().starts_with("/v2/verify/init")) {
     return nullptr;
   }
 
-  const auto& content = base::JSONReader::Read(request.content);
+  const auto& content =
+      base::JSONReader::Read(request.content, base::JSON_PARSE_RFC);
   const auto data = AuthenticationRequest::FromValue(content->GetDict());
 
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
@@ -87,7 +88,7 @@ std::unique_ptr<net::test_server::HttpResponse> AuthenticationHandler(
 std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
     const net::test_server::HttpRequest& request) {
   if (!request.GetURL().has_path() ||
-      !request.GetURL().path_piece().starts_with("/v2/verify/result")) {
+      !request.GetURL().path().starts_with("/v2/verify/result")) {
     return nullptr;
   }
 
@@ -125,7 +126,7 @@ std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
 std::unique_ptr<net::test_server::HttpResponse> ManageHandler(
     const net::test_server::HttpRequest& request) {
   if (!request.GetURL().has_path() ||
-      !request.GetURL().path_piece().starts_with("/manage")) {
+      !request.GetURL().path().starts_with("/manage")) {
     return nullptr;
   }
 
