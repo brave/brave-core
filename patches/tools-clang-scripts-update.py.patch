@@ -1,5 +1,5 @@
 diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
-index bcf4c9b192234aa1d470662e4036ac7a23ce2262..6d06202eb5222d01271b1c0e092411a176460992 100755
+index bcf4c9b192234aa1d470662e4036ac7a23ce2262..8a8d3b1f638f1ed6f44307d71608c6ee13365fa6 100755
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
 @@ -31,6 +31,119 @@ import urllib.error
@@ -122,7 +122,7 @@ index bcf4c9b192234aa1d470662e4036ac7a23ce2262..6d06202eb5222d01271b1c0e092411a1
  
  # Do NOT CHANGE this if you don't know what you're doing -- see
  # https://chromium.googlesource.com/chromium/src/+/main/docs/updating_clang.md
-@@ -190,17 +303,34 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
+@@ -190,17 +303,38 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
        assert path_prefixes is None
        zipfile.ZipFile(f).extractall(path=output_dir)
      else:
@@ -135,10 +135,14 @@ index bcf4c9b192234aa1d470662e4036ac7a23ce2262..6d06202eb5222d01271b1c0e092411a1
        if path_prefixes is not None:
          members = [m for m in t.getmembers()
                     if any(m.name.startswith(p) for p in path_prefixes)]
-+      #print('------------ MEMBERS ------------')
-+      #print(*members, sep='\n')
-+      #print('---------------------------------')
++      print('------------ MEMBERS ------------')
++      print(*members, sep='\n')
++      print('---------------------------------')
        t.extractall(path=output_dir, members=members)
++      failing_path = os.path.join(output_dir, 'lib/clang/22/lib/aarch64-unknown-linux-gnu')
++      print(f'Checking for {failing_path}')
++      show_file_mode(failing_path)
++      get_windows_file_attributes(failing_path)
  
        # Don't set mtime based on the archive metadata; see crbug.com/450551220
        # The nicest way to do this would be by passing a filter to extractall,
