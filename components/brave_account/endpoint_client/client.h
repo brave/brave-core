@@ -34,6 +34,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -147,15 +148,15 @@ class Client {
         simple_url_loader);
 
     Response response;
-    response.error = simple_url_loader_ref.NetError();
+    response.net_error = simple_url_loader_ref.NetError();
 
     auto* const response_info = simple_url_loader_ref.ResponseInfo();
     auto headers = response_info ? response_info->headers : nullptr;
-    if (response.error != net::OK || !headers) {
+    if (response.net_error != net::OK || !headers) {
       return std::move(callback).Run(std::move(response));
     }
 
-    response.status = headers->response_code();
+    response.status_code = headers->response_code();
     if constexpr (base::is_instantiation<Response, WithHeaders>) {
       response.headers = std::move(headers);
     }
@@ -164,7 +165,7 @@ class Client {
         base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
             .value_or(base::Value());
     // Intentionally kept as an if-else block for symmetry.
-    if (*response.status / 100 == 2) {  // 2xx
+    if (network::IsSuccessfulStatus(*response.status_code)) {  // 2xx
       if (auto success_body = Response::SuccessBody::FromValue(value)) {
         response.body = std::move(*success_body);
       }

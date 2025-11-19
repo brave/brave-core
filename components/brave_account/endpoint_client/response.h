@@ -19,8 +19,8 @@ struct Response {
   using SuccessBody = T;
   using ErrorBody = E;
 
-  int error = net::ERR_IO_PENDING;
-  std::optional<int> status;
+  int net_error = net::ERR_IO_PENDING;
+  std::optional<int> status_code;
   std::optional<base::expected<T, E>> body;
 };
 

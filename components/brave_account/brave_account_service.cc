@@ -209,11 +209,11 @@ void BraveAccountService::OnRegisterInitialize(
     PasswordInit::Response response) {
   if (!response.body) {
     return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
-        response.status.value_or(response.error), std::nullopt)));
+        response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status);
-  const auto response_status = *response.status;
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
 
   auto result =
       std::move(*response.body)
@@ -221,7 +221,7 @@ void BraveAccountService::OnRegisterInitialize(
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
             return mojom::RegisterError::New(
-                response_status, TransformError(std::move(error_body)));
+                status_code, TransformError(std::move(error_body)));
           })
           // expected<[SuccessBody                ], RegisterError> ==>
           // expected<[RegisterInitializeResultPtr], RegisterError>
@@ -231,7 +231,7 @@ void BraveAccountService::OnRegisterInitialize(
             if (success_body.verification_token.empty() ||
                 success_body.serialized_response.empty()) {
               return base::unexpected(
-                  mojom::RegisterError::New(response_status, std::nullopt));
+                  mojom::RegisterError::New(status_code, std::nullopt));
             }
 
             std::string encrypted_verification_token =
@@ -256,11 +256,11 @@ void BraveAccountService::OnRegisterFinalize(
     PasswordFinalize::Response response) {
   if (!response.body) {
     return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
-        response.status.value_or(response.error), std::nullopt)));
+        response.status_code.value_or(response.net_error), std::nullopt)));
   }
 
-  CHECK(response.status);
-  const auto response_status = *response.status;
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
 
   auto result =
       std::move(*response.body)
@@ -268,7 +268,7 @@ void BraveAccountService::OnRegisterFinalize(
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
             return mojom::RegisterError::New(
-                response_status, TransformError(std::move(error_body)));
+                status_code, TransformError(std::move(error_body)));
           })
           // expected<[SuccessBody              ], RegisterError> ==>
           // expected<[RegisterFinalizeResultPtr], RegisterError>
@@ -377,9 +377,8 @@ void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
     return;
   }
 
-  if (const auto response_status = response.status.value_or(-1);
-      response_status == net::HTTP_BAD_REQUEST ||
-      response_status == net::HTTP_UNAUTHORIZED) {
+  if (const auto status_code = response.status_code.value_or(-1);
+      status_code >= 300 && status_code < 500) {
     // Polling cannot recover from these errors, so we stop further attempts.
     return pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
   }
