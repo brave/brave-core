@@ -12,10 +12,12 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import { useAppState } from '../../lib/app_model_context'
 import { useLocaleContext, usePluralString } from '../../lib/locale_strings'
 import { useConnectAccountRouter } from '../../lib/connect_account_router'
+import { shouldResetExternalWallet } from '../../../shared/lib/external_wallet'
 import { PayoutStatusView } from './payout_status_view'
 import { AdsSummary } from './ads_summary'
 import { AdsSettingsModal } from './ads_settings_modal'
 import { AdsHistoryModal } from './ads_history_modal'
+import { ResetExternalWalletCard } from './reset_external_wallet_card'
 
 import batCoinGray from '../../assets/bat_coin_gray_animated.svg'
 import batCoinColor from '../../assets/bat_coin_color_animated.svg'
@@ -227,6 +229,10 @@ export function EarningCard() {
         {renderAdsSummary()}
       </div>
     )
+  }
+
+  if (externalWallet && shouldResetExternalWallet(externalWallet.provider)) {
+    return <ResetExternalWalletCard />
   }
 
   return (

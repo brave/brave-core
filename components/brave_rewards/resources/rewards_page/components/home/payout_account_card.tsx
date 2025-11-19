@@ -14,7 +14,10 @@ import { useLocaleContext } from '../../lib/locale_strings'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
-import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
+import {
+  getExternalWalletProviderName,
+  shouldResetExternalWallet,
+} from '../../../shared/lib/external_wallet'
 import { AccountBalance } from '../common/account_balance'
 
 import { style } from './payout_account_card.style'
@@ -46,7 +49,7 @@ export function PayoutAccountCard() {
     return () => document.removeEventListener('click', listener)
   }, [setShowDetails])
 
-  if (!externalWallet) {
+  if (!externalWallet || shouldResetExternalWallet(externalWallet.provider)) {
     return null
   }
 

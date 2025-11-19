@@ -123,6 +123,12 @@ export function isExternalWalletProviderDisabled(
   return allow.length === 1 && regionInfo.allow[0] === 'disabled'
 }
 
+// Returns a value indicating whether user's connected to the specified wallet
+// provider should be prompted to reset their account.
+export function shouldResetExternalWallet(provider: ExternalWalletProvider) {
+  return provider === 'gemini'
+}
+
 // Returns true if the specified wallet provider is a self-custody provider.
 export function isSelfCustodyProvider(provider: ExternalWalletProvider) {
   switch (provider) {

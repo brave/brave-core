@@ -21,6 +21,37 @@
     Disable and reset Rewards
   </message>
 
+  <!-- Reset External Wallet -->
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_BUTTON_LABEL" desc="">
+    Reset now
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_NOTE" desc="">
+    Don't worry: Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account won't be affected by resetting.
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TEXT" desc="">
+    You will not earn for ads while connected to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Reset Brave Rewards and connect a different payout account to keep earning. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">$3</ph>
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TITLE" desc="">
+    <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account no longer supported.
+  </message>
+
+  <!-- Switch Account -->
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_COUNTRY_SELECT_LABEL" desc="">
+    Confirm your region
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_1" desc="">
+    Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account will stay there.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_2" desc="">
+    Your 30-day Ads History and other Brave Rewards settings will reset.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_3" desc="">
+    You can choose a different payout account after this step.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TITLE" desc="">
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account will be disconnected, and your Brave Rewards profile will be reset.
+  </message>
+
   <!-- Payout status banner -->
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
     Check status

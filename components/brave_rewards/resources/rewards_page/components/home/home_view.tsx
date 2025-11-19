@@ -13,6 +13,7 @@ import { PayoutAccountCard } from './payout_account_card'
 import { BenefitsCard } from './benefits_card'
 import { RecurringContributionCard } from './recurring_contribution_card'
 import { TopPromoCard } from './top_promo_card'
+import { shouldResetExternalWallet } from '../../../shared/lib/external_wallet'
 
 import { style } from './home_view.style'
 
@@ -21,7 +22,12 @@ export function HomeView() {
   const externalWallet = useAppState((state) => state.externalWallet)
   const embedder = useAppState((state) => state.embedder)
 
-  if (viewType === 'double' && externalWallet) {
+  const showDoubleView =
+    viewType === 'double'
+    && externalWallet
+    && !shouldResetExternalWallet(externalWallet.provider)
+
+  if (showDoubleView) {
     return (
       <div data-css-scope={style.scope}>
         <ContributeCard />
@@ -46,11 +52,7 @@ export function HomeView() {
       <EarningCard />
       <PayoutAccountCard />
       <BenefitsCard />
-      {!embedder.isAutoResizeBubble && (
-        <>
-          <RecurringContributionCard />
-        </>
-      )}
+      {!embedder.isAutoResizeBubble && <RecurringContributionCard />}
     </div>
   )
 }
