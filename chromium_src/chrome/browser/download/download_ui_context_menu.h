@@ -11,15 +11,21 @@
   RecordCommandsEnabled(__VA_ARGS__) {} \
   void RecordCommandsEnabled_Unused(__VA_ARGS__)
 
-#define GetMenuModel \
-  UnUsed() {         \
-    return nullptr;  \
-  }                  \
-  virtual ui::SimpleMenuModel* GetMenuModel
+// Add Brave's unittest as friend.
+#define DetachFromDownloadItem() \
+  DetachFromDownloadItem();      \
+  friend class DownloadBubbleTest
+
+// Add a decorator around upstream's GetMenuModel to insert Brave-specific
+// commands.
+#define GetMenuModel       \
+  GetMenuModel_Chromium(); \
+  ui::SimpleMenuModel* GetMenuModel
 
 #include <chrome/browser/download/download_ui_context_menu.h>  // IWYU pragma: export
 
 #undef GetMenuModel
+#undef DetachFromDownloadItem
 #undef RecordCommandsEnabled
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_H_

@@ -1,35 +1,19 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 
-#define DownloadUiContextMenuView DownloadUiContextMenuViewChromium
-// To make private methods accessible from our subclass.
-#define OnMenuClosed \
-  UnUsed() {}        \
-                     \
- protected:          \
-  void OnMenuClosed
+#include "chrome/browser/download/download_commands.h"
+
+// Extend download_commands_executed_recorded_ array size to include
+// Brave-specific commands.
+#define kMaxValue DELETE_LOCAL_FILE
 
 #include <chrome/browser/ui/views/download/download_ui_context_menu_view.h>  // IWYU pragma: export
 
-#undef OnMenuClosed
-#undef DownloadUiContextMenuView
-
-class DownloadUiContextMenuView : public DownloadUiContextMenuViewChromium {
- public:
-  using DownloadUiContextMenuViewChromium::DownloadUiContextMenuViewChromium;
-  ~DownloadUiContextMenuView() override;
-
-  // DownloadUiContextMenuViewChromium overrides:
-  ui::SimpleMenuModel* GetMenuModel() override;
-  bool IsCommandIdEnabled(int command_id) const override;
-  bool IsCommandIdChecked(int command_id) const override;
-  bool IsCommandIdVisible(int command_id) const override;
-  void ExecuteCommand(int command_id, int event_flags) override;
-};
+#undef kMaxValue
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_

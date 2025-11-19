@@ -5,26 +5,21 @@
 
 #include "chrome/browser/download/bubble/download_bubble_ui_controller.h"
 
+#include "base/metrics/histogram_functions.h"
 #include "brave/browser/download/brave_download_commands.h"
+#include "chrome/browser/download/download_commands.h"
 
-#define ProcessDownloadButtonPress ProcessDownloadButtonPress_ChromiumImpl
+// Scrubs out the histogramming overload for UmaHistogramEnumeration to
+// avoid crash from Brave-specific commands.
+#define UmaHistogramEnumeration(...) DoNothing()
+
+// Add switch cases for Brave-specific commands. This will end up calling
+// DownloadCommands::ExecuteCommand() for those commands.
+#define OPEN_SAFE_BROWSING_SETTING \
+  OPEN_SAFE_BROWSING_SETTING:      \
+  case DownloadCommands::DELETE_LOCAL_FILE
 
 #include <chrome/browser/download/bubble/download_bubble_ui_controller.cc>
 
-#undef ProcessDownloadButtonPress
-
-void DownloadBubbleUIController::ProcessDownloadButtonPress(
-    base::WeakPtr<DownloadUIModel> model,
-    DownloadCommands::Command command,
-    bool is_main_view) {
-  if (!model) {
-    return;
-  }
-
-  if (command == BraveDownloadCommands::DELETE_LOCAL_FILE) {
-    BraveDownloadCommands commands(model);
-    commands.ExecuteCommand(command);
-    return;
-  }
-  ProcessDownloadButtonPress_ChromiumImpl(model, command, is_main_view);
-}
+#undef OPEN_SAFE_BROWSING_SETTING
+#undef UmaHistogramEnumeration
