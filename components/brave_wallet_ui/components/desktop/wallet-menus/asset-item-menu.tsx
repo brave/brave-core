@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
@@ -30,6 +29,7 @@ import {
 import {
   useFindBuySupportedToken, //
 } from '../../../common/hooks/use-multi-chain-buy-assets'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -69,9 +69,6 @@ interface Props {
 export const AssetItemMenu = (props: Props) => {
   const { asset, assetBalance, account, onClickEditToken } = props
 
-  // routing
-  const history = useHistory()
-
   // State
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
 
@@ -110,6 +107,7 @@ export const AssetItemMenu = (props: Props) => {
   } = useMultiChainSellAssets()
 
   const { foundMeldBuyToken } = useFindBuySupportedToken(asset)
+  const { openOrPushRoute } = useRoute()
 
   // Memos
   const isAssetsBalanceZero = React.useMemo(() => {
@@ -125,17 +123,17 @@ export const AssetItemMenu = (props: Props) => {
   // Methods
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      history.push(makeFundWalletRoute(foundMeldBuyToken, account))
+      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, account))
     }
-  }, [foundMeldBuyToken, history, account])
+  }, [foundMeldBuyToken, openOrPushRoute, account])
 
   const onClickSend = React.useCallback(() => {
-    history.push(makeSendRoute(asset, account))
-  }, [account, history, asset])
+    openOrPushRoute(makeSendRoute(asset, account))
+  }, [account, openOrPushRoute, asset])
 
   const onClickSwapOrBridge = React.useCallback(
     (routeType: 'swap' | 'bridge') => {
-      history.push(
+      openOrPushRoute(
         makeSwapOrBridgeRoute({
           fromToken: asset,
           fromAccount: account,
@@ -143,12 +141,12 @@ export const AssetItemMenu = (props: Props) => {
         }),
       )
     },
-    [account, history, asset],
+    [account, openOrPushRoute, asset],
   )
 
   const onClickDeposit = React.useCallback(() => {
-    history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
-  }, [asset, history])
+    openOrPushRoute(makeDepositFundsRoute(getAssetIdKey(asset)))
+  }, [asset, openOrPushRoute])
 
   const onClickSell = React.useCallback(() => {
     setSelectedSellAsset(asset)
@@ -173,14 +171,14 @@ export const AssetItemMenu = (props: Props) => {
       return
     }
 
-    history.push(
+    openOrPushRoute(
       makeSendRoute(
         asset,
         account,
         availableShieldedAccount.orchardInternalAddress,
       ),
     )
-  }, [availableShieldedAccount, asset, history, account])
+  }, [availableShieldedAccount, asset, openOrPushRoute, account])
 
   return (
     <StyledWrapper yPosition={42}>

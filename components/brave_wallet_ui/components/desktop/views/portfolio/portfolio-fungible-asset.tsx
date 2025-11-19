@@ -92,6 +92,7 @@ import {
 import {
   useSyncedLocalStorage, //
 } from '../../../../common/hooks/use_local_storage'
+import { useRoute } from '../../../../common/hooks/use_route'
 
 // Styled Components
 import { StyledWrapper, ButtonRow } from './style'
@@ -223,6 +224,8 @@ export const PortfolioFungibleAsset = () => {
   )
 
   // custom hooks
+  const { openOrPushRoute } = useRoute()
+
   const { foundMeldBuyToken } = useFindBuySupportedToken(
     selectedAssetFromParams,
   )
@@ -372,28 +375,28 @@ export const PortfolioFungibleAsset = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      history.push(makeFundWalletRoute(foundMeldBuyToken))
+      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken))
     }
-  }, [history, foundMeldBuyToken])
+  }, [openOrPushRoute, foundMeldBuyToken])
 
   const onClickDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
-      history.push(
+      openOrPushRoute(
         makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams)),
       )
     }
-  }, [history, selectedAssetFromParams])
+  }, [openOrPushRoute, selectedAssetFromParams])
 
   const onClickSend = React.useCallback(() => {
     if (selectedAssetFromParams) {
-      history.push(makeSendRoute(selectedAssetFromParams))
+      openOrPushRoute(makeSendRoute(selectedAssetFromParams))
     }
-  }, [history, selectedAssetFromParams])
+  }, [openOrPushRoute, selectedAssetFromParams])
 
   const onClickSwapOrBridge = React.useCallback(
     (routeType: 'swap' | 'bridge') => {
       if (selectedAssetFromParams) {
-        history.push(
+        openOrPushRoute(
           makeSwapOrBridgeRoute({
             fromToken: selectedAssetFromParams,
             routeType,
@@ -401,7 +404,7 @@ export const PortfolioFungibleAsset = () => {
         )
       }
     },
-    [history, selectedAssetFromParams],
+    [openOrPushRoute, selectedAssetFromParams],
   )
 
   // asset not found
