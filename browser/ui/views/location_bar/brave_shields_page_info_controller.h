@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SHIELDS_PAGE_INFO_CONTROLLER_H_
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
@@ -44,6 +45,7 @@ class BraveShieldsPageInfoController
 
   raw_ref<TabStripModel> tab_strip_model_;
   raw_ref<LocationIconView> location_icon_view_;
+  base::WeakPtrFactory<BraveShieldsPageInfoController> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_SHIELDS_PAGE_INFO_CONTROLLER_H_
