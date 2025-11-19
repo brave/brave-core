@@ -3,6 +3,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("frame") {
+  sources = [
+    "brave_contents_view_util.cc",
+    "brave_contents_view_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/common:constants",
+    "//components/prefs",
+    "//components/tabs:public",
+    "//components/tabs:split_tabs",
+    "//ui/compositor",
+    "//ui/views",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -11,6 +31,7 @@ source_set("browser_tests") {
       [ "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc" ]
 
   deps = [
+    ":frame",
     "//base",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
