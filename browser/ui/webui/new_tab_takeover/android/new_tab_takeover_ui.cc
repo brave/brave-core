@@ -95,7 +95,7 @@ void NewTabTakeoverUI::GetCurrentWallpaper(
 
   const ntp_background_images::NTPSponsoredImagesData* sponsored_images_data =
       ntp_background_images_service_->GetSponsoredImagesData(
-          /*super_referral=*/false, /*supports_rich_media=*/true);
+          /*supports_rich_media=*/true);
   if (!sponsored_images_data) {
     return failed();
   }

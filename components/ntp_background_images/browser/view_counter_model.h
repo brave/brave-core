@@ -38,10 +38,6 @@ class ViewCounterModel {
 
   void set_total_image_count(int count) { total_image_count_ = count; }
 
-  void set_always_show_branded_wallpaper(bool show) {
-    always_show_branded_wallpaper_ = show;
-  }
-
   void set_show_branded_wallpaper(bool show) { show_branded_wallpaper_ = show; }
   void set_show_wallpaper(bool show) { show_wallpaper_ = show; }
 
@@ -83,7 +79,6 @@ class ViewCounterModel {
   // For NTP SI.
   raw_ptr<PrefService> prefs_ = nullptr;
   int count_to_branded_wallpaper_ = 0;
-  bool always_show_branded_wallpaper_ = false;
   bool show_branded_wallpaper_ = true;
   size_t current_campaign_index_ = 0;
   size_t total_campaign_count_ = 0;

@@ -36,12 +36,8 @@ void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
 
   // Pick the first image index for each campaign randomly for SI
   for (size_t i = 0; i < total_campaign_count_; ++i) {
-    const int index =
-        always_show_branded_wallpaper_
-            ? 0
-            : base::RandInt(
-                  0, static_cast<int>(campaigns_total_branded_image_count_[i]) -
-                         1);
+    const int index = base::RandInt(
+        0, static_cast<int>(campaigns_total_branded_image_count_[i]) - 1);
     campaigns_current_branded_image_index_.push_back(index);
   }
 
@@ -57,10 +53,6 @@ std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
 }
 
 bool ViewCounterModel::ShouldShowSponsoredImages() const {
-  if (always_show_branded_wallpaper_) {
-    return true;
-  }
-
   if (!show_branded_wallpaper_) {
     return false;
   }
@@ -77,18 +69,8 @@ void ViewCounterModel::RegisterPageView() {
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
-  // NTP SI/SR component is not ready.
+  // NTP SI component is not ready.
   if (total_campaign_count_ == 0) {
-    return;
-  }
-
-  // In SR mode, SR image is always visible regardless of
-  if (always_show_branded_wallpaper_) {
-    // SR uses only one campaign.
-    DCHECK_EQ(1UL, total_campaign_count_);
-    campaigns_current_branded_image_index_[0]++;
-    campaigns_current_branded_image_index_[0] %=
-        campaigns_total_branded_image_count_[0];
     return;
   }
 
@@ -122,11 +104,6 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
-  // We don't show NTP BI in SR mode.
-  if (always_show_branded_wallpaper_) {
-    return;
-  }
-
   // Don't count when SI will be visible.
   if (show_branded_wallpaper_ && total_campaign_count_ != 0 &&
       count_to_branded_wallpaper_ == 0) {
@@ -167,7 +144,7 @@ void ViewCounterModel::NextBrandedImage() {
 void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
   // Set count so that user is more likely to see new branded data at least once
   // Only reset count for SI images
-  if (!always_show_branded_wallpaper_ && show_branded_wallpaper_) {
+  if (show_branded_wallpaper_) {
     count_to_branded_wallpaper_ =
         std::min(count_to_branded_wallpaper_,
                  features::kInitialCountToBrandedWallpaper.Get() - 1);
@@ -177,7 +154,6 @@ void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
 void ViewCounterModel::Reset() {
   current_wallpaper_image_index_ = 0;
   total_image_count_ = 0;
-  always_show_branded_wallpaper_ = false;
   current_campaign_index_ = 0;
   total_campaign_count_ = 0;
   campaigns_total_branded_image_count_.clear();

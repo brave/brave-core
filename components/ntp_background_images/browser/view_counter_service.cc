@@ -27,7 +27,6 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
-#include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -85,10 +84,6 @@ ViewCounterService::ViewCounterService(
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(
-      prefs::kNewTabPageSuperReferralThemesOption,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
@@ -158,16 +153,8 @@ NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
   const bool supports_rich_media =
       host_content_settings_map_->GetDefaultContentSetting(
           ContentSettingsType::JAVASCRIPT) == CONTENT_SETTING_ALLOW;
-
-  NTPSponsoredImagesData* images_data =
-      background_images_service_->GetSponsoredImagesData(
-          /*super_referral=*/true, supports_rich_media);
-  if (images_data && IsSuperReferralWallpaperOptedIn()) {
-    return images_data;
-  }
-
   return background_images_service_->GetSponsoredImagesData(
-      /*super_referral=*/false, supports_rich_media);
+      supports_rich_media);
 }
 
 std::optional<base::Value::Dict>
@@ -222,13 +209,6 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
     return std::nullopt;
   }
 
-  if (images_data->IsSuperReferral()) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "Super referrals are enabled");
-    base::debug::DumpWithoutCrashing();
-    return GetCurrentBrandedWallpaperFromModel();
-  }
-
   return GetCurrentBrandedWallpaperFromAdsService();
 }
 
@@ -273,15 +253,6 @@ ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
                                                         creative_index);
 }
 
-std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
-  if (const NTPSponsoredImagesData* const images_data =
-          GetSponsoredImagesData()) {
-    return images_data->top_sites;
-  }
-
-  return {};
-}
-
 void ViewCounterService::Shutdown() {
   ntp_background_images_service_observation_.Reset();
 }
@@ -297,7 +268,7 @@ void ViewCounterService::OnBackgroundImagesDataDidUpdate(
 void ViewCounterService::OnSponsoredImagesDataDidUpdate(
     NTPSponsoredImagesData* data) {
   if (data) {
-    DVLOG(2) << __func__ << ": NTP SI/SR component is updated.";
+    DVLOG(2) << __func__ << ": NTP SI component is updated.";
     ResetModel();
   }
 }
@@ -312,12 +283,6 @@ void ViewCounterService::OnSponsoredContentDidUpdate(
         base::BindOnce(&ViewCounterService::ParseAndSaveNewTabPageAdsCallback,
                        weak_ptr_factory_.GetWeakPtr()));
   }
-}
-
-void ViewCounterService::OnSuperReferralCampaignDidEnd() {
-  // Need to reset model because SI images are shown only for every 4th NTP but
-  // we've shown SR images for every NTP.
-  ResetModel();
 }
 
 void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
@@ -343,7 +308,6 @@ void ViewCounterService::ResetModel() {
     for (const auto& campaign : images_data->campaigns) {
       campaigns_total_branded_images_count.push_back(campaign.creatives.size());
     }
-    model_.set_always_show_branded_wallpaper(images_data->IsSuperReferral());
     model_.SetCampaignsTotalBrandedImageCount(
         campaigns_total_branded_images_count);
   }
@@ -366,10 +330,6 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
     RecordSponsoredImagesEnabledP3A(prefs_);
   }
 
-  // Reset model because SI and SR use different policy.
-  // Start from initial model state whenever
-  // prefs::kNewTabPageSuperReferralThemesOption or
-  // prefs::kNewTabPageShowSponsoredImagesBackgroundImage prefs are changed.
   ResetModel();
 }
 
@@ -405,11 +365,6 @@ bool ViewCounterService::CanShowSponsoredImages() const {
     return false;
   }
 
-  if (images_data->IsSuperReferral() && IsSuperReferralWallpaperOptedIn()) {
-    // Super referral is always shown if opted in.
-    return true;
-  }
-
   if (!IsShowBackgroundImageOptedIn()) {
     return false;
   }
@@ -438,37 +393,12 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
         is_supported_locale_;
 }
 
-bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {
-  return prefs_->GetInteger(prefs::kNewTabPageSuperReferralThemesOption) ==
-         static_cast<int>(ThemesOption::kSuperReferral);
-}
-
-bool ViewCounterService::IsSuperReferral() const {
-  return background_images_service_->IsSuperReferral();
-}
-
-std::string ViewCounterService::GetSuperReferralThemeName() const {
-  return background_images_service_->GetSuperReferralThemeName();
-}
-
-std::string ViewCounterService::GetSuperReferralCode() const {
-  return background_images_service_->GetSuperReferralCode();
-}
-
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
-  NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!ads_service_) {
     return;
   }
 
-  if (!CanShowSponsoredImages() || !images_data) {
-    return;
-  }
-
-  if (images_data->IsSuperReferral()) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "Super referrals are enabled");
-    base::debug::DumpWithoutCrashing();
+  if (!CanShowSponsoredImages()) {
     return;
   }
 

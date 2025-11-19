@@ -40,7 +40,6 @@ class BraveNTPCustomBackgroundService;
 
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
-struct TopSite;
 
 class ViewCounterService : public KeyedService,
                            public content_settings::Observer,
@@ -81,11 +80,6 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdsService()
       const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
-  std::vector<TopSite> GetTopSitesData() const;
-
-  bool IsSuperReferral() const;
-  std::string GetSuperReferralThemeName() const;
-  std::string GetSuperReferralCode() const;
 
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
@@ -146,14 +140,12 @@ class ViewCounterService : public KeyedService,
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
   void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
-  void OnSuperReferralCampaignDidEnd() override;
 
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 
   void ResetNotificationState();
   bool IsShowBackgroundImageOptedIn() const;
   bool IsSponsoredImagesWallpaperOptedIn() const;
-  bool IsSuperReferralWallpaperOptedIn() const;
 
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.

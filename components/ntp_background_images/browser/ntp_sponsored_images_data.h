@@ -25,32 +25,6 @@ namespace ntp_background_images {
 inline constexpr char kImageWallpaperType[] = "image";
 inline constexpr char kRichMediaWallpaperType[] = "richMedia";
 
-struct TopSite {
-  TopSite();
-
-  // For unit test.
-  TopSite(const std::string& name,
-          const std::string& destination_url,
-          const std::string& image_path,
-          const base::FilePath& image_file);
-
-  TopSite(const TopSite&);
-  TopSite& operator=(const TopSite&);
-
-  TopSite(TopSite&&) noexcept;
-  TopSite& operator=(TopSite&&) noexcept;
-
-  ~TopSite();
-
-  [[nodiscard]] bool IsValid() const;
-
-  std::string name;
-  std::string destination_url;
-  std::string background_color;
-  std::string image_path;
-  base::FilePath image_file;
-};
-
 struct Logo {
   Logo();
 
@@ -118,8 +92,6 @@ struct Campaign {
   std::vector<Creative> creatives;
 };
 
-// For SI, campaign list can have multiple items.
-// For SR, campaign list has only one item.
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
   NTPSponsoredImagesData(const base::Value::Dict& dict,
@@ -138,16 +110,11 @@ struct NTPSponsoredImagesData {
   void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
 
-  void ParseSuperReferrals(const base::Value::Dict& dict,
-                           const base::FilePath& installed_dir);
-
   std::optional<base::Value::Dict> MaybeGetBackgroundAt(
       size_t campaign_index,
       size_t creative_index) const;
   std::optional<base::Value::Dict> MaybeGetBackground(
       const brave_ads::NewTabPageAdInfo& ad);
-
-  bool IsSuperReferral() const;
 
   const Creative* GetCreativeByInstanceId(
       const std::string& creative_instance_id) const;
@@ -155,10 +122,6 @@ struct NTPSponsoredImagesData {
   std::string url_prefix;
 
   std::vector<Campaign> campaigns;
-
-  // SR only properties.
-  std::string theme_name;
-  std::vector<TopSite> top_sites;
 };
 
 }  // namespace ntp_background_images

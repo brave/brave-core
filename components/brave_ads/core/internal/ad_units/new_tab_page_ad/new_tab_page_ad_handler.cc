@@ -81,8 +81,6 @@ void NewTabPageAdHandler::TriggerEvent(
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (creative_instance_id.empty()) {
-    // No-op if `creative_instance_id` is empty. This should only occur for
-    // super referrals.
     return std::move(callback).Run(/*success=*/false);
   }
 

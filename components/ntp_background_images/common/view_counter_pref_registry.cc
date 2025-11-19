@@ -8,7 +8,6 @@
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
-#include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -28,6 +27,10 @@ constexpr char kCountToBrandedWallpaperPref[] =
 constexpr char kNewTabTakeoverInfobarShowCount[] =
     "brave.new_tab_page.new_tab_takeover_infobar_show_count";
 
+// Added 11/2025.
+constexpr char kNewTabPageSuperReferralThemesOption[] =
+    "brave.new_tab_page.super_referral_themes_option";
+
 }  // namespace
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -42,10 +45,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
-  // Integer type is used because this pref is used by radio button group in
-  // appearance settings. Super referral is disabled when it is set to kDefault.
-  registry->RegisterIntegerPref(prefs::kNewTabPageSuperReferralThemesOption,
-                                static_cast<int>(ThemesOption::kSuperReferral));
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
@@ -59,6 +58,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 05/2025.
   registry->RegisterIntegerPref(kNewTabTakeoverInfobarShowCount, 0);
+
+  // Added 11/2025.
+  registry->RegisterIntegerPref(kNewTabPageSuperReferralThemesOption, 0);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
@@ -67,6 +69,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 05/2025.
   prefs->ClearPref(kNewTabTakeoverInfobarShowCount);
+
+  // Added 11/2025.
+  prefs->ClearPref(kNewTabPageSuperReferralThemesOption);
 }
 
 }  // namespace ntp_background_images

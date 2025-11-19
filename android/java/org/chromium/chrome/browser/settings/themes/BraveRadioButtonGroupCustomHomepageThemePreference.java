@@ -15,10 +15,7 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.night_mode.R;
 import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePreference;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
-import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveRadioButtonGroupCustomHomepageThemePreference
         extends RadioButtonGroupThemePreference {
@@ -42,10 +39,6 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);
-        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                .setInteger(
-                        BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION,
-                        checkedId == R.id.light ? 0 : 1);
         BraveRelaunchUtils.askForRelaunch(getContext());
     }
 }

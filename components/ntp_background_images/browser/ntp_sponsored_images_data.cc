@@ -260,30 +260,6 @@ std::optional<Campaign> MaybeParseCampaign(
 
 }  // namespace
 
-TopSite::TopSite() = default;
-TopSite::TopSite(const std::string& i_name,
-                 const std::string& i_destination_url,
-                 const std::string& i_image_path,
-                 const base::FilePath& i_image_file)
-    : name(i_name),
-      destination_url(i_destination_url),
-      image_path(i_image_path),
-      image_file(i_image_file) {}
-
-TopSite::TopSite(const TopSite& other) = default;
-
-TopSite& TopSite::operator=(const TopSite& other) = default;
-
-TopSite::TopSite(TopSite&& other) noexcept = default;
-
-TopSite& TopSite::operator=(TopSite&& other) noexcept = default;
-
-TopSite::~TopSite() = default;
-
-bool TopSite::IsValid() const {
-  return !name.empty() && !destination_url.empty() && !image_file.empty();
-}
-
 Logo::Logo() = default;
 
 Logo::Logo(const Logo& other) = default;
@@ -347,18 +323,11 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 
   url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
                                kBrandedWallpaperHost);
-  if (const std::string* const name = dict.FindString(kThemeNameKey)) {
-    theme_name = *name;
-    url_prefix += kSuperReferralPath;
-  } else {
-    url_prefix += kSponsoredImagesPath;
-  }
+  url_prefix += kSponsoredImagesPath;
 
   if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
     ParseCampaigns(*value, installed_dir);
   }
-
-  ParseSuperReferrals(dict, installed_dir);
 }
 
 NTPSponsoredImagesData::NTPSponsoredImagesData(
@@ -392,69 +361,8 @@ void NTPSponsoredImagesData::ParseCampaigns(
   }
 }
 
-void NTPSponsoredImagesData::ParseSuperReferrals(
-    const base::Value::Dict& dict,
-    const base::FilePath& installed_dir) {
-  if (theme_name.empty()) {
-    DVLOG(2) << __func__ << ": Don't have NTP SR properties";
-    return;
-  }
-
-  DVLOG(2) << __func__ << ": Theme name: " << theme_name;
-
-  const base::Value::List* const list = dict.FindList(kTopSitesKey);
-  if (!list) {
-    return;
-  }
-
-  for (const auto& value : *list) {
-    const base::Value::Dict* const top_site_dict = value.GetIfDict();
-    if (!top_site_dict) {
-      continue;
-    }
-
-    const std::string* const name = top_site_dict->FindString(kTopSiteNameKey);
-    if (!name) {
-      continue;
-    }
-
-    const std::string* const destination_url =
-        top_site_dict->FindString(kDestinationURLKey);
-    if (!destination_url) {
-      continue;
-    }
-
-    const std::string* const background_color =
-        top_site_dict->FindString(kBackgroundColorKey);
-    if (!background_color) {
-      continue;
-    }
-
-    const std::string* const icon_url =
-        top_site_dict->FindString(kTopSiteIconURLKey);
-    if (!icon_url) {
-      continue;
-    }
-
-    TopSite top_site;
-    top_site.name = *name;
-    top_site.destination_url = *destination_url;
-    top_site.background_color = *background_color;
-    top_site.image_path = url_prefix + *icon_url;
-    top_site.image_file = installed_dir.AppendASCII(*icon_url);
-
-    if (top_site.IsValid()) {
-      top_sites.push_back(top_site);
-    }
-  }
-}
-
 bool NTPSponsoredImagesData::IsValid() const {
   return !campaigns.empty();
-}
-
-bool NTPSponsoredImagesData::IsSuperReferral() const {
-  return IsValid() && !theme_name.empty();
 }
 
 const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
@@ -496,8 +404,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
   return base::Value::Dict()
       .Set(kCampaignIdKey, campaign.campaign_id)
       .Set(kCreativeInstanceIDKey, creative.creative_instance_id)
-      .Set(kThemeNameKey, theme_name)
-      .Set(kIsSponsoredKey, !IsSuperReferral())
+      .Set(kIsSponsoredKey, true)
       .Set(kIsBackgroundKey, false)
       .Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString())
       .Set(kWallpaperMetricTypeKey, static_cast<int>(creative.metric_type))
