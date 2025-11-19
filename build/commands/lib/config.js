@@ -246,7 +246,10 @@ const Config = function () {
   this.offline = getEnvConfig(['offline']) || false
   this.use_libfuzzer = false
   this.androidAabToApk = false
-  this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
+  this.useBraveHermeticToolchain = getEnvConfig(
+    ['use_brave_hermetic_toolchain'],
+    this.rbeService.includes('.brave.com:'),
+  )
   this.braveIOSDeveloperOptionsCode = getEnvConfig([
     'brave_ios_developer_options_code',
   ])
