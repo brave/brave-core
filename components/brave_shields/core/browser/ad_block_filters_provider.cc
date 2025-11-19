@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
@@ -20,6 +21,8 @@ AdBlockFiltersProvider::AdBlockFiltersProvider(
   // Can be nullptr in tests (deferred setter)
   if (filters_provider_manager_ != nullptr) {
     filters_provider_manager_->AddProvider(this, engine_is_default_);
+  } else {
+    CHECK_IS_TEST();
   }
 }
 

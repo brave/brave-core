@@ -64,13 +64,7 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(
-        AdBlockEngine* adblock_engine,
-        AdBlockFiltersProvider* filters_provider,
-        AdBlockResourceProvider* resource_provider,
-        AdBlockFiltersProviderManager* filters_provider_manager,
-        scoped_refptr<base::SequencedTaskRunner> task_runner,
-        bool is_filter_provider_manager = false);
+    SourceProviderObserver(AdBlockService* owner, bool engine_is_default);
 
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
@@ -89,14 +83,13 @@ class AdBlockService {
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
-    raw_ptr<AdBlockFiltersProvider> filters_provider_ = nullptr;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
         nullptr;  // not owned
-    raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_;
+    raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_ =
+        nullptr;  // not owned
 
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
-    bool is_filter_provider_manager_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
   };
