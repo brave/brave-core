@@ -100,11 +100,4 @@ extension Domain {
         > Preferences.Shields.blockAdsAndTrackingLevel.strength
     }).count
   }
-
-  @MainActor public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
-    let allExplicitlySet = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue)
-    guard Preferences.Shields.shredLevel.shredOnAppExit else { return allExplicitlySet }
-    // Default value is SiteShredLevel.appExit, include all with default value nil
-    return (allExplicitlySet ?? []) + (Domain.allDomainsWithAutoShredLevel(nil) ?? [])
-  }
 }

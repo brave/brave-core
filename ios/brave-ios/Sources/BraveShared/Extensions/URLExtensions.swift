@@ -306,7 +306,10 @@ extension URL {
       // only allow reader mode InternalURL to be shred
       return nil
     }
-    return self
+    // Use `domainURL` to align with `Domain.getOrCreateInternal` storage
+    // TODO: brave-browser#48761
+    // Don't use domainURL when kBraveShieldsContentSettings enabled
+    return domainURL
   }
 
   // Returns true if a string is a valid URL, with the specified optional scheme,

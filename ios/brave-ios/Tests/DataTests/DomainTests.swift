@@ -248,38 +248,64 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(Preferences.Shields.shredLevel, .never)
 
     // test defaults
-    XCTAssertEqual((Domain.allDomainsWithAutoShredLevel(nil) ?? []).count, 3)
-    XCTAssertTrue(
-      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.never.rawValue) ?? []).isEmpty
+    XCTAssertEqual(
+      (Domain.allDomainsWithAutoShredLevel(nil, context: DataController.viewContext) ?? []).count,
+      3
     )
     XCTAssertTrue(
-      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.whenSiteClosed.rawValue) ?? []).isEmpty
+      (Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.never.rawValue,
+        context: DataController.viewContext
+      ) ?? []).isEmpty
     )
     XCTAssertTrue(
-      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue) ?? []).isEmpty
+      (Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.whenSiteClosed.rawValue,
+        context: DataController.viewContext
+      ) ?? []).isEmpty
+    )
+    XCTAssertTrue(
+      (Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.appExit.rawValue,
+        context: DataController.viewContext
+      ) ?? []).isEmpty
     )
 
     // test explict assigned
     domain.shredLevel = .never
     domain2.shredLevel = .whenSiteClosed
     domain3.shredLevel = .appExit
-    XCTAssertEqual((Domain.allDomainsWithAutoShredLevel(nil) ?? []).count, 0)
-    let neverDomains = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.never.rawValue) ?? []
+    XCTAssertEqual(
+      (Domain.allDomainsWithAutoShredLevel(nil, context: DataController.viewContext) ?? []).count,
+      0
+    )
+    let neverDomains =
+      Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.never.rawValue,
+        context: DataController.viewContext
+      ) ?? []
     XCTAssertEqual(neverDomains.count, 1)
     XCTAssertNotNil(neverDomains.first?.url?.asURL?.baseDomain)
     XCTAssertEqual(neverDomains.first?.url?.asURL?.baseDomain, url.baseDomain)
     let whenSiteClosedDomains =
-      Domain.allDomainsWithAutoShredLevel(SiteShredLevel.whenSiteClosed.rawValue) ?? []
+      Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.whenSiteClosed.rawValue,
+        context: DataController.viewContext
+      ) ?? []
     XCTAssertEqual(whenSiteClosedDomains.count, 1)
     XCTAssertNotNil(whenSiteClosedDomains.first?.url?.asURL?.baseDomain)
     XCTAssertEqual(whenSiteClosedDomains.first?.url?.asURL?.baseDomain, url2.baseDomain)
-    let appExitDomains = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue) ?? []
+    let appExitDomains =
+      Domain.allDomainsWithAutoShredLevel(
+        SiteShredLevel.appExit.rawValue,
+        context: DataController.viewContext
+      ) ?? []
     XCTAssertEqual(appExitDomains.count, 1)
     XCTAssertNotNil(appExitDomains.first?.url?.asURL?.baseDomain)
     XCTAssertEqual(appExitDomains.first?.url?.asURL?.baseDomain, compound.baseDomain)
   }
 
-  @MainActor func testAllDomainsWithShredLevelAppExit() {
+  @MainActor func testAllDomainsWithShredLevelAppExit() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
     // domain should use `Preferences.Shields.shredLevel` value (default)
     let domain2 = Domain.getOrCreate(forUrl: url2, persistent: true)
@@ -287,27 +313,81 @@ class DomainTests: CoreDataTestCase {
     let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
     domain2.shredLevel = .appExit
 
+    // save context before fetching off background thread
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
+
     // verify default is SiteShredLevel.never
     Preferences.Shields.shredLevelRaw.value = nil
     XCTAssertEqual(Preferences.Shields.shredLevel, .never)
 
-    var allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    var allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
+      rawShredLevel: SiteShredLevel.appExit.rawValue,
+      isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
+    )
     XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
-    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
-    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
-    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
+    XCTAssertFalse(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain.url })
+    )
+    XCTAssertTrue(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain2.url })
+    )
+    XCTAssertFalse(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain3.url })
+    )
 
     // update default to SiteShredLevel.appExit
     Preferences.Shields.shredLevel = .appExit
     XCTAssertEqual(Preferences.Shields.shredLevel, .appExit)
 
     // should contain domain2 & domain3
-    allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
+      rawShredLevel: SiteShredLevel.appExit.rawValue,
+      isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
+    )
     XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 2)
-    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
-    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
-    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
+    XCTAssertFalse(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain.url })
+    )
+    XCTAssertTrue(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain2.url })
+    )
+    XCTAssertTrue(
+      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain3.url })
+    )
   }
+
+  @MainActor func testAllDomainsWithShredLevelAppExitGlobalPref() async {
+    Preferences.Shields.shredLevel = .appExit
+    // Add some mock data
+    let domainURL = URL(string: "https://brave.com")!
+    let domain = Domain.getOrCreate(forUrl: domainURL, persistent: true)
+    domain.shredLevel = .appExit
+    // Add secure & insecure Domain object for same baseDomain, but set
+    // explicit shred level on secure version to verify explicit opt-out for
+    // baseDomain matches will be filtered out of default value shred level
+    // matches. See brave-browser#46560.
+    let insecureDomainURL = URL(string: "http://github.com")!
+    _ = Domain.getOrCreate(forUrl: insecureDomainURL, persistent: true)
+    let secureDomainURL = URL(string: "https://github.com")!
+    let secureDomain = Domain.getOrCreate(forUrl: secureDomainURL, persistent: true)
+    secureDomain.shredLevel = .never
+
+    // save context before fetching off background thread
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
+
+    // verify insecureDomain is filtered out because baseDomain matches
+    let allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
+      rawShredLevel: SiteShredLevel.appExit.rawValue,
+      isGlobalShredLevel: true
+    )
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.first, URL(string: "https://brave.com"))
+  }
+
 }
 
 extension Domain {
