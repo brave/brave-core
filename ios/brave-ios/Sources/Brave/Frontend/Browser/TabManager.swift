@@ -906,13 +906,15 @@ class TabManager: NSObject {
     }
 
     // Remove all unwanted tabs
-    for tab in allTabs {
-      guard tab.visibleURL?.urlToShred?.baseDomain == baseDomain else { continue }
+    for tabToClose in allTabs {
+      guard tabToClose.visibleURL?.urlToShred?.baseDomain == baseDomain,
+        tabToClose.isPrivate == tab.isPrivate
+      else { continue }
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
-      tab.deleteWebView()
-      removeTab(tab)
+      tabToClose.deleteWebView()
+      removeTab(tabToClose)
     }
 
     Task {
