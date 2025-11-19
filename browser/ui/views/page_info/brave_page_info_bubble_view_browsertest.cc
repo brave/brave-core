@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/page_info/brave_page_info_bubble_view.h"
 
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_view_ids.h"
@@ -336,8 +337,9 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewRepeatedReloadsBrowserTest,
   reload();
   EXPECT_FALSE(GetBubbleView());
 
-  // The second reload should open the bubble with the Shield tab visible.
+  // The second reload should open the bubble with the Shields tab visible.
   reload();
+  ASSERT_TRUE(base::test::RunUntil([] { return GetBubbleView(); }));
   auto* bubble_view = GetBubbleView();
   ASSERT_TRUE(bubble_view);
   EXPECT_TRUE(IsShieldsViewDrawn(bubble_view));
