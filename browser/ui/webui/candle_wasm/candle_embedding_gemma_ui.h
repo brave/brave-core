@@ -14,6 +14,8 @@
 
 namespace local_ai {
 
+// We need to run embedding gemma WASM in an isolated context because we might
+// provide untrusted input to be embedded. ex. passages of page contents.
 class UntrustedCandleEmbeddingGemmaUI : public ui::MojoWebUIController {
  public:
   explicit UntrustedCandleEmbeddingGemmaUI(content::WebUI* web_ui);
