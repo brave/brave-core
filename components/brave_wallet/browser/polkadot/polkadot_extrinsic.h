@@ -41,6 +41,10 @@ struct PolkadotChainMetadata {
   // end.
   void AddChainMetadata(std::string_view chain_id, std::string_view chain_name);
 
+  // Returns a boolean that lets us know if the associated chain_id has a
+  // backing ChainMetadata associated with it.
+  bool HasChainMetadata(std::string_view chain_id) const;
+
   const ChainMetadata& chain_metadata() const { return *chain_metadata_; }
 
  private:

@@ -27,8 +27,13 @@ PolkadotChainMetadata::~PolkadotChainMetadata() = default;
 
 void PolkadotChainMetadata::AddChainMetadata(std::string_view chain_id,
                                              std::string_view chain_name) {
+  CHECK(!HasChainMetadata(chain_id));
   chain_metadata_->add_chain_metadata(StringViewToRustStr(chain_id),
                                       StringViewToRustStr(chain_name));
+}
+
+bool PolkadotChainMetadata::HasChainMetadata(std::string_view chain_id) const {
+  return chain_metadata_->has_chain_metadata(StringViewToRustStr(chain_id));
 }
 
 PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
@@ -42,6 +47,7 @@ std::string PolkadotUnsignedTransfer::Encode(
     std::string_view chain_id,
     const PolkadotChainMetadata& chain_metadata) const {
   CHECK(IsPolkadotNetwork(chain_id));
+  CHECK(chain_metadata.HasChainMetadata(chain_id));
 
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
@@ -59,6 +65,9 @@ std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::Decode(
     std::string_view chain_id,
     const PolkadotChainMetadata& chain_metadata,
     std::string_view input) {
+  CHECK(IsPolkadotNetwork(chain_id));
+  CHECK(chain_metadata.HasChainMetadata(chain_id));
+
   std::vector<uint8_t> bytes;
   if (!base::HexStringToBytes(input, &bytes)) {
     return std::nullopt;

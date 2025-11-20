@@ -359,34 +359,35 @@ TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
   // Test the case where we have a valid extrinsics for a specific parachain
   // that's not compatible with the current one we're supplying.
 
-  constexpr const char kPolkadotAssetHubTestnet[] =
-      "polkadot_testnet_asset_hub";
-
-  constexpr const char kPolkadotAssetHubMainnet[] =
-      "polkadot_mainnet_asset_hub";
-
-  PolkadotChainMetadata metadata;
-  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
-  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
-  metadata.AddChainMetadata(kPolkadotAssetHubTestnet,
-                            kWestendAssetHubChainType);
-  metadata.AddChainMetadata(kPolkadotAssetHubMainnet,
-                            kPolkadotAssetHubChainType);
-
   const char* testnet_extrinsic =
       R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-  auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
-      mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
+  {
+    PolkadotChainMetadata metadata;
+    metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+    metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
 
-  EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
-  EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
 
-  for (std::string_view chain_id :
-       {mojom::kPolkadotMainnet, kPolkadotAssetHubTestnet,
-        kPolkadotAssetHubMainnet}) {
-    EXPECT_FALSE((PolkadotUnsignedTransfer::Decode(chain_id, metadata,
-                                                   testnet_extrinsic)));
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+
+    EXPECT_FALSE(PolkadotUnsignedTransfer::Decode(mojom::kPolkadotMainnet,
+                                                  metadata, testnet_extrinsic));
+  }
+
+  {
+    PolkadotChainMetadata metadata;
+    metadata.AddChainMetadata(mojom::kPolkadotTestnet,
+                              kWestendAssetHubChainType);
+    metadata.AddChainMetadata(mojom::kPolkadotMainnet,
+                              kPolkadotAssetHubChainType);
+
+    EXPECT_FALSE(PolkadotUnsignedTransfer::Decode(mojom::kPolkadotTestnet,
+                                                  metadata, testnet_extrinsic));
+    EXPECT_FALSE(PolkadotUnsignedTransfer::Decode(mojom::kPolkadotMainnet,
+                                                  metadata, testnet_extrinsic));
   }
 }
 
