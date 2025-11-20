@@ -147,6 +147,11 @@ extension Preferences {
       key: "general.isdefault-api-last-result-date",
       default: nil
     )
+    /// Whether or not automatically bring up keyboard when select a new tab
+    public static let openKeyboardOnNTPSelection = Option<Bool>(
+      key: "general.open-keyboard-on-ntp-selection",
+      default: false
+    )
   }
 
   final public class Search {

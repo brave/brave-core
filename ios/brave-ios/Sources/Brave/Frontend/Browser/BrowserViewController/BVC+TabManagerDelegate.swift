@@ -323,11 +323,17 @@ extension BrowserViewController: TabManagerDelegate {
           if Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
               if success {
-                self?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+                self?.openBlankNewTab(
+                  attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+                  isPrivate: true
+                )
               }
             }
           } else {
-            self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+            self.openBlankNewTab(
+              attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+              isPrivate: true
+            )
           }
         }
       )
@@ -349,7 +355,7 @@ extension BrowserViewController: TabManagerDelegate {
         : UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
         self.openBlankNewTab(
-          attemptLocationFieldFocus: false,
+          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
           isPrivate: privateBrowsingManager.isPrivateBrowsing
         )
       }

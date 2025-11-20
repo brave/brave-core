@@ -56,7 +56,12 @@ extension BrowserViewController: TopToolbarDelegate {
         openTabsModel: profileController.openTabsAPI,
         toolbarUrlActionsDelegate: self,
         profileController: profileController,
-        windowProtection: windowProtection
+        windowProtection: windowProtection,
+        didAddTab: { [weak self] in
+          if Preferences.General.openKeyboardOnNTPSelection.value {
+            self?.focusURLBar()
+          }
+        }
       )
       tabTrayController.modalPresentationStyle = .fullScreen
       if !UIAccessibility.isReduceMotionEnabled {
@@ -1054,7 +1059,7 @@ extension BrowserViewController: ToolbarDelegate {
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     recordCreateTabAction(location: .toolbar)
     self.openBlankNewTab(
-      attemptLocationFieldFocus: false,
+      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
   }

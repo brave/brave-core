@@ -1344,11 +1344,21 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
+        var legacyTabTrayDismissed = false
+        if let presentedNavigationController = presentedViewController
+          as? UINavigationController,
+          presentedNavigationController.topViewController is TabTrayController
+        {
+          legacyTabTrayDismissed = true
+        }
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
-            || clearRecentSearchAlertDismissed)
+            || clearRecentSearchAlertDismissed
+            || legacyTabTrayDismissed
+            || presentedViewController is TabGridHostingController)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
@@ -1926,6 +1936,7 @@ public class BrowserViewController: UIViewController {
   func clearHistoryAndOpenNewTab() {
     // When PB Only mode is enabled
     // All private tabs closed and a new private tab is created
+    // Consider this case as launch app and landing in NTP
     if Preferences.Privacy.privateBrowsingOnly.value {
       tabManager.removeAll()
       openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
@@ -2299,7 +2310,10 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
     recordCreateTabAction(location: .toolbar)
-    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
+    openBlankNewTab(
+      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+      isPrivate: isPrivate
+    )
   }
 
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {
@@ -2575,6 +2589,9 @@ extension BrowserViewController: TabTrayDelegate {
 
   func didCreateTab() {
     recordCreateTabAction(location: .tabTray)
+    if Preferences.General.openKeyboardOnNTPSelection.value {
+      focusURLBar()
+    }
   }
 }
 
@@ -2772,9 +2789,11 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
-    if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
-      return
-    }
+    // do not show if topToobar is in overlay mode
+    guard !topToolbar.inOverlayMode,
+      rewards.ads.shouldDisplayNewTabTakeoverInfobar()
+    else { return }
+
     rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
     let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
