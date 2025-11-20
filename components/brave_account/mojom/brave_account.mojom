@@ -43,6 +43,42 @@ struct RegisterError {
   RegisterErrorCode? errorCode;
 };
 
+struct LoginInitializeResult {
+  string encryptedLoginToken;
+  string serializedKE2;
+};
+
+struct LoginFinalizeResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
+enum LoginErrorCode {
+  // Client-side errors:
+  kOpaqueError = -3,
+  kVerificationTokenEncryptionFailed = -2,
+  kVerificationTokenDecryptionFailed = -1,
+  // Server-side errors:
+  kMiscServerError                   = 0,
+  // /v2/accounts/password/init:
+  // - internal:
+  kNewAccountEmailRequired           = 11005,
+  kIntentNotAllowed                  = 13003,
+  // - user-facing:
+  kTooManyVerifications              = 13001,
+  kAccountExists                     = 13004,
+  kEmailDomainNotSupported           = 13006,
+  // /v2/accounts/password/finalize:
+  // - internal:
+  kInterimPasswordStateNotFound      = 14001,
+  kInterimPasswordStateExpired       = 14002,
+  // - user-facing: -
+};
+
+struct LoginError {
+  uint32? statusCode;
+  LoginErrorCode? errorCode;
+};
+
 // Interface for a two-step registration process
 // with the backend to create a Brave Account.
 interface Authentication {
@@ -75,6 +111,12 @@ interface Authentication {
 
   // Cancels the registration process by clearing the verification token.
   CancelRegistration();
+
+  LoginInitialize(string email, string serializedKE1)
+    => result<LoginInitializeResult, LoginError>;
+
+  LoginFinalize(string encryptedLoginToken, string clientMac)
+    => result<LoginFinalizeResult, LoginError>;
 
   // Logs out the user by clearing the authentication token.
   LogOut();
