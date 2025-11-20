@@ -13,7 +13,6 @@ public class Wallpaper extends NTPImage {
     private final int mFocalPointY;
     private final String mLogoPath;
     private final String mLogoDestinationUrl;
-    private final String mThemeName;
     private final boolean mIsSponsored;
     private final String mCreativeInstanceId;
     private final String mWallpaperId;
@@ -26,7 +25,6 @@ public class Wallpaper extends NTPImage {
             int focalPointY,
             String logoPath,
             String logoDestinationUrl,
-            String themeName,
             boolean isSponsored,
             String creativeInstanceId,
             String wallpaperId,
@@ -37,7 +35,6 @@ public class Wallpaper extends NTPImage {
         mFocalPointY = focalPointY;
         mLogoPath = logoPath;
         mLogoDestinationUrl = logoDestinationUrl;
-        mThemeName = themeName;
         mIsSponsored = isSponsored;
         mCreativeInstanceId = creativeInstanceId;
         mWallpaperId = wallpaperId;
@@ -63,10 +60,6 @@ public class Wallpaper extends NTPImage {
 
     public String getLogoDestinationUrl() {
         return mLogoDestinationUrl;
-    }
-
-    public String getThemeName() {
-        return mThemeName;
     }
 
     public boolean isSponsored() {
