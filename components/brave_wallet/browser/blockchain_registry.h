@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/sequence_checker.h"
 #include "base/task/thread_pool.h"

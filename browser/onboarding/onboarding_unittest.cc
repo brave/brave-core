@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "base/command_line.h"
-#include "base/files/file_util.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"

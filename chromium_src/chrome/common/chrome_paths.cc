@@ -7,6 +7,7 @@
 #include <chrome/common/chrome_paths.cc>
 #undef RegisterPathProvider
 
+#include "base/files/file_util.h"
 #include "brave/components/constants/brave_paths.h"
 
 namespace brave {

@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/files/file_util.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/logging.h"
 #include "base/test/values_test_util.h"

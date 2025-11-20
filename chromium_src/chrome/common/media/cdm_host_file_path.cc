@@ -6,7 +6,6 @@
 #include "chrome/common/media/cdm_host_file_path.h"
 
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/stl_util.h"
 #include "build/branding_buildflags.h"

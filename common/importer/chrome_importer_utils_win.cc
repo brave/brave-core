@@ -5,7 +5,7 @@
 
 #include "brave/common/importer/chrome_importer_utils.h"
 
-#include "base/files/file_util.h"
+#include "base/files/file_path.h"
 #include "base/path_service.h"
 
 base::FilePath GetChromeUserDataFolder() {

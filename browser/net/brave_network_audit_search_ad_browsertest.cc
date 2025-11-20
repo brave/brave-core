@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/json/json_reader.h"

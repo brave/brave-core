@@ -13,6 +13,7 @@
 
 #include "base/auto_reset.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "chrome/updater/updater_scope.h"
 #include "chrome/updater/util/mac_util.h"
 
