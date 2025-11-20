@@ -7,6 +7,7 @@
 
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -82,8 +83,15 @@ IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserTest, DidntCrash) {
 using BraveSyncNetworkTimeHelperBrowserDeathTest =
     BraveSyncNetworkTimeHelperBrowserTest;
 
+// There is a CI report about this test failure on Windows x64,
+// See https://github.com/brave/brave-browser/issues/50706
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86_64)
+#define MAYBE_CrashNoUiTaskRunner DISABLED_CrashNoUiTaskRunner
+#else
+#define MAYBE_CrashNoUiTaskRunner CrashNoUiTaskRunner
+#endif
 IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserDeathTest,
-                       CrashNoUiTaskRunner) {
+                       MAYBE_CrashNoUiTaskRunner) {
   brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
       g_browser_process->network_time_tracker(), nullptr);
 
