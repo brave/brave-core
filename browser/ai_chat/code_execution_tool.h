@@ -18,7 +18,6 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "content/public/browser/web_contents_observer.h"
 
 class Profile;
 
@@ -28,9 +27,6 @@ class BrowserContext;
 }  // namespace content
 
 namespace ai_chat {
-
-class AIChatService;
-class CodeSandboxWebContentsObserver;
 
 // Tool for executing JavaScript code and returning console.log output.
 // This tool is provided by the browser and allows AI assistants to run
@@ -62,25 +58,24 @@ class CodeExecutionTool : public Tool {
 
  private:
   struct CodeExecutionRequest {
-    CodeExecutionRequest(
-        std::unique_ptr<content::WebContents> web_contents,
-        std::unique_ptr<CodeSandboxWebContentsObserver> observer,
-        raw_ptr<Profile> otr_profile,
-        UseToolCallback callback);
+    CodeExecutionRequest(std::unique_ptr<content::WebContents> web_contents,
+                         raw_ptr<Profile> otr_profile,
+                         UseToolCallback callback);
     ~CodeExecutionRequest();
 
     std::unique_ptr<content::WebContents> web_contents;
-    std::unique_ptr<CodeSandboxWebContentsObserver> observer;
     base::OneShotTimer timeout_timer;
     raw_ptr<Profile> otr_profile;
     UseToolCallback callback;
   };
 
+  void HandleScriptResult(std::list<CodeExecutionRequest>::iterator request_it,
+                          base::Value result);
+  void HandleTimeout(std::list<CodeExecutionRequest>::iterator request_it);
   void HandleResult(std::list<CodeExecutionRequest>::iterator request_it,
                     std::string output);
 
   raw_ptr<Profile> profile_;
-  raw_ptr<AIChatService> ai_chat_service_;
   std::list<CodeExecutionRequest> requests_;
   std::optional<base::TimeDelta> execution_time_limit_for_testing_;
   base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};

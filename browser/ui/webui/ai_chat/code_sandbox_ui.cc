@@ -5,11 +5,6 @@
 
 #include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
 
-#include <string>
-
-#include "base/memory/ref_counted_memory.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -53,11 +48,6 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
 
   source->SetDefaultResource(IDR_AI_CHAT_CODE_SANDBOX_UI_HTML);
 
-  source->SetRequestFilter(
-      base::BindRepeating(&CodeSandboxUI::ShouldHandleRequest),
-      base::BindRepeating(&CodeSandboxUI::HandleScriptRequest,
-                          browser_context->GetWeakPtr()));
-
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
@@ -76,36 +66,6 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
-}
-
-bool CodeSandboxUI::ShouldHandleRequest(const std::string& path) {
-  return path.ends_with("/script.js") || path == "script.js" || path.empty();
-}
-
-void CodeSandboxUI::HandleScriptRequest(
-    base::WeakPtr<content::BrowserContext> browser_context,
-    const std::string& path,
-    content::WebUIDataSource::GotDataCallback callback) {
-  std::string request_id;
-  auto slash_pos = path.find('/');
-  if (slash_pos != std::string::npos) {
-    request_id = path.substr(0, slash_pos);
-  }
-  std::string script_content;
-  auto* original_profile =
-      Profile::FromBrowserContext(browser_context.get())->GetOriginalProfile();
-  auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(original_profile);
-  if (ai_chat_service) {
-    auto script = ai_chat_service->ConsumeCodeExecutionToolScript(request_id);
-    if (script) {
-      script_content = std::move(*script);
-    }
-  }
-
-  auto script =
-      base::MakeRefCounted<base::RefCountedString>(std::move(script_content));
-  std::move(callback).Run(script.get());
 }
 
 CodeSandboxUI::~CodeSandboxUI() = default;
