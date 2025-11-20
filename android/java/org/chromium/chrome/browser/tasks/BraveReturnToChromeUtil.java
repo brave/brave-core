@@ -82,10 +82,23 @@ public final class BraveReturnToChromeUtil {
         int openingScreenOption =
                 ChromeSharedPreferences.getInstance()
                         .readInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, 1);
-
         // If user has selected "New Tab" option, return true without checking timer
         if (openingScreenOption == BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB) {
-            return true;
+            boolean foregroundSessionEndTriggered =
+                    ChromeSharedPreferences.getInstance()
+                            .readBoolean(
+                                    BravePreferenceKeys.BRAVE_FOREGROUND_SESSION_ENDS_TRIGGERED,
+                                    false);
+            // If foreground session ends has been triggered, return true and reset the flag
+            if (foregroundSessionEndTriggered) {
+                ChromeSharedPreferences.getInstance()
+                        .writeBoolean(
+                                BravePreferenceKeys.BRAVE_FOREGROUND_SESSION_ENDS_TRIGGERED, false);
+                return true;
+            }
+            // If foreground session ends has not been triggered, return false.
+            // It could be because of Settings Activity or other activities.
+            return false;
         }
 
         // If OPTION_NEW_TAB_AFTER_INACTIVITY is not selected, return false
@@ -94,9 +107,9 @@ public final class BraveReturnToChromeUtil {
                 || inactivityTracker == null) {
             return false;
         }
-
         // Check if app has been backgrounded for ≥ threshold
         long timeSinceLastBackgroundedMs = inactivityTracker.getTimeSinceLastBackgroundedMs();
+
         return timeSinceLastBackgroundedMs >= inactivityThresholdMs;
     }
 
