@@ -267,6 +267,11 @@ bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
   return brave_shields_settings_->GetBraveShieldsEnabled(GetCurrentSiteURL());
 }
 
+bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
+  return brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state());
+}
+
 void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
                                                   GetCurrentSiteURL());
