@@ -65,6 +65,8 @@ if (!is_android) {
 }
 
 if (is_win) {
+  # These tests are especially important while we are maintaining the delta
+  # update logic ourselves. See github.com/brave/brave-core/pull/31937.
   chromium_unit_tests_deps += [
     "//chrome/installer/setup:setup_unittests",
     "//chrome/installer/util:installer_util_unittests",

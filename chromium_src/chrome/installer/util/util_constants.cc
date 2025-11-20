@@ -13,6 +13,10 @@ namespace installer {
 
 namespace switches {
 
+// The switches kNewSetupExe, kPreviousVersion and kUpdateSetupExe used to be
+// upstream and had to be restored in Brave to support delta updates on Windows
+// until we are on Omaha 4. See github.com/brave/brave-core/pull/31937.
+
 // Useful only when used with --update-setup-exe; otherwise ignored. Specifies
 // the full path where the updated setup.exe will be written. Any other files
 // created in the indicated directory may be deleted by the caller after process

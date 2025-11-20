@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_BRAND_BEHAVIORS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_BRAND_BEHAVIORS_H_
 
+// UpdateInstallStatus used to have a different signature in upstream. We need
+// to restore it here to support delta updates on Windows until we are on Omaha
+// 4. See github.com/brave/brave-core/pull/31937.
 #define UpdateInstallStatus() \
     UpdateInstallStatus(installer::ArchiveType archive_type, \
                         installer::InstallStatus install_status)

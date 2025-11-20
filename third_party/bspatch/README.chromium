@@ -9,8 +9,9 @@ Security Critical: yes
 Shipped: yes
 
 Description:
-This is Chrome's locally patched copy of Colin Percival's bspatch tool
-(see ../bsdiff for the corresponding bsdiff tool).
+This is Chrome's locally patched copy of Colin Percival's bspatch tool. It used
+to be in Chromium and had to be restored in Brave to support delta updates on
+Windows until Brave is on Omaha 4. See github.com/brave/brave-core/pull/31937.
 
 Originally obtained from Mozilla's local copy/fork of bspatch; see:
 

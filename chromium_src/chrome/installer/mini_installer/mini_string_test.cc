@@ -1,6 +1,9 @@
 #include <chrome/installer/mini_installer/mini_string_test.cc>
 
 // Tests the case insensitive find support of the StackString class.
+// This test used to be upstream and had to be restored in Brave to support
+// delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
 TEST_F(MiniInstallerStringTest, StackStringFind) {
   static const wchar_t kTestStringSource[] = L"1234ABcD567890";
   static const wchar_t kTestStringFind[] = L"abcd";

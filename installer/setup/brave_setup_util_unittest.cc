@@ -17,6 +17,10 @@ namespace {
 
 // A test fixture that configures an InstallationState and an InstallerState
 // with a product being updated.
+//
+// FindArchiveToPatchTest and its test cases used to be upstream and had to be
+// restored in Brave to support delta updates on Windows until we are on
+// Omaha 4. See github.com/brave/brave-core/pull/31937.
 class FindArchiveToPatchTest : public testing::Test {
  public:
   FindArchiveToPatchTest(const FindArchiveToPatchTest&) = delete;
