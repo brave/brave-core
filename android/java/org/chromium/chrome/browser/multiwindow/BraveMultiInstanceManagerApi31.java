@@ -16,6 +16,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
@@ -74,7 +75,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             if (selector != null && selector.getTotalTabCount() == 0) {
                 closeWindow(mInstanceId, CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
-            if (MultiWindowUtils.getInstanceCount() == 1) {
+            if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
             } else {
                 Snackbar snackbar =

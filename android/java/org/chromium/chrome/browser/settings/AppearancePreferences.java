@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragmen
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -261,14 +262,17 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
-                if (MultiWindowUtils.getInstanceCount() > 1) {
+                if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE)
+                        > 1) {
                     BraveMultiWindowDialogFragment dialogFragment =
                             BraveMultiWindowDialogFragment.newInstance();
                     BraveMultiWindowDialogFragment.DismissListener dismissListener =
                             new BraveMultiWindowDialogFragment.DismissListener() {
                                 @Override
                                 public void onDismiss() {
-                                    if (MultiWindowUtils.getInstanceCount() == 1) {
+                                    if (MultiWindowUtils.getInstanceCountWithFallback(
+                                                    PersistedInstanceType.ACTIVE)
+                                            == 1) {
                                         if (preference instanceof ChromeSwitchPreference) {
                                             ((ChromeSwitchPreference) preference).setChecked(false);
                                             BraveMultiWindowUtils.updateEnableMultiWindows(false);
