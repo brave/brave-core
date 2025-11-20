@@ -851,3 +851,19 @@ TEST_F(BraveStatsUpdaterTest, StatsUpdaterMigration) {
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
   EXPECT_EQ(query_value, "BRV001");
 }
+
+TEST_F(BraveStatsUpdaterTest, UsagePingDisabledFirstCheck) {
+  GetLocalState()->SetBoolean(kStatsReportingEnabled, false);
+
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback cb =
+      base::BindRepeating([](const GURL& url) {
+        // Dummy URL confirms no request was triggered
+        EXPECT_EQ(url.host(), "no-thanks.invalid");
+      });
+  SetupStatsUpdater(&cb);
+
+  task_environment_.FastForwardBy(base::Hours(1));
+
+  // No prefs should be updated
+  EXPECT_FALSE(GetLocalState()->GetBoolean(kFirstCheckMade));
+}
