@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -401,6 +402,49 @@ TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
                                                 testnet_extrinsic));
   EXPECT_FALSE(PolkadotUnsignedTransfer::Decode(mainnet_assethub_metadata,
                                                 testnet_extrinsic));
+}
+
+TEST(PolkadotExtrinsics, SignaturePayload) {
+  auto testnet_metadata =
+      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+
+  auto mainnet_metadata =
+      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+
+  uint32_t sender_nonce = 2;
+
+  uint128_t send_amount = 1234;
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> recipient = {};
+  base::HexStringToSpan(kBob, recipient);
+
+  uint32_t spec_version = 1020001;
+  uint32_t transaction_version = 27;
+
+  uint32_t block_number = 0x1b41217;
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
+      genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0xbdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a671913",
+      block_hash));
+
+  auto encoded = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, recipient,
+      spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  constexpr const char kExpected[] =
+      R"(0400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
+
+  EXPECT_EQ(base::HexEncodeLower(encoded), kExpected);
 }
 
 }  // namespace brave_wallet

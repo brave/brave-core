@@ -72,6 +72,18 @@ mod ffi {
             chain_metadata: &CxxPolkadotChainMetadata,
             mut input: &[u8],
         ) -> Box<CxxPolkadotDecodeUnsignedTransferResult>;
+
+        fn generate_extrinsic_signature_payload(
+            chain_metadata: &CxxPolkadotChainMetadata,
+            sender_nonce: u32,
+            send_amount_bytes: &mut [u8; 16],
+            recipient: &[u8; 32],
+            spec_version: u32,
+            transaction_version: u32,
+            block_number: u32,
+            genesis_hash: &[u8; 32],
+            block_hash: &[u8; 32],
+        ) -> Vec<u8>;
     }
 }
 
@@ -258,4 +270,57 @@ fn decode_unsigned_transfer_allow_death(
 ) -> Box<CxxPolkadotDecodeUnsignedTransferResult> {
     let r = decode_unsigned_transfer_allow_death_impl(chain_metadata, input);
     Box::new(CxxPolkadotDecodeUnsignedTransferResult(r))
+}
+
+fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2] {
+    let phase = number % period;
+    let factor = (period >> 12).max(1);
+
+    let left = 15.min((period.trailing_zeros() - 1).max(1));
+    let right = (phase / factor) << 4;
+    let encoded = u16::try_from(left | right).unwrap();
+
+    [(encoded & 0xff) as u8, (encoded >> 8) as u8]
+}
+
+fn generate_extrinsic_signature_payload(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_nonce: u32,
+    send_amount_bytes: &mut [u8; 16],
+    recipient: &[u8; 32],
+    spec_version: u32,
+    transaction_version: u32,
+    block_number: u32,
+    genesis_hash: &[u8; 32],
+    block_hash: &[u8; 32],
+) -> Vec<u8> {
+    const PERIOD: u32 = 64;
+
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+        chain_metadata;
+
+    let mut buf = Vec::<u8>::with_capacity(256);
+
+    buf.extend_from_slice(&[
+        *balances_pallet_index,
+        *transfer_allow_death_call_index,
+        MULTIADDRESS_TYPE,
+    ]);
+
+    buf.extend_from_slice(recipient);
+
+    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+
+    buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
+
+    Compact(sender_nonce).encode_to(&mut buf);
+
+    buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* mode */]);
+    buf.extend_from_slice(&spec_version.to_le_bytes());
+    buf.extend_from_slice(&transaction_version.to_le_bytes());
+    buf.extend_from_slice(genesis_hash);
+    buf.extend_from_slice(block_hash);
+    buf.extend_from_slice(&[0x00]);
+
+    buf
 }
