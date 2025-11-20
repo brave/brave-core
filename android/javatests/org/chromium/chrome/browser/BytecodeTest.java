@@ -1135,7 +1135,6 @@ public class BytecodeTest {
                         GURL.class,
                         long.class,
                         boolean.class,
-                        boolean.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
