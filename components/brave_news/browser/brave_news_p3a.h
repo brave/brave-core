@@ -24,10 +24,6 @@ inline constexpr char kWeeklySessionCountHistogramName[] =
     "Brave.Today.WeeklySessionCount";
 inline constexpr char kTotalCardViewsHistogramName[] =
     "Brave.Today.WeeklyTotalCardViews";
-inline constexpr char kRewardsAdsViewsHistogramName[] =
-    "Brave.Today.RewardsAdViews";
-inline constexpr char kNonRewardsAdsViewsHistogramName[] =
-    "Brave.Today.NonRewardsAdViews";
 inline constexpr char kDirectFeedsTotalHistogramName[] =
     "Brave.Today.DirectFeedsTotal.3";
 inline constexpr char kWeeklyAddedDirectFeedsHistogramName[] =
@@ -62,8 +58,6 @@ class NewsMetrics : public BraveNewsPrefManager::PrefObserver {
 
   void RecordAtInit();
   void RecordAtSessionStart();
-
-  void RecordWeeklyDisplayAdsViewedCount(bool is_add);
 
   void RecordTotalActionCount(ActionType action, uint64_t count_delta);
   void RecordVisitCardDepth(uint32_t new_visit_card_depth);

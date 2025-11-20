@@ -11,12 +11,10 @@
 #include "base/check.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
-#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -74,22 +72,6 @@ void NewsMetrics::RecordAtSessionStart() {
   }
 
   RecordWeeklySessionCount(true);
-}
-
-void NewsMetrics::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
-  DVLOG(1) << __FUNCTION__ << " is_add: " << is_add;
-  // Store current weekly total in p3a, ready to send on the next upload
-  constexpr int kBuckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
-  uint64_t total = AddToWeeklyStorageAndGetSum(
-      prefs::kBraveNewsWeeklyDisplayAdViewedCount, is_add);
-  const char* histogram_name = kNonRewardsAdsViewsHistogramName;
-  const char* disabled_histogram_name = kRewardsAdsViewsHistogramName;
-  if (prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
-    histogram_name = kRewardsAdsViewsHistogramName;
-    disabled_histogram_name = kNonRewardsAdsViewsHistogramName;
-  }
-  p3a_utils::RecordToHistogramBucket(histogram_name, kBuckets, total);
-  base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 8);
 }
 
 void NewsMetrics::RecordDirectFeedsTotal() {
@@ -252,7 +234,6 @@ void NewsMetrics::RecordAtInit() {
   RecordDirectFeedsTotal();
   RecordWeeklyAddedDirectFeedsCount(0);
   RecordWeeklySessionCount(false);
-  RecordWeeklyDisplayAdsViewedCount(false);
 
   for (const auto action : kAllActionTypes) {
     RecordTotalActionCount(action, 0);

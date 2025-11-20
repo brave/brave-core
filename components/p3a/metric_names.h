@@ -132,8 +132,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Today.ClickCardDepth", MetricConfig{.ephemeral = true}},
     {"Brave.Today.LastUsageTime", {}},
     {"Brave.Today.NewUserReturning", {}},
-    {"Brave.Today.NonRewardsAdViews", {}},
-    {"Brave.Today.RewardsAdViews", {}},
     {"Brave.Today.SidebarFilterUsages", MetricConfig{.ephemeral = true}},
     {"Brave.Today.WeeklySessionCount", {}},
     {"Brave.Today.WeeklyTotalCardClicks", MetricConfig{.ephemeral = true}},

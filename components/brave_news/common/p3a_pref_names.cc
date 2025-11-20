@@ -13,7 +13,6 @@ namespace brave_news::p3a::prefs {
 
 void RegisterProfileNewsMetricsPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kBraveNewsWeeklySessionCount);
-  registry->RegisterListPref(kBraveNewsWeeklyDisplayAdViewedCount);
   registry->RegisterListPref(kBraveNewsWeeklyAddedDirectFeedsCount);
   registry->RegisterListPref(kBraveNewsTotalCardViews);
   registry->RegisterListPref(kBraveNewsTotalCardVisits);
@@ -27,11 +26,12 @@ void RegisterProfileNewsMetricsPrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfileNewsMetricsPrefsForMigration(PrefRegistrySimple* registry) {
-  // Reserved for future deprecated P3A-related prefs
+  registry->RegisterListPref(
+      kBraveNewsWeeklyDisplayAdViewedCount);  // Added 11/2025
 }
 
 void MigrateObsoleteProfileNewsMetricsPrefs(PrefService* prefs) {
-  // Reserved for future deprecated P3A-related prefs
+  prefs->ClearPref(prefs::kBraveNewsWeeklyDisplayAdViewedCount);
 }
 
 }  // namespace brave_news::p3a::prefs
