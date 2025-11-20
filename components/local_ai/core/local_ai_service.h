@@ -58,6 +58,7 @@ class LocalAIService : public KeyedService,
   void RegisterPassageEmbedderFactory(
       mojo::PendingRemote<mojom::PassageEmbedderFactory> factory) override;
   void GetPassageEmbedder(GetPassageEmbedderCallback callback) override;
+  void NotifyPassageEmbedderIdle() override;
 
  private:
   // LocalModelsUpdaterState::Observer:

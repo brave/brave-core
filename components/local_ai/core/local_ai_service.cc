@@ -145,6 +145,11 @@ void LocalAIService::GetPassageEmbedder(GetPassageEmbedderCallback callback) {
   }
 }
 
+void LocalAIService::NotifyPassageEmbedderIdle() {
+  DVLOG(3) << "LocalAIService: All PassageEmbedder receivers disconnected";
+  CloseBackgroundContents();
+}
+
 void LocalAIService::OnLocalModelsReady(const base::FilePath& install_dir) {
   DVLOG(3) << "LocalAIService: Local models ready at: " << install_dir;
   if (model_load_barrier_) {
