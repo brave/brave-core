@@ -292,7 +292,7 @@ void RequestAndVerifyAttestationDocument(
 
   std::unique_ptr<network::ResourceRequest> resource_request =
       std::make_unique<network::ResourceRequest>();
-  std::string nonce_hex = base::ToLowerASCII(base::HexEncode(nonce));
+  std::string nonce_hex = base::HexEncodeLower(nonce);
   resource_request->url =
       net::AppendQueryParameter(attestation_url, "nonce", nonce_hex);
 

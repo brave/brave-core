@@ -722,16 +722,13 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
 
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
-      expected_domain_hash);
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
-      expected_primary_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->domain_hash),
+            expected_domain_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->primary_hash),
+            expected_primary_hash);
   auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
-            expected_message_to_sign);
+  EXPECT_EQ(base::HexEncodeLower(message_to_sign), expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
 
   // Test that TypedData can also be a Dict, instead of a string
@@ -756,16 +753,13 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
 
   EXPECT_EQ(eth_sign_typed_data->chain_id, "0x1");
 
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
-      expected_domain_hash);
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
-      expected_primary_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->domain_hash),
+            expected_domain_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->primary_hash),
+            expected_primary_hash);
   message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
-            expected_message_to_sign);
+  EXPECT_EQ(base::HexEncodeLower(message_to_sign), expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
 
   // Test with extra fields in the message.
@@ -790,20 +784,17 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   EXPECT_EQ(eth_sign_typed_data->message_json, expected_message);
 
   // OK: primary type message hash is unchanged.
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->primary_hash)),
-      expected_primary_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->primary_hash),
+            expected_primary_hash);
 
   // OK: domain hash is unchanged.
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(eth_sign_typed_data->domain_hash)),
-      expected_domain_hash);
+  EXPECT_EQ(base::HexEncodeLower(eth_sign_typed_data->domain_hash),
+            expected_domain_hash);
 
   // OK: message bytes to sign are unchanged.
   message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
       eth_sign_typed_data->domain_hash, eth_sign_typed_data->primary_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
-            expected_message_to_sign);
+  EXPECT_EQ(base::HexEncodeLower(message_to_sign), expected_message_to_sign);
   EXPECT_FALSE(eth_sign_typed_data->meta);
 }
 

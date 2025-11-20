@@ -258,7 +258,7 @@ std::optional<SolanaAddress> ParseAndVerifySolRecordV1Data(
 
   // Reference implementation adds lowered hex encoding.
   // https://github.com/Bonfida/solana-program-library/blob/171553544d76f5de294a0c041dfcb17834fe91c5/name-service/js/src/resolve.ts#L54
-  std::string hex_message = base::ToLowerASCII(base::HexEncode(message));
+  std::string hex_message = base::HexEncodeLower(message);
 
   // Signature must match.
   if (!ED25519_verify(reinterpret_cast<const uint8_t*>(hex_message.data()),

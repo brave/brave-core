@@ -326,13 +326,12 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->parent_fingerprint_),
             "31a507b8");
   EXPECT_EQ(hdkey_from_pri->index_, 2u);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->chain_code_)),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->chain_code_),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->GetPrivateKeyBytes()),
+            "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23");
   EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(hdkey_from_pri->GetPrivateKeyBytes())),
-      "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23");
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(hdkey_from_pri->public_key_)),
+      base::HexEncodeLower(hdkey_from_pri->public_key_),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
@@ -348,11 +347,11 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->parent_fingerprint_),
             "31a507b8");
   EXPECT_EQ(hdkey_from_pub->index_, 2u);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->chain_code_)),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->chain_code_),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
   EXPECT_TRUE(hdkey_from_pub->GetPrivateKeyBytes().empty());
   EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(hdkey_from_pub->public_key_)),
+      base::HexEncodeLower(hdkey_from_pub->public_key_),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
@@ -365,13 +364,13 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->parent_fingerprint_),
             "7ef32bdb");
   EXPECT_EQ(hdkey_from_zprv->index_, 2147483648u);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->chain_code_)),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->chain_code_),
             "4a53a0ab21b9dc95869c4e92a161194e03c0ef3ff5014ac692f433c4765490fc");
   EXPECT_EQ(base::ToLowerASCII(
                 base::HexEncode(hdkey_from_zprv->GetPrivateKeyBytes())),
             "e14f274d16ca0d91031b98b162618061d03930fa381af6d4caf44b01819ab6d4");
   EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->public_key_)),
+      base::HexEncodeLower(hdkey_from_zprv->public_key_),
       "02707a62fdacc26ea9b63b1c197906f56ee0180d0bcf1966e1a2da34f5f3a09a9b");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
@@ -384,13 +383,13 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->parent_fingerprint_),
             "0ef4b1af");
   EXPECT_EQ(hdkey_from_vprv->index_, 2147483648u);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->chain_code_)),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->chain_code_),
             "3c8c2037ee4c1621da0d348db51163709a622d0d2838dde6d8419c51f6301c62");
   EXPECT_EQ(base::ToLowerASCII(
                 base::HexEncode(hdkey_from_vprv->GetPrivateKeyBytes())),
             "7262788152f6450e0f0b336847e5ed3ea4319e10b793c3a7488a474aa4fbeaae");
   EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->public_key_)),
+      base::HexEncodeLower(hdkey_from_vprv->public_key_),
       "03b88e0fbe3f646337ed93bc0c0f3b843fcf7d2589e5ec884754e6402027a890b4");
   EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->GetIdentifier()),
             "e99b862826a40a32c24c79785d06b19de3fb076f");
@@ -409,10 +408,10 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   msg_b.fill(0x08);
   auto sig_a = *key->SignCompact(msg_a);
   auto sig_b = *key->SignCompact(msg_b);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a.rs_bytes())),
+  EXPECT_EQ(base::HexEncodeLower(sig_a.rs_bytes()),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b.rs_bytes())),
+  EXPECT_EQ(base::HexEncodeLower(sig_b.rs_bytes()),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
   EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
@@ -430,10 +429,10 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   msg_b.fill(0x08);
   auto sig_a = *key->SignCompact(msg_a);
   auto sig_b = *key->SignCompact(msg_b);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a.rs_bytes())),
+  EXPECT_EQ(base::HexEncodeLower(sig_a.rs_bytes()),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b.rs_bytes())),
+  EXPECT_EQ(base::HexEncodeLower(sig_b.rs_bytes()),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
   EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
@@ -470,7 +469,7 @@ TEST(HDKeyUnitTest, SetPublicKey) {
   ASSERT_TRUE(base::HexStringToBytes(valid_pubkey, &bytes));
   ASSERT_EQ(bytes.size(), kSecp256k1PubkeySize);
   key.SetPublicKey(*base::span(bytes).to_fixed_extent<kSecp256k1PubkeySize>());
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(key.public_key_)), valid_pubkey);
+  EXPECT_EQ(base::HexEncodeLower(key.public_key_), valid_pubkey);
 }
 
 TEST(HDKeyUnitTest, DeriveChildFromPath) {
@@ -515,7 +514,7 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
         "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
     auto* key = parsed_xprv->hdkey.get();
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(key->GetPrivateKeyBytes())),
+        base::HexEncodeLower(key->GetPrivateKeyBytes()),
         "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
     std::unique_ptr<HDKey> derived_key =
         key->DeriveChild(DerivationIndex::Hardened(44))
@@ -524,7 +523,7 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
             ->DeriveChild(DerivationIndex::Normal(0))
             ->DeriveChild(DerivationIndex::Hardened(0));
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(derived_key->GetPrivateKeyBytes())),
+        base::HexEncodeLower(derived_key->GetPrivateKeyBytes()),
         "3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb");
   }
 }

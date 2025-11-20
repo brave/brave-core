@@ -115,10 +115,8 @@ TEST(CryptoTest, HKDFSha512) {
     std::vector<uint8_t> info;
     if (base::HexStringToBytes(c.info, &info))
       info_ptr = &info;
-    EXPECT_EQ(c.out_key,
-              base::ToLowerASCII(base::HexEncode(
-                  HKDFSha512(ikm, salt_ptr, info_ptr, c.key_size).data(),
-                  c.key_size)));
+    EXPECT_EQ(c.out_key, base::HexEncodeLower(
+                             HKDFSha512(ikm, salt_ptr, info_ptr, c.key_size)));
   }
 }
 
@@ -166,8 +164,7 @@ TEST(CryptoTest, GetNonce) {
   EXPECT_EQ(nonce[1], 0);
   EXPECT_EQ(nonce[22], 0);
   EXPECT_EQ(nonce[23], 0);
-  previous_nonces.insert(
-      base::ToLowerASCII(base::HexEncode(nonce.data(), nonce.size())));
+  previous_nonces.insert(base::HexEncodeLower(nonce));
 
   // gets a nonce with counter 1000
   ::crypto::RandBytes(nonce_bytes);
@@ -177,8 +174,7 @@ TEST(CryptoTest, GetNonce) {
   EXPECT_EQ(nonce[1], 232);
   EXPECT_EQ(nonce[22], 0);
   EXPECT_EQ(nonce[23], 0);
-  previous_nonces.insert(
-      base::ToLowerASCII(base::HexEncode(nonce.data(), nonce.size())));
+  previous_nonces.insert(base::HexEncodeLower(nonce));
 
   // no duplicate nonces
   for (size_t i = 0; i < 100; ++i) {
@@ -189,8 +185,7 @@ TEST(CryptoTest, GetNonce) {
     EXPECT_EQ(nonce[1], 1);
     EXPECT_EQ(nonce[22], 0);
     EXPECT_EQ(nonce[23], 0);
-    const std::string nonce_hex =
-        base::ToLowerASCII(base::HexEncode(nonce.data(), nonce.size()));
+    const std::string nonce_hex = base::HexEncodeLower(nonce);
     EXPECT_EQ(previous_nonces.find(nonce_hex), previous_nonces.end());
     previous_nonces.insert(nonce_hex);
   }

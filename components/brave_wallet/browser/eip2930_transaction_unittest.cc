@@ -94,7 +94,7 @@ TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(0))),
+  EXPECT_EQ(base::HexEncodeLower(tx.GetHashedMessageToSign(0)),
             "78528e2724aa359c58c13e43a7c467eb721ce8d410c2a12ee62943a3aaefb60b");
 }
 
@@ -142,9 +142,9 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
       "0xbbd570a3c6acc9bb7da0d5c0322fe4ea2a300db80226f7df4fef39b2d6649eec");
 
   EXPECT_EQ(tx.v_, (uint256_t)0);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r_)),
+  EXPECT_EQ(base::HexEncodeLower(tx.r_),
             "294ac94077b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938d");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s_)),
+  EXPECT_EQ(base::HexEncodeLower(tx.s_),
             "0be950468ba1c25a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
 }
 

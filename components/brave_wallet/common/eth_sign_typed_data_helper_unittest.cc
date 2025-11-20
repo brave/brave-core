@@ -41,7 +41,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
             "Mail(Person from,Person to,string contents)Person(string "
             "name,address wallet)");
   auto typed_hash_v4 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(typed_hash_v4)),
+  EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2");
 
   // v3 should be same as v4
@@ -124,7 +124,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
   EXPECT_EQ(encoded_types_v4,
             "Mail(Person[] to)Person(string name,address wallet)");
   auto typed_hash_v4 = helper->GetTypeHash("Mail");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(typed_hash_v4)),
+  EXPECT_EQ(base::HexEncodeLower(typed_hash_v4),
             "08dde06d30a2d7c005e313f9d36bef353674e06b4ae1a923fb086f2da5b40cce");
 
   // v3 should be same as v4
@@ -161,19 +161,19 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   ASSERT_TRUE(helper);
   auto encoded_mail_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_mail_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_mail_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_mail_v4->first),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2"
             "fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd"
             "54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aa"
             "df3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8");
   auto data_mail_hash_v4 = helper->HashStruct("Mail", data_dict);
   ASSERT_TRUE(data_mail_hash_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(data_mail_hash_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(data_mail_hash_v4->first),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto encoded_person_v4 =
       helper->EncodeData("Person", *(data_dict.FindDict("to")));
   ASSERT_TRUE(encoded_person_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_person_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_person_v4->first),
             "b9d8c78acf9b987311de6c7b45bb6a9c8e1bf361fa7fd3467a2163f994c79500"
             "28cac318a86c8a0a6a9156c2dba2c8c2363677ba0514ef616592d81557e679b600"
             "0000000000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
@@ -194,7 +194,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
   data_dict.Set("extra", base::Value("extra"));
   data_mail_hash_v4 = helper->HashStruct("Mail", data_dict);
   ASSERT_TRUE(data_mail_hash_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(data_mail_hash_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(data_mail_hash_v4->first),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
 
   std::string sanitized_data_mail_v4;
@@ -276,7 +276,7 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_data_v4->first),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -287,7 +287,7 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
   auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v3->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_data_v3->first),
             "66658e9662034bcd21df657297dab8ba47f0ae05dd8aa253cc935d9aacfd9d10fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -322,7 +322,7 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
   ASSERT_TRUE(helper);
   auto encoded_data_v4 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v4);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v4->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_data_v4->first),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac200"
             "00000000000000000000000000000000000000000000000000000000000000cd54"
             "f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf"
@@ -332,7 +332,7 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
   helper->SetVersion(EthSignTypedDataHelper::Version::kV3);
   auto encoded_data_v3 = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data_v3);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data_v3->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_data_v3->first),
             "a0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2cd"
             "54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aa"
             "df3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8");
@@ -369,7 +369,7 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
   ASSERT_TRUE(helper);
   auto encoded_data = helper->EncodeData("Mail", data_dict);
   ASSERT_TRUE(encoded_data);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(encoded_data->first)),
+  EXPECT_EQ(base::HexEncodeLower(encoded_data->first),
             "dd57d9596af52b430ced3d5b52d4e3d5dccfdf3e0572db1dcf526baad311fbd1fc"
             "71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c86447"
             "52e282fcf7fda2a1198d94a0fdc47c09b694e927a40403469fa89f10bbda2b6bac"
@@ -405,7 +405,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("string[]", list);
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "817f9cf412e48771da9077a54e99b92c920c5a08b06477d97fcc2b64ad9eea8f");
   }
   // not string
@@ -415,7 +415,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("string", base::Value("brave"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "e3e90daa6a58ae029a7000d6cc00698775d4b20492e71d5126fada73256f0f26");
   }
 
@@ -427,31 +427,31 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         helper->EncodeField("bytes", base::Value("0x12345678"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "30ca65d5da355227c97ff836c9c6719af9d3835fc6bc72bddc50eeecc1bb2b25");
 
     // 0x00, 0x0 are handled the same
     encoded_field = helper->EncodeField("bytes", base::Value("0x00"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "bc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a");
     encoded_field = helper->EncodeField("bytes", base::Value("0x0"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "bc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a");
 
     // Empty return
     encoded_field = helper->EncodeField("bytes", base::Value("0x"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
     encoded_field = helper->EncodeField("bytes", base::Value(""));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
   }
 
@@ -461,12 +461,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("bool", base::Value(false));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("bool", base::Value(true));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000001");
   }
 
@@ -482,7 +482,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         "address", base::Value("0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "000000000000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
   }
 
@@ -500,12 +500,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         helper->EncodeField("bytes5", base::Value("0xdeadbeef"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "deadbeef00000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("bytes18", base::Value("0xdeadbeef"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "deadbeef00000000000000000000000000000000000000000000000000000000");
 
     // "0x" is treated as empty, for some reason MM doesn't allow empty here
@@ -513,7 +513,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     encoded_field = helper->EncodeField("bytes18", base::Value("0x"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
@@ -532,24 +532,24 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("uint8", base::Value(255));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "00000000000000000000000000000000000000000000000000000000000000ff");
     encoded_field = helper->EncodeField("uint32", base::Value(4096));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
 
     encoded_field = helper->EncodeField("uint56", base::Value(4096));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
 
     encoded_field = helper->EncodeField("uint256", base::Value(65536));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000010000");
   }
 
@@ -558,22 +558,22 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("uint8", base::Value("255"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "00000000000000000000000000000000000000000000000000000000000000ff");
     encoded_field = helper->EncodeField("uint32", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("uint56", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("uint256", base::Value("65536"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000010000");
     // max uint256 in decimal format
     encoded_field = helper->EncodeField(
@@ -581,7 +581,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                                "5640564039457584007913129639935"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
     // max uint256 in hex format
     encoded_field = helper->EncodeField(
@@ -589,7 +589,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                                "FFFFFFFFFFFFFFFFFFF"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
     // overflow
     EXPECT_FALSE(helper->EncodeField("uint8", base::Value("256")));
@@ -619,22 +619,22 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     encoded_field = helper->EncodeField("uint32", base::Value("0x"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("uint32", base::Value("0"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("uint32", base::Value(0));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("uint32", base::Value(""));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
@@ -653,17 +653,17 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("int8", base::Value(127));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "000000000000000000000000000000000000000000000000000000000000007f");
     encoded_field = helper->EncodeField("int32", base::Value(4096));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("int256", base::Value(65536));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000010000");
 
     // max int256 in decimal format
@@ -672,7 +672,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                               "20282019728792003956564819967"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
     // max int256 in hex format
     encoded_field = helper->EncodeField(
@@ -680,7 +680,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                               "FFFFFFFFFFFFFFFFFF"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
     // min int256 in decimal format
     encoded_field = helper->EncodeField(
@@ -688,7 +688,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                               "820282019728792003956564819968"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "8000000000000000000000000000000000000000000000000000000000000000");
     // min int256 in hex format
     encoded_field = helper->EncodeField(
@@ -696,7 +696,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                               "000000000000000000"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "8000000000000000000000000000000000000000000000000000000000000000");
 
     // overflow
@@ -739,22 +739,22 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     encoded_field = helper->EncodeField("int32", base::Value("0x"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("int32", base::Value("0"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("int32", base::Value(0));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
     encoded_field = helper->EncodeField("int32", base::Value(""));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
@@ -763,22 +763,22 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     auto encoded_field = helper->EncodeField("int8", base::Value("127"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "000000000000000000000000000000000000000000000000000000000000007f");
     encoded_field = helper->EncodeField("int32", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("int56", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000001000");
     encoded_field = helper->EncodeField("int256", base::Value("65536"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
-        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        base::HexEncodeLower(*encoded_field),
         "0000000000000000000000000000000000000000000000000000000000010000");
   }
   {  // custom type but not dictionary
@@ -831,16 +831,16 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
   ASSERT_TRUE(ds_hash);
   auto domain_hash = helper->GetTypedDataDomainHash(ds_value.GetDict());
   ASSERT_TRUE(domain_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(domain_hash->first)),
+  EXPECT_EQ(base::HexEncodeLower(domain_hash->first),
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
   auto primary_hash =
       helper->GetTypedDataPrimaryHash("Mail", data_value.GetDict());
   ASSERT_TRUE(primary_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash->first)),
+  EXPECT_EQ(base::HexEncodeLower(primary_hash->first),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto message_to_sign = helper->GetTypedDataMessageToSign(domain_hash->first,
                                                            primary_hash->first);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
+  EXPECT_EQ(base::HexEncodeLower(message_to_sign),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
 }
 
