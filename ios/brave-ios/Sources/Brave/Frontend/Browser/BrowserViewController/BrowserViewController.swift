@@ -1322,6 +1322,7 @@ public class BrowserViewController: UIViewController {
         var activeKeyboardHeight: CGFloat = 0
         var searchEngineSettingsDismissed = false
         var clearRecentSearchAlertDismissed = false
+        var systemUndoTypingAlertDismissed = false
 
         if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
           activeKeyboardHeight = keyboardHeight
@@ -1336,19 +1337,29 @@ public class BrowserViewController: UIViewController {
         }
 
         if let alertController = presentedViewController
-          as? UIAlertController,
-          alertController.preferredStyle == .actionSheet,
-          let action = alertController.actions.first,
-          action.title == Strings.recentSearchClearAlertButton
+          as? UIAlertController
         {
-          clearRecentSearchAlertDismissed = true
+          if alertController.preferredStyle == .actionSheet,
+            let action = alertController.actions.first,
+            action.title == Strings.recentSearchClearAlertButton
+          {
+            clearRecentSearchAlertDismissed = true
+          } else if alertController.preferredStyle == .alert,
+            let cancelAction = alertController.actions.first,
+            let undoAction = alertController.actions.last,
+            cancelAction.style == .cancel,
+            undoAction.style == .default
+          {
+            systemUndoTypingAlertDismissed = true
+          }
         }
 
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
-            || clearRecentSearchAlertDismissed)
+            || clearRecentSearchAlertDismissed
+            || systemUndoTypingAlertDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
