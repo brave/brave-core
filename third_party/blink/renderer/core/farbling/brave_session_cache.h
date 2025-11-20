@@ -30,7 +30,6 @@ using blink::DOMWindow;
 using blink::ExecutionContext;
 using blink::GarbageCollected;
 using blink::MakeGarbageCollected;
-using blink::Supplement;
 
 enum FarbleKey : uint64_t {
   kNone,
@@ -70,11 +69,8 @@ CORE_EXPORT int FarbledPointerScreenCoordinate(const DOMWindow* view,
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
-      public Supplement<ExecutionContext> {
+      public blink::GarbageCollectedMixin {
  public:
-  static constexpr auto kSupplementIndex =
-      ExecutionContext::Supplements::kBraveSessionCache;
-
   explicit BraveSessionCache(ExecutionContext&);
   ~BraveSessionCache() = default;
 
@@ -100,6 +96,7 @@ class CORE_EXPORT BraveSessionCache final
  private:
   void PerturbPixelsInternal(base::span<uint8_t> data);
 
+  blink::Member<blink::ExecutionContext> execution_context_;
   blink::HashMap<FarbleKey, int> farbled_integers_;
   brave_shields::mojom::ShieldsSettingsPtr default_shields_settings_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
