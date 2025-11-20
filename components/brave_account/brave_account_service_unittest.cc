@@ -17,6 +17,8 @@
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_service_test.h"
+#include "brave/components/brave_account/endpoints/login_finalize.h"
+#include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/endpoints/verify_result.h"
@@ -28,6 +30,8 @@
 
 namespace brave_account {
 
+using endpoints::LoginFinalize;
+using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::VerifyResult;
@@ -1096,5 +1100,724 @@ INSTANTIATE_TEST_SUITE_P(BraveAccountServiceTests,
                          testing::Values(LogOutAuthenticationTokenEmpty(),
                                          LogOutAuthenticationTokenNonEmpty()),
                          BraveAccountServiceLogOutTest::kNameGenerator);
+
+struct LoginInitializeTestCase {
+  using Endpoint = LoginInit;
+  using EndpointResponse = Endpoint::Response;
+  using MojoExpected =
+      base::expected<mojom::LoginInitializeResultPtr, mojom::LoginErrorPtr>;
+
+  static void Run(const LoginInitializeTestCase& test_case,
+                  mojom::Authentication& authentication,
+                  base::OnceCallback<void(MojoExpected)> callback) {
+    authentication.LoginInitialize(test_case.email, test_case.serialized_ke1,
+                                   std::move(callback));
+  }
+
+  std::string test_name;
+  std::string email;
+  std::string serialized_ke1;
+  bool fail_encryption;
+  bool fail_decryption;
+  std::optional<EndpointResponse> endpoint_response;
+  MojoExpected mojo_expected;
+};
+
+namespace {
+
+const LoginInitializeTestCase* LoginInitializeEmailEmpty() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeEmailEmpty({
+          .test_name = "login_initialize_email_empty",
+          .email = "",
+          .serialized_ke1 = {},     // not used
+          .fail_encryption = {},    // not used
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::LoginError::New()),
+      });
+  return kLoginInitializeEmailEmpty.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeSerializedKe1Empty() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeSerializedKe1Empty({
+          .test_name = "login_initialize_serialized_ke1_empty",
+          .email = "email",
+          .serialized_ke1 = "",
+          .fail_encryption = {},    // not used
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::LoginError::New()),
+      });
+  return kLoginInitializeSerializedKe1Empty.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeBodyMissingOrFailedToParse({
+          .test_name = "login_initialize_body_missing_or_failed_to_parse",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kLoginInitializeBodyMissingOrFailedToParse.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeErrorCodeIsNull() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeErrorCodeIsNull({
+          .test_name = "login_initialize_error_code_is_null",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+      });
+  return kLoginInitializeErrorCodeIsNull.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeEmailNotVerified() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeEmailNotVerified({
+          .test_name = "login_initialize_email_not_verified",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(11003);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_UNAUTHORIZED,
+                                     mojom::LoginErrorCode::kEmailNotVerified)),
+      });
+  return kLoginInitializeEmailNotVerified.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeIncorrectCredentials() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeIncorrectCredentials({
+          .test_name = "login_initialize_incorrect_credentials",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(14004);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kIncorrectCredentials)),
+      });
+  return kLoginInitializeIncorrectCredentials.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeIncorrectEmail() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeIncorrectEmail({
+          .test_name = "login_initialize_incorrect_email",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(14005);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+      });
+  return kLoginInitializeIncorrectEmail.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeIncorrectPassword() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeIncorrectPassword({
+          .test_name = "login_initialize_incorrect_password",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(14006);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kIncorrectPassword)),
+      });
+  return kLoginInitializeIncorrectPassword.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeServerError() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeServerError({
+          .test_name = "login_initialize_server_error",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
+                                     mojom::LoginErrorCode::kMiscServerError)),
+      });
+  return kLoginInitializeServerError.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeUnknown() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeUnknown({
+          .test_name = "login_initialize_unknown",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_TOO_EARLY,
+                                 .body = base::unexpected([] {
+                                   LoginInit::Response::ErrorBody body;
+                                   body.code = base::Value(42);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+      });
+  return kLoginInitializeUnknown.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeLoginTokenEmpty() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeLoginTokenEmpty({
+          .test_name = "login_initialize_login_token_empty",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginInit::Response::SuccessBody body;
+                                       body.login_token = "";
+                                       body.serialized_ke2 = "serialized_ke2";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kLoginInitializeLoginTokenEmpty.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeSerializedKe2Empty({
+          .test_name = "login_initialize_serialized_ke2_empty",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = {},  // not used
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginInit::Response::SuccessBody body;
+                                       body.login_token = "login_token";
+                                       body.serialized_ke2 = "";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kLoginInitializeSerializedKe2Empty.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeLoginTokenFailedToEncrypt({
+          .test_name = "login_initialize_login_token_failed_to_encrypt",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = true,
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginInit::Response::SuccessBody body;
+                                       body.login_token = "login_token";
+                                       body.serialized_ke2 = "serialized_ke2";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              std::nullopt,
+              mojom::LoginErrorCode::kLoginTokenEncryptionFailed)),
+      });
+  return kLoginInitializeLoginTokenFailedToEncrypt.get();
+}
+
+const LoginInitializeTestCase* LoginInitializeSuccess() {
+  static const base::NoDestructor<LoginInitializeTestCase>
+      kLoginInitializeSuccess({
+          .test_name = "login_initialize_success",
+          .email = "email",
+          .serialized_ke1 = "serialized_ke1",
+          .fail_encryption = false,
+          .fail_decryption = {},  // not used
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginInit::Response::SuccessBody body;
+                                       body.login_token = "login_token";
+                                       body.serialized_ke2 = "serialized_ke2";
+                                       return body;
+                                     }()}},
+          .mojo_expected = mojom::LoginInitializeResult::New(
+              base::Base64Encode("login_token"), "serialized_ke2"),
+      });
+  return kLoginInitializeSuccess.get();
+}
+
+using BraveAccountServiceLoginInitializeTest =
+    BraveAccountServiceTest<LoginInitializeTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceLoginInitializeTest,
+       MapsEndpointExpectedToMojoExpected) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceLoginInitializeTest,
+    testing::Values(LoginInitializeEmailEmpty(),
+                    LoginInitializeSerializedKe1Empty(),
+                    LoginInitializeBodyMissingOrFailedToParse(),
+                    LoginInitializeErrorCodeIsNull(),
+                    LoginInitializeEmailNotVerified(),
+                    LoginInitializeIncorrectCredentials(),
+                    LoginInitializeIncorrectEmail(),
+                    LoginInitializeIncorrectPassword(),
+                    LoginInitializeServerError(),
+                    LoginInitializeUnknown(),
+                    LoginInitializeLoginTokenEmpty(),
+                    LoginInitializeSerializedKe2Empty(),
+                    LoginInitializeLoginTokenFailedToEncrypt(),
+                    LoginInitializeSuccess()),
+    BraveAccountServiceLoginInitializeTest::kNameGenerator);
+
+struct LoginFinalizeTestCase {
+  using Endpoint = LoginFinalize;
+  using EndpointResponse = Endpoint::Response;
+  using MojoExpected =
+      base::expected<mojom::LoginFinalizeResultPtr, mojom::LoginErrorPtr>;
+
+  static void Run(const LoginFinalizeTestCase& test_case,
+                  mojom::Authentication& authentication,
+                  base::OnceCallback<void(MojoExpected)> callback) {
+    authentication.LoginFinalize(test_case.encrypted_login_token,
+                                 test_case.client_mac, std::move(callback));
+  }
+
+  std::string test_name;
+  std::string encrypted_login_token;
+  std::string client_mac;
+  bool fail_encryption;
+  bool fail_decryption;
+  std::optional<EndpointResponse> endpoint_response;
+  MojoExpected mojo_expected;
+};
+
+namespace {
+
+const LoginFinalizeTestCase* LoginFinalizeEncryptedLoginTokenEmpty() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeEncryptedLoginTokenEmpty({
+          .test_name = "login_finalize_encrypted_login_token_empty",
+          .encrypted_login_token = "",
+          .client_mac = {},         // not used
+          .fail_encryption = {},    // not used
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::LoginError::New()),
+      });
+  return kLoginFinalizeEncryptedLoginTokenEmpty.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeClientMacEmpty() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeClientMacEmpty({
+          .test_name = "login_finalize_client_mac_empty",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "",
+          .fail_encryption = {},    // not used
+          .fail_decryption = {},    // not used
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::LoginError::New()),
+      });
+  return kLoginFinalizeClientMacEmpty.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeLoginTokenFailedToDecrypt({
+          .test_name = "login_finalize_login_token_failed_to_decrypt",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = true,
+          .endpoint_response = {},  // not used
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              std::nullopt,
+              mojom::LoginErrorCode::kLoginTokenDecryptionFailed)),
+      });
+  return kLoginFinalizeLoginTokenFailedToDecrypt.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeBodyMissingOrFailedToParse() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeBodyMissingOrFailedToParse({
+          .test_name = "login_finalize_body_missing_or_failed_to_parse",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kLoginFinalizeBodyMissingOrFailedToParse.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeErrorCodeIsNull() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeErrorCodeIsNull({
+          .test_name = "login_finalize_error_code_is_null",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+      });
+  return kLoginFinalizeErrorCodeIsNull.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateMismatch() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeInterimPasswordStateMismatch({
+          .test_name = "login_finalize_interim_password_state_mismatch",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14009);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::LoginErrorCode::kInterimPasswordStateMismatch)),
+      });
+  return kLoginFinalizeInterimPasswordStateMismatch.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateNotFound() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeInterimPasswordStateNotFound({
+          .test_name = "login_finalize_interim_password_state_not_found",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14001);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kInterimPasswordStateNotFound)),
+      });
+  return kLoginFinalizeInterimPasswordStateNotFound.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateHasExpired() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeInterimPasswordStateHasExpired({
+          .test_name = "login_finalize_interim_password_state_has_expired",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14002);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kInterimPasswordStateHasExpired)),
+      });
+  return kLoginFinalizeInterimPasswordStateHasExpired.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeIncorrectCredentials() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeIncorrectCredentials({
+          .test_name = "login_finalize_incorrect_credentials",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14004);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kIncorrectCredentials)),
+      });
+  return kLoginFinalizeIncorrectCredentials.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeIncorrectEmail() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeIncorrectEmail({
+          .test_name = "login_finalize_incorrect_email",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14005);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+      });
+  return kLoginFinalizeIncorrectEmail.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeIncorrectPassword() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeIncorrectPassword({
+          .test_name = "login_finalize_incorrect_password",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14006);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              net::HTTP_UNAUTHORIZED,
+              mojom::LoginErrorCode::kIncorrectPassword)),
+      });
+  return kLoginFinalizeIncorrectPassword.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeServerError() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeServerError({
+          .test_name = "login_finalize_server_error",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   LoginFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
+                                 }())}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
+                                     mojom::LoginErrorCode::kMiscServerError)),
+      });
+  return kLoginFinalizeServerError.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeUnknown() {
+  static const base::NoDestructor<LoginFinalizeTestCase> kLoginFinalizeUnknown({
+      .test_name = "login_finalize_unknown",
+      .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+      .client_mac = "client_mac",
+      .fail_encryption = {},  // not used
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_TOO_EARLY,
+                             .body = base::unexpected([] {
+                               LoginFinalize::Response::ErrorBody body;
+                               body.code = base::Value(42);
+                               return body;
+                             }())}},
+      .mojo_expected = base::unexpected(
+          mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+  });
+  return kLoginFinalizeUnknown.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeAuthTokenEmpty() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeAuthTokenEmpty({
+          .test_name = "login_finalize_auth_token_empty",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = {},  // not used
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginFinalize::Response::SuccessBody
+                                           body;
+                                       body.auth_token = "";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+      });
+  return kLoginFinalizeAuthTokenEmpty.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
+  static const base::NoDestructor<LoginFinalizeTestCase>
+      kLoginFinalizeAuthenticationTokenFailedToEncrypt({
+          .test_name = "login_finalize_authentication_token_failed_to_encrypt",
+          .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+          .client_mac = "client_mac",
+          .fail_encryption = true,
+          .fail_decryption = false,
+          .endpoint_response = {{.net_error = net::OK,
+                                 .status_code = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       LoginFinalize::Response::SuccessBody
+                                           body;
+                                       body.auth_token = "auth_token";
+                                       return body;
+                                     }()}},
+          .mojo_expected = base::unexpected(mojom::LoginError::New(
+              std::nullopt,
+              mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed)),
+      });
+  return kLoginFinalizeAuthenticationTokenFailedToEncrypt.get();
+}
+
+const LoginFinalizeTestCase* LoginFinalizeSuccess() {
+  static const base::NoDestructor<LoginFinalizeTestCase> kLoginFinalizeSuccess({
+      .test_name = "login_finalize_success",
+      .encrypted_login_token = base::Base64Encode("encrypted_login_token"),
+      .client_mac = "client_mac",
+      .fail_encryption = false,
+      .fail_decryption = false,
+      .endpoint_response = {{.net_error = net::OK,
+                             .status_code = net::HTTP_OK,
+                             .body =
+                                 [] {
+                                   LoginFinalize::Response::SuccessBody body;
+                                   body.auth_token = "auth_token";
+                                   return body;
+                                 }()}},
+      .mojo_expected = mojom::LoginFinalizeResult::New(),
+  });
+  return kLoginFinalizeSuccess.get();
+}
+
+using BraveAccountServiceLoginFinalizeTest =
+    BraveAccountServiceTest<LoginFinalizeTestCase>;
+
+}  // namespace
+
+TEST_P(BraveAccountServiceLoginFinalizeTest,
+       MapsEndpointExpectedToMojoExpected) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    BraveAccountServiceLoginFinalizeTest,
+    testing::Values(LoginFinalizeEncryptedLoginTokenEmpty(),
+                    LoginFinalizeClientMacEmpty(),
+                    LoginFinalizeLoginTokenFailedToDecrypt(),
+                    LoginFinalizeBodyMissingOrFailedToParse(),
+                    LoginFinalizeErrorCodeIsNull(),
+                    LoginFinalizeInterimPasswordStateMismatch(),
+                    LoginFinalizeInterimPasswordStateNotFound(),
+                    LoginFinalizeInterimPasswordStateHasExpired(),
+                    LoginFinalizeIncorrectCredentials(),
+                    LoginFinalizeIncorrectEmail(),
+                    LoginFinalizeIncorrectPassword(),
+                    LoginFinalizeServerError(),
+                    LoginFinalizeUnknown(),
+                    LoginFinalizeAuthTokenEmpty(),
+                    LoginFinalizeAuthenticationTokenFailedToEncrypt(),
+                    LoginFinalizeSuccess()),
+    BraveAccountServiceLoginFinalizeTest::kNameGenerator);
 
 }  // namespace brave_account

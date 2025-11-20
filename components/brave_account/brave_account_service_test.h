@@ -33,11 +33,13 @@
 
 namespace brave_account {
 
-struct RegisterInitializeTestCase;
-struct RegisterFinalizeTestCase;
-struct VerifyResultTestCase;
 struct CancelRegistrationTestCase;
+struct LoginFinalizeTestCase;
+struct LoginInitializeTestCase;
 struct LogOutTestCase;
+struct RegisterFinalizeTestCase;
+struct RegisterInitializeTestCase;
+struct VerifyResultTestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -85,7 +87,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     }
 
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
-                  std::is_same_v<TestCase, RegisterFinalizeTestCase>) {
+                  std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
+                  std::is_same_v<TestCase, LoginInitializeTestCase> ||
+                  std::is_same_v<TestCase, LoginFinalizeTestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
       TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
                     future.GetCallback());
