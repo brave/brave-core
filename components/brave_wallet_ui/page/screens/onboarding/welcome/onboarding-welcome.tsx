@@ -23,6 +23,13 @@ import { WelcomeAction } from '../components/welcome_action/welcome_action'
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
+// Page API Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+
+// Selectors
+import { UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+
 // styles
 import * as leo from '@brave/leo/tokens/css/variables'
 import { Row, VerticalSpace } from '../../../../components/shared/style'
@@ -38,15 +45,6 @@ import {
   SubHeading,
 } from './onboarding-welcome.style'
 
-const walletIcons = [
-  'brave-icon-release-color',
-  'phantom-color',
-  'metamask-color',
-  'coinbase-color',
-  'trezor-color',
-  'wallet-ledger',
-]
-
 export const OnboardingWelcome = () => {
   // routing
   const history = useHistory()
@@ -55,8 +53,27 @@ export const OnboardingWelcome = () => {
   const dispatch = useDispatch()
   const setupStillInProgress = useSelector(PageSelectors.setupStillInProgress)
 
+  // selectors
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+
   // mutations
   const [report] = useReportOnboardingActionMutation()
+
+  const walletIcons = isMobile
+    ? [
+        'brave-icon-release-color',
+        'phantom-color',
+        'metamask-color',
+        'coinbase-color',
+      ]
+    : [
+        'brave-icon-release-color',
+        'phantom-color',
+        'metamask-color',
+        'coinbase-color',
+        'trezor-color',
+        'wallet-ledger',
+      ]
 
   // effects
   React.useEffect(() => {
@@ -88,9 +105,13 @@ export const OnboardingWelcome = () => {
               title={getLocale('braveWalletWelcomeNewWalletTitle')}
               description={getLocale('braveWalletWelcomeNewWalletDescription')}
               iconName='plus-add'
-              onSelect={() =>
-                history.push(WalletRoutes.OnboardingNewWalletTerms)
-              }
+              onSelect={() => {
+                if (isMobile) {
+                  getWalletPageApiProxy().pageHandler.showOnboarding(true)
+                } else {
+                  history.push(WalletRoutes.OnboardingNewWalletTerms)
+                }
+              }}
             />
 
             <WelcomeAction
@@ -100,9 +121,13 @@ export const OnboardingWelcome = () => {
               )}
               iconName='import-arrow'
               walletIcons={walletIcons}
-              onSelect={() =>
-                history.push(WalletRoutes.OnboardingImportSelectWalletType)
-              }
+              onSelect={() => {
+                if (isMobile) {
+                  getWalletPageApiProxy().pageHandler.showOnboarding(false)
+                } else {
+                  history.push(WalletRoutes.OnboardingImportSelectWalletType)
+                }
+              }}
             />
           </ActionsContainer>
           <VerticalSpace space='96px' />

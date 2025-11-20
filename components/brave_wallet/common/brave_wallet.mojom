@@ -455,11 +455,17 @@ interface PageHandler {
   // Used by the brave://wallet page to open up the approval panel
   ShowApprovePanelUI();
 
-  // Android only - Used by the brave://wallet page to open up the backup UI.
+  // Mobile only - Used by the brave://wallet page to open up the backup UI.
   ShowWalletBackupUI();
 
-  // Android only - Used by the brave://wallet page to open up the unlock UI.
+  // Mobile only - Used by the brave://wallet page to open up the unlock UI.
   UnlockWalletUI();
+
+  // Mobile only
+  // - Used by iOS Wallet WebUI when the user tap to open onboarding flow.
+  // - Also available for Android and can be implemented once Android
+  // start allowing Wallet WebUI with no wallet created.
+  ShowOnboarding(bool is_new_wallet);
 };
 
 enum AssetPriceTimeframe {

@@ -23,6 +23,9 @@ NS_SWIFT_NAME(WalletPageHandler)
 - (void)showWalletBackupUI;
 /// Handle when the user double taps the lock screen to unlock wallet
 - (void)unlockWalletUI;
+/// Handle when the user taps either create a new wallet or restore wallet to
+/// enter onboarding flow
+- (void)showOnboarding:(BOOL)isNewWallet;
 
 @end
 
