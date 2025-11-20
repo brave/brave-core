@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 
 AndroidWalletPageHandler::AndroidWalletPageHandler(
@@ -34,4 +35,10 @@ void AndroidWalletPageHandler::ShowWalletBackupUI() {
 
 void AndroidWalletPageHandler::UnlockWalletUI() {
   ::brave_wallet::UnlockWallet();
+}
+
+void AndroidWalletPageHandler::ShowOnboarding(bool is_new_wallet) {
+  // Android does not render wallet landing page.
+  // Therefore, users won't be able to start onboarding from WebUI.
+  NOTREACHED();
 }

@@ -39,3 +39,8 @@ void WalletPageHandler::ShowWalletBackupUI() {
 void WalletPageHandler::UnlockWalletUI() {
   NOTREACHED();
 }
+
+void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
+  // iOS/Mobile only
+  NOTREACHED();
+}
