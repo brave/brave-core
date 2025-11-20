@@ -520,7 +520,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_ads_existing_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ads_new_user_dialog_layout.xml",
     "java/brave-res/layout/brave_ask_play_store_rating_dialog.xml",
-    "java/brave-res/layout/brave_autofill_service_item.xml",
     "java/brave-res/layout/brave_bookmark_toolbar.xml",
     "java/brave-res/layout/brave_bottom_new_tab_button.xml",
     "java/brave-res/layout/brave_custom_tabs_toolbar.xml",

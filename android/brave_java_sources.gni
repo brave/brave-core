@@ -61,8 +61,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/Shimmer.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerDrawable.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerFrameLayout.java",
-  "../../brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillBackgroundServiceImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillService.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkImportExportDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator.java",
