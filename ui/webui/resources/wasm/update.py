@@ -24,6 +24,11 @@ PRESERVE_PATTERNS = [
     'vendor/*/README.chromium',
 ]
 
+CLEANUP_PATTERNS = [
+    'vendor/**/*.o',
+    'vendor/**/*.dll',
+]
+
 
 def back_up_files(patterns):
     backed_up_files = {}
@@ -41,6 +46,13 @@ def restore_files(backed_up_files):
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, 'w', encoding='utf-8', newline='\n') as f:
             f.write(content)
+
+
+def clean_up_files(patterns):
+    for pattern in patterns:
+        for path in Path().glob(pattern):
+            print(f'Removing: {path}')
+            path.unlink()
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
@@ -77,6 +89,7 @@ def main():
             toml.dump(CONFIG_TOML, f)
 
     restore_files(backed_up_files)
+    clean_up_files(CLEANUP_PATTERNS)
 
 
 if __name__ == '__main__':
