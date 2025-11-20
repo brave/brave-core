@@ -66,7 +66,9 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels)) {
+  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
+      base::FeatureList::IsEnabled(
+          local_ai::features::kBraveHistoryEmbeddings)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<local_ai::UntrustedCandleEmbeddingGemmaUIConfig>());
   }

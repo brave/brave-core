@@ -202,7 +202,9 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
+  if (!(base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
+        base::FeatureList::IsEnabled(
+            local_ai::features::kBraveHistoryEmbeddings)) ||
       !cus) {
     DeleteComponentDirectory();
     return;
