@@ -24,6 +24,9 @@
   </head>
   <body>
     <h1>Local AI Internals</h1>
+    <div class="info" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+      <p><strong>⚠️ Developer Feature:</strong> This feature is intended for developers. See <a href="https://github.com/brave/brave-core/pull/32261" target="_blank">brave-core#32261</a> for more details.</p>
+    </div>
     <div class="info">
       <p><strong>Architecture:</strong></p>
       <ul>
@@ -33,7 +36,8 @@
         chrome-untrusted://candle-embedding-gemma-wasm</li>
       </ul>
       <p>The Candle WASM modules run in isolated untrusted contexts for
-      security.</p>
+      security because we might provide untrusted content as input to WASM.
+      ex. passages of page contents to be embedded</p>
       <p><strong>Check the console for logs from both contexts.</strong></p>
     </div>
 
