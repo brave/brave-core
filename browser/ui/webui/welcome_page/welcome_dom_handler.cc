@@ -69,10 +69,6 @@ bool IsChromeDev(const std::u16string& browser_name) {
 }
 
 bool ShouldRedirectToGettingStartedPage() {
-  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment) &&
-      features::kBraveDayZeroExperimentVariant.Get() == "c") {
-    return true;
-  }
   return base::FeatureList::IsEnabled(
       brave_education::features::kShowGettingStartedPage);
 }
