@@ -9,6 +9,7 @@
 
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/logging.h"
 
 namespace brave::private_cdn {
 
@@ -16,6 +17,7 @@ bool RemovePadding(std::string_view* padded_string) {
   if (!padded_string) {
     return false;
   }
+  LOG(INFO) << "###RemovePadding try: " << padded_string->size();
 
   if (padded_string->size() < sizeof(uint32_t)) {
     return false;  // Missing length field
@@ -33,6 +35,7 @@ bool RemovePadding(std::string_view* padded_string) {
 
   // Remove padding.
   padded_string->remove_suffix(padded_string->size() - data_length);
+  LOG(INFO) << "###RemovePadding done: " << padded_string->size();
   return true;
 }
 

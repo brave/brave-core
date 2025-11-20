@@ -163,7 +163,7 @@ public class FeedDataSource: ObservableObject {
   /// Updating the environment automatically clears the current cached items if any exist.
   ///
   /// - warning: Should only be changed in non-public releases
-  public var environment: Environment = .production {
+  public var environment: Environment = .staging {
     didSet {
       if oldValue == environment { return }
       Preferences.BraveNews.debugEnvironment.value = environment.rawValue
@@ -363,6 +363,13 @@ public class FeedDataSource: ObservableObject {
     localeIdentifier: String? = nil,
     decodedTo: DataType.Type
   ) async throws -> DataType where DataType: Decodable {
+    // LOGGING: URLs used for Brave News feed JSON (not topics_news)
+    if resource.name == "feed" {
+      let filename = resourceFilename(for: resource, localeIdentifier: localeIdentifier)
+      if let url = self.resourceUrl(for: resource.bucket)?.appendingPathComponent(filename) {
+        print("🔍 BRAVE NEWS FEED: Loading feed JSON from URL: \(url.absoluteString)")
+      }
+    }
     assert(!resource.isLocalized || localeIdentifier != nil)
     func data(for resource: NewsResource) async throws -> Data {
       if let cachedData = await cachedResource(resource, localeIdentifier: localeIdentifier) {

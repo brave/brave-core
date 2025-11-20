@@ -102,6 +102,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--brave-services-env=staging"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-BREnableScreenTimeByDefault NO"
             isEnabled = "NO">
          </CommandLineArgument>

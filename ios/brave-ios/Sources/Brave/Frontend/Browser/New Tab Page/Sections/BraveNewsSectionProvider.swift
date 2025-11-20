@@ -587,8 +587,14 @@ extension FeedItemView {
       thumbnailImageView.isHidden = true
     } else {
       thumbnailImageView.isHidden = false
+
+      var url = URL(string: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 18 18'%3E%3Cpath fill='%23000' d='M7.223 11.831c.489.36 1.032.646 1.614.845l.616-1.798a4.1 4.1 0 1 1 4.04-.803l1.256 1.426a6 6 0 0 0 1.41-7.161 6 6 0 1 0-8.936 7.491'/%3E%3Cpath fill='%23000' d='M10.646 6.235A6 6 0 0 0 9.05 5.36l-.65 1.786a4.1 4.1 0 1 1-4.053.729l-1.23-1.449a6 6 0 1 0 7.53-.192'/%3E%3C/svg%3E")
+      if feedItem.content.imageURL!.absoluteString.contains(".pad") {
+        url = feedItem.content.imageURL!
+        print("🖼️ BRAVE NEWS: Loading image from URL: \(feedItem.content.imageURL!.absoluteString)")
+      }
       thumbnailImageView.sd_setImage(
-        with: feedItem.content.imageURL,
+        with: url,
         placeholderImage: nil,
         options: .avoidAutoSetImage,
         completed: { (image, _, cacheType, _) in

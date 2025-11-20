@@ -3,10 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
+import Shared
 import CodableHelpers
 import Foundation
 import OrderedCollections
 import UIKit
+import OSLog
 
 /// Handles fetching Brave News Topics for widgets
 struct NewsTopicsModel {
@@ -38,9 +41,12 @@ extension NewsTopicsModel {
           // At the moment there is only english US topics
           let url = URL(
             string:
-              "https://brave-today-cdn.brave.com/news-topic-clustering/widget_topic_news.\(targetLocale.identifier).json"
+              "https://brave-today-cdn.bravesoftware.com/news-topic-clustering/widget_topic_news.\(targetLocale.identifier).json"
           )!
           let session = URLSession(configuration: .default)
+          let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-news")
+
+          logger.info("###Fetching news topics for locale \(targetLocale.identifier): \(url)")
           let (data, _) = try await session.data(for: URLRequest(url: url))
 
           let topics = Dictionary(
@@ -78,15 +84,19 @@ extension NewsTopicsModel {
               return queue
             }()
           )
+          let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-news")
+
           for topic in topics {
             guard let imageURL = topic.imageURL else { continue }
             group.addTask {
               do {
                 let request = URLRequest(url: imageURL, timeoutInterval: 10)
+                logger.info("###Fetching image thumbnail for topic \(topic.id): \(imageURL)")
                 let (data, _) = try await session.data(for: request)
                 let image = await UIImage(data: data)?.byPreparingThumbnail(ofSize: thumbnailSize)
                 return (topic.id, image)
               } catch {
+                logger.error("Error fetching image thumbnail for topic \(topic.id): \(error), url: \(imageURL)")
                 return (topic.id, nil)
               }
             }

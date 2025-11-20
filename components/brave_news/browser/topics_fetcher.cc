@@ -96,6 +96,9 @@ void TopicsFetcher::GetTopics(const std::string& locale,
 void TopicsFetcher::FetchTopics(FetchState state) {
   GURL url(base::StrCat({"https://", brave_news::GetHostname(), kTopicsEndpoint,
                          ".", state.locale, ".json"}));
+  LOG(INFO) << "###Fetching topics for locale " << state.locale << ": " << url.spec();
+  // LOGGING: URLs used for topics JSON
+  LOG(INFO) << "🔍 BRAVE NEWS TOPICS: Loading topics JSON from URL: " << url.spec();
   api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(
@@ -122,6 +125,9 @@ void TopicsFetcher::OnFetchedTopics(
 void TopicsFetcher::FetchTopicArticles(FetchState state) {
   GURL url(base::StrCat({"https://", brave_news::GetHostname(),
                          kTopicArticlesEndpoint, ".", state.locale, ".json"}));
+  LOG(INFO) << "###Fetching topic articles for locale " << state.locale << ": " << url.spec();
+  // LOGGING: URLs used for topics_news JSON (topic articles)
+  LOG(INFO) << "🔍 BRAVE NEWS TOPICS: Loading topics_news JSON from URL: " << url.spec();
   api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(

@@ -12,7 +12,7 @@
 namespace brave_news {
 
 std::string GetHostname() {
-  return brave_domains::GetServicesDomain("brave-today-cdn");
+  return brave_domains::GetServicesDomain("brave-today-cdn", brave_domains::ServicesEnvironment::STAGING);
 }
 
 }  // namespace brave_news
