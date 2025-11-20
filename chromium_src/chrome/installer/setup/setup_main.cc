@@ -122,5 +122,6 @@ void SavePromoCode(installer::InstallStatus install_status) {
 #include <chrome/installer/setup/setup_main.cc>
 
 #undef UpdateInstallStatus
+#undef BRAVE_UPDATE_INSTALL_STATUS
 #undef BRAVE_HANDLE_NON_INSTALL_CMD_LINE_OPTIONS
 #undef DoLegacyCleanups

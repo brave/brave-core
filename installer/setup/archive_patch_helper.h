@@ -7,8 +7,8 @@
 // Brave to support delta updates on Windows until we are on Omaha 4. See:
 // github.com/brave/brave-core/pull/31937
 
-#ifndef CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
-#define CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
+#ifndef BRAVE_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
+#define BRAVE_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
 
 #include "base/files/file_path.h"
 #include "chrome/installer/setup/setup_util.h"
@@ -109,4 +109,4 @@ class ArchivePatchHelper {
 
 }  // namespace installer
 
-#endif  // CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
+#endif  // BRAVE_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
