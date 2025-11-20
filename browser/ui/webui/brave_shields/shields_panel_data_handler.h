@@ -42,10 +42,11 @@ class ShieldsPanelDataHandler
                              ui_handler_receiver) override;
   void GetSiteBlockInfo(GetSiteBlockInfoCallback callback) override;
   void GetSiteSettings(GetSiteSettingsCallback callback) override;
-  void SetAdBlockMode(AdBlockMode callback) override;
-  void SetFingerprintMode(FingerprintMode mode) override;
-  void SetCookieBlockMode(CookieBlockMode mode) override;
-  void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
+  void SetAdBlockMode(brave_shields::mojom::AdBlockMode callback) override;
+  void SetFingerprintMode(brave_shields::mojom::FingerprintMode mode) override;
+  void SetCookieBlockMode(brave_shields::mojom::CookieBlockMode mode) override;
+  void SetHttpsUpgradeMode(
+      brave_shields::mojom::HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled) override;

@@ -25,12 +25,6 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
-using brave_shields::mojom::AdBlockMode;
-using brave_shields::mojom::CookieBlockMode;
-using brave_shields::mojom::FingerprintMode;
-using brave_shields::mojom::HttpsUpgradeMode;
-using content::NavigationEntry;
-
 namespace brave_shields {
 
 class BraveShieldsSettingsService;
@@ -78,18 +72,18 @@ class BraveShieldsTabHelper
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
-  AdBlockMode GetAdBlockMode();
-  FingerprintMode GetFingerprintMode();
-  CookieBlockMode GetCookieBlockMode();
+  mojom::AdBlockMode GetAdBlockMode();
+  mojom::FingerprintMode GetFingerprintMode();
+  mojom::CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
-  HttpsUpgradeMode GetHttpsUpgradeMode();
+  mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
   bool GetForgetFirstPartyStorageEnabled();
-  void SetAdBlockMode(AdBlockMode mode);
-  void SetFingerprintMode(FingerprintMode mode);
-  void SetCookieBlockMode(CookieBlockMode mode);
-  void SetHttpsUpgradeMode(HttpsUpgradeMode mode);
+  void SetAdBlockMode(mojom::AdBlockMode mode);
+  void SetFingerprintMode(mojom::FingerprintMode mode);
+  void SetCookieBlockMode(mojom::CookieBlockMode mode);
+  void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void AllowScriptsOnce(const std::vector<std::string>& origins);

@@ -337,15 +337,15 @@ GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
   return url;
 }
 
-AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
+mojom::AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
   return brave_shields_settings_->GetAdBlockMode(GetCurrentSiteURL());
 }
 
-FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
+mojom::FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
   return brave_shields_settings_->GetFingerprintMode(GetCurrentSiteURL());
 }
 
-CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
+mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
@@ -354,11 +354,11 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 
   switch (control_type) {
     case ControlType::ALLOW:
-      return CookieBlockMode::ALLOW;
+      return mojom::CookieBlockMode::ALLOW;
     case ControlType::BLOCK_THIRD_PARTY:
-      return CookieBlockMode::CROSS_SITE_BLOCKED;
+      return mojom::CookieBlockMode::CROSS_SITE_BLOCKED;
     case ControlType::BLOCK:
-      return CookieBlockMode::BLOCKED;
+      return mojom::CookieBlockMode::BLOCKED;
     case ControlType::DEFAULT:
       break;
   }
@@ -366,17 +366,17 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
                << base::to_underlying(control_type);
 }
 
-HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
+mojom::HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
       &*host_content_settings_map_, GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
-    return HttpsUpgradeMode::DISABLED_MODE;
+    return mojom::HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {
-    return HttpsUpgradeMode::STRICT_MODE;
+    return mojom::HttpsUpgradeMode::STRICT_MODE;
   } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
-    return HttpsUpgradeMode::STANDARD_MODE;
+    return mojom::HttpsUpgradeMode::STANDARD_MODE;
   } else {
-    return HttpsUpgradeMode::STANDARD_MODE;
+    return mojom::HttpsUpgradeMode::STANDARD_MODE;
   }
 }
 
@@ -395,31 +395,31 @@ bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
       GetCurrentSiteURL());
 }
 
-void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
+void BraveShieldsTabHelper::SetAdBlockMode(mojom::AdBlockMode mode) {
   brave_shields_settings_->SetAdBlockMode(mode, GetCurrentSiteURL());
 
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::SetFingerprintMode(FingerprintMode mode) {
+void BraveShieldsTabHelper::SetFingerprintMode(mojom::FingerprintMode mode) {
   brave_shields_settings_->SetFingerprintMode(mode, GetCurrentSiteURL());
 
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
+void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
   auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
                     ->GetPrefs();
   ControlType control_type = ControlType::BLOCK;
 
   switch (mode) {
-    case CookieBlockMode::ALLOW:
+    case mojom::CookieBlockMode::ALLOW:
       control_type = ControlType::ALLOW;
       break;
-    case CookieBlockMode::CROSS_SITE_BLOCKED:
+    case mojom::CookieBlockMode::CROSS_SITE_BLOCKED:
       control_type = ControlType::BLOCK_THIRD_PARTY;
       break;
-    case CookieBlockMode::BLOCKED:
+    case mojom::CookieBlockMode::BLOCKED:
       control_type = ControlType::BLOCK;
       break;
   }
@@ -431,13 +431,13 @@ void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
   ControlType control_type;
-  if (mode == HttpsUpgradeMode::DISABLED_MODE) {
+  if (mode == mojom::HttpsUpgradeMode::DISABLED_MODE) {
     control_type = ControlType::ALLOW;
-  } else if (mode == HttpsUpgradeMode::STRICT_MODE) {
+  } else if (mode == mojom::HttpsUpgradeMode::STRICT_MODE) {
     control_type = ControlType::BLOCK;
-  } else if (mode == HttpsUpgradeMode::STANDARD_MODE) {
+  } else if (mode == mojom::HttpsUpgradeMode::STANDARD_MODE) {
     control_type = ControlType::BLOCK_THIRD_PARTY;
   } else {
     control_type = ControlType::DEFAULT;

@@ -92,7 +92,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
   std::move(callback).Run(settings.Clone());
 }
 
-void ShieldsPanelDataHandler::SetAdBlockMode(AdBlockMode mode) {
+void ShieldsPanelDataHandler::SetAdBlockMode(
+    brave_shields::mojom::AdBlockMode mode) {
   if (!active_shields_data_controller_) {
     return;
   }
@@ -100,7 +101,8 @@ void ShieldsPanelDataHandler::SetAdBlockMode(AdBlockMode mode) {
   active_shields_data_controller_->SetAdBlockMode(mode);
 }
 
-void ShieldsPanelDataHandler::SetFingerprintMode(FingerprintMode mode) {
+void ShieldsPanelDataHandler::SetFingerprintMode(
+    brave_shields::mojom::FingerprintMode mode) {
   if (!active_shields_data_controller_) {
     return;
   }
@@ -108,7 +110,8 @@ void ShieldsPanelDataHandler::SetFingerprintMode(FingerprintMode mode) {
   active_shields_data_controller_->SetFingerprintMode(mode);
 }
 
-void ShieldsPanelDataHandler::SetCookieBlockMode(CookieBlockMode mode) {
+void ShieldsPanelDataHandler::SetCookieBlockMode(
+    brave_shields::mojom::CookieBlockMode mode) {
   if (!active_shields_data_controller_) {
     return;
   }
@@ -116,7 +119,8 @@ void ShieldsPanelDataHandler::SetCookieBlockMode(CookieBlockMode mode) {
   active_shields_data_controller_->SetCookieBlockMode(mode);
 }
 
-void ShieldsPanelDataHandler::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+void ShieldsPanelDataHandler::SetHttpsUpgradeMode(
+    brave_shields::mojom::HttpsUpgradeMode mode) {
   if (!active_shields_data_controller_) {
     return;
   }
