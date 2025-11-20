@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import static org.chromium.chrome.browser.settings.MainSettings.PREF_UI_THEME;
-
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -26,7 +24,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
@@ -71,10 +68,6 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         }
 
-        if (!NightModeUtils.isNightModeSupported()) {
-            removePreferenceIfPresent(PREF_UI_THEME);
-        }
-
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.isSupported()) {
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
@@ -88,11 +81,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
-        // We have our own Theme preference, so hide the original one.
-        Preference prefUiTheme = findPreference(AppearanceSettingsFragment.PREF_UI_THEME);
-        if (prefUiTheme != null) {
-            prefUiTheme.setVisible(false);
-        }
+        // Correct the order of the preferences.
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
+        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
+        setPreferenceOrder(PREF_ADDRESS_BAR, 2);
     }
 
     private void removePreferenceIfPresent(String key) {
@@ -223,6 +215,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         updatePreferenceIcon(
                 AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
                 R.drawable.ic_browser_customizable_shortcut);
+
+        // Update the UI theme preference icon and clear the summary.
+        updatePreferenceIcon(AppearanceSettingsFragment.PREF_UI_THEME, R.drawable.ic_theme_system);
+        clearPreferenceSummary(AppearanceSettingsFragment.PREF_UI_THEME);
     }
 
     @Override
@@ -330,6 +326,20 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         Preference preference = findPreference(preferenceString);
         if (preference != null) {
             preference.setSummary(summaryId);
+        }
+    }
+
+    private void clearPreferenceSummary(String preferenceString) {
+        Preference preference = findPreference(preferenceString);
+        if (preference != null) {
+            preference.setSummary("");
+        }
+    }
+
+    private void setPreferenceOrder(String key, int order) {
+        Preference preference = findPreference(key);
+        if (preference != null) {
+            preference.setOrder(order);
         }
     }
 }
