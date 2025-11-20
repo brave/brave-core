@@ -26,7 +26,7 @@ bool ParseReferralCode(const wchar_t* installer_filename,
 // minimal changes in upstream even though UnpackBinaryResources's has changed,
 // we stuff the information whether a differential update is to be applied into
 // the Windows error code, with this special value:
-constexpr DWORD kNotAnErrorIsPatchUpdate = 0x12345678;
+inline constexpr DWORD kNotAnErrorIsPatchUpdate = 0x12345678;
 
 }  // namespace mini_installer
 

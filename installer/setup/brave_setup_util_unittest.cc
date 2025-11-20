@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/installer/setup/brave_setup_util.h"
 
 #include <memory>
@@ -36,10 +41,11 @@ class FindArchiveToPatchTest : public testing::Test {
     }
 
     void set_version(const base::Version& version) {
-      if (version.IsValid())
+      if (version.IsValid()) {
         version_ = std::make_unique<base::Version>(version);
-      else
+      } else {
         version_.reset();
+      }
     }
 
     void set_uninstall_command(const base::CommandLine& uninstall_command) {

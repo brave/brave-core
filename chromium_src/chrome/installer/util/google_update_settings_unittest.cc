@@ -65,10 +65,11 @@ TEST_F(GoogleUpdateSettingsTest, UpdateGoogleUpdateApKey) {
       for (const wchar_t* const* inputs : input_arrays) {
         if (archive_type == installer::UNKNOWN_ARCHIVE_TYPE) {
           // "-full" is untouched if the archive type is unknown.
-          if (inputs == full)
+          if (inputs == full) {
             outputs = full;
-          else
+          } else {
             outputs = plain;
+          }
         }
         for (size_t input_idx = 0; input_idx < std::size(plain); ++input_idx) {
           const wchar_t* input = inputs[input_idx];

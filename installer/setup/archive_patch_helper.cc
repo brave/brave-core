@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // This file contains code that used to be upstream and had to be restored in
 // Brave to support delta updates on Windows until we are on Omaha 4. See:
 // github.com/brave/brave-core/pull/31937
@@ -10,10 +15,10 @@
 
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "brave/third_party/bspatch/mbspatch.h"
 #include "chrome/installer/util/lzma_util.h"
 #include "components/zucchini/zucchini.h"
 #include "components/zucchini/zucchini_integration.h"
-#include "brave/third_party/bspatch/mbspatch.h"
 
 namespace installer {
 
@@ -51,12 +56,14 @@ bool ArchivePatchHelper::Uncompress(base::FilePath* last_uncompressed_file) {
   UnPackStatus unpack_status =
       UnPackArchive(compressed_archive_, working_directory_, &output_file);
   RecordUnPackMetrics(unpack_status, consumer_);
-  if (unpack_status != UNPACK_NO_ERROR)
+  if (unpack_status != UNPACK_NO_ERROR) {
     return false;
+  }
 
   last_uncompressed_file_ = output_file;
-  if (last_uncompressed_file)
+  if (last_uncompressed_file) {
     *last_uncompressed_file = last_uncompressed_file_;
+  }
   return true;
 }
 
@@ -77,8 +84,9 @@ bool ArchivePatchHelper::ZucchiniEnsemblePatch() {
   zucchini::status::Code result =
       zucchini::Apply(patch_source_, last_uncompressed_file_, target_);
 
-  if (result == zucchini::status::kStatusSuccess)
+  if (result == zucchini::status::kStatusSuccess) {
     return true;
+  }
 
   LOG(ERROR) << "Failed to apply patch " << last_uncompressed_file_.value()
              << " to file " << patch_source_.value() << " and generating file "
@@ -100,8 +108,9 @@ bool ArchivePatchHelper::BinaryPatch() {
   int result = ApplyBinaryPatch(patch_source_.value().c_str(),
                                 last_uncompressed_file_.value().c_str(),
                                 target_.value().c_str());
-  if (result == OK)
+  if (result == OK) {
     return true;
+  }
 
   LOG(ERROR) << "Failed to apply patch " << last_uncompressed_file_.value()
              << " to file " << patch_source_.value() << " and generating file "

@@ -1,6 +1,6 @@
 # bspatch is infrequently updated and rarely used. New additions to the below
 # list should be scrutinized.
 visibility = [
-  "//chrome/installer/setup/*",
   "//brave/third_party/bspatch",
+  "//chrome/installer/setup/*",
 ]
