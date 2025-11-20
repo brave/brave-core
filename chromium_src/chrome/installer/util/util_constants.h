@@ -11,20 +11,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_UTIL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_UTIL_CONSTANTS_H_
 
-#define INSTALL_FAILED \
-  SETUP_PATCH_FAILED = 8, \
-  APPLY_DIFF_PATCH_FAILED = 42, \
-  PATCH_INVALID_ARGUMENTS = 49, \
-  DIFF_PATCH_SOURCE_MISSING = 50, \
-  INSTALL_FAILED
+#define INSTALL_FAILED                                  \
+  SETUP_PATCH_FAILED = 8, APPLY_DIFF_PATCH_FAILED = 42, \
+  PATCH_INVALID_ARGUMENTS = 49, DIFF_PATCH_SOURCE_MISSING = 50, INSTALL_FAILED
 
 #define NO_STAGE \
-  NO_STAGE, \
-  UPDATING_SETUP // Patching setup.exe with differential update.
+  NO_STAGE, UPDATING_SETUP  // Patching setup.exe with differential update.
 
 #define UNCOMPRESSING \
-  UNCOMPRESSING, \
-  PATCHING // Patching chrome.7z with differential update.
+  UNCOMPRESSING, PATCHING  // Patching chrome.7z with differential update.
 
 #define kGoogleUpdateIsMachineEnvVar                               \
   kGoogleUpdateIsMachineEnvVar[] = "BraveSoftwareUpdateIsMachine"; \

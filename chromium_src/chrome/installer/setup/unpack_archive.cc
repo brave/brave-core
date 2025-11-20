@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // The code in this file used to be upstream and had to be restored in Brave to
 // support delta updates on Windows until we are on Omaha 4. See:
 //     github.com/brave/brave-core/pull/31937
@@ -164,7 +169,8 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
   // bypassed.
   installer_state.uncompressed_archive =
       cmd_line.GetSwitchValuePath(switches::kUncompressedArchive);
-  if (!install_archive.empty() || installer_state.uncompressed_archive.empty()) {
+  if (!install_archive.empty() ||
+      installer_state.uncompressed_archive.empty()) {
     if (!installer_state.uncompressed_archive.empty()) {
       LOG(ERROR)
           << "A compressed archive and an uncompressed archive were both "
@@ -187,8 +193,8 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
       VLOG(1) << "Installing Chrome from compressed archive "
               << archive_helper->compressed_archive().value();
       RETURN_IF_ERROR(UncompressAndPatchChromeArchive(
-          original_state, installer_state, archive_helper.get(), &installer_state.archive_type,
-          previous_version));
+          original_state, installer_state, archive_helper.get(),
+          &installer_state.archive_type, previous_version));
       installer_state.uncompressed_archive = archive_helper->target();
       DCHECK(!installer_state.uncompressed_archive.empty());
     }
@@ -197,7 +203,8 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
   // Check for an uncompressed archive alongside the current executable if one
   // was not given or generated.
   if (installer_state.uncompressed_archive.empty()) {
-    installer_state.uncompressed_archive = setup_exe.DirName().Append(kChromeArchive);
+    installer_state.uncompressed_archive =
+        setup_exe.DirName().Append(kChromeArchive);
   }
 
   if (installer_state.archive_type == UNKNOWN_ARCHIVE_TYPE) {
@@ -231,8 +238,9 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
   // More information can also be found with metric:
   // Setup.Install.LzmaUnPackNTSTATUS_UncompressedChromeArchive
   installer_state.SetStage(UNPACKING);
-  UnPackStatus unpack_status = UnPackArchive(installer_state.uncompressed_archive, unpack_path,
-                                             /*output_file=*/nullptr);
+  UnPackStatus unpack_status =
+      UnPackArchive(installer_state.uncompressed_archive, unpack_path,
+                    /*output_file=*/nullptr);
   RecordUnPackMetrics(unpack_status,
                       UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE);
   if (unpack_status != UNPACK_NO_ERROR) {

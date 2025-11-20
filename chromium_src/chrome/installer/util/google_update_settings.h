@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // This file changes function signatures that used to be upstream and had to be
 // restored in Brave to support delta updates on Windows until we are on Omaha
 // 4. See github.com/brave/brave-core/pull/31937.
@@ -14,10 +19,10 @@
 // string (if it is present) regardless of whether installer failed or not.
 // There is no fall-back for full installer :)
 // - Unconditionally clear a legacy "-stage:" modifier.
-#define UpdateInstallStatus UpdateInstallStatus( \
-  bool system_install, \
-  installer::ArchiveType archive_type, \
-  int install_return_code); \
+#define UpdateInstallStatus                                \
+  UpdateInstallStatus(bool system_install,                 \
+                      installer::ArchiveType archive_type, \
+                      int install_return_code);            \
   static void UpdateInstallStatus_Unused
 
 // This method updates the value for Google Update "ap" key for Chrome
@@ -34,13 +39,13 @@
 // archive_type: tells whether this is incremental install or not.
 // install_return_code: if 0, means installation was successful.
 // value: current value of Google Update "ap" key.
-#define UpdateGoogleUpdateApKey UpdateGoogleUpdateApKey( \
-  installer::ArchiveType archive_type, \
-  int install_return_code, \
-  installer::AdditionalParameters* value); \
+#define UpdateGoogleUpdateApKey                                    \
+  UpdateGoogleUpdateApKey(installer::ArchiveType archive_type,     \
+                          int install_return_code,                 \
+                          installer::AdditionalParameters* value); \
   static bool UpdateGoogleUpdateApKey_Unused
 
-#include <chrome/installer/util/google_update_settings.h>
+#include <chrome/installer/util/google_update_settings.h>  // IWYU pragma: export
 
 #undef UpdateGoogleUpdateApKey
 #undef UpdateInstallStatus
