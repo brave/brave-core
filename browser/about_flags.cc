@@ -718,6 +718,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       FEATURE_VALUE_TYPE(local_ai::features::kBraveHistoryEmbeddings), \
   })
 
+#define BRAVE_HISTORY_EMBEDDINGS_FLAG                                  \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "brave-history-embeddings",                                      \
+      "Brave History Embeddings",                                      \
+      "Enables semantic history search using local AI embeddings",     \
+      kOsWin | kOsMac | kOsLinux,                                      \
+      FEATURE_VALUE_TYPE(local_ai::features::kBraveHistoryEmbeddings), \
+  })
+
 #define BRAVE_OMNIBOX_FEATURES                                                \
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
