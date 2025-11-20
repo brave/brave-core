@@ -100,6 +100,8 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   std::unique_ptr<brave_shields::AdBlockListP3A> _adblockListP3A;
   std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
       _catalogProvider;
+  std::unique_ptr<brave_shields::AdBlockFiltersProviderManager>
+      _filtersProviderManager;
   std::unique_ptr<brave_shields::AdBlockComponentServiceManager>
       _serviceManager;
   std::unique_ptr<brave_shields::AdBlockDefaultResourceProvider>
@@ -125,9 +127,12 @@ void AdBlockResourceObserver::OnResourcesLoaded(
         GetApplicationContext()->GetLocalState());
     _catalogProvider =
         std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(_cus);
+    _filtersProviderManager =
+        std::make_unique<brave_shields::AdBlockFiltersProviderManager>();
     _serviceManager =
         std::make_unique<brave_shields::AdBlockComponentServiceManager>(
             GetApplicationContext()->GetLocalState(),
+            _filtersProviderManager.get(),
             GetApplicationContext()->GetApplicationLocaleStorage()->Get(), _cus,
             _catalogProvider.get(), _adblockListP3A.get());
     _resourceProvider =
@@ -140,8 +145,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   auto _serviceObserver =
       std::make_unique<brave_shields::AdBlockServiceObserver>(
           base::BindRepeating(callback));
-  brave_shields::AdBlockFiltersProviderManager::GetInstance()->AddObserver(
-      _serviceObserver.get());
+  _filtersProviderManager->AddObserver(_serviceObserver.get());
   _serviceObservers.push_back(std::move(_serviceObserver));
 }
 
