@@ -163,7 +163,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
   for (Browser* browser : *BrowserList::GetInstance()) {
-    if (!profile->IsSameOrParent(browser->profile())) {
+    if (profile != browser->profile()) {
       continue;
     }
     BraveTabStripModel* tab_strip =
@@ -179,15 +179,15 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
       if (!contents) {
         continue;
       }
-      const auto tab_tld = net::URLToEphemeralStorageDomain(contents->GetURL());
-      if (tab_tld.empty()) {
+      const auto tab_tld =
+          net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+      if (tab_tld.empty() || tab_tld != ephemeral_domain) {
         continue;
       }
 
       if (auto* ephemeral_storage_tab_helper =
               ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-                  contents);
-          ephemeral_storage_tab_helper && tab_tld == ephemeral_domain) {
+                  contents)) {
         closing_tab_indices.push_back(
             tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
         ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();

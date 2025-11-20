@@ -1484,7 +1484,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, true);
 
   // Wait for the cleanup to finish.
-  WaitForCleanup(profile);
+  WaitForCleanupAfterKeepAlive(profile);
 
   // Check if the tab related to site_a_tab has been closed
   int site_a_tab_index =
@@ -1570,7 +1570,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, true);
 
   // Wait for the cleanup to finish.
-  WaitForCleanup(profile);
+  WaitForCleanupAfterKeepAlive(profile);
 
   // Check that tabs for a.com, a.a.com, and b.a.com have been closed
   EXPECT_EQ(TabStripModel::kNoTab,
@@ -1654,7 +1654,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, false);
 
   // Wait for the cleanup to finish.
-  WaitForCleanup(profile);
+  WaitForCleanupAfterKeepAlive(profile);
 
   // Check that tabs for a.com, a.a.com, and b.a.com have not been closed
   EXPECT_NE(TabStripModel::kNoTab,
