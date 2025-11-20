@@ -642,7 +642,7 @@ if (!is_android) {
         "//brave/chromium_src/chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
       ]
       if (!is_official_build) {
-        sources += [ "//brave/chromium_src/chrome/installer/mini_installer/brave_mini_installer_constants_unittest.cc" ]
+        sources += [ "//brave/installer/mini_installer/brave_mini_installer_constants_unittest.cc" ]
       }
       include_dirs = [ "$target_gen_dir" ]
       deps += [
