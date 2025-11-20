@@ -1,6 +1,6 @@
-// Copyright 2013 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// This file contains code that used to be upstream and had to be restored in
+// Brave to support delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
 
 #include "brave/installer/setup/archive_patch_helper.h"
 

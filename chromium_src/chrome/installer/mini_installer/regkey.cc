@@ -22,6 +22,9 @@
 
 namespace mini_installer {
 
+// This function used to be upstream and had to be restored in Brave to support
+// delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
 LONG RegKey::WriteSZValue(const wchar_t* value_name, const wchar_t* value) {
   return ::RegSetValueEx(key_, value_name, 0, REG_SZ,
                          reinterpret_cast<const BYTE*>(value),

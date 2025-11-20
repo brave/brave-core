@@ -1,3 +1,7 @@
+// This file changes function signatures that used to be upstream and had to be
+// restored in Brave to support delta updates on Windows until we are on Omaha
+// 4. See github.com/brave/brave-core/pull/31937.
+
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_GOOGLE_UPDATE_SETTINGS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_GOOGLE_UPDATE_SETTINGS_H_
 

@@ -186,6 +186,10 @@ void UpdateBraveVpn(const base::FilePath& target_path,
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+// The code in BRAVE_ADD_INSTALLER_COPY_TASKS and 
+// BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS used to be upstream and had to be
+// restored in Brave to support delta updates on Windows until we are on Omaha
+// 4. See github.com/brave/brave-core/pull/31937.
 #define BRAVE_ADD_INSTALLER_COPY_TASKS                                        \
   const base::FilePath& archive_path = installer_state.uncompressed_archive;  \
   base::FilePath archive_dst(installer_dir.Append(archive_path.BaseName()));  \

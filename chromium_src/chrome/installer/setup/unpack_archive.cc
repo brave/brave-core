@@ -1,11 +1,7 @@
-// Copyright 2024 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-//
-// This file defines the unpack function needed to unpack compressed and
-// uncompressed archives in setup.exe.
-
-// N.B. This file does not #include upstream's implementation.
+// The code in this file used to be upstream and had to be restored in Brave to
+// support delta updates on Windows until we are on Omaha 4. See:
+//     github.com/brave/brave-core/pull/31937
+// N.B.: This file does not #include upstream's implementation.
 
 #include "chrome/installer/setup/unpack_archive.h"
 
