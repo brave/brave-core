@@ -18,9 +18,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class Profile;
 
@@ -72,7 +70,6 @@ class CodeExecutionTool : public Tool {
 
     std::unique_ptr<content::WebContents> web_contents;
     std::unique_ptr<CodeSandboxWebContentsObserver> observer;
-    mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector;
     base::OneShotTimer timeout_timer;
     raw_ptr<Profile> otr_profile;
     UseToolCallback callback;

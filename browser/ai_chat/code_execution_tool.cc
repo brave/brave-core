@@ -22,7 +22,6 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -88,7 +87,7 @@ std::string_view CodeExecutionTool::Name() const {
 
 std::string_view CodeExecutionTool::Description() const {
   return "Execute JavaScript code for performing calculations/computations. "
-         "Ensure snippet ends with return statement. Always return a string. "
+         "Ensure snippet ends with return statement. Always return a human-readable string. "
          "Do not use console logging statements.";
 }
 
@@ -159,20 +158,17 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
       request_it->web_contents.get());
 
   auto* rfh = request_it->web_contents->GetPrimaryMainFrame();
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&request_it->injector);
 
   request_it->web_contents->GetController().LoadURL(
       GURL(kAIChatCodeSandboxUIURL), content::Referrer(),
       ui::PAGE_TRANSITION_TYPED, std::string());
 
-  wrapped_js = "(function() { return 'Hello, world!'; })()";
   auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js);
-  request_it->injector->RequestAsyncExecuteScript(
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL, wrapped_js_utf16,
-      blink::mojom::UserActivationOption::kActivate,
-      blink::mojom::PromiseResultOption::kAwait,
+  rfh->ExecuteJavaScriptInIsolatedWorld(
+      wrapped_js_utf16,
       base::BindOnce(&CodeExecutionTool::HandleScriptResult,
-                     weak_ptr_factory_.GetWeakPtr(), request_it));
+                     weak_ptr_factory_.GetWeakPtr(), request_it),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
   auto time_limit =
       execution_time_limit_for_testing_.value_or(kExecutionTimeLimit);
