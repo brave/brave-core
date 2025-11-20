@@ -47,30 +47,46 @@ if (!is_android) {
 }
 
 source_set("history_embeddings") {
+  sources = [
+    "brave_embedder.cc",
+    "brave_embedder.h",
+    "brave_passage_embeddings_service_controller.cc",
+    "brave_passage_embeddings_service_controller.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/local_ai",
+    "//brave/components/local_ai/core:mojom",
+    "//chrome/browser/profiles",
+    "//components/passage_embeddings/core",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    "//brave/components/local_ai/core",
+    "//components/history_embeddings/content",
+    "//components/history_embeddings/core",
+    "//components/page_content_annotations/core",
+    "//content/public/browser",
+    "//services/passage_embeddings/public/mojom",
+    "//ui/base",
+  ]
+
   if (!is_android) {
-    sources = [
+    sources += [
       "brave_page_content_extraction_service.h",
       "brave_page_content_extraction_tab_helper.cc",
       "brave_page_content_extraction_tab_helper.h",
     ]
 
-    public_deps = [ "//chrome/browser/ui/tabs" ]
+    public_deps += [ "//chrome/browser/ui/tabs" ]
 
-    deps = [
-      "//components/history_embeddings/core",
+    deps += [
       "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
       "//components/page_content_annotations/content",
-      "//components/page_content_annotations/core",
-      "//content/public/browser",
       "//services/service_manager/public/cpp",
-      "//ui/base",
     ]
   }
-
-  public_deps += [
-    "//base",
-    "//chrome/browser/profiles",
-    "//mojo/public/cpp/bindings",
-  ]
 }

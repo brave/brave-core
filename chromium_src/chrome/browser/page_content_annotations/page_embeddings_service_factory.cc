@@ -11,9 +11,9 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 #include "build/build_config.h"
 #include "chrome/browser/page_content_annotations/page_content_extraction_service_factory.h"
-#include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/page_content_annotations/content/embeddings_candidate_generator.h"
@@ -60,14 +60,12 @@ PageEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
     return nullptr;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/53873): Replace with
-  // BravePassageEmbeddingsServiceController in
-  // https://github.com/brave/brave-core/pull/32689 before it lands.
   auto* controller =
-      passage_embeddings::ChromePassageEmbeddingsServiceController::Get();
+      passage_embeddings::BravePassageEmbeddingsServiceController::Get();
   return std::make_unique<PageEmbeddingsService>(
       base::BindRepeating(&GenerateEmbeddingsCandidates),
-      page_content_extraction_service, controller->GetEmbedder(), controller);
+      page_content_extraction_service, controller->GetBraveEmbedder(),
+      controller);
 #endif
 }
 
