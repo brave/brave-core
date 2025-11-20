@@ -89,7 +89,7 @@ class MacAddressProcessor {
       return;
     }
 
-    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address_bytes));
+    mac_address_ = base::HexEncodeLower(mac_address_bytes);
 
     found_index_ = index;
   }

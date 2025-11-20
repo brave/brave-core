@@ -61,7 +61,7 @@ std::optional<std::string> GetExportEncodedJSON(
       protocol.value() == mojom::FilecoinAddressProtocol::BLS ? "bls"
                                                               : "secp256k1",
       base::Base64Encode(private_key_bytes).c_str());
-  return base::ToLowerASCII(base::HexEncode(json));
+  return base::HexEncodeLower(json);
 }
 
 std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,

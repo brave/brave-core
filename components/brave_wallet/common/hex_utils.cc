@@ -32,14 +32,14 @@ std::string ToHex(std::string_view data) {
   if (data.empty()) {
     return "0x0";
   }
-  return "0x" + base::ToLowerASCII(base::HexEncode(data.data(), data.size()));
+  return "0x" + base::HexEncodeLower(data);
 }
 
 std::string ToHex(base::span<const uint8_t> data) {
   if (data.empty()) {
     return "0x0";
   }
-  return "0x" + base::ToLowerASCII(base::HexEncode(data));
+  return "0x" + base::HexEncodeLower(data);
 }
 
 // Determines if the passed in hex string is valid

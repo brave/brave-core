@@ -167,7 +167,7 @@ class MacAddressProcessor {
       return keep_going;
     }
 
-    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address_bytes));
+    mac_address_ = base::HexEncodeLower(mac_address_bytes);
 
     base::apple::ScopedCFTypeRef<CFStringRef> provider_class_string(
         static_cast<CFStringRef>(IORegistryEntryCreateCFProperty(

@@ -221,7 +221,7 @@ bool EncodeString(std::string_view input, std::string* output) {
   }
 
   // Encode string.
-  *output += base::ToLowerASCII(base::HexEncode(input.data(), input.size()));
+  *output += base::HexEncodeLower(input);
 
   // Pad 0 to right.
   size_t last_row_len = input.size() % 32;

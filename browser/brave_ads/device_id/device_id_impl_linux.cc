@@ -144,7 +144,7 @@ class MacAddressProcessor {
 
     keep_going = false;
 
-    mac_address_ = base::ToLowerASCII(base::HexEncode(mac_address_bytes));
+    mac_address_ = base::HexEncodeLower(mac_address_bytes);
 
     return keep_going;
   }

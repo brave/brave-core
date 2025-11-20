@@ -50,7 +50,7 @@ TEST(Eip1559TransactionUnitTest, GetMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(0))),
+  EXPECT_EQ(base::HexEncodeLower(tx.GetHashedMessageToSign(0)),
             "fa81814f7dd57bad435657a05eabdba2815f41e3f15ddd6139027e7db56b0dea");
 }
 

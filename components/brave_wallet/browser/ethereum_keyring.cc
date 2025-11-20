@@ -209,7 +209,7 @@ std::optional<std::string> EthereumKeyring::EncodePrivateKeyForExport(
     return std::nullopt;
   }
 
-  return base::ToLowerASCII(base::HexEncode(hd_key->GetPrivateKeyBytes()));
+  return base::HexEncodeLower(hd_key->GetPrivateKeyBytes());
 }
 
 std::unique_ptr<HDKey> EthereumKeyring::DeriveAccount(uint32_t index) const {

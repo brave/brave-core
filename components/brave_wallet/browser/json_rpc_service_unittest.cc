@@ -428,7 +428,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
                    sol_record_payload_address.bytes().end());
     message.insert(message.end(), sol_record_address.bytes().begin(),
                    sol_record_address.bytes().end());
-    std::string hex_message = base::ToLowerASCII(base::HexEncode(message));
+    std::string hex_message = base::HexEncodeLower(message);
     ED25519_sign(result_span.subspan(32u).data(),
                  reinterpret_cast<const uint8_t*>(hex_message.data()),
                  hex_message.length(), signer_key.data());
