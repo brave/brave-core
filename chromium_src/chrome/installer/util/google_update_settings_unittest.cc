@@ -8,7 +8,8 @@
 // github.com/brave/brave-core/pull/31937
 
 #ifdef UNSAFE_BUFFERS_BUILD
-// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+// TODO(https://github.com/brave/brave-browser/issues/50977): Remove this and
+// convert code to safer constructs.
 #pragma allow_unsafe_buffers
 #endif
 
