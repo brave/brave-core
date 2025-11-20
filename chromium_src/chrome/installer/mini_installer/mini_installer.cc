@@ -21,7 +21,6 @@
 #include "chrome/installer/mini_installer/mini_string.h"
 #include "chrome/installer/mini_installer/regkey.h"
 
-
 #if defined(OFFICIAL_BUILD) && !BUILDFLAG(GOOGLE_CHROME_BRANDING)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
@@ -30,62 +29,63 @@
 
 #define BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR                            \
   if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) { \
-    exit_code.windows_error = kNotAnErrorIsPatchUpdate;                           \
+    exit_code.windows_error = kNotAnErrorIsPatchUpdate;                      \
   }
 
-#define BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY      \
-  if (*setup_path == L'\0') {                                    \
-    ProcessExitResult exit_code = GetPreviousSetupExePath(       \
-        configuration, setup_exe.get(), setup_exe.capacity());   \
-    if (!exit_code.IsSuccess()) {                                \
-      return exit_code;                                          \
-    }                                                            \
+#define BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY    \
+  if (*setup_path == L'\0') {                                  \
+    ProcessExitResult exit_code = GetPreviousSetupExePath(     \
+        configuration, setup_exe.get(), setup_exe.capacity()); \
+    if (!exit_code.IsSuccess()) {                              \
+      return exit_code;                                        \
+    }                                                          \
   }
 
-#define BRAVE_MAYBE_APPEND_PREVIOUS_VERSION_AND_PARSE_REFERRAL_CODE          \
-  if (configuration.previous_version() &&                                    \
-      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||  \
-       !cmd_line.append(L"=\"") ||                                           \
-       !cmd_line.append(configuration.previous_version()) ||                 \
-       !cmd_line.append(L"\""))) {                                           \
-    return ProcessExitResult(COMMAND_STRING_OVERFLOW);                       \
-  }                                                                          \
-  PathString installer_filename;                                             \
-  wchar_t value[MAX_PATH] = {0, };                                           \
-  const bool result =                                                        \
-      RegKey::ReadSZValue(HKEY_CURRENT_USER,                                 \
-                          L"Software\\BraveSoftware\\Promo",                 \
-                          L"StubInstallerPath", value, _countof(value)) ;    \
-  if (result &&                                                              \
-       installer_filename.assign(value) &&                                   \
-       installer_filename.length() != 0) {                                   \
-    ReferralCodeString referral_code;                                        \
-    if (ParseReferralCode(installer_filename.get(), &referral_code)) {       \
-      cmd_line.append(L" --brave-referral-code");                            \
-      cmd_line.append(L"=\"");                                               \
-      cmd_line.append(referral_code.get());                                  \
-      cmd_line.append(L"\"");                                                \
-    }                                                                        \
+#define BRAVE_MAYBE_APPEND_PREVIOUS_VERSION_AND_PARSE_REFERRAL_CODE         \
+  if (configuration.previous_version() &&                                   \
+      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) || \
+       !cmd_line.append(L"=\"") ||                                          \
+       !cmd_line.append(configuration.previous_version()) ||                \
+       !cmd_line.append(L"\""))) {                                          \
+    return ProcessExitResult(COMMAND_STRING_OVERFLOW);                      \
+  }                                                                         \
+  PathString installer_filename;                                            \
+  wchar_t value[MAX_PATH] = {                                               \
+      0,                                                                    \
+  };                                                                        \
+  const bool result = RegKey::ReadSZValue(                                  \
+      HKEY_CURRENT_USER, L"Software\\BraveSoftware\\Promo",                 \
+      L"StubInstallerPath", value, _countof(value));                        \
+  if (result && installer_filename.assign(value) &&                         \
+      installer_filename.length() != 0) {                                   \
+    ReferralCodeString referral_code;                                       \
+    if (ParseReferralCode(installer_filename.get(), &referral_code)) {      \
+      cmd_line.append(L" --brave-referral-code");                           \
+      cmd_line.append(L"=\"");                                              \
+      cmd_line.append(referral_code.get());                                 \
+      cmd_line.append(L"\"");                                               \
+    }                                                                       \
   }
 
 #define BRAVE_APPEND_FULL_SUFFIX_IN_REGISTRY SetInstallerFlags(configuration);
 
 // If a compressed setup patch was found, run the previous setup.exe to
 // patch and generate the new setup.exe.
-#define BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE                                 \
-  if (exit_code.IsSuccess() && exit_code.windows_error == kNotAnErrorIsPatchUpdate) { \
-    PathString setup_dest_path;                                              \
-    if (!setup_dest_path.assign(base_path.get()) ||                          \
-        !setup_dest_path.append(kSetupExe)) {                                \
-      return ProcessExitResult(PATH_STRING_OVERFLOW);                        \
-    }                                                                        \
-    exit_code = PatchSetup(configuration, setup_path, setup_dest_path,       \
-                           max_delete_attempts);                             \
-    if (exit_code.IsSuccess()) {                                             \
-      setup_path.assign(setup_dest_path);                                    \
-    } else {                                                                 \
-      setup_path.clear();                                                    \
-    }                                                                        \
+#define BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE                           \
+  if (exit_code.IsSuccess() &&                                         \
+      exit_code.windows_error == kNotAnErrorIsPatchUpdate) {           \
+    PathString setup_dest_path;                                        \
+    if (!setup_dest_path.assign(base_path.get()) ||                    \
+        !setup_dest_path.append(kSetupExe)) {                          \
+      return ProcessExitResult(PATH_STRING_OVERFLOW);                  \
+    }                                                                  \
+    exit_code = PatchSetup(configuration, setup_path, setup_dest_path, \
+                           max_delete_attempts);                       \
+    if (exit_code.IsSuccess()) {                                       \
+      setup_path.assign(setup_dest_path);                              \
+    } else {                                                           \
+      setup_path.clear();                                              \
+    }                                                                  \
   }
 
 namespace mini_installer {
@@ -303,7 +303,6 @@ void SetInstallerFlags(const Configuration& configuration) {
   }
 #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
-
 
 // Gets the setup.exe path from Registry by looking at the value of Uninstall
 // string.  |size| is measured in wchar_t units.

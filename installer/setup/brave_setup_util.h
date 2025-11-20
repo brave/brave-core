@@ -1,5 +1,10 @@
-#ifndef BRAVE_INSTALLER_SETUP_SETUP_UTIL_H_
-#define BRAVE_INSTALLER_SETUP_SETUP_UTIL_H_
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_INSTALLER_SETUP_BRAVE_SETUP_UTIL_H_
+#define BRAVE_INSTALLER_SETUP_BRAVE_SETUP_UTIL_H_
 
 namespace base {
 class FilePath;
@@ -24,4 +29,4 @@ base::FilePath FindArchiveToPatch(const InstallationState& original_state,
 
 }  // namespace installer
 
-#endif  // BRAVE_INSTALLER_SETUP_SETUP_UTIL_H_
+#endif  // BRAVE_INSTALLER_SETUP_BRAVE_SETUP_UTIL_H_

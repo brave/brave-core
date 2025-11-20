@@ -10,9 +10,9 @@
 // For development builds, the primary mode is DEVELOPER_INDEX.
 //
 // Usage:
-//   #include "brave/chromium_src/chrome/installer/chromium_index_helper_begin.h"
-//   #include <chrome/installer/.../original_file.cc>
-//   #include "brave/chromium_src/chrome/installer/chromium_index_helper_end.h"
+//  #include "brave/chromium_src/chrome/installer/chromium_index_helper_begin.h"
+//  #include <chrome/installer/.../original_file.cc>
+//  #include "brave/chromium_src/chrome/installer/chromium_index_helper_end.h"
 
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_CHROMIUM_INDEX_HELPER_BEGIN_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_CHROMIUM_INDEX_HELPER_BEGIN_H_

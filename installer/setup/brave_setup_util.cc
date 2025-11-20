@@ -1,12 +1,17 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/installer/setup/brave_setup_util.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/version.h"
 #include "chrome/installer/setup/installer_state.h"
-#include "chrome/installer/util/installation_state.h"
 #include "chrome/installer/setup/setup_constants.h"
 #include "chrome/installer/setup/setup_util.h"
+#include "chrome/installer/util/installation_state.h"
 
 namespace installer {
 
@@ -32,16 +37,18 @@ base::FilePath FindArchiveToPatch(const InstallationState& original_state,
   if (product) {
     patch_source = installer_state.GetInstallerDirectory(product->version())
                        .Append(installer::kChromeArchive);
-    if (base::PathExists(patch_source))
+    if (base::PathExists(patch_source)) {
       return patch_source;
+    }
   }
   std::unique_ptr<base::Version> version(
       installer::GetMaxVersionFromArchiveDir(installer_state.target_path()));
   if (version) {
     patch_source = installer_state.GetInstallerDirectory(*version).Append(
         installer::kChromeArchive);
-    if (base::PathExists(patch_source))
+    if (base::PathExists(patch_source)) {
       return patch_source;
+    }
   }
   return base::FilePath();
 }

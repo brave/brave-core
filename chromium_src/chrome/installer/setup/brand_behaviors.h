@@ -9,9 +9,9 @@
 // UpdateInstallStatus used to have a different signature in upstream. We need
 // to restore it here to support delta updates on Windows until we are on Omaha
 // 4. See github.com/brave/brave-core/pull/31937.
-#define UpdateInstallStatus() \
-    UpdateInstallStatus(installer::ArchiveType archive_type, \
-                        installer::InstallStatus install_status)
+#define UpdateInstallStatus()                              \
+  UpdateInstallStatus(installer::ArchiveType archive_type, \
+                      installer::InstallStatus install_status)
 
 #include <chrome/installer/setup/brand_behaviors.h>  // IWYU pragma: export
 

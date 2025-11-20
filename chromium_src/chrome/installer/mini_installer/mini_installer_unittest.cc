@@ -17,7 +17,7 @@ namespace {
 constexpr wchar_t kPreviousVersion[] = PREVIOUS_VERSION;
 
 class FakeConfiguration : public Configuration {
-  public:
+ public:
   FakeConfiguration() { previous_version_ = kPreviousVersion; }
 };
 
