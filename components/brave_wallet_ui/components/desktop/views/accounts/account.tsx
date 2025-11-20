@@ -139,6 +139,7 @@ import {
 import {
   useFindBuySupportedToken, //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
+import { useRoute } from '../../../../common/hooks/use_route'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -319,6 +320,7 @@ export const Account = () => {
   }, [selectedAccount, networksFilteredByAccountsCoinType])
 
   const onClickViewOnBlockExplorer = useExplorer(networkForSelectedAccount)
+  const { openOrPushRoute } = useRoute()
 
   // memos
   const transactionList = React.useMemo(() => {
@@ -609,11 +611,11 @@ export const Account = () => {
 
   const onClickBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      history.push(makeFundWalletRoute(foundMeldBuyToken, selectedAccount))
+      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, selectedAccount))
       return
     }
-    history.push(WalletRoutes.FundWalletPageStart)
-  }, [foundMeldBuyToken, history, selectedAccount])
+    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+  }, [foundMeldBuyToken, openOrPushRoute, selectedAccount])
 
   // redirect (asset not found)
   if (!selectedAccount) {
