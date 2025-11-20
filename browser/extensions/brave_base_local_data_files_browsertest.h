@@ -10,12 +10,9 @@
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "extensions/browser/install_verifier.h"
 
-using brave_component_updater::LocalDataFilesObserver;
-using extensions::ExtensionBrowserTest;
-
 // This is an abstract base class that centralizes functions common to all
 // LocalDataFiles-related extension browser tests.
-class BaseLocalDataFilesBrowserTest : public ExtensionBrowserTest {
+class BaseLocalDataFilesBrowserTest : public extensions::ExtensionBrowserTest {
  public:
   BaseLocalDataFilesBrowserTest() {}
 
@@ -33,7 +30,7 @@ class BaseLocalDataFilesBrowserTest : public ExtensionBrowserTest {
   // Descendant classes must override these
   virtual const char* test_data_directory() = 0;
   virtual const char* embedded_test_server_directory() = 0;
-  virtual LocalDataFilesObserver* service() = 0;
+  virtual brave_component_updater::LocalDataFilesObserver* service() = 0;
 
  private:
   // Disable extension install verification for our mock extension.

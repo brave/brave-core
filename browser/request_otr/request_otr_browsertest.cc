@@ -116,7 +116,7 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
   // BaseLocalDataFilesBrowserTest overrides
   const char* test_data_directory() override { return kTestDataDirectory; }
   const char* embedded_test_server_directory() override { return ""; }
-  LocalDataFilesObserver* service() override {
+  brave_component_updater::LocalDataFilesObserver* service() override {
     return g_brave_browser_process->request_otr_component_installer();
   }
 
