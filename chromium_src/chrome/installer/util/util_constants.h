@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// The macros INSTALL_FAILED, NO_STAGE, UNCOMPRESSING and the enum ArchiveType
+// below contain code that used to be upstream and had to be restored in Brave
+// to support delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
+
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_UTIL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_UTIL_UTIL_CONSTANTS_H_
 

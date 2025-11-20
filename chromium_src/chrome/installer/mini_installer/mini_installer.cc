@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// This file contains a lot of code that used to be upstream and had to be
+// restored in Brave to support delta updates on Windows until we are on Omaha
+// 4. See github.com/brave/brave-core/pull/31937.
+
 #ifdef UNSAFE_BUFFERS_BUILD
 // TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
 #pragma allow_unsafe_buffers

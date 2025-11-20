@@ -9,6 +9,8 @@
 #include "base/files/file_path.h"
 #include "chrome/installer/util/util_constants.h"
 
+// Needed for delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
 #define RequiresActiveSetup                                     \
   RequiresActiveSetup() const;                                  \
   ArchiveType archive_type = ArchiveType::UNKNOWN_ARCHIVE_TYPE; \

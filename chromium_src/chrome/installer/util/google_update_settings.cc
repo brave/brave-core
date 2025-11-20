@@ -1,3 +1,7 @@
+// This file contains code that used to be upstream and had to be restored in
+// Brave to support delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
+
 #include "chrome/installer/util/google_update_settings.h"
 
 #define UpdateInstallStatus UpdateInstallStatus_Unused

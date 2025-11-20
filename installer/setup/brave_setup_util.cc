@@ -10,6 +10,9 @@
 
 namespace installer {
 
+// This function implementation used to be upstream and had to be restored in
+// Brave to support delta updates on Windows until we are on Omaha 4. See:
+// github.com/brave/brave-core/pull/31937
 base::FilePath FindArchiveToPatch(const InstallationState& original_state,
                                   const InstallerState& installer_state,
                                   const base::Version& desired_version) {
