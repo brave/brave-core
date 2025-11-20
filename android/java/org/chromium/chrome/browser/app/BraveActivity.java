@@ -61,7 +61,9 @@ import com.wireguard.android.backend.GoBackend;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.ApplicationState;
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.ApplicationStatus.ApplicationStateListener;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
@@ -146,6 +148,7 @@ import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
@@ -345,6 +348,8 @@ public abstract class BraveActivity extends ChromeActivity
     private View mQuickSearchEnginesView;
 
     private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
+
+    private ApplicationStateListener mApplicationStateListener;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -550,6 +555,12 @@ public abstract class BraveActivity extends ChromeActivity
         if (mNotificationPermissionController != null) {
             NotificationPermissionController.detach(mNotificationPermissionController);
             mNotificationPermissionController = null;
+        }
+
+        // Unregister application state listener
+        if (mApplicationStateListener != null) {
+            ApplicationStatus.unregisterApplicationStateListener(mApplicationStateListener);
+            mApplicationStateListener = null;
         }
 
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
@@ -952,6 +963,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void initializeState() {
+        if (BraveFreshNtpHelper.isEnabled()) {
+            setForegroundSessionEndsTriggered();
+        }
         super.initializeState();
         if (isNoRestoreState()) {
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
@@ -1049,6 +1063,47 @@ public abstract class BraveActivity extends ChromeActivity
         super.performPostInflationStartup();
 
         createNotificationChannel();
+    }
+
+    @Override
+    public void onStartWithNative() {
+        // Register application state listener to detect foreground session end
+        if (BraveFreshNtpHelper.isEnabled() && mApplicationStateListener == null) {
+            mApplicationStateListener = this::onApplicationStateChange;
+            ApplicationStatus.registerApplicationStateListener(mApplicationStateListener);
+        }
+
+        super.onStartWithNative();
+    }
+
+    /**
+     * Called when the application state changes. Similar to ChromeActivitySessionTracker, this
+     * detects when the foreground session ends (when all activities are stopped).
+     */
+    private void onApplicationStateChange(@ApplicationState int newState) {
+        if (newState == ApplicationState.HAS_STOPPED_ACTIVITIES) {
+            onForegroundSessionEnds();
+        }
+    }
+
+    /**
+     * Marks that the foreground session ends has been triggered. Called when the activity
+     * initializes state or when the foreground session ends.
+     */
+    private void setForegroundSessionEndsTriggered() {
+        // Note that the preference is reset to false when the app is foregrounded inside
+        // BraveReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup() in case of always
+        // New Tab option is selected.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_FOREGROUND_SESSION_ENDS_TRIGGERED, true);
+    }
+
+    /**
+     * Called when the foreground session ends (when all activities are stopped). Similar to
+     * ChromeActivitySessionTracker#onForegroundSessionEnd().
+     */
+    protected void onForegroundSessionEnds() {
+        setForegroundSessionEndsTriggered();
     }
 
     @Override
