@@ -9,6 +9,7 @@ source_set("endpoints") {
   sources = [
     "host.cc",
     "host.h",
+    "login_finalize.h",
     "login_init.h",
     "password_finalize.h",
     "password_init.h",
@@ -31,6 +32,8 @@ source_set("endpoints") {
 generated_types("generated_api_types") {
   sources = [
     "error.idl",
+    "login_finalize_request.idl",
+    "login_finalize_response.idl",
     "login_init_request.idl",
     "login_init_response.idl",
     "password_finalize_request.idl",
@@ -53,6 +56,7 @@ source_set("unit_tests") {
 
   sources = [
     "endpoint_test.h",
+    "login_finalize_unittest.cc",
     "login_init_unittest.cc",
     "password_finalize_unittest.cc",
     "password_init_unittest.cc",
