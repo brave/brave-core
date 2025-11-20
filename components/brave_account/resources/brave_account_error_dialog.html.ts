@@ -10,7 +10,10 @@ import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { BraveAccountErrorDialogElement } from './brave_account_error_dialog.js'
 import { Flow, FlowToErrorCode } from './brave_account_common.js'
-import { RegisterErrorCode } from './brave_account.mojom-webui.js'
+import {
+  LoginErrorCode,
+  RegisterErrorCode,
+} from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountErrorDialogElement) {
   return html`<!--_html_template_start_-->
@@ -25,9 +28,19 @@ export function getHtml(this: BraveAccountErrorDialogElement) {
             '$i18n{braveAccountErrorDialogTooManyVerifications}',
         } satisfies Partial<Record<RegisterErrorCode, string>>
 
+        const LOGIN_ERROR_STRINGS = {
+          [LoginErrorCode.kAccountExists]:
+            '$i18n{braveAccountErrorDialogAccountExists}',
+          [LoginErrorCode.kEmailDomainNotSupported]:
+            '$i18n{braveAccountErrorDialogEmailDomainNotSupported}',
+          [LoginErrorCode.kTooManyVerifications]:
+            '$i18n{braveAccountErrorDialogTooManyVerifications}',
+        } satisfies Partial<Record<LoginErrorCode, string>>
+
         const ERROR_STRINGS: {
           [F in Flow]: Partial<Record<FlowToErrorCode[F], string>>
         } = {
+          login: LOGIN_ERROR_STRINGS,
           register: REGISTER_ERROR_STRINGS,
         }
 
