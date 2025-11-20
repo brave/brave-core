@@ -282,9 +282,6 @@ void SetInstallerFlags(const Configuration& configuration) {
     return;
   }
 
-  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
-  // multi,readymode,stage,migrating,multifail) from the ap value.
-
   LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
 
   // The conditions below are handling two cases:
