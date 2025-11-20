@@ -10,6 +10,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -99,9 +100,15 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // BookmarkBar not visible as current active tab is not NTP.
   EXPECT_FALSE(bookmark_bar()->GetVisible());
 
+  const bool rounded_corners =
+      BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser());
+
+  // With rounded corners, we need
+  // distance(tabs::kMarginForVerticalTabContainers) between vertical tab and
+  // contents. Each side has half of it as a margin.
   const int contents_margin =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
-  const int top_contents_separator_height = contents_margin > 0 ? 0 : 1;
+      rounded_corners ? (tabs::kMarginForVerticalTabContainers / 2) : 0;
+  const int top_contents_separator_height = rounded_corners ? 0 : 1;
 
   // Infobar is visible at first run.
   // Update this test if it's not visible at first run.

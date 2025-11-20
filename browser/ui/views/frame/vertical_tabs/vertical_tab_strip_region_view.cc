@@ -86,6 +86,7 @@ namespace {
 
 constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 constexpr int kSeparatorHeight = 1;
+constexpr int kBorderThickness = 1;
 
 // Use toolbar button's ink drop effect.
 class ToggleButton : public ToolbarButton {
@@ -775,14 +776,41 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
     return {};
   }
 
+  auto target_state = state_;
+
+  // Minimum size is used for host view's preferred size.
+  // See VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged().
+  // When floating, host view's size should not be changed during the floating.
   if (state_ == State::kFloating) {
-    return GetPreferredSizeForState(State::kCollapsed,
-                                    /*include_border=*/true,
-                                    /*ignore_animation=*/true);
+    target_state = State::kCollapsed;
   }
 
-  return GetPreferredSizeForState(state_, /*include_border=*/true,
-                                  /*ignore_animation=*/true);
+  // Get size w/o border. Consider border width later.
+  auto size = GetPreferredSizeForState(target_state,
+                                       /*include_border=*/false,
+                                       /*ignore_animation=*/true);
+  if (size.IsZero()) {
+    return size;
+  }
+
+  // No border for hide completely mode.
+  if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
+    return size;
+  }
+
+  // In rounded corners, border is changed on floating.
+  // If we calculated preferred size with |include_border|,
+  // it gives different size because of border change.
+  // If minumum size changes during the floating, it could affect
+  // contents size. It could cause contents area flickering.
+  // Append same border width to |size|.
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser_)) {
+    size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
+  } else {
+    size.Enlarge(kBorderThickness, 0);
+  }
+
+  return size;
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
@@ -1109,19 +1137,31 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
   bool is_on_right =
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
   bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
-  int inset =
-      1 -
-      (sidebar_on_same_side
-           ? 0
-           : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
-  gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
-                                            : gfx::Insets::TLBR(0, 0, 0, inset);
 
+  gfx::Insets border_insets;
+  if (is_on_right) {
+    border_insets.set_left(kBorderThickness);
+  } else {
+    border_insets.set_right(kBorderThickness);
+  }
+
+  // When show vertical tab's border line, vertical tab can have its whole
+  // padding.
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(
         border_insets,
         GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
   } else {
+    // When vertical tab's border line is not shown, vertical tab should have
+    // only half of its padding because contents has half or margin to draw its
+    // shadow.
+    if (!sidebar_on_same_side) {
+      if (is_on_right) {
+        border_insets.set_left(-(tabs::kMarginForVerticalTabContainers / 2));
+      } else {
+        border_insets.set_right(-(tabs::kMarginForVerticalTabContainers / 2));
+      }
+    }
     SetBorder(views::CreateEmptyBorder(border_insets));
   }
 

@@ -26,6 +26,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -370,6 +371,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
+  // When rounded corners is on(it's default now),
+  // region view's border inset is changed during the floating.
+  // See BraveVerticalTabStripRegionView::UpdateBorder() for
+  // border inset calculation.
+  const int inset_for_expanded_collapsed = -2;
+  const int inset_for_floating = 1;
+  EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
+
   // Try Expanding / collapsing
   auto* prefs = browser()->profile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
@@ -385,6 +394,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseEntered(event);
     EXPECT_EQ(State::kFloating, region_view->state());
+    EXPECT_EQ(inset_for_floating, region_view->GetInsets().width());
   }
 
   // Check if mouse exiting make tab strip collapsed.
@@ -394,6 +404,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseExited(event);
     EXPECT_EQ(State::kCollapsed, region_view->state());
+    EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
   }
 
   // When floating mode is disabled, it shouldn't be triggered.
@@ -1197,11 +1208,17 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
 
-  // When the preference is disabled, the minimum width should be back to 41px.
+  // When the preference is disabled, the minimum width should be back to
+  // 41px(w/o rounded corners) or 38px(with rounded corners) due to region
+  // view's difference. See BraveVerticalTabStripRegionView::UpdateBorder().
   SetHideCompletelyWhenCollapsed(false);
-  const int contents_margin =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
-  EXPECT_EQ(41 - contents_margin, region_view->GetMinimumSize().width());
+
+  // As rounded corners is on by default minimum size is 38px.
+  EXPECT_EQ(38, region_view->GetMinimumSize().width());
+
+  // 41px w/o rounded corners.
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  EXPECT_EQ(41, region_view->GetMinimumSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
