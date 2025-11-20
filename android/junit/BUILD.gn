@@ -67,4 +67,10 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.util") {
+    sources = [ "src/org/chromium/chrome/browser/util/BraveReferrerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
 }
