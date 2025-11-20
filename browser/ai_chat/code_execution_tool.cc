@@ -21,7 +21,6 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -33,38 +32,11 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 
 }  // namespace
 
-class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
- public:
-  explicit CodeSandboxWebContentsObserver(content::WebContents* web_contents)
-      : content::WebContentsObserver(web_contents) {}
-
-  ~CodeSandboxWebContentsObserver() override = default;
-
-  void OnDidAddMessageToConsole(
-      content::RenderFrameHost* source_frame,
-      blink::mojom::ConsoleMessageLevel log_level,
-      const std::u16string& message,
-      int32_t line_no,
-      const std::u16string& source_id,
-      const std::optional<std::u16string>& untrusted_stack_trace) override {
-    console_messages_.push_back(base::UTF16ToUTF8(message));
-  }
-
-  std::string GetConsoleContents() const {
-    return base::JoinString(console_messages_, "\n");
-  }
-
- private:
-  std::vector<std::string> console_messages_;
-};
-
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
     std::unique_ptr<content::WebContents> web_contents,
-    std::unique_ptr<CodeSandboxWebContentsObserver> observer,
     raw_ptr<Profile> otr_profile,
     UseToolCallback callback)
     : web_contents(std::move(web_contents)),
-      observer(std::move(observer)),
       otr_profile(otr_profile),
       callback(std::move(callback)) {}
 
@@ -150,13 +122,10 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
   content::WebContents::CreateParams create_params(otr_profile);
   auto web_contents = content::WebContents::Create(create_params);
 
-  requests_.emplace_back(std::move(web_contents), nullptr, otr_profile,
+  requests_.emplace_back(std::move(web_contents), otr_profile,
                          std::move(callback));
 
   auto request_it = std::prev(requests_.end());
-  request_it->observer = std::make_unique<CodeSandboxWebContentsObserver>(
-      request_it->web_contents.get());
-
   auto* rfh = request_it->web_contents->GetPrimaryMainFrame();
 
   request_it->web_contents->GetController().LoadURL(
@@ -181,7 +150,6 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 void CodeExecutionTool::HandleScriptResult(
     std::list<CodeExecutionRequest>::iterator request_it,
     base::Value result) {
-  LOG(ERROR) << "HandleScriptResult: " << result.DebugString();
   if (!result.is_string()) {
     HandleResult(request_it, "Error: Invalid result type");
     return;

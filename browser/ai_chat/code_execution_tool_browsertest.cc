@@ -89,7 +89,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, HelloWorld) {
   std::string output;
-  ExecuteCode("console.log('hello world')", &output);
+  ExecuteCode("return 'hello world'", &output);
   EXPECT_EQ(output, "hello world");
 }
 
@@ -103,14 +103,15 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
       R"(', false);
         try {
           xhr.send();
-          console.log('Request succeeded: ' + xhr.responseText);
+          return 'Request succeeded: ' + xhr.responseText;
         } catch (e) {
-          console.log('Error: ' + e.message);
+          return 'External request error: ' + e.message;
         }
       )"});
 
   std::string output;
   ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("External request error:"));
   EXPECT_THAT(output, HasSubstr("action has been blocked"));
 }
 
@@ -122,9 +123,9 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
       if (n <= 1) return n;
       return fibonacci(n - 1) + fibonacci(n - 2);
     }
-    console.log('Starting computation...');
-    const result = fibonacci(45);
-    console.log('Result: ' + result);
+    const output = 'Starting computation...';
+    output += `Result: ${fibonacci(45)}`;
+    return output;
   )";
 
   std::string output;
@@ -135,8 +136,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
                        WindowAndLocationAreUndefined) {
   std::string script = R"(
-    console.log('window: ' + typeof window);
-    console.log('location: ' + typeof location);
+    return `window: ${typeof window} location: ${typeof location}`;
   )";
 
   std::string output;
