@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index ca0bba30c5058ff4e1230502540f60a154878b95..542dee342a10318eb2ad0bf9fcfcb1ef632de156 100644
+index 90b8dbac885c1145265ed75faa878feacd0fd207..999005dcfeb0ead6cb14530f589adb18ab8d1546 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -602,6 +602,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
