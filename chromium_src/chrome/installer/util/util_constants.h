@@ -34,7 +34,7 @@
 
 namespace installer {
 
-  // The type of an update archive.
+// The type of an update archive.
 enum ArchiveType {
   UNKNOWN_ARCHIVE_TYPE,     // Unknown or uninitialized.
   FULL_ARCHIVE_TYPE,        // Full chrome.7z archive.
