@@ -12,7 +12,6 @@
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_opener.h"
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
 #include "ios/chrome/browser/tabs/model/synced_window_delegate_browser_agent.h"
-#include "ios/web/public/session/crw_navigation_item_storage.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
