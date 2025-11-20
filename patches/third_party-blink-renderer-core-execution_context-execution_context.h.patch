@@ -1,21 +1,27 @@
 diff --git a/third_party/blink/renderer/core/execution_context/execution_context.h b/third_party/blink/renderer/core/execution_context/execution_context.h
-index ce25ad394f20898e5581b2121748b303bc8fbc60..bb3b9458e8961ffe7157a9120035a46256e3bd18 100644
+index ca705e013099539ce79ec0480f16fe922795ece0..ab44615ed99115d0774f114c99239fe3c2f0842f 100644
 --- a/third_party/blink/renderer/core/execution_context/execution_context.h
 +++ b/third_party/blink/renderer/core/execution_context/execution_context.h
-@@ -135,7 +135,7 @@ enum ReferrerPolicySource { kPolicySourceHttpHeader, kPolicySourceMetaTag };
- // by an extension developer, but these share an ExecutionContext (the window)
- // in common.
- class CORE_EXPORT ExecutionContext
--    : public Supplementable<ExecutionContext, 33>,
-+    : public Supplementable<ExecutionContext, 34>,
-       public MojoBindingContext,
-       public UseCounterAndConsoleLogger,
-       public FeatureContext {
-@@ -174,6 +174,7 @@ class CORE_EXPORT ExecutionContext
-     kCanvasResourceProviderCache = 30,
-     kExecutionContextClipboardEventState = 31,
-     kCachedVideoFramePool = 32
-+    , kBraveSessionCache,
-   };
+@@ -803,6 +803,14 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
+     web_view_android_ = web_view_android;
+   }
  
-   ExecutionContext(const ExecutionContext&) = delete;
++  ForwardDeclaredMember<brave::BraveSessionCache> GetBraveSessionCache() const {
++    return brave_session_cache_;
++  }
++  void SetBraveSessionCache(
++      ForwardDeclaredMember<brave::BraveSessionCache> brave_session_cache) {
++    brave_session_cache_ = brave_session_cache;
++  }
++
+  protected:
+   ExecutionContext(v8::Isolate* isolate, Agent* agent, bool is_window = false);
+   ~ExecutionContext() override;
+@@ -910,6 +918,7 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
+   ForwardDeclaredMember<WebCodecsLogger> web_codecs_logger_;
+   ForwardDeclaredMember<WebPrintingManager> web_printing_manager_;
+   ForwardDeclaredMember<WebViewAndroid> web_view_android_;
++  ForwardDeclaredMember<brave::BraveSessionCache> brave_session_cache_;
+ };
+ 
+ }  // namespace blink
