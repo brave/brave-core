@@ -112,12 +112,15 @@ void CandleService::LoadModelFiles(const base::FilePath& weights_path,
 }
 
 void CandleService::Embed(const std::string& text, EmbedCallback callback) {
+  LOG(INFO) << "CandleService::Embed called with text length=" << text.length();
+
   if (!embedding_gemma_remote_) {
-    DVLOG(0) << "Embedding Gemma not initialized";
+    LOG(WARNING) << "Embedding Gemma remote not bound - model not loaded/initialized";
     std::move(callback).Run({});
     return;
   }
 
+  LOG(INFO) << "Forwarding Embed request to EmbeddingGemma";
   embedding_gemma_remote_->Embed(text, std::move(callback));
 }
 
