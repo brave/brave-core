@@ -43,6 +43,7 @@ mod ffi {
 
         fn make_chain_metadata() -> Box<ChainMetadata>;
         fn add_chain_metadata(self: &mut ChainMetadata, chain_id: &str, chain_name: &str) -> bool;
+        fn has_chain_metadata(self: &ChainMetadata, chain_id: &str) -> bool;
 
         fn encode_unsigned_transfer_allow_death(
             chain_data: &ChainMetadata,
@@ -104,6 +105,10 @@ impl ChainMetadata {
 
         self.metadata.insert(chain_id.to_string(), meta_data);
         true
+    }
+
+    fn has_chain_metadata(self: &ChainMetadata, chain_id: &str) -> bool {
+        self.metadata.contains_key(chain_id)
     }
 }
 
