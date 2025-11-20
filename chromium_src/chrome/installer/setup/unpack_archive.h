@@ -16,7 +16,7 @@ namespace installer {
 class InstallationState;
 class InstallerState;
 
-// The sole purpose for this declaration is to change the installer_state
+// The sole purpose of this declaration is to change the installer_state
 // parameter from const to non-const. This lets us stuff return values into
 // installer_state in a way that otherwise preserves upstream's function
 // signatures. Specifically:
