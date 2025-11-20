@@ -67,6 +67,12 @@ def main():
 
     subprocess.run([CARGO, 'vendor'], check=True)
 
+    # Clean up compiled objects and DLLs from vendor directory
+    for pattern in ['**/*.o', '**/*.dll']:
+        for file_path in Path('vendor').glob(pattern):
+            print(f'Removing: {file_path}')
+            file_path.unlink()
+
     # Restore backed up files
     for file_path, content in backed_up_files.items():
         path = Path(file_path)
