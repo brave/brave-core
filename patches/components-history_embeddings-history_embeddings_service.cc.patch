@@ -1,0 +1,13 @@
+diff --git a/components/history_embeddings/history_embeddings_service.cc b/components/history_embeddings/history_embeddings_service.cc
+index 8fa486c84e47758b0af7febd45be07a06236c917..018b303a880ed70d6031d36e08647297b1129efd 100644
+--- a/components/history_embeddings/history_embeddings_service.cc
++++ b/components/history_embeddings/history_embeddings_service.cc
+@@ -1018,7 +1018,7 @@ void HistoryEmbeddingsService::OnPassageVisibilityCalculated(
+     const std::vector<page_content_annotations::BatchAnnotationResult>&
+         annotation_results) {
+   if (annotation_results.empty()) {
+-    scored_url_rows.clear();
++    //scored_url_rows.clear();
+   } else {
+     CHECK_EQ(scored_url_rows.size(), annotation_results.size());
+ 

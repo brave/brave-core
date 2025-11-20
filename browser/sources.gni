@@ -140,7 +140,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
   "//brave/browser/email_aliases",
-  "//brave/browser/local_ai",
+  "//brave/browser/history_embeddings",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",

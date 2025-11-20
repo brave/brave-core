@@ -1,0 +1,22 @@
+diff --git a/components/history_embeddings/history_embeddings_features.cc b/components/history_embeddings/history_embeddings_features.cc
+index 96a567a11f4c631e6b187cf1b96146cf72317c15..9a8f0ff0b564987d5eeaa74d5ffa43674c0eced6 100644
+--- a/components/history_embeddings/history_embeddings_features.cc
++++ b/components/history_embeddings/history_embeddings_features.cc
+@@ -175,7 +175,7 @@ const base::FeatureParam<int> kMaxAnswererContextUrlCount(
+ const base::FeatureParam<double> kWordMatchMinEmbeddingScore(
+     &kHistoryEmbeddings,
+     "WordMatchMinEmbeddingScore",
+-    0.7);
++    0.4);
+ 
+ const base::FeatureParam<int> kWordMatchMinTermLength(&kHistoryEmbeddings,
+                                                       "WordMatchMinTermLength",
+@@ -202,7 +202,7 @@ const base::FeatureParam<int> kWordMatchMaxTermCount(&kHistoryEmbeddings,
+ const base::FeatureParam<double> kWordMatchRequiredTermRatio(
+     &kHistoryEmbeddings,
+     "WordMatchRequiredTermRatio",
+-    1.0);
++    0.8);
+ 
+ const base::FeatureParam<bool> kScrollTagsEnabled(&kHistoryEmbeddings,
+                                                   "ScrollTagsEnabled",
