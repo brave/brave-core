@@ -9,11 +9,12 @@
 
 #include <chrome/installer/mini_installer/mini_installer_unittest.cc>
 
+#define PREVIOUS_VERSION L"62.0.1234.0"
+
 namespace mini_installer {
 
 namespace {
 
-#define PREVIOUS_VERSION L"62.0.1234.0"
 constexpr wchar_t kPreviousVersion[] = PREVIOUS_VERSION;
 
 class FakeConfiguration : public Configuration {
@@ -90,3 +91,5 @@ TEST_F(GetPreviousSetupExePathTest, QuoteStripping) {
 }
 
 }  // namespace mini_installer
+
+#undef PREVIOUS_VERSION
