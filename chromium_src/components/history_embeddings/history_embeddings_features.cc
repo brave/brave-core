@@ -7,6 +7,9 @@
 
 #include <components/history_embeddings/history_embeddings_features.cc>
 
+// Keep upstream history embeddings flags disabled by default. Brave gates
+// the feature via kBraveHistoryEmbeddings in history_embeddings_utils.cc
+// overrides, so these raw flags should not activate independently.
 namespace history_embeddings {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

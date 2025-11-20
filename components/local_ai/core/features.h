@@ -10,6 +10,7 @@
 
 namespace local_ai::features {
 
+BASE_DECLARE_FEATURE(kBraveHistoryEmbeddings);
 BASE_DECLARE_FEATURE(kLocalAIModels);
 
 }  // namespace local_ai::features
