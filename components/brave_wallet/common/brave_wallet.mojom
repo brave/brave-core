@@ -461,7 +461,10 @@ interface PageHandler {
   // Mobile only - Used by the brave://wallet page to open up the unlock UI.
   UnlockWalletUI();
 
-  // iOS only - Used by Wallet WebUI when the user tap to open onboarding flow.
+  // Mobile only
+  // - Used by iOS Wallet WebUI when the user tap to open onboarding flow.
+  // - Also available for Android and can be implemented once Android
+  // start allowing Wallet WebUI with no wallet created.
   ShowOnboarding(bool is_new_wallet);
 };
 
