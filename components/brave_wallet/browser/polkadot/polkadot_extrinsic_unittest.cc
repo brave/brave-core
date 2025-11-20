@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -28,6 +30,14 @@ inline constexpr const char kWestendChainType[] = "Westend";
 inline constexpr const char kPolkadotChainType[] = "Polkadot";
 inline constexpr const char kWestendAssetHubChainType[] = "Westend Asset Hub";
 inline constexpr const char kPolkadotAssetHubChainType[] = "Polkadot Asset Hub";
+
+// Taken from:
+// https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
+constexpr uint8_t kSchnorrkelSeed[] = {
+    157, 97,  177, 157, 239, 253, 90, 96,  186, 132, 74,
+    244, 146, 236, 44,  196, 68,  73, 197, 105, 123, 50,
+    105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
+};
 
 }  // namespace
 
@@ -401,6 +411,175 @@ TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
                                                 testnet_extrinsic));
   EXPECT_FALSE(PolkadotUnsignedTransfer::Decode(mainnet_assethub_metadata,
                                                 testnet_extrinsic));
+}
+
+TEST(PolkadotExtrinsics, SignaturePayload) {
+  auto testnet_metadata =
+      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+
+  auto mainnet_metadata =
+      PolkadotChainMetadata::FromChainName(kPolkadotChainType).value();
+
+  uint32_t sender_nonce = 2;
+
+  uint128_t send_amount = 1234;
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> recipient = {};
+  base::HexStringToSpan(kBob, recipient);
+
+  uint32_t spec_version = 1020001;
+  uint32_t transaction_version = 27;
+
+  uint32_t block_number = 0x1b41217;
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
+      genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0xbdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a671913",
+      block_hash));
+
+  auto encoded = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, recipient,
+      spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  constexpr const char kExpected[] =
+      R"(0400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
+
+  EXPECT_EQ(base::HexEncodeLower(encoded), kExpected);
+}
+
+TEST(PolkadotExtrinsics, SignedExtrinsic) {
+  auto testnet_metadata =
+      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+
+  std::array<uint8_t, 32> recipient = {};
+  base::HexStringToSpan(kBob, recipient);
+
+  uint128_t send_amount = 1234;
+  uint32_t spec_version = 1020001;
+  uint32_t transaction_version = 27;
+
+  uint32_t sender_nonce = 0;
+  uint32_t block_number = 28636844;
+  const char block_hash_encoded[] =
+      R"(0xe5ae4dfe809c0ec870e18c2cd8b0d97ff00473f1d9b82b03a746d913e43b9a77)";
+
+  const char genesis_hash_encoded[] =
+      R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
+
+  PolkadotUnsignedTransfer transfer(recipient, send_amount);
+
+  uint32_t account_index = 0;
+
+  PolkadotKeyring keyring(kSchnorrkelSeed, mojom::KeyringId::kPolkadotTestnet);
+  keyring.AddNewHDAccount(account_index);
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, recipient,
+      spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  auto signature = keyring.SignMessage(signature_payload, account_index);
+
+  EXPECT_TRUE(
+      keyring.VerifyMessage(signature, signature_payload, account_index));
+
+  auto signed_extrinsic = make_signed_extrinsic(
+      *testnet_metadata, keyring.GetPublicKey(0), recipient, send_amount_bytes,
+      signature, block_number, sender_nonce);
+
+  auto signed_extrinsic_encoded = base::HexEncodeLower(signed_extrinsic);
+
+  /*
+    This extrinsic lives at the testnet here:
+    https://westend.subscan.io/extrinsic/28636848-2
+    Full extrinsic is:
+      35028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274014cc9388b153151257fd528ca6dda63edc2a633f9252ee6d024346a003d97680037729d88d4c9544e20aa158a220f6d5a582dd6014ccb20cf1b1672a23425778dc5020000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913
+
+    Broken down, this becomes:
+
+    3502 // SCALE-encoded length
+    84   // Sign-bit set (0x80), extrinsic version 4.
+    00   // MultiAddress type.
+    d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274
+    01   // Signature type (sr25519).
+    4cc9388b153151257fd528ca6dda63edc2a633f9252ee6d024346a003d97680037729d88d4c9544e20aa158a220f6d5a582dd6014ccb20cf1b1672a23425778d
+    c502 // Mortality era.
+    00   // SCALE-encoded account nonce.
+    00   // Tip.
+    00   // Mode.
+    0400 // Pallet + call index.
+    00   // MultiAddress type.
+    8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48
+    4913 // SCALE-encoded send amount.
+  */
+
+  std::string_view extrinsic = signed_extrinsic_encoded;
+
+  EXPECT_EQ(extrinsic.substr(0, 4), "3502");
+  extrinsic.remove_prefix(4);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "84");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "00");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 64),
+            base::HexEncodeLower(keyring.GetPublicKey(account_index)));
+  extrinsic.remove_prefix(64);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "01");
+  extrinsic.remove_prefix(2);
+
+  std::array<uint8_t, 64> expected_signature = {};
+  base::HexStringToSpan(extrinsic.substr(0, 128), expected_signature);
+  extrinsic.remove_prefix(128);
+
+  EXPECT_TRUE(keyring.VerifyMessage(expected_signature, signature_payload,
+                                    account_index));
+
+  EXPECT_EQ(extrinsic.substr(0, 4), "c502");
+  extrinsic.remove_prefix(4);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "00");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "00");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "00");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 4), "0400");
+  extrinsic.remove_prefix(4);
+
+  EXPECT_EQ(extrinsic.substr(0, 2), "00");
+  extrinsic.remove_prefix(2);
+
+  EXPECT_EQ(extrinsic.substr(0, 64), kBob);
+  extrinsic.remove_prefix(64);
+
+  EXPECT_EQ(extrinsic.substr(0, 4), "4913");
+  extrinsic.remove_prefix(4);
 }
 
 }  // namespace brave_wallet
