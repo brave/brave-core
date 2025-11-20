@@ -19,6 +19,10 @@ namespace sidebar {
 class SidebarController;
 }  // namespace sidebar
 
+namespace email_aliases {
+class EmailAliasesController;
+}  // namespace email_aliases
+
 // This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
 // because this file only could be included at the bottom of
 // //chrome/browser/ui/browser_window/public/browser_window_features.h. So we
@@ -45,6 +49,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return playlist_side_panel_coordinator_.get();
   }
 
+  email_aliases::EmailAliasesController* email_aliases_controller() {
+    return email_aliases_controller_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
@@ -52,6 +60,8 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       rewards_panel_coordinator_;
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+  std::unique_ptr<email_aliases::EmailAliasesController>
+      email_aliases_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

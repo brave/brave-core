@@ -31,13 +31,14 @@ if (is_android) {
 }
 if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
+    "//brave/browser/ui/email_aliases",
+    "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views:layout_provider",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/location_bar",
     "//brave/browser/ui/views/page_info",
-    "//brave/browser/ui/sidebar",
   ]
 
   if (enable_ai_chat) {

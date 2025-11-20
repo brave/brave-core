@@ -15,7 +15,6 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
@@ -395,6 +394,10 @@ void EmailAliasesService::AddObserver(
         mojom::AuthState::New(mojom::AuthenticationStatus::kUnauthenticated,
                               /*email=*/"", /*error_message=*/std::nullopt));
   }
+}
+
+bool EmailAliasesService::IsAuthenticated() const {
+  return !auth_email_.empty() && !auth_token_.empty();
 }
 
 std::string EmailAliasesService::GetAuthTokenForTesting() const {

@@ -26,9 +26,11 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -351,6 +353,14 @@ void OnRewriteSuggestionCompleted(
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+email_aliases::EmailAliasesController* GetEmailAliasesController(
+    BrowserWindowInterface* browser) {
+  if (!browser) {
+    return nullptr;
+  }
+  return browser->GetFeatures().email_aliases_controller();
+}
+
 }  // namespace
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
@@ -424,6 +434,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return true;
     case IDC_OPEN_IN_CONTAINER:
       return true;
+    case IDC_NEW_EMAIL_ALIAS:
+      return !!GetEmailAliasesController(GetBrowser());
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -494,6 +506,12 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
+      break;
+    case IDC_NEW_EMAIL_ALIAS:
+      if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
+        email_aliases->ShowBubble(GetRenderFrameHost(),
+                                  params_.field_renderer_id);
+      }
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
@@ -759,6 +777,14 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     } else {
       menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    }
+  }
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
+        email_aliases && email_aliases->IsAvailableFor(params_)) {
+      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                      IDS_IDC_NEW_EMAIL_ALIAS);
     }
   }
 }
