@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Candle Embedding Gemma Bridge</title>
+  </head>
+  <body>
+    <h2>Embedding Gemma WASM</h2>
+    <div id="status" class="status loading">Initializing...</div>
+    <div class="examples">
+      <strong>Examples:</strong>
+      <button class="example-btn" data-text="The cat sits outside">Example 1</button>
+      <button class="example-btn" data-text="A man is playing guitar">Example 2</button>
+      <button class="example-btn" data-text="I love pasta">Example 3</button>
+      <button class="example-btn" data-text="The new movie is awesome">Example 4</button>
+    </div>
+    <input id="textInput" placeholder="Enter text to embed" disabled>
+    <button id="embedBtn" disabled>Generate Embedding</button>
+    <div id="result" class="result"></div>
+    <script type="module"
+      src="candle_embedding_gemma_bridge.bundle.js"></script>
+  </body>
+</html>
