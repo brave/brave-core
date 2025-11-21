@@ -17,6 +17,7 @@ import os.path
 import sys
 import glob
 from lib.l10n.grd_utils import (braveify_grd_in_place, braveify_grd_tree,
+                                INSTALLER_STRINGS,
                                 GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
                                 write_xml_file_from_tree)
@@ -106,6 +107,61 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
         new_element.text = google_message_elem.text
         new_element.set('desc', google_message_elem.get('desc'))
     return migrate_google_chrome_xtb_translations_for_messages(message_ids)
+
+
+def add_installer_strings_xtb_translations_for_messages(message_ids):
+    installer_xtb_files = glob.glob(
+        os.path.join(
+            BRAVE_SOURCE_ROOT,
+            'chromium_src/chrome/installer/setup/resources/setup_resources_*.xtb'
+        ))
+    for installer_xtb_path in installer_xtb_files:
+        installer_xtb_xml_tree = etree.parse(installer_xtb_path)
+        lang = os.path.basename(installer_xtb_path).replace(
+            'setup_resources_', '').replace('.xtb', '')
+        if not lang:
+            print(
+                'Skipping file {} because unable to determine language'.format(
+                    installer_xtb_path))
+            continue
+        brave_xtb_path = os.path.join(
+            BRAVE_SOURCE_ROOT,
+            'app/resources/brave_strings_{}.xtb'.format(lang))
+        if not os.path.exists(brave_xtb_path):
+            print('Unable to find brave translation file {}'.format(
+                brave_xtb_path))
+            return False
+        messages = [(message_id,
+                     installer_xtb_xml_tree.xpath('//translation[@id="' +
+                                                  message_id + '"]')[0].text)
+                    for message_id in message_ids]
+
+        write_new_translations_to_xtb(brave_xtb_path, messages)
+
+    return True
+
+
+def add_installer_strings(brave_strings_xml_tree, installer_strings):
+    print('Adding installer strings...')
+    installer_strings_grd_path = os.path.join(
+        BRAVE_SOURCE_ROOT,
+        'chromium_src/chrome/installer/setup/resources/setup_resources.grd')
+    installer_strings_xml_tree = etree.parse(installer_strings_grd_path)
+    message_ids = []
+    messages_element = brave_strings_xml_tree.xpath('//messages')[0]
+    if_element = etree.SubElement(messages_element, 'if')
+    if_element.set('expr', 'is_win')
+    for item in installer_strings:
+        message_elem = installer_strings_xml_tree.xpath(
+            '//message[@name="{}"]'.format(item))[0]
+        message_text = message_elem.text.lstrip().rstrip()
+        message_id = tclib.GenerateMessageId(message_text)
+        message_ids.append(message_id)
+        new_element = etree.SubElement(if_element, 'message')
+        new_element.set('name', item)
+        new_element.text = message_elem.text
+        new_element.set('desc', message_elem.get('desc'))
+    return add_installer_strings_xtb_translations_for_messages(message_ids)
 
 
 def parse_args():
@@ -233,6 +289,8 @@ def main():
     if basename == 'brave_strings':
         if not migrate_google_chrome_strings(
                 xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
+            return 1
+        if not add_installer_strings(xml_tree, INSTALLER_STRINGS):
             return 1
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = 'Brave Nightly'
