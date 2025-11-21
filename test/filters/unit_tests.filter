@@ -307,6 +307,7 @@
 
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
@@ -659,10 +660,11 @@
 # includes entries not supported by Brave (i.e. "@gemini").
 -OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
 
-# This test fails because ContextualTasksContextService cannot be created
-# because it depends on PageEmbeddingsService being created and that service
-# is not created because we disable kHistoryEmbeddings.
+# These tests fail because ContextualTasksContextService cannot be created
+# because it depends on PageEmbeddingsService being created and that service is
+# not created because we disable kHistoryEmbeddings.
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+-PageEmbeddingsServiceTest.*
 
 # These tests fail because we disable
 # switches::kSyncEnableBookmarksInTransportMode which leads to
