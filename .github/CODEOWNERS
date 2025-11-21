@@ -229,6 +229,7 @@ docs/gni_sources.md @brave/sources-gni-reviewers
 
 # Rust code
 **/*.rs @brave/rust-reviewers
+docs/rust.md @brave/rust-reviewers
 
 # Third-party binaries
 **/*.aar @brave/sec-team
