@@ -12,6 +12,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -33,7 +35,8 @@ class SidebarBrowserTest;
 // SidebarContainerView controls this panel's visibility.
 class BraveSidePanel : public views::View,
                        public views::ViewObserver,
-                       public views::ResizeAreaDelegate {
+                       public views::ResizeAreaDelegate,
+                       public SidePanelAnimationCoordinator::Observer {
   METADATA_HEADER(BraveSidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
@@ -51,6 +54,10 @@ class BraveSidePanel : public views::View,
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
+
+  SidePanelAnimationCoordinator* animation_coordinator() {
+    return animation_coordinator_.get();
+  }
 
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
@@ -114,6 +121,14 @@ class BraveSidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
+  // SidePanelAnimationCoordinator::AnimationObserver
+  void OnAnimationSequenceProgressed(
+      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
+      double animation_value) override;
+  void OnAnimationSequenceEnded(
+      const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id)
+      override;
+
   void OnSidePanelWidthChanged();
 
   // Monitors addition of content view and change content view property that
@@ -136,6 +151,11 @@ class BraveSidePanel : public views::View,
   // Owned by `this` indirectly through the views tree.
   raw_ptr<views::View> content_parent_view_;
   State state_ = State::kClosed;
+
+  // The animation coordinator for the side panel. This controls all of the
+  // animations that are tied to the side panel when triggering the show and
+  // hide states.
+  std::unique_ptr<SidePanelAnimationCoordinator> animation_coordinator_;
 };
 
 // Alias to the original `SidePanel` to the benefit of upstream code, as
