@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // Selectors
 import {
@@ -100,6 +101,7 @@ import {
   AddressButtonText,
   DomainLoadIcon,
   SearchBoxContainer,
+  PasteButton,
 } from './select_address_modal.style'
 
 interface Props {
@@ -393,6 +395,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       dismissOffchainEnsWarning(true)
     }, [enableEnsOffchainLookup])
 
+    const onPaste = React.useCallback(async () => {
+      const text = await navigator.clipboard.readText()
+      if (text !== '') {
+        setSearchValue(text)
+      }
+    }, [])
+
     if (showChecksumInfo) {
       return (
         <PopupModal
@@ -446,9 +455,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               type='text'
               disabled={isGeneratingAddress}
             >
-              <div slot='right-icon'>
-                <Icon name='copy-plain-text' />
-              </div>
+              <Column slot='right-icon'>
+                <Tooltip text={getLocale('braveWalletPasteFromClipboard')}>
+                  <PasteButton onClick={onPaste}>
+                    <Icon name='copy-plain-text' />
+                  </PasteButton>
+                </Tooltip>
+              </Column>
             </AddressInput>
           </SearchBoxContainer>
           {isGeneratingAddress ? (
