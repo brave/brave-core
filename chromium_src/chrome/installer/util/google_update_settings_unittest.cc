@@ -15,13 +15,13 @@
 
 #include "chrome/installer/util/google_update_settings.h"
 
-#include "brave/installer/chromium_index_helper_begin.h"
+#include "brave/installer/util/chromium_index_helper_begin.h"
 #define UpdateGoogleUpdateApKey UpdateGoogleUpdateApKey_Unused
 #define UpdateInstallStatus UpdateInstallStatus_Unused
 #include <chrome/installer/util/google_update_settings_unittest.cc>
 #undef UpdateInstallStatus
 #undef UpdateGoogleUpdateApKey
-#include "brave/installer/chromium_index_helper_end.h"
+#include "brave/installer/util/chromium_index_helper_end.h"
 
 // Run through all combinations of diff vs. full install, success and failure
 // results, and a fistful of initial "ap" values checking that the expected
