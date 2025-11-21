@@ -290,9 +290,7 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
         new_sources.append(f.LocalPath())
 
     gn_file_filter = lambda f: input_api.FilterSourceFile(
-        f,
-        files_to_check=(r'.+\.gn$', r'.+\.gni$'),
-        files_to_skip=files_to_skip)
+        f, files_to_check=(r'.+\.gn$', r'.+\.gni$'))
 
     all_gn_changed_contents = ''
     for f in input_api.AffectedSourceFiles(gn_file_filter):
