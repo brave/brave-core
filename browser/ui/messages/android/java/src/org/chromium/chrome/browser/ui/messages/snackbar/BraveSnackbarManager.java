@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.view.ViewGroup;
 
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 
 /** Brave's extension of SnackbarManager. */
@@ -27,8 +29,9 @@ public class BraveSnackbarManager extends SnackbarManager {
     public BraveSnackbarManager(
             Activity activity,
             ViewGroup snackbarParentView,
-            @Nullable WindowAndroid windowAndroid) {
-        super(activity, snackbarParentView, windowAndroid);
+            @Nullable WindowAndroid windowAndroid,
+            @Nullable ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+        super(activity, snackbarParentView, windowAndroid, edgeToEdgeControllerSupplier);
     }
 
     @Override

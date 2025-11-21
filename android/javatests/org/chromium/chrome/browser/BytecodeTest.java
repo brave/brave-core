@@ -121,6 +121,7 @@ import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
@@ -147,8 +148,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
-import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
-import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
@@ -712,6 +711,17 @@ public class BytecodeTest {
                         Intent.class,
                         Bundle.class,
                         ChromeInactivityTracker.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
+                        "createNewTabAndShowHomeSurfaceUi",
+                        MethodModifier.STATIC,
+                        Tab.class,
+                        TabCreator.class,
+                        HomeSurfaceTracker.class,
+                        TabModelSelector.class,
+                        String.class,
+                        Tab.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
@@ -1932,24 +1942,6 @@ public class BytecodeTest {
                         Context.class,
                         ContextMenuParams.class,
                         ContextMenuNativeDelegate.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
-                        "org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarView",
-                        Activity.class,
-                        OnClickListener.class,
-                        Snackbar.class,
-                        ViewGroup.class,
-                        WindowAndroid.class,
-                        EdgeToEdgeController.class,
-                        boolean.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager",
-                        "org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManager",
-                        Activity.class,
-                        ViewGroup.class,
-                        WindowAndroid.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",

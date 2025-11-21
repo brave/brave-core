@@ -16,8 +16,6 @@ public class BraveSnackbarManagerClassAdapter extends BraveClassVisitor {
     public BraveSnackbarManagerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sSnackbarManagerClassName, sBraveSnackbarManagerClassName);
-
         deleteField(sBraveSnackbarManagerClassName, "mView");
         makeProtectedField(sSnackbarManagerClassName, "mView");
     }
