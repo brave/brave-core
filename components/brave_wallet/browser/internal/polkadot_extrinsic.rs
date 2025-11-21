@@ -6,9 +6,8 @@
 extern crate cxx;
 extern crate parity_scale_codec;
 
-use std::collections::HashMap;
-
 use parity_scale_codec::{Compact, Decode, Encode};
+use std::fmt;
 
 const EXTRINSIC_VERSION: u8 = 4;
 const MULTIADDRESS_TYPE: u8 = 0;
@@ -39,22 +38,23 @@ const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 4 + 32 + 1;
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     extern "Rust" {
-        type ChainMetadata;
+        type CxxPolkadotChainMetadata;
+        type CxxPolkadotChainMetadataResult;
 
-        fn make_chain_metadata() -> Box<ChainMetadata>;
-        fn add_chain_metadata(self: &mut ChainMetadata, chain_id: &str, chain_name: &str) -> bool;
-        fn has_chain_metadata(self: &ChainMetadata, chain_id: &str) -> bool;
+        fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
+        fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
+        fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
+
+        fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult>;
 
         fn encode_unsigned_transfer_allow_death(
-            chain_data: &ChainMetadata,
-            chain_id: &str,
+            chain_metadata: &CxxPolkadotChainMetadata,
             send_amount_bytes: &[u8; 16],
             pubkey: &[u8; 32],
         ) -> Vec<u8>;
 
         fn decode_unsigned_transfer_allow_death(
-            chain_data: &ChainMetadata,
-            chain_id: &str,
+            chain_metadata: &CxxPolkadotChainMetadata,
             mut input: &[u8],
             pubkey: &mut [u8; 32],
             send_amount: &mut [u8; 16],
@@ -62,74 +62,103 @@ mod ffi {
     }
 }
 
-struct ChainMetadata {
-    metadata: HashMap<String, MetaData>,
+#[macro_export]
+macro_rules! impl_result {
+    ($t:ident, $r:ident) => {
+        impl $r {
+            fn error_message(self: &$r) -> String {
+                match &self.0 {
+                    Err(e) => e.to_string(),
+                    Ok(_) => String::new(),
+                }
+            }
+
+            fn is_ok(self: &$r) -> bool {
+                self.0.is_ok()
+            }
+
+            fn unwrap(self: &mut $r) -> Box<$t> {
+                match std::mem::replace(&mut self.0, Err(Error::AlreadyUnwrapped)) {
+                    Ok(v) => Box::new(v),
+                    Err(e) => panic!("{}", e.to_string()),
+                }
+            }
+        }
+    };
 }
 
-struct MetaData {
+/// Errors that can occur when parsing Polkadot runtime metadata or parsing
+/// extrinsics.
+#[derive(Clone, Debug)]
+pub enum Error {
+    /// The Result has already been unwrapped.
+    AlreadyUnwrapped,
+    /// The supplied chain name did not match our hard-coded whitelist.
+    ChainNameNotFound,
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Error::ChainNameNotFound => {
+                write!(f, "The supplied chain spec name did not match the whitelist.")
+            }
+            Error::AlreadyUnwrapped => write!(f, "Already unwrapped"),
+        }
+    }
+}
+
+struct CxxPolkadotChainMetadata {
     balances_pallet_index: u8,
     transfer_allow_death_call_index: u8,
 }
 
-fn make_chain_metadata() -> Box<ChainMetadata> {
-    Box::new(ChainMetadata { metadata: HashMap::default() })
-}
+struct CxxPolkadotChainMetadataResult(Result<CxxPolkadotChainMetadata, Error>);
 
-impl ChainMetadata {
-    fn add_chain_metadata(self: &mut ChainMetadata, chain_id: &str, chain_name: &str) -> bool {
-        if self.metadata.contains_key(chain_id) {
-            return true;
-        }
+impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
 
-        let meta_data = match chain_name {
-            "Westend" => MetaData {
-                balances_pallet_index: POLKADOT_TESTNET_BALANCES_PALLET,
-                transfer_allow_death_call_index: POLKADOT_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-            },
-            "Westend Asset Hub" => MetaData {
-                balances_pallet_index: POLKADOT_ASSET_HUB_TESTNET_BALANCES_PALLET,
-                transfer_allow_death_call_index:
-                    POLKADOT_ASSET_HUB_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-            },
-            "Polkadot Asset Hub" => MetaData {
-                balances_pallet_index: POLKADOT_ASSET_HUB_MAINNET_BALANCES_PALLET,
-                transfer_allow_death_call_index:
-                    POLKADOT_ASSET_HUB_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-            },
-            "Polkadot" => MetaData {
-                balances_pallet_index: POLKADOT_MAINNET_BALANCES_PALLET,
-                transfer_allow_death_call_index: POLKADOT_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-            },
-            _ => return false,
-        };
+fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
+    let metadata = match chain_name {
+        "Westend" => Ok(CxxPolkadotChainMetadata {
+            balances_pallet_index: POLKADOT_TESTNET_BALANCES_PALLET,
+            transfer_allow_death_call_index: POLKADOT_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
+        }),
+        "Westend Asset Hub" => Ok(CxxPolkadotChainMetadata {
+            balances_pallet_index: POLKADOT_ASSET_HUB_TESTNET_BALANCES_PALLET,
+            transfer_allow_death_call_index:
+                POLKADOT_ASSET_HUB_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
+        }),
+        "Polkadot Asset Hub" => Ok(CxxPolkadotChainMetadata {
+            balances_pallet_index: POLKADOT_ASSET_HUB_MAINNET_BALANCES_PALLET,
+            transfer_allow_death_call_index:
+                POLKADOT_ASSET_HUB_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
+        }),
+        "Polkadot" => Ok(CxxPolkadotChainMetadata {
+            balances_pallet_index: POLKADOT_MAINNET_BALANCES_PALLET,
+            transfer_allow_death_call_index: POLKADOT_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
+        }),
+        _ => Err(Error::ChainNameNotFound),
+    };
 
-        self.metadata.insert(chain_id.to_string(), meta_data);
-        true
-    }
-
-    fn has_chain_metadata(self: &ChainMetadata, chain_id: &str) -> bool {
-        self.metadata.contains_key(chain_id)
-    }
+    Box::new(CxxPolkadotChainMetadataResult(metadata))
 }
 
 fn encode_unsigned_transfer_allow_death(
-    chain_data: &ChainMetadata,
-    chain_id: &str,
+    chain_metadata: &CxxPolkadotChainMetadata,
     send_amount_bytes: &[u8; 16],
     pubkey: &[u8; 32],
 ) -> Vec<u8> {
-    let Some(MetaData { balances_pallet_index, transfer_allow_death_call_index }) =
-        chain_data.metadata.get(chain_id)
-    else {
-        return Vec::new();
-    };
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+        chain_metadata;
 
-    let mut buf = vec![
+    let mut buf = Vec::<u8>::with_capacity(256);
+
+    buf.extend_from_slice(&[
         EXTRINSIC_VERSION,
         *balances_pallet_index,
         *transfer_allow_death_call_index,
         MULTIADDRESS_TYPE,
-    ];
+    ]);
 
     buf.extend_from_slice(pubkey);
 
@@ -143,8 +172,7 @@ fn encode_unsigned_transfer_allow_death(
 }
 
 fn decode_unsigned_transfer_allow_death(
-    chain_data: &ChainMetadata,
-    chain_id: &str,
+    chain_metadata: &CxxPolkadotChainMetadata,
     mut input: &[u8],
     pubkey: &mut [u8; 32],
     send_amount_bytes: &mut [u8; 16],
@@ -167,11 +195,8 @@ fn decode_unsigned_transfer_allow_death(
     }
     input = &input[1..];
 
-    let Some(MetaData { balances_pallet_index, transfer_allow_death_call_index }) =
-        chain_data.metadata.get(chain_id)
-    else {
-        return false;
-    };
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+        chain_metadata;
 
     if input[0] != *balances_pallet_index {
         return false;

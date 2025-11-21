@@ -7,11 +7,14 @@
 
 #include "base/containers/span_rust.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
 namespace {
+
+bool IsBoxNonNull(const rust::Box<CxxPolkadotChainMetadata>& chain_metadata) {
+  return chain_metadata.operator->();
+}
 
 ::rust::Str StringViewToRustStr(std::string_view sv) {
   return ::rust::Str(sv.data(), sv.size());
@@ -19,21 +22,28 @@ namespace {
 
 }  // namespace
 
-PolkadotChainMetadata::PolkadotChainMetadata()
-    : chain_metadata_(make_chain_metadata()) {}
+PolkadotChainMetadata::PolkadotChainMetadata(PolkadotChainMetadata&&) = default;
 
 PolkadotChainMetadata::~PolkadotChainMetadata() = default;
 
-void PolkadotChainMetadata::AddChainMetadata(std::string_view chain_id,
-                                             std::string_view chain_name) {
-  CHECK(!HasChainMetadata(chain_id));
-  chain_metadata_->add_chain_metadata(StringViewToRustStr(chain_id),
-                                      StringViewToRustStr(chain_name));
+std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
+    std::string_view chain_name) {
+  auto result = make_chain_metadata(StringViewToRustStr(chain_name));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+
+  return PolkadotChainMetadata(result->unwrap());
 }
 
-bool PolkadotChainMetadata::HasChainMetadata(std::string_view chain_id) const {
-  return chain_metadata_->has_chain_metadata(StringViewToRustStr(chain_id));
+const CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() const {
+  CHECK(IsBoxNonNull(chain_metadata_));
+  return *chain_metadata_;
 }
+
+PolkadotChainMetadata::PolkadotChainMetadata(
+    ::rust::Box<CxxPolkadotChainMetadata> chain_metadata)
+    : chain_metadata_(std::move(chain_metadata)) {}
 
 PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
     base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
@@ -43,30 +53,21 @@ PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
 }
 
 std::string PolkadotUnsignedTransfer::Encode(
-    std::string_view chain_id,
     const PolkadotChainMetadata& chain_metadata) const {
-  CHECK(IsPolkadotNetwork(chain_id));
-  CHECK(chain_metadata.HasChainMetadata(chain_id));
-
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
       .copy_from(base::byte_span_from_ref(send_amount_));
 
   auto buf = encode_unsigned_transfer_allow_death(
-      chain_metadata.chain_metadata(), StringViewToRustStr(chain_id),
-      send_amount_bytes, recipient_);
+      *chain_metadata, send_amount_bytes, recipient_);
 
-  return base::HexEncode(buf);
+  return base::HexEncodeLower(buf);
 }
 
 // static
 std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::Decode(
-    std::string_view chain_id,
     const PolkadotChainMetadata& chain_metadata,
     std::string_view input) {
-  CHECK(IsPolkadotNetwork(chain_id));
-  CHECK(chain_metadata.HasChainMetadata(chain_id));
-
   std::vector<uint8_t> bytes;
   if (!base::HexStringToBytes(input, &bytes)) {
     return std::nullopt;
@@ -75,9 +76,9 @@ std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::Decode(
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   std::array<uint8_t, 16> send_amount_bytes = {};
 
-  if (!decode_unsigned_transfer_allow_death(
-          chain_metadata.chain_metadata(), StringViewToRustStr(chain_id),
-          base::SpanToRustSlice(bytes), pubkey, send_amount_bytes)) {
+  if (!decode_unsigned_transfer_allow_death(*chain_metadata,
+                                            base::SpanToRustSlice(bytes),
+                                            pubkey, send_amount_bytes)) {
     return std::nullopt;
   }
 
