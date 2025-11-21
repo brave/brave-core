@@ -7,10 +7,11 @@
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_ANDROID_EPHEMERAL_STORAGE_UTILS_H_
 
 #include <string>
+#include "chrome/browser/profiles/profile.h"
 
 namespace ephemeral_storage {
 
-void CloseTabsWithTLD(const std::string& etldplusone);
+void CloseTabsWithTLD(Profile* profile, const std::string& etldplusone);
 
 }  // namespace ephemeral_storage
 

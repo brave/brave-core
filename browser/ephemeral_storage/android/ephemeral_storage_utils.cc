@@ -8,17 +8,15 @@
 #include <cstddef>
 
 #include "base/android/jni_android.h"
-#include "base/android/jni_array.h"
-#include "base/android/jni_string.h"
-#include "base/android/scoped_java_ref.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/android/chrome_jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
 #include "content/public/browser/site_instance.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 
 namespace ephemeral_storage {
 
@@ -49,41 +47,8 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 
-static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorageCallback(
-    JNIEnv* env,
-    const jni_zero::JavaRef<jobjectArray>& tab_array) {
-  // Get array length
-  size_t len = base::android::SafeGetArrayLength(env, tab_array);
-
-  // Iterate through the array
-  for (size_t i = 0; i < len; ++i) {
-    auto tab_object = jni_zero::ScopedJavaLocalRef<jobject>::Adopt(
-        env, static_cast<jobject>(env->GetObjectArrayElement(
-                 tab_array.obj(), base::checked_cast<jsize>(i))));
-    if (!tab_object.obj()) {
-      continue;
-    }
-
-    TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab_object);
-    if (!tab_android) {
-      return;
-    }
-
-    content::WebContents* web_contents = tab_android->web_contents();
-    if (!web_contents) {
-      return;
-    }
-
-    if (auto* ephemeral_storage_tab_helper =
-            ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-                web_contents);
-        ephemeral_storage_tab_helper) {
-      ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
-    }
-  }
-}
-
-void CloseTabsWithTLD(const std::string& etldplusone) {
+void CloseTabsWithTLD(Profile* current_profile, const std::string& etldplusone) {
+  CHECK(current_profile);
   if (etldplusone.empty() ||
       !net::registry_controlled_domains::HostHasRegistryControlledDomain(
           etldplusone,
@@ -92,10 +57,46 @@ void CloseTabsWithTLD(const std::string& etldplusone) {
     return;
   }
 
-  Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
-      base::android::AttachCurrentThread(),
-      base::android::ConvertUTF8ToJavaString(
-          base::android::AttachCurrentThread(), std::move(etldplusone)));
+  std::vector<TabAndroid*> tabs_to_close;
+  for (TabModel* model : TabModelList::models()) {
+    const size_t tab_count = model->GetTabCount();
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = model->GetTabAt(index);
+      // Do not process tabs from other profiles.
+      if (!tab || current_profile != tab->profile()) {
+        continue;
+      }
+
+      content::WebContents* web_contents = tab->GetContents();
+      if (!web_contents) {
+        continue;
+      }
+
+      const auto tab_tld =
+          net::URLToEphemeralStorageDomain(web_contents->GetLastCommittedURL());
+      if (tab_tld.empty() || tab_tld != etldplusone) {
+        continue;
+      }
+
+      if (auto* ephemeral_storage_tab_helper =
+              ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+                  web_contents);
+          ephemeral_storage_tab_helper) {
+        // Enforce storage cleaning before closing the tab.
+        ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+
+        tabs_to_close.push_back(tab);
+      }
+    }
+  }
+
+  // Close all collected tabs
+  for(TabAndroid* tab : tabs_to_close) {
+    if(!tab){
+      continue;
+    }
+    tab->Close();
+  }
 }
 
 }  // namespace ephemeral_storage

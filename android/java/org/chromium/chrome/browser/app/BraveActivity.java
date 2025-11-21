@@ -110,7 +110,6 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -191,7 +190,6 @@ import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDeleg
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -238,7 +236,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -247,7 +244,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 /** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
@@ -263,7 +259,6 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
                 OnSharedPreferenceChangeListener {
-    public static final String TAG = "BraveActivity";
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -1942,59 +1937,6 @@ public abstract class BraveActivity extends ChromeActivity
             if (tab != null) {
                 tab.setClosing(true);
                 tabModel.getTabRemover().closeTabs(TabClosureParams.closeTab(tab).build(), false);
-            }
-        }
-    }
-
-    /** Close all tabs whose domain matches with a given eTLD+1. */
-    public void closeTabsWithTLD(
-            @NonNull final String etldplusone, @Nullable Consumer<Tab[]> callback) {
-        // Process all TabModels from all windows
-        for (TabModelSelector selector :
-                TabWindowManagerSingleton.getInstance().getAllTabModelSelectors()) {
-            for (TabModel tabModel : selector.getModels()) {
-                closeTabsByTldInModel(tabModel, etldplusone, callback);
-            }
-        }
-    }
-
-    private void closeTabsByTldInModel(
-            @NonNull TabModel tabModel,
-            @NonNull String etldplusone,
-            @Nullable Consumer<Tab[]> callback) {
-        final int count = tabModel.getCount();
-        final List<Tab> tabsToClose = new ArrayList<>();
-
-        // Collect all tabs that match the eTLD+1
-        for (int i = 0; i < count; i++) {
-            Tab tab = tabModel.getTabAt(i);
-            if (tab != null) {
-                String spec = tab.getUrl().getSpec();
-                if (spec == null) continue;
-
-                String domain = UrlUtilities.getDomainAndRegistry(spec, false);
-                if (domain == null || domain.isEmpty()) {
-                    continue;
-                }
-
-                if (domain.equals(etldplusone)) {
-                    tabsToClose.add(tab);
-                }
-            }
-        }
-
-        // Close all matching tabs in a single operation
-        if (!tabsToClose.isEmpty()) {
-            try {
-                if (callback != null) {
-                    callback.accept(tabsToClose.toArray(new Tab[tabsToClose.size()]));
-                }
-                tabModel.getTabRemover()
-                        .closeTabs(
-                                TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
-                                false);
-            } catch (Exception e) {
-                Log.e(TAG, "Error closing tabs with eTLD+1: " + etldplusone, e);
             }
         }
     }

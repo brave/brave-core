@@ -23,28 +23,8 @@ public class BraveEphemeralStorageUtils {
         BraveEphemeralStorageUtilsJni.get().cleanupTLDEphemeralStorage(tab);
     }
 
-    public static void cleanupTLDEphemeralStorageCallback(Tab[] tabs) {
-        BraveEphemeralStorageUtilsJni.get().cleanupTLDEphemeralStorageCallback(tabs);
-    }
-
-    @CalledByNative
-    public static void closeTabsWithTLD(String etldplusone) {
-        try {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            if (braveActivity != null) {
-                braveActivity.closeTabsWithTLD(
-                        etldplusone,
-                        BraveEphemeralStorageUtils::cleanupTLDEphemeralStorageCallback);
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "closeTabsWithTLD error" + e);
-        }
-    }
-
     @NativeMethods
     interface Natives {
         void cleanupTLDEphemeralStorage(Tab tab);
-
-        void cleanupTLDEphemeralStorageCallback(Tab[] tabs);
     }
 }

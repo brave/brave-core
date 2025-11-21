@@ -196,7 +196,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
     tab_strip->CloseTabs(base::span<int>(closing_tab_indices));
   }
 #else
-  CloseTabsWithTLD(ephemeral_domain);
+  CloseTabsWithTLD(Profile::FromBrowserContext(context_), ephemeral_domain);
 #endif
 }
 
