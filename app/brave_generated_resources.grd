@@ -103,13 +103,18 @@
     <output filename="brave_generated_resources_en-XA.pak" type="data_package" lang="en-XA" />
   </outputs>
   <translations>
+    <file path="resources/brave_generated_resources_af.xtb" lang="af" />
     <file path="resources/brave_generated_resources_am.xtb" lang="am" />
     <file path="resources/brave_generated_resources_ar.xtb" lang="ar" />
+    <file path="resources/brave_generated_resources_as.xtb" lang="as" />
     <file path="resources/brave_generated_resources_az.xtb" lang="az" />
+    <file path="resources/brave_generated_resources_be.xtb" lang="be" />
+    <file path="resources/brave_generated_resources_bs.xtb" lang="bs" />
     <file path="resources/brave_generated_resources_bg.xtb" lang="bg" />
     <file path="resources/brave_generated_resources_bn.xtb" lang="bn" />
     <file path="resources/brave_generated_resources_ca.xtb" lang="ca" />
     <file path="resources/brave_generated_resources_cs.xtb" lang="cs" />
+    <file path="resources/brave_generated_resources_cy.xtb" lang="cy" />
     <file path="resources/brave_generated_resources_da.xtb" lang="da" />
     <file path="resources/brave_generated_resources_de.xtb" lang="de" />
     <file path="resources/brave_generated_resources_el.xtb" lang="el" />
@@ -117,6 +122,7 @@
     <file path="resources/brave_generated_resources_es.xtb" lang="es" />
     <file path="resources/brave_generated_resources_es-419.xtb" lang="es-419" />
     <file path="resources/brave_generated_resources_et.xtb" lang="et" />
+    <file path="resources/brave_generated_resources_eu.xtb" lang="eu" />
     <file path="resources/brave_generated_resources_fa.xtb" lang="fa" />
     <file path="resources/brave_generated_resources_fi.xtb" lang="fi" />
     <file path="resources/brave_generated_resources_fil.xtb" lang="fil" />
@@ -127,7 +133,9 @@
     <file path="resources/brave_generated_resources_hi.xtb" lang="hi" />
     <file path="resources/brave_generated_resources_hr.xtb" lang="hr" />
     <file path="resources/brave_generated_resources_hu.xtb" lang="hu" />
+    <file path="resources/brave_generated_resources_hy.xtb" lang="hy" />
     <file path="resources/brave_generated_resources_id.xtb" lang="id" />
+    <file path="resources/brave_generated_resources_is.xtb" lang="is" />
     <file path="resources/brave_generated_resources_it.xtb" lang="it" />
     <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
     <file path="resources/brave_generated_resources_iw.xtb" lang="he" />
@@ -137,6 +145,7 @@
     <file path="resources/brave_generated_resources_km.xtb" lang="km" />
     <file path="resources/brave_generated_resources_kn.xtb" lang="kn" />
     <file path="resources/brave_generated_resources_ko.xtb" lang="ko" />
+    <file path="resources/brave_generated_resources_ky.xtb" lang="ky" />
     <file path="resources/brave_generated_resources_lo.xtb" lang="lo" />
     <file path="resources/brave_generated_resources_lt.xtb" lang="lt" />
     <file path="resources/brave_generated_resources_lv.xtb" lang="lv" />
@@ -146,8 +155,11 @@
     <file path="resources/brave_generated_resources_mr.xtb" lang="mr" />
     <file path="resources/brave_generated_resources_ms.xtb" lang="ms" />
     <file path="resources/brave_generated_resources_my.xtb" lang="my" />
+    <file path="resources/brave_generated_resources_ne.xtb" lang="ne" />
     <file path="resources/brave_generated_resources_nl.xtb" lang="nl" />
     <file path="resources/brave_generated_resources_no.xtb" lang="no" />
+    <file path="resources/brave_generated_resources_or.xtb" lang="or" />
+    <file path="resources/brave_generated_resources_pa.xtb" lang="pa" />
     <file path="resources/brave_generated_resources_pl.xtb" lang="pl" />
     <file path="resources/brave_generated_resources_pt-BR.xtb" lang="pt-BR" />
     <file path="resources/brave_generated_resources_pt-PT.xtb" lang="pt-PT" />
@@ -166,10 +178,13 @@
     <file path="resources/brave_generated_resources_th.xtb" lang="th" />
     <file path="resources/brave_generated_resources_tr.xtb" lang="tr" />
     <file path="resources/brave_generated_resources_uk.xtb" lang="uk" />
+    <file path="resources/brave_generated_resources_ur.xtb" lang="ur" />
     <file path="resources/brave_generated_resources_uz.xtb" lang="uz" />
     <file path="resources/brave_generated_resources_vi.xtb" lang="vi" />
     <file path="resources/brave_generated_resources_zh-CN.xtb" lang="zh-CN" />
+    <file path="resources/brave_generated_resources_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/brave_generated_resources_zh-TW.xtb" lang="zh-TW" />
+    <file path="resources/brave_generated_resources_zu.xtb" lang="zu" />
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
@@ -249,6 +264,13 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
+
+      <!-- Windows Installer -->
+      <if expr="is_win">
+        <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
+          Installation failed due to unspecified error. Please download Brave again.
+        </message>
+      </if>
 
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">

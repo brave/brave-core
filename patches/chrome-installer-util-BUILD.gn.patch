@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index f7d3ac043e245288211974d9c9cc10ea327f83a6..f4aa9a068ab3c6f417b15c247fa34a00e71f8708 100644
+index f7d3ac043e245288211974d9c9cc10ea327f83a6..3c2088c0a49a27c0d6158c48218faf4dd65268bd 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -202,6 +202,7 @@ static_library("with_no_strings") {
@@ -14,7 +14,7 @@ index f7d3ac043e245288211974d9c9cc10ea327f83a6..f4aa9a068ab3c6f417b15c247fa34a00
    output_file_name_base = "installer_util_strings"
  
    branding = branding_path_product
-+  sources = [ "//chrome/app/brave_strings.grd" ] import("//brave/installer/util/sources.gni") extractor_datafile = brave_installer_util_generate_strings_extractor_datafile
++  sources = [ "//chrome/app/brave_strings.grd", "//brave/app/brave_generated_resources.grd" ] import("//brave/installer/util/sources.gni") extractor_datafile = brave_installer_util_generate_strings_extractor_datafile
  }
  
  # Compile the generated .rc file.
