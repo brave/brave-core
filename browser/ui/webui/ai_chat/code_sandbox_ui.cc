@@ -7,14 +7,14 @@
 
 #include <string>
 
+#include "base/base64.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/grit/brave_components_resources.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -29,8 +29,7 @@ bool CodeSandboxUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   auto* profile = Profile::FromBrowserContext(browser_context);
   return IsAIChatEnabled(user_prefs::UserPrefs::Get(browser_context)) &&
-         profile->IsOffTheRecord() &&
-         profile->GetOTRProfileID().IsCodeSandbox();
+         profile->IsOffTheRecord();
 }
 
 std::unique_ptr<content::WebUIController>
@@ -51,25 +50,27 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
   auto* source = content::WebUIDataSource::CreateAndAdd(
       browser_context, kAIChatCodeSandboxUIURL);
 
-  source->SetDefaultResource(IDR_AI_CHAT_CODE_SANDBOX_UI_HTML);
-
   source->SetRequestFilter(
       base::BindRepeating(&CodeSandboxUI::ShouldHandleRequest),
-      base::BindRepeating(&CodeSandboxUI::HandleScriptRequest,
+      base::BindRepeating(&CodeSandboxUI::HandleRequest,
                           browser_context->GetWeakPtr()));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc, "script-src 'self';");
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      "script-src 'unsafe-inline';");
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ObjectSrc, "object-src 'none';");
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
+      network::mojom::CSPDirectiveName::FrameSrc, "frame-src data:;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      "frame-ancestors 'self';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
   source->OverrideContentSecurityPolicy(
@@ -79,10 +80,10 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
 }
 
 bool CodeSandboxUI::ShouldHandleRequest(const std::string& path) {
-  return path.ends_with("/script.js") || path == "script.js" || path.empty();
+  return true;
 }
 
-void CodeSandboxUI::HandleScriptRequest(
+void CodeSandboxUI::HandleRequest(
     base::WeakPtr<content::BrowserContext> browser_context,
     const std::string& path,
     content::WebUIDataSource::GotDataCallback callback) {
@@ -91,6 +92,7 @@ void CodeSandboxUI::HandleScriptRequest(
   if (slash_pos != std::string::npos) {
     request_id = path.substr(0, slash_pos);
   }
+
   std::string script_content;
   auto* original_profile =
       Profile::FromBrowserContext(browser_context.get())->GetOriginalProfile();
@@ -103,9 +105,19 @@ void CodeSandboxUI::HandleScriptRequest(
     }
   }
 
-  auto script =
-      base::MakeRefCounted<base::RefCountedString>(std::move(script_content));
-  std::move(callback).Run(script.get());
+  // Base64 encode the entire iframe HTML to avoid escaping issues
+  std::string iframe_html =
+      base::StrCat({"<html><head><meta charset='utf-8'></head><body><script>",
+                    script_content, "</script></body></html>"});
+
+  std::string html_content = base::StrCat(
+      {"<!DOCTYPE html><html><head><meta charset=\"utf-8\"></head><body>"
+       "<iframe sandbox=\"allow-scripts\" src=\"data:text/html;base64,",
+       base::Base64Encode(iframe_html), "\"></iframe></body></html>"});
+
+  auto result =
+      base::MakeRefCounted<base::RefCountedString>(std::move(html_content));
+  std::move(callback).Run(result.get());
 }
 
 CodeSandboxUI::~CodeSandboxUI() = default;

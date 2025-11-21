@@ -77,13 +77,8 @@ class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
 
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
     std::unique_ptr<content::WebContents> web_contents,
-    std::unique_ptr<CodeSandboxWebContentsObserver> observer,
-    raw_ptr<Profile> otr_profile,
     UseToolCallback callback)
-    : web_contents(std::move(web_contents)),
-      observer(std::move(observer)),
-      otr_profile(otr_profile),
-      callback(std::move(callback)) {}
+    : web_contents(std::move(web_contents)), callback(std::move(callback)) {}
 
 CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() = default;
 
@@ -94,13 +89,7 @@ CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
   CHECK(ai_chat_service_);
 }
 
-CodeExecutionTool::~CodeExecutionTool() {
-  for (auto& request : requests_) {
-    if (request.otr_profile) {
-      profile_->DestroyOffTheRecordProfile(request.otr_profile);
-    }
-  }
-}
+CodeExecutionTool::~CodeExecutionTool() = default;
 
 std::string_view CodeExecutionTool::Name() const {
   return mojom::kCodeExecutionToolName;
@@ -161,23 +150,19 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
     return;
   }
 
-  auto wrapped_js =
-      base::StrCat({"(function(window, location) { try {", *script,
-                    "} catch (error) {console.error('Error:', "
-                    "error.toString()); } })(undefined, undefined)"});
+  auto wrapped_js = base::StrCat({"try {", *script,
+                                  "} catch (error) {console.error('Error:', "
+                                  "error.toString()); }"});
 
   auto request_id =
       ai_chat_service_->StoreCodeExecutionToolScript(std::move(wrapped_js));
 
-  auto otr_profile_id = Profile::OTRProfileID::CreateUniqueForCodeSandbox();
-  auto* otr_profile = profile_->GetOffTheRecordProfile(
-      otr_profile_id, true /* create_if_needed */);
-
+  auto* otr_profile =
+      profile_->GetPrimaryOTRProfile(true /* create_if_needed */);
   content::WebContents::CreateParams create_params(otr_profile);
   auto web_contents = content::WebContents::Create(create_params);
 
-  requests_.emplace_back(std::move(web_contents), nullptr, otr_profile,
-                         std::move(callback));
+  requests_.emplace_back(std::move(web_contents), std::move(callback));
 
   auto request_it = std::prev(requests_.end());
   request_it->observer = std::make_unique<CodeSandboxWebContentsObserver>(
@@ -204,14 +189,7 @@ void CodeExecutionTool::HandleResult(
     std::list<CodeExecutionRequest>::iterator request_it,
     std::string output) {
   auto callback = std::move(request_it->callback);
-  Profile* otr_profile = request_it->otr_profile;
-
   requests_.erase(request_it);
-
-  if (otr_profile) {
-    profile_->DestroyOffTheRecordProfile(otr_profile);
-  }
-
   std::move(callback).Run(CreateContentBlocksForText(output));
 }
 
