@@ -17,12 +17,10 @@
 #include "components/prefs/pref_change_registrar.h"
 
 class Profile;
-using brave_shields::AdBlockSubscriptionServiceManager;
-using brave_shields::AdBlockSubscriptionServiceManagerObserver;
 
 class BraveAdBlockHandler
     : public settings::SettingsPageUIHandler,
-      public AdBlockSubscriptionServiceManagerObserver,
+      public brave_shields::AdBlockSubscriptionServiceManagerObserver,
       public brave_shields::AdBlockCustomResourceProvider::Observer {
  public:
   BraveAdBlockHandler();
@@ -71,8 +69,9 @@ class BraveAdBlockHandler
 
   void OnFilterListsUpdated(std::string callback_id, bool success);
 
-  base::ScopedObservation<AdBlockSubscriptionServiceManager,
-                          AdBlockSubscriptionServiceManagerObserver>
+  base::ScopedObservation<
+      brave_shields::AdBlockSubscriptionServiceManager,
+      brave_shields::AdBlockSubscriptionServiceManagerObserver>
       service_observer_{this};
 
   base::ScopedObservation<
