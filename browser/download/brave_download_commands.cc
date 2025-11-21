@@ -17,6 +17,11 @@ bool BraveDownloadCommands::IsCommandEnabled(Command command) const {
            !model_->GetFileExternallyRemoved() &&
            !model_->GetFullPath().empty();
   }
+
+  if (command == COPY_DOWNLOAD_LINK) {
+    return model_->GetURL().is_valid();
+  }
+
   return DownloadCommands::IsCommandEnabled(command);
 }
 
@@ -27,6 +32,11 @@ void BraveDownloadCommands::ExecuteCommand(Command command) {
 
   if (command == DELETE_LOCAL_FILE) {
     model_->DeleteLocalFile();
+    return;
+  }
+
+  if (command == COPY_DOWNLOAD_LINK) {
+    model_->CopyDownloadLinkToClipboard();
     return;
   }
 
