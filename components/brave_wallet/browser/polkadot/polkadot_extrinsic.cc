@@ -7,7 +7,6 @@
 
 #include "base/containers/span_rust.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
