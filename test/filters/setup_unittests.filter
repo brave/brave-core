@@ -7,3 +7,7 @@
 
 # This test hardcodes kCommandExecuteImplClsid in a non-easily-replaceable way.
 -LegacyCleanupsTest.Do
+
+# This test hardcodes "GoogleUpdateIsMachine" in a non-easily-replaceable way,
+# when we would need "BraveUpdateIsMachine".
+-MiniInstallerConfigurationTest.IsSystemLevel
