@@ -90,6 +90,11 @@ BraveApplicationContextImpl::debounce_component_installer() {
 
 https_upgrade_exceptions::HttpsUpgradeExceptionsService*
 BraveApplicationContextImpl::https_upgrade_exceptions_service() {
+  if (!https_upgrade_exceptions_service_) {
+    https_upgrade_exceptions_service_ =
+        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
+            local_data_files_service());
+  }
   return https_upgrade_exceptions_service_.get();
 }
 
@@ -100,11 +105,7 @@ void BraveApplicationContextImpl::StartBraveServices() {
   debounce_component_installer();
 
   // eagerly initialize for component updater
-  if (!https_upgrade_exceptions_service_) {
-    https_upgrade_exceptions_service_ =
-        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
-            local_data_files_service());
-  }
+  https_upgrade_exceptions_service();
 
   // Start the local data file service
   local_data_files_service()->Start();

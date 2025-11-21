@@ -257,9 +257,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   resource_component();
 
   // eagerly initialize for component updater
-  https_upgrade_exceptions_service_ =
-      https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
-          local_data_files_service());
+  https_upgrade_exceptions_service();
 
   if (base::FeatureList::IsEnabled(
           webcompat::features::kBraveWebcompatExceptionsService)) {
@@ -311,6 +309,11 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
 
 https_upgrade_exceptions::HttpsUpgradeExceptionsService*
 BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
+  if (!https_upgrade_exceptions_service_) {
+    https_upgrade_exceptions_service_ =
+        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
+            local_data_files_service());
+  }
   return https_upgrade_exceptions_service_.get();
 }
 
