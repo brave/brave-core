@@ -21,7 +21,6 @@
 #include "brave/ios/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "net/base/features.h"
 
 BraveApplicationContextImpl::BraveApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
