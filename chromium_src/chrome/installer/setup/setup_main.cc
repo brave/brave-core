@@ -10,7 +10,6 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "brave/installer/setup/archive_patch_helper.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/installer/setup/brand_behaviors.h"
