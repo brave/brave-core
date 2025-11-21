@@ -7,7 +7,7 @@
 <lint>
     <issue id="ExportedService" severity="ignore" />
     <issue id="DuplicateDefinition">
-        <ignore regexp="chrome/android/java/res/values/brave_colors.xml" />
+        <ignore regexp="chrome/android/java/res/values/colors.xml" />
     </issue>
     <issue id="StringFormatCount">
         <ignore regexp="sponsored_images_bottom_sheet_text" />
@@ -56,8 +56,11 @@
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_link_text` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_unlinked_title` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_linked_title` appears to be unused" />
+        <!-- Ignore these because we had replaced chrome/android/java/res/drawable/incognito_history_placeholder_image.xml -->
+        <ignore regexp="The resource `R.color.incognito_history_placeholder_bottom_circle_color` appears to be unused" />
+        <ignore regexp="The resource `R.color.incognito_history_placeholder_stroke_color` appears to be unused" />
     </issue>
     <issue id="ImpliedQuantity">
         <ignore regexp="brave/build/android/android_brave_strings_grd"/>
-  </issue>
+    </issue>
 </lint>

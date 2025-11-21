@@ -164,9 +164,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_DESCRIPTION" desc="Description for the password import action in Android settings">
         Select a .csv file that contains your passwords to import them to Brave's password manager.
       </message>
-      <message name="IDS_CUSTOM"  desc="Text for custom">
-        Custom
-      </message>
       <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
         Block 'Switch to App' Notices
       </message>
@@ -1350,9 +1347,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_PREFS_ABOUT_SECTION" desc="Title for the about section in settings.">
         About
-      </message>
-      <message name="IDS_NEVER" desc="Text for rate brave dialog button.">
-        Never
       </message>
       <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
         Maybe Later
