@@ -841,7 +841,7 @@ class TabManager: NSObject {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
-    let tabsToRemove = allTabs.filter({
+    let tabsToRemove = self.tabs(isPrivate: isPrivateBrowsing).filter({
       if let url = $0.visibleURL?.urlToShred {
         return urlsToShred.contains(url)
       }
