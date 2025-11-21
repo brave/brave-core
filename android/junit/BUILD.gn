@@ -33,6 +33,7 @@ if (is_android) {
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/tab_group_suggestion:toolbar_java",
+      "//chrome/browser/ui/messages/android:java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
     ]
   }
