@@ -88,6 +88,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            LocationBarEmbedder locationBarEmbedder,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,
             Supplier<Integer> bottomWindowPaddingSupplier,
@@ -122,6 +123,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 backPressManager,
                 omniboxSuggestionsDropdownScrollListener,
                 tabModelSelectorSupplier,
+                locationBarEmbedder,
                 uiOverrides,
                 baseChromeLayout,
                 () ->
