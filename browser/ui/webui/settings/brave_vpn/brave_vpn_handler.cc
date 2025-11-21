@@ -24,6 +24,11 @@
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_vpn/win/storage_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#endif
+
 BraveVpnHandler::BraveVpnHandler(Profile* profile) : profile_(profile) {
   auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   CHECK(service);
@@ -47,6 +52,16 @@ void BraveVpnHandler::RegisterMessages() {
       "isBraveVpnConnected",
       base::BindRepeating(&BraveVpnHandler::HandleIsBraveVpnConnected,
                           base::Unretained(this)));
+#if BUILDFLAG(IS_WIN)
+  web_ui()->RegisterMessageCallback(
+      "showInSystemTray",
+      base::BindRepeating(&BraveVpnHandler::HandleShowInSystemTray,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setShowInSystemTray",
+      base::BindRepeating(&BraveVpnHandler::SetShowInSystemTray,
+                          base::Unretained(this)));
+#endif
 }
 
 void BraveVpnHandler::OnProtocolChanged() {
@@ -78,6 +93,24 @@ void BraveVpnHandler::HandleIsBraveVpnConnected(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0],
                             base::Value(service && service->IsConnected()));
 }
+
+#if BUILDFLAG(IS_WIN)
+void BraveVpnHandler::HandleShowInSystemTray(const base::Value::List& args) {
+  AllowJavascript();
+
+  ResolveJavascriptCallback(args[0],
+                            base::Value(brave_vpn::IsVPNTrayIconEnabled()));
+}
+
+void BraveVpnHandler::SetShowInSystemTray(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  bool value = args[0].GetBool();
+  brave_vpn::EnableVPNTrayIcon(value);
+  if (value) {
+    brave_vpn::wireguard::ShowBraveVpnStatusTrayIcon();
+  }
+}
+#endif
 
 void BraveVpnHandler::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {

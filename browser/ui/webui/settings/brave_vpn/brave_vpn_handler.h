@@ -29,6 +29,10 @@ class BraveVpnHandler : public settings::SettingsPageUIHandler,
   void OnWireguardServiceInstalled(const std::string& callback_id,
                                    bool success);
   void HandleIsBraveVpnConnected(const base::Value::List& args);
+#if BUILDFLAG(IS_WIN)
+  void HandleShowInSystemTray(const base::Value::List& args);
+  void SetShowInSystemTray(const base::Value::List& args);
+#endif
 
   // brave_vpn::BraveVPNServiceObserver
   void OnConnectionStateChanged(
