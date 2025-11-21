@@ -10,13 +10,11 @@
 
 class Profile;
 
-using content::WebContents;
-
 class BraveAutoplayContentSettingBubbleModel
     : public ContentSettingSimpleBubbleModel {
  public:
   BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
-                                         WebContents* web_contents);
+                                         content::WebContents* web_contents);
   BraveAutoplayContentSettingBubbleModel(
       const BraveAutoplayContentSettingBubbleModel&) = delete;
   BraveAutoplayContentSettingBubbleModel& operator=(

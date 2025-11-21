@@ -31,7 +31,7 @@ using SettingSource::kUser;
 
 BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     Delegate* delegate,
-    WebContents* web_contents)
+    content::WebContents* web_contents)
     : ContentSettingSimpleBubbleModel(delegate,
                                       web_contents,
                                       ContentSettingsType::AUTOPLAY),
