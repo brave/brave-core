@@ -73,18 +73,18 @@ std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::Decode(
     return std::nullopt;
   }
 
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  std::array<uint8_t, 16> send_amount_bytes = {};
+  auto result = decode_unsigned_transfer_allow_death(
+      *chain_metadata, base::SpanToRustSlice(bytes));
 
-  if (!decode_unsigned_transfer_allow_death(*chain_metadata,
-                                            base::SpanToRustSlice(bytes),
-                                            pubkey, send_amount_bytes)) {
+  if (!result->is_ok()) {
     return std::nullopt;
   }
 
-  auto send_amount = base::bit_cast<uint128_t>(send_amount_bytes);
+  auto decoded = result->unwrap();
 
-  return {PolkadotUnsignedTransfer(pubkey, send_amount)};
+  return {PolkadotUnsignedTransfer(
+      decoded->recipient,
+      base::bit_cast<uint128_t>(decoded->send_amount_bytes))};
 }
 
 }  // namespace brave_wallet

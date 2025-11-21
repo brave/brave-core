@@ -6,6 +6,7 @@
 extern crate cxx;
 extern crate parity_scale_codec;
 
+use ffi::CxxPolkadotDecodeUnsignedTransfer;
 use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
@@ -37,6 +38,12 @@ const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 4 + 32 + 1;
 
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
+    #[derive(Clone, Copy)]
+    pub struct CxxPolkadotDecodeUnsignedTransfer {
+        pub recipient: [u8; 32],
+        pub send_amount_bytes: [u8; 16],
+    }
+
     extern "Rust" {
         type CxxPolkadotChainMetadata;
         type CxxPolkadotChainMetadataResult;
@@ -44,6 +51,14 @@ mod ffi {
         fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
         fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
         fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
+
+        type CxxPolkadotDecodeUnsignedTransferResult;
+
+        fn is_ok(self: &CxxPolkadotDecodeUnsignedTransferResult) -> bool;
+        fn error_message(self: &CxxPolkadotDecodeUnsignedTransferResult) -> String;
+        fn unwrap(
+            self: &mut CxxPolkadotDecodeUnsignedTransferResult,
+        ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
 
         fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult>;
 
@@ -56,9 +71,7 @@ mod ffi {
         fn decode_unsigned_transfer_allow_death(
             chain_metadata: &CxxPolkadotChainMetadata,
             mut input: &[u8],
-            pubkey: &mut [u8; 32],
-            send_amount: &mut [u8; 16],
-        ) -> bool;
+        ) -> Box<CxxPolkadotDecodeUnsignedTransferResult>;
     }
 }
 
@@ -95,6 +108,12 @@ pub enum Error {
     AlreadyUnwrapped,
     /// The supplied chain name did not match our hard-coded whitelist.
     ChainNameNotFound,
+    /// Invalid SCALE value found.
+    InvalidScale,
+    /// Invalid metadata such as the wrong pallet index or call index.
+    InvalidMetadata,
+    /// Invalid length.
+    InvalidLength,
 }
 
 impl fmt::Display for Error {
@@ -103,7 +122,10 @@ impl fmt::Display for Error {
             Error::ChainNameNotFound => {
                 write!(f, "The supplied chain spec name did not match the whitelist.")
             }
-            Error::AlreadyUnwrapped => write!(f, "Already unwrapped"),
+            Error::AlreadyUnwrapped => write!(f, "Already unwrapped."),
+            Error::InvalidScale => write!(f, "Invalid SCALE-encoded bytes were found."),
+            Error::InvalidMetadata => write!(f, "Invalid chain metadata was encountered."),
+            Error::InvalidLength => write!(f, "Invalid length."),
         }
     }
 }
@@ -114,8 +136,10 @@ struct CxxPolkadotChainMetadata {
 }
 
 struct CxxPolkadotChainMetadataResult(Result<CxxPolkadotChainMetadata, Error>);
-
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
+
+struct CxxPolkadotDecodeUnsignedTransferResult(Result<CxxPolkadotDecodeUnsignedTransfer, Error>);
+impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransferResult);
 
 fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
     let metadata = match chain_name {
@@ -171,27 +195,28 @@ fn encode_unsigned_transfer_allow_death(
     buf
 }
 
-fn decode_unsigned_transfer_allow_death(
+fn decode_unsigned_transfer_allow_death_impl(
     chain_metadata: &CxxPolkadotChainMetadata,
     mut input: &[u8],
-    pubkey: &mut [u8; 32],
-    send_amount_bytes: &mut [u8; 16],
-) -> bool {
+) -> Result<CxxPolkadotDecodeUnsignedTransfer, Error> {
     let Ok(len) = Compact::<u64>::decode(&mut input) else {
-        return false;
+        return Err(Error::InvalidScale);
     };
 
-    let len = len.0 as usize;
+    let Ok(len) = usize::try_from(len.0) else {
+        return Err(Error::InvalidLength);
+    };
+
     if input.len() != len {
-        return false;
+        return Err(Error::InvalidLength);
     }
 
     if len < UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN {
-        return false;
+        return Err(Error::InvalidLength);
     }
 
     if input[0] != EXTRINSIC_VERSION {
-        return false;
+        return Err(Error::InvalidMetadata);
     }
     input = &input[1..];
 
@@ -199,29 +224,38 @@ fn decode_unsigned_transfer_allow_death(
         chain_metadata;
 
     if input[0] != *balances_pallet_index {
-        return false;
+        return Err(Error::InvalidMetadata);
     }
     input = &input[1..];
 
     if input[0] != *transfer_allow_death_call_index {
-        return false;
+        return Err(Error::InvalidMetadata);
     }
     input = &input[1..];
 
     if input[0] != MULTIADDRESS_TYPE {
-        return false;
+        return Err(Error::InvalidMetadata);
     }
 
-    pubkey.copy_from_slice(&input[1..1 + 32]);
+    let mut recipient = [0_u8; 32];
+    recipient.copy_from_slice(&input[1..1 + 32]);
     input = &input[1 + 32..];
 
     let Ok(send_amount) = Compact::<u128>::decode(&mut input) else {
-        return false;
+        return Err(Error::InvalidScale);
     };
 
     let send_amount = send_amount.0;
-
+    let mut send_amount_bytes = [0_u8; 16];
     send_amount_bytes.copy_from_slice(&send_amount.to_le_bytes());
 
-    true
+    Ok(CxxPolkadotDecodeUnsignedTransfer { recipient, send_amount_bytes })
+}
+
+fn decode_unsigned_transfer_allow_death(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    input: &[u8],
+) -> Box<CxxPolkadotDecodeUnsignedTransferResult> {
+    let r = decode_unsigned_transfer_allow_death_impl(chain_metadata, input);
+    Box::new(CxxPolkadotDecodeUnsignedTransferResult(r))
 }
