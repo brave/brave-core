@@ -15,6 +15,7 @@ import {
 import {
   useGetCombinedTokensListQuery, //
 } from '../../../../common/slices/api.slice.extra'
+import { useRoute } from '../../../../common/hooks/use_route'
 
 // Constants
 import { WalletRoutes } from '../../../../constants/types'
@@ -57,6 +58,7 @@ export const MarketView = () => {
 
   // Hooks
   const history = useHistory()
+  const { openOrPushRoute } = useRoute()
 
   // Queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -91,7 +93,7 @@ export const MarketView = () => {
             (t) => getAssetSymbol(t) === symbolLower,
           )
           if (foundMeldTokens) {
-            history.push(makeFundWalletRoute(foundMeldTokens[0]))
+            openOrPushRoute(makeFundWalletRoute(foundMeldTokens[0]))
           }
           break
         }
@@ -104,7 +106,7 @@ export const MarketView = () => {
           )
 
           if (foundTokens.length === 1) {
-            history.push(
+            openOrPushRoute(
               makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
                 searchText: symbolLower,
               }),
@@ -113,7 +115,7 @@ export const MarketView = () => {
           }
 
           if (foundTokens.length > 1) {
-            history.push(
+            openOrPushRoute(
               makeDepositFundsRoute('', {
                 searchText: symbolLower,
               }),
@@ -129,7 +131,7 @@ export const MarketView = () => {
         }
       }
     },
-    [buyAssets, combinedTokensList, history],
+    [buyAssets, combinedTokensList, history, openOrPushRoute],
   )
 
   const onMarketDataFrameLoad = React.useCallback(() => {

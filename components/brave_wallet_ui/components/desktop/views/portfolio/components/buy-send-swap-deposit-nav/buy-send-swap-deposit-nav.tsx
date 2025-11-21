@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 
 // Types
 import { NavOption } from '../../../../../../constants/types'
@@ -13,6 +12,7 @@ import { NavOption } from '../../../../../../constants/types'
 import {
   useOnClickOutside, //
 } from '../../../../../../common/hooks/useOnClickOutside'
+import { useRoute } from '../../../../../../common/hooks/use_route'
 
 // Options
 import {
@@ -38,9 +38,6 @@ import {
 import { Row } from '../../../../../shared/style'
 
 export const BuySendSwapDepositNav = () => {
-  // Routing
-  const history = useHistory()
-
   // state
   const [showMoreMenu, setShowMoreMenu] = React.useState<boolean>(false)
 
@@ -49,13 +46,14 @@ export const BuySendSwapDepositNav = () => {
 
   // hooks
   useOnClickOutside(moreMenuRef, () => setShowMoreMenu(false), showMoreMenu)
+  const { openOrPushRoute } = useRoute()
 
   // methods
   const onClick = React.useCallback(
     (option: NavOption) => {
-      history.push(option.route)
+      openOrPushRoute(option.route)
     },
-    [history],
+    [openOrPushRoute],
   )
 
   return (
