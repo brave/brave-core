@@ -1,0 +1,20 @@
+diff --git a/chrome/test/data/webui/BUILD.gn b/chrome/test/data/webui/BUILD.gn
+index 63df65f09209f048ae95f14f3df9be0abe7dd946..964ee25c257a5a3a8333c24cba7a326107896437 100644
+--- a/chrome/test/data/webui/BUILD.gn
++++ b/chrome/test/data/webui/BUILD.gn
+@@ -93,11 +93,14 @@ source_set("browser_tests") {
+     deps += [
+       "//chrome/browser/actor",
+       "//chrome/browser/engagement",
+-      "//chrome/browser/glic",
+       "//chrome/browser/signin:signin_promo",
+       "//chrome/browser/subscription_eligibility",
+     ]
+ 
++    if (enable_glic) {
++      deps += [ "//chrome/browser/glic" ]
++    }
++
+     if (is_chrome_branded) {
+       sources += [ "media_router/cast_feedback_ui_browsertest.cc" ]
+     }
