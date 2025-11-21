@@ -22,6 +22,8 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -81,9 +83,14 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
 
   content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());
   content_parent_view_->SetVisible(false);
+
+  animation_coordinator_ =
+      std::make_unique<SidePanelAnimationCoordinator>(this);
+  animation_coordinator_->AddObserver(kSidePanelBoundsAnimation, this);
 }
 
 BraveSidePanel::~BraveSidePanel() {
+  animation_coordinator_->RemoveObserver(kSidePanelBoundsAnimation, this);
   scoped_observation_.RemoveObservation(this);
 }
 
@@ -156,7 +163,7 @@ gfx::Size BraveSidePanel::GetMinimumSize() const {
 }
 
 bool BraveSidePanel::IsClosing() {
-  return false;
+  return animation_coordinator_->IsClosing();
 }
 
 void BraveSidePanel::AddedToWidget() {
@@ -245,6 +252,13 @@ void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
     scoped_observation_.RemoveObservation(child);
   }
 }
+
+void BraveSidePanel::OnAnimationSequenceProgressed(
+    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
+    double animation_value) {}
+
+void BraveSidePanel::OnAnimationSequenceEnded(
+    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id) {}
 
 void BraveSidePanel::Open(bool animated) {
   UpdateVisibility(/*should_be_open=*/true);
