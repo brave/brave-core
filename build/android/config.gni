@@ -37,7 +37,6 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
-  "//brave/browser/ui/messages/android:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
   "//brave/components/brave_account/mojom:mojom_java",
   "//brave/components/brave_ads/core/mojom:mojom_java",
