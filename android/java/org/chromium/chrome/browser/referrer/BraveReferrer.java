@@ -24,6 +24,9 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.PackageUtils;
 
@@ -32,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @JNINamespace("android_brave_referrer")
+@NullMarked
 public class BraveReferrer implements InstallReferrerStateListener {
     private static final String TAG = "BraveReferrer";
     private static final String APP_CHROME_DIR = "app_chrome";
@@ -42,8 +46,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private static final String PLAY_STORE_AD_GBRAID_REFERRAL_CODE = "UAC003";
     private static final String PLAY_STORE_AD_GCLID_GBRAID_REFERRAL_CODE = "UAC004";
 
-    private String mPromoCodeFilePath;
-    private InstallReferrerClient mReferrerClient;
+    private @MonotonicNonNull String mPromoCodeFilePath;
+    private @MonotonicNonNull InstallReferrerClient mReferrerClient;
 
     private long mNativeBraveReferrer;
 
@@ -98,7 +102,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
     public void initReferrer() {
         // On some devices InstallReferrerClient.startConnection causes file IO,
         // so run it in IO task
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 new InitReferrerRunnable(ContextUtils.getApplicationContext(), this));
     }
 
@@ -112,6 +117,11 @@ public class BraveReferrer implements InstallReferrerStateListener {
         @Override
         public void run() {
             FileOutputStream outputStreamWriter = null;
+            if (mPromoCodeFilePath == null) {
+                Log.e(TAG, "Promo code file path is null");
+                onReferrerReady();
+                return;
+            }
             try {
                 File promoCodeFile = new File(mPromoCodeFilePath);
                 outputStreamWriter = new FileOutputStream(promoCodeFile);
@@ -136,6 +146,11 @@ public class BraveReferrer implements InstallReferrerStateListener {
         switch (responseCode) {
             case InstallReferrerResponse.OK:
                 try {
+                    if (mReferrerClient == null) {
+                        Log.e(TAG, "Referrer client is null");
+                        onReferrerReady();
+                        break;
+                    }
                     ReferrerDetails response = mReferrerClient.getInstallReferrer();
                     String referrer = response.getInstallReferrer();
                     Uri uri = Uri.parse("http://www.stub.co/?" + referrer);
@@ -169,11 +184,11 @@ public class BraveReferrer implements InstallReferrerStateListener {
         }
     }
 
-    private static boolean isNullOrEmpty(String value) {
+    private static boolean isNullOrEmpty(@Nullable String value) {
         return value == null || value.isEmpty();
     }
 
-    private static String getReferralCode(Uri uri, String referrer) {
+    private static @Nullable String getReferralCode(Uri uri, @Nullable String referrer) {
         String urpc = uri.getQueryParameter("urpc");
         if (!isNullOrEmpty(urpc)) {
             return urpc;
@@ -191,7 +206,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
             return PLAY_STORE_AD_REFERRAL_CODE;
         }
 
-        if (!isNullOrEmpty(referrer) && referrer.contains("gclid")) {
+        if (referrer != null && referrer.contains("gclid")) {
             // This detection was found empirically. Unfortunately we are not able to get any more
             // info from the referrer at the moment.
             return GOOGLE_SEARCH_AD_REFERRAL_CODE;
@@ -200,7 +215,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
     }
 
     @VisibleForTesting
-    static String getReferralCodeForTesting(String referrer) {
+    static @Nullable String getReferralCodeForTesting(String referrer) {
         if (isNullOrEmpty(referrer)) {
             return null;
         }
@@ -214,8 +229,11 @@ public class BraveReferrer implements InstallReferrerStateListener {
     }
 
     private void onReferrerReady() {
-        PostTask.postTask(TaskTraits.UI_BEST_EFFORT,
-                () -> { BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer); });
+        PostTask.postTask(
+                TaskTraits.UI_BEST_EFFORT,
+                () -> {
+                    BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer);
+                });
     }
 
     @NativeMethods

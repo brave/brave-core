@@ -68,7 +68,8 @@ if (is_android) {
     ]
   }
 
-  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.util") {
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.referrer") {
     sources =
         [ "src/org/chromium/chrome/browser/referrer/BraveReferrerTest.java" ]
 
