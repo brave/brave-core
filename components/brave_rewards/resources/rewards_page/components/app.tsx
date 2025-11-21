@@ -22,6 +22,7 @@ import { AuthorizationModal } from './connect/authorization_modal'
 import { CaptchaModal } from './modals/captcha_modal'
 import { ContributeModal } from './contribute/contribute_modal'
 import { ResetModal } from './modals/reset_modal'
+import { SwitchAccountModal } from './modals/switch_account_modal'
 import { TosUpdateModal } from './modals/tos_update_modal'
 import { NotificationModal } from './modals/notification_modal'
 import { SelfCustodyInviteModal } from './modals/self_custody_invite_modal'
@@ -46,6 +47,8 @@ export function App() {
   const viewType = useBreakpoint()
 
   const [showResetModal, setShowResetModal] = React.useState(false)
+  const [showSwitchAccountModal, setShowSwitchAccountModal] =
+    React.useState(false)
   const [showContributeModal, setShowContributeModal] = React.useState(false)
   const [hideCaptcha, setHideCaptcha] = React.useState(false)
   const [showOnboardingSuccess, setShowOnboardingSuccess] =
@@ -54,6 +57,9 @@ export function App() {
   const route = useRoute((route, router) => {
     if (route === routes.reset) {
       setShowResetModal(true)
+      router.replaceRoute('/')
+    } else if (route === routes.switchAccount) {
+      setShowSwitchAccountModal(true)
       router.replaceRoute('/')
     }
   })
@@ -128,6 +134,15 @@ export function App() {
       )
     }
 
+    if (showSwitchAccountModal) {
+      return (
+        <SwitchAccountModal
+          key='switch-account'
+          onClose={() => setShowSwitchAccountModal(false)}
+        />
+      )
+    }
+
     if (showContributeModal) {
       return <ContributeModal onClose={() => setShowContributeModal(false)} />
     }
@@ -186,6 +201,17 @@ export function App() {
     }
 
     if (!paymentId) {
+      // Allow the switch account modal to stay open while the "reset and
+      // re-enable" procedure is in process. The "key" prop ensures that a new
+      // modal component is not created.
+      if (showSwitchAccountModal) {
+        return (
+          <SwitchAccountModal
+            key='switch-account'
+            onClose={() => setShowSwitchAccountModal(false)}
+          />
+        )
+      }
       return (
         <Onboarding
           onOnboardingCompleted={() => setShowOnboardingSuccess(true)}

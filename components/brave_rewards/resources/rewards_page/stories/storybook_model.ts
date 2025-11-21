@@ -203,6 +203,11 @@ export function createModel(): AppModel {
       }
     },
 
+    async resetRewards() {
+      await delay(100)
+      stateManager.update({ paymentId: '', externalWallet: null })
+    },
+
     async enableRewards(countryCode) {
       await delay(500)
       setTimeout(() => {

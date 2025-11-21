@@ -220,6 +220,13 @@ export const localeStrings: { [K in StringKey]: string } = {
   resetButtonLabel: 'Reset',
   resetConsentText:
     "I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the $1support article about resetting$2.",
+  resetExternalWalletButtonLabel: 'Reset now',
+  resetExternalWalletNote:
+    'Don’t worry: Any BAT already in your $1 account won’t be affected by resetting.',
+  resetExternalWalletText:
+    'You will not earn for ads while connected to $1. Reset Brave Rewards and '
+    + 'connect a different payout account to keep earning. $2Learn more$3',
+  resetExternalWalletTitle: '$1 account no longer supported.',
   resetRewardsButtonLabel: 'Disable and reset Rewards',
   resetRewardsText:
     'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
@@ -231,6 +238,14 @@ export const localeStrings: { [K in StringKey]: string } = {
   selfCustodyInviteTitle:
     'Receive BAT directly to a self-custody crypto address',
   showAllButtonLabel: 'Show all',
+  switchAccountCountrySelectLabel: 'Confirm your region',
+  switchAccountText1: 'Any BAT already in your $1 account will stay there.',
+  switchAccountText2:
+    'Your 30-day Ads History and other Brave Rewards settings will reset.',
+  switchAccountText3:
+    'You can choose a different payout account after this step.',
+  switchAccountTitle:
+    'Your $1 account will be disconnected, and your Brave Rewards profile will be reset.',
   tosUpdateAcceptButtonLabel: 'I agree',
   tosUpdateLink: 'See $1Brave Rewards Terms of Service$2',
   tosUpdateRequiredText:

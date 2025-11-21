@@ -23,3 +23,17 @@ export function useConnectAccountRouter() {
     }
   }
 }
+
+export function useSwitchAccountRouter() {
+  const model = React.useContext(AppModelContext)
+  const router = React.useContext(RouterContext)
+  const isBubble = useAppState((state) => state.embedder.isBubble)
+
+  return () => {
+    if (isBubble) {
+      model.openTab(urls.switchAccountURL)
+    } else {
+      router.setRoute(routes.switchAccount)
+    }
+  }
+}

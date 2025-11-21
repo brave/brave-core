@@ -20,7 +20,7 @@ function getCountryOptions(countries: string[]) {
 
 interface Props {
   countries: string[]
-  defaultCountry: string
+  defaultCountry?: string
   placeholderText: string
   value: string
   onChange: (country: string) => void
