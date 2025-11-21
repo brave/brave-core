@@ -96,6 +96,7 @@ import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
@@ -1688,6 +1689,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
+                        LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
                         Supplier.class,
