@@ -232,13 +232,13 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
 }
 
 void NTPBackgroundImagesBridge::OnBackgroundImagesDataDidUpdate(
-    NTPBackgroundImagesData* data) {
+    ntp_background_images::NTPBackgroundImagesData* data) {
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
 
 void NTPBackgroundImagesBridge::OnSponsoredImagesDataDidUpdate(
-    NTPSponsoredImagesData* data) {
+    ntp_background_images::NTPSponsoredImagesData* data) {
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
