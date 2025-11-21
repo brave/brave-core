@@ -28,13 +28,9 @@ struct NTPSponsoredImagesData;
 class ViewCounterService;
 }  // namespace ntp_background_images
 
-using ntp_background_images::NTPBackgroundImagesData;
-using ntp_background_images::NTPBackgroundImagesService;
-using ntp_background_images::NTPSponsoredImagesData;
-using ntp_background_images::ViewCounterService;
-
-class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
-                                  public KeyedService {
+class NTPBackgroundImagesBridge
+    : public ntp_background_images::NTPBackgroundImagesService::Observer,
+      public KeyedService {
  public:
   explicit NTPBackgroundImagesBridge(Profile* profile);
   NTPBackgroundImagesBridge(const NTPBackgroundImagesBridge&) = delete;
@@ -56,8 +52,10 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
  private:
-  void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
-  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
+  void OnBackgroundImagesDataDidUpdate(
+      ntp_background_images::NTPBackgroundImagesData* data) override;
+  void OnSponsoredImagesDataDidUpdate(
+      ntp_background_images::NTPSponsoredImagesData* data) override;
 
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(
       const base::Value::Dict& data);
@@ -65,8 +63,10 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       const base::Value::Dict& data);
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<ViewCounterService> view_counter_service_ = nullptr;
-  raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
+  raw_ptr<ntp_background_images::ViewCounterService> view_counter_service_ =
+      nullptr;
+  raw_ptr<ntp_background_images::NTPBackgroundImagesService>
+      background_images_service_ = nullptr;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
 };
 
