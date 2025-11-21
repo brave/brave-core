@@ -157,7 +157,7 @@ void SidebarController::ActivatePanelItem(
   }
   CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui->Close();
+    side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
     return;
   }
 

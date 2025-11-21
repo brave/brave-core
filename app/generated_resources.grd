@@ -7452,8 +7452,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_FOOTER_HEADER" desc="The toggle for the Footer title in the customization menu on the New Tab Page." meaning="The footer which shows at the bottom of the New Tab page.">
         Footer
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_TOOLS_HEADER" desc="The heading for the Tools section in the Customize Brave Side Panel." meaning="Setting controlling visibility of different tools.">
-        Tools
+      <message name="IDS_NTP_CUSTOMIZE_TOOLS_HEADER" desc="The heading for the Brave Search tools section in the Customize Brave Side Panel." meaning="Setting controlling visibility of different Google Search tools. Search is a proper noun.">
+        Search tools
       </message>
       <message name="IDS_NTP_MANAGED_BY_SEARCH_ENGINE" desc="The string that shows on the customize chrome UI when a 3rd party manages the new tab page.">
         Current search engine managing your new tab page
@@ -7494,8 +7494,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_SHOW_FOOTER_LABEL" desc="The label for the option to show footer in the customization menu on the New Tab Page">
         Show footer on New Tab page
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_SHOW_CHIPS_LABEL" desc="The label for the option to show the tool chips in the New Tab Page" meaning="Toggle to display/hide the tool chips in the New Tab Page.">
-        Show Chips
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_CHIPS_LABEL" desc="The label for the option to show the Brave Search tools options in the New Tab Page" meaning="Toggle to display/hide the Search tool options in the New Tab Page.">
+        Show options
       </message>
       <message name="IDS_NTP_CUSTOMIZE_SHOW_SHORTCUTS_LABEL" desc="The label for the option to show shortcuts in the customization menu on the New Tab Page">
         Show shortcuts
@@ -8235,6 +8235,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_VALIDATION_FAILED" desc="The generic text to display when a file upload fails a validation step.">
         Can't upload. File upload failed validation checks.
+      </message>
+      <message name="IDS_NTP_COMPOSE_DRAG_AND_DROP_HINT" desc="Hint text that displays when a user is dragging a file to the composebox. [ICU Syntax]">
+        {FILE_COUNT, plural,
+          =1 {Drop file here}
+          other {Drop files here}}
+      </message>
+      <message name="IDS_NTP_COMPOSE_MAX_FILES_REACHED_ERROR" desc="Error text for the maximum number of files that can be uploaded. [ICU Syntax]">
+        {FILE_LIMIT, plural, =1 {Upload 1 file to use with your question} other {Upload up to # files to use with your question}}
+      </message>
+      <message name="IDS_NTP_COMPOSE_FILE_TYPE_NOT_ALLOWED_ERROR" desc="Error text displayed when user attempts to upload file in non-supported format.">
+        Can't upload.  Try a different file format.
       </message>
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_FAILED">
         Unexpected error, file upload failed.
