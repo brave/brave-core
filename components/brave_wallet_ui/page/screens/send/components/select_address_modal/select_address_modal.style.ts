@@ -109,3 +109,12 @@ export const DomainLoadIcon = styled(LoaderIcon)<{ position: number }>`
   width: 20px;
   margin-right: 10px;
 `
+
+export const PasteButton = styled.button`
+  display: flex;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+`
