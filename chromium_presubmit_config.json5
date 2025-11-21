@@ -76,7 +76,7 @@
   // Files to skip per check.
   "per_check_files_to_skip": {
     // Permanent ignores.
-    "CheckNewHeaderWithoutGnChangeOnUpload": ["chromium_src/"],
+    "CheckNewHeaderWithoutGnChangeOnUpload": ["chromium_src/.*\\.h"],
     "CheckForCcIncludes": ["chromium_src/"],
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckLongLines": [
