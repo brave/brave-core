@@ -257,7 +257,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   resource_component();
 
-  // eagerly initialize for component update
+  // eagerly initialize for component updater
   https_upgrade_exceptions_service_ =
         https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
             local_data_files_service());
