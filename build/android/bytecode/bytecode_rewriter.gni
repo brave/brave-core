@@ -50,6 +50,7 @@ brave_bytecode_jars = [
   "obj/chrome/browser/ui/android/searchactivityutils/java.javac.jar",
   "obj/chrome/browser/ui/android/theme/java.javac.jar",
   "obj/chrome/browser/ui/android/toolbar/java.javac.jar",
+  "obj/chrome/browser/ui/messages/android/java.javac.jar",
   "obj/components/browser_ui/notifications/android/java.javac.jar",
   "obj/components/browser_ui/media/android/java.javac.jar",
   "obj/components/browser_ui/site_settings/android/java.javac.jar",

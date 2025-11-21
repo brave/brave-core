@@ -16,6 +16,7 @@ import("//brave/browser/hub/internal/android/java/java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
 import("//brave/browser/tab_ui/android/brave_tab_ui_sources.gni")
+import("//brave/browser/ui/messages/android/java_sources.gni")
 import(
     "//brave/components/cached_flags/brave_components_cached_flags_java_sources.gni")
 import("//brave/components/embedder_support/android/java_sources.gni")
@@ -259,6 +260,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobar.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNtpAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveRecentTabsSnackbarHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NtpUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/OnBraveNtpListener.java",
@@ -350,6 +352,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveOriginResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRadioButtonGroupOpeningScreenPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.ntp_background_images.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,6 +18,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.ImageUtils;
 
 import java.io.IOException;
@@ -207,8 +207,8 @@ public class NTPImageUtil {
     }
 
     private static Set<String> getRemovedTopSiteUrls() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getStringSet(REMOVED_SITES, new HashSet<String>());
+        return ChromeSharedPreferences.getInstance()
+                .readStringSet(REMOVED_SITES, new HashSet<String>());
     }
 
     public static boolean isInRemovedTopSite(String url) {
@@ -225,10 +225,7 @@ public class NTPImageUtil {
             urlSet.add(url);
         }
 
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putStringSet(REMOVED_SITES, urlSet);
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance().writeStringSet(REMOVED_SITES, urlSet);
     }
 
     public static boolean shouldEnableNTPFeature() {
@@ -238,8 +235,9 @@ public class NTPImageUtil {
         return false;
     }
 
-    public static NTPImage getNTPImage(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
-        NTPImage mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper();
+    public static NTPImage getNTPImage(
+            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredImage) {
+        NTPImage mWallpaper = mNTPBackgroundImagesBridge.getCurrentWallpaper(allowSponsoredImage);
         if (mWallpaper != null) {
             return mWallpaper;
         } else {

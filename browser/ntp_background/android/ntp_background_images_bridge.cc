@@ -206,16 +206,17 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::GetCurrentWallpaper(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& obj) {
+NTPBackgroundImagesBridge::GetCurrentWallpaper(JNIEnv* env,
+                                               const JavaParamRef<jobject>& obj,
+                                               jboolean allow_sponsored_image) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!view_counter_service_) {
     return base::android::ScopedJavaLocalRef<jobject>();
   }
 
   std::optional<base::Value::Dict> data =
-      view_counter_service_->GetCurrentWallpaperForDisplay();
+      view_counter_service_->GetCurrentWallpaperForDisplay(
+          allow_sponsored_image);
   if (!data) {
     return base::android::ScopedJavaLocalRef<jobject>();
   }

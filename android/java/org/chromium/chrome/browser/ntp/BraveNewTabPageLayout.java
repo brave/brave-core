@@ -139,6 +139,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private FetchWallpaperWorkerTask mWorkerTask;
     private boolean mIsFromBottomSheet;
+    // Whether to show sponsored image on NTP based on experiment variant
+    private boolean mShouldShowSponsoredImage;
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private ViewGroup mMainLayout;
     private final DatabaseHelper mDatabaseHelper;
@@ -190,6 +192,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         super(context, attrs);
 
         mDatabaseHelper = DatabaseHelper.getInstance();
+        // Default to show sponsored image on NTP
+        // This will be overridden in onAttachedToWindow if the experiment variant is D
+        mShouldShowSponsoredImage = true;
     }
 
     protected void updateTileGridPlaceholderVisibility() {
@@ -258,6 +263,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
+        mShouldShowSponsoredImage = shouldShowSponsoredImage();
         if (mSponsoredTab == null) {
             initilizeSponsoredTab();
         }
@@ -281,6 +287,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     .registerOnSharedPreferenceChangeListener(mPreferenceListener);
         }
         setNtpViews();
+
+        // Show recent tabs dialog for variants B, C, and D if NTP was shown after inactivity
+        maybeShowRecentTabsDialog();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -925,7 +934,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             return;
         }
         if (mSponsoredTab != null && NTPImageUtil.shouldEnableNTPFeature()) {
-            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false);
+            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false, mShouldShowSponsoredImage);
             if (ntpImage == null) {
                 mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             } else if (ntpImage instanceof Wallpaper) {
@@ -1331,8 +1340,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         observer.addOnGlobalLayoutListener(mBgImageViewOnGlobalLayoutListener);
     }
 
+    // Determine if the sponsored image should be shown on NTP based on experiment variant
+    private boolean shouldShowSponsoredImage() {
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            return true;
+        }
+        boolean shouldShowSnackbar =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+        String variant = BraveFreshNtpHelper.getVariant();
+        return variant == null || !variant.equals("D") || !shouldShowSnackbar;
+    }
+
     private void checkAndShowNTPImage(boolean isReset) {
-        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset);
+        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset, mShouldShowSponsoredImage);
         if (ntpImage == null) {
             mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
         } else if (ntpImage instanceof Wallpaper) {
@@ -1346,7 +1367,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(getTab()).get(String.valueOf(getTab().getId())) == null) {
-            SponsoredTab sponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
+            SponsoredTab sponsoredTab =
+                    new SponsoredTab(mNTPBackgroundImagesBridge, mShouldShowSponsoredImage);
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
         mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
@@ -1430,5 +1452,51 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void updateMvtOnTablet() {
         assert false : "This method should be removed in the bytecode!";
+    }
+
+    /**
+     * Shows the recent tabs snackbar if variant B, C, or D is active, and either OPTION_NEW_TAB or
+     * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
+     * when app was returned from background after inactivity threshold.
+     */
+    private void maybeShowRecentTabsDialog() {
+        // Check if feature is enabled and variant is B, C, or D
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            return;
+        }
+
+        String variant = BraveFreshNtpHelper.getVariant();
+        if (variant == null
+                || (!variant.equals("B") && !variant.equals("C") && !variant.equals("D"))) {
+            return;
+        }
+
+        // Check if OPTION_NEW_TAB or OPTION_NEW_TAB_AFTER_INACTIVITY is selected
+        int openingScreenOption =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, 1);
+        if (openingScreenOption
+                        != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY
+                && openingScreenOption != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB) {
+            return;
+        }
+
+        // Check the flag set by BraveReturnToChromeUtil when NTP was shown
+        // For OPTION_NEW_TAB_AFTER_INACTIVITY, flag is set only after inactivity threshold
+        // For OPTION_NEW_TAB, flag is set whenever NTP is shown at startup
+        boolean shouldShowSnackbar =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+        if (!shouldShowSnackbar) {
+            return;
+        }
+
+        // Clear the flag so snackbar is only shown once
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+
+        // Show the snackbar
+        BraveRecentTabsSnackbarHelper snackbarHelper = new BraveRecentTabsSnackbarHelper();
+        snackbarHelper.showSnackbar((BraveActivity) mActivity);
     }
 }

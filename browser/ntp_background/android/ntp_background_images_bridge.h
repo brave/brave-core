@@ -47,7 +47,8 @@ class NTPBackgroundImagesBridge
       int metricType);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& obj);
+      const base::android::JavaParamRef<jobject>& obj,
+      jboolean allow_sponsored_image);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 

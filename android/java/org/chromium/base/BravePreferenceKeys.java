@@ -84,6 +84,19 @@ public final class BravePreferenceKeys {
 
     public static final String DAY_ZERO_EXPT_VARIANT = "day_zero_expt_variant";
 
+    public static final String BRAVE_NEW_TAB_PAGE_OPENING_SCREEN =
+            "brave_new_tab_page_opening_screen";
+
+    // Opening screen option values
+    public static final int BRAVE_OPENING_SCREEN_OPTION_LAST_OPEN_TAB = 0;
+    public static final int BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY = 1;
+    public static final int BRAVE_OPENING_SCREEN_OPTION_NEW_TAB = 2;
+
+    public static final String BRAVE_SHOW_RECENT_TABS_SNACKBAR = "brave_show_recent_tabs_snackbar";
+    public static final String BRAVE_LAST_ACTIVE_TAB_URL = "brave_last_active_tab_url";
+    public static final String BRAVE_FOREGROUND_SESSION_ENDS_TRIGGERED =
+            "brave_foreground_session_ends_triggered";
+
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
     public static final String OPEN_YT_IN_BRAVE_DIALOG = "open_yt_in_brave_dialog";

@@ -164,8 +164,8 @@ ViewCounterService::GetNextWallpaperForDisplay() {
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentWallpaperForDisplay() {
-  if (ShouldShowSponsoredImages()) {
+ViewCounterService::GetCurrentWallpaperForDisplay(bool allow_sponsored_image) {
+  if (allow_sponsored_image && ShouldShowSponsoredImages()) {
     if (std::optional<base::Value::Dict> dict = GetCurrentBrandedWallpaper()) {
       return dict;
     }
