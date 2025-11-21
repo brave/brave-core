@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
-#include "chrome/browser/extensions/install_verifier.h"
+#include "extensions/browser/install_verifier.h"
 
 using brave_component_updater::LocalDataFilesObserver;
 using extensions::ExtensionBrowserTest;

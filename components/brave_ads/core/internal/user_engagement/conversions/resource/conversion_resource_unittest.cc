@@ -70,9 +70,8 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   ON_CALL(ads_client_mock_, LoadResourceComponent(kConversionResourceId,
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
-      .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
-                                          int /*version*/,
-                                          LoadFileCallback callback) {
+      .WillByDefault([](const std::string& /*id*/, int /*version*/,
+                        LoadFileCallback callback) {
         const base::FilePath path =
             test::ResourceComponentsDataPath().AppendASCII(
                 test::kMissingResourceId);
@@ -80,7 +79,7 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
         std::move(callback).Run(std::move(file));
-      }));
+      });
 
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);

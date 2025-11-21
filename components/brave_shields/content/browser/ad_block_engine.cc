@@ -117,8 +117,8 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
       url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
       INCLUDE_PRIVATE_REGISTRIES);
   return ad_block_client_->matches(
-      url.spec(), url.host(), tab_host, ResourceTypeToString(resource_type),
-      is_third_party,
+      url.spec(), std::string(url.host()), tab_host,
+      ResourceTypeToString(resource_type), is_third_party,
       // Checking normal rules is skipped if a normal rule or exception rule was
       // found previously
       previously_matched_rule || previously_matched_exception,
@@ -138,8 +138,8 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
       url, url::Origin::CreateFromNormalizedTuple("https", tab_host, 80),
       INCLUDE_PRIVATE_REGISTRIES);
   auto result = ad_block_client_->get_csp_directives(
-      url.spec(), url.host(), tab_host, ResourceTypeToString(resource_type),
-      is_third_party);
+      url.spec(), std::string(url.host()), tab_host,
+      ResourceTypeToString(resource_type), is_third_party);
 
   if (result.empty()) {
     return std::nullopt;

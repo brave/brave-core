@@ -281,8 +281,7 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
   // If mobileOnly is true, require host to be exactly "m.youtube.com"
   // (case-insensitive).
   if (mobileOnly) {
-    const std::string& host = url.host();
-    if (!base::EqualsCaseInsensitiveASCII(host, "m.youtube.com")) {
+    if (!base::EqualsCaseInsensitiveASCII(url.host(), "m.youtube.com")) {
       return false;
     }
   }
@@ -298,14 +297,14 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
   const GURL& url = web_contents()->GetLastCommittedURL();
 
   // Check if path is exactly "/watch" (case sensitive).
-  const auto path = url.path_piece();
+  std::string_view path = url.path();
   constexpr std::string_view watch_path = "/watch";
   if (path != watch_path) {
     return false;
   }
 
   // Check if query exists and contains a non-empty "v" parameter.
-  const auto query = url.query_piece();
+  std::string_view query = url.query();
   if (query.empty()) {
     return false;
   }

@@ -145,8 +145,8 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
 
     EXPECT_EQ(IsLeoOpened(), expected_leo_opened);
     EXPECT_EQ(expected_prompt_count, prompt_factory_->show_count());
-    EXPECT_EQ(observer.last_navigation_url().path_piece(), kLeoPath);
-    EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path_piece(),
+    EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
+    EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(),
               expected_last_committed_path);
   }
 
@@ -235,7 +235,6 @@ IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
   EXPECT_FALSE(IsLeoOpened());
   EXPECT_EQ(0, prompt_factory_->show_count());
   EXPECT_TRUE(observer.last_navigation_succeeded());
-  EXPECT_EQ(observer.last_navigation_url().path_piece(), kLeoPath);
-  EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path_piece(),
-            kLeoPath);
+  EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
+  EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(), kLeoPath);
 }

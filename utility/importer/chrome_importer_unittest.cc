@@ -17,7 +17,6 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/user_data_importer/common/importer_url_row.h"
@@ -138,43 +137,3 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
   EXPECT_EQ("https://static.nytimes.com/favicon.ico",
             favicons[3].favicon_url.spec());
 }
-
-// The mock keychain only works on macOS, so only run this test on macOS (for
-// now)
-#if BUILDFLAG(IS_MAC)
-TEST_F(ChromeImporterTest, ImportPasswords) {
-  // Use mock keychain on mac to prevent blocking permissions dialogs.
-  OSCryptMocker::SetUp();
-
-  user_data_importer::ImportedPasswordForm autofillable_login;
-  user_data_importer::ImportedPasswordForm blocked_login;
-
-  EXPECT_CALL(*bridge_, NotifyStarted());
-  EXPECT_CALL(*bridge_, NotifyItemStarted(user_data_importer::PASSWORDS));
-  EXPECT_CALL(*bridge_, SetPasswordForm(_))
-      .WillOnce(::testing::SaveArg<0>(&autofillable_login))
-      .WillOnce(::testing::SaveArg<0>(&blocked_login));
-  EXPECT_CALL(*bridge_, NotifyItemEnded(user_data_importer::PASSWORDS));
-  EXPECT_CALL(*bridge_, NotifyEnded());
-
-  importer_->StartImport(profile_, user_data_importer::PASSWORDS,
-                         bridge_.get());
-
-  EXPECT_FALSE(autofillable_login.blocked_by_user);
-  EXPECT_EQ("http://127.0.0.1:8080/",
-            autofillable_login.signon_realm);
-  EXPECT_EQ("test-autofillable-login",
-            UTF16ToASCII(autofillable_login.username_value));
-  EXPECT_EQ("autofillable-login-password",
-            UTF16ToASCII(autofillable_login.password_value));
-
-  EXPECT_TRUE(blocked_login.blocked_by_user);
-  EXPECT_EQ("http://127.0.0.1:8081/",
-            blocked_login.signon_realm);
-  EXPECT_EQ("", UTF16ToASCII(blocked_login.username_value));
-  EXPECT_EQ("", UTF16ToASCII(blocked_login.password_value));
-
-  OSCryptMocker::TearDown();
-}
-
-#endif

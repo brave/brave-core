@@ -38,10 +38,11 @@
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/viz/common/frame_sinks/copy_output_result.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_widget_host_view.h"
@@ -68,11 +69,12 @@ constexpr char kGetViewPortSizeParamName[] = "height";
 constexpr char kOnViewPortSizeChangedEventName[] = "onViewPortSizeChanged";
 
 content::WebContents* GetActiveWebContents() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
-  return browser->tab_strip_model()->GetActiveWebContents();
+  return bwi->GetTabStripModel()->GetActiveWebContents();
 }
 
 const std::optional<gfx::Rect> GetContainerBounds(content::WebUI* web_ui) {
@@ -86,13 +88,14 @@ const std::optional<gfx::Rect> GetContainerBounds(content::WebUI* web_ui) {
 }
 
 views::Widget* GetBrowserWidget() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(
-      browser->window()->GetNativeWindow());
+      bwi->GetWindow()->GetNativeWindow());
   if (!widget) {
     return nullptr;
   }
@@ -101,12 +104,13 @@ views::Widget* GetBrowserWidget() {
 }
 
 content::RenderWidgetHostView* GetRenderWidgetHostViewForActiveTab() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
 
-  auto* last_active_tab = browser->tab_strip_model()->GetActiveTab();
+  auto* last_active_tab = bwi->GetTabStripModel()->GetActiveTab();
   if (!last_active_tab) {
     return nullptr;
   }
@@ -246,12 +250,13 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
              scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-             base::Value callback_id, const SkBitmap& bitmap) {
+             base::Value callback_id,
+             const viz::CopyOutputBitmapWithMetadata& result) {
             ui_task_runner->PostTask(
                 FROM_HERE,
                 base::BindOnce(&WebcompatReporterDOMHandler::
                                    HandleCapturedScreenshotBitmap,
-                               handler, bitmap, std::move(callback_id)));
+                               handler, result.bitmap, std::move(callback_id)));
           },
           weak_ptr_factory_.GetWeakPtr(), ui_task_runner_, args[0].Clone()));
 }

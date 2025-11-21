@@ -60,8 +60,8 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  const std::string_view url_host = url.host_piece();
-  const std::string_view url_path = url.path_piece();
+  std::string_view url_host = url.host();
+  std::string_view url_path = url.path();
 
   if (url_host == kGettingStartedHostName || url_host == kRewardsHostName ||
       url_host == kSyncHostName || url_host == kLeoAiHostName ||

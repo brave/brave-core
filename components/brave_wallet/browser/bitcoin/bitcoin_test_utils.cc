@@ -213,13 +213,13 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  if (request.url.path_piece() == "/blocks/tip/height") {
+  if (request.url.path() == "/blocks/tip/height") {
     url_loader_factory_.AddResponse(request.url.spec(),
                                     base::ToString(mainnet_height_));
     return;
   }
 
-  if (request.url.path_piece() == "/fee-estimates") {
+  if (request.url.path() == "/fee-estimates") {
     url_loader_factory_.AddResponse(request.url.spec(),
                                     base::ToString(fee_estimates_));
     return;

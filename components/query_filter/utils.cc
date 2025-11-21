@@ -236,7 +236,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
 namespace query_filter {
 
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
-  const auto& query = original_url.query_piece();
+  std::string_view query = original_url.query();
   const std::string& spec = original_url.spec();
   const auto clean_query_value = StripQueryParameter(query, spec);
   if (!clean_query_value.has_value()) {

@@ -472,7 +472,7 @@ void RewardsInternalsDOMHandler::OnGetEnvironment(
 }  // namespace
 
 BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
-                                                 const std::string& name)
+                                                 std::string_view name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kRewardsInternalsGenerated,
                               IDR_BRAVE_REWARDS_INTERNALS_HTML);

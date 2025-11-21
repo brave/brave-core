@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/contains.h"
-#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
+#include "extensions/browser/extension_util.h"
 #include "extensions/common/extension.h"
 
 #define Contains(...)      \

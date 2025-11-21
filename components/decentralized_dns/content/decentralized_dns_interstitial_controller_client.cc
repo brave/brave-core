@@ -58,11 +58,11 @@ void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
     ResolveMethodTypes type) {
   DCHECK(local_state_);
   const char* pref_name = nullptr;
-  if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
+  if (IsUnstoppableDomainsTLD(request_url_.host())) {
     pref_name = kUnstoppableDomainsResolveMethod;
-  } else if (IsENSTLD(request_url_.host_piece())) {
+  } else if (IsENSTLD(request_url_.host())) {
     pref_name = kENSResolveMethod;
-  } else if (IsSnsTLD(request_url_.host_piece())) {
+  } else if (IsSnsTLD(request_url_.host())) {
     pref_name = kSnsResolveMethod;
   } else {
     NOTREACHED();

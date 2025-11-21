@@ -93,7 +93,6 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
 
 void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
                                                      bool verified) {
-  const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
@@ -119,7 +118,7 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
   bool found = false;
   for (int index = 0; index < tab_strip->count(); ++index) {
     auto* contents = tab_strip->GetWebContentsAt(index);
-    if (contents->GetLastCommittedURL().host_piece() == url.host_piece()) {
+    if (contents->GetLastCommittedURL().host() == url.host()) {
       found = true;
       tab_strip->ActivateTabAt(index);
       break;

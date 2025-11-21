@@ -56,7 +56,7 @@ std::unique_ptr<RewardsPageHandler::BubbleDelegate> MakeBubbleDelegate() {
 
 }  // namespace
 
-RewardsPageUI::RewardsPageUI(content::WebUI* web_ui, const std::string& host)
+RewardsPageUI::RewardsPageUI(content::WebUI* web_ui, std::string_view host)
     : WebUIController(web_ui) {
   CreateAndAddRewardsPageDataSource(*web_ui, host);
 }

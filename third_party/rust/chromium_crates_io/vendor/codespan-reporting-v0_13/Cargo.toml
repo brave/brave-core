@@ -1,0 +1,36 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from `tools/crates/gnrt/removed_Cargo.toml.hbs`
+# by `tools/crates/run_gnrt.py vendor`. Do not edit!
+#
+# This is an empty placeholder that has replaced the
+# `codespan-reporting-0.13.1` crate.
+#
+# See `//tools/crates/gnrt/removed_crate.md` to learn more.
+
+[package]
+name = "codespan-reporting"
+version = "0.13.1"
+
+[package.metadata.gnrt]
+is_placeholder = true
+
+[features]
+"ascii-only" = []
+"default" = []
+"serde" = []
+"serialization" = []
+"std" = []
+"termcolor" = []
+
+[dependencies.serde]
+version = "^1"
+default_features = false
+[dependencies.termcolor]
+version = "^1.0.4"
+default_features = false
+[dependencies.unicode-width]
+version = ">=0.1, <0.3"
+default_features = false

@@ -6,16 +6,28 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/tabs/features.h"
 
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
+#define BRAVE_BROWSER_ON_WINDOW_CLOSING                                       \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) { \
+    auto* shared_pinned_tab_service =                                         \
+        SharedPinnedTabServiceFactory::GetForProfile(profile());              \
+    if (shared_pinned_tab_service) {                                          \
+      shared_pinned_tab_service->BrowserClosing(tab_strip_model());           \
+    }                                                                         \
+  }
 
 #include <chrome/browser/ui/browser.cc>
 
 #undef DeprecatedCreateOwnedForTesting
 #undef BrowserTabStripModelDelegate
-#undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING
+#undef BRAVE_BROWSER_ON_WINDOW_CLOSING
 
 // static
 std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(

@@ -226,7 +226,7 @@ fn extract_inputs(
     // Inputs are stored directly in an array value or in a tag value wrapping an array.
     let inputs_array: &Vec<_> = match inputs_value {
         Some(CborValue::Array(arr)) => arr,
-        Some(CborValue::Tag(SET_TAG, ref tagged_array)) => match &**tagged_array {
+        Some(CborValue::Tag(SET_TAG, tagged_array)) => match &**tagged_array {
             CborValue::Array(arr) => arr,
             _ => return Err(Error::InvalidInputFormat),
         },

@@ -42,7 +42,7 @@ SidebarService* GetSidebarService(Profile* profile) {
 }
 
 std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
-                                               const std::string& host) {
+                                               std::string_view host) {
   const int tab_count = tab_strip_model->count();
   std::vector<int> all_index;
   for (int i = 0; i < tab_count; ++i) {
@@ -154,7 +154,7 @@ void SidebarController::ActivatePanelItem(
   }
   CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui->Close();
+    side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
     return;
   }
 

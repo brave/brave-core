@@ -73,7 +73,7 @@ bool AuthFlowUses3PCookies(const GURL& request_url) {
     // Check `redirect_uri` param in request_url for string "storagerelay"
     // Ref: manual inspection
     return request_url.has_query() &&
-           request_url.query_piece().find("redirect_uri=storagerelay") !=
+           request_url.query().find("redirect_uri=storagerelay") !=
                std::string::npos;
   }
   if (IsFirebaseAuthUrl(request_url)) {
@@ -81,7 +81,7 @@ bool AuthFlowUses3PCookies(const GURL& request_url) {
     // Ref:
     // https://firebase.google.com/docs/auth/web/redirect-best-practices
     return request_url.has_query() &&
-           request_url.query_piece().find("authType=signInViaRedirect") !=
+           request_url.query().find("authType=signInViaRedirect") !=
                std::string::npos;
   }
   return false;
@@ -162,7 +162,6 @@ bool GetPermissionAndMaybeCreatePrompt(
       return true;
     }
 
-    case blink::mojom::PermissionStatus::UNSATISFIED_OPTIONS:
     case blink::mojom::PermissionStatus::DENIED: {
       return false;
     }

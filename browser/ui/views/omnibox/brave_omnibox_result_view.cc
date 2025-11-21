@@ -92,8 +92,8 @@ void BraveOmniboxResultView::OnThemeChanged() {
 }
 
 void BraveOmniboxResultView::OpenMatch() {
-  popup_view_->model()->OpenSelection(OmniboxPopupSelection(model_index_),
-                                      base::TimeTicks::Now());
+  popup_view_->controller()->edit_model()->OpenSelection(
+      OmniboxPopupSelection(model_index_), base::TimeTicks::Now());
 }
 
 void BraveOmniboxResultView::RefreshOmniboxResult() {

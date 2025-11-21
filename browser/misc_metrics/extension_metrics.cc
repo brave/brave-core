@@ -8,8 +8,8 @@
 #include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_util.h"
 
 namespace misc_metrics {
 

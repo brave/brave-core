@@ -18,8 +18,9 @@
 
 BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
     views::View* contents,
-    LocationBarView* location_bar)
-    : RoundedOmniboxResultsFrame(contents, location_bar),
+    LocationBarView* location_bar,
+    bool forward_mouse_events)
+    : RoundedOmniboxResultsFrame(contents, location_bar, forward_mouse_events),
       browser_(location_bar->browser()) {
   UpdateShadowBorder();
 

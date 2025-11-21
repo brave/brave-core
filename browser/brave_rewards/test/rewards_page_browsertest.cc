@@ -232,7 +232,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   static RequestHandlerResult HandleEnableRewardsRequest(
       const GURL& url,
       const std::string& method) {
-    if (url.path_piece() == "/v4/wallets" && method == "POST") {
+    if (url.path() == "/v4/wallets" && method == "POST") {
       return std::pair{201, R"({
             "paymentId": "33fe956b-ed15-515b-bccd-b6cc63a80e0e"
           })"};
@@ -373,10 +373,10 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
 
   SetRequestHandler(base::BindLambdaForTesting(
       [](const GURL& url, const std::string& method) -> RequestHandlerResult {
-        if (url.path_piece() == "/oauth2/token" && method == "POST") {
+        if (url.path() == "/oauth2/token" && method == "POST") {
           return std::pair{200, R"({ "access_token": "abc123" })"};
         }
-        if (url.path_piece() == "/v0/me" && method == "GET") {
+        if (url.path() == "/v0/me" && method == "GET") {
           return std::pair{200, R"({
                 "firstName": "Test",
                 "id": "abc123",
@@ -384,21 +384,21 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
                 "currencies": ["BAT"]
               })"};
         }
-        if (url.path_piece() == "/v0/me/capabilities" && method == "GET") {
+        if (url.path() == "/v0/me/capabilities" && method == "GET") {
           return std::pair{200, R"([
                 { "key": "sends", "enabled": true, "requirements": [] },
                 { "key": "receives", "enabled": true, "requirements": [] }
               ])"};
         }
-        if (url.path_piece() == "/v0/me/cards" && method == "POST") {
+        if (url.path() == "/v0/me/cards" && method == "POST") {
           return std::pair{200, R"({ "id": "abc123" })"};
         }
-        if (url.path_piece() == "/v0/me/cards/abc123" && method == "PATCH") {
+        if (url.path() == "/v0/me/cards/abc123" && method == "PATCH") {
           return std::pair{200, ""};
         }
         std::string claim_path =
             "/v3/wallet/uphold/2b6e71a6-f3c7-5999-9235-11605a60ec93/claim";
-        if (url.path_piece() == claim_path && method == "POST") {
+        if (url.path() == claim_path && method == "POST") {
           return std::pair{200, R"({ "geoCountry": "US" })"};
         }
         return std::nullopt;
@@ -414,16 +414,15 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, SendContribution) {
       [](const GURL& url, const std::string& method) -> RequestHandlerResult {
         std::string card_path =
             "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3";
-        if (url.path_piece() == card_path && method == "GET") {
+        if (url.path() == card_path && method == "GET") {
           return std::pair{200, R"({ "available": "30.0" })"};
         }
-        if (url.path_piece() == "/publishers/prefixes/a379" &&
-            method == "GET") {
+        if (url.path() == "/publishers/prefixes/a379" && method == "GET") {
           return std::pair{200, BuildPublisherChannelResponse("example.com")};
         }
         std::string transactions_path =
             "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3/transactions";
-        if (url.path_piece() == transactions_path && method == "POST") {
+        if (url.path() == transactions_path && method == "POST") {
           return std::pair{200, R"({
               "id": "ba1ba438-49a8-4618-8c0b-099b69afc722"
             })"};
@@ -431,7 +430,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, SendContribution) {
         std::string commit_path =
             "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3/transactions/"
             "ba1ba438-49a8-4618-8c0b-099b69afc722/commit";
-        if (url.path_piece() == commit_path && method == "POST") {
+        if (url.path() == commit_path && method == "POST") {
           return std::pair{200, R"({ "status": "completed" })"};
         }
         return std::nullopt;

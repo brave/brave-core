@@ -25,8 +25,7 @@ constexpr char kRequestTargetHeader[] = "(request-target)";
 
 }  // namespace
 
-std::pair<std::string, std::string> GetDigestHeader(
-    const std::string& payload) {
+std::pair<std::string, std::string> GetDigestHeader(std::string_view payload) {
   const std::string value = base::StrCat(
       {"SHA-256=", base::Base64Encode(crypto::SHA256HashString(payload))});
   return std::make_pair(net::kDigestAuthScheme, value);
@@ -35,7 +34,7 @@ std::pair<std::string, std::string> GetDigestHeader(
 std::pair<std::string, std::string> CreateSignatureString(
     const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
-    const std::string& method,
+    std::string_view method,
     const std::vector<std::string>& headers_to_sign) {
   std::string header_names;
   std::string signature_string;
@@ -70,33 +69,25 @@ std::pair<std::string, std::string> CreateSignatureString(
   return std::make_pair(header_names, signature_string);
 }
 
-std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
-    const std::string& service_key,
+std::pair<std::string, std::string> GetAuthorizationHeader(
+    std::string_view service_key,
     const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
-    const std::string& method,
+    std::string_view method,
     const std::vector<std::string>& headers_to_sign) {
   CHECK(url.is_valid());
   auto [header_names, signature_string] =
       CreateSignatureString(headers, url, method, headers_to_sign);
 
-  // Create the signature using the service_key.
-  crypto::HMAC hmac(crypto::HMAC::SHA256);
-  const size_t signature_digest_length = hmac.DigestLength();
-  std::vector<uint8_t> signature_digest(signature_digest_length);
-  const bool success = hmac.Init(service_key) &&
-                       hmac.Sign(signature_string, &signature_digest[0],
-                                 signature_digest.size());
-  if (!success) {
-    return std::nullopt;
-  }
-
-  const std::string value = base::StrCat(
-      {"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
-       "\",algorithm=\"hs2019\",headers=\"", header_names, "\",signature=\"",
-       base::Base64Encode(signature_digest), "\""});
-
-  return std::make_pair(net::HttpRequestHeaders::kAuthorization, value);
+  return std::make_pair(
+      net::HttpRequestHeaders::kAuthorization,
+      base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
+                    "\",algorithm=\"hs2019\",headers=\"", header_names,
+                    "\",signature=\"",
+                    base::Base64Encode(crypto::hmac::SignSha256(
+                        base::as_byte_span(service_key),
+                        base::as_byte_span(signature_string))),
+                    "\""}));
 }
 
 }  // namespace brave_service_keys

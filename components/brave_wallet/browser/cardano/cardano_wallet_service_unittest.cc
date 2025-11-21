@@ -205,7 +205,7 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
       post_callback;
 
   EXPECT_CALL(post_callback, Run(_, _, _))
-      .WillOnce(DoAll(RunOnceClosure(task_environment_.QuitClosure())));
+      .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
 
   cardano_wallet_service_->SignAndPostTransaction(
       account_id(), captured_tx.value(), post_callback.Get());

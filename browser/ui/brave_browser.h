@@ -30,7 +30,8 @@ class BraveBrowser : public Browser {
 
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
-  static bool ShouldUseBraveWebViewRoundedCornersForContents(Browser* browser);
+  static bool ShouldUseBraveWebViewRoundedCornersForContents(
+      const Browser* browser);
 
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,

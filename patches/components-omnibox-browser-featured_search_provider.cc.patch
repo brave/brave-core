@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
-index b9a486f7d11fc478c3652472da07b3a647ff5461..38603b3cbb10146f3def2121ccf323754384faa4 100644
+index 04a7e55a972c0ea393f6843c58a1fb311e8c244f..fd4c71df68aef619dcf0b9d2383ff3114de83a77 100644
 --- a/components/omnibox/browser/featured_search_provider.cc
 +++ b/components/omnibox/browser/featured_search_provider.cc
-@@ -294,6 +294,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
+@@ -295,6 +295,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
    for (TemplateURL* turl : turls) {
      if (turl->starter_pack_id() > 0 &&
          turl->is_active() == TemplateURLData::ActiveStatus::kTrue) {

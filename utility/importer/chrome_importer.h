@@ -45,7 +45,6 @@ class ChromeImporter : public Importer {
 
   void ImportBookmarks();
   void ImportHistory();
-  void ImportPasswords(const base::FilePath& passwords_file_name);
   void ImportPayments();
 
   double chromeTimeToDouble(int64_t time);

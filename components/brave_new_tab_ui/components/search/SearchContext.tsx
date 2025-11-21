@@ -4,8 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
-import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
+import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver, SelectedFileInfo } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
@@ -78,6 +77,8 @@ class SearchPage implements PageInterface {
   setThumbnail(thumbnailUrl: string) { }
   onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
   onTabStripChanged() { }
+  addFileContext(token: string, fileInfo: SelectedFileInfo) { }
+  setKeywordSelected(isKeywordSelected: boolean): void {}
 }
 
 export const search = new SearchPage()
@@ -116,7 +117,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(stringToMojoString16(keywordQuery), false);
+      omniboxController.queryAutocomplete(keywordQuery, false);
     } else {
       omniboxController.stopAutocomplete(true)
     }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/incognito_allowed_url.cc b/chrome/browser/ui/incognito_allowed_url.cc
-index ee61e8eec113aad24dc8a88bca816e7666c0f961..5f763b590bd5ca7bea6564e9bbce9f25bacae664 100644
+index 455d54eea959545c66d1ab34eb8a8a12ee5abd66..878c7cf9a2a0b0b7c6700acbeea7de03d92a2e87 100644
 --- a/chrome/browser/ui/incognito_allowed_url.cc
 +++ b/chrome/browser/ui/incognito_allowed_url.cc
 @@ -68,6 +68,7 @@ bool IsURLAllowedInIncognito(const GURL& url) {

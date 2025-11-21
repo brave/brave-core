@@ -414,7 +414,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
         new net::test_server::BasicHttpResponse());
     http_response->set_code(net::HTTP_OK);
     http_response->set_content_type("text/html");
-    std::string request_path = request.GetURL().path();
 
     auto body = base::test::ParseJsonDict(request.content);
     auto* method = body.FindString("method");

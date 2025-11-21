@@ -113,11 +113,11 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     auto redirector = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      if (request.GetURL().path_piece() != kTestPageRedirect) {
+      if (request.GetURL().path() != kTestPageRedirect) {
         return nullptr;
       }
       const std::string dest =
-          base::UnescapeBinaryURLComponent(request.GetURL().query_piece());
+          base::UnescapeBinaryURLComponent(request.GetURL().query());
 
       auto http_response =
           std::make_unique<net::test_server::BasicHttpResponse>();

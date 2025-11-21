@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -44,6 +45,8 @@ class BraveSidePanel : public views::View,
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(
       BrowserView* browser_view,
+      SidePanelEntry::PanelType type,
+      bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
@@ -59,6 +62,16 @@ class BraveSidePanel : public views::View,
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
+  void AddHeaderView(std::unique_ptr<views::View> view);
+  void RemoveHeaderView();
+  void SetHeaderVisibility(bool visible);
+  void SetOutlineVisibility(bool visible);
+
+  // Only used by tests.
+  template <typename T>
+  T* GetHeaderView() {
+    return nullptr;
+  }
 
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
@@ -66,8 +79,6 @@ class BraveSidePanel : public views::View,
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
-  void AddHeaderView(std::unique_ptr<views::View> view);
-  void SetHeaderVisibility(bool visible);
 
   // views::View:
   void OnThemeChanged() override;
@@ -90,8 +101,6 @@ class BraveSidePanel : public views::View,
   views::View* GetContentParentView();
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
-
-  views::View* get_header_for_testing() { return header_view_.get(); }
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -118,10 +127,10 @@ class BraveSidePanel : public views::View,
   // contents layout while sidebar show/hide animation is in-progress.
   std::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
+  const SidePanelEntry::PanelType type_;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
-  std::unique_ptr<views::View> header_view_;
   // Owned by `this` indirectly through the views tree.
   raw_ptr<views::View> content_parent_view_;
   State state_ = State::kClosed;

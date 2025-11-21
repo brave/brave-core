@@ -98,10 +98,9 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
       "bacfb4d7e93c6df045f66fa4bf438402b43ba2c9e3ce9b4eef470d24e32378e8";
   auto result = GetAuthorizationHeader(
       service_key, headers, GURL("https://example.com"), "POST", {"digest"});
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, "Authorization");
+  EXPECT_EQ(result.first, "Authorization");
   EXPECT_EQ(
-      result->second,
+      result.second,
       base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
                     "\",algorithm=\"hs2019\",headers=\"digest\",signature=\""
                     "jumtKp4LQDzIBpuGKIEI/mxrr9AEcSzvRGD6PfYyAq8=\""}));
@@ -110,10 +109,9 @@ TEST(BraveServicesUtilsUnittest, GetAuthorizationHeader) {
   result = GetAuthorizationHeader(service_key, headers,
                                   GURL("https://example.com/test/v1?a=b"),
                                   "POST", {"(request-target)", "digest"});
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->first, "Authorization");
+  EXPECT_EQ(result.first, "Authorization");
   EXPECT_EQ(
-      result->second,
+      result.second,
       base::StrCat({"Signature keyId=\"", BUILDFLAG(BRAVE_SERVICES_KEY_ID),
                     "\",algorithm=\"hs2019\",headers=\"(request-target) "
                     "digest\",signature=\""

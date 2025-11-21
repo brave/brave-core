@@ -78,7 +78,8 @@ base::expected<T, std::string> ParseResponseDictAs(
     return base::unexpected(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
   }
-  auto value_opt = base::JSONReader::Read(*response_body);
+  auto value_opt = base::JSONReader::Read(*response_body,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value_opt) {
     return base::unexpected(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
@@ -488,7 +489,8 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     LOG(ERROR) << "Email Aliases service error: No response body";
     return;
   }
-  auto parsed = base::JSONReader::Read(*response_body);
+  auto parsed = base::JSONReader::Read(*response_body,
+                                       base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   // TODO(https://github.com/brave/brave-browser/issues/49624):
   // Remove this check once the backend is updated to return a dictionary.
   if (parsed && parsed->is_list()) {

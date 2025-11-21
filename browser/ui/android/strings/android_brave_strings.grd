@@ -1300,9 +1300,6 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
       </message>
-      <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
-        Brave Default
-      </message>
       <message name="IDS_SHARE_BRAVE_WITH_YOUR_FRIENDS" desc="Title text for share dialog.">
         Share Brave with your friends!
       </message>

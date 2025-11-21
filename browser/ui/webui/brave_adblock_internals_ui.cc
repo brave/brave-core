@@ -80,9 +80,9 @@ class BraveAdblockInternalsMessageHandler
 
   void OnGetMemoryDump(
       const std::string& callback_id,
-      bool success,
+      memory_instrumentation::mojom::RequestOutcome outcome,
       std::unique_ptr<memory_instrumentation::GlobalMemoryDump> dump) {
-    if (!success) {
+    if (outcome != memory_instrumentation::mojom::RequestOutcome::kSuccess) {
       RejectJavascriptCallback(base::Value(callback_id),
                                base::Value("failed to get dump"));
     }

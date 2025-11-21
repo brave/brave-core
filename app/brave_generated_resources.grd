@@ -1133,33 +1133,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Reading List
       </message>
 
-      <!--First-run dialog messages -->
-      <message name="IDS_FIRSTRUN_DLG_HEADER_TEXT" desc="Text for FirstRun dialog header">
-        Ready for the best privacy online?
-      </message>
-      <message name="IDS_FIRSTRUN_DLG_CONTENTS_TEXT" desc="Text for FirstRun dialog contents">
-        Set Brave as your default browser to get Brave's privacy protections on every web page you open.
-      </message>
-      <message name="IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL" desc="Text for FirstRun dialog ok button">
-        Set Brave as default
-      </message>
-      <message name="IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
-        Maybe later
-      </message>
-
-      <if expr="enable_pin_shortcut">
-        <if expr="is_win">
-          <message name="IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT" desc="Text for pin to taskbar checkbox">
-            Pin to taskbar
-          </message>
-        </if>
-        <if expr="is_macosx">
-          <message name="IDS_FIRSTRUN_DLG_PIN_SHORTCUT_TEXT" desc="Text for pin to taskbar checkbox">
-            Keep in Dock
-          </message>
-        </if>
-      </if>
-
       <!-- Importer -->
       <message name="IDS_BRAVE_IMPORT_FROM_EDGE" desc="browser combo box: Microsoft Edge Legacy">
         Microsoft Edge Legacy

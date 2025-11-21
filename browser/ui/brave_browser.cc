@@ -70,7 +70,7 @@ bool BraveBrowser::IsBraveWebViewRoundedCornersEnabled(Browser* browser) {
 
 // static
 bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
-    Browser* browser) {
+    const Browser* browser) {
   if (!browser->is_type_normal()) {
     return false;
   }
