@@ -68,15 +68,21 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
   }
 )");
 
-template <typename ErrorCode>
-std::optional<ErrorCode> TransformError(Error error_body) {
+template <typename MojomError>
+auto MakeMojomError(int status_code, Error error_body) {
+  auto mojom_error = MojomError::New(status_code, std::nullopt);
+
   if (!error_body.code.is_int()) {
-    return std::nullopt;
+    return mojom_error;
   }
 
-  const auto error_code = static_cast<ErrorCode>(error_body.code.GetInt());
-  return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
-                                             : std::nullopt;
+  const auto error_code =
+      static_cast<decltype(mojom_error->errorCode)::value_type>(
+          error_body.code.GetInt());
+  mojom_error->errorCode = mojom::IsKnownEnumValue(error_code)
+                               ? std::optional(error_code)
+                               : std::nullopt;
+  return mojom_error;
 }
 
 }  // namespace
@@ -246,9 +252,8 @@ void BraveAccountService::OnRegisterInitialize(
           // expected<SuccessBody, [ErrorBody    ]> ==>
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
-            return mojom::RegisterError::New(
-                status_code, TransformError<mojom::RegisterErrorCode>(
-                                 std::move(error_body)));
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
           })
           // expected<[SuccessBody                ], RegisterError> ==>
           // expected<[RegisterInitializeResultPtr], RegisterError>
@@ -294,9 +299,8 @@ void BraveAccountService::OnRegisterFinalize(
           // expected<SuccessBody, [ErrorBody    ]> ==>
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
-            return mojom::RegisterError::New(
-                status_code, TransformError<mojom::RegisterErrorCode>(
-                                 std::move(error_body)));
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
           })
           // expected<[SuccessBody              ], RegisterError> ==>
           // expected<[RegisterFinalizeResultPtr], RegisterError>
@@ -418,9 +422,8 @@ void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,
           // expected<SuccessBody, [ErrorBody ]> ==>
           // expected<SuccessBody, [LoginError]>
           .transform_error([&](auto error_body) {
-            return mojom::LoginError::New(
-                status_code,
-                TransformError<mojom::LoginErrorCode>(std::move(error_body)));
+            return MakeMojomError<mojom::LoginError>(status_code,
+                                                     std::move(error_body));
           })
           // expected<[SuccessBody             ], LoginError> ==>
           // expected<[LoginInitializeResultPtr], LoginError>
@@ -464,9 +467,8 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
           // expected<SuccessBody, [ErrorBody ]> ==>
           // expected<SuccessBody, [LoginError]>
           .transform_error([&](auto error_body) {
-            return mojom::LoginError::New(
-                status_code,
-                TransformError<mojom::LoginErrorCode>(std::move(error_body)));
+            return MakeMojomError<mojom::LoginError>(status_code,
+                                                     std::move(error_body));
           })
           // expected<[SuccessBody           ], LoginError> ==>
           // expected<[LoginFinalizeResultPtr], LoginError>
