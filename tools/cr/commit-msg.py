@@ -92,7 +92,8 @@ def main():
         return 1
 
     # Skip fixup! changes.
-    if commit_message.startswith('fixup!'):
+    if commit_message.startswith('fixup!') or commit_message.startswith(
+            'amend!'):
         return 0
 
     first_line = commit_message.split('\n', 1)[0]
