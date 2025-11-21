@@ -37,6 +37,50 @@ public actor AppStoreReceipt {
     }
   }
 
+  /// Encodes a receipt for use with SkusSDK and Brave's Account Linking page
+  /// - Parameter product: The purchased product to create a receipt for
+  /// - Returns: Returns a Receipt structure encoded as Base64
+  public static func receipt(for product: BraveStoreProduct) throws -> String {
+    struct Receipt: Codable {
+      let type: String
+      let rawReceipt: String
+      let package: String
+      let subscriptionId: String
+
+      enum CodingKeys: String, CodingKey {
+        case type, package
+        case rawReceipt = "raw_receipt"
+        case subscriptionId = "subscription_id"
+      }
+    }
+
+    // Retrieve the AppStore receipt stored in the Application bundle
+    let rawReceipt = try receipt
+
+    // Fetch the Application's Bundle-ID
+    guard let bundleId = Bundle.main.bundleIdentifier else {
+      throw SkusError.invalidBundleId
+    }
+
+    // Create a Receipt structure for Skus-iOS
+    let json = Receipt(
+      type: "ios",
+      rawReceipt: rawReceipt,
+      package: bundleId,
+      subscriptionId: product.rawValue
+    )
+
+    do {
+      // Encode the Receipt as JSON and Base-64 Encode it
+      return try JSONEncoder().encode(json).base64EncodedString
+    } catch {
+      Logger.module.error(
+        "Failed to serialize AppStore Receipt for LocalStorage: \(error.localizedDescription, privacy: .public)"
+      )
+      throw SkusError.cannotEncodeReceipt
+    }
+  }
+
   /// Forces the AppStore to add the receipt to the Application Bundle
   /// When using StoreKit 2, receipts are no longer stored in the Application
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API

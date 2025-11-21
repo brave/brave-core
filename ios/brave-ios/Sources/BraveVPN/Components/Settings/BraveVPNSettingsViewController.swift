@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveStore
 import BraveUI
@@ -103,8 +104,12 @@ public class BraveVPNSettingsViewController: TableViewController {
       return nil
     }
 
+    guard let skusService = Skus.SkusServiceFactory.get(privateMode: false) else {
+      return nil
+    }
+
     do {
-      return try await BraveSkusSDK.shared.credentialsSummary(for: .vpn)
+      return try await skusService.credentialsSummary(for: .vpn)
     } catch {
       Logger.module.error("Error Fetching VPN Skus Credential Summary: \(error)")
     }

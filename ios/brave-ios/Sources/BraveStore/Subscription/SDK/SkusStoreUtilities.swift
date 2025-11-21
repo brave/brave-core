@@ -91,69 +91,53 @@ public enum BraveSkusEnvironment {
   }
 }
 
-/// A class for handling Brave Skus via SkusService
-public class BraveSkusSDK {
+/// An error related to Skus handling
+public enum SkusError: Error {
+  /// The SkusService failed is unavailable for use
+  /// Can be thrown due to SkusServiceFactory returning null
+  case skusServiceUnavailable
 
-  /// Singleton instance since there can only ever be one instance of SkusService
-  public static let shared = BraveSkusSDK()
+  /// The Application's BundleID is invalid
+  /// Can be thrown when encoding AppStore receipts
+  case invalidBundleId
 
-  private init() {
-    self.skusService = Skus.SkusServiceFactory.get(privateMode: false)
-  }
+  /// The URL of the receipt stored in the Application Bundle is null or invalid
+  case invalidReceiptURL
 
-  // MARK: - Structures
+  /// The receipt is invalid
+  /// Thrown when Skus cannot validate the receipt and fetch credentials
+  case invalidReceiptData
 
-  /// An error related to Skus handling
-  public enum SkusError: Error {
-    /// The SkusService failed is unavailable for use
-    /// Can be thrown due to SkusServiceFactory returning null
-    case skusServiceUnavailable
+  /// The receipt cannot be encoded/serialized for use with Skus
+  case cannotEncodeReceipt
 
-    /// The Application's BundleID is invalid
-    /// Can be thrown when encoding AppStore receipts
-    case invalidBundleId
+  /// The SDK was unable to create a purchase order or retrieve an existing order
+  case cannotCreateOrder
 
-    /// The URL of the receipt stored in the Application Bundle is null or invalid
-    case invalidReceiptURL
+  /// The SDK was unable to submit a receipt
+  case cannotSubmitReceipt
 
-    /// The receipt is invalid
-    /// Thrown when Skus cannot validate the receipt and fetch credentials
-    case invalidReceiptData
+  /// The SDK was unable to refresh an order
+  case cannotRefreshOrder
 
-    /// The receipt cannot be encoded/serialized for use with Skus
-    case cannotEncodeReceipt
+  ///  The SDK was unable to fetch the customer's purchase credential summary
+  case cannotFetchCredentialSummary
 
-    /// The SDK was unable to create a purchase order or retrieve an existing order
-    case cannotCreateOrder
+  ///  The SDK was unable to fetch the customer's purchase credentials
+  case cannotFetchCredentials
 
-    /// The SDK was unable to submit a receipt
-    case cannotSubmitReceipt
+  ///  The SDK was unable to prepare the customer's purchase credentials
+  case cannotPrepareCredentials
 
-    /// The SDK was unable to refresh an order
-    case cannotRefreshOrder
+  /// There was an error decoding an SDK response
+  /// Can be thrown when the SDK fails to decode an order, order summary, credentials, etc
+  case decodingError
+}
 
-    ///  The SDK was unable to fetch the customer's purchase credential summary
-    case cannotFetchCredentialSummary
-
-    ///  The SDK was unable to fetch the customer's purchase credentials
-    case cannotFetchCredentials
-
-    ///  The SDK was unable to prepare the customer's purchase credentials
-    case cannotPrepareCredentials
-
-    /// There was an error decoding an SDK response
-    /// Can be thrown when the SDK fails to decode an order, order summary, credentials, etc
-    case decodingError
-  }
-
-  // MARK: - Private
-
-  /// The Skus Brave-Core Service
-  private let skusService: SkusSkusService?
-
+extension JSONDecoder {
   /// A custom JSON Decoder that handles decoding Skus Object dates as ISO-8601
   /// with optional milli-seconds
-  private let jsonDecoder: JSONDecoder = {
+  fileprivate static let skus: JSONDecoder = {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [
       .withYear,
@@ -181,87 +165,40 @@ public class BraveSkusSDK {
     })
     return decoder
   }()
+}
 
-  /// Encodes a receipt for use with SkusSDK and Brave's Account Linking page
-  /// - Parameter product: The purchased product to create a receipt for
-  /// - Returns: Returns a Receipt structure encoded as Base64
-  public static func receipt(for product: BraveStoreProduct) throws -> String {
-    struct Receipt: Codable {
-      let type: String
-      let rawReceipt: String
-      let package: String
-      let subscriptionId: String
-
-      enum CodingKeys: String, CodingKey {
-        case type, package
-        case rawReceipt = "raw_receipt"
-        case subscriptionId = "subscription_id"
-      }
-    }
-
-    // Retrieve the AppStore receipt stored in the Application bundle
-    let receipt = try AppStoreReceipt.receipt
-
-    // Fetch the Application's Bundle-ID
-    guard let bundleId = Bundle.main.bundleIdentifier else {
-      throw SkusError.invalidBundleId
-    }
-
-    // Create a Receipt structure for Skus-iOS
-    let json = Receipt(
-      type: "ios",
-      rawReceipt: receipt,
-      package: bundleId,
-      subscriptionId: product.rawValue
-    )
-
-    do {
-      // Encode the Receipt as JSON and Base-64 Encode it
-      return try JSONEncoder().encode(json).base64EncodedString
-    } catch {
-      Logger.module.error(
-        "[BraveSkusSDK] - Failed to serialize AppStore Receipt for LocalStorage: \(error.localizedDescription, privacy: .public)"
-      )
-      throw SkusError.cannotEncodeReceipt
-    }
-  }
-
-  // MARK: - Implementation
-
+/// A group of helper methods built around BraveStoreProduct
+extension SkusSkusService {
   /// Creates an order from an AppStore Receipt
   /// If an order already exists, returns the existing Order-ID
   /// - Parameter product: The purchased product to create an order for
   /// - Returns: The Order-ID associated with the AppStore receipt
   @MainActor
   public func createOrder(for product: BraveStoreProduct) async throws -> String {
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
+    Logger.module.info("[SkusService] - Creating Order")
 
-    Logger.module.info("[BraveSkusSDK] - Creating Order")
+    let receipt = try AppStoreReceipt.receipt(for: product)
 
-    let receipt = try BraveSkusSDK.receipt(for: product)
+    Logger.module.info("[SkusService] - Fetched Receipt")
 
-    Logger.module.info("[BraveSkusSDK] - Fetched Receipt")
-
-    Logger.module.info("[BraveSkusSDK] - Creating Order From Receipt")
-    let skusResult = await skusService.createOrderFromReceipt(
+    Logger.module.info("[SkusService] - Creating Order From Receipt")
+    let skusResult = await createOrderFromReceipt(
       domain: product.group.skusDomain,
       receipt: receipt
     )
 
     if skusResult.code != Skus.SkusResultCode.ok {
-      Logger.module.info("[BraveSkusSDK] - No OrderID - \(skusResult.message, privacy: .public)")
+      Logger.module.info("[SkusService] - No OrderID - \(skusResult.message, privacy: .public)")
       throw SkusError.cannotCreateOrder
     }
 
     let orderId = skusResult.message
     if orderId.isEmpty {
-      Logger.module.info("[BraveSkusSDK] - No OrderID")
+      Logger.module.info("[SkusService] - No OrderID")
       throw SkusError.cannotCreateOrder
     }
 
-    Logger.module.info("[BraveSkusSDK] - OrderID: \(orderId, privacy: .private(mask: .hash))")
+    Logger.module.info("[SkusService] - OrderID: \(orderId, privacy: .private(mask: .hash))")
     return orderId
   }
 
@@ -272,12 +209,8 @@ public class BraveSkusSDK {
   @MainActor
   public func submitReceipt(orderId: String, for product: BraveStoreProduct) async throws -> String
   {
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    let receipt = try BraveSkusSDK.receipt(for: product)
-    let skusResult = await skusService.submitReceipt(
+    let receipt = try AppStoreReceipt.receipt(for: product)
+    let skusResult = await submitReceipt(
       domain: product.group.skusDomain,
       orderId: orderId,
       receipt: receipt
@@ -285,7 +218,7 @@ public class BraveSkusSDK {
 
     if skusResult.code != Skus.SkusResultCode.ok {
       Logger.module.info(
-        "[BraveSkusSDK] - Failed to Submit Receipt - \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed to Submit Receipt - \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotSubmitReceipt
     }
@@ -313,22 +246,18 @@ public class BraveSkusSDK {
         throw SkusError.decodingError
       }
 
-      return try self.jsonDecoder.decode(SkusOrder.self, from: data)
+      return try JSONDecoder.skus.decode(SkusOrder.self, from: data)
     }
 
     Logger.module.info(
-      "[BraveSkusSDK] - Refreshing Order: \(orderId, privacy: .private(mask: .hash))"
+      "[SkusService] - Refreshing Order: \(orderId, privacy: .private(mask: .hash))"
     )
 
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    let skusResult = await skusService.refreshOrder(domain: group.skusDomain, orderId: orderId)
+    let skusResult = await refreshOrder(domain: group.skusDomain, orderId: orderId)
 
     if skusResult.code != Skus.SkusResultCode.ok {
       Logger.module.info(
-        "[BraveSkusSDK] - Failed Refreshing Order - \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed Refreshing Order - \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotRefreshOrder
     }
@@ -353,17 +282,13 @@ public class BraveSkusSDK {
         throw SkusError.decodingError
       }
 
-      return try self.jsonDecoder.decode(SkusCredentialSummary.self, from: data)
+      return try JSONDecoder.skus.decode(SkusCredentialSummary.self, from: data)
     }
 
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    let skusResult = await skusService.credentialSummary(domain: group.skusDomain)
+    let skusResult = await credentialSummary(domain: group.skusDomain)
     if skusResult.code != Skus.SkusResultCode.ok {
       Logger.module.info(
-        "[BraveSkusSDK] - Failed Fetching CredentialSummary - \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed Fetching CredentialSummary - \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotFetchCredentialSummary
     }
@@ -377,26 +302,22 @@ public class BraveSkusSDK {
   /// - Throws: An exception if fetching credentials failed
   @MainActor
   public func fetchCredentials(orderId: String, for group: BraveStoreProductGroup) async throws {
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    Logger.module.info("[BraveSkusSDK] - Fetching Order Credentials")
-    let skusResult = await skusService.fetchOrderCredentials(
+    Logger.module.info("[SkusService] - Fetching Order Credentials")
+    let skusResult = await fetchOrderCredentials(
       domain: group.skusDomain,
       orderId: orderId
     )
 
     if skusResult.code != Skus.SkusResultCode.ok {
       Logger.module.info(
-        "[BraveSkusSDK] - Failed Fetching Credentials - \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed Fetching Credentials - \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotFetchCredentials
     }
 
     if !skusResult.message.isEmpty {
       Logger.module.error(
-        "[BraveSkusSDK] - Failed to Fetch Credentials: \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed to Fetch Credentials: \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotFetchCredentials
     }
@@ -412,18 +333,14 @@ public class BraveSkusSDK {
     for group: BraveStoreProductGroup,
     path: String = "*"
   ) async throws -> String {
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    let skusResult = await skusService.prepareCredentialsPresentation(
+    let skusResult = await prepareCredentialsPresentation(
       domain: group.skusDomain,
       path: path
     )
 
     if skusResult.code != Skus.SkusResultCode.ok {
       Logger.module.info(
-        "[BraveSkusSDK] - Failed Preparing Credentials - \(skusResult.message, privacy: .public)"
+        "[SkusService] - Failed Preparing Credentials - \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotPrepareCredentials
     }
