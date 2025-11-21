@@ -51,8 +51,56 @@
         <ignore regexp="The resource `R.macro.default_bg_color_elev_0` appears to be unused"/>
         <ignore regexp="The resource `R.drawable.incognito_card_bg` appears to be unused"/>
         <ignore regexp="The resource `R.string.incognito_ntp_block_third_party_cookies_header` appears to be unused" />
+        <ignore regexp="The resource `R.string.autofill_bnpl_tos_review_text` appears to be unused" />
+        <ignore regexp="The resource `R.string.autofill_bnpl_tos_approve_text` appears to be unused" />
+        <ignore regexp="The resource `R.string.autofill_bnpl_tos_link_text` appears to be unused" />
+        <ignore regexp="The resource `R.string.autofill_bnpl_tos_unlinked_title` appears to be unused" />
+        <ignore regexp="The resource `R.string.autofill_bnpl_tos_linked_title` appears to be unused" />
     </issue>
     <issue id="ImpliedQuantity">
         <ignore regexp="brave/build/android/android_brave_strings_grd"/>
-  </issue>
+    </issue>
+
+    <!-- WIP Suppress multiple warnings after upgrade to 144.0.7536.1
+
+../../chrome/android/java/res/values/colors.xml:29: Error: ntp_bg_incognito has already been defined in this folder [DuplicateDefinition]
+    <color name="ntp_bg_incognito">@color/default_bg_color_dark</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~
+    ../../chrome/android/java/res/values/brave_colors.xml:177: Previously defined here
+../../chrome/android/java/res/values/colors.xml:34: Error: incognito_emphasis has already been defined in this folder [DuplicateDefinition]
+    <color name="incognito_emphasis">@android:color/white</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ../../chrome/android/java/res/values/brave_colors.xml:189: Previously defined here
+../../chrome/android/java/res/values/colors.xml:41: Error: find_in_page_query_incognito_hint_color has already been defined in this folder [DuplicateDefinition]
+    <color name="find_in_page_query_incognito_hint_color">@color/white_alpha_70</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ../../chrome/android/java/res/values/brave_colors.xml:191: Previously defined here
+gen/chrome/android/chrome_public_apk__lint/RESZIPS/obj/brave/build/android/android_brave_strings_grd.resources.zip/values-am/android_brave_strings.xml:4: Warning: The resource R.string.custom appears to be unused [UnusedResources]
+<string name="custom">"ብጁ"</string>
+        ~~~~~~~~~~~~~
+gen/chrome/android/chrome_public_apk__lint/RESZIPS/obj/brave/build/android/android_brave_strings_grd.resources.zip/values-am/android_brave_strings.xml:344: Warning: The resource R.string.never appears to be unused [UnusedResources]
+<string name="never">"በፍጹም"</string>
+        ~~~~~~~~~~~~
+../../brave/android/java/brave-res/drawable-hdpi/checkbox.png: Warning: The resource R.drawable.checkbox appears to be unused [UnusedResources]
+../../ui/android/java/res/values/semantic_colors_adaptive.xml:72: Warning: The resource R.color.incognito_history_placeholder_stroke_color appears to be unused [UnusedResources]
+    <color name="incognito_history_placeholder_stroke_color">@color/baseline_neutral_50</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../../ui/android/java/res/values/semantic_colors_adaptive.xml:73: Warning: The resource R.color.incognito_history_placeholder_bottom_circle_color appears to be unused [UnusedResources]
+    <color name="incognito_history_placeholder_bottom_circle_color">@color/baseline_neutral_70</color>
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    -->
+    <issue id="DuplicateDefinition">
+        <ignore regexp="`ntp_bg_incognito` has already been defined" />
+        <ignore regexp="`incognito_emphasis` has already been defined" />
+        <ignore regexp="`find_in_page_query_incognito_hint_color` has already been defined" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore regexp="The resource `R.string.custom` appears to be unused" />
+        <ignore regexp="The resource `R.string.never appears` appears to be unused" />
+        <ignore regexp="The resource `R.color.incognito_history_placeholder_stroke_color` appears to be unused" />
+        <ignore regexp="The resource `R.color.incognito_history_placeholder_bottom_circle_color` appears to be unused" />
+        <ignore regexp="The resource `R.string.never` appears to be unused" />
+        <ignore regexp="The resource `R.drawable.checkbox` appears to be unused" />
+    </issue>
 </lint>

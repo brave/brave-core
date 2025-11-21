@@ -113,12 +113,13 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
       }
 
       auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
-      if (!side_panel_ui ||
-          side_panel_ui->GetCurrentEntryId() != SidePanelEntryId::kPlaylist) {
+      if (!side_panel_ui || side_panel_ui->GetCurrentEntryId(
+                                SidePanelEntry::PanelType::kContent) !=
+                                SidePanelEntryId::kPlaylist) {
         continue;
       }
 
-      side_panel_ui->Close();
+      side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
     }
 #endif  // !BUILDFLAG(IS_ANDROID)
 

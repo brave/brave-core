@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc b/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
-index 4250a221a160e4873590669a9287e9665d4a23eb..4e81bad9bfdfe8cf0f0a0bdb214d0e552c5db24d 100644
+index e831596b62ed86d6389151e2c52077032f272290..1238756f2554eab931481e434f1364d2ebb0f1f5 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
-@@ -381,6 +381,7 @@ void ExtensionsMenuViewPlatformDelegateViews::OnActionAdded(
+@@ -381,6 +381,7 @@ void ExtensionsMenuViewPlatformDelegateViews::OnPermissionsSettingsChanged() {
  }
  
  void ExtensionsMenuViewPlatformDelegateViews::OpenMainPage() {

@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
+index 3d68661a992d29d4b863d7e168d3aa099f82ba6a..2c51da1de2d0f17cf8d181105b0c53b129573c93 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.h
++++ b/third_party/blink/renderer/core/frame/local_frame.h
+@@ -1024,6 +1024,16 @@ class CORE_EXPORT LocalFrame final
+     dev_tools_frontend_impl_ = dev_tools_frontend_impl;
+   }
+ 
++  ForwardDeclaredMember<PageGraph>
++  GetPageGraph() const {
++    return page_graph_;
++  }
++  void SetPageGraph(
++      ForwardDeclaredMember<PageGraph>
++          page_graph) {
++    page_graph_ = page_graph;
++  }
++
+  private:
+   friend class FrameNavigationDisabler;
+   // LocalFrameMojoHandler is a part of LocalFrame.
+@@ -1307,6 +1317,8 @@ class CORE_EXPORT LocalFrame final
+   ForwardDeclaredMember<RemoteObjectGatewayImpl> remote_object_gateway_impl_;
+   ForwardDeclaredMember<DevToolsFrontendImpl, InspectorFrontendClient>
+       dev_tools_frontend_impl_;
++  ForwardDeclaredMember<PageGraph>
++      page_graph_;
+ 
+   void OnStorageAccessCallback(base::OnceCallback<void(bool)> callback,
+                                mojom::blink::StorageTypeAccessed storage_type,

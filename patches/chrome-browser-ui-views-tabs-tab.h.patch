@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.h b/chrome/browser/ui/views/tabs/tab.h
-index 2633dda37993f6f278769137cad245d4aaec5cc6..625a05a7548f85a8f17cf5f46a7d63c8356ddd82 100644
+index d4322160fa1842f2a810ddd6bcc7b9f862e028a9..a789f8a18dc4913329177a809e3ba11548f23ea3 100644
 --- a/chrome/browser/ui/views/tabs/tab.h
 +++ b/chrome/browser/ui/views/tabs/tab.h
 @@ -307,7 +307,7 @@ class Tab : public gfx::AnimationDelegate,

@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import 'chrome://resources/cr_elements/cr_icon/cr_icon.js';
+import 'chrome://resources/cr_elements/cr_menu_selector/cr_menu_selector.js';
+import 'chrome://resources/cr_elements/cr_ripple/cr_ripple.js';
+
 import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from '//resources/brave/polymer_overriding.js'
 import {html} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 

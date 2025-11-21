@@ -54,8 +54,8 @@ std::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
   GURL url;
   bool write_url = false;
   auto selected_text = std::u16string(GetSelectedText());
-  model()->AdjustTextForCopy(GetSelectedRange().GetMin(), &selected_text, &url,
-                             &write_url);
+  controller()->edit_model()->AdjustTextForCopy(
+      GetSelectedRange().GetMin(), &selected_text, &url, &write_url);
   if (!write_url) {
     return std::nullopt;
   }
@@ -179,7 +179,7 @@ BraveOmniboxViewViews::GetClipboardTextForPasteAndSearch() {
   }
 
   AutocompleteMatch match;
-  model()->ClassifyString(clipboard_text, &match, nullptr);
+  controller()->edit_model()->ClassifyString(clipboard_text, &match, nullptr);
   if (!AutocompleteMatch::IsSearchType(match.type)) {
     return std::nullopt;
   }

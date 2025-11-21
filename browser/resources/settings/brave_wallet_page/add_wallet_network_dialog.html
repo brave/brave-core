@@ -126,10 +126,9 @@
     <div>
       <div class="settings-row urls-button-container">
         <span>$i18n{walletAddNetworkDialogIconsTitle}</span>
-        <cr-icon-button iron-icon="cr:add" class="icon-picture-button"
+        <cr-icon-button iron-icon="cr:add" class="icon-picture-button wallet-input"
                         id="icon-plus-button" on-click="onAddIconUrlTap_"
                         disabled="{{isIconPlusButtonDisabled_}}"
-                        class="wallet-input"
                         type="url"
         ></cr-icon-button>
       </div>
@@ -159,14 +158,13 @@
       </div>
       <iron-list items="[[blockUrls]]" class="urls-list" id="block-urls-list" preserve-focus risk-selection>
         <template >
-          <cr-input type="text"
+          <cr-input type="url"
                     placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
                     error-message="$i18n{walletAddNetworkInvalidURLInput}"
                     spellcheck="false"
                     on-input=urlChangedBlock_
                     value="{{item.value}}"
-                    class="wallet-input"
-                    type="url">
+                    class="wallet-input">
           </cr-input>
         </template>
       </iron-list>

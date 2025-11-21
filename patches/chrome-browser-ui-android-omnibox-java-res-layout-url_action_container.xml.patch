@@ -1,12 +1,21 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index 86faa53155579453e5ced7b3d755fe4aa51c08a8..e76648891a54fe9c9691be856d6fa21eeed113d4 100644
+index 1b9777d2d65f64d64fa392ede02218acfa6dcc68..cefad80327c18c93e00bacd9cc4896fc2134c752 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-@@ -30,6 +30,7 @@ found in the LICENSE file.
-             android:contentDescription="@string/accessibility_toolbar_btn_delete_url"
-             android:tooltipText="@string/accessibility_toolbar_btn_delete_url"/>
+@@ -46,6 +46,7 @@ found in the LICENSE file.
+         app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
+         app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
  
-+<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" />
-         <org.chromium.ui.widget.ChromeImageButton
-             android:id="@+id/composeplate_button"
-             style="@style/LocationBarActionButton.AdaptiveDensity"
++<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton.AdaptiveDensity" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@id/mic_button"/>
+     <!--
+     Fusebox/Omnibox top-stacked elements on Active Omnibox with Empty content
+     -->
+@@ -80,7 +81,7 @@ found in the LICENSE file.
+         android:contentDescription="@string/accessibility_toolbar_btn_delete_url"
+         android:tooltipText="@string/accessibility_toolbar_btn_delete_url"
+         app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
+-        app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
++        app:layout_constraintEnd_toStartOf="@id/qr_button"/>
+ 
+     <Space
+         android:id="@+id/margin_spacer"

@@ -93,11 +93,9 @@ class TiledItemsView : public views::BoxLayoutView {
     auto container = std::make_unique<views::BoxLayoutView>();
     container->SetOrientation(views::BoxLayout::Orientation::kVertical);
     container->AddChildView(std::make_unique<views::BoxLayoutView>());
-    SkPath clip;
-    clip.addRoundRect(
+    container->SetClipPath(SkPath::RRect(
         SkRect::MakeWH(kThumbnailSize.width(), kThumbnailSize.height()),
-        kCornerRadius, kCornerRadius);
-    container->SetClipPath(clip);
+        kCornerRadius, kCornerRadius));
     if (!is_single_row) {
       container->AddChildView(std::make_unique<views::BoxLayoutView>());
     }
@@ -257,7 +255,7 @@ void ClosePanel(content::WebContents* contents) {
   // closing the tab.
   if (SidePanelUI* ui =
           browser_view->browser()->GetFeatures().side_panel_ui()) {
-    ui->Close();
+    ui->Close(SidePanelEntry::PanelType::kContent);
   }
 }
 

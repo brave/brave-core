@@ -39,6 +39,8 @@
     </message>
   </if>
 
+  <if expr="not is_ios">
+    </if>
   <if expr="is_ios">
     </if>
 

@@ -61,6 +61,7 @@ export function getHtml(this: BraveAccountDialogs) {
       <brave-account-forgot-password-dialog
         @back-button-clicked=${this.onBackButtonClicked}
         @close-dialog=${this.onCloseDialog}
+      >
       </brave-account-forgot-password-dialog>
     `,
     ERROR: () => html`

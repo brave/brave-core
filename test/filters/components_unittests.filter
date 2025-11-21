@@ -51,7 +51,7 @@
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
--OnDeviceAssetManagerTest.AdaptationModelDownloadRegisteredWhenFeatureFirstUsed
+-OnDeviceAssetManagerTest.*
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
@@ -125,6 +125,10 @@
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.
 -Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
+
+# These tests fail because the text contains "Google" instead of "Brave" (the
+# string is hard-coded into the test)
+-BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
