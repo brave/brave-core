@@ -31,6 +31,16 @@ inline constexpr const char kPolkadotAssetHubChainType[] = "Polkadot Asset Hub";
 
 }  // namespace
 
+TEST(PolkadotExtrinsics, MetadataFromChainName) {
+  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kWestendChainType));
+  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kPolkadotChainType));
+  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kWestendAssetHubChainType));
+  EXPECT_TRUE(PolkadotChainMetadata::FromChainName(kPolkadotAssetHubChainType));
+
+  EXPECT_FALSE(PolkadotChainMetadata::FromChainName("random text"));
+  EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
+}
+
 TEST(PolkadotExtrinsics, UnsignedTransfer) {
   // Test we can construct an unsigned extrinsic representing a
   // transfer_allow_death call and then serialize it appropriately to a hex
