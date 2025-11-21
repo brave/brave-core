@@ -19,9 +19,12 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.RequiresPermission;
 
@@ -175,6 +178,22 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     private boolean isPortraitMode() {
+        // Check the whole screen orientation first and fallback to context's orientation if it's
+        // not available.
+        Display display = getDisplay();
+        if (display == null) {
+            WindowManager windowManager =
+                    (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            if (windowManager != null) {
+                display = windowManager.getDefaultDisplay();
+            }
+        }
+
+        if (display != null) {
+            int rotation = display.getRotation();
+            return rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180;
+        }
+
         int orientation = mContext.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             return false;
