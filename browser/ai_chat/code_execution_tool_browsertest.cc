@@ -76,6 +76,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::test_server::HttpResponse> HandleTestRequest(
       const net::test_server::HttpRequest& request) {
     if (request.relative_url == "/test") {
+      ADD_FAILURE() << "Request should have been blocked";
       auto response = std::make_unique<net::test_server::BasicHttpResponse>();
       response->set_code(net::HTTP_OK);
       response->set_content("test response");
@@ -132,17 +133,15 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   EXPECT_EQ(output, "Error: Time limit exceeded");
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
-                       WindowAndLocationAreUndefined) {
-  std::string script = R"(
-    console.log('window: ' + typeof window);
-    console.log('location: ' + typeof location);
-  )";
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, NavigationBlocked) {
+  std::string script = base::StrCat({
+      R"(
+        window.location = ')",
+      test_server_url(), "'"});
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_THAT(output, HasSubstr("window: undefined"));
-  EXPECT_THAT(output, HasSubstr("location: undefined"));
+  EXPECT_THAT(output, HasSubstr("request has been blocked"));
 }
 
 }  // namespace ai_chat

@@ -62,17 +62,13 @@ class CodeExecutionTool : public Tool {
 
  private:
   struct CodeExecutionRequest {
-    CodeExecutionRequest(
-        std::unique_ptr<content::WebContents> web_contents,
-        std::unique_ptr<CodeSandboxWebContentsObserver> observer,
-        raw_ptr<Profile> otr_profile,
-        UseToolCallback callback);
+    CodeExecutionRequest(std::unique_ptr<content::WebContents> web_contents,
+                         UseToolCallback callback);
     ~CodeExecutionRequest();
 
     std::unique_ptr<content::WebContents> web_contents;
     std::unique_ptr<CodeSandboxWebContentsObserver> observer;
     base::OneShotTimer timeout_timer;
-    raw_ptr<Profile> otr_profile;
     UseToolCallback callback;
   };
 

@@ -10,8 +10,6 @@
   PrimaryID();                                              \
   static OTRProfileID CreateUniqueForSearchBackupResults(); \
   bool IsSearchBackupResults() const;                       \
-  static OTRProfileID CreateUniqueForCodeSandbox();         \
-  bool IsCodeSandbox() const;                               \
   friend class TorProfileManager;                           \
   static const OTRProfileID TorID
 #define HasPrimaryOTRProfile           \

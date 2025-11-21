@@ -25,7 +25,6 @@
 namespace {
 const char kSearchBackupResultsOTRProfileIDPrefix[] =
     "SearchBackupResults::OTR";
-const char kCodeSandboxOTRProfileIDPrefix[] = "CodeSandbox::OTR";
 }  // namespace
 
 // static
@@ -68,15 +67,6 @@ Profile::OTRProfileID::CreateUniqueForSearchBackupResults() {
 
 bool Profile::OTRProfileID::IsSearchBackupResults() const {
   return base::StartsWith(profile_id_, kSearchBackupResultsOTRProfileIDPrefix,
-                          base::CompareCase::SENSITIVE);
-}
-
-Profile::OTRProfileID Profile::OTRProfileID::CreateUniqueForCodeSandbox() {
-  return CreateUnique(kCodeSandboxOTRProfileIDPrefix);
-}
-
-bool Profile::OTRProfileID::IsCodeSandbox() const {
-  return base::StartsWith(profile_id_, kCodeSandboxOTRProfileIDPrefix,
                           base::CompareCase::SENSITIVE);
 }
 

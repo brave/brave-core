@@ -40,7 +40,7 @@ class CodeSandboxUI : public ui::UntrustedWebUIController {
 
  private:
   static bool ShouldHandleRequest(const std::string& path);
-  static void HandleScriptRequest(
+  static void HandleRequest(
       base::WeakPtr<content::BrowserContext> browser_context,
       const std::string& path,
       content::WebUIDataSource::GotDataCallback callback);
