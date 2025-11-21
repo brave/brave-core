@@ -7,6 +7,9 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import { useHistory } from 'react-router'
 
+// Hooks
+import { useRoute } from '../../../../../../common/hooks/use_route'
+
 // Types
 import { WalletRoutes } from '../../../../../../constants/types'
 
@@ -37,6 +40,7 @@ export const EmptyTokenListState = (props: Props) => {
 
   // routing
   const history = useHistory()
+  const { openOrPushRoute } = useRoute()
 
   // methods
   const onDeposit = React.useCallback(() => {
@@ -44,16 +48,16 @@ export const EmptyTokenListState = (props: Props) => {
       onDepositOverride()
       return
     }
-    history.push(WalletRoutes.DepositFundsPageStart)
-  }, [onDepositOverride, history])
+    openOrPushRoute(WalletRoutes.DepositFundsPageStart)
+  }, [onDepositOverride, openOrPushRoute])
 
   const onBuy = React.useCallback(() => {
     if (onBuyOverride) {
       onBuyOverride()
       return
     }
-    history.push(WalletRoutes.FundWalletPageStart)
-  }, [onBuyOverride, history])
+    openOrPushRoute(WalletRoutes.FundWalletPageStart)
+  }, [onBuyOverride, openOrPushRoute])
 
   return (
     <StyledWrapper

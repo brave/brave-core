@@ -78,6 +78,7 @@ import {
 import {
   useSyncedLocalStorage, //
 } from '../../../../common/hooks/use_local_storage'
+import { useRoute } from '../../../../common/hooks/use_route'
 
 // Styled Components
 import { Row, Column, LeoSquaredButton } from '../../../shared/style'
@@ -209,6 +210,7 @@ export const MarketAsset = () => {
   const { foundMeldBuyToken } = useFindBuySupportedToken(
     selectedAssetFromParams,
   )
+  const { openOrPushRoute } = useRoute()
 
   // memos / computed
   const isLoadingGraphData =
@@ -308,13 +310,13 @@ export const MarketAsset = () => {
 
   const onSelectBuy = React.useCallback(() => {
     if (foundMeldBuyToken) {
-      history.push(makeFundWalletRoute(foundMeldBuyToken))
+      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken))
     }
-  }, [history, foundMeldBuyToken])
+  }, [openOrPushRoute, foundMeldBuyToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
-      history.push(
+      openOrPushRoute(
         makeDepositFundsRoute(getAssetIdKey(foundTokens[0]), {
           searchText: foundTokens[0].symbol,
         }),
@@ -323,13 +325,13 @@ export const MarketAsset = () => {
     }
 
     if (foundTokens.length > 1) {
-      history.push(
+      openOrPushRoute(
         makeDepositFundsRoute('', {
           searchText: foundTokens[0].symbol,
         }),
       )
     }
-  }, [foundTokens, history])
+  }, [foundTokens, openOrPushRoute])
 
   // token list & market data needs to load before we can find an asset to
   // select from the url params

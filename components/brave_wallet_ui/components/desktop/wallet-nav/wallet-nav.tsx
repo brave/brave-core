@@ -8,6 +8,9 @@ import { useLocation, useHistory } from 'react-router-dom'
 import NavigationMenu from '@brave/leo/react/navigationMenu'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
+// Hooks
+import { useRoute } from '../../../common/hooks/use_route'
+
 // Selectors
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
@@ -43,6 +46,7 @@ export const WalletNav = () => {
   // routing
   const history = useHistory()
   const { pathname: walletLocation } = useLocation()
+  const { openOrPushRoute } = useRoute()
 
   // computed
   const navigationOptions = isPanel ? PanelNavOptions : NavOptions
@@ -88,7 +92,7 @@ export const WalletNav = () => {
                 key={option.id}
                 icon={option.icon}
                 isCurrent={walletLocation.includes(option.route)}
-                onClick={() => history.push(option.route)}
+                onClick={() => openOrPushRoute(option.route)}
               >
                 {getLocale(option.name)}
               </NavigationItem>
