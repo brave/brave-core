@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // clang-format off
-#include "brave/installer/chromium_index_helper_begin.h"
+#include "brave/installer/util/chromium_index_helper_begin.h"
 #include <chrome/installer/util/beacons_unittest.cc>
-#include "brave/installer/chromium_index_helper_end.h"
+#include "brave/installer/util/chromium_index_helper_end.h"
 // clang-format on

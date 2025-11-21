@@ -6,8 +6,8 @@
 // This helper undefines CHROMIUM_INDEX after including the original file.
 // See chromium_index_helper_begin.h for usage.
 
-#ifndef BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_END_H_
-#define BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_END_H_
+#ifndef BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_END_H_
+#define BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_END_H_
 
 #include "build/branding_buildflags.h"
 
@@ -16,4 +16,4 @@
 #undef CHROMIUM_INDEX
 #endif
 
-#endif  // BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_END_H_
+#endif  // BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_END_H_

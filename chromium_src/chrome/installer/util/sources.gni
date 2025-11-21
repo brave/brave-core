@@ -7,6 +7,14 @@ brave_chromium_src_chrome_installer_util_sources = []
 brave_chromium_src_chrome_installer_util_deps = []
 
 if (is_win) {
+  # Putting these headers here adds them to
+  # `//chrome/installer/util:with_no_strings` instead of (ideally) to
+  # `//chrome/installer/util:test_support`. But doing so lets us avoid an
+  # additional patch, and `test_support` depends on `with_no_strings`.
+  brave_chromium_src_chrome_installer_util_sources += [
+    "//brave/installer/util/chromium_index_helper_begin.h",
+    "//brave/installer/util/chromium_index_helper_end.h",
+  ]
   brave_chromium_src_chrome_installer_util_deps += [
     "//brave/installer/util",
     "//chrome/common:non_code_constants",
