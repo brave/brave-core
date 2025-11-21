@@ -12,12 +12,12 @@
 #include <vector>
 
 #include "base/feature_list.h"
-#include "net/base/features.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
+#include "net/base/features.h"
 #include "url/gurl.h"
 
 #define HTTPS_UPGRADE_EXCEPTIONS_TXT_FILE "https-upgrade-exceptions-list.txt"

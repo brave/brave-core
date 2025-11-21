@@ -258,8 +258,8 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   // eagerly initialize for component updater
   https_upgrade_exceptions_service_ =
-        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
-            local_data_files_service());
+      https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
+          local_data_files_service());
 
   if (base::FeatureList::IsEnabled(
           webcompat::features::kBraveWebcompatExceptionsService)) {
