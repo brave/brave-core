@@ -10,12 +10,12 @@
 // For development builds, the primary mode is DEVELOPER_INDEX.
 //
 // Usage:
-//   #include "brave/installer/chromium_index_helper_begin.h"
+//   #include "brave/installer/util/chromium_index_helper_begin.h"
 //   #include <original_file.cc>
-//   #include "brave/installer/chromium_index_helper_end.h"
+//   #include "brave/installer/util/chromium_index_helper_end.h"
 
-#ifndef BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_BEGIN_H_
-#define BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_BEGIN_H_
+#ifndef BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_BEGIN_H_
+#define BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_BEGIN_H_
 
 #include "build/branding_buildflags.h"
 
@@ -31,4 +31,4 @@
 #endif  // !BUILDFLAG(GOOGLE_CHROME_BRANDING) &&
         // !BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
 
-#endif  // BRAVE_INSTALLER_CHROMIUM_INDEX_HELPER_BEGIN_H_
+#endif  // BRAVE_INSTALLER_UTIL_CHROMIUM_INDEX_HELPER_BEGIN_H_
