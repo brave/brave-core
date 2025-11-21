@@ -138,10 +138,11 @@ export const Button = styled(WalletButton)<{
   background-color: transparent;
   padding: 10px 0px;
   color: ${(p) =>
-    p.isPlaceholder ? leo.color.text.tertiary : leo.color.text.primary};
+    p.isPlaceholder ? leo.color.text.interactive : leo.color.text.primary};
   white-space: nowrap;
   :disabled {
     cursor: not-allowed;
+    color: ${leo.color.text.tertiary};
   }
   &:hover:not([disabled]) {
     color: ${leo.color.text.interactive};
