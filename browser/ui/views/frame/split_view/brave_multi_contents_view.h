@@ -20,6 +20,10 @@ FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 
 class BraveContentsContainerView;
 
+namespace views {
+class WebView;
+}  // namespace views
+
 class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
@@ -32,7 +36,7 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
-  void SetWebPanelVisible(bool visible);
+  void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
@@ -54,6 +58,8 @@ class BraveMultiContentsView : public MultiContentsView {
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ResetResizeArea() override;
+  void UpdateContentsBorderAndOverlay() override;
+  void OnWebContentsFocused(views::WebView* web_view) override;
 
   int GetWebPanelWidth() const;
 

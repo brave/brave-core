@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index ca0bba30c5058ff4e1230502540f60a154878b95..542dee342a10318eb2ad0bf9fcfcb1ef632de156 100644
+index ca0bba30c5058ff4e1230502540f60a154878b95..d4b633941a984a2235a636799cc54720984ac551 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -602,6 +602,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
@@ -18,3 +18,11 @@ index ca0bba30c5058ff4e1230502540f60a154878b95..542dee342a10318eb2ad0bf9fcfcb1ef
      // Trusted pinned mode does not allow to escape. So do not show the bubble.
      bool is_trusted_pinned =
          platform_util::IsBrowserLockedFullscreen(browser_view_->browser_.get());
+@@ -1781,6 +1783,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+       !browser_->tab_strip_model()->closing_all() && GetWidget()->IsActive() &&
+       GetWidget()->IsVisible() && !tab_change_in_split_view;
+ #endif
++  BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
+   // Update various elements that are interested in knowing the current
+   // WebContents.
+ 

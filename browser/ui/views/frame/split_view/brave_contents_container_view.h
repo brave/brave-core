@@ -35,6 +35,9 @@ class BraveContentsContainerView :
   explicit BraveContentsContainerView(BrowserView* browser_view);
   ~BraveContentsContainerView() override;
 
+  // true when a tab that wraps this container's web contents is active.
+  bool IsActive() const;
+
   // ContentsContainerView:
   void UpdateBorderAndOverlay(bool is_in_split,
                               bool is_active,

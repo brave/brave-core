@@ -89,6 +89,15 @@ BraveContentsContainerView::BraveContentsContainerView(
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
 
+bool BraveContentsContainerView::IsActive() const {
+  auto* web_contents = contents_view_->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
+}
+
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {

@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
@@ -49,14 +50,20 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
     contents_container_view_for_web_panel_ = AddChildView(
         std::make_unique<BraveContentsContainerView>(browser_view_));
     contents_container_view_for_web_panel_->SetVisible(false);
+    web_contents_focused_subscriptions_.push_back(
+        contents_container_view_for_web_panel_->contents_view()
+            ->AddWebContentsFocusedCallback(base::BindRepeating(
+                &BraveMultiContentsView::OnWebContentsFocused,
+                base::Unretained(this))));
   }
 }
 
-void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
+void BraveMultiContentsView::SetWebPanelContents(
+    content::WebContents* web_contents) {
   CHECK(contents_container_view_for_web_panel_);
-  contents_container_view_for_web_panel_->SetVisible(visible);
-  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
-                                                                 false);
+  contents_container_view_for_web_panel_->contents_view()->SetWebContents(
+      web_contents);
+  contents_container_view_for_web_panel_->SetVisible(web_contents);
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {
@@ -127,6 +134,49 @@ void BraveMultiContentsView::ResetResizeArea() {
   // Pass true to make delegate save ratio in session service like resizing
   // complete.
   delegate_->ResizeWebContents(0.5, /*done_resizing=*/true);
+}
+
+void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
+  if (!contents_container_view_for_web_panel_ ||
+      !contents_container_view_for_web_panel_->GetVisible()) {
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  if (!contents_container_view_for_web_panel_->IsActive()) {
+    contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+        /*is_in_split*/ true, /*is_active*/ false,
+        /*is_highlighted*/ false);
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  // When web panel is active, only it should have active border.
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+      /*is_in_split*/ true, /*is_active*/ true,
+      /*is_highlighted*/ false);
+
+  for (auto* contents_container_view : contents_container_views_) {
+    contents_container_view->UpdateBorderAndOverlay(IsInSplitView(),
+                                                    /*is_active*/ false,
+                                                    /*is_highlighted*/ false);
+  }
+}
+
+void BraveMultiContentsView::OnWebContentsFocused(views::WebView* web_view) {
+  if (!contents_container_view_for_web_panel_ ||
+      !contents_container_view_for_web_panel_->GetVisible()) {
+    MultiContentsView::OnWebContentsFocused(web_view);
+    return;
+  }
+
+  // Base class only gives focus for inactive split tab because that inactive
+  // split tab could get focused in upstream.
+  // With web panel feature, other tabs also could get focused.
+  // When web panel has focus, active/inactive split tab could get focus.
+  // Also, web panel's tab also needs focus.
+  // So, notify always.
+  delegate_->WebContentsFocused(web_view->web_contents());
 }
 
 int BraveMultiContentsView::GetWebPanelWidth() const {
