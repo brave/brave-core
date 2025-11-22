@@ -167,7 +167,8 @@ base::Value::Dict CardanoTransaction::TxInput::ToValue() const {
   // json_schema_compiler.
   dict.Set("utxo_address", utxo_address.ToString());
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
-  dict.Set("utxo_value", base::NumberToString(utxo_value));
+  dict.Set("utxo_value",
+           base::NumberToString(strict_cast<uint64_t>(utxo_value)));
 
   return dict;
 }
@@ -204,6 +205,7 @@ CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
   result.utxo_value = utxo.lovelace_amount;
+  result.utxo_tokens = utxo.tokens;
 
   return result;
 }
@@ -510,6 +512,29 @@ bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
 
   change->amount = change_amount.ValueOrDie();
   DCHECK_EQ(EffectiveFeeAmount(), min_fee);
+  return true;
+}
+
+bool CardanoTransaction::MoveTokensToChangeOutput() {
+  CHECK(ChangeOutput());
+  base::flat_map<cardano_rpc::UnspentOutput::Token,
+                 base::CheckedNumeric<uint64_t>>
+      tokens;
+
+  for (const auto& input : inputs_) {
+    for (const auto& token : input.utxo_tokens) {
+      tokens[token.first] += token.second;
+    }
+  }
+
+  for (const auto& token : tokens) {
+    uint64_t token_value_total = 0u;
+    if (!token.second.AssignIfValid(&token_value_total)) {
+      return false;
+    }
+    ChangeOutput()->tokens[token.first] = token_value_total;
+  }
+
   return true;
 }
 
