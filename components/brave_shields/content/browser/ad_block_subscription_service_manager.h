@@ -20,6 +20,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -78,6 +79,7 @@ class AdBlockSubscriptionServiceManager {
  public:
   explicit AdBlockSubscriptionServiceManager(
       PrefService* local_state,
+      AdBlockFiltersProviderManager* filters_provider_manager,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
       const base::FilePath& profile_dir,
       AdBlockListP3A* list_p3a);
@@ -140,6 +142,8 @@ class AdBlockSubscriptionServiceManager {
                                     base::TimeDelta* retry_interval);
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
   base::FilePath subscription_path_;

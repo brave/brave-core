@@ -139,7 +139,7 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
-    ad_block_service->UseSourceProviderForTest(source_provider_.get());
+    source_provider_->RegisterAsSourceProvider(ad_block_service);
     WaitForAdBlockServiceThreads();
   }
 
@@ -251,6 +251,11 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(0, prompt_factory()->show_count());
     // Check content setting is still ASK.
     CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+  }
+
+  void PostRunTestOnMainThread() override {
+    source_provider_.reset();
+    InProcessBrowserTest::PostRunTestOnMainThread();
   }
 
  protected:

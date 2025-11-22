@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -35,6 +36,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   // Build an adblock filters component with given component info
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
+      AdBlockFiltersProviderManager* manager,
       std::string component_id,
       std::string base64_public_key,
       std::string title,
@@ -43,6 +45,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   // Helper to build a particular adblock component from a catalog entry
   AdBlockComponentFiltersProvider(
       component_updater::ComponentUpdateService* cus,
+      AdBlockFiltersProviderManager* manager,
       const FilterListCatalogEntry& catalog_entry,
       bool is_default_engine = true);
   ~AdBlockComponentFiltersProvider() override;

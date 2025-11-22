@@ -48,7 +48,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
-    ad_block_service->UseSourceProviderForTest(source_provider_.get());
+    source_provider_->RegisterAsSourceProvider(ad_block_service);
 
     auto* engine =
         g_brave_browser_process->ad_block_service()->default_engine_.get();
@@ -164,6 +164,11 @@ class EphemeralStorage1pDomainBlockBrowserTest
   ContentSetting GetCookieSetting(const GURL& url) {
     return content_settings()->GetContentSetting(url, url,
                                                  ContentSettingsType::COOKIES);
+  }
+
+  void PostRunTestOnMainThread() override {
+    source_provider_.reset();
+    EphemeralStorageBrowserTest::PostRunTestOnMainThread();
   }
 
  protected:

@@ -81,7 +81,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
 
-    ad_block_service->UseSourceProviderForTest(filters_provider_.get());
+    filters_provider_->RegisterAsSourceProvider(ad_block_service);
 
     WaitForAdBlockServiceThreads();
   }
@@ -90,6 +90,11 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
         g_brave_browser_process->ad_block_service()->GetTaskRunner()));
     ASSERT_TRUE(tr_helper->Run());
+  }
+
+  void PostRunTestOnMainThread() override {
+    filters_provider_.reset();
+    InProcessBrowserTest::PostRunTestOnMainThread();
   }
 
   std::unique_ptr<TestFiltersProvider> filters_provider_;

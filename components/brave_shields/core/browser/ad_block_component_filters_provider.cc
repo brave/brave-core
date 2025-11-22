@@ -55,12 +55,13 @@ void OnReadDATFileData(
 
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
+    AdBlockFiltersProviderManager* manager,
     std::string component_id,
     std::string base64_public_key,
     std::string title,
     uint8_t permission_mask,
     bool is_default_engine)
-    : AdBlockFiltersProvider(is_default_engine),
+    : AdBlockFiltersProvider(is_default_engine, manager),
       component_id_(component_id),
       permission_mask_(permission_mask),
       component_updater_service_(cus) {
@@ -82,9 +83,11 @@ std::string AdBlockComponentFiltersProvider::GetNameForDebugging() {
 
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
+    AdBlockFiltersProviderManager* manager,
     const FilterListCatalogEntry& catalog_entry,
     bool is_default_engine)
     : AdBlockComponentFiltersProvider(cus,
+                                      manager,
                                       catalog_entry.component_id,
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title,

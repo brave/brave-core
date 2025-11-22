@@ -20,6 +20,8 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
+class AdBlockFiltersProviderManager;
+
 // Interface for any source that can load filters or serialized filter data
 // into an adblock engine.
 class AdBlockFiltersProvider {
@@ -29,7 +31,9 @@ class AdBlockFiltersProvider {
     virtual void OnChanged(bool is_for_default_engine) = 0;
   };
 
-  explicit AdBlockFiltersProvider(bool engine_is_default);
+  explicit AdBlockFiltersProvider(
+      bool engine_is_default,
+      AdBlockFiltersProviderManager* filters_provider_manager_);
   // Used by AdblockFiltersProviderManager
   AdBlockFiltersProvider();
   AdBlockFiltersProvider(const AdBlockFiltersProvider&) = delete;
@@ -54,6 +58,7 @@ class AdBlockFiltersProvider {
  protected:
   bool engine_is_default_;
 
+  raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_;
   void NotifyObservers(bool is_for_default_engine);
 
  private:

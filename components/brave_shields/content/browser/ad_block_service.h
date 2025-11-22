@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
@@ -55,6 +56,7 @@ class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
 class CosmeticResourceMergeTest;
 class StripProceduralFiltersTest;
+class TestFiltersProvider;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
@@ -62,11 +64,7 @@ class AdBlockService {
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
                                  public AdBlockFiltersProvider::Observer {
    public:
-    SourceProviderObserver(AdBlockEngine* adblock_engine,
-                           AdBlockFiltersProvider* filters_provider,
-                           AdBlockResourceProvider* resource_provider,
-                           scoped_refptr<base::SequencedTaskRunner> task_runner,
-                           bool is_filter_provider_manager = false);
+    SourceProviderObserver(AdBlockService* owner, bool engine_is_default);
 
     SourceProviderObserver(const SourceProviderObserver&) = delete;
     SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
@@ -85,12 +83,13 @@ class AdBlockService {
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
-    raw_ptr<AdBlockFiltersProvider> filters_provider_ = nullptr;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
     raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
         nullptr;  // not owned
+    raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_ =
+        nullptr;  // not owned
+
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
-    bool is_filter_provider_manager_;
 
     base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
   };
@@ -145,15 +144,13 @@ class AdBlockService {
 
   base::SequencedTaskRunner* GetTaskRunner();
 
-  void UseSourceProviderForTest(AdBlockFiltersProvider* source_provider);
-  void UseCustomSourceProviderForTest(AdBlockFiltersProvider* source_provider);
-
  private:
   friend class ::AdBlockServiceTest;
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::DebounceBrowserTest;
   friend class brave_shields::CosmeticResourceMergeTest;
   friend class brave_shields::StripProceduralFiltersTest;
+  friend class brave_shields::TestFiltersProvider;
 
   static std::string g_ad_block_dat_file_version_;
 
@@ -161,6 +158,11 @@ class AdBlockService {
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
+  }
+
+  AdBlockFiltersProviderManager* filters_provider_manager() {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return filters_provider_manager_.get();
   }
 
   void OnGetDebugInfoFromDefaultEngine(
@@ -189,6 +191,8 @@ class AdBlockService {
 
   AdBlockListP3A list_p3a_;
 
+  std::unique_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
+      GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockDefaultResourceProvider> default_resource_provider_

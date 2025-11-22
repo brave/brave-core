@@ -118,6 +118,7 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   }
 
   void TearDown() override {
+    filters_provider_.reset();
     // The AdBlockBaseService destructor must be called before the task runner
     // is destroyed.
     TestingBraveBrowserProcess::DeleteInstance();
@@ -125,8 +126,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
   void ResetAdblockInstance(std::string rules) {
     filters_provider_ = std::make_unique<TestFiltersProvider>(rules);
-    g_brave_browser_process->ad_block_service()->UseSourceProviderForTest(
-        filters_provider_.get());
+    filters_provider_->RegisterAsSourceProvider(
+        g_brave_browser_process->ad_block_service());
     task_environment_.RunUntilIdle();
   }
 

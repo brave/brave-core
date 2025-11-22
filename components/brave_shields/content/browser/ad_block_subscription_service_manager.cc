@@ -128,12 +128,14 @@ void SubscriptionInfo::RegisterJSONConverter(
 
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     PrefService* local_state,
+    AdBlockFiltersProviderManager* filters_provider_manager,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
     const base::FilePath& profile_dir,
     AdBlockListP3A* list_p3a)
     : initialized_(false),
       local_state_(local_state),
+      filters_provider_manager_(filters_provider_manager),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscription_update_timer_(
           std::make_unique<component_updater::TimerUpdateScheduler>()),
@@ -244,7 +246,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 
   auto subscription_filters_provider =
       std::make_unique<AdBlockSubscriptionFiltersProvider>(
-          local_state_,
+          local_state_, filters_provider_manager_,
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
           base::BindRepeating(
               &AdBlockSubscriptionServiceManager::OnListMetadata,
@@ -285,7 +287,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
     DCHECK(it == subscription_filters_providers_.end());
     auto subscription_filters_provider =
         std::make_unique<AdBlockSubscriptionFiltersProvider>(
-            local_state_,
+            local_state_, filters_provider_manager_,
             GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
             base::BindRepeating(
                 &AdBlockSubscriptionServiceManager::OnListMetadata,
@@ -434,7 +436,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       if (info.enabled) {
         auto subscription_filters_provider =
             std::make_unique<AdBlockSubscriptionFiltersProvider>(
-                local_state_,
+                local_state_, filters_provider_manager_,
                 GetSubscriptionPath(sub_url).Append(
                     kCustomSubscriptionListText),
                 base::BindRepeating(

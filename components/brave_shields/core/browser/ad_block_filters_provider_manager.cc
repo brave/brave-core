@@ -12,19 +12,12 @@
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/location.h"
-#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
 
 namespace brave_shields {
-
-// static
-AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
-  static base::NoDestructor<AdBlockFiltersProviderManager> instance;
-  return instance.get();
-}
 
 AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;
 
