@@ -52,12 +52,22 @@ class ToolProvider {
   // user.
   virtual void OnGenerationCompleteWithNoToolsToHandle() {}
 
+  // A task can be interrupted by the user by some external means that the
+  // ToolProvider knows about. For example, the user can pause tab operations
+  // by clicking a button in the browser UI. The tool loop that this
+  // ToolProvider is part of will ask each ToolProvider if it can continue
+  // executing tools once any tool provider sends OnTaskStateChanged.
+  virtual bool IsPausedByUser();
+
   class Observer : public base::CheckedObserver {
    public:
     ~Observer() override {}
 
     // This ToolProvider has some Tool acting on a Tab
     virtual void OnContentTaskStarted(int32_t tab_id) {}
+
+    // User requests that the task should be paused
+    virtual void OnTaskStateChanged() {}
   };
 
   void AddObserver(Observer* observer);
@@ -79,6 +89,8 @@ class ToolProvider {
   virtual void StopAllTasks() {}
 
  protected:
+  void NotifyTaskStateChanged();
+
   base::ObserverList<Observer> observers_;
 };
 

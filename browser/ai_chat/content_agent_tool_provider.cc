@@ -62,6 +62,11 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
   task_id_ = actor_service_->CreateTask();
 
+  actor_task_state_changed_subscription_ =
+      actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
+          &ContentAgentToolProvider::OnActorTaskStateChanged,
+          base::Unretained(this)));
+
   CreateTools();
 }
 
@@ -83,7 +88,6 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
   return tool_ptrs;
 }
 
-
 void ContentAgentToolProvider::OnGenerationCompleteWithNoToolsToHandle() {
   // Marks all tools for this round of the loop being completed, we can return
   // control back to the tab(s).
@@ -97,6 +101,11 @@ void ContentAgentToolProvider::StopAllTasks() {
     actor_service_->StopTask(task_id_,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
+}
+
+bool ContentAgentToolProvider::IsPausedByUser() {
+  // Tools shouldn't be attempted to run whilst actor task is paused by user
+  return actor_service_->GetTask(task_id_)->IsUnderUserControl();
 }
 
 actor::TaskId ContentAgentToolProvider::GetTaskId() {
@@ -153,6 +162,13 @@ void ContentAgentToolProvider::ExecuteActions(
       actor::ActorTaskMetadata(),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void ContentAgentToolProvider::OnActorTaskStateChanged(
+    const actor::ActorTask& task) {
+  if (!task.id().is_null() && task.id() == task_id_) {
+    NotifyTaskStateChanged();
+  }
 }
 
 void ContentAgentToolProvider::CreateTools() {

@@ -11,12 +11,22 @@ ToolProvider::ToolProvider() = default;
 
 ToolProvider::~ToolProvider() = default;
 
+bool ToolProvider::IsPausedByUser() {
+  return false;
+}
+
 void ToolProvider::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }
 
 void ToolProvider::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void ToolProvider::NotifyTaskStateChanged() {
+  for (auto& observer : observers_) {
+    observer.OnTaskStateChanged();
+  }
 }
 
 }  // namespace ai_chat
