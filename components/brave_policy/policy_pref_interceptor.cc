@@ -6,16 +6,50 @@
 #include "brave/components/brave_policy/policy_pref_interceptor.h"
 
 #include "base/containers/map_util.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "components/prefs/pref_value_map.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
 
 namespace brave_policy {
 
 namespace {
 
-// Preference names that should not support dynamic refresh.
+// Preference names that do not support dynamic refresh.
+// All policy values will be initialized at browser start
+// and cached for the lifetime of the browser process.
 constexpr const char* kNonDynamicPrefs[] = {
+#if BUILDFLAG(ENABLE_AI_CHAT)
     ai_chat::prefs::kEnabledByPolicy,
+#endif
+    brave_news::prefs::kBraveNewsDisabledByPolicy,
+    brave_rewards::prefs::kDisabledByPolicy,
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    brave_vpn::prefs::kManagedBraveVPNDisabled,
+#endif
+    brave_wallet::prefs::kDisabledByPolicy,
+    kBraveTalkDisabledByPolicy,
+    playlist::kPlaylistEnabledPref,
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    speedreader::kSpeedreaderEnabled,
+#endif
 };
 
 }  // namespace
