@@ -390,7 +390,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnStateForConversationEntriesChanged();
 
   mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
-  void MaybeRespondToNextToolUseRequest();
+
+  // Returns true if there are any more tool use requests to handle
+  bool MaybeRespondToNextToolUseRequest();
 
   // We don't own all the available tools for the conversation as:
   // - The available tools can change over time.
