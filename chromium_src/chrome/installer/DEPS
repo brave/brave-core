@@ -6,4 +6,7 @@ include_rules += [
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",
+  # We need bspatch for delta updates on Windows until we are on Omaha 4. See:
+  # github.com/brave/brave-core/pull/31937
+  "+brave/third_party/bspatch"
 ]

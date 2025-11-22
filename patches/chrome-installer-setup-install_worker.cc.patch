@@ -1,0 +1,20 @@
+diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
+index 3393a297bb7120d8082cecc25df15f4e60324425..c418458f97f593fa5805dc9d125ea1ee08191591 100644
+--- a/chrome/installer/setup/install_worker.cc
++++ b/chrome/installer/setup/install_worker.cc
+@@ -106,6 +106,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
+     install_list->AddCopyTreeWorkItem(setup_path, active_setup_exe, temp_path,
+                                       WorkItem::ALWAYS);
+   }
++  BRAVE_ADD_INSTALLER_COPY_TASKS
+ }
+ 
+ // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
+@@ -216,6 +217,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
+         installer_state.GetInstallerDirectory(current_version));
+     base::FilePath old_archive(
+         old_installer_dir.Append(installer::kChromeArchive));
++    BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS
+     auto* delete_old_archive_work_item =
+         install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
+     // Don't cause failure of |install_list| if this WorkItem fails.
