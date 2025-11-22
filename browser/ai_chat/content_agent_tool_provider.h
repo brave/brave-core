@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
+#include "chrome/browser/actor/actor_task.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 
 namespace ai_chat {
@@ -37,6 +38,7 @@ class ContentAgentToolProvider : public ToolProvider,
   std::vector<base::WeakPtr<Tool>> GetTools() override;
   void OnGenerationCompleteWithNoToolsToHandle() override;
   void StopAllTasks() override;
+  bool IsPausedByUser() override;
 
   // ContentAgentTaskProvider implementation
   actor::TaskId GetTaskId() override;
@@ -49,6 +51,8 @@ class ContentAgentToolProvider : public ToolProvider,
   friend class BrowserToolsTest;
   friend class ContentAgentToolProviderTest;
   friend class ContentAgentToolProviderBrowserTest;
+
+  void OnActorTaskStateChanged(const actor::ActorTask& task);
 
   void CreateTools();
 
@@ -73,6 +77,7 @@ class ContentAgentToolProvider : public ToolProvider,
   tabs::TabHandle task_tab_handle_;
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
+  base::CallbackListSubscription actor_task_state_changed_subscription_;
 
   base::WeakPtrFactory<ContentAgentToolProvider> weak_ptr_factory_{this};
 };

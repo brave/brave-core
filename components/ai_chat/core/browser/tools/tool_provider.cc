@@ -11,6 +11,10 @@ ToolProvider::ToolProvider() = default;
 
 ToolProvider::~ToolProvider() = default;
 
+bool ToolProvider::IsPausedByUser() {
+  return false;
+}
+
 void ToolProvider::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
 }

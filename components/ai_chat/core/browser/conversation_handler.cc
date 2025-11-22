@@ -917,6 +917,15 @@ void ConversationHandler::PerformQuestionGeneration() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+bool ConversationHandler::IsToolLoopPausedByUser() const {
+  for (auto& tool_provider : tool_providers_) {
+    if (tool_provider->IsPausedByUser()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
   std::move(callback).Run(associated_content_manager_->GetAssociatedContent());
@@ -1069,24 +1078,8 @@ void ConversationHandler::RespondToToolUseRequest(
 
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
 
-  // Only perform generation if there are no pending tools left to run from
-  // the last entry.
-  if (std::ranges::all_of(
-          *chat_history_.back()->events,
-          [](const mojom::ConversationEntryEventPtr& event) {
-            return !event->is_tool_use_event() ||
-                   event->get_tool_use_event()->output.has_value();
-          })) {
-    DVLOG(0) << "No more tool use requests to handle, performing generation";
-    is_request_in_progress_ = true;
-    is_tool_use_in_progress_ = false;
-    OnAPIRequestInProgressChanged();
-    PerformAssistantGenerationWithPossibleContent();
-  } else {
-    DVLOG(0) << "Tool use request handled, but still have more to handle";
-    // Still have more tool use requests to handle.
-    MaybeRespondToNextToolUseRequest();
-  }
+  // Run next tool, or perform generation with all the tools outputs
+  MaybeRespondToNextToolUseRequest();
 }
 
 void ConversationHandler::ProcessPermissionChallenge(
@@ -1121,10 +1114,7 @@ void ConversationHandler::ProcessPermissionChallenge(
     // This stops processing of any remaining tools in this turn
     DVLOG(0)
         << "Permission denied, stopping tool loop and performing generation";
-    is_request_in_progress_ = true;
-    is_tool_use_in_progress_ = false;
-    OnAPIRequestInProgressChanged();
-    PerformAssistantGenerationWithPossibleContent();
+    PerformPostToolAssistantGeneration();
     return;
   }
 
@@ -1220,6 +1210,17 @@ void ConversationHandler::PerformAssistantGeneration() {
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ConversationHandler::PerformPostToolAssistantGeneration() {
+  if (IsToolLoopPausedByUser()) {
+    DVLOG(0) << "Tool loop is paused by user, skipping generation";
+    return;
+  }
+  is_request_in_progress_ = true;
+  is_tool_use_in_progress_ = false;
+  OnAPIRequestInProgressChanged();
+  PerformAssistantGenerationWithPossibleContent();
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1711,6 +1712,27 @@ void ConversationHandler::OnContentTaskStarted(int32_t tab_id) {
   }
 }
 
+void ConversationHandler::OnTaskStateChanged() {
+  DVLOG(0) << "OnTaskStateChanged: " << IsToolLoopPausedByUser() << " "
+           << tool_loop_was_paused_by_tool_provider_ << " "
+           << is_request_in_progress_;
+  if (IsToolLoopPausedByUser()) {
+    tool_loop_was_paused_by_tool_provider_ = true;
+    // is_request_in_progress_ = false;
+    // engine_->ClearAllQueries();
+    // OnAPIRequestInProgressChanged();
+    // TODO(petemill): Stop in-progress tool use requests in case the tool loop
+    // is resumed before any in-progress tool use request is completed. In that
+    // case we would kick off a new tool loop below, *and* we would resume the
+    // original tool loop when the original callback is invoked.
+  } else if (tool_loop_was_paused_by_tool_provider_) {
+    // Only try to resume the tool loop once per un-pause.
+    tool_loop_was_paused_by_tool_provider_ = false;
+
+    MaybeRespondToNextToolUseRequest();
+  }
+}
+
 void ConversationHandler::OnModelDataChanged() {
   const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
   auto default_model_key = model_service_->GetDefaultModelKey();
@@ -1978,6 +2000,8 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
   bool has_pending_tool_use_request = false;
 
+  bool has_only_completed_tool_use_events = false;
+
   // Handle one tool at a time and wait for its response
   // before handling the next one
   for (auto& event : *last_entry->events) {
@@ -1985,11 +2009,21 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       auto& tool_use_event = event->get_tool_use_event();
       if (tool_use_event->output != std::nullopt) {
         // already handled
+        has_only_completed_tool_use_events = true;
         continue;
       }
 
+      has_only_completed_tool_use_events = false;
 
       has_pending_tool_use_request = true;
+
+      // We check if we're allowed to execute tools only now that we know we
+      // have a pending tool to execute.
+      if (IsToolLoopPausedByUser()) {
+        DVLOG(0) << "Tool loop is paused by user, not executing any tools.";
+        break;
+      }
+
       // Check for existing permission challenge that hasn't been
       // granted yet. If permission_challenge exists, permission is needed.
       if (tool_use_event->permission_challenge) {
@@ -2070,6 +2104,12 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
                          weak_ptr_factory_.GetWeakPtr(), tool_use_event->id));
       break;
     }
+  }
+
+  // If there's nothing to do but send results, and there is no request in
+  // progress, then we must be resuming from a previous cancellation
+  if (has_only_completed_tool_use_events && !is_request_in_progress_) {
+    PerformPostToolAssistantGeneration();
   }
 
   return has_pending_tool_use_request;
