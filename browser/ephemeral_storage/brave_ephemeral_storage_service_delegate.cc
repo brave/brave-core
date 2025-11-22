@@ -10,21 +10,30 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/dom_storage_context.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
+#include "net/base/url_util.h"
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#else
+#include "brave/browser/ephemeral_storage/android/ephemeral_storage_utils.h"
 #endif
 
 namespace ephemeral_storage {
@@ -32,13 +41,16 @@ namespace ephemeral_storage {
 BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> cookie_settings)
+    scoped_refptr<content_settings::CookieSettings> cookie_settings,
+    brave_shields::BraveShieldsSettingsService* shields_settings_service)
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
-      cookie_settings_(std::move(cookie_settings)) {
+      cookie_settings_(std::move(cookie_settings)),
+      shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
+  CHECK(shields_settings_service_);
 }
 
 BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() {
@@ -144,5 +156,54 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
   BrowserList::RemoveObserver(this);
 }
 #endif
+
+void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
+    const std::string& ephemeral_domain) {
+#if !BUILDFLAG(IS_ANDROID)
+  auto* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    if (!profile->IsSameOrParent(browser->profile())) {
+      continue;
+    }
+    BraveTabStripModel* tab_strip =
+        static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+    if (!tab_strip) {
+      continue;
+    }
+
+    std::vector<int> closing_tab_indices;
+    for (auto tab_itr = tab_strip->begin(); tab_itr != tab_strip->end();
+         ++tab_itr) {
+      content::WebContents* contents = tab_itr->GetContents();
+      if (!contents) {
+        continue;
+      }
+      const auto tab_tld = net::URLToEphemeralStorageDomain(contents->GetURL());
+      if (tab_tld.empty()) {
+        continue;
+      }
+
+      if (auto* ephemeral_storage_tab_helper =
+              ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+                  contents);
+          ephemeral_storage_tab_helper && tab_tld == ephemeral_domain) {
+        closing_tab_indices.push_back(
+            tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
+        ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+      }
+    }
+    tab_strip->CloseTabs(base::span<int>(closing_tab_indices));
+  }
+#else
+  CloseTabsWithTLD(ephemeral_domain);
+#endif
+}
+
+bool BraveEphemeralStorageServiceDelegate::
+    IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
+  return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      url);
+}
 
 }  // namespace ephemeral_storage
