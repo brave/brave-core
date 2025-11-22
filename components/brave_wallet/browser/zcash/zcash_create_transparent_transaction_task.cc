@@ -173,7 +173,7 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
 
   target_output.amount = transaction_.amount();
   target_output.script_pubkey =
-      ZCashAddressToScriptPubkey(target_output.address, IsTestnet());
+      ZCashAddressToScriptPubkey(target_output.address, IsTestnet()).value();
 
   auto change_amount =
       base::CheckSub<uint64_t>(transaction_.TotalInputsAmount(),
@@ -198,7 +198,7 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   change_output.address = change_address_->address_string;
   change_output.amount = change_amount.ValueOrDie();
   change_output.script_pubkey =
-      ZCashAddressToScriptPubkey(change_output.address, IsTestnet());
+      ZCashAddressToScriptPubkey(change_output.address, IsTestnet()).value();
   return true;
 }
 

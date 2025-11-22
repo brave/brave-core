@@ -477,4 +477,33 @@ TEST(ZCashUtilsUnitTest, OrchardMemo) {
   EXPECT_FALSE(ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize + 1, 1)));
 }
 
+TEST(ZCashUtilsUnitTest, ZCashAddressToScriptPubkey_Fails) {
+  // Chain mismatch.
+  {
+    EXPECT_FALSE(ZCashAddressToScriptPubkey(
+        "tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", false));
+    EXPECT_FALSE(ZCashAddressToScriptPubkey(
+        "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", true));
+  }
+
+  // Can't decode address.
+  {
+    EXPECT_FALSE(ZCashAddressToScriptPubkey(
+        "tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rE0", true));
+    EXPECT_FALSE(ZCashAddressToScriptPubkey(
+        "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLb0", false));
+  }
+}
+
+TEST(ZCashUtilsUnitTest, ZCashAddressToScriptPubkey) {
+  EXPECT_EQ("0x76a914238ba3549d04a616913940e04d30fa5494f3bffc88ac",
+            ToHex(ZCashAddressToScriptPubkey(
+                      "tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", true)
+                      .value()));
+  EXPECT_EQ("0x76a914000000000000000000000000000000000000000088ac",
+            ToHex(ZCashAddressToScriptPubkey(
+                      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", false)
+                      .value()));
+}
+
 }  // namespace brave_wallet
