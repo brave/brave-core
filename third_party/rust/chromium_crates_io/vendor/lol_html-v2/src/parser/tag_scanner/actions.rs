@@ -42,11 +42,9 @@ impl<S: TagHintSink> StateMachineActions for TagScanner<S> {
         let tag_start = self
             .tag_start
             .take()
-            .expect("Tag start should be set at this point");
+            .ok_or_else(|| ActionError::internal("Tag start should be set at this point"))?;
 
-        let unhandled_feedback = self
-            .try_apply_tree_builder_feedback(context)
-            .map_err(ActionError::from)?;
+        let unhandled_feedback = self.try_apply_tree_builder_feedback(context)?;
 
         let is_in_end_tag = self.is_in_end_tag;
 
@@ -60,10 +58,7 @@ impl<S: TagHintSink> StateMachineActions for TagScanner<S> {
             );
         }
 
-        match self
-            .emit_tag_hint(context, input, is_in_end_tag)
-            .map_err(ActionError::RewritingError)?
-        {
+        match self.emit_tag_hint(context, input, is_in_end_tag)? {
             ParserDirective::WherePossibleScanForTagsOnly => Ok(()),
             ParserDirective::Lex => {
                 let feedback_directive = self.take_feedback_directive();
@@ -88,7 +83,7 @@ impl<S: TagHintSink> StateMachineActions for TagScanner<S> {
     }
 
     noop_action_with_result!(
-        emit_eof,
+        emit_text_and_eof,
         emit_text,
         emit_current_token,
         emit_current_token_and_eof,
