@@ -6,6 +6,7 @@
 #include <content/public/browser/web_contents_delegate.cc>
 
 namespace content {
+
 WebContents* WebContentsDelegate::AddNewContents_ChromiumImpl(
     WebContents* source,
     std::unique_ptr<WebContents> new_contents,
@@ -15,6 +16,13 @@ WebContents* WebContentsDelegate::AddNewContents_ChromiumImpl(
     bool user_gesture,
     bool* was_blocked) {
   return nullptr;
+}
+
+std::optional<content::StoragePartitionConfig>
+WebContentsDelegate::MaybeInheritStoragePartition(
+    WebContents* source,
+    const content::StoragePartitionConfig& partition_config) {
+  return std::nullopt;
 }
 
 }  // namespace content
