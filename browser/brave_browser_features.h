@@ -19,6 +19,7 @@ BASE_DECLARE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore);
 BASE_DECLARE_FEATURE(kBraveCopyCleanLinkByDefault);
 BASE_DECLARE_FEATURE(kBraveCopyCleanLinkFromJs);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
+BASE_DECLARE_FEATURE(kBraveRoundedCornersByDefault);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
 #if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
