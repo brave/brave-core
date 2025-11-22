@@ -404,8 +404,10 @@ void ConversationAPIClient::OnQueryCompleted(
       is_near_verified = *header_value == "true";
     }
 
-    completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(completion));
+    completion_event = completion.empty()
+                           ? nullptr
+                           : mojom::ConversationEntryEvent::NewCompletionEvent(
+                                 mojom::CompletionEvent::New(completion));
     GenerationResultData data(std::move(completion_event), std::move(model_key),
                               is_near_verified);
     std::move(callback).Run(base::ok(std::move(data)));

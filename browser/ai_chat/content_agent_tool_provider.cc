@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/containers/fixed_flat_set.h"
 #include "brave/browser/ai_chat/page_content_blocks.h"
 #include "brave/browser/ai_chat/tools/click_tool.h"
 #include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
@@ -42,6 +43,19 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
 
 namespace ai_chat {
 
+namespace {
+
+constexpr auto kActorStatesToNotify =
+    base::MakeFixedFlatSet<actor::ActorTask::State>({
+        actor::ActorTask::State::kPausedByUser,
+        actor::ActorTask::State::kPausedByActor,
+        actor::ActorTask::State::kActing,
+        actor::ActorTask::State::kReflecting,
+        actor::ActorTask::State::kWaitingOnUser,
+    });
+
+}  // namespace
+
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
     actor::ActorKeyedService* actor_service)
@@ -61,6 +75,11 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
   task_id_ = actor_service_->CreateTask();
+
+  actor_task_state_changed_subscription_ =
+      actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
+          &ContentAgentToolProvider::OnActorTaskStateChanged,
+          base::Unretained(this)));
 
   CreateTools();
 }
@@ -96,6 +115,15 @@ void ContentAgentToolProvider::StopAllTasks() {
     actor_service_->StopTask(task_id_,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
+}
+
+bool ContentAgentToolProvider::IsPausedByUser() {
+  // Tools shouldn't be attempted to run whilst actor task is paused by user
+  actor::ActorTask* task = actor_service_->GetTask(task_id_);
+  if (!task) {
+    return false;
+  }
+  return task->IsUnderUserControl();
 }
 
 actor::TaskId ContentAgentToolProvider::GetTaskId() {
@@ -152,6 +180,15 @@ void ContentAgentToolProvider::ExecuteActions(
       actor::ActorTaskMetadata(),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void ContentAgentToolProvider::OnActorTaskStateChanged(
+    const actor::ActorTask& task) {
+  DVLOG(4) << __func__ << " " << task.GetState();
+  if (!task.id().is_null() && task.id() == task_id_ &&
+      kActorStatesToNotify.contains(task.GetState())) {
+    NotifyTaskStateChanged();
+  }
 }
 
 void ContentAgentToolProvider::CreateTools() {
