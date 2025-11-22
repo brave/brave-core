@@ -8,6 +8,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
@@ -21,9 +22,21 @@ void UpdateBraveScheme(NavigateParams* params) {
   }
 }
 
+void MaybeOverridePopupDisposition(NavigateParams* params) {
+  if (base::FeatureList::IsEnabled(features::kForcePopupToBeOpenedAsTab) &&
+      params->disposition == WindowOpenDisposition::NEW_POPUP) {
+    params->disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  }
+}
+
+void UpdateParams(NavigateParams* params) {
+  UpdateBraveScheme(params);
+  MaybeOverridePopupDisposition(params);
+}
+
 }  // namespace
 
-#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
+#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #define GetSiteInstanceForNewTab(...) \

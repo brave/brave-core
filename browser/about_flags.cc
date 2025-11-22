@@ -716,6 +716,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                    FEATURE_VALUE_TYPE(features::kBraveWebAssemblyJitless),   \
                }))
 
+#define BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY      \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "force-popup-to-be-opened-as-tab",                             \
+      "Force popups to be opened as tab",                            \
+      "Forces all popup windows to be opened in a new tab instead.", \
+      kOsDesktop,                                                    \
+      FEATURE_VALUE_TYPE(features::kForcePopupToBeOpenedAsTab),      \
+  })
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1281,6 +1290,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
+  BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
