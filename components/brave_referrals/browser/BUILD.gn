@@ -50,7 +50,7 @@ static_library("browser") {
 
 if (is_android) {
   generate_jni("jni_headers") {
-    sources = [ "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java" ]
+    sources = [ "//brave/android/java/org/chromium/chrome/browser/referrer/BraveReferrer.java" ]
   }
 }
 
