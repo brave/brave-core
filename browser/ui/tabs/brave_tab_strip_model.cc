@@ -8,15 +8,21 @@
 #include <algorithm>
 #include <cstdint>
 #include <iterator>
+#include <memory>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -38,6 +44,9 @@ BraveTabStripModel::BraveTabStripModel(
     : TabStripModel(delegate, profile, group_model_factory) {
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       delegate->IsNormalWindow()) {
+    // Replace the default TabStripCollection with Brave's version
+    contents_data_ = std::make_unique<tabs::BraveTabStripCollection>();
+
     tree_tabs_enabled_.Init(
         brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
         base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
@@ -154,37 +163,63 @@ void BraveTabStripModel::SetCustomTitleForTab(
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
+    tree_tab_node_created_subscription_ =
+        std::make_unique<base::CallbackListSubscription>(
+            tree_tab_model_->RegisterAddTreeTabNodeCallback(base::BindRepeating(
+                &BraveTabStripModel::NotifyTreeTabNodeCreated,
+                base::Unretained(this))));
+    tree_tab_node_destroyed_subscription_ =
+        std::make_unique<base::CallbackListSubscription>(
+            tree_tab_model_->RegisterRemoveTreeTabNodeCallback(
+                base::BindRepeating(
+                    &BraveTabStripModel::NotifyTreeTabNodeDestroyed,
+                    base::Unretained(this))));
   } else {
+    tree_tab_node_created_subscription_.reset();
+    tree_tab_node_destroyed_subscription_.reset();
     FlattenTreeTabs();
   }
 }
 
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
-  CHECK(!in_tree_mode_);
+  CHECK(!tree_tab_model_);
+  tree_tab_model_ = std::make_unique<TreeTabModel>();
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
-  CHECK(unpinned_collection);
-
-  TreeTabNode::BuildTreeTabs(*unpinned_collection);
-  in_tree_mode_ = true;
+  contents_data()->SetDelegate(
+      std::make_unique<BraveTreeTabStripCollectionDelegate>(
+          *contents_data(), tree_tab_model_->GetWeakPtr()));
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
-  if (!in_tree_mode_) {
+  if (!tree_tab_model_) {
     return;
   }
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
-  CHECK(unpinned_collection);
+  contents_data()->SetDelegate(nullptr);
+}
 
-  TreeTabNode::FlattenTreeTabs(*unpinned_collection);
-  in_tree_mode_ = false;
+void BraveTabStripModel::NotifyTreeTabNodeCreated(
+    const tabs::TreeTabNode& node) {
+  auto change = TreeTabChange(node.id(), TreeTabChange::CreatedChange(node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeDestroyed(
+    const tree_tab::TreeTabNodeId& id) {
+  auto* node = tree_tab_model_->GetNode(id);
+  CHECK(node);
+  auto change = TreeTabChange(id, TreeTabChange::WillBeDestroyedChange(*node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
 }
 
 tabs::TabStripCollection&
 BraveTabStripModel::GetTabStripCollectionForTesting() {
-  return *contents_data_;
+  return *contents_data();
 }

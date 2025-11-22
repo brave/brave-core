@@ -239,6 +239,17 @@ bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
   return *always_hide_close_button_;
 }
 
+int BraveTabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeHeight(id);
+}
+
+const tabs::TreeTabNode& BraveTabStrip::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeTabNode(id);
+}
+
 void BraveTabStrip::EnterTabRenameModeAt(int index) {
   auto* tab = tab_at(index);
   CHECK(tab);

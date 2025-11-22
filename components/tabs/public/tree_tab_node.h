@@ -3,64 +3,73 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
-#define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
+#ifndef TREE_TAB_NODE_H_
+#define TREE_TAB_NODE_H_
 
-#include <memory>
-
-#include "base/callback_list.h"
+#include "base/memory/raw_ref.h"
+#include "base/types/pass_key.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
-#include "components/tabs/public/tab_collection.h"
-#include "components/tabs/public/tab_interface.h"
 
-// TreeTabNode is a specialized TabCollection that represents a node in the
-// tree structure of tabs. It contains a current tab and can have child
-// collections, such as other TreeTabNodes, TabGroupTabCollections,
-// SplitTabCollections.
-class TreeTabNode : public tabs::TabCollection {
+namespace tabs {
+
+class TabInterface;
+class TreeTabNodeTabCollection;
+
+// A class that represents metadata about a tree tab node.
+class TreeTabNode {
  public:
-  // Builds the tree tabs structure starting from the root collection.
-  // This will wrap all tabs in the tree with TreeTabNode
-  static void BuildTreeTabs(TabCollection& root);
+  TreeTabNode(TreeTabNodeTabCollection& collection,
+              const tree_tab::TreeTabNodeId& id);
+  TreeTabNode(const TreeTabNode&) = delete;
+  TreeTabNode& operator=(const TreeTabNode&) = delete;
+  ~TreeTabNode() = default;
 
-  // Flattens the tree tabs structure by moving all tabs from TreeTabNodes
-  // to their parent collections and removing the TreeTabNodes themselves.
-  static void FlattenTreeTabs(TabCollection& root);
+  const tree_tab::TreeTabNodeId& id() const { return id_; }
 
-  TreeTabNode(const tree_tab::TreeTabNodeId& tree_tab_node_id,
-              std::unique_ptr<tabs::TabInterface> current_tab);
-  ~TreeTabNode() override;
+  int height() const { return height_; }
+  int level() const { return level_; }
 
-  const tree_tab::TreeTabNodeId& tree_tab_node_id() const {
-    return tree_tab_node_id_;
-  }
+  void set_collapsed(bool collapsed) { collapsed_ = collapsed; }
+  bool collapsed() const { return collapsed_; }
 
-  const tabs::TabInterface* current_tab() const { return current_tab_; }
-  tabs::TabInterface* current_tab() { return current_tab_; }
+  // Returns the height of the tree that this node belongs to.
+  int GetTreeHeight() const;
+
+  // Returns the tab associated with this tree tab node.
+  const TabInterface* GetTab() const;
+
+  // Exposes the calculation of level and height to TreeTabNodeTabCollection.
+  int CalculateLevelAndHeightRecursively(
+      base::PassKey<TreeTabNodeTabCollection> pass_key);
+  void OnChildHeightChanged(base::PassKey<TreeTabNodeTabCollection> pass_key);
 
  private:
-  // Returns all TreeTabNodes recursively from the given parent collection.
-  static void CollectTreeNodesRecursively(tabs::TabCollection& parent,
-                                          std::vector<TreeTabNode*>& nodes);
+  // Recalculates the level and height of this node and its children recursively
+  // in the tree. This returns the deepest height of the subtree rooted at this
+  // node.
+  int CalculateLevelAndHeightRecursivelyImpl();
 
-  // Callback for when the current tab is about to be detached.
-  // This is used to ensure that the current tab is properly handled when the
-  // TreeTabNode is removed or the tab is closed.
-  void OnWillDetach(tabs::TabInterface*,
-                    tabs::TabInterface::DetachReason tab_detach_reason);
+  // Called when child node's height changes to update this node's height.
+  void OnChildHeightChangedImpl();
 
-  // Returns the direct children of this TreeTabNode as a list of variants
-  // containing either TabInterface* or TabCollection*.
-  std::vector<std::variant<tabs::TabInterface*, TabCollection*>>
-  GetTreeNodeChildren();
+  // Owner of this TreeNode.
+  base::raw_ref<TreeTabNodeTabCollection> collection_;
 
-  tree_tab::TreeTabNodeId tree_tab_node_id_;
+  // id of this tree tab node.
+  tree_tab::TreeTabNodeId id_;
 
-  // Could be nullptr on closing the tab. Should be nulled out in order to avoid
-  // dangling pointer issues.
-  raw_ptr<tabs::TabInterface> current_tab_;
+  // The level of this node in the tree. Root is level 0, its children are
+  // level 1, and so on.
+  int level_ = 0;
 
-  base::CallbackListSubscription will_detach_tab_subscription_;
+  // The height of the subtree rooted at this node. A leaf node has height 0.
+  // This is used for calculating the level of nodes efficiently.
+  int height_ = 0;
+
+  // When this is true, the child tabs under this tree node are hidden.
+  bool collapsed_ = false;
 };
 
-#endif  // BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
+}  // namespace tabs
+
+#endif  // TREE_TAB_NODE_H_
