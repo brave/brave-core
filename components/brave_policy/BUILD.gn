@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
 static_library("policy_pref_interceptor") {
   sources = [
     "policy_pref_interceptor.cc",
@@ -11,9 +15,28 @@ static_library("policy_pref_interceptor") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/constants",
+    "//brave/components/playlist/core/common",
+    "//brave/components/speedreader/common/buildflags",
     "//components/prefs",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader:pref_names" ]
+  }
 }
 
 static_library("brave_policy") {
