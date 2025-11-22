@@ -68,6 +68,14 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
   }
 )");
 
+template <typename Request>
+auto MakeRequest() {
+  Request request;
+  request.network_traffic_annotation_tag =
+      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  return request;
+}
+
 template <typename MojomError>
 auto MakeMojomError(int status_code, Error error_body) {
   auto mojom_error = MojomError::New(status_code, std::nullopt);
@@ -137,9 +145,7 @@ void BraveAccountService::RegisterInitialize(
         base::unexpected(mojom::RegisterError::New()));
   }
 
-  PasswordInit::Request request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<PasswordInit::Request>();
   request.blinded_message = blinded_message;
   request.new_account_email = email;
   request.serialize_response = true;
@@ -165,9 +171,7 @@ void BraveAccountService::RegisterFinalize(
         mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)));
   }
 
-  WithHeaders<PasswordFinalize::Request> request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<WithHeaders<PasswordFinalize::Request>>();
   request.serialized_record = serialized_record;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
@@ -194,9 +198,7 @@ void BraveAccountService::LoginInitialize(const std::string& email,
     return std::move(callback).Run(base::unexpected(mojom::LoginError::New()));
   }
 
-  LoginInit::Request request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<LoginInit::Request>();
   request.email = email;
   request.serialized_ke1 = serialized_ke1;
   Client<LoginInit>::Send(
@@ -219,9 +221,7 @@ void BraveAccountService::LoginFinalize(
         std::nullopt, mojom::LoginErrorCode::kLoginTokenDecryptionFailed)));
   }
 
-  WithHeaders<LoginFinalize::Request> request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<WithHeaders<LoginFinalize::Request>>();
   request.client_mac = client_mac;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", login_token}));
@@ -349,9 +349,7 @@ void BraveAccountService::VerifyResult(
     return;
   }
 
-  WithHeaders<VerifyResult::Request> request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<WithHeaders<VerifyResult::Request>>();
   request.wait = false;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
