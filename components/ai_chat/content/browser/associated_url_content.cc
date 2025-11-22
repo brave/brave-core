@@ -26,8 +26,7 @@ namespace ai_chat {
 AssociatedURLContent::AssociatedURLContent(
     GURL url,
     std::u16string title,
-    content::BrowserContext* browser_context,
-    base::OnceCallback<void(content::WebContents*)> attach_tab_helpers) {
+    content::BrowserContext* browser_context) {
   DVLOG(2) << __func__ << "Creating link content for: " << url.spec()
            << " title: " << title;
 
@@ -40,7 +39,6 @@ AssociatedURLContent::AssociatedURLContent(
   params.initially_hidden = true;
   params.preview_mode = true;
   web_contents_ = content::WebContents::Create(params);
-  std::move(attach_tab_helpers).Run(web_contents_.get());
 
   // Start observing the WebContents
   content::WebContentsObserver::Observe(web_contents_.get());

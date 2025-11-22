@@ -54,8 +54,7 @@ class TestableAssociatedURLContent : public AssociatedURLContent {
                                content::BrowserContext* browser_context)
       : AssociatedURLContent(std::move(url),
                              std::move(title),
-                             browser_context,
-                             base::DoNothing()) {
+                             browser_context) {
     auto fetcher =
         std::make_unique<MockPageContentFetcher>(web_contents_.get());
     mock_fetcher_ = fetcher.get();
