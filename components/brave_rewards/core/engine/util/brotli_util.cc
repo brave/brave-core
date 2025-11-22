@@ -10,6 +10,9 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/span.h"
+#include "base/functional/function_ref.h"
+#include "base/strings/string_view_util.h"
 #include "third_party/brotli/include/brotli/decode.h"
 
 namespace {
@@ -31,11 +34,14 @@ class BrotliStreamDecoder {
     Error,
   };
 
-  template <typename F>
-  Result Decode(const uint8_t* input_buffer, size_t input_length, F callback) {
-    if (!input_buffer || input_length == 0) {
+  Result Decode(base::span<const uint8_t> input,
+                base::FunctionRef<void(base::span<const uint8_t>)> callback) {
+    if (input.empty()) {
       return Result::Error;
     }
+
+    size_t input_length = input.size();
+    const uint8_t* input_buffer = input.data();
 
     uint8_t* output_buffer = out_vector_.data();
     size_t output_length = out_vector_.size();
@@ -47,13 +53,15 @@ class BrotliStreamDecoder {
 
       switch (brotli_result) {
         case BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT: {
-          callback(out_vector_.data(), out_vector_.size() - output_length);
+          callback(base::span(out_vector_)
+                       .first(out_vector_.size() - output_length));
           output_buffer = out_vector_.data();
           output_length = out_vector_.size();
           break;
         }
         case BROTLI_DECODER_RESULT_SUCCESS: {
-          callback(out_vector_.data(), out_vector_.size() - output_length);
+          callback(base::span(out_vector_)
+                       .first(out_vector_.size() - output_length));
           return Result::Done;
         }
         case BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT: {
@@ -76,19 +84,15 @@ class BrotliStreamDecoder {
 
 namespace brave_rewards::internal::util {
 
-bool DecodeBrotliString(std::string_view input,
-                        size_t uncompressed_size,
-                        std::string* output) {
-  DCHECK(output);
+bool DecodeBrotliString(std::string_view input, base::span<uint8_t> output) {
   if (input.empty()) {
     return false;
   }
 
-  output->resize(uncompressed_size);
-  auto result = BrotliDecoderDecompress(
-      input.size(), reinterpret_cast<const uint8_t*>(input.data()),
-      &uncompressed_size,
-      reinterpret_cast<uint8_t*>(const_cast<char*>(output->data())));
+  auto input_data = base::as_byte_span(input);
+  size_t output_length = output.size();
+  auto result = BrotliDecoderDecompress(input_data.size(), input_data.data(),
+                                        &output_length, output.data());
 
   return result == BROTLI_DECODER_RESULT_SUCCESS;
 }
@@ -101,13 +105,12 @@ bool DecodeBrotliStringWithBuffer(std::string_view input,
     return false;
   }
 
-  output->resize(0);
+  output->clear();
   BrotliStreamDecoder decoder(buffer_size);
-  auto result =
-      decoder.Decode(reinterpret_cast<const uint8_t*>(input.data()),
-                     input.size(), [output](uint8_t* buffer, size_t length) {
-                       output->append(reinterpret_cast<char*>(buffer), length);
-                     });
+  auto result = decoder.Decode(base::as_byte_span(input),
+                               [output](base::span<const uint8_t> data) {
+                                 output->append(base::as_string_view(data));
+                               });
 
   return result == BrotliStreamDecoder::Result::Done;
 }
