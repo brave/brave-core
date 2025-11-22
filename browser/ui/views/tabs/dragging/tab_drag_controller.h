@@ -39,6 +39,8 @@ class TabDragController : public TabDragControllerChromium {
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                    TabDragContext* target_context) override;
 
+  void RestoreAttachedWindowForDrag() override;
+
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();
 
