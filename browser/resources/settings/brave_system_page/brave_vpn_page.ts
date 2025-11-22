@@ -14,10 +14,16 @@ import {getTemplate} from './brave_vpn_page.html.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BraveVPNBrowserProxy, BraveVPNBrowserProxyImpl} from './brave_vpn_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-/**
- * 'settings-brave-vpn-page' is the settings page containing
- * brave's vpn features.
- */
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+
+export interface SettingsBraveVpnPageElement {
+  $: {
+    // <if expr="is_win">
+    toggleShowInSystemTray: SettingsToggleButtonElement
+    // </if>
+  }
+}
+
 const SettingsBraveVpnPageElementBase =
   PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(
     PolymerElement)))) as {
@@ -27,6 +33,10 @@ const SettingsBraveVpnPageElementBase =
            I18nMixinInterface
   }
 
+/**
+ * 'settings-brave-vpn-page' is the settings page containing
+ * brave's vpn features.
+ */
 export class SettingsBraveVpnPageElement
     extends SettingsBraveVpnPageElementBase {
 
@@ -38,17 +48,37 @@ export class SettingsBraveVpnPageElement
     return getTemplate()
   }
 
+  static get properties() {
+    return {
+      // <if expr="is_win">
+      showInSystemTrayPref_: {
+        type: Object,
+        value() {
+          return {}
+        }
+      }
+      // </if>
+    }
+  }
+
   private toggleWireguardSubLabel_: String;
   private braveVpnConnected_: Boolean = false;
-
+  // <if expr="is_win">
+  declare showInSystemTrayPref_: chrome.settingsPrivate.PrefObject;
+  // </if>
   private vpnBrowserProxy_: BraveVPNBrowserProxy =
     BraveVPNBrowserProxyImpl.getInstance();
 
   override ready() {
     super.ready();
-    this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
+    this.addWebUiListener('brave-vpn-state-change',
+      this.onVpnStateChange.bind(this))
     // <if expr="is_win">
-    this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
+    this.vpnBrowserProxy_.isBraveVpnConnected()
+      .then(this.onVpnStateChange.bind(this))
+    const setShowInSystemTrayPref = (enabled: boolean) =>
+        this.setShowInSystemTrayPref_(enabled)
+    this.vpnBrowserProxy_.showInSystemTray().then(setShowInSystemTrayPref)
     // </if>
   }
 
@@ -56,6 +86,22 @@ export class SettingsBraveVpnPageElement
     this.braveVpnConnected_ = connected
     this.updateState()
   }
+
+  // <if expr="is_win">
+  setShowInSystemTrayPref_(enabled: boolean) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    }
+    this.showInSystemTrayPref_ = pref
+  }
+
+  onToggleShowInSystemTrayChange_ () {
+    this.vpnBrowserProxy_.
+      setShowInSystemTray(this.$.toggleShowInSystemTray.checked)
+  }
+  // </if>
 
   private updateState() {
     this.toggleWireguardSubLabel_ = this.braveVpnConnected_ ?
