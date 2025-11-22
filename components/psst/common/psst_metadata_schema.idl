@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for Brave PSST permissions.
+// Schema for Brave PSST metadata.
 namespace psst {
     // Represents the behavior type based on user consent decision
     enum ConsentStatus {
@@ -12,8 +12,8 @@ namespace psst {
         kBlock
     };
 
-    // Permission information for Psst flow
-    dictionary PsstPermissionInfo {
+    // Metadata for Psst flow
+    dictionary PsstMetadata {
         // User consent decision
         ConsentStatus consent_status;
         // Actual script version

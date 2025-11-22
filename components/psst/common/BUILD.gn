@@ -26,7 +26,7 @@ static_library("common") {
 
   public_deps = [
     ":mojom",
-    ":psst_permission_schema",
+    ":psst_metadata_schema",
     ":psst_script_responses",
   ]
 
@@ -45,8 +45,8 @@ generated_types("psst_script_responses") {
   visibility = [ ":common" ]
 }
 
-generated_types("psst_permission_schema") {
-  sources = [ "psst_permission_schema.idl" ]
+generated_types("psst_metadata_schema") {
+  sources = [ "psst_metadata_schema.idl" ]
   root_namespace = "psst"
   deps = [ "//base" ]
   visibility = [ ":common" ]
