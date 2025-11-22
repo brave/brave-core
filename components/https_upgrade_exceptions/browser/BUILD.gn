@@ -14,6 +14,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
+    "//net:net_features",
     "//url",
   ]
 }

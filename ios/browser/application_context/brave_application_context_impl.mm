@@ -21,7 +21,6 @@
 #include "brave/ios/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "net/base/features.h"
 
 BraveApplicationContextImpl::BraveApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
@@ -105,9 +104,8 @@ void BraveApplicationContextImpl::StartBraveServices() {
   url_sanitizer_component_installer();
   debounce_component_installer();
 
-  if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
-    https_upgrade_exceptions_service();
-  }
+  // eagerly initialize for component updater
+  https_upgrade_exceptions_service();
 
   // Start the local data file service
   local_data_files_service()->Start();

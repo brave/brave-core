@@ -11,11 +11,14 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
+#include "net/base/features.h"
+#include "url/gurl.h"
 
 #define HTTPS_UPGRADE_EXCEPTIONS_TXT_FILE "https-upgrade-exceptions-list.txt"
 #define HTTPS_UPGRADE_EXCEPTIONS_TXT_FILE_VERSION "1"
@@ -58,6 +61,14 @@ void HttpsUpgradeExceptionsService::OnDATFileDataReady(
 }
 
 bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
+    return false;
+  }
+
+  if (!url.SchemeIsHTTPOrHTTPS() || !url.is_valid()) {
+    return false;
+  }
+
   if (!is_ready_) {
     // We don't have the exceptions list loaded yet. To avoid breakage,
     // don't upgrade any websites yet.
