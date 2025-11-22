@@ -50,6 +50,29 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
+namespace brave_account::endpoint_client {
+
+template <typename T, typename E>
+bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
+  return lhs.net_error == rhs.net_error && lhs.status_code == rhs.status_code &&
+         lhs.body == rhs.body;
+}
+
+template <typename T, typename E>
+bool operator==(const WithHeaders<Response<T, E>>& lhs,
+                const WithHeaders<Response<T, E>>& rhs) {
+  if (static_cast<const Response<T, E>&>(lhs) !=
+      static_cast<const Response<T, E>&>(rhs)) {
+    return false;
+  }
+
+  if (!lhs.headers || !rhs.headers) {
+    return lhs.headers == rhs.headers;
+  }
+
+  return lhs.headers->StrictlyEquals(*rhs.headers);
+}
+
 namespace {
 
 template <const char* Key>
@@ -80,31 +103,6 @@ struct Body {
 inline constexpr char kRequestKey[] = "request";
 inline constexpr char kSuccessKey[] = "success";
 inline constexpr char kErrorKey[] = "error";
-
-}  // namespace
-
-namespace brave_account::endpoint_client {
-
-template <typename T, typename E>
-bool operator==(const Response<T, E>& lhs, const Response<T, E>& rhs) {
-  return lhs.net_error == rhs.net_error && lhs.status_code == rhs.status_code &&
-         lhs.body == rhs.body;
-}
-
-template <typename T, typename E>
-bool operator==(const WithHeaders<Response<T, E>>& lhs,
-                const WithHeaders<Response<T, E>>& rhs) {
-  if (static_cast<const Response<T, E>&>(lhs) !=
-      static_cast<const Response<T, E>&>(rhs)) {
-    return false;
-  }
-
-  if (!lhs.headers || !rhs.headers) {
-    return lhs.headers == rhs.headers;
-  }
-
-  return lhs.headers->StrictlyEquals(*rhs.headers);
-}
 
 using TestRequestBody = Body<kRequestKey>;
 using TestRequest = POST<TestRequestBody>;
@@ -225,6 +223,21 @@ class ClientTest : public testing::TestWithParam<TestCase<Request, Response>> {
 };
 
 using ClientTestPlainRequest = ClientTest<TestEndpoint::Request>;
+using ClientTestRequestWithHeaders =
+    ClientTest<WithHeaders<TestEndpoint::Request>>;
+using ClientTestResponseWithHeaders =
+    ClientTest<TestEndpoint::Request, WithHeaders<TestEndpoint::Response>>;
+
+enum class CancelRequestOn { kSameSequence, kDifferentSequence };
+
+class ClientTestCancelableRequest
+    : public testing::TestWithParam<CancelRequestOn> {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+};
+
+}  // namespace
 
 TEST_P(ClientTestPlainRequest, Send) {
   RunTestCase();
@@ -268,9 +281,6 @@ INSTANTIATE_TEST_SUITE_P(
                                        .body = std::nullopt}}),
     ClientTestPlainRequest::kNameGenerator);
 
-using ClientTestRequestWithHeaders =
-    ClientTest<WithHeaders<TestEndpoint::Request>>;
-
 TEST_P(ClientTestRequestWithHeaders, Send) {
   RunTestCase();
 }
@@ -295,10 +305,7 @@ INSTANTIATE_TEST_SUITE_P(
                                   "some response")}}),
     ClientTestRequestWithHeaders::kNameGenerator);
 
-using ClientTestResponseWithHeaders =
-    ClientTest<TestEndpoint::Request, WithHeaders<TestEndpoint::Response>>;
-
-TEST_P(ClientTestResponseWithHeaders, Send) {
+TEST_P(ClientTestResponseWithHeaders, Receive) {
   RunTestCase();
 }
 
@@ -326,19 +333,7 @@ INSTANTIATE_TEST_SUITE_P(
                 }()}),
     ClientTestResponseWithHeaders::kNameGenerator);
 
-namespace {
-
-enum class CancelRequestOn { kSameSequence, kDifferentSequence };
-
-class ClientCancelTest : public testing::TestWithParam<CancelRequestOn> {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  network::TestURLLoaderFactory test_url_loader_factory_;
-};
-
-}  // namespace
-
-TEST_P(ClientCancelTest, Cancel) {
+TEST_P(ClientTestCancelableRequest, Cancel) {
   base::test::TestFuture<TestEndpoint::Response> future;
   RequestHandle request_handle =
       Client<TestEndpoint>::Send<RequestCancelability::kCancelable>(
@@ -372,14 +367,14 @@ TEST_P(ClientCancelTest, Cancel) {
   EXPECT_FALSE(future.IsReady());
 }
 
-INSTANTIATE_TEST_SUITE_P(Cancelation,
-                         ClientCancelTest,
+INSTANTIATE_TEST_SUITE_P(CancelableRequest,
+                         ClientTestCancelableRequest,
                          testing::Values(CancelRequestOn::kSameSequence,
                                          CancelRequestOn::kDifferentSequence),
                          [](const auto& info) {
                            return info.param == CancelRequestOn::kSameSequence
-                                      ? "SameSequence"
-                                      : "DifferentSequence";
+                                      ? "same_sequence"
+                                      : "different_sequence";
                          });
 
 }  // namespace brave_account::endpoint_client
