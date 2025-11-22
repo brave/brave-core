@@ -66,8 +66,12 @@ source_set("tabs_impl") {
   deps = [
     ":tabs_public",
     "//base",
-    "//brave/browser/ai_chat",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/browser/ai_chat" ]
+  }
 }

@@ -57,11 +57,13 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID) && \
+    (BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT))
+#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
-#endif  // BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -182,7 +184,8 @@ void BraveContentRendererClient::RenderFrameCreated(
     skus::SkusRenderFrameObserver::Create(render_frame);
   }
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) && \
+    (BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT))
   bool should_create_subscription_observer = false;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   should_create_subscription_observer |= brave_vpn::IsBraveVPNFeatureEnabled();
@@ -195,7 +198,8 @@ void BraveContentRendererClient::RenderFrameCreated(
     new brave_subscription::SubscriptionRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
-#endif  // BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID) && (BUILDFLAG(ENABLE_BRAVE_VPN) ||
+        // BUILDFLAG(ENABLE_AI_CHAT))
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(
