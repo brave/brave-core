@@ -83,6 +83,14 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
   return tool_ptrs;
 }
 
+
+void ContentAgentToolProvider::OnGenerationCompleteWithNoToolsToHandle() {
+  // Marks all tools for this round of the loop being completed, we can return
+  // control back to the tab(s).
+  if (!task_id_.is_null()) {
+    actor_service_->GetTask(task_id_)->Pause(true);
+  }
+}
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     // `success` sets whether the task ends as state kFinished or kCancelled
@@ -119,6 +127,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
       task_tab_handle_,
       base::BindOnce(&ContentAgentToolProvider::TabAddedToTask,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  actor_service_->GetTask(task_id_)->Resume();
 }
 
 void ContentAgentToolProvider::TabAddedToTask(
