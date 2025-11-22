@@ -27,6 +27,17 @@
 
 namespace brave_account {
 
+using endpoint_client::Client;
+using endpoint_client::RequestCancelability;
+using endpoint_client::RequestHandle;
+using endpoint_client::WithHeaders;
+using endpoints::Error;
+using endpoints::LoginFinalize;
+using endpoints::LoginInit;
+using endpoints::PasswordFinalize;
+using endpoints::PasswordInit;
+using endpoints::VerifyResult;
+
 namespace {
 
 inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
@@ -57,16 +68,32 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
   }
 )");
 
-}  // namespace
+template <typename Request>
+auto MakeRequest() {
+  Request request;
+  request.network_traffic_annotation_tag =
+      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  return request;
+}
 
-using endpoint_client::Client;
-using endpoint_client::RequestCancelability;
-using endpoint_client::RequestHandle;
-using endpoint_client::WithHeaders;
-using endpoints::Error;
-using endpoints::PasswordFinalize;
-using endpoints::PasswordInit;
-using endpoints::VerifyResult;
+template <typename MojomError>
+auto MakeMojomError(int status_code, Error error_body) {
+  auto mojom_error = MojomError::New(status_code, std::nullopt);
+
+  if (!error_body.code.is_int()) {
+    return mojom_error;
+  }
+
+  const auto error_code =
+      static_cast<decltype(mojom_error->errorCode)::value_type>(
+          error_body.code.GetInt());
+  mojom_error->errorCode = mojom::IsKnownEnumValue(error_code)
+                               ? std::optional(error_code)
+                               : std::nullopt;
+  return mojom_error;
+}
+
+}  // namespace
 
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
@@ -109,37 +136,6 @@ BraveAccountService::BraveAccountService(
   OnVerificationTokenChanged();
 }
 
-std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
-  if (plain_text.empty()) {
-    return std::string();
-  }
-
-  std::string encrypted;
-  if (!encrypt_callback_.Run(plain_text, &encrypted)) {
-    return std::string();
-  }
-
-  return base::Base64Encode(encrypted);
-}
-
-std::string BraveAccountService::Decrypt(const std::string& base64) const {
-  if (base64.empty()) {
-    return std::string();
-  }
-
-  std::string encrypted;
-  if (!base::Base64Decode(base64, &encrypted)) {
-    return std::string();
-  }
-
-  std::string plain_text;
-  if (!decrypt_callback_.Run(encrypted, &plain_text)) {
-    return std::string();
-  }
-
-  return plain_text;
-}
-
 void BraveAccountService::RegisterInitialize(
     const std::string& email,
     const std::string& blinded_message,
@@ -149,9 +145,7 @@ void BraveAccountService::RegisterInitialize(
         base::unexpected(mojom::RegisterError::New()));
   }
 
-  PasswordInit::Request request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<PasswordInit::Request>();
   request.blinded_message = blinded_message;
   request.new_account_email = email;
   request.serialize_response = true;
@@ -177,9 +171,7 @@ void BraveAccountService::RegisterFinalize(
         mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)));
   }
 
-  WithHeaders<PasswordFinalize::Request> request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<WithHeaders<PasswordFinalize::Request>>();
   request.serialized_record = serialized_record;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
@@ -197,6 +189,46 @@ void BraveAccountService::ResendConfirmationEmail() {
 
 void BraveAccountService::CancelRegistration() {
   pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
+}
+
+void BraveAccountService::LoginInitialize(const std::string& email,
+                                          const std::string& serialized_ke1,
+                                          LoginInitializeCallback callback) {
+  if (email.empty() || serialized_ke1.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::LoginError::New()));
+  }
+
+  auto request = MakeRequest<LoginInit::Request>();
+  request.email = email;
+  request.serialized_ke1 = serialized_ke1;
+  Client<LoginInit>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnLoginInitialize,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveAccountService::LoginFinalize(
+    const std::string& encrypted_login_token,
+    const std::string& client_mac,
+    LoginFinalizeCallback callback) {
+  if (encrypted_login_token.empty() || client_mac.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::LoginError::New()));
+  }
+
+  const std::string login_token = Decrypt(encrypted_login_token);
+  if (login_token.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::LoginError::New(
+        std::nullopt, mojom::LoginErrorCode::kLoginTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<LoginFinalize::Request>>();
+  request.client_mac = client_mac;
+  request.headers.SetHeader("Authorization",
+                            base::StrCat({"Bearer ", login_token}));
+  Client<endpoints::LoginFinalize>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnLoginFinalize,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::LogOut() {
@@ -220,8 +252,8 @@ void BraveAccountService::OnRegisterInitialize(
           // expected<SuccessBody, [ErrorBody    ]> ==>
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
-            return mojom::RegisterError::New(
-                status_code, TransformError(std::move(error_body)));
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
           })
           // expected<[SuccessBody                ], RegisterError> ==>
           // expected<[RegisterInitializeResultPtr], RegisterError>
@@ -267,8 +299,8 @@ void BraveAccountService::OnRegisterFinalize(
           // expected<SuccessBody, [ErrorBody    ]> ==>
           // expected<SuccessBody, [RegisterError]>
           .transform_error([&](auto error_body) {
-            return mojom::RegisterError::New(
-                status_code, TransformError(std::move(error_body)));
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
           })
           // expected<[SuccessBody              ], RegisterError> ==>
           // expected<[RegisterFinalizeResultPtr], RegisterError>
@@ -282,18 +314,6 @@ void BraveAccountService::OnRegisterFinalize(
           });
 
   std::move(callback).Run(std::move(result));
-}
-
-std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
-    Error error_body) {
-  if (!error_body.code.is_int()) {
-    return std::nullopt;
-  }
-
-  const auto error_code =
-      static_cast<mojom::RegisterErrorCode>(error_body.code.GetInt());
-  return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
-                                             : std::nullopt;
 }
 
 void BraveAccountService::OnVerificationTokenChanged() {
@@ -329,9 +349,7 @@ void BraveAccountService::VerifyResult(
     return;
   }
 
-  WithHeaders<VerifyResult::Request> request;
-  request.network_traffic_annotation_tag =
-      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
+  auto request = MakeRequest<WithHeaders<VerifyResult::Request>>();
   request.wait = false;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
@@ -385,6 +403,127 @@ void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
 
   // Replace watchdog timer with the normal cadence.
   ScheduleVerifyResult(kVerifyResultPollInterval);
+}
+
+void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,
+                                            LoginInit::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(base::unexpected(mojom::LoginError::New(
+        response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody ]> ==>
+          // expected<SuccessBody, [LoginError]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::LoginError>(status_code,
+                                                     std::move(error_body));
+          })
+          // expected<[SuccessBody             ], LoginError> ==>
+          // expected<[LoginInitializeResultPtr], LoginError>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::LoginInitializeResultPtr,
+                                          mojom::LoginErrorPtr> {
+            if (success_body.login_token.empty() ||
+                success_body.serialized_ke2.empty()) {
+              return base::unexpected(
+                  mojom::LoginError::New(status_code, std::nullopt));
+            }
+
+            std::string encrypted_login_token =
+                Encrypt(success_body.login_token);
+            if (encrypted_login_token.empty()) {
+              return base::unexpected(mojom::LoginError::New(
+                  std::nullopt,
+                  mojom::LoginErrorCode::kLoginTokenEncryptionFailed));
+            }
+
+            return mojom::LoginInitializeResult::New(
+                std::move(encrypted_login_token),
+                std::move(success_body.serialized_ke2));
+          });
+
+  std::move(callback).Run(std::move(result));
+}
+
+void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
+                                          LoginFinalize::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(base::unexpected(mojom::LoginError::New(
+        response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  CHECK(response.status_code);
+  const auto status_code = *response.status_code;
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody ]> ==>
+          // expected<SuccessBody, [LoginError]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::LoginError>(status_code,
+                                                     std::move(error_body));
+          })
+          // expected<[SuccessBody           ], LoginError> ==>
+          // expected<[LoginFinalizeResultPtr], LoginError>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::LoginFinalizeResultPtr,
+                                          mojom::LoginErrorPtr> {
+            if (success_body.auth_token.empty()) {
+              return base::unexpected(
+                  mojom::LoginError::New(status_code, std::nullopt));
+            }
+
+            const std::string encrypted_authentication_token =
+                Encrypt(success_body.auth_token);
+            if (encrypted_authentication_token.empty()) {
+              return base::unexpected(mojom::LoginError::New(
+                  std::nullopt,
+                  mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed));
+            }
+
+            pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
+                                     encrypted_authentication_token);
+
+            return mojom::LoginFinalizeResult::New();
+          });
+
+  std::move(callback).Run(std::move(result));
+}
+
+std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
+  if (plain_text.empty()) {
+    return std::string();
+  }
+
+  std::string encrypted;
+  if (!encrypt_callback_.Run(plain_text, &encrypted)) {
+    return std::string();
+  }
+
+  return base::Base64Encode(encrypted);
+}
+
+std::string BraveAccountService::Decrypt(const std::string& base64) const {
+  if (base64.empty()) {
+    return std::string();
+  }
+
+  std::string encrypted;
+  if (!base::Base64Decode(base64, &encrypted)) {
+    return std::string();
+  }
+
+  std::string plain_text;
+  if (!decrypt_callback_.Run(encrypted, &plain_text)) {
+    return std::string();
+  }
+
+  return plain_text;
 }
 
 }  // namespace brave_account
