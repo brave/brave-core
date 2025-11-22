@@ -447,4 +447,287 @@ TEST_F(CardanoProviderImplUnitTest, EnableFails_OnWalletUnlock_TabNotActive) {
   EXPECT_TRUE(error);
 }
 
+TEST_F(CardanoProviderImplUnitTest, Enable_GlobalPermissionDenial) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), IsPermissionDenied(mojom::CoinType::ADA))
+      .WillByDefault([&]() { return true; });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+
+  auto error = future.Take();
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -3);  
+  EXPECT_EQ(error->error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(CardanoProviderImplUnitTest, IsEnabled_GlobalPermissionDenial) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), IsPermissionDenied(mojom::CoinType::ADA))
+      .WillByDefault([&]() { return true; });
+
+  TestFuture<bool> future;
+  provider()->IsEnabled(future.GetCallback());
+  EXPECT_FALSE(future.Take());
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_OriginValidation) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  const url::Origin expected_origin =
+      url::Origin::Create(GURL("https://example.com"));
+
+  EXPECT_CALL(*delegate(), GetOrigin())
+      .WillOnce(testing::Return(expected_origin));
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+
+  auto error = future.Take();
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_UnlockRetainsCapturedOrigin) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  const url::Origin initial_origin =
+      url::Origin::Create(GURL("https://initial.com"));
+
+  EXPECT_CALL(*delegate(), GetOrigin())
+      .WillOnce(testing::Return(initial_origin));
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  keyring_service()->Lock();
+
+  base::MockCallback<CardanoProviderImpl::EnableCallback> callback;
+  mojo::Remote<mojom::CardanoApi> api;
+  base::RunLoop main_run_loop;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::CardanoProviderErrorBundlePtr())))
+      .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
+
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), callback.Get());
+
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                  callback) {
+            std::move(callback).Run(
+                mojom::RequestPermissionsError::kNone,
+                std::vector<std::string>(
+                    {added_account->account_id->unique_key}));
+          });
+
+  UnlockWallet();
+  main_run_loop.Run();
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_MultipleCallsCreateSeparateAPIs) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future1;
+  mojo::Remote<mojom::CardanoApi> api1;
+  provider()->Enable(api1.BindNewPipeAndPassReceiver(), future1.GetCallback());
+
+  auto error1 = future1.Take();
+  EXPECT_FALSE(error1);
+  EXPECT_TRUE(api1.is_bound());
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future2;
+  mojo::Remote<mojom::CardanoApi> api2;
+  provider()->Enable(api2.BindNewPipeAndPassReceiver(), future2.GetCallback());
+
+  auto error2 = future2.Take();
+  EXPECT_FALSE(error2);
+  EXPECT_TRUE(api2.is_bound());
+
+  EXPECT_TRUE(api1.is_bound());
+  EXPECT_TRUE(api2.is_bound());
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_RequestInProgressError) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>();
+          });
+
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                  callback) {
+            std::move(callback).Run(
+                mojom::RequestPermissionsError::kRequestInProgress,
+                std::nullopt);
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+
+  auto error = future.Take();
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -3);  
+  EXPECT_EQ(error->error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_InternalError) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>();
+          });
+
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                  callback) {
+            std::move(callback).Run(mojom::RequestPermissionsError::kInternal,
+                                    std::nullopt);
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+
+  auto error = future.Take();
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -2);  
+  EXPECT_EQ(error->error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_AccountValidationAfterApproval) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+
+  bool permission_granted = false;
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            if (permission_granted) {
+              return std::vector<std::string>(
+                  {added_account->account_id->unique_key});
+            }
+            return std::vector<std::string>();
+          });
+
+  ON_CALL(*delegate(), RequestPermissions(_, _, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts,
+              MockBraveWalletProviderDelegate::RequestPermissionsCallback
+                  callback) {
+            permission_granted = true;  
+            std::move(callback).Run(
+                mojom::RequestPermissionsError::kNone,
+                std::vector<std::string>(
+                    {added_account->account_id->unique_key}));
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future;
+  mojo::Remote<mojom::CardanoApi> api;
+  provider()->Enable(api.BindNewPipeAndPassReceiver(), future.GetCallback());
+
+  auto error = future.Take();
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoProviderImplUnitTest, Enable_DuplicateUnlockRequestsDropped) {
+  CreateWallet();
+  auto added_account = AddAccount();
+  keyring_service()->Lock();
+
+  ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future1;
+  mojo::Remote<mojom::CardanoApi> api1;
+  provider()->Enable(api1.BindNewPipeAndPassReceiver(), future1.GetCallback());
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future2;
+  mojo::Remote<mojom::CardanoApi> api2;
+  provider()->Enable(api2.BindNewPipeAndPassReceiver(), future2.GetCallback());
+
+  auto error2 = future2.Take();
+  ASSERT_TRUE(error2);
+  EXPECT_EQ(error2->code, -3);  
+
+  TestFuture<mojom::CardanoProviderErrorBundlePtr> future3;
+  mojo::Remote<mojom::CardanoApi> api3;
+  provider()->Enable(api3.BindNewPipeAndPassReceiver(), future3.GetCallback());
+
+  auto error3 = future3.Take();
+  ASSERT_TRUE(error3);
+  EXPECT_EQ(error3->code, -3);  
+}
+
 }  // namespace brave_wallet
