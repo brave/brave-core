@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 
+#include <limits>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
@@ -16,6 +17,14 @@
 namespace brave_wallet {
 
 namespace {
+
+cardano_rpc::EpochParameters GetReferenceEpochParameters() {
+  cardano_rpc::EpochParameters epoch_parameters;
+  epoch_parameters.min_fee_coefficient = 44;
+  epoch_parameters.min_fee_constant = 155381;
+  epoch_parameters.coins_per_utxo_size = 4310;
+  return epoch_parameters;
+}
 
 CardanoTransaction GetReferenceTransaction() {
   // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
@@ -215,15 +224,86 @@ TEST(CardanoTransactionSerializerTest, GetTxHash) {
 }
 
 TEST(CardanoTransactionSerializerTest, CalcMinTransactionFee) {
-  cardano_rpc::EpochParameters epoch_parameters;
-  epoch_parameters.min_fee_coefficient = 44;
-  epoch_parameters.min_fee_constant = 155381;
+  cardano_rpc::EpochParameters epoch_parameters = GetReferenceEpochParameters();
+
   EXPECT_EQ(CardanoTransactionSerializer().CalcMinTransactionFee(
                 GetReferenceTransaction(), epoch_parameters),
             168141u);
   EXPECT_EQ(CardanoTransactionSerializer().CalcMinTransactionFee(
                 GetNullTransaction(), epoch_parameters),
             162201u);
+}
+
+TEST(CardanoTransactionSerializerTest, CalcMinAdaRequired) {
+  cardano_rpc::EpochParameters epoch_parameters = GetReferenceEpochParameters();
+  CardanoTransactionSerializer serializer;
+
+  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/test/fees/fees.test.ts#L84
+  CardanoTransaction::TxOutput output;
+  output.address = *CardanoAddress::FromString(
+      "addr_"
+      "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
+      "xgjqnnj83ws8lhrn648jjxtwq2ytjqp");
+  output.amount = 0;
+
+  EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
+
+  // Amount matches min value.
+  output.amount = 969750u;
+  EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
+
+  // Amount is slightly less than min value -> still same min value.
+  output.amount = 960000u;
+  EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
+
+  // Amount is slightly larger than min value -> still same min value.
+  output.amount = 1000000u;
+  EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 969750u);
+
+  // Larger amount would need 9 bytes (vs 5 bytes) and then larger min value.
+  output.amount = 5000000000;
+  EXPECT_EQ(serializer.CalcMinAdaRequired(output, epoch_parameters), 986990u);
+
+  // Unexpectedly large `coins_per_utxo_size` fails with no overflow.
+  epoch_parameters.coins_per_utxo_size =
+      std::numeric_limits<uint64_t>::max() / 2;
+  EXPECT_FALSE(serializer.CalcMinAdaRequired(output, epoch_parameters));
+}
+
+TEST(CardanoTransactionSerializerTest, ValidateMinValue) {
+  cardano_rpc::EpochParameters epoch_parameters = GetReferenceEpochParameters();
+  CardanoTransactionSerializer serializer;
+
+  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/test/fees/fees.test.ts#L84
+  CardanoTransaction::TxOutput output;
+  output.address = *CardanoAddress::FromString(
+      "addr_"
+      "test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uq"
+      "xgjqnnj83ws8lhrn648jjxtwq2ytjqp");
+  output.amount = 0;
+  // Zero amount fails.
+  EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
+
+  // Amount matches min value.
+  output.amount = 969750u;
+  EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
+
+  // Amount is slightly less than min value - validation fails.
+  output.amount = 969740u;
+  EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
+
+  // Amount is slightly larger than min value - validation succeeds.
+  output.amount = 1000000u;
+  EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
+
+  // Very large amount succeeds.
+  output.amount = 5000000000;
+  EXPECT_TRUE(serializer.ValidateMinValue(output, epoch_parameters));
+
+  // Unexpectedly large `coins_per_utxo_size` fails with no overflow.
+  epoch_parameters.coins_per_utxo_size =
+      std::numeric_limits<uint64_t>::max() / 2;
+  EXPECT_FALSE(serializer.ValidateMinValue(output, epoch_parameters));
 }
 
 }  // namespace brave_wallet

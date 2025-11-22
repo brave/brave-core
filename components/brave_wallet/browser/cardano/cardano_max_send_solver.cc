@@ -5,18 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/numerics/clamped_math.h"
-#include "base/rand_util.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
-#include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -43,12 +39,16 @@ base::expected<CardanoTransaction, std::string> CardanoMaxSendSolver::Solve() {
           .CalcMinTransactionFee(result, latest_epoch_parameters_);
 
   if (result.TotalInputsAmount() <= fee) {
-    return base::unexpected(
-        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
+    return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
   result.TargetOutput()->amount = result.TotalInputsAmount() - fee;
   result.set_amount(result.TargetOutput()->amount);
+
+  if (!CardanoTransactionSerializer().ValidateMinValue(
+          *result.TargetOutput(), latest_epoch_parameters_)) {
+    return base::unexpected(WalletInsufficientBalanceErrorMessage());
+  }
 
   return base::ok(std::move(result));
 }

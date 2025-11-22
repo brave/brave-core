@@ -22,7 +22,6 @@ import {
   CoinTypesMap,
   BraveWallet,
   BaseTransactionParams,
-  AmountValidationErrorType,
 } from '../../../../constants/types'
 
 // Constants
@@ -103,6 +102,23 @@ import {
   SelectAddressButton, //
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
+
+type SendAmountValidationErrorType =
+  | 'fromAmountDecimalsOverflow'
+  | 'fromAmountADAValueToLow'
+
+const isNativeAdaToken = (token: BraveWallet.BlockchainToken) => {
+  return (
+    token.coin === BraveWallet.CoinType.ADA
+    && (token.chainId === BraveWallet.CARDANO_MAINNET
+      || token.chainId === BraveWallet.CARDANO_TESTNET)
+    && token.contractAddress === ''
+  )
+}
+
+// https://github.com/Emurgo/yoroi-frontend/blob/22c69a1a0cd7d2a257ee6c12c2eec07f3247256b/packages/yoroi-extension/app/components/buySell/BuySellDialog.js#L98
+// Actual minimal value is slightly less, but for better UX we round this to 1ADA.
+const MINIMUM_SEND_ADA = new Amount('1')
 
 export const SendScreen = React.memo(() => {
   // routing
@@ -232,10 +248,16 @@ export const SendScreen = React.memo(() => {
       === BraveWallet.ZCashTxType.kShielding
 
   // memos & computed
-  const sendAmountValidationError: AmountValidationErrorType | undefined =
+  const sendAmountValidationError: SendAmountValidationErrorType | undefined =
     React.useMemo(() => {
       if (!sendAmount || !tokenFromParams) {
         return
+      }
+
+      if (isNativeAdaToken(tokenFromParams)) {
+        if (new Amount(sendAmount).lt(MINIMUM_SEND_ADA)) {
+          return 'fromAmountADAValueToLow'
+        }
       }
 
       // extract BigNumber object wrapped by Amount
@@ -746,13 +768,16 @@ function ethToWeiAmount(
 }
 
 function getReviewButtonText(
-  sendAmountValidationError: string | undefined,
+  sendAmountValidationError: SendAmountValidationErrorType | undefined,
   insufficientFundsError: boolean,
   isAccountSyncing?: boolean,
   isShieldingFunds?: boolean,
 ) {
-  if (sendAmountValidationError) {
+  if (sendAmountValidationError === 'fromAmountDecimalsOverflow') {
     return 'braveWalletDecimalPlacesError'
+  }
+  if (sendAmountValidationError === 'fromAmountADAValueToLow') {
+    return 'braveWalletMinOneAdaError'
   }
   if (insufficientFundsError) {
     return 'braveWalletNotEnoughFunds'
