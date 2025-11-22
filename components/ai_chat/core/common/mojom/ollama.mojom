@@ -7,6 +7,9 @@ module ai_chat.mojom;
 
 // Ollama local endpoints
 const string kOllamaBaseUrl = "http://localhost:11434";
+const string kOllamaListModelsAPIEndpoint = "http://localhost:11434/api/tags";
+const string kOllamaShowModelInfoAPIEndpoint = "http://localhost:11434/api/show";
+const string kOllamaEndpoint = "http://localhost:11434/v1/chat/completions";
 
 // Interface for communicating with a local Ollama instance.
 // This interface is implemented directly by OllamaService and allows

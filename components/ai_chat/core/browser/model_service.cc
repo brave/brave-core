@@ -47,6 +47,7 @@
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
@@ -58,10 +59,8 @@ namespace {
 constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 constexpr char kCustomModelItemLabelKey[] = "label";
-constexpr char kCustomModelItemModelKey[] = "model_request_name";
 constexpr char kCustomModelContextSizeKey[] = "context_size";
 constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
-constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 constexpr char kCustomModelItemApiKey[] = "api_key";
 constexpr char kCustomModelItemKey[] = "key";
 constexpr char kCustomModelVisionSupport[] = "vision_support";
@@ -749,7 +748,7 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 void ModelService::InitModels() {
   // Get leo and custom models
   const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-  std::vector<mojom::ModelPtr> custom_models = GetCustomModelsFromPrefs();
+  const std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
   models_.clear();
@@ -998,6 +997,45 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   }
 }
 
+void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
+  ScopedListPrefUpdate update(pref_service_, kCustomModelsList);
+  bool any_removed = false;
+
+  // Remove models matching predicate
+  auto it = update->begin();
+  while (it != update->end()) {
+    const base::Value::Dict& model_dict = it->GetDict();
+
+    if (predicate.Run(model_dict)) {
+      std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
+      any_removed = true;
+
+      // Check if this is the default model
+      if (GetDefaultModelKey() == removed_key) {
+        pref_service_->ClearPref(kDefaultModelKey);
+        DVLOG(1) << "Default model key " << removed_key
+                 << " was removed. Cleared default model key.";
+        for (auto& obs : observers_) {
+          obs.OnDefaultModelChanged(removed_key, GetDefaultModelKey());
+        }
+      }
+
+      it = update->erase(it);
+
+      // Notify observers immediately after removing
+      for (auto& obs : observers_) {
+        obs.OnModelRemoved(removed_key);
+      }
+    } else {
+      ++it;
+    }
+  }
+
+  if (any_removed) {
+    InitModels();
+  }
+}
+
 void ModelService::SetDefaultModelKey(const std::string& new_key) {
   const auto& models = GetModels();
 
@@ -1036,7 +1074,7 @@ const std::string& ModelService::GetDefaultModelKey() {
   return pref_service_->GetString(kDefaultModelKey);
 }
 
-std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
+const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
   std::vector<mojom::ModelPtr> models;
 
   const base::Value::List& custom_models_pref =
