@@ -35,6 +35,7 @@ class ContentAgentToolProvider : public ToolProvider,
 
   // ToolProvider implementation
   std::vector<base::WeakPtr<Tool>> GetTools() override;
+  void OnGenerationCompleteWithNoToolsToHandle() override;
   void StopAllTasks() override;
 
   // ContentAgentTaskProvider implementation

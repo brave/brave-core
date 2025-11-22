@@ -38,11 +38,19 @@ class ToolProvider {
   ToolProvider(const ToolProvider&) = delete;
   ToolProvider& operator=(const ToolProvider&) = delete;
 
+  // Marks that a new message has been added to the conversation and therefore
+  // a new generation loop has started which may result in tool calls.
   // Optionally handle and reset the state of this class or any tools that
   // should only maintain state within the tool loop of a single set of
   // responses. For example a TODO tool would only be applicable during 1 task,
   // but not a whole conversation.
   virtual void OnNewGenerationLoop() {}
+
+  // A response has been completed with no more tool use requests to handle.
+  // Future requests might be made in a new loop (after `OnNewGenerationLoop` is
+  // called). This is a good opportunity to hand over any control back to the
+  // user.
+  virtual void OnGenerationCompleteWithNoToolsToHandle() {}
 
   class Observer : public base::CheckedObserver {
    public:

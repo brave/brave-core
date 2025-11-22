@@ -1633,7 +1633,13 @@ void ConversationHandler::CompleteGeneration(bool success) {
   if (success) {
     MaybePopPendingRequests();
   }
-  MaybeRespondToNextToolUseRequest();
+  if (!MaybeRespondToNextToolUseRequest()) {
+    // Inform tool providers that there are no more tool use requests to handle,
+    // that the loop is complete until a new message is submitted.
+    for (auto& tool_provider : tool_providers_) {
+      tool_provider->OnGenerationCompleteWithNoToolsToHandle();
+    }
+  }
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
@@ -1951,7 +1957,7 @@ mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
   return nullptr;
 }
 
-void ConversationHandler::MaybeRespondToNextToolUseRequest() {
+bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
   // Continue the loop of tool use handling and completion continuing until
   // either:
   // - A response comes back with no tool use requests
@@ -1962,13 +1968,15 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
   OnAPIRequestInProgressChanged();
 
   if (chat_history_.empty()) {
-    return;
+    return false;
   }
   auto& last_entry = chat_history_.back();
   if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
       last_entry->events->size() == 0) {
-    return;
+    return false;
   }
+
+  bool has_pending_tool_use_request = false;
 
   // Handle one tool at a time and wait for its response
   // before handling the next one
@@ -1980,6 +1988,8 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         continue;
       }
 
+
+      has_pending_tool_use_request = true;
       // Check for existing permission challenge that hasn't been
       // granted yet. If permission_challenge exists, permission is needed.
       if (tool_use_event->permission_challenge) {
@@ -2061,6 +2071,8 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
       break;
     }
   }
+
+  return has_pending_tool_use_request;
 }
 
 size_t ConversationHandler::GetConversationHistorySize() {
