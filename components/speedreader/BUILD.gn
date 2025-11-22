@@ -7,8 +7,13 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 assert(enable_speedreader)
 
+source_set("pref_names") {
+  sources = [ "speedreader_pref_names.h" ]
+}
+
 static_library("speedreader") {
   public_deps = [
+    ":pref_names",
     "rust/ffi",
     "//brave/components/speedreader/common",
     "//brave/components/speedreader/common/buildflags",
@@ -26,7 +31,6 @@ static_library("speedreader") {
     "speedreader_metrics.h",
     "speedreader_pref_migration.cc",
     "speedreader_pref_migration.h",
-    "speedreader_pref_names.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",
     "speedreader_service.cc",
