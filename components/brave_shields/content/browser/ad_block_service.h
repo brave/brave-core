@@ -73,9 +73,7 @@ class AdBlockService {
     ~SourceProviderObserver() override;
 
    private:
-    void OnFilterSetCallbackLoaded(
-        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
-    void OnFilterSetCreated(std::unique_ptr<rust::Box<adblock::FilterSet>>);
+    void OnDATCreated(const std::vector<unsigned char>& verified_engine_dat);
 
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;
@@ -83,7 +81,7 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(const std::string& resources_json) override;
 
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
+    std::vector<unsigned char> pending_dat_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
     raw_ptr<AdBlockFiltersProvider> filters_provider_ = nullptr;    // not owned
     raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
