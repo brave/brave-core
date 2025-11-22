@@ -106,6 +106,18 @@ rust_static_library("sr25519_rs") {
   ]
 }
 
+rust_static_library("polkadot_extrinsic_rs") {
+  visibility = [ "//brave/components/brave_wallet/browser:*" ]
+
+  crate_name = "polkadot_extrinsic"
+  crate_root = "polkadot_extrinsic.rs"
+  allow_unsafe = true
+  sources = [ "polkadot_extrinsic.rs" ]
+  cxx_bindings = [ "polkadot_extrinsic.rs" ]
+
+  deps = [ "//brave/third_party/rust/parity_scale_codec/v3:lib" ]
+}
+
 rust_static_library("cardano_tx_decoder_rs") {
   # This should only be used by internal wallet code
   visibility = [ "//brave/components/brave_wallet/browser/internal:*" ]
