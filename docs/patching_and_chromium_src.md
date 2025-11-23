@@ -16,6 +16,42 @@ When you can't make a change directly in existing `src/brave` code, different ap
 * `#include "chrome/browser/profiles/profile.h"` will actually include `src/brave/chromium_src/chrome/browser/profiles/profile.h` if it exists.
 * compile `chrome/browser/profiles/profile.cc` will actually compile `src/brave/chromium_src/chrome/browser/profiles/profile.cc` if it exists.
 
+### Minimize dependencies
+
+gn dependency checks don't currently run for chromium_src so unlike other
+targets, it won't fail if you add includes that do not have deps listed for the
+original source file target. We also want to avoid patching gn to add
+dependencies. One way to avoid these is with forward declarations. For most code
+in chrome you can forward declare classes or methods that have their
+implementation in brave.
+
+chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
+```cpp
+bool BraveDoSomething(...);
+
+#define DoSomething DoSomething_ChromiumImpl
+
+bool ChromeFeature::DoSomething(...) {
+  if (BraveDoSomething(...)) {
+    return true;
+  }
+
+  return DoSomething_ChromiumImpl(...);
+}
+```
+
+brave/browser/some_feature/my_feature_override.cc
+```cpp
+bool BraveDoSomething(...) {
+  ...
+}
+```
+
+brave/browser/sources.gni
+```
+deps += [ "//brave/browser/chrome_feature" ]
+```
+
 ### Subclass and override
 
 To change an upstream logic it's often best to simply subclass a Chromium class, and override the functions needed.
