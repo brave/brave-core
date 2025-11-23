@@ -10,20 +10,16 @@ If changes can be made inside existing subclasses and code inside `src/brave`, t
 
 ## Changes inside Chromium
 
-### Introduction to `chromium_src` overrides
-
-When you can't make a change directly in existing `src/brave` code, different approaches can be used to alter an upstream implementation. Many of them are based on `src/brave/chromium_src` overrides. The content of this directory is prioritized over upstream files during compilation. The basic rules are:
-* `#include "chrome/browser/profiles/profile.h"` will actually include `src/brave/chromium_src/chrome/browser/profiles/profile.h` if it exists.
-* compile `chrome/browser/profiles/profile.cc` will actually compile `src/brave/chromium_src/chrome/browser/profiles/profile.cc` if it exists.
-
 ### Minimize dependencies
 
-gn dependency checks don't currently run for chromium_src so unlike other
+We want to avoid creating new dependencies in the chrome code when possible. gn
+dependency checks also don't currently run for chromium_src so unlike other
 targets, it won't fail if you add includes that do not have deps listed for the
 original source file target. We also want to avoid patching gn to add
 dependencies. One way to avoid these is with forward declarations. For most code
 in chrome you can forward declare classes or methods that have their
-implementation in brave.
+implementation in brave. This also applies to patches in general including
+plaster.
 
 chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
 ```cpp
@@ -51,6 +47,12 @@ brave/browser/sources.gni
 ```
 deps += [ "//brave/browser/chrome_feature" ]
 ```
+
+### Introduction to `chromium_src` overrides
+
+When you can't make a change directly in existing `src/brave` code, different approaches can be used to alter an upstream implementation. Many of them are based on `src/brave/chromium_src` overrides. The content of this directory is prioritized over upstream files during compilation. The basic rules are:
+* `#include "chrome/browser/profiles/profile.h"` will actually include `src/brave/chromium_src/chrome/browser/profiles/profile.h` if it exists.
+* compile `chrome/browser/profiles/profile.cc` will actually compile `src/brave/chromium_src/chrome/browser/profiles/profile.cc` if it exists.
 
 ### Subclass and override
 
