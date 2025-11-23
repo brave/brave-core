@@ -18,7 +18,8 @@ targets, it won't fail if you add includes that do not have deps listed for the
 original source file target. We also want to avoid patching gn to add
 dependencies. One way to avoid these is with forward declarations. For most code
 in chrome you can forward declare classes or methods that have their
-implementation in brave. This also applies to patches in general including
+implementation in brave. Code in `component` gn target types doesn't lend itself
+to this technique in general. This also applies to patches in general including
 plaster.
 
 chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
