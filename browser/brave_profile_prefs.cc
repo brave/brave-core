@@ -183,9 +183,8 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
 #else
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(
-      ntp_prefs::kNtpShortcutsType,
-      base::Value(static_cast<int>(ntp_tiles::TileType::kTopSites)));
+  registry->SetDefaultPrefValue(ntp_prefs::kNtpCustomLinksVisible,
+                                base::Value(false));
 
   registry->SetDefaultPrefValue(
       bookmarks_webui::prefs::kBookmarksViewType,
