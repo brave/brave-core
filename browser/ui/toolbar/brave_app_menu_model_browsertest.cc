@@ -18,6 +18,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -173,7 +174,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
       IDC_TOGGLE_AI_CHAT,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       IDC_SHOW_BRAVE_WALLET,
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
@@ -226,7 +229,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       IDC_SHOW_BRAVE_WALLET,
+#endif
 #if defined(TOOLKIT_VIEWS)
       IDC_SIDEBAR_SHOW_OPTION_MENU,
 #endif
@@ -289,7 +294,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
       IDC_TOGGLE_AI_CHAT,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       IDC_SHOW_BRAVE_WALLET,
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
@@ -328,7 +335,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       IDC_SHOW_BRAVE_WALLET,
+#endif
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
       IDC_EXTENSIONS_SUBMENU,

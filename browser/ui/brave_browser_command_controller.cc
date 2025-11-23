@@ -23,7 +23,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
@@ -77,6 +77,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/common_utils.h"
 #endif
 
 namespace {
@@ -220,9 +224,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveWallet();
     }
+#endif
     if (syncer::IsSyncAllowedByFlag()) {
       UpdateCommandForBraveSync();
     }
@@ -488,11 +494,13 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
   UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
 }
+#endif
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
@@ -542,9 +550,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_SYNC:
       brave::ShowSync(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(&*browser_);
       break;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_TOGGLE_AI_CHAT:
       brave::ToggleAIChat(&*browser_);
@@ -556,12 +566,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case IDC_SHOW_BRAVE_WALLET_PANEL:
       brave::ShowWalletBubble(&*browser_);
       break;
     case IDC_CLOSE_BRAVE_WALLET_PANEL:
       brave::CloseWalletBubble(&*browser_);
       break;
+#endif
     case IDC_SHOW_BRAVE_VPN_PANEL:
       brave::ShowBraveVPNBubble(&*browser_);
       break;

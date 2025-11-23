@@ -8,9 +8,12 @@ import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i1
 import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js'
 import { loadTimeData } from "../i18n_setup.js"
 import { getTemplate } from './toolbar.html.js'
-import { BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl } from '../brave_wallet_page/brave_wallet_browser_proxy.js';
 import {Route, RouteObserverMixin, Router} from '../router.js';
 import {routes} from '../route.js';
+
+// <if expr="enable_brave_wallet">
+import { BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl } from '../brave_wallet_page/brave_wallet_browser_proxy.js';
+// </if>
 
 
 import '../settings_shared.css.js'
@@ -36,22 +39,28 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
 
   static get properties() {
     return {
+      // <if expr="enable_brave_wallet">
       isNativeWalletEnabled_: {
         type: Boolean,
         value: false,
       }
+      // </if>
     }
   }
 
+  // <if expr="enable_brave_wallet">
   private declare isNativeWalletEnabled_: boolean
   private walletBrowserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance()
+  // </if>
 
   override ready() {
     super.ready()
 
+    // <if expr="enable_brave_wallet">
     this.walletBrowserProxy_.isNativeWalletEnabled().then(val => {
       this.isNativeWalletEnabled_ = val
     });
+    // </if>
   }
 
   /**

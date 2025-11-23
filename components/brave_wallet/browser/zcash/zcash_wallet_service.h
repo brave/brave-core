@@ -21,7 +21,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"

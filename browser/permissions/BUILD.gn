@@ -3,13 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
-      "brave_wallet_permission_context_browsertest.cc",
       "google_sign_in_permission_browsertest.cc",
       "localhost_access_permission_browsertest.cc",
       "mock_permission_lifetime_prompt.cc",
@@ -22,15 +23,12 @@ if (!is_android) {
 
     deps = [
       "//brave/browser",
-      "//brave/browser/brave_wallet",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/content/browser",
       "//brave/components/brave_shields/content/test:test_support",
       "//brave/components/brave_shields/core/browser",
       "//brave/components/brave_shields/core/common",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:permission_utils",
-      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/ephemeral_storage",
       "//brave/components/google_sign_in_permission",
       "//chrome/browser",
@@ -42,6 +40,16 @@ if (!is_android) {
       "//components/permissions",
       "//content/test:test_support",
     ]
+
+    if (enable_brave_wallet) {
+      sources += [ "brave_wallet_permission_context_browsertest.cc" ]
+      deps += [
+        "//brave/browser/brave_wallet",
+        "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/browser:permission_utils",
+        "//brave/components/brave_wallet/common",
+      ]
+    }
   }
 }
 
@@ -49,13 +57,9 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "brave_wallet_permission_context_unittest.cc",
-    "permission_lifetime_manager_unittest.cc",
-  ]
+  sources = [ "permission_lifetime_manager_unittest.cc" ]
 
   deps = [
-    "//brave/components/brave_wallet/browser:permission_utils",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/permissions",
@@ -67,4 +71,9 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_brave_wallet) {
+    sources += [ "brave_wallet_permission_context_unittest.cc" ]
+    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
+  }
 }

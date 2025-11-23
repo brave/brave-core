@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
@@ -12,10 +13,11 @@ declare_args() {
 }
 
 java_cpp_enum("brave_android_java_enums_srcjar") {
-  sources = [
-    "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
-    "//brave/components/decentralized_dns/core/constants.h",
-  ]
+  sources = [ "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h" ]
+
+  if (enable_brave_wallet) {
+    sources += [ "//brave/components/decentralized_dns/core/constants.h" ]
+  }
 }
 
 java_cpp_template("brave_config_java") {

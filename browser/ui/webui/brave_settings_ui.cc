@@ -15,7 +15,6 @@
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
@@ -28,7 +27,6 @@
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
-#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/brave_account_service.h"
@@ -37,8 +35,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -114,6 +111,13 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#endif
+
 namespace {
 
 bool IsLocaleJapan(Profile* profile) {
@@ -136,7 +140,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
+#endif
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
 #if BUILDFLAG(ENABLE_AI_CHAT)
   web_ui->AddMessageHandler(
@@ -200,6 +206,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
            !profile->GetPrefs()->IsManagedPreference(
                speedreader::kSpeedreaderEnabled)));
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
@@ -208,6 +215,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_wallet::IsCardanoDAppSupportEnabled());
   html_source->AddBoolean("isBraveWalletAllowed",
                           brave_wallet::IsAllowedForContext(profile));
+#endif
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
                           base::FeatureList::IsEnabled(
                               net::features::kBraveForgetFirstPartyStorage));

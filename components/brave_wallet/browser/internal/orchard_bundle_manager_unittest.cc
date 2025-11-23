@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"

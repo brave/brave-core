@@ -9,7 +9,7 @@ include_rules = [
   "+brave/components/brave_search_conversion/features.h",
   "+brave/components/brave_shields/core/common/features.h",
   "+brave/components/brave_sync/features.h",
-  "+brave/components/brave_wallet/common/buildflags.h",
+  "+brave/components/brave_wallet/common/buildflags/buildflags.h",
   "+brave/components/brave_wallet/common/features.h",
   "+brave/components/brave_user_agent/common/features.h",
   "+brave/components/de_amp/common/features.h",

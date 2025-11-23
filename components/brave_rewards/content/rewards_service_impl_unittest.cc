@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -70,7 +71,12 @@ class RewardsServiceTest : public testing::Test {
             const GURL& url, base::OnceCallback<void(const SkBitmap& bitmap)>,
             const net::NetworkTrafficAnnotationTag& traffic_annotation)>(),
         base::RepeatingCallback<void(int)>(),
-        profile()->GetDefaultStoragePartition(), nullptr);
+        profile()->GetDefaultStoragePartition()
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+            ,
+        nullptr
+#endif
+    );
     ASSERT_TRUE(rewards_service());
     observer_ = std::make_unique<MockRewardsServiceObserver>();
     rewards_service_->AddObserver(observer_.get());

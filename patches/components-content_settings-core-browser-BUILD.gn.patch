@@ -1,8 +1,16 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 98422cd2565c93f7f2739d2209d2c0c8ff90e77d..81cf5461be0a3ef04a1f913cd84d3f3649b7ec79 100644
+index 98422cd2565c93f7f2739d2209d2c0c8ff90e77d..c1e66ad4944251cff653e5537951fe5920b9ec0c 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -81,6 +81,7 @@ static_library("browser") {
+@@ -55,6 +55,7 @@ static_library("browser") {
+ 
+   public_deps = [ "//base" ]
+   deps = [
++    "//brave/components/brave_wallet/common/buildflags",
+     "//build:blink_buildflags",
+     "//components/content_settings/core/common",
+     "//components/keyed_service/core",
+@@ -81,6 +82,7 @@ static_library("browser") {
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]

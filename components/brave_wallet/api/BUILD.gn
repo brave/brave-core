@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_brave_wallet)
 
 generated_types("api") {
   sources = [ "asset_ratio.idl" ]

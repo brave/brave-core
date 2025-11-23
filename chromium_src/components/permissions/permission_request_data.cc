@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/permissions/content_setting_permission_context_base.h"
 
 namespace permissions {
@@ -14,18 +15,20 @@ namespace permissions {
 std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
     ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case ContentSettingsType::BRAVE_ETHEREUM:
       return RequestType::kBraveEthereum;
     case ContentSettingsType::BRAVE_SOLANA:
       return RequestType::kBraveSolana;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
+#endif
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return RequestType::kBraveOpenAIChat;
-    case ContentSettingsType::BRAVE_CARDANO:
-      return RequestType::kBraveCardano;
     default:
       return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
   }

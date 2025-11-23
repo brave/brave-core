@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("customize_chrome") {
   sources = [
@@ -20,8 +21,7 @@ source_set("customize_chrome") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/browser:pref_names",
-    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
@@ -32,6 +32,13 @@ source_set("customize_chrome") {
     "//components/user_prefs",
     "//content/public/browser",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/common",
+    ]
+  }
 
   if (enable_ai_chat) {
     deps += [
@@ -77,7 +84,7 @@ source_set("unit_tests") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/webui/util",
@@ -91,6 +98,10 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common" ]
+  }
 
   if (enable_ai_chat) {
     deps += [

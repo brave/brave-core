@@ -91,7 +91,9 @@ function getPageVisibility () {
     privacy: alwaysTrueProxy,
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
+    // <if expr="enable_brave_wallet">
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
+    // </if>
     // <if expr="enable_ai_chat">
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoPersonalization: loadTimeData.getBoolean('isLeoAssistantAllowed'),

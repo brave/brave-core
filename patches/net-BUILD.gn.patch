@@ -1,8 +1,16 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 5bad83b0abb9ddadd137698ba2272e12539d6735..7a9d2a597dc512fa7352cbc434973b68975adfc3 100644
+index 5bad83b0abb9ddadd137698ba2272e12539d6735..9f8cb11909287ec5b8172a246d2f20d87ea69d98 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1246,6 +1246,7 @@ component("net") {
+@@ -1173,6 +1173,7 @@ component("net") {
+   }
+ 
+   deps = [
++    "//brave/components/brave_wallet/common/buildflags",
+     ":cronet_buildflags",
+     ":net_deps",
+     "//components/network_time/time_tracker",
+@@ -1246,6 +1247,7 @@ component("net") {
        "reporting/reporting_uploader.h",
      ]
    }

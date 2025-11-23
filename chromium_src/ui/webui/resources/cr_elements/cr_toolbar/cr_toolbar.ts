@@ -120,7 +120,8 @@ export class CrToolbarElement extends CrLitElement {
   accessor closeMenuPromo: string = ''
   showingSearch = false
   showRewardsButton = true
-  accessor isBraveWalletAllowed_: boolean = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+  accessor isBraveWalletAllowed_: boolean =
+      loadTimeData.getBoolean('isBraveWalletAllowed')
 
   accessor alwaysShowLogo:boolean = false
   accessor searchIconOverride: string|undefined

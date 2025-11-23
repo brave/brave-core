@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/browser/brave_stats/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
@@ -32,8 +33,7 @@ source_set("brave_stats") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//brave/components/rpill/common",
@@ -47,6 +47,13 @@ source_set("brave_stats") {
     "//net",
     "//services/network/public/cpp",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+    ]
+  }
 }
 
 source_set("browser_tests") {
@@ -79,12 +86,18 @@ source_set("unit_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_stats/browser",
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/misc_metrics",
     "//chrome/browser",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//components/prefs",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+    ]
+  }
 }

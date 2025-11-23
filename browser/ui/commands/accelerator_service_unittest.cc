@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/features.h"
@@ -36,6 +36,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace commands {
@@ -322,6 +326,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #endif
 
   // Test Brave Wallet (multiple commands)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   const std::vector<int> wallet_commands = {IDC_SHOW_BRAVE_WALLET,
                                             IDC_SHOW_BRAVE_WALLET_PANEL,
                                             IDC_CLOSE_BRAVE_WALLET_PANEL};
@@ -335,6 +340,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   }
   profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
                                    false);
+#endif
 
   // Test Brave Rewards
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_REWARDS));
@@ -394,7 +400,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   commands::Accelerators test_accelerators = {
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}},
       {IDC_CONFIGURE_BRAVE_NEWS, {commands::FromCodesString("Control+KeyN")}},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {IDC_SHOW_BRAVE_WALLET, {commands::FromCodesString("Control+KeyW")}},
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       {IDC_TOGGLE_AI_CHAT, {commands::FromCodesString("Control+KeyC")}},
 #endif
@@ -403,8 +411,10 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   // Disable some features and test filtering
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
                                    true);
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy,
                                    false);  // Disable AI Chat
@@ -420,7 +430,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #endif
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
   EXPECT_FALSE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_FALSE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(filtered.contains(IDC_TOGGLE_AI_CHAT));
 #endif
@@ -428,22 +440,28 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   // Re-enable commands and test again
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
                                    false);
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, true);
 #endif
 
   filtered = service.FilterCommandsByPolicy(test_accelerators);
   // All commands should be present now
-#if BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_EQ(4u, filtered.size());
-#else
+#elif BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_EQ(3u, filtered.size());
+#else
+  EXPECT_EQ(2u, filtered.size());
 #endif
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
   EXPECT_TRUE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_TRUE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_TRUE(filtered.contains(IDC_TOGGLE_AI_CHAT));
 #endif

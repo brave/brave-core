@@ -105,6 +105,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
         r.SITE_SETTINGS.createChild('braveOpenAIChat')
     }
     // </if>
+    // <if expr="enable_brave_wallet">
     const isNativeBraveWalletFeatureEnabled =
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =
@@ -117,6 +118,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
         r.SITE_SETTINGS_CARDANO = r.SITE_SETTINGS.createChild('cardano')
       }
     }
+    // </if>
     r.SITE_SETTINGS_SHIELDS_STATUS = r.SITE_SETTINGS.createChild('braveShields')
     if (r.SITE_SETTINGS_ADS) {
       delete r.SITE_SETTINGS_ADS

@@ -7,13 +7,17 @@
 
 #include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_google_sign_in_permission_context.h"
 #include "brave/components/permissions/contexts/brave_localhost_permission_context.h"
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#endif
 
 #define GeolocationPermissionContextDelegate \
   BraveGeolocationPermissionContextDelegate
@@ -32,6 +36,7 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
   auto permission_contexts = CreatePermissionContexts(profile);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   permission_contexts[ContentSettingsType::BRAVE_ETHEREUM] =
       std::make_unique<permissions::BraveWalletPermissionContext>(
           profile, ContentSettingsType::BRAVE_ETHEREUM);
@@ -41,6 +46,7 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
   permission_contexts[ContentSettingsType::BRAVE_CARDANO] =
       std::make_unique<permissions::BraveWalletPermissionContext>(
           profile, ContentSettingsType::BRAVE_CARDANO);
+#endif
   permission_contexts[ContentSettingsType::BRAVE_GOOGLE_SIGN_IN] =
       std::make_unique<permissions::BraveGoogleSignInPermissionContext>(
           profile);

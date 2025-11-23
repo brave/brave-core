@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 brave_components_permissions_sources = [
@@ -14,8 +15,6 @@ brave_components_permissions_sources = [
   "//brave/components/permissions/contexts/brave_localhost_permission_context.h",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.cc",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
-  "//brave/components/permissions/contexts/brave_wallet_permission_context.cc",
-  "//brave/components/permissions/contexts/brave_wallet_permission_context.h",
   "//brave/components/permissions/permission_expiration_key.cc",
   "//brave/components/permissions/permission_expiration_key.h",
   "//brave/components/permissions/permission_expirations.cc",
@@ -39,11 +38,16 @@ if (enable_widevine) {
   ]
 }
 
+if (enable_brave_wallet) {
+  brave_components_permissions_sources += [
+    "//brave/components/permissions/contexts/brave_wallet_permission_context.cc",
+    "//brave/components/permissions/contexts/brave_wallet_permission_context.h",
+  ]
+}
+
 brave_components_permissions_deps = [
   "//base",
   "//brave/brave_domains",
-  "//brave/components/brave_wallet/browser:permission_utils",
-  "//brave/components/brave_wallet/common:mojom",
   "//brave/components/constants",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",
@@ -56,6 +60,13 @@ brave_components_permissions_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (enable_brave_wallet) {
+  brave_components_permissions_deps += [
+    "//brave/components/brave_wallet/browser:permission_utils",
+    "//brave/components/brave_wallet/common:mojom",
+  ]
+}
 
 if (is_android) {
   brave_components_permissions_deps +=

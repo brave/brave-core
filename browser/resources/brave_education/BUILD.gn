@@ -6,12 +6,16 @@
 # based on //chrome/browser/resources/whats_new/BUILD.gn
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//ui/webui/resources/tools/build_webui.gni")
 
 build_webui("build") {
   grd_prefix = "brave_education"
 
-  preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
+  preprocessor_defines = [
+    "enable_ai_chat=$enable_ai_chat",
+    "enable_brave_wallet=$enable_brave_wallet",
+  ]
   static_files = [ "brave_education.html" ]
   ts_files = [
     "brave_education_app.html.ts",

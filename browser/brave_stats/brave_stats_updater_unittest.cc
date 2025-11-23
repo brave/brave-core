@@ -25,8 +25,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "build/build_config.h"
@@ -40,6 +39,11 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/switches.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 
 using testing::HasSubstr;
 
@@ -75,7 +79,9 @@ class BraveStatsUpdaterTest : public testing::Test {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
     }
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     brave_wallet::RegisterLocalStatePrefs(testing_local_state_.registry());
+#endif
     task_environment_.AdvanceClock(base::Minutes(30));
 
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
@@ -667,6 +673,7 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringNeverUsed) {
                                                            last_reported_use));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   auto params = BuildUpdaterParams();
 
@@ -705,6 +712,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   EXPECT_THAT(url.query(), HasSubstr("wallet2=1"));
   params->SavePrefs();
 }
+#endif
 
 TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
   int ping_count = 0;

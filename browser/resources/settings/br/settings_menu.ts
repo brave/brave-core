@@ -282,8 +282,9 @@ RegisterPolymerTemplateModifications({
     }
 
     // Add web3 item
-    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
     let web3El: HTMLElement | null = null
+    // <if expr="enable_brave_wallet">
+    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
     if (isBraveWalletAllowed) {
       web3El = createMenuElement(
         loadTimeData.getString('braveWeb3'),
@@ -295,6 +296,7 @@ RegisterPolymerTemplateModifications({
         privacyEl.insertAdjacentElement('afterend', web3El)
       }
     }
+    // </if>
 
     // Add leo item
 // <if expr="enable_ai_chat">
@@ -321,10 +323,15 @@ RegisterPolymerTemplateModifications({
 // <if expr="enable_ai_chat">
     leoAssistantEl.insertAdjacentElement('afterend', syncEl)
 // </if>
-// <if expr="not enable_ai_chat">
+// <if expr="not enable_ai_chat and enable_brave_wallet">
     if (web3El) {
       web3El.insertAdjacentElement('afterend', syncEl)
     } else if (privacyEl) {
+      privacyEl.insertAdjacentElement('afterend', syncEl)
+    }
+// </if>
+// <if expr="not enable_ai_chat and not enable_brave_wallet">
+    if (privacyEl) {
       privacyEl.insertAdjacentElement('afterend', syncEl)
     }
 // </if>

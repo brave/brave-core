@@ -58,8 +58,8 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   override ready() {
     super.ready()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      window.testing = window.testing || {}
-      window.testing[`adblockScriptletEditor`] = this.shadowRoot
+      (window as any).testing = (window as any).testing || {};
+      (window as any).testing[`adblockScriptletEditor`] = this.shadowRoot;
     }
 
     this.oldScriptletName_ = this.scriptlet.name
