@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">서드 파티 쿠키를 허용한 이유를 알려주시면 Brave을 개선하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>의견 보내기<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">사이트의 데스크톱 버전을 표시하도록 요청할 수 있습니다.</translation>
 <translation id="9183227624343766158">Brave을 기본 브라우저로 사용</translation>
+<translation id="113098737392899175">키보드가 연결되어 있을 때 텍스트 커서로 페이지 탐색</translation>
 <translation id="1178015372320901893">내 바로가기 하단 시트</translation>
 <translation id="1178581264944972037">일시중지</translation>
 <translation id="1181037720776840403">삭제</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">계속</translation>
 <translation id="904887679952026733">가능하면 Brave에서 어두운 테마를 사용할 때 사이트에도 어두운 테마를 적용합니다.</translation>
 <translation id="2390272837142897736">확대</translation>
+<translation id="2397689164757137845">허용됨 • 정확한 위치</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/>MB</translation>
 <translation id="2403474027143565107">정확한 위치</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 허용됨}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 허용됨}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">고객센터</translation>
 <translation id="2501278716633472235">뒤로 이동</translation>
 <translation id="2533138527374486328">사용 설정하면 사이트에서 로컬 네트워크의 모든 기기에 연결하도록 요청할 수 있습니다. 사용 중지하면 사이트에서 로컬 네트워크의 기기에 연결할 수 없습니다.</translation>
+<translation id="2536779053640817375">현재 허용됨 • 정확한 위치</translation>
 <translation id="2544997614631598250">어두운 테마 색상</translation>
 <translation id="2546283357679194313">쿠키 및 사이트 데이터</translation>
 <translation id="2570922361219980984">이 기기의 위치 정보 액세스도 사용 중지되었습니다. <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 사용 설정하세요.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">일부 사이트에서 차단됨</translation>
 <translation id="3132996321662585180">매일 새로고침</translation>
 <translation id="3143754809889689516">처음부터 재생</translation>
+<translation id="3164169438034704658"><ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 정확한 위치를 사용 설정할 수 있습니다.</translation>
 <translation id="3165022941318558018">사이트에서 서드 파티 쿠키를 사용하도록 허용합니다</translation>
 <translation id="3167868116600277716">디스커버 피드</translation>
 <translation id="3198916472715691905">저장 데이터 <ph name="STORAGE_AMOUNT"/></translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">오늘 Brave에서 다시 쿠키를 제한합니다</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/>의 모든 사이트</translation>
 <translation id="4340799661701629185">사이트에서 알림을 전송하도록 허용하지 않음</translation>
+<translation id="4341577178275615435">캐럿 브라우징을 사용 설정하거나 중지하려면 F7 단축키를 사용합니다.</translation>
 <translation id="4402755511846832236">사용자가 현재 기기를 사용 중인지 사이트에서 알 수 없도록 차단합니다.</translation>
 <translation id="8382883799082236806">Brave 색상 하단 시트가 절반 높이로 열림</translation>
 <translation id="4412992751769744546">서드 파티 쿠키 허용</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">동영상 일시중지</translation>
 <translation id="5877248419911025165">모든 요청 접기</translation>
 <translation id="5878945009165002849">ID 서비스의 로그인 메시지를 차단합니다.</translation>
+<translation id="588258955323874662">전체화면</translation>
 <translation id="5884085660368669834">사이트 환경설정</translation>
 <translation id="5887687176710214216">최근 방문: 어제</translation>
 <translation id="5908617755156109052">사이트에서 주변 환경의 3D 지도를 생성하거나 카메라 위치를 추적할 수 없음</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">확인</translation>
 <translation id="6980861169612950611"><ph name="SITE_NAME"/> 사이트 데이터를 삭제하시겠습니까?</translation>
 <translation id="6981982820502123353">접근성</translation>
+<translation id="6991142177939282156">허용됨 • 대략적인 위치 사용 중</translation>
 <translation id="6992289844737586249">사이트에서 마이크를 사용하기 전에 확인(권장)</translation>
 <translation id="7000754031042624318">Android 설정에서 사용 중지됨</translation>
 <translation id="8683151724374457021">이 사이트는 내 관심분야를 파악한 후 다른 사이트에 광고를 추천합니다. Brave에 저장된 내 광고 주제를 기반으로 더 관련성 있는 광고를 표시합니다.</translation>
+<translation id="7036823721811529709">백그라운드로 듣기</translation>
 <translation id="7044081119134178347">현재 카메라 허용됨</translation>
 <translation id="7053983685419859001">차단</translation>
 <translation id="7055552182600664515">저작권으로 보호되는 콘텐츠를 재생하려면 사이트에서 콘텐츠 보호 서비스를 사용해야 할 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">이 설정은 확인 과정의 일부로 약간의 정보를 공유할 수는 있지만 사용자를 식별하거나 사이트에서 방문 기록을 보도록 허용하지 않고 작동합니다.</translation>
 <translation id="7409735910987429903">사이트에서 팝업을 전송하여 광고를 표시하거나, 원치 않는 웹사이트로 리디렉션할 수 있습니다.</translation>
 <translation id="7412160840120117304">기본 색상 16진수</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{확대/축소}other{확대/축소: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">우선 확인</translation>
 <translation id="7423538860840206698">클립보드 액세스가 차단됨</translation>
 <translation id="7425915948813553151">사이트에 어두운 테마 적용</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">삭제</translation>
 <translation id="8284326494547611709">자막</translation>
 <translation id="8300705686683892304">앱에서 관리함</translation>
+<translation id="8301363963630676147">현재 허용됨 • 대략적인 위치 사용 중</translation>
 <translation id="8315509175050791576">탭 공유</translation>
 <translation id="8324158725704657629">다시 묻지 않음</translation>
 <translation id="8362795839483915693">방문하는 사이트를 확대 또는 축소할 수 있습니다.</translation>

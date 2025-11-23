@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Visualizzo un pop-up che mi invita a iscrivermi a una newsletter</translation>
 <translation id="6136090320163235283">Widget social</translation>
 <translation id="6657720240983439091">Widget di chat</translation>
+<translation id="3597441883564676263">Browser non supportato</translation>
 <translation id="7138678301420049075">Altro</translation>
 <translation id="4046860372562593546">Gestisci gli Annunci Brave</translation>
 <translation id="5136973036012418831">Controlla quali tipi di annunci Brave vedi e con quale frequenza.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Modificato</translation>
 <translation id="5604254791550001355">Modifica prompt</translation>
 <translation id="8115786586976830777">Copia prompt</translation>
+<translation id="3666616415490815310">Salva come abilità</translation>
+<translation id="6574544364990812112">Le mie competenze</translation>
+<translation id="6696824203401957025">Nuova abilità</translation>
+<translation id="6410279677882692627">Le abilità appariranno nei suoi strumenti [/] e saranno accessibili semplicemente digitando il "/nome" che ha impostato di seguito.</translation>
+<translation id="1344606707744657196">Modello per il prompt</translation>
+<translation id="8458341576712814616">Comando rapido</translation>
+<translation id="1326559827339317236">Inserisca qui la sua scorciatoia</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Inserisca la sua richiesta qui</translation>
+<translation id="900733896273558337">Modifica abilità</translation>
+<translation id="7662963028545588801">Cancellare l'abilità</translation>
+<translation id="4209790625997566418">È sicuro di voler eliminare questa abilità? Questa azione non può essere annullata.</translation>
+<translation id="7161540406494327389">La scorciatoia è necessaria</translation>
+<translation id="3722223049736774445">La scorciatoia può contenere solo lettere, numeri, trattino basso e trattino.</translation>
+<translation id="6997214168632888867">La scorciatoia deve essere di 64 caratteri o meno</translation>
+<translation id="2806891468525657116">La scorciatoia esiste già</translation>
+<translation id="5497501845974700950">Il prompt è necessario</translation>
+<translation id="5642369858603376334">Il prompt deve essere di 5000 caratteri o meno</translation>
 <translation id="1406205536570262057">Modifica la risposta</translation>
 <translation id="3386725253392845084">Riprova lo stesso modello</translation>
 <translation id="2461822463642141190">Corrente</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/>Mostra di più…</translation>
 <translation id="8103700533980268469">Chiudi l'avviso</translation>
 <translation id="3417835166382867856">Cerca schede</translation>
+<translation id="3828029223314399057">Cerca i segnalibri</translation>
+<translation id="381480092025168632">Ricerca nella cronologia del browser</translation>
 <translation id="7311244614769792472">Nessun risultato</translation>
 <translation id="3112448569149476523">Prova una ricerca diversa</translation>
 <translation id="1352836459737874921">Allega contenuti da altre schede</translation>
+<translation id="7173836072258346701">Allegare contenuti dai segnalibri</translation>
+<translation id="163680814308917875">Allegare contenuti dalla cronologia del browser</translation>
 <translation id="7039179822221107025">Invia il contenuto della pagina dal tuo browser per dare più contesto a Leo per questa conversazione.</translation>
+<translation id="1602382615168212961">Invii il contenuto della pagina dalle schede nei suoi segnalibri per dare a Leo un contesto più ampio per la conversazione.</translation>
+<translation id="4808122506413075135">Invii il contenuto della pagina dalla cronologia del suo browser per fornire a Leo un contesto più ampio per la conversazione.</translation>
 <translation id="220541218939267992">I contenuti della pagina saranno inviati a Leo insieme ai tuoi messaggi.</translation>
-<translation id="1446346932629101482">Aggiungi contenuti dalle schede per fornire maggiore contesto. I contenuti saranno inviati a Leo insieme ai tuoi messaggi.</translation>
-<translation id="7193316103691252734">Nessuna scheda corrispondente</translation>
+<translation id="8164365899016970783">Aggiunga contenuti di schede e segnalibri per il contesto. I contenuti saranno inviati a Leo insieme ai suoi messaggi.</translation>
+<translation id="6237410387937453423">Nessun allegato corrispondente</translation>
+<translation id="8076492880354921740">Schede</translation>
 <translation id="2315654674554095762">Leo ora ricorderà le tue conversazioni, così potrai ritrovarle facilmente. Sono memorizzate in modo criptato sul tuo dispositivo e puoi cancellarle in qualsiasi momento.</translation>
 <translation id="7821251979960635244">La cronologia delle conversazioni apparirà qui una volta avviata una conversazione.</translation>
 <translation id="887511360213807449">Cronologia disattivata</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="7949596341600215809">Cattura tutta la pagina</translation>
 <translation id="6332876390231524389">Contenuti della scheda corrente</translation>
-<translation id="7742969455167760092">Apri schede...</translation>
+<translation id="6397861830483632092">Schede aperte…</translation>
+<translation id="802080272588201037">Segnalibri…</translation>
+<translation id="2716127283451902393">Storia…</translation>
 <translation id="49269513399674318">Usa il microfono</translation>
 <translation id="3895031624234442305">Modelli personalizzati</translation>
 <translation id="4572010449071015143">Inizia una nuova conversazione</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Gestisci tutte</translation>
 <translation id="8410199626695516952">Ok, non lo ricorderò</translation>
 <translation id="8419849467765474535">Salvataggio in memoria non riuscito. Riprova.</translation>
+<translation id="5517580030864973329">Navigazione della pagina web verso un nuovo indirizzo</translation>
+<translation id="8832457834975923266">Ha navigato nella pagina web a <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progressi</translation>
+<translation id="8332385567036775056">Passi</translation>
+<translation id="4521931942079977149">Cliccando sulla pagina</translation>
+<translation id="7732267913911704962">Trascinare e rilasciare sulla pagina</translation>
+<translation id="7703800915509570212">Navigazione a ritroso</translation>
+<translation id="4875586490950981498">Navigare in avanti</translation>
+<translation id="738881387603843066">Spostamento del mouse</translation>
+<translation id="4850669014075537160">Scorrimento</translation>
+<translation id="1265072406500460724">Selezione da un menu a tendina</translation>
+<translation id="7573920298077917439">Digitare il testo</translation>
+<translation id="4089034800311309656">Aspettando la pagina</translation>
+<translation id="4798146464408730445">Non sono state trovate competenze. Ne crei una nuova cliccando sul pulsante "Nuova".</translation>
+<translation id="271033894570825754">Nuovo</translation>
+<translation id="8266605059880650542">Annota alcune informazioni sulla pagina da utilizzare in seguito.</translation>
 <translation id="3486480638399578250">Mantieni privata la tua email personale</translation>
 <translation id="7765422154906712751">Crea indirizzi unici e casuali che inoltrano all'email del tuo account Brave e possono essere eliminati in qualsiasi momento. Evita che il tuo indirizzo e-mail venga divulgato o utilizzato dagli inserzionisti.</translation>
 <translation id="5222676887888702881">Esci</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Nessun token di verifica ricevuto dal servizio Brave Accounts</translation>
 <translation id="3179527991526213624">Nessuna risposta dal servizio Brave Accounts</translation>
 <translation id="7911439408853154309">Verifica email fallita</translation>
+<translation id="2595463802839066496">Nessuna risposta dal servizio Email Aliases</translation>
+<translation id="367191282389216837">Risposta non valida dal servizio Email Aliases</translation>
+<translation id="7203490731644771170">Errore del servizio Alias e-mail: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Errore: Alias non disponibile</translation>
 <translation id="8370801182970639038">Automatico (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motori di ricerca abilitati</translation>
 <translation id="8285901519864208412">Nascondi carta Ricompense</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Abilita Protezioni Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Protezioni ATTIVE<ph name="STATUS_AFTER"/> per questo sito</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Protezioni NON ATTIVE<ph name="STATUS_AFTER"/>per questo sito</translation>
-<translation id="5623354834493649144">Se questo sito sembra non funzionare, prova a disattivare le Protezioni.
-   <ph name="NOTE_BEFORE"/>Nota: ciò potrebbe ridurre l'efficacia della protezioni Brave per la tua privacy.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Se il sito sembra non funzionare, provi ad abbassare gli schermi.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Nota: questo potrebbe ridurre le protezioni della privacy di Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Sta riscontrando dei problemi con questo sito?</translation>
+<translation id="9176447766421988172">Stiamo provando un esperimento per aumentare la compatibilità del sito web, in cui manteniamo abilitato solo il blocco degli annunci. Attenzione: elimina tutte le protezioni della privacy. Vuole provarlo? <ph name="LINK_BEFORE"/>Per saperne di più<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">La preghiamo di notare che per i singoli siti web non protetti dalle protezioni della privacy di Brave, può impostare gli scudi su DOWN.</translation>
+<translation id="1836572675775891780">Abilita la modalità Solo blocco annunci</translation>
+<translation id="6623668214089604469">Il sito funziona correttamente ora?</translation>
+<translation id="8978860854770042258">Prenda in considerazione la possibilità di inviare una segnalazione se questo sito è ancora rotto.</translation>
+<translation id="4677356505199464553">Sembra buono</translation>
+<translation id="1992750560347846445">Segnala sito</translation>
+<translation id="2887186586339544116">Modalità Ad Block Only abilitata</translation>
+<translation id="673665019618844072">Attualmente sta utilizzando la modalità Solo blocco annunci. Questa modalità offre solo la protezione del blocco degli annunci. Se desidera tornare alla modalità Shields completa, disattivi questa modalità dalle impostazioni.</translation>
+<translation id="4820891023903368625">Annunci bloccati <ph name="LINK_BEFORE"/>Per saperne di più<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">I tracker, gli annunci pubblicitari e altri sistemi sono bloccati <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nessun blocco dalle protezioni di Brave <ph name="LINK_BEFORE"/>Scopri di più<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controlli avanzati</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Consenti il fingerprinting</translation>
 <translation id="7638541189782135885">Non eseguire l’upgrade delle connessioni HTTP</translation>
 <translation id="2570787596946026998">Connetti solo con HTTPS</translation>
-<translation id="1992750560347846445">Segnala sito</translation>
 <translation id="2387532482048804818">Segnalaci se il sito non funzionava correttamente con le Protezioni attive.</translation>
 <translation id="3795015906457257780">Stai visualizzando il sito senza gli strumenti di Brave a tutela della privacy.</translation>
 <translation id="7194012750329511146">Protezioni di Brave

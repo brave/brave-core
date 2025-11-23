@@ -64,11 +64,9 @@
 <translation id="1434416574322382019">ටෝර් සහිත නව පෞද්ගලික කවුළුව</translation>
 <translation id="4703780849509456860">ටෝර් සහිත පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
 <translation id="3488584642074079080">ටෝර් සහිත Brave පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
-<translation id="8594912907680633924">Split View හි සබැඳිය විවෘත කරන්න</translation>
 <translation id="6313675821927505581">ටෝර් සහිත නව පෞද්ගලික කවුළුව</translation>
 <translation id="2638041073279639246">ටෝර් සහිත පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
 <translation id="3425600262621021599">ටෝර් සහිත Brave පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
-<translation id="3795436270513738622">බෙදීම් දසුන තුළ සබැඳිය විවෘත කරන්න</translation>
 <translation id="2545072023356206691">2023 දෙසැම්බර් 1 වැනිදා සිට, Brave Dev නාලිකාවට තවදුරටත් බ්‍රවුසර යාවත්කාලීන නොලැබේ. Brave හි Nightly, Beta, හෝ Release versions වෙත සංක්‍රමණය වන ලෙස අපි පරිශීලකයින්ට නිර්දේශ කරමු.</translation>
 <translation id="474217410105706308">පටිත්ත නිහඬ</translation>
 <translation id="2804710924397009224">Brave පාරිතෝෂික නිරූපකය සඟවන්න</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">පොත්යොමුවක් එක් කිරීමට ලිපින තීරුව අසල පොත්යොමු බොත්තම ඔබන්න</translation>
 <translation id="8487693399751278191">පොත්යොමු ආයාත කරන්න...</translation>
 <translation id="2557899542277210112">ඉක්මන් ප්‍රවේශය සඳහා ඔබගේ පොත්යොමු මෙම පොත්යොමු තීරුවේ තබන්න.</translation>
-<translation id="1968543937259008435">අනර්ඝ මාර්ගගත පෞද්ගලිකත්වයකට සූදානම්ද?</translation>
-<translation id="6817415381278637662">ඔබ අරින සියලු පිටු වලට බ්‍රේව් පෞද්ගලිකත්‍ව රැකවරණය ලබා ගැනීමට බ්‍රේව් ඔබගේ පෙරනිමි අතිරික්සුව ලෙස සකසන්න.</translation>
-<translation id="7537601449003285327">කාර්ය තීරුවට අමුණන්න</translation>
-<translation id="2307973900865360088">තටාකයේ තබාගන්න</translation>
 <translation id="961012016278832836">පරණ මයික්‍රොසොෆ්ට් එඩ්ගේ</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> වෙතින් ආයාත කෙරිණි.</translation>
 <translation id="5119173345047096771">මොසිල්ලා ෆයර්ෆොක්ස්</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">සියලු කවුළු වල ඇමිණු පටිති පෙන්වන්න</translation>
 <translation id="2396127686705429331">පොත්යොමු බොත්තම පෙන්වන්න</translation>
 <translation id="2814998458708016836">පුළුල් ලිපින තීරුව භාවිතා කරන්න</translation>
+<translation id="4749586705247636385">ප්‍රධාන අන්තර්ගත ප්‍රදේශවල වටකුරු මායිම් පෙන්වන්න</translation>
 <translation id="4109670531935487117">ලිපින තීරුවේ ඉබේ පිරවෙන යෝජනා පෙන්වන්න</translation>
 <translation id="4579877808890085926">උපකරණය තුළ ඇති යෝජනා</translation>
 <translation id="7859704718976024901">පිරික්සුම් ඉතිහාසය</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">මුල් පිටුව</translation>
 <translation id="5448570825852364919">හිස් පිටුවක්</translation>
 <translation id="8244387390464017490">නව පටිති පිටුව අභිරුචිකරණය</translation>
+<translation id="7537601449003285327">කාර්ය තීරුවට අමුණන්න</translation>
 <translation id="7461924472993315131">අමුණන්න</translation>
 <translation id="735832369569964359">පහත කවුළු දැනුම්දීමේ දී අමුණන්න ඔබා තහවුරු කරන්න</translation>
 <translation id="7506648566440714944">Brave දැනටමත් අමුණා ඇත</translation>
+<translation id="2307973900865360088">තටාකයේ තබාගන්න</translation>
 <translation id="239275665037555969">තටාකය</translation>
 <translation id="4057614912106618659">Brave දැනටමත් තටාකයේ ඇත</translation>
 <translation id="3195845168740336657">පලිහ සැකසුම්</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">කුඩා අත්පත හමු නොවිණි.</translation>
 <translation id="4088315951291671239">ඔබට නොතේරෙන හෝ ඔබම සමාලෝචනය නොකළ කේත මෙහි අලවන්න එපා. එය ප්‍රහාරකයන්ට ඔබගේ අනන්‍යතාවය සොරකම් කිරීමට හෝ පරිගණකය පාලනයට ඉඩ සැලසිය හැකිය.</translation>
 <translation id="3020183492814296499">කෙටිමං</translation>
+<translation id="2935698011275148880">Brave මූලය</translation>
+<translation id="2587535830241068901">Brave එකට සහාය විය හැකි අතර ඔබේ ගවේශකය අභිරුචි ගන්වන්න</translation>
+<translation id="553273341094971255">Brave Origin මගින් ඔබට Brave ඔබේ කැමැත්තට අනුව සැකසිය හැකි අතර, ස්ථාපනය කරන විට සක්‍රීය කරනා ලෙස විය හැකි අපගේ ගුප්ත සංඛ්‍යානානුව (anonymous analytics) ද ඇතුළු අභ්‍යන්තර දැන්වීම් දැක්වීම් සහ වෙළඳ නාම දැන්වීම් සියල්ල ඉවත් කරයි.</translation>
+<translation id="534725333104202278">ඔබ පෙර සක්‍රීය කළ හෝ භාවිතා කළ ඕනෑම ඇඩ්-ඔන් හෝ විශේෂාංග දැක්වෙන තත්ත්වයේ දිගටම පවතින අතර, ඉතිරිය අක්‍රීය කෙරේ. Brave ගවේශකයට නව විශේෂාංග අළුත් කරන විට ඔබට Brave සරිලන ලෙස වැඩිදියුණු කරගෙන යා හැක. ඒවා සාමකාමීව සහ පෙරනිමියෙන් සෑම විටම සඟවා ඇති තත්වයේ Brave Origin පාලක පුවරුවේ පෙන්වනු ඇත.</translation>
+<translation id="1919345977826869612">දැන්වීම්</translation>
+<translation id="944736176598169208">පාරිතෝෂික</translation>
+<translation id="2839742394543397416">සංඛ්‍යාන විශ්ලේෂණය</translation>
+<translation id="1799030480311994998">විශේෂාංග</translation>
+<translation id="6709133671862442373">පුවත්</translation>
+<translation id="6297791103122079275">කතා</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="1199170151481311646">පෞද්ගලිකත්වය ආරක්ෂා කරන විශ්ලේෂණය</translation>
+<translation id="5990642573624858459">සංඛ්‍යාන වාර්තාවීම්</translation>
+<translation id="2441719842399509963">සියල්ල පෙරනිමියට සකසන්න</translation>
 <translation id="5567412479632285879">Brave පාරිතෝෂික අබල කර ඇත</translation>
 <translation id="413570371620795359">සබල කර පටන් ගැනීමට පාරිතෝෂික මඬල අරින්න</translation>
 <translation id="1051600834033686945">සමස්ත Brave පාරිතෝෂික සැකසුම් අරින්න</translation>
 <translation id="8826461509529116322">Brave පාරිතෝෂික බොත්තම පෙන්වන්න</translation>
+<translation id="3328713589982547433">දැනට දැන්වීම් අවහිර කිරීම පමණක් යාවත්කාලීන පිළිවෙත්</translation>
+<translation id="1574253307550419595">දැන්වීම් අවහිර කිරීම පමණක් යාවත්කාලීන පිළිවෙත් භාවිතා කරන්න</translation>
+<translation id="738717058053657696">Ad Block Only පිළිවෙත් Brave Shields හි මූලික දැන්වීම් අවහිර කිරීමේ නිති රඳවා ගනී. අනතුරු ඇඟවීම: සියලුම පෞද්ගලිකත්ව ආරක්ෂණ ඉවත් කෙරේ. Brave විසින් ලබාදුන් පෞද්ගලිකත්ව ආරක්ෂණයන් හමුවේ භාජිත වෙබ් අඩවි අදහලවීමේදී, Shields DOWN බවට සකසාගත හැක. මෙය පරීක්ෂණ මට්ටමේ පිළිවෙත් එකකි. <ph name="BEGIN_LINK"/>තවත් දැනගන්න<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">Shields විකල්ප දැනට අක්‍රීයයි.</translation>
+<translation id="516439939408671102">Ad Block Only පිළිවෙත් Brave Shields හි මූලික දැන්වීම් අවහිර කිරීමේ නිති තබා ගනී සහ පෞද්ගලිකත්ව ආරක්ෂණ අක්‍රීය කරයි. සම්මත Shields සක්‍රීය කිරීමට අවශ්‍යනම්, මෙය අක්‍රීය කරන්න.</translation>
+<translation id="177233004755519660">Ad Block Only පිළිවෙත් අක්‍රීය කරන්න</translation>
 <translation id="9185018653595759199">සමාජ මාධ්‍ය අවහිරය</translation>
 <translation id="863171915776379000">ෆේස්බුක් පිවිසුම් සහ කාවැද්දූ ලිපි සඳහා ඉඩ දෙන්න</translation>
 <translation id="7791141927430186653">X (කලින් ට්විටර්) කාවැද්දූ ට්වීට් සඳහා ඉඩ දෙන්න</translation>

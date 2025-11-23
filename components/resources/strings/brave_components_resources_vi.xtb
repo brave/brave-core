@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Cửa sổ bản tin bật lên</translation>
 <translation id="6136090320163235283">Tiện ích mạng xã hội</translation>
 <translation id="6657720240983439091">Tiện ích trò chuyện</translation>
+<translation id="3597441883564676263">Trình duyệt không được hỗ trợ</translation>
 <translation id="7138678301420049075">Khác</translation>
 <translation id="4046860372562593546">Quản lý Brave Quảng cáo</translation>
 <translation id="5136973036012418831">Kiểm soát những loại quảng cáo Brave mà bạn nhìn thấy, và tần suất.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Đã sửa</translation>
 <translation id="5604254791550001355">Chỉnh sửa câu lệnh</translation>
 <translation id="8115786586976830777">Sao chép câu lệnh</translation>
+<translation id="3666616415490815310">Lưu dưới dạng kỹ năng</translation>
+<translation id="6574544364990812112">Kỹ năng của tôi</translation>
+<translation id="6696824203401957025">Kỹ năng mới</translation>
+<translation id="6410279677882692627">Các kỹ năng sẽ xuất hiện trong các công cụ của bạn [/] và có thể truy cập bằng cách nhập "/tên" mà bạn đã thiết lập bên dưới.</translation>
+<translation id="1344606707744657196">Mẫu cho lời nhắc</translation>
+<translation id="8458341576712814616">Phím tắt</translation>
+<translation id="1326559827339317236">Nhập phím tắt của bạn vào đây</translation>
+<translation id="5032574515228824816">Gợi ý</translation>
+<translation id="2573797314568446575">Nhập lời nhắc của bạn vào đây</translation>
+<translation id="900733896273558337">Chỉnh sửa kỹ năng</translation>
+<translation id="7662963028545588801">Xóa kỹ năng</translation>
+<translation id="4209790625997566418">Bạn có chắc chắn muốn xóa kỹ năng này không? Hành động này không thể hoàn tác.</translation>
+<translation id="7161540406494327389">Phím tắt là bắt buộc.</translation>
+<translation id="3722223049736774445">Phím tắt chỉ có thể chứa các ký tự chữ cái, số, dấu gạch dưới và dấu gạch ngang.</translation>
+<translation id="6997214168632888867">Tên tắt phải có độ dài không quá 64 ký tự.</translation>
+<translation id="2806891468525657116">Lối tắt đã tồn tại</translation>
+<translation id="5497501845974700950">Yêu cầu nhập lệnh</translation>
+<translation id="5642369858603376334">Yêu cầu phải có độ dài không quá 5000 ký tự.</translation>
 <translation id="1406205536570262057">Sửa câu trả lời</translation>
 <translation id="3386725253392845084">Thử lại với cùng mô hình</translation>
 <translation id="2461822463642141190">Hiện tại</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> khác…</translation>
 <translation id="8103700533980268469">Đóng thông báo này</translation>
 <translation id="3417835166382867856">Tìm thẻ</translation>
+<translation id="3828029223314399057">Tìm kiếm dấu trang</translation>
+<translation id="381480092025168632">Tìm kiếm lịch sử trình duyệt</translation>
 <translation id="7311244614769792472">Không tìm thấy kết quả nào</translation>
 <translation id="3112448569149476523">Vui lòng thử một tìm kiếm khác</translation>
 <translation id="1352836459737874921">Đính kèm nội dung từ các thẻ khác</translation>
+<translation id="7173836072258346701">Chèn nội dung từ dấu trang</translation>
+<translation id="163680814308917875">Đính kèm nội dung từ lịch sử trình duyệt</translation>
 <translation id="7039179822221107025">Gửi nội dung của trang từ thẻ trình duyệt của bạn để Leo có thể hiểu rõ hơn bối cảnh cuộc trò chuyện.</translation>
+<translation id="1602382615168212961">Gửi nội dung trang từ các tab trong dấu trang của bạn để cung cấp cho Leo thêm bối cảnh cho cuộc trò chuyện.</translation>
+<translation id="4808122506413075135">Gửi nội dung trang web từ lịch sử trình duyệt của bạn để cung cấp cho Leo thêm bối cảnh cho cuộc trò chuyện.</translation>
 <translation id="220541218939267992">Nội dung trang sẽ được gửi đến Leo cùng với tin nhắn của bạn.</translation>
-<translation id="1446346932629101482">Thêm nội dung thẻ vào bối cảnh. Nội dung này sẽ được gửi đến Leo cùng tin nhắn của bạn.</translation>
-<translation id="7193316103691252734">Không có thẻ khớp</translation>
+<translation id="8164365899016970783">Thêm nội dung tab và dấu trang để cung cấp bối cảnh. Nội dung này sẽ được gửi đến Leo cùng với tin nhắn của bạn.</translation>
+<translation id="6237410387937453423">Không có tệp đính kèm khớp</translation>
+<translation id="8076492880354921740">Tab</translation>
 <translation id="2315654674554095762">Giờ đây Leo sẽ nhớ các cuộc trò chuyện để bạn có thể quay lại và tiếp tục. Các cuộc trò chuyện được lưu trữ mã hóa trên thiết bị của bạn và bạn có thể xóa bất kỳ lúc nào.</translation>
 <translation id="7821251979960635244">Lịch sử trò chuyện của bạn sẽ hiển thị ở đây khi bạn bắt đầu một cuộc trò chuyện.</translation>
 <translation id="887511360213807449">Lịch sử không được bật</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Ảnh chụp màn hình</translation>
 <translation id="7949596341600215809">Ảnh chụp màn hình toàn trang</translation>
 <translation id="6332876390231524389">Nội dung thẻ hiện tại</translation>
-<translation id="7742969455167760092">Mở thẻ...</translation>
+<translation id="6397861830483632092">Mở các tab…</translation>
+<translation id="802080272588201037">Dấu trang…</translation>
+<translation id="2716127283451902393">Lịch sử…</translation>
 <translation id="49269513399674318">Sử dụng micrô</translation>
 <translation id="3895031624234442305">Mô hình tùy chỉnh</translation>
 <translation id="4572010449071015143">Bắt đầu cuộc trò chuyện mới</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Quản lý tất cả</translation>
 <translation id="8410199626695516952">Được, tôi sẽ không nhớ thông tin đó</translation>
 <translation id="8419849467765474535">Không thể lưu ký ức. Vui lòng thử lại.</translation>
+<translation id="5517580030864973329">Điều hướng trang web đến một địa chỉ mới</translation>
+<translation id="8832457834975923266">Điều hướng đến trang web <ph name="URL"/></translation>
+<translation id="5095252080770652994">Tiến độ</translation>
+<translation id="8332385567036775056">Các bước</translation>
+<translation id="4521931942079977149">Nhấp vào trang</translation>
+<translation id="7732267913911704962">Kéo và thả trên trang</translation>
+<translation id="7703800915509570212">Quay lại</translation>
+<translation id="4875586490950981498">Tiến về phía trước</translation>
+<translation id="738881387603843066">Di chuyển chuột</translation>
+<translation id="4850669014075537160">Cuộn</translation>
+<translation id="1265072406500460724">Chọn từ danh sách thả xuống</translation>
+<translation id="7573920298077917439">Gõ văn bản</translation>
+<translation id="4089034800311309656">Đang chờ trang</translation>
+<translation id="4798146464408730445">Không tìm thấy kỹ năng nào. Tạo một kỹ năng mới bằng cách nhấp vào nút "Mới".</translation>
+<translation id="271033894570825754">Mới</translation>
+<translation id="8266605059880650542">Ghi chép lại một số thông tin về trang web để sử dụng sau này.</translation>
 <translation id="3486480638399578250">Giữ riêng tư địa chỉ email cá nhân của bạn</translation>
 <translation id="7765422154906712751">Tạo các địa chỉ ngẫu nhiên, duy nhất chuyển tiếp đến email tài khoản Brave của bạn và có thể được xóa bất cứ lúc nào. Giữ cho địa chỉ email thực tế của bạn không bị tiết lộ hoặc sử dụng bởi các nhà quảng cáo.</translation>
 <translation id="5222676887888702881">Đăng xuất</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Không nhận được token xác minh từ dịch vụ Brave Accounts</translation>
 <translation id="3179527991526213624">Không có phản hồi từ dịch vụ Brave Accounts</translation>
 <translation id="7911439408853154309">Xác minh email không thành công</translation>
+<translation id="2595463802839066496">Không có phản hồi từ dịch vụ Email Aliases.</translation>
+<translation id="367191282389216837">Phản hồi không hợp lệ từ dịch vụ Email Aliases</translation>
+<translation id="7203490731644771170">Lỗi dịch vụ Alias email: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Lỗi: Tên gọi khác không khả dụng</translation>
 <translation id="8370801182970639038">Tự động (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Công cụ tìm kiếm đã bật</translation>
 <translation id="8285901519864208412">Ẩn thẻ Phần thưởng</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Đã BẬT Lá chắn<ph name="STATUS_AFTER"/> cho trang web này</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Đã TẮT Lá chắn<ph name="STATUS_AFTER"/> cho trang web này</translation>
-<translation id="5623354834493649144">Nếu trang web này có vẻ bị hỏng, hãy thử tắt Lá chắn. 
-  <ph name="NOTE_BEFORE"/>Lưu ý: điều này có thể làm giảm khả năng bảo vệ quyền riêng tư của Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Nếu trang web này trông có vẻ bị hỏng, hãy thử tắt Shields.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Lưu ý: Điều này có thể làm giảm các biện pháp bảo vệ quyền riêng tư của Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Bạn có gặp vấn đề gì với trang web này không?</translation>
+<translation id="9176447766421988172">Chúng tôi đang thử nghiệm một tính năng để tăng khả năng tương thích của trang web, trong đó chỉ kích hoạt tính năng chặn quảng cáo. Lưu ý: Tính năng này sẽ loại bỏ tất cả các biện pháp bảo vệ quyền riêng tư. Bạn có muốn thử nghiệm tính năng này không? <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Lưu ý rằng đối với các trang web bị chặn bởi các biện pháp bảo vệ quyền riêng tư của Brave, bạn có thể thiết lập Shields thành DOWN.</translation>
+<translation id="1836572675775891780">Bật chế độ Chặn quảng cáo duy nhất</translation>
+<translation id="6623668214089604469">Trang web hiện đang hoạt động bình thường chưa?</translation>
+<translation id="8978860854770042258">Vui lòng xem xét việc gửi báo cáo nếu trang web này vẫn còn bị lỗi.</translation>
+<translation id="4677356505199464553">Trông ổn.</translation>
+<translation id="1992750560347846445">Báo cáo trang</translation>
+<translation id="2887186586339544116">Chế độ Chặn Quảng cáo Duy nhất đã được kích hoạt</translation>
+<translation id="673665019618844072">Bạn hiện đang sử dụng chế độ Chặn quảng cáo duy nhất. Chế độ này chỉ cung cấp bảo vệ chặn quảng cáo. Nếu bạn muốn quay lại chế độ Shields đầy đủ, hãy tắt chế độ này trong cài đặt.</translation>
+<translation id="4820891023903368625">Quảng cáo bị chặn <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Đã chặn trình theo dõi, quảng cáo và nhiều hơn nữa <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Không được bảo vệ bởi Khiên Brave <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Cho phép vân tay</translation>
 <translation id="7638541189782135885">Không nâng cấp kết nối HTTP</translation>
 <translation id="2570787596946026998">Chỉ kết nối với HTTPS</translation>
-<translation id="1992750560347846445">Báo cáo trang</translation>
 <translation id="2387532482048804818">Hãy cho chúng tôi biết nếu trang web không hoạt động bình thường khi bật Khiên.</translation>
 <translation id="3795015906457257780">Bạn đang xem trang web này mà không có các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
 <translation id="7194012750329511146">Khiên Brave 

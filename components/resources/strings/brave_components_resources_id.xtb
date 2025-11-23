@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Popup buletin</translation>
 <translation id="6136090320163235283">Widget sosial</translation>
 <translation id="6657720240983439091">Widget obrolan</translation>
+<translation id="3597441883564676263">Browser tidak didukung</translation>
 <translation id="7138678301420049075">Lainnya</translation>
 <translation id="4046860372562593546">Kelola Iklan Brave</translation>
 <translation id="5136973036012418831">Kendalikan jenis Iklan Brave yang akan Anda lihat dan seberapa sering.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Diedit</translation>
 <translation id="5604254791550001355">Edit perintah</translation>
 <translation id="8115786586976830777">Salin perintah</translation>
+<translation id="3666616415490815310">Simpan sebagai keterampilan</translation>
+<translation id="6574544364990812112">Keahlian Saya</translation>
+<translation id="6696824203401957025">Keterampilan baru</translation>
+<translation id="6410279677882692627">Keterampilan akan muncul di alat [/] Anda dan dapat diakses hanya dengan mengetikkan "/nama" yang Anda siapkan di bawah ini.</translation>
+<translation id="1344606707744657196">Model untuk prompt</translation>
+<translation id="8458341576712814616">Jalan Pintas</translation>
+<translation id="1326559827339317236">Masukkan pintasan Anda di sini</translation>
+<translation id="5032574515228824816">Cepat</translation>
+<translation id="2573797314568446575">Masukkan prompt Anda di sini</translation>
+<translation id="900733896273558337">Keterampilan mengedit</translation>
+<translation id="7662963028545588801">Hapus keterampilan</translation>
+<translation id="4209790625997566418">Apakah Anda yakin ingin menghapus keterampilan ini? Tindakan ini tidak dapat dibatalkan.</translation>
+<translation id="7161540406494327389">Diperlukan pintasan</translation>
+<translation id="3722223049736774445">Pintasan hanya dapat berisi huruf, angka, garis bawah, dan tanda hubung</translation>
+<translation id="6997214168632888867">Pintasan harus terdiri dari 64 karakter atau kurang</translation>
+<translation id="2806891468525657116">Pintasan sudah ada</translation>
+<translation id="5497501845974700950">Diperlukan permintaan</translation>
+<translation id="5642369858603376334">Prompt harus terdiri dari 5000 karakter atau kurang</translation>
 <translation id="1406205536570262057">Edit jawaban</translation>
 <translation id="3386725253392845084">Coba lagi model yang sama</translation>
 <translation id="2461822463642141190">Saat ini</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> selengkapnya…</translation>
 <translation id="8103700533980268469">Tutup pemberitahuan ini</translation>
 <translation id="3417835166382867856">Tab penelusuran</translation>
+<translation id="3828029223314399057">Cari penanda</translation>
+<translation id="381480092025168632">Cari riwayat browser</translation>
 <translation id="7311244614769792472">Hasil tidak ditemukan</translation>
 <translation id="3112448569149476523">Coba penelusuran lain</translation>
 <translation id="1352836459737874921">Lampirkan konten dari tab lain</translation>
+<translation id="7173836072258346701">Melampirkan konten dari penanda</translation>
+<translation id="163680814308917875">Melampirkan konten dari riwayat browser</translation>
 <translation id="7039179822221107025">Kirim konten halaman dari tab browser guna memberi Leo lebih banyak konteks untuk percakapan.</translation>
+<translation id="1602382615168212961">Kirim konten halaman dari tab di bookmark Anda untuk memberi Leo lebih banyak konteks untuk percakapan.</translation>
+<translation id="4808122506413075135">Kirim konten halaman dari riwayat peramban Anda untuk memberi Leo lebih banyak konteks percakapan.</translation>
 <translation id="220541218939267992">Konten halaman akan dikirim ke Leo bersama pesan Anda.</translation>
-<translation id="1446346932629101482">Tambahkan konten tab sebagai konteks. Konten akan dikirim ke Leo bersama dengan pesan Anda.</translation>
-<translation id="7193316103691252734">Tidak ada tab yang sesuai</translation>
+<translation id="8164365899016970783">Tambahkan tab dan tandai konten untuk konteks. Konten akan dikirim ke Leo bersama dengan pesan Anda.</translation>
+<translation id="6237410387937453423">Tidak ada lampiran yang cocok</translation>
+<translation id="8076492880354921740">Tab</translation>
 <translation id="2315654674554095762">Kini Leo mengingat percakapan sehingga Anda bisa kembali ke percakapan itu. Percakapan disimpan dan dienkripsi di perangkat, dan Anda bisa hapus kapan saja.</translation>
 <translation id="7821251979960635244">Riwayat percakapan akan muncul di sini setelah Anda memulai percakapan.</translation>
 <translation id="887511360213807449">Riwayat dinonaktifkan</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Tangkapan layar</translation>
 <translation id="7949596341600215809">Tangkapan layar halaman penuh</translation>
 <translation id="6332876390231524389">Isi tab saat ini</translation>
-<translation id="7742969455167760092">Buka tab...</translation>
+<translation id="6397861830483632092">Buka tab…</translation>
+<translation id="802080272588201037">Bookmark…</translation>
+<translation id="2716127283451902393">Sejarah…</translation>
 <translation id="49269513399674318">Gunakan mikrofon</translation>
 <translation id="3895031624234442305">Model khusus</translation>
 <translation id="4572010449071015143">Memulai percakapan baru</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Kelola semua</translation>
 <translation id="8410199626695516952">Baik, saya tidak akan mengingatnya</translation>
 <translation id="8419849467765474535">Gagal menyimpan memori. Coba lagi.</translation>
+<translation id="5517580030864973329">Menavigasi halaman web ke alamat baru</translation>
+<translation id="8832457834975923266">Menavigasi halaman web ke <ph name="URL"/></translation>
+<translation id="5095252080770652994">Kemajuan</translation>
+<translation id="8332385567036775056">Langkah-langkah</translation>
+<translation id="4521931942079977149">Mengklik pada halaman</translation>
+<translation id="7732267913911704962">Menyeret dan menjatuhkan pada halaman</translation>
+<translation id="7703800915509570212">Menavigasi kembali</translation>
+<translation id="4875586490950981498">Menavigasi ke depan</translation>
+<translation id="738881387603843066">Menggerakkan mouse</translation>
+<translation id="4850669014075537160">Menggulir</translation>
+<translation id="1265072406500460724">Memilih dari menu tarik-turun</translation>
+<translation id="7573920298077917439">Mengetik teks</translation>
+<translation id="4089034800311309656">Menunggu halaman</translation>
+<translation id="4798146464408730445">Tidak ada keterampilan yang ditemukan. Buat yang baru dengan mengeklik tombol "Baru".</translation>
+<translation id="271033894570825754">Baru</translation>
+<translation id="8266605059880650542">Mencatat beberapa informasi untuk nanti tentang halaman tersebut</translation>
 <translation id="3486480638399578250">Pastikan alamat email pribadi Anda tetap privat</translation>
 <translation id="7765422154906712751">Buat alamat yang unik dan acak, yang meneruskan pesan ke email akun Brave Anda dan dapat dihapus kapan saja. Ini untuk mencegah alamat email asli Anda diungkapkan atau digunakan oleh pengiklan.</translation>
 <translation id="5222676887888702881">Keluar</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Tidak ada token verifikasi yang diterima dari layanan Akun Brave</translation>
 <translation id="3179527991526213624">Tidak ada respons dari layanan Akun Brave</translation>
 <translation id="7911439408853154309">Verifikasi email gagal</translation>
+<translation id="2595463802839066496">Tidak ada respons dari layanan Email Alias</translation>
+<translation id="367191282389216837">Respons tidak valid dari layanan Email Alias</translation>
+<translation id="7203490731644771170">Kesalahan layanan Email Alias: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Kesalahan: Alias tidak tersedia</translation>
 <translation id="8370801182970639038">Otomatis (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Mesin penelusuran diaktifkan</translation>
 <translation id="8285901519864208412">Sembunyikan kartu Rewards</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Perisai sedang AKTIF<ph name="STATUS_AFTER"/> untuk situs ini</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Perisai sedang NONAKTIF<ph name="STATUS_AFTER"/> untuk situs ini</translation>
-<translation id="5623354834493649144">Jika situs ini tampak bermasalah, coba nonaktifkan Perisai.
-   <ph name="NOTE_BEFORE"/>Catatan: ini bisa mengurangi tingkat perlindungan privasi Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Jika situs ini tampaknya rusak, coba Shields down.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Catatan: hal ini dapat mengurangi perlindungan privasi Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Apakah Anda mengalami masalah dengan situs ini?</translation>
+<translation id="9176447766421988172">Kami mencoba eksperimen untuk meningkatkan kompatibilitas situs web, di mana kami hanya mengaktifkan pemblokiran iklan. Peringatan: menghapus semua perlindungan privasi. Ingin mencobanya? <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Harap diperhatikan bahwa untuk situs web individual yang dilanggar oleh perlindungan privasi Brave, Anda dapat mengatur Perisai ke TURUN.</translation>
+<translation id="1836572675775891780">Mengaktifkan mode Hanya Blokir Iklan</translation>
+<translation id="6623668214089604469">Apakah situs ini berfungsi dengan benar sekarang?</translation>
+<translation id="8978860854770042258">Mohon pertimbangkan untuk mengirimkan laporan jika situs ini masih rusak.</translation>
+<translation id="4677356505199464553">Terlihat bagus</translation>
+<translation id="1992750560347846445">Laporkan situs</translation>
+<translation id="2887186586339544116">Mode Hanya Blokir Iklan diaktifkan</translation>
+<translation id="673665019618844072">Anda saat ini menggunakan mode Hanya Blokir Iklan. Mode ini hanya menawarkan perlindungan pemblokiran iklan. Jika Anda ingin kembali ke mode Perisai penuh, nonaktifkan mode ini dari pengaturan.</translation>
+<translation id="4820891023903368625">Iklan diblokir <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Pelacak, iklan, dan lebih banyak pemblokiran <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Tidak dilindungi oleh Pelindung Brave <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Izinkan pengambilan sidik jari</translation>
 <translation id="7638541189782135885">Jangan meningkatkan koneksi HTTP</translation>
 <translation id="2570787596946026998">Hubungkan hanya dengan HTTPS</translation>
-<translation id="1992750560347846445">Laporkan situs</translation>
 <translation id="2387532482048804818">Beri tahu kami jika situs tidak berfungsi dengan baik saat Perisai diaktifkan.</translation>
 <translation id="3795015906457257780">Anda melihat situs ini tanpa perlindungan privasi Brave.</translation>
 <translation id="7194012750329511146">Perisai Brave

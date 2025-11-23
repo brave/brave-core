@@ -2,48 +2,9 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sq">
 <translation id="7630214457764713113">Kopjo lidhjen e pastër</translation>
-<translation id="3478449063771497234">Njoftimet janë të çaktivizuara</translation>
-<translation id="2862978891748913252">Zgjidhni vendin tuaj</translation>
-<translation id="3970520675790340955">Zgjidhni vendin tuaj që të mund t’ju tregojmë mundësitë e duhura dhe reklamat për rajonin tuaj.</translation>
 <translation id="721490496276866468">Importo fjalëkalimet</translation>
 <translation id="8178175542325151321">Zgjidh një skedar .csv që përmban fjalëkalimet e tua për t’i importuar në menaxherin e fjalëkalimeve të Brave.</translation>
-<translation id="7301741773883122509">Tani mund të shpërbleheni për shikimin e reklamave. Po ndihmoni në krijimin e një vendi më të mirë për të gjithë në web. Dhe kjo është fantastike!</translation>
-<translation id="6439128034594289376">Woohoo! Jeni gati!</translation>
-<translation id="370665806235115550">Po ngarkohet…</translation>
-<translation id="7931127789630755251">Fito emblema për reklamat private që sheh në Brave</translation>
-<translation id="7859066142771796818">Përdor emblemat për të blerë karta dhuratë, shkëmbeji me monedha të tjera, mbështet krijuesit e përmbajtjes dhe më shumë.</translation>
-<translation id="3863981251715594911">Si funksionon?</translation>
-<translation id="5547108999862247665">Si funksionojnë Shpërblimet Brave?</translation>
-<translation id="2965798296974325760">Fillo përdor Shpërblimet</translation>
-<translation id="8220484609979012449">Mund të dërgoni ende kontribute kripto këtij krijuesi duke përdorur kuletën tuaj Web3.</translation>
-<translation id="6385969012847057348">Ky krijues nuk është në gjendje të marrë kontribute nga <ph name="CUSTODIAN"/>.</translation>
-<translation id="735733310778086206">Ky krijues ende nuk është konfiguruar për të marrë kontribute Web3 ose kripto.</translation>
-<translation id="6268134562674951939">Nuk keni mjaftueshëm emblem</translation>
-<translation id="4529874892536380156">Bëjeni këtë një kontribut të përsëritur mujor. Mund ta anuloni në çdo kohë.</translation>
-<translation id="5562948772940025260">Mund të dërgoni deri në <ph name="AMOUNT"/> BAT duke përdorur bilancën e Shpërblimeve Brave.</translation>
-<translation id="5012991400231464322">Kontribute Mujore</translation>
-<translation id="5907051927340164207">Ju tashmë po dërgoni kontribute mujore për këtë krijues</translation>
-<translation id="4848906651275579475">Mund të dërgoni ende një kontribut tani dhe mund të anuloni kontributet tuaja mujore për këtë krijues duke i hequr nga <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
-<translation id="5379685283876547860">Kontributi u dërgua!</translation>
-<translation id="1041398280582063935">Ndani mbështetjen tuaj</translation>
-<translation id="8855543392451028706">Mirë se vini! Përdoruesit mund të mbështesin këtë krijues të përmbajtjes duke i dërguar kontribute. Është një mënyrë për t’ju falënderuar për krijimin e përmbajtjes së shkëlqyer.</translation>
-<translation id="1235176624390585199"><ph name="TITLE"/> në <ph name="PROVIDER"/></translation>
-<translation id="3699420827646925694">Jeni çkyçur nga <ph name="CUSTODIAN"/></translation>
-<translation id="9038728316393235637">Kyçu në <ph name="CUSTODIAN"/></translation>
-<translation id="7063168612616047608">Faleminderit që mbështetni krijuesit tuaj të preferuar</translation>
-<translation id="3796032246917966749">Duket se jeni çkyçur nga <ph name="CUSTODIAN"/> për Shpërblimet Brave. Kyçu përsëri për të vazhduar.</translation>
-<translation id="5202112619925434373">Ky krijues ende nuk është verifikuar me Krijuesit Brave. Do të mund të dërgoni kontribute pasi të verifikohen. <ph name="LEARN_MORE"/></translation>
-<translation id="3733094367889291358">Dërgo Kontribut</translation>
-<translation id="1899434873745933492">Nuk mund të dërgoni kontributin tuaj</translation>
-<translation id="1794046983410841192">Përdorni Shpërblimet Brave</translation>
-<translation id="8037118277449189044">Përdorni portofolin Web3</translation>
-<translation id="9059356165618961685">Bilanci i Shpërblimeve Brave</translation>
-<translation id="86107454835395919">Cakto si kontribut mujor</translation>
 <translation id="1177863135347784049">I personalizuar</translation>
-<translation id="4827581232860040208">Pati një problem gjatë dërgimit të kontributit tuaj</translation>
-<translation id="3259723213051400722">Ju lutemi, riprovoni</translation>
-<translation id="5298965408768377685">Ky krijues është regjistruar me Brave dhe mund të pranojë kontribute nga përdoruesit e Shpërblimeve Brave. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Shpërblimet Brave mund të mos funksionojnë ndërsa njoftimet janë të çaktivizuara.</translation>
 <translation id="6112331814131703370">Blloko 'Kalimi në Aplikacion' Njoftimet</translation>
 <translation id="4744921452903670666">Na trego çfarë mendon!</translation>
 <translation id="2524310205387880526">Vlerëso Brave</translation>
@@ -58,7 +19,6 @@
 <translation id="5488843227043643519">Do të lësh një vlerësim në Play Store?</translation>
 <translation id="5867854497245948308">Faleminderit për komentin tuaj!</translation>
 <translation id="4935400164159327304">Na trego si mund të përmirësojmë Brave-in.</translation>
-<translation id="1420756770787071946">Mbështetni këtë krijues</translation>
 <translation id="8966035543003363155">Njoftimet Brave e bëjnë më të lehtë</translation>
 <translation id="7662771815233894695">Menaxho shkarkimet, fito shenja, shiko statistikat javore të përdorimit dhe më shumë.</translation>
 <translation id="4265429476391459783">Nuk po fitoni Shpërblime apo duke marrë Raporte të Privatësisë</translation>
@@ -75,11 +35,9 @@
 <translation id="325187916104529570">Hap Cilësimet dhe aktivizo njoftimet e pajisjes për Reklamat Brave.</translation>
 <translation id="5744802588121897886">Aktivizo njoftimet Brave</translation>
 <translation id="7307834434086582547">Aktivizo/Çaktivizo Mbrojtjen e Braves</translation>
+<translation id="15346379325756892">Kalo në mënyrën pamje-në-pamje</translation>
 <translation id="6945863270524203017">Merr përditësime të përjavshme të privatësisë për bllokimin e gjurmuesve dhe reklamave.</translation>
 <translation id="4324735664183300693">Aktivizo njoftimet</translation>
-<translation id="6395059271589866759">Brave mbledh 5% të shumës së dërguar si tarifë përpunimi.</translation>
-<translation id="6661699662755460155">këmbim</translation>
-<translation id="6790981891677399838">Unë sapo dhashë një kontribut prej <ph name="AMOUNT"/> Shenja e Vëmendjes Bazë duke përdorur Shfletuesin Brave. Shikoni si mund të mbështetni krijuesit tuaj të preferuar dhe faqet: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">Rivërje automatikisht faqet AMP</translation>
 <translation id="5197219128592971597">Gjithmonë vizito URL-të origjinale (jo-AMP), në vend të versioneve të Google sa Accelerojnë Faqet e Lëvizshme</translation>
 <translation id="920638232916443453">Rivërje automatikisht URL-t gjurmuese</translation>
@@ -104,6 +62,8 @@
 <translation id="5713644099811900409">Llogari Brave</translation>
 <translation id="4472575034687746823">Fillojani</translation>
 <translation id="1799030480311994998">Veçoritë</translation>
+<translation id="1919345977826869612">Reklama</translation>
+<translation id="2839742394543397416">Analitika</translation>
 <translation id="2005732746077850308">Mburojat Brave &amp; privatësia</translation>
 <translation id="4692623383562244444">Motorët e kërkimit</translation>
 <translation id="1468415711258933398">Skedë standarde</translation>
@@ -114,8 +74,6 @@
 <translation id="6285118765755298263">Indekso motorët e tjerë të kërkimit</translation>
 <translation id="919715748352669592">Indekson automatikisht faqet që ndjekin specifikimet OpenSearch.</translation>
 <translation id="9148058034647219655">Dil</translation>
-<translation id="8047754398610073499">Blloko njoftimet e pranimit të kukive</translation>
-<translation id="2621893359845808115">Bllokon dritaret që kërkojnë të pranosh/refuzosh kukit në sajtin e tyre</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Filtrimi i Përmbajtjes</translation>
 <translation id="2398817776566547893">Aktivizo filtra vetjakë që bllokojnë gjurmuesit dhe bezdisjet specifike rajonale dhe gjuhësore</translation>
@@ -251,7 +209,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> dhe reklama të tjera dhe gjurmues të bllokuar</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklama &amp; gjurmues të bllokuar</translation>
 <translation id="8281886186245836920">Kapërceje</translation>
-<translation id="1377600615067678409">Kalo tani për tani</translation>
 <translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="986879628471635371">Zgjidhja e problemeve duke u bërë</translation>
 <translation id="5806601733251372221">Mburoja e Brave-s</translation>
@@ -274,7 +231,6 @@
 <translation id="1545749641540134597">Skanoni Kodin QR</translation>
 <translation id="5317781812114905957">Udhëzime</translation>
 <translation id="8515319483805157233">Për të kërkuar me Kodin QR, vendosni Kodin QR në qendër të kornizës.</translation>
-<translation id="2734870894159530879">Hyni te <ph name="WALLET_PROVIDER"/> për të parë balancën tuaj</translation>
 <translation id="7658239707568436148">Anuloje</translation>
 <translation id="1201402288615127009">Pasuesi</translation>
 <translation id="8481779960444041069">Për të përmirësuar privatësinë tuaj, vendosni Brave si Shfletuesin tuaj të paracaktuar</translation>
@@ -303,16 +259,7 @@
 <translation id="7002271985859760052">Veprimet e faqes</translation>
 <translation id="7104487676473617844">Elementet në vijim do të duken në menu vetëm kur mbështeten nga faqja aktuale e hapur.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Konfigurime</translation>
-<translation id="6020176662032623904">Krijues i Verifikuar</translation>
-<translation id="2369994359029526515">Krijues i Paverifikuar</translation>
-<translation id="6112368337882254910">Vetë-Kontribuoni</translation>
-<translation id="1848737374354350807">Bilanci</translation>
-<translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE"/> BAT.</translation>
-<translation id="2429828319207652823">Pati një problem me përpunimin e ndihmesës tuaj.</translation>
-<translation id="683765328936486920">në YouTube</translation>
-<translation id="8969049974285901797">në Twitch</translation>
 <translation id="8038539967102225446">Reklamat Brave Mbërritën!</translation>
 <translation id="222883304157347087">(kjo pajisje)</translation>
 <translation id="4157741509680155021">PAJISJET NË ZINXHIRIN SINKRON</translation>
@@ -369,7 +316,6 @@
 <translation id="4114170343590425996">Pati një gabim gjatë rivendosjes së Shpërblimeve Brave. Lutemi rinis Brave dhe provo përsëri.</translation>
 <translation id="6417420737057016607">Reklama Brave</translation>
 <translation id="5611966874859284786">Trego reklama kur Brave nuk është në përdorim</translation>
-<translation id="6606319453795180219">Kjo do të fshijë Shpërblimet Brave dhe do të rivendosë të gjitha të dhënat e Shpërblimeve Brave</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Rivendos të dhënat e Shpërblimeve Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Pastro të dhënat e Reklamave Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Shto faqeruajtës</translation>
@@ -417,12 +363,6 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="1413177583895309156">Brave VPN kodon dhe mbron çdo gjë që bën në internet, edhe jashtë shfletuesit Brave.</translation>
 <translation id="3974348661685061050">Provoje falas për 7 ditë</translation>
 <translation id="5789441016350810005">Reklama Brave dërguar kur shfletuesi është në sfond</translation>
-<translation id="4973347371961481083">Kontribute</translation>
-<translation id="7047578174221019462">Kontributi yt mujor u përfundua.</translation>
-<translation id="3124090095880236567">Aktivizo Reklamat</translation>
-<translation id="2975780980638932742">Mbërriti Brave Ads!</translation>
-<translation id="7541582550122501404">Kontribut pezull</translation>
-<translation id="8520059774736886747">Krijuesi <ph name="PUBLISHER_NAME"/> i verifikuar kohët e fundit</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Dritare e re faqeje</translation>
 <translation id="5927196110206824867">Imazhet e sfondit të sponsorizuara mbështesin misionin e Brave për të ndërtuar një Web të pavarur, të orientuar nga përdoruesi. Dhe ndryshe nga Big Tech, ne matim performancën e reklamave anonim për të ruajtur privatësinë tuaj.</translation>
@@ -438,26 +378,14 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="2898634658146274982">Hap lidhje të jashtme në Brave</translation>
 <translation id="5616508928556767259">Hap lidhje nga aplikacione të tjera në Brave. Vërejtje: Brave duhet të paracaktohet si shfletuesi juaj i përhershëm.</translation>
 <translation id="2394961582378297792">U çkyç</translation>
-<translation id="5308380583665731573">Lidh</translation>
 <translation id="3368922792935385530">Lidhur</translation>
-<translation id="6569877533335686968">Uphold</translation>
-<translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="6011108706830742093">ZebPay</translation>
-<translation id="1665118090708049096">Shko në llogarinë time <ph name="WALLET_PROVIDER"/></translation>
-<translation id="4858636682078269312">Futu në llogarinë tënde <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Nuk u lidh</translation>
-<translation id="2495032782748793764">Parazgjedhje Brave</translation>
 <translation id="9132378787893584761">Ndani Brave me miqtë tuaj!</translation>
 <translation id="717952606991220586">Hëm, diç shkoi ters. Ju lutemi, riprovoni më vonë.</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
 <translation id="1116694919640316211">Rreth</translation>
 <translation id="7961015016161918242">Asnjëherë</translation>
 <translation id="1275213816424141989">Mbase më vonë</translation>
-<translation id="8164992819127316581">Pas pagesës për shpërblimet e <ph name="CURRENT_MONTH"/>, përpunimi do të fillojë deri më <ph name="PAYOUT_DATE"/>.</translation>
-<translation id="33967210973550414">Pas pagesës për shpërblimet e <ph name="CURRENT_MONTH"/>, është në proces. <ph name="CHECK_STATUS"/></translation>
-<translation id="1622952853310946314">Pas pagesës për shpërblimet e <ph name="CURRENT_MONTH"/>, është përfunduar. <ph name="SUPPORT"/></translation>
-<translation id="7717357606512850995">Kontrollo statusin</translation>
 <translation id="3624048886326677117">Bllokoni gjurmues &amp; reklama (Agresive)</translation>
 <translation id="7151914815476509258">Bllokoni gjurmues &amp; reklama (Standard)</translation>
 <translation id="7384778069178817075">Lejo gjithë gjurmuesit dhe reklamat</translation>
@@ -568,31 +496,8 @@ Të Bllokuara</translation>
 <translation id="13296465911709339">Teksti juaj është kopjuar në kujtesën e fragmenteve.</translation>
 <translation id="2735834606413553397">Adresa publike është kopjuar në kujtesën e fragmenteve.</translation>
 <translation id="2977461003134694205">Statistikat e privatësisë</translation>
-<translation id="2956070106555335453">Përmbledhje</translation>
-<translation id="7465614181960492526">Fitoni Shenja &amp; Jepni Pas</translation>
-<translation id="2731539192954672606">Fitoni shenja duke parë reklama që respektojnë privatësinë dhe mbështesni automatikisht faqet dhe krijuesit tuaj të preferuar të përmbajtjeve.</translation>
-<translation id="631124996535890460">Duke vazhduar, ju pranoni <ph name="TERMS_OF_SERVICE"/> dhe <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Rregulla Privatësie</translation>
-<translation id="8363792084628930008">Duke aktivizuar Shpërblimet, ti pranon <ph name="TERMS_OF_SERVICE"/> dhe <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="185034574799484512">Le të bëjmë një tur të shpejtë</translation>
-<translation id="7930505144430343145">Mirë se erdhët në Shpërblimet Brave!</translation>
-<translation id="3477340970981564961">Reklamat Brave Private ju shpërblejnë me shenja për të mbështetur krijuesit e përmbajtjes, ndryshe nga reklamat tradicionale, duke mbajtur informacionin tuaj personal privat.</translation>
-<translation id="6973095375773523904">Ku shfaqen reklamat?</translation>
-<translation id="4328028439561659455">Reklamat Brave Private shfaqen si njoftime në ekranin tuaj. Ju kontrolloni sa shpesh i shihni këto reklama.</translation>
-<translation id="7712287524451429139">Dhurimi është i lehtë</translation>
-<translation id="105037569026952831">Krijuesit e përmbajtjes marrin automatikisht kontributet tuaja me shenja bazuar në nivelet tuaja të angazhimit që ne i masim si 'Vëmendje'.</translation>
-<translation id="3025802705256919103">Thoni faleminderit me kontribute</translation>
-<translation id="8235783939971604011">Dhurimi është një mënyrë për të inkurajuar dhe mbështetur personalisht përmbajtjen ose krijuesit që ju pëlqeni. Filloni të kontribuoni!</translation>
-<translation id="4215679190414901888">Së fundi, le të ju konfigurojmë</translation>
-<translation id="3494356595346329740">Këtë mund ta ndryshoni më vonë.</translation>
-<translation id="3286390186030710347">Rrëshqitësi</translation>
-<translation id="3115702351969988294">Sa shpesh dëshironi të shihni reklama?</translation>
-<translation id="2353222426385080466">Më shumë reklama private, më shumë shpërblime.</translation>
-<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> Reklama në orë</translation>
-<translation id="827315274423079662">Woohoo, keni përfunduar!</translation>
-<translation id="3895246934788932488">Duke përdorur Shpërblimet Brave, ju mbroni privatësinë tuaj dhe ndihmoni për ta bërë web-in një vend më të mirë për të gjithë. Dhe kjo është gjë e mrekullueshme!</translation>
 <translation id="5705882733397021510">Shko mbrapsht</translation>
-<translation id="3985567919248057638">Le të Bëjmë Një Tur të Shpejtë</translation>
 <translation id="7889432931837317731">Hape automatikisht kur të jetë e mundur</translation>
 <translation id="1029304566263314007">Shfaq njoftimet e progresit të shkarkimit</translation>
 <translation id="2910433761530295035">Pyet ku të ruhen skedarët (nëse detektohet karta SD)</translation>
@@ -610,7 +515,6 @@ Të Bllokuara</translation>
 <translation id="1822560017823072927">Ndërfaqe parazgjedhje publike dhe private</translation>
 <translation id="5825943197137337319">Vetëm ndërfaqe parazgjedhje publike</translation>
 <translation id="1689062823386843231">Çaktivizo UDP të pakaluara në ndërmjetës</translation>
-<translation id="6915830896450988084">Dërgo me <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Dërgo</translation>
 <translation id="538450413584738399">Ndërro</translation>
 <translation id="4556086616242530072">Browser i natyrës.\nVet-kustodi.\nDhe multi-chain.</translation>
@@ -835,14 +739,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="7373308452149471621">Limit çmimi për-gaz (Gwei)</translation>
 <translation id="5891811606602061966">Dështoi importimi i llogarisë, ju lutemi provoni përsëri.</translation>
 <translation id="4351811224047421378">Decimalet e saktësisë</translation>
-<translation id="3494964159182650590">Përmbledhje Shpërblimesh</translation>
-<translation id="590733288489975971">Shpërblimet nga Reklamat</translation>
-<translation id="1450735350187803276">Reklamat e para këtë muaj</translation>
-<translation id="1767561995429774671">Jepni ndihmesë</translation>
-<translation id="6727102863431372879">Përcakto</translation>
-<translation id="3074127054582480056">Kujdes</translation>
-<translation id="2280319752798785157">Kontribut Mujor</translation>
-<translation id="3079421456571897484"><ph name="VALUE"/> Shenja e vëmendjes bazë</translation>
 <translation id="1241283133946520352">Rrjete</translation>
 <translation id="1062463687579789365">Personalizimi i rrjeteve të kuletës</translation>
 <translation id="2512821599885971349">Shto rrjet</translation>
@@ -869,6 +765,7 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="4945690646623486292">Zgjidh Rrjetin</translation>
 <translation id="5233638681132016545">Skedë e re</translation>
 <translation id="8006088103295786154">Hyni në Kuletën Brave</translation>
+<translation id="5308380583665731573">Lidh</translation>
 <translation id="8030169304546394654">Jo e lidhur</translation>
 <translation id="3423275441470187644">Beso</translation>
 <translation id="2391762656119864333">Revokim</translation>
@@ -1013,9 +910,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="8382368767453083629">Inicioni multisig 2</translation>
 <translation id="77243237706803459">Inicioni monedhat 2</translation>
 <translation id="583281660410589416">I panjohur</translation>
-<translation id="909076461795862330">Fatkeqësisht, pati një gabim gjatë përpjekjes për të vendosur Shpërblimet Brave. Ju lutem provoni përsëri.</translation>
-<translation id="7352651011704765696">Ndodhi një gabim</translation>
-<translation id="7144878232160441200">Përsërite</translation>
 <translation id="6040143037577758943">Mbylle</translation>
 <translation id="7710469167917867539">Tarifa e transaksionit</translation>
 <translation id="7843211152394841558">Max Përsëritje:</translation>
@@ -1047,41 +941,25 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="6365389672683343144">Abonimi yt në VPN Brave mund të mbrojë deri në 5 pajisje, në Android, iOS dhe desktop. Thjesht lidhe abonimin në Google Play me llogarinë tënde Brave.</translation>
 <translation id="6610899852831463073">Nuk mund të aktivizohet Shfletimi i Sigurt</translation>
 <translation id="7954263306665462056">Shfletimi i Sigurt është çaktivizuar në pajisjen tënde. Për ta aktivizuar, sigurohu që Google Play Services është instaluar dhe që është i përditësuar.</translation>
-<translation id="6605147707233193230">Aktivizo për të ndihmuar në mbështetjen e krijuesve të përmbajtjes</translation>
-<translation id="5899814466108868020">Po ndihmon në mbështetjen e Brave dhe të komunitetit BAT</translation>
-<translation id="6067959437127691361">Përdorimi i Shpërblimeve Brave ndihmon në mbështetjen e krijuesve të përmbajtjeve dhe ju lejon të fitoni BAT.</translation>
-<translation id="3264975266761862670">Gati për të fituar?</translation>
-<translation id="265337947574975838">Hyr ose krijo llogari me një nga partnerët tanë.</translation>
-<translation id="654447476965480878">Mëso më shumë si të fitosh BAT</translation>
-<translation id="6278643716658443228">Parametrat e Shpërblimeve</translation>
-<translation id="6516984207843289176">Lidh llogarinë</translation>
-<translation id="4272136334824111854">Këtë muaj, ke vizituar <ph name="CREATOR_COUNT"/> krijues të mbështetur nga Shpërblimet Brave</translation>
-<translation id="6845311459433734326">Lidh një llogari të kujdestarit që të mund të fitosh Shenja e vëmendjes bazë dhe të tërheqësh shpërblimet e tua</translation>
-<translation id="928980476243133540">Do ta bëj më vonë</translation>
-<translation id="579702532610384533">Rilidhe</translation>
-<translation id="1619753851206150396">Jeni Ç’Identifikuar</translation>
-<translation id="8208669151660770401">Kjo mund të ndodhë për të mbajtur llogarinë tënde të sigurt. Shtrydh më poshtë për të rilidhur tani.</translation>
-<translation id="6390041270339783491">Kontributi mujor dështoi</translation>
-<translation id="9074594632540931067">Gabim: BAT nuk është i Qashtëm</translation>
-<translation id="5382684862562314222">BAT ende nuk mbështetet në rajonin tuaj në Uphold.</translation>
-<translation id="6996157559236886133">Gabim: Funksionalitet i pamjaftueshëm i llogarisë Uphold</translation>
-<translation id="1677961202754619328">Sipas Uphold, aktualisht ka disa kufizime në llogarinë tuaj Uphold. Ju lutem hyni përsëri në llogarinë tuaj Uphold dhe kontrolloni nëse ka ndonjë njoftim ose kërkesa të mbetura për të përfunduar, pastaj provoni përsëri.</translation>
-<translation id="5425006356459378415">Shpërblimet Brave nuk janë të qasura</translation>
-<translation id="833643743158564518">Regjistrimet e reja për Shpërblimet Brave janë aktualisht të çaktivizuara në rajonin tënd. Megjithatë, gjithmonë mund të provosh më vonë. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Rrjetet Kryesore</translation>
 <translation id="2781668117338732220">Rrjetet Sekondare</translation>
 <translation id="282560918037172384">Rrjetet e Testimit</translation>
-<translation id="8949422576126100041">Shiko faqen me Speedreader?</translation>
-<translation id="3435896845095436175">Lejo</translation>
-<translation id="5296840868251496327">Aktivizo Speedreader</translation>
-<translation id="591648995518106347">Ngarkon automatikisht artikujt e përshtatshëm në mënyrën lexuese</translation>
-<translation id="1295796122927221823">Shikoje në mënyrën lexuese</translation>
 <translation id="7568430944629653319">Aktivizo zbulimin e NFT-ve</translation>
 <translation id="622372328961630111">Shto automatikisht NFT-të që zotëron në Kuletë duke përdorur API të palëve të treta. <ph name="BEGIN_LINK_1"/>Mëso më shumë.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Llogaria e Tavolinës së Kërkimit të Adresave:</translation>
 <translation id="7659483790930268440">Indeksi i Tavolinës së Kërkimit të Adresave:</translation>
 <translation id="5494920125229734069">Zgjidh të gjitha</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="944736176598169208">Shpërblime Brave</translation>
+<translation id="4272190451231642425">Dërgo automatikisht raportet e ndërprerjeve</translation>
+<translation id="1199170151481311646">Analitikë që ruajnë privatësinë</translation>
+<translation id="1706715315466634757">Pseudonimet e email-it</translation>
+<translation id="6709133671862442373">Lajmet</translation>
+<translation id="5990642573624858459">Raportim statistikor</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2441719842399509963">Riktheji në parazgjedhje</translation>
+<translation id="4922034974043704366">Kjo veçori është e aktivizuar sepse ju u pajtuat me të</translation>
+<translation id="3144818380093107753">Brave Origin është një mënyrë me abonim për të çaktivizuar veçoritë që gjenerojnë të ardhura, të cilat përndryshe mbështesin Brave si biznes. Abonentët e Brave Origin do të vazhdojnë të përfitojnë nga privatësia udhëheqëse në industri, bllokimi i reklamave dhe shpejtësia (nëpërmjet Mburojat Brave), si dhe përditësime të rregullta të softuerit, përditësime të Chromium-it dhe përmirësime të sigurisë dhe privatësisë.&lt;br/&gt;&lt;br/&gt;Gjithashtu, ata do të çelin opsionin për të çaktivizuar veçori si Brave Leo, Lajme, Rewards, Wallet, VPN, domene Web3 dhe më shumë.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Shënim: Brave Origin nuk do të çaktivizojë veçoritë e browser-it që përdorni aktualisht, dhe nuk do të ndikojë tek veçoritë e Kërkimit Brave apo Reklamat e Kërkimit Brave.&lt;/b&gt;</translation>
 <translation id="8613144770663526433">Identifikohu me Brave Wallet</translation>
 <translation id="3696514931437952995">Po lidhesh me <ph name="ORIGIN"/>. Kuleta Brave do të ndajë adresën tënde të kuletës me <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Shih detajet</translation>
@@ -1174,8 +1052,6 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="5543505256451301851">Provo 7 ditë falas</translation>
 <translation id="614530507403667291">Model i paracaktuar për biseda të reja</translation>
 <translation id="4071849832011229600">Modeli i paracaktuar</translation>
-<translation id="4185473179105062442">Merrni BAT direkt në një adresë kripto të vetë-kujdestarit</translation>
-<translation id="5802986777701714573">Ne kemi shtuar një mënyrë të re që të merrni shpërblimet tuaja mujore BAT. Lidhni një llogari nga një prej partnerëve tanë ose përdorni opsionin e ri të vetë-kujdestarit për të filluar fitimet tani.</translation>
 <translation id="7557539689487606886">Bëhu Premium</translation>
 <translation id="5538904824395606812">Përdorni ofruesin tuaj aktual të shërbimit ose Quad9</translation>
 <translation id="6393423486818299209">Përdorni ofruesin tuaj aktual të shërbimit ose Wikimedia DNS</translation>
@@ -1206,10 +1082,6 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="8051552210542030943">kod pin</translation>
 <translation id="5233247193491045452">kodi postar</translation>
 <translation id="3300502432153878901">zip</translation>
-<translation id="4130750466177569591">Pranoj</translation>
-<translation id="3251885322612056119">Kushtet e Përditësuara të Shërbimit</translation>
-<translation id="4049035689681585146">Ne kemi përditësuar Kushtet e Shërbimit për Shpërblime Brave. Kemi bërë këto përditësime për të sqaruar kushtet tona dhe për të siguruar që ato të mbulojnë veçoritë e reja. Nëse vazhdoni të përdorni Shpërblimet Brave, ju po pranoni Kushtet e Shërbimit të përditësuara. Nëse nuk pajtoheni, mund <ph name="RESET_START"/>rivendosni<ph name="RESET_END"/> Shpërblimet Brave, të cilat do të çaktivizojnë veçorinë.</translation>
-<translation id="2165953574528546737">Shiko <ph name="TOS_START"/>Kushtet e Shërbimit për Shpërblimet Brave<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Aktivizo dritaret e shumëfishta</translation>
 <translation id="6167344249617630304">Hap deri në 5 dritare në të njëjtën kohë dhe zhvendos skedat nga një dritare në tjetrën</translation>
 <translation id="1063948063403254568">Janë zbuluar dritare të shumëfishta</translation>
@@ -1234,10 +1106,9 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="2735247450315842119">Lejo bëj screenshot në skeda private</translation>
 <translation id="8420414929552321089">Nëse lejohet, skedat private do të jenë të dukshme edhe kur janë të hapura aplikacione të shumta.</translation>
 <translation id="7956713633345437162">Faqeruejtësit e pajisjes së lëvizshme</translation>
-<translation id="3176467469116060712">Mbështet punën kryesore të Brave për privatësinë në Web dhe listat e hapura të bllokimit të reklamave</translation>
-<translation id="5896375129784311037">Optimizuar për një ndërfaqe më minimaliste të shfletuesit</translation>
-<translation id="746156554966264308">Një bazë e Mburojave Brave për bllokimin e reklamave, privatësi dhe shpejtësi</translation>
-<translation id="1432661650699782509">Mbështetje për politika të menaxhuara nga IT në punë</translation>
+<translation id="6261139507111008244">Mbështetni misionin tonë &amp; punën open-source</translation>
+<translation id="7882690061170175552">UI minimialist i browser-it i fokusuar në Mburojat</translation>
+<translation id="2267973897341040743">Ruaj bllokuesin bazë të reklamave, privatësinë &amp; shpejtësinë</translation>
 <translation id="1361157028850796410">vlera më e mirë</translation>
 <translation id="7280825497485894053">Abonim mujor</translation>
 <translation id="4570901726096223030">Mëso më shumë për Origin</translation>

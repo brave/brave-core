@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Hjælp os med at forbedre Brave ved at fortælle os, hvorfor du har tilladt tredjepartscookies. <ph name="BEGIN_LINK"/>Send feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kan anmode om at se computerversionen af websites</translation>
 <translation id="9183227624343766158">Brug Brave som standard</translation>
+<translation id="113098737392899175">Naviger på sider med en tekstmarkør, når der er tilsluttet et tastatur</translation>
 <translation id="1178015372320901893">Feltet i bunden, der viser Mine genveje</translation>
 <translation id="1178581264944972037">Pause</translation>
 <translation id="1181037720776840403">Fjern</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="904887679952026733">Anvend Mørkt tema på websites, når Brave anvender Mørkt tema (når det er muligt)</translation>
 <translation id="2390272837142897736">Zoom in</translation>
+<translation id="2397689164757137845">Tilladt • Præcis</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Præcis</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="NUM_MORE"/> mere er tilladt}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, and <ph name="NUM_MORE"/> more allowed}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="NUM_MORE"/> mere er tilladt}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Hjælp og feedback</translation>
 <translation id="2501278716633472235">Gå tilbage</translation>
 <translation id="2533138527374486328">Når denne indstilling er aktiveret, kan websites anmode om at oprette tilknytning til enhver enhed på dit lokale netværk. Når denne indstilling er deaktiveret, kan websites ikke oprette tilknytning til enheder på dit lokale netværk.</translation>
+<translation id="2536779053640817375">Tilladt denne gang • Præcis</translation>
 <translation id="2544997614631598250">Mørk temafarve</translation>
 <translation id="2546283357679194313">Cookies og websitedata</translation>
 <translation id="2570922361219980984">Lokationsadgang er også deaktiveret for denne enhed. Aktivér det under <ph name="BEGIN_LINK"/>indstillinger for Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="3123473560110926937">Blokeret på visse websites</translation>
 <translation id="3132996321662585180">Opdater dagligt</translation>
 <translation id="3143754809889689516">Afspil fra begyndelsen</translation>
+<translation id="3164169438034704658">Du kan aktivere præcis lokation i <ph name="BEGIN_LINK"/>Android-indstillingerne<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Tillad, at et website bruger tredjepartscookies</translation>
 <translation id="3167868116600277716">Discover-feed</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> gemte data</translation>
@@ -308,6 +312,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="8601682686806697614">Brave begrænser cookies igen fra i dag</translation>
 <translation id="4338831206024587507">Alle websites på <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Tillad ikke, at websites sender notifikationer</translation>
+<translation id="4341577178275615435">Brug genvejen F7 for at aktivere eller deaktivere tastenavigation</translation>
 <translation id="4402755511846832236">Bloker websites fra at vide, hvornår du aktivt bruger denne enhed</translation>
 <translation id="8382883799082236806">Feltet i bunden, der viser Brave-farver, er åbnet i halv højde</translation>
 <translation id="4412992751769744546">Tillad tredjepartscookies</translation>
@@ -436,6 +441,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="5876056640971328065">Sæt video på pause</translation>
 <translation id="5877248419911025165">Skjul alle anmodninger</translation>
 <translation id="5878945009165002849">Bloker loginmeddelelser fra identitetstjenester</translation>
+<translation id="588258955323874662">Fuld skærm</translation>
 <translation id="5884085660368669834">Websitepræference</translation>
 <translation id="5887687176710214216">Senest besøgt i går</translation>
 <translation id="5908617755156109052">Tillad ikke, at websites kan oprette et 3D-kort over dine omgivelser eller registrere kamerapositionen</translation>
@@ -531,9 +537,11 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Vil du slette websitedata? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Hjælpefunktioner</translation>
+<translation id="6991142177939282156">Tilladt • Bruger omtrentlig</translation>
 <translation id="6992289844737586249">Spørg, før websites bruger din mikrofon (anbefales)</translation>
 <translation id="7000754031042624318">Deaktiveret i indstillingerne for Android</translation>
 <translation id="8683151724374457021">Dette website foretager en vurdering af, hvad du kan lide, og foreslår derefter annoncer til andre websites. Dette website indhenter også dine annonceemner fra Brave med henblik på at vise dig mere relevante annoncer.</translation>
+<translation id="7036823721811529709">Hør musik i baggrunden</translation>
 <translation id="7044081119134178347">Der er givet adgang til kameraet denne gang</translation>
 <translation id="7053983685419859001">Bloker</translation>
 <translation id="7055552182600664515">For at afspille ophavsretligt beskyttet indhold kan det være nødvendigt for websites at benytte en tjeneste til beskyttelse af indhold. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="7406113532070524618">Denne indstilling fungerer uden at identificere dig eller give websites tilladelse til at se din browserhistorik, men websites kan dele en lille mængde oplysninger som en del af verificeringen</translation>
 <translation id="7409735910987429903">Websites kan sende pop op-vinduer for at vise annoncer eller bruge omdirigeringer til af føre dig til websites, du måske ikke ønsker at besøge</translation>
 <translation id="7412160840120117304">Hex-kode for primær farve</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zoom}one{Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER"/> %%}other{Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER"/> %%}}</translation>
 <translation id="7423098979219808738">Spørg først</translation>
 <translation id="7423538860840206698">Blokeret fra at læse udklipsholderen</translation>
 <translation id="7425915948813553151">Mørkt tema på websites</translation>
@@ -639,6 +648,7 @@ Avanceret beskyttelse styrer disse Brave-indstillinger:
 <translation id="8261506727792406068">Slet</translation>
 <translation id="8284326494547611709">Undertekster</translation>
 <translation id="8300705686683892304">Administreres af en app</translation>
+<translation id="8301363963630676147">Tilladt denne gang • Bruger omtrentlig</translation>
 <translation id="8315509175050791576">Deler en fane</translation>
 <translation id="8324158725704657629">Spørg ikke igen</translation>
 <translation id="8362795839483915693">Du kan zoome ind eller ud på websites, du besøger</translation>

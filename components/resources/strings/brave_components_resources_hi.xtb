@@ -197,6 +197,7 @@
 <translation id="7279636930553631442">न्यूज़लेटर पॉपअप</translation>
 <translation id="6136090320163235283">सोशल विजेट</translation>
 <translation id="6657720240983439091">चैट विजेट</translation>
+<translation id="3597441883564676263">ब्राउज़र समर्थित नहीं है</translation>
 <translation id="7138678301420049075">अन्य</translation>
 <translation id="4046860372562593546">Brave विज्ञापन मैनेज करें</translation>
 <translation id="5136973036012418831">आप किस तरह के Brave विज्ञापन, कितनी बार देखना चाहते हैं, यह कंट्रोल करें.</translation>
@@ -2235,6 +2236,24 @@
 <translation id="7488762544858401571">एडिट किया गया</translation>
 <translation id="5604254791550001355">प्रॉम्प्ट में बदलाव करें</translation>
 <translation id="8115786586976830777">प्रॉम्प्ट कॉपी करें</translation>
+<translation id="3666616415490815310">स्किल के रूप में सेव करें</translation>
+<translation id="6574544364990812112">मेरी स्किल्स</translation>
+<translation id="6696824203401957025">नई स्किल</translation>
+<translation id="6410279677882692627">स्किल्स आपके [/] टूल्स में दिखाई देंगी और नीचे सेट किए गए "/name" को टाइप करके इन तक पहुँचा जा सकता है।</translation>
+<translation id="1344606707744657196">प्रॉम्प्ट के लिए मॉडल</translation>
+<translation id="8458341576712814616">शॉर्टकट</translation>
+<translation id="1326559827339317236">यहाँ अपना शॉर्टकट दर्ज करें</translation>
+<translation id="5032574515228824816">प्रॉम्प्ट</translation>
+<translation id="2573797314568446575">यहाँ अपना प्रॉम्प्ट दर्ज करें</translation>
+<translation id="900733896273558337">स्किल संपादित करें</translation>
+<translation id="7662963028545588801">स्किल हटाएँ</translation>
+<translation id="4209790625997566418">क्या आप वाकई इस स्किल को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।</translation>
+<translation id="7161540406494327389">शॉर्टकट आवश्यक है</translation>
+<translation id="3722223049736774445">शॉर्टकट में केवल अक्षर, संख्या, अंडरस्कोर और हाइफ़न हो सकते हैं</translation>
+<translation id="6997214168632888867">शॉर्टकट अधिकतम 64 कैरेक्टर या उससे कम होना चाहिए</translation>
+<translation id="2806891468525657116">शॉर्टकट पहले से मौजूद है</translation>
+<translation id="5497501845974700950">प्रॉम्प्ट आवश्यक है</translation>
+<translation id="5642369858603376334">प्रॉम्प्ट अधिकतम 5000 कैरेक्टर या उससे कम होना चाहिए</translation>
 <translation id="1406205536570262057">जवाब में बदलाव करें</translation>
 <translation id="3386725253392845084">उसी मॉडल को फिर से आज़माएँ</translation>
 <translation id="2461822463642141190">मौजूदा</translation>
@@ -2272,13 +2291,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> ज़्यादा…</translation>
 <translation id="8103700533980268469">इस नोटिस को बंद करें</translation>
 <translation id="3417835166382867856">सर्च टैब्स</translation>
+<translation id="3828029223314399057">बुकमार्क्स सर्च करें</translation>
+<translation id="381480092025168632">ब्राउज़र इतिहास सर्च करें</translation>
 <translation id="7311244614769792472">कोई परिणाम नहीं मिला.</translation>
 <translation id="3112448569149476523">कृपया कोई और सर्च आज़माएं</translation>
 <translation id="1352836459737874921">दूसरे टैब्स का कॉन्टेंट अटैच करें</translation>
+<translation id="7173836072258346701">बुकमार्क्स से कंटेंट अटैच करें</translation>
+<translation id="163680814308917875">ब्राउज़र इतिहास से कंटेंट अटैच करें</translation>
 <translation id="7039179822221107025">अपने ब्राउज़र टैब्स से पेज का कॉन्टेंट भेजें, ताकि Leo को बातचीत के बारे में ज़्यादा जानकारी मिल सके।</translation>
+<translation id="1602382615168212961">Leo को बातचीत के लिए ज़्यादा संदर्भ देने के लिए अपने बुकमार्क्स टैब्स से पेज कंटेंट भेजें।</translation>
+<translation id="4808122506413075135">Leo को बातचीत के लिए ज़्यादा संदर्भ देने के लिए अपने ब्राउज़र इतिहास से पेज कंटेंट भेजें।</translation>
 <translation id="220541218939267992">आपकी संदेशों के साथ इस पेज की सामग्री भी Leo को भेजी जाएगी।</translation>
-<translation id="1446346932629101482">संदर्भ के लिए टैब कॉन्टेंट्स जोड़ें। कॉन्टेंट्स को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
-<translation id="7193316103691252734">मेल खाने वाला कोई टैब नहीं है</translation>
+<translation id="8164365899016970783">संदर्भ के लिए टैब और बुकमार्क कॉन्टेंट्स जोड़ें। कॉन्टेंट्स को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
+<translation id="6237410387937453423">कोई मेल खाने वाला अटैचमेंट नहीं</translation>
+<translation id="8076492880354921740">टैब</translation>
 <translation id="2315654674554095762">Leo अब आपकी बातचीतों को याद रखेगा, ताकि आप उन्हें वापस देख सकें। वे आपके डिवाइस पर एन्क्रिप्ट होकर स्टोर रहते हैं, और आप उन्हें किसी भी समय डिलीट कर सकते हैं।</translation>
 <translation id="7821251979960635244">जब आप कोई बातचीत शुरू करेंगे, तो आपकी बातचीत का इतिहास यहाँ दिखेगा।</translation>
 <translation id="887511360213807449">इतिहास बंद है</translation>
@@ -2337,7 +2363,9 @@
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
 <translation id="7949596341600215809">पूरे पेज का स्क्रीनशॉट</translation>
 <translation id="6332876390231524389">मौजूदा टैब की सामग्री</translation>
-<translation id="7742969455167760092">टैब्स खोलें...</translation>
+<translation id="6397861830483632092">खुले टैब…</translation>
+<translation id="802080272588201037">बुकमार्क्स…</translation>
+<translation id="2716127283451902393">इतिहास…</translation>
 <translation id="49269513399674318">माइक्रोफ़ोन का इस्तेमाल करें</translation>
 <translation id="3895031624234442305">कस्टम मॉडल</translation>
 <translation id="4572010449071015143">नई बातचीत शुरू करें</translation>
@@ -2349,6 +2377,22 @@
 <translation id="2593275000606533518">सभी को प्रबंधित करें</translation>
 <translation id="8410199626695516952">ठीक है, इसे याद नहीं रखा जाएगा</translation>
 <translation id="8419849467765474535">मेमोरी सेव नहीं की जा सकी। कृपया फिर से कोशिश करें।</translation>
+<translation id="5517580030864973329">वेब पेज को नए पते पर नेविगेट किया जा रहा है</translation>
+<translation id="8832457834975923266">वेब पेज को <ph name="URL"/> पर नेविगेट किया गया</translation>
+<translation id="5095252080770652994">प्रगति</translation>
+<translation id="8332385567036775056">स्टेप्स</translation>
+<translation id="4521931942079977149">पेज पर क्लिक किया जा रहा है</translation>
+<translation id="7732267913911704962">पेज पर खींचकर छोड़ा जा रहा है</translation>
+<translation id="7703800915509570212">ब्राउज़र इतिहास में पीछे नेविगेट किया जा रहा है</translation>
+<translation id="4875586490950981498">ब्राउज़र इतिहास में आगे नेविगेट किया जा रहा है</translation>
+<translation id="738881387603843066">माउस पॉइंटर को पेज पर घुमाया जा रहा है</translation>
+<translation id="4850669014075537160">पेज को स्क्रॉल किया जा रहा है</translation>
+<translation id="1265072406500460724">ड्रॉपडाउन से चयन किया जा रहा है</translation>
+<translation id="7573920298077917439">फील्ड में टेक्स्ट टाइप किया जा रहा है</translation>
+<translation id="4089034800311309656">पेज लोड या अपडेट होने का इंतज़ार किया जा रहा है</translation>
+<translation id="4798146464408730445">कोई स्किल नहीं मिली। "New" बटन क्लिक कर नई स्किल बनाएँ।</translation>
+<translation id="271033894570825754">New</translation>
+<translation id="8266605059880650542">पेज से बाद में उपयोग के लिए जानकारी नोट की जा रही है</translation>
 <translation id="3486480638399578250">अपना व्यक्तिगत ईमेल पता निजी रखें</translation>
 <translation id="7765422154906712751">यूनीक, रैंडम पते बनाएँ, जो आपके ब्राउज़र अकाउंट ईमेल पर फ़ॉरवर्ड होते हैं और किसी भी समय हटाए जा सकते हैं। अपने असली ईमेल पते का खुलासा करने या विज्ञापनदाताओं द्वारा उनका इस्तेमाल किए जाने से बचें।</translation>
 <translation id="5222676887888702881">साइन आउट करें</translation>
@@ -2394,6 +2438,10 @@
 <translation id="7508412964869396375">Brave Accounts सेवा से कोई वेरिफ़िकेशन टोकन नहीं मिला</translation>
 <translation id="3179527991526213624">Brave Accounts सेवा से कोई जवाब नहीं</translation>
 <translation id="7911439408853154309">ईमेल वेरिफ़िकेशन नहीं हो पाया</translation>
+<translation id="2595463802839066496">Email Aliases सेवा से कोई जवाब नहीं</translation>
+<translation id="367191282389216837">Email Aliases सेवा से अमान्य जवाब</translation>
+<translation id="7203490731644771170">Email Aliases सेवा में त्रुटि: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">त्रुटि: उपनाम उपलब्ध नहीं</translation>
 <translation id="8370801182970639038">ऑटोमैटिक (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">चालू किया गया सर्च इंजन</translation>
 <translation id="8285901519864208412">रिवॉर्ड कार्ड छिपाएँ</translation>
@@ -2439,8 +2487,19 @@
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
 <translation id="8443488493738411048">इस साइट के लिए <ph name="STATUS_BEFORE"/>Shields चालू है<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">इस साइट के लिए<ph name="STATUS_BEFORE"/>Shields बंद है<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">अगर कोई साइट खराब लगती है, तो Shields हटाने की कोशिश करें।
-   <ph name="NOTE_BEFORE"/>ध्यान दें: इससे Brave की प्राइवेसी सुरक्षा कम हो सकती है।<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">यदि यह साइट ठीक से नहीं दिखाई देती है, तो शील्ड को डाउन करने का प्रयास करें।</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>नोट: इससे Brave की गोपनीयता सुरक्षा कम हो सकती है।<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">क्या आपको इस साइट पर समस्या हो रही है?</translation>
+<translation id="9176447766421988172">हम वेबसाइट की संगतता बेहतर करने के लिए एक प्रयोग कर रहे हैं, जिसमें हम केवल ऐड ब्लॉकिंग चालू रखते हैं। चेतावनी: इससे सभी गोपनीयता सुरक्षाएँ हट जाती हैं। क्या आप इसे आज़माना चाहते हैं? <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/>।</translation>
+<translation id="5372101283158221516">कृपया ध्यान रखें कि Brave की गोपनीयता सुरक्षा द्वारा प्रभावित किसी भी वेबसाइट के लिए आप शील्ड को डाउन कर सकते हैं।</translation>
+<translation id="1836572675775891780">केवल ऐड ब्लॉकिंग मोड सक्षम करें</translation>
+<translation id="6623668214089604469">क्या यह साइट अब सही से काम कर रही है?</translation>
+<translation id="8978860854770042258">अगर यह साइट अभी भी टूटी हुई लग रही है, तो कृपया रिपोर्ट सबमिट करने पर विचार करें।</translation>
+<translation id="4677356505199464553">सब कुछ ठीक दिख रहा है</translation>
+<translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
+<translation id="2887186586339544116">केवल ऐड ब्लॉक मोड चालू है</translation>
+<translation id="673665019618844072">आप अभी केवल ऐड ब्लॉकिंग मोड का उपयोग कर रहे हैं। यह मोड केवल ऐड ब्लॉकिंग सुरक्षा देता है। यदि आप पूर्ण शील्ड्स मोड पर लौटना चाहते हैं, तो सेटिंग्स से इस मोड को अक्षम करें।</translation>
+<translation id="4820891023903368625">ऐड ब्लॉक किए गए <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave शील्ड से सुरक्षित नहीं है <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
@@ -2474,7 +2533,6 @@
 <translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
 <translation id="7638541189782135885">HTTP कनेक्शन अपग्रेड न करें</translation>
 <translation id="2570787596946026998">सिर्फ़ HTTPS के साथ कनेक्ट करें</translation>
-<translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
 <translation id="2387532482048804818">अगर शील्ड चालू रखने पर साइट ठीक से काम नहीं कर रही थी, तो हमें बताएँ.</translation>
 <translation id="3795015906457257780">आप Brave की प्राइवेसी सुविधा के बिना इस साइट को इस्तेमाल कर रहे हैं.</translation>
 <translation id="7194012750329511146">Brave शील्ड

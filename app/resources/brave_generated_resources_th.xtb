@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
 <translation id="4703780849509456860">เปิดลิงก์ในหน้าต่างส่วนตัวพร้อม Tor</translation>
 <translation id="3488584642074079080">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave พร้อม Tor</translation>
-<translation id="8594912907680633924">เปิดลิงก์ในมุมมองแบบแยก</translation>
 <translation id="6313675821927505581">หน้าต่างส่วนตัวใหม่ด้วย Tor</translation>
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
-<translation id="3795436270513738622">เปิดลิงก์ในมุมมองแบบแยก</translation>
 <translation id="2545072023356206691">ตั้งแต่วันที่ 1 ธันวาคม 2566 เป็นต้นไป ช่องทาง Brave Dev จะไม่ได้รับการอัปเดตอีกต่อไป เราจึงขอแนะนำให้ผู้ใช้เปลี่ยนไปใช้งาน Nightly ในรุ่น Beta หรือตัวเต็มของ Brave</translation>
 <translation id="474217410105706308">ปิดเสียงแท็บ</translation>
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 <translation id="8487693399751278191">นำเข้าบุ๊กมาร์กเดี๋ยวนี้...</translation>
 <translation id="2557899542277210112">สำหรับการเข้าถึงแบบด่วน วางบุ๊กมาร์กไว้ที่นี่บนแถบบุ๊กมาร์ก</translation>
-<translation id="1968543937259008435">พร้อมท่องโลกออนไลน์แบบส่วนตัวที่สุดแล้วหรือยัง</translation>
-<translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
-<translation id="7537601449003285327">ตรึงกับแถบงาน</translation>
-<translation id="2307973900865360088">เก็บใน Dock</translation>
 <translation id="961012016278832836">Microsoft Edge เวอร์ชันเก่า</translation>
 <translation id="6436994631426134065">นำเข้าจาก <ph name="BROWSER_NAME"/></translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">แสดงแท็บที่ปักหมุดในหน้าต่างทั้งหมด</translation>
 <translation id="2396127686705429331">แสดงปุ่มบุ๊กมาร์ก</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
+<translation id="4749586705247636385">แสดงมุมโค้งมนในพื้นที่เนื้อหาหลัก</translation>
 <translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
 <translation id="4579877808890085926">คำแนะนำในอุปกรณ์</translation>
 <translation id="7859704718976024901">ประวัติการเรียกดู</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">หน้าหลัก</translation>
 <translation id="5448570825852364919">หน้าว่าง</translation>
 <translation id="8244387390464017490">ปรับแต่งหน้าแท็บใหม่</translation>
+<translation id="7537601449003285327">ตรึงกับแถบงาน</translation>
 <translation id="7461924472993315131">ตรึง</translation>
 <translation id="735832369569964359">คลิกตรึงและยืนยันในการแจ้งเตือน Windows ด้านล่าง</translation>
 <translation id="7506648566440714944">มีการตรึง Brave แล้ว</translation>
+<translation id="2307973900865360088">เก็บใน Dock</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Brave อยู่ใน Dock แล้ว</translation>
 <translation id="3195845168740336657">การตั้งค่า Shields</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">ไม่พบสคริปต์ย่อย</translation>
 <translation id="4088315951291671239">อย่าคัดลอกและวางโค้ดที่คุณไม่เข้าใจหรือไม่ได้ตรวจสอบเองที่นี่ เพราะมันอาจทำให้ผู้โจมตีขโมยข้อมูลส่วนตัวของคุณหรือควบคุมคอมพิวเตอร์ของคุณได้</translation>
 <translation id="3020183492814296499">ทางลัด</translation>
+<translation id="2935698011275148880">ต้นกำเนิดแห่งความกล้าหาญ</translation>
+<translation id="2587535830241068901">ปรับแต่งเบราว์เซอร์ของคุณในขณะที่ยังคงสนับสนุน Brave</translation>
+<translation id="553273341094971255">Brave Origin ช่วยให้คุณปรับแต่ง Brave ให้ตรงกับความต้องการของคุณ และลบข้อเสนอโปรโมชั่นในแอปทั้งหมด โฆษณาที่มีแบรนด์ และแม้แต่การวิเคราะห์ข้อมูลแบบไม่ระบุตัวตนที่คุณอาจเปิดใช้งานไว้ระหว่างการติดตั้ง</translation>
+<translation id="534725333104202278">ส่วนเสริมหรือฟีเจอร์ใด ๆ ที่คุณได้เปิดใช้งานหรือเคยใช้มาก่อนจะยังคงแสดงและผสานรวมอยู่ตามเดิม ส่วนที่เหลือจะถูกปิดใช้งานชั่วคราว คุณสามารถปรับแต่ง Brave ได้อย่างต่อเนื่องขณะที่เราทยอยเพิ่มฟีเจอร์ใหม่ ๆ เข้าสู่เบราว์เซอร์ ฟีเจอร์เหล่านี้จะปรากฏโดยอัตโนมัติและถูกซ่อนไว้เป็นค่าเริ่มต้นในแผงควบคุม Brave Origin</translation>
+<translation id="1919345977826869612">โฆษณา</translation>
+<translation id="944736176598169208">รีวอร์ด</translation>
+<translation id="2839742394543397416">การวิเคราะห์</translation>
+<translation id="1799030480311994998">ฟีเจอร์</translation>
+<translation id="6709133671862442373">ข่าวสาร</translation>
+<translation id="6297791103122079275">พูดคุย</translation>
+<translation id="1458638489455808030">เครื่องย้อนเวลาเว็บ</translation>
+<translation id="1199170151481311646">การวิเคราะห์ข้อมูลที่รักษาความเป็นส่วนตัว</translation>
+<translation id="5990642573624858459">การรายงานสถิติ</translation>
+<translation id="2441719842399509963">รีเซ็ตเป็นค่าเริ่มต้น</translation>
 <translation id="5567412479632285879">Brave รีวอร์ดปิดใช้งานอยู่</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="1051600834033686945">เปิดการตั้งค่า Brave Rewards ทั้งหมด</translation>
 <translation id="8826461509529116322">แสดงปุ่ม Brave รีวอร์ด</translation>
+<translation id="3328713589982547433">โหมดบล็อกโฆษณาเท่านั้น</translation>
+<translation id="1574253307550419595">ใช้โหมดบล็อกโฆษณาเท่านั้น</translation>
+<translation id="738717058053657696">โหมดบล็อกโฆษณาเท่านั้นจะคงกฎการบล็อกโฆษณาหลักของ Brave Shields ไว้ คำเตือน: จะลบการป้องกันความเป็นส่วนตัวทั้งหมด โปรดทราบว่าสำหรับเว็บไซต์แต่ละแห่งที่ Brave's privacy protections ทำให้ใช้งานไม่ได้ คุณสามารถตั้งค่า Shields เป็น DOWN ได้ นี่เป็นโหมดทดลอง <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">ตัวเลือกโล่ป้องกันถูกปิดใช้งานอยู่ในขณะนี้</translation>
+<translation id="516439939408671102">โหมดบล็อกโฆษณาเท่านั้นจะคงกฎการบล็อกโฆษณาหลักของ Brave Shields และปิดการป้องกันความเป็นส่วนตัว หากคุณต้องการเปิดใช้งาน Shields มาตรฐาน โปรดปิดโหมดนี้</translation>
+<translation id="177233004755519660">ปิดโหมดปิดกั้นโฆษณาเท่านั้น</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="7791141927430186653">อนุญาตทวีตแบบฝังของ X (เดิมเรียกว่า Twitter)</translation>

@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Newsletter popup</translation>
 <translation id="6136090320163235283">Social widget</translation>
 <translation id="6657720240983439091">Chat widget</translation>
+<translation id="3597441883564676263">Browser not supported</translation>
 <translation id="7138678301420049075">Other</translation>
 <translation id="4046860372562593546">Manage Brave Ads</translation>
 <translation id="5136973036012418831">Control what kinds of Brave Ads you see and how often.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Edited</translation>
 <translation id="5604254791550001355">Edit prompt</translation>
 <translation id="8115786586976830777">Copy prompt</translation>
+<translation id="3666616415490815310">Save as skill</translation>
+<translation id="6574544364990812112">My Skills</translation>
+<translation id="6696824203401957025">New skill</translation>
+<translation id="6410279677882692627">Skills will appear in your [/] tools and are accessible by just typing the "/name" you set up below.</translation>
+<translation id="1344606707744657196">Model for prompt</translation>
+<translation id="8458341576712814616">Shortcut</translation>
+<translation id="1326559827339317236">Enter your shortcut here</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Enter your prompt here</translation>
+<translation id="900733896273558337">Edit skill</translation>
+<translation id="7662963028545588801">Delete skill</translation>
+<translation id="4209790625997566418">Are you sure you want to delete this skill? This action cannot be undone.</translation>
+<translation id="7161540406494327389">Shortcut is required</translation>
+<translation id="3722223049736774445">Shortcut can only contain letters, numbers, underscore, and hyphen</translation>
+<translation id="6997214168632888867">Shortcut must be 64 characters or less</translation>
+<translation id="2806891468525657116">Shortcut already exists</translation>
+<translation id="5497501845974700950">Prompt is required</translation>
+<translation id="5642369858603376334">Prompt must be 5000 characters or less</translation>
 <translation id="1406205536570262057">Edit answer</translation>
 <translation id="3386725253392845084">Retry same model</translation>
 <translation id="2461822463642141190">Current</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> more…</translation>
 <translation id="8103700533980268469">Close this notice</translation>
 <translation id="3417835166382867856">Search tabs</translation>
+<translation id="3828029223314399057">Search bookmarks</translation>
+<translation id="381480092025168632">Search browser history</translation>
 <translation id="7311244614769792472">No results found</translation>
 <translation id="3112448569149476523">Please try a different search</translation>
 <translation id="1352836459737874921">Attach content from other tabs</translation>
+<translation id="7173836072258346701">Attach content from bookmarks</translation>
+<translation id="163680814308917875">Attach content from browser history</translation>
 <translation id="7039179822221107025">Send page content from your browser tabs to give Leo more context for the conversation.</translation>
+<translation id="1602382615168212961">Send page content from tabs in your bookmarks to give Leo more context for the conversation.</translation>
+<translation id="4808122506413075135">Send page content from your browser history to give Leo more context for the conversation.</translation>
 <translation id="220541218939267992">Page contents will be sent to Leo along with your messages.</translation>
-<translation id="1446346932629101482">Add tab contents for context. The contents will be sent to Leo along with your messages.</translation>
-<translation id="7193316103691252734">No matching tabs</translation>
+<translation id="8164365899016970783">Add tab and bookmark contents for context. The contents will be sent to Leo along with your messages.</translation>
+<translation id="6237410387937453423">No matching attachments</translation>
+<translation id="8076492880354921740">Tabs</translation>
 <translation id="2315654674554095762">Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.</translation>
 <translation id="7821251979960635244">Your conversation history will appear here once you start a conversation.</translation>
 <translation id="887511360213807449">History is disabled</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="7949596341600215809">Full page screenshot</translation>
 <translation id="6332876390231524389">Current tab contents</translation>
-<translation id="7742969455167760092">Open tabs...</translation>
+<translation id="6397861830483632092">Open tabs…</translation>
+<translation id="802080272588201037">Bookmarks…</translation>
+<translation id="2716127283451902393">History…</translation>
 <translation id="49269513399674318">Use microphone</translation>
 <translation id="3895031624234442305">Custom models</translation>
 <translation id="4572010449071015143">Start new conversation</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Manage all</translation>
 <translation id="8410199626695516952">Ok, I won't remember that</translation>
 <translation id="8419849467765474535">Failed to save memory. Please try again.</translation>
+<translation id="5517580030864973329">Navigating the web page to a new address</translation>
+<translation id="8832457834975923266">Navigated the web page to <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progress</translation>
+<translation id="8332385567036775056">Steps</translation>
+<translation id="4521931942079977149">Clicking on the page</translation>
+<translation id="7732267913911704962">Dragging and dropping on the page</translation>
+<translation id="7703800915509570212">Navigating back</translation>
+<translation id="4875586490950981498">Navigating forward</translation>
+<translation id="738881387603843066">Moving the mouse</translation>
+<translation id="4850669014075537160">Scrolling</translation>
+<translation id="1265072406500460724">Selecting from a dropdown</translation>
+<translation id="7573920298077917439">Typing text</translation>
+<translation id="4089034800311309656">Waiting for the page</translation>
+<translation id="4798146464408730445">No skills found. Create a new one by clicking the "New" button.</translation>
+<translation id="271033894570825754">New</translation>
+<translation id="8266605059880650542">Noting down some information for later about the page</translation>
 <translation id="3486480638399578250">Keep your personal email address private</translation>
 <translation id="7765422154906712751">Create unique, random addresses that forward to your Brave account email and can be deleted at any time. Keep your actual email address from being disclosed or used by advertisers.</translation>
 <translation id="5222676887888702881">Sign out</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">No verification token received from Brave Accounts service</translation>
 <translation id="3179527991526213624">No response from Brave Accounts service</translation>
 <translation id="7911439408853154309">Email verification failed</translation>
+<translation id="2595463802839066496">No response from Email Aliases service</translation>
+<translation id="367191282389216837">Invalid response from Email Aliases service</translation>
+<translation id="7203490731644771170">Email Aliases service error: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Error: Alias not available</translation>
 <translation id="8370801182970639038">Automatic (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Enabled search engines</translation>
 <translation id="8285901519864208412">Hide Rewards card</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields are UP<ph name="STATUS_AFTER"/> for this site</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields are DOWN<ph name="STATUS_AFTER"/> for this site</translation>
-<translation id="5623354834493649144">If this site seems broken, try Shields down.
-   <ph name="NOTE_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">If this site seems broken, try Shields down.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Are you experiencing issues with this site?</translation>
+<translation id="9176447766421988172">We're trying out an experiment to increase website compatibility, where we keep only ad blocking enabled. Warning: removes all privacy protections. Do you want to try it out? <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN.</translation>
+<translation id="1836572675775891780">Enable Ad Block Only mode</translation>
+<translation id="6623668214089604469">Is the site working correctly now?</translation>
+<translation id="8978860854770042258">Please consider submitting a report if this site is still broken.</translation>
+<translation id="4677356505199464553">Looks good</translation>
+<translation id="1992750560347846445">Report site</translation>
+<translation id="2887186586339544116">Ad Block Only mode enabled</translation>
+<translation id="673665019618844072">You're currently using Ad Blocking Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.</translation>
+<translation id="4820891023903368625">Ads blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Not protected by Brave Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Advanced controls</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Allow fingerprinting</translation>
 <translation id="7638541189782135885">Don't upgrade HTTP connections</translation>
 <translation id="2570787596946026998">Only connect with HTTPS</translation>
-<translation id="1992750560347846445">Report site</translation>
 <translation id="2387532482048804818">Tell us if the site wasn't working properly with Shields up.</translation>
 <translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
 <translation id="7194012750329511146">Brave Shields

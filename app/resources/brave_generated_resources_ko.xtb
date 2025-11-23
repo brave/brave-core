@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
-<translation id="8594912907680633924">분할 보기에서 링크 열기</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
-<translation id="3795436270513738622">분할 보기에서 링크 열기</translation>
 <translation id="2545072023356206691">2023년 12월 1일부터 Brave Dev 채널이 더 이상 브라우저 업데이트를 수신하지 않습니다. 기존 이용자는 Brave Nightly, Beta 또는 Release 버전으로 전환하기를 권장합니다.</translation>
 <translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
-<translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
-<translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
-<translation id="7537601449003285327">작업 표시줄에 고정</translation>
-<translation id="2307973900865360088">도크에 고정</translation>
 <translation id="961012016278832836">Microsoft Edge 레거시</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>에서 가져왔습니다.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">모든 창에 고정된 탭 표시</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
+<translation id="4749586705247636385">주요 콘텐츠 영역에 둥근 모서리 표시</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
 <translation id="4579877808890085926">기기 내 추천 항목</translation>
 <translation id="7859704718976024901">검색 내역</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">홈페이지</translation>
 <translation id="5448570825852364919">빈 페이지</translation>
 <translation id="8244387390464017490">새 탭 페이지 맞춤설정</translation>
+<translation id="7537601449003285327">작업 표시줄에 고정</translation>
 <translation id="7461924472993315131">고정</translation>
 <translation id="735832369569964359">PIN을 클릭하고, 표시되는 Windows 알림에서 확인하세요.</translation>
 <translation id="7506648566440714944">Brave가 이미 고정됨</translation>
+<translation id="2307973900865360088">도크에 고정</translation>
 <translation id="239275665037555969">도크</translation>
 <translation id="4057614912106618659">Brave가 이미 도크에 있음</translation>
 <translation id="3195845168740336657">Shields 설정</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">스크립트릿을 찾을 수 없습니다.</translation>
 <translation id="4088315951291671239">이해가 가지 않거나 아직 검토하지 않은 코드를 여기에 붙여 넣지 마세요. 공격자가 신원을 도용하거나 컴퓨터를 제어하게 될 수 있습니다.</translation>
 <translation id="3020183492814296499">바로가기</translation>
+<translation id="2935698011275148880">브레이브 오리진</translation>
+<translation id="2587535830241068901">Brave를 계속 지원하면서 브라우저 사용자 지정</translation>
+<translation id="553273341094971255">Brave Origin은 사용자가 원하는 대로 Brave를 조정하고 설치 중에 활성화했을 수 있는 모든 인앱 프로모션 제안, 브랜드 광고 및 익명 분석 기능을 제거할 수 있도록 도와줍니다.</translation>
+<translation id="534725333104202278">이전에 활성화했거나 사용했던 애드온이나 기능은 계속 표시되고 통합된 상태로 유지되며, 나머지는 비활성화됩니다. 브라우저에 새로운 기능이 추가될 때마다 Brave를 계속 조정해 주세요. 이러한 기능은 기본적으로 Brave Origin 제어판에서 조용히 표시되고 숨겨집니다.</translation>
+<translation id="1919345977826869612">광고</translation>
+<translation id="944736176598169208">리워드</translation>
+<translation id="2839742394543397416">분석</translation>
+<translation id="1799030480311994998">기능</translation>
+<translation id="6709133671862442373">뉴스</translation>
+<translation id="6297791103122079275">Talk</translation>
+<translation id="1458638489455808030">웨이백 머신</translation>
+<translation id="1199170151481311646">개인 정보 보호 분석</translation>
+<translation id="5990642573624858459">통계 보고</translation>
+<translation id="2441719842399509963">기본값으로 재설정</translation>
 <translation id="5567412479632285879">Brave Rewards 비활성화됨</translation>
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
 <translation id="8826461509529116322">Brave Rewards 버튼 표시</translation>
+<translation id="3328713589982547433">광고 차단 전용 모드</translation>
+<translation id="1574253307550419595">광고 차단 전용 모드 사용</translation>
+<translation id="738717058053657696">광고 차단 전용 모드는 Brave Shield의 핵심 광고 차단 규칙을 유지합니다. 경고: 모든 개인정보 보호 기능을 제거합니다. Brave의 개인 정보 보호 기능을 차단하는 개별 웹사이트의 경우, Shields를 DOWN으로 설정할 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">보호막 옵션은 현재 비활성화되어 있습니다.</translation>
+<translation id="516439939408671102">광고 차단 전용 모드는 Brave Shield의 핵심 광고 차단 규칙을 유지하며 개인정보 보호 기능을 해제합니다. 표준 쉴드를 사용하려면 이 모드를 비활성화하세요.</translation>
+<translation id="177233004755519660">광고 차단 전용 모드 끄기</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="7791141927430186653">X(구 Twitter) 임베디드 트윗 허용</translation>

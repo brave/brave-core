@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
 <translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
 <translation id="3488584642074079080">使用 Tor 在隱私視窗中打開連結</translation>
-<translation id="8594912907680633924">在分割檢視畫面開啟連結</translation>
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
-<translation id="3795436270513738622">在分割檢視畫面開啟連結</translation>
 <translation id="2545072023356206691">從 2023 年 12 月 1 日開始，Brave Dev 頻道將不再接收瀏覽器更新。建議使用者改用 Brave Nightly、測試版或正式版。</translation>
 <translation id="474217410105706308">關閉分頁音訊</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
-<translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
-<translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
-<translation id="7537601449003285327">固定至工作列</translation>
-<translation id="2307973900865360088">保留於 Dock</translation>
 <translation id="961012016278832836">Microsoft Edge 舊版</translation>
 <translation id="6436994631426134065">已從 <ph name="BROWSER_NAME"/> 匯入。</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">在所有視窗中顯示已釘選的分頁</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
+<translation id="4749586705247636385">在主要內容區域顯示圓角</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
 <translation id="4579877808890085926">裝置上的建議</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">首頁</translation>
 <translation id="5448570825852364919">空白頁</translation>
 <translation id="8244387390464017490">自訂新的分頁</translation>
+<translation id="7537601449003285327">固定至工作列</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="735832369569964359">點選大頭針並在接下來出現的 Windows 通知中確認</translation>
 <translation id="7506648566440714944">Brave 已固定</translation>
+<translation id="2307973900865360088">保留於 Dock</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Brave 已位於 Dock 中</translation>
 <translation id="3195845168740336657">Shields 設定</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">未找到 Scriptlet。</translation>
 <translation id="4088315951291671239">請勿在此貼上您不瞭解或未親自檢視的程式碼。這可能會讓攻擊者竊取您的身分或控制您的電腦。</translation>
 <translation id="3020183492814296499">捷徑</translation>
+<translation id="2935698011275148880">勇敢的起源</translation>
+<translation id="2587535830241068901">自訂您的瀏覽器，同時仍支援 Brave</translation>
+<translation id="553273341094971255">Brave Origin 可幫助您調整 Brave，使其符合您的喜好，並移除所有應用程式內的促銷優惠、品牌廣告，甚至是您在安裝時可能啟用的匿名分析。</translation>
+<translation id="534725333104202278">您之前啟用或使用過的任何附加元件或功能將維持可見與整合，而其他附加元件或功能則會停用。當我們在瀏覽器中提供新功能時，請繼續調整Brave。在Brave Origin控制面板中，這些功能預設會隱藏並靜默顯示。</translation>
+<translation id="1919345977826869612">廣告</translation>
+<translation id="944736176598169208">獎勵</translation>
+<translation id="2839742394543397416">分析</translation>
+<translation id="1799030480311994998">功能</translation>
+<translation id="6709133671862442373">新聞內容</translation>
+<translation id="6297791103122079275">Talk</translation>
+<translation id="1458638489455808030">回溯機</translation>
+<translation id="1199170151481311646">隱私權保護分析</translation>
+<translation id="5990642573624858459">統計報告</translation>
+<translation id="2441719842399509963">重設為預設值</translation>
 <translation id="5567412479632285879">Brave 獎勵已停用</translation>
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
 <translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
+<translation id="3328713589982547433">僅廣告封鎖模式</translation>
+<translation id="1574253307550419595">只使用廣告封鎖模式</translation>
+<translation id="738717058053657696">僅廣告封鎖模式保留 Brave Shields 的核心廣告封鎖規則。警告：移除所有隱私保護。請注意，對於被 Brave 隱私保護破壞的個別網站，您可以將 Shields 設定為 DOWN。此為實驗模式。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">遮罩選項目前已停用。</translation>
+<translation id="516439939408671102">僅廣告封鎖模式保留 Brave Shields 的核心廣告封鎖規則，並關閉隱私保護。如果您想啟用標準的 Shields，請停用此模式。</translation>
+<translation id="177233004755519660">關閉「僅限廣告封鎖」模式</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="7791141927430186653">允許 X (原為 Twitter) 嵌入的推文</translation>

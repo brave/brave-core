@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Jaunumu abonēšanas uznirstošais logs</translation>
 <translation id="6136090320163235283">Sociālo tīklu logrīks</translation>
 <translation id="6657720240983439091">Tērzēšanas logrīks</translation>
+<translation id="3597441883564676263">Pārlūkprogramma netiek atbalstīta</translation>
 <translation id="7138678301420049075">Cits</translation>
 <translation id="4046860372562593546">Pārvaldīt Brave reklāmas</translation>
 <translation id="5136973036012418831">Kontrolējiet, kāda veida Brave reklāmas jūs redzat un cik bieži.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Labots</translation>
 <translation id="5604254791550001355">Rediģēt uzvedni</translation>
 <translation id="8115786586976830777">Kopēt uzvedni</translation>
+<translation id="3666616415490815310">Saglabāt kā prasmi</translation>
+<translation id="6574544364990812112">Manas prasmes</translation>
+<translation id="6696824203401957025">Jaunas prasmes</translation>
+<translation id="6410279677882692627">Prasmes parādīsies jūsu [/] rīkos, un tās būs pieejamas, vienkārši ierakstot tālāk iestatīto "/vārds".</translation>
+<translation id="1344606707744657196">Ātrā pieprasījuma modelis</translation>
+<translation id="8458341576712814616">Īsais ceļvedis</translation>
+<translation id="1326559827339317236">Ievadiet saīsni šeit</translation>
+<translation id="5032574515228824816">Uzaicinājums</translation>
+<translation id="2573797314568446575">Šeit ievadiet savu uzaicinājumu</translation>
+<translation id="900733896273558337">Rediģēt prasmi</translation>
+<translation id="7662963028545588801">Dzēst prasmi</translation>
+<translation id="4209790625997566418">Vai esat pārliecināts, ka vēlaties dzēst šo prasmi? Šo darbību nevar atsaukt.</translation>
+<translation id="7161540406494327389">Nepieciešams saīsinājums</translation>
+<translation id="3722223049736774445">Saīsnes var saturēt tikai burtus, ciparus, pasvītrojumu un defisi.</translation>
+<translation id="6997214168632888867">Īsinājumam jābūt 64 vai mazāk rakstzīmēm</translation>
+<translation id="2806891468525657116">Saīsne jau pastāv</translation>
+<translation id="5497501845974700950">Nepieciešams uzaicinājums</translation>
+<translation id="5642369858603376334">Uzaicinājumam jābūt 5000 rakstzīmju vai mazākam.</translation>
 <translation id="1406205536570262057">Rediģēt atbildi</translation>
 <translation id="3386725253392845084">Izmēģināt to pašu modeli vēlreiz</translation>
 <translation id="2461822463642141190">Pašreizējais modelis</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949">Atlikums: <ph name="COUNT"/></translation>
 <translation id="8103700533980268469">Aizvērt šo paziņojumu</translation>
 <translation id="3417835166382867856">Meklēšana cilnēs</translation>
+<translation id="3828029223314399057">Meklēt grāmatzīmes</translation>
+<translation id="381480092025168632">Pārlūkprogrammas meklēšanas vēsture</translation>
 <translation id="7311244614769792472">Netika atrasts neviens rezultāts</translation>
 <translation id="3112448569149476523">Lūdzu, mēģiniet citu meklēšanu</translation>
 <translation id="1352836459737874921">Pievienot saturu no citām cilnēm</translation>
+<translation id="7173836072258346701">Pievienojiet saturu no grāmatzīmēm</translation>
+<translation id="163680814308917875">Pievienojiet saturu no pārlūkprogrammas vēstures</translation>
 <translation id="7039179822221107025">Nosūtiet lapas saturu no savām pārlūkprogrammas cilnēm, lai Leo sniegtu vairāk konteksta sarunai.</translation>
+<translation id="1602382615168212961">Nosūtiet lapas saturu no grāmatzīmju cilnēm, lai sniegtu Leo plašāku kontekstu sarunai.</translation>
+<translation id="4808122506413075135">Nosūtiet lapas saturu no savas pārlūkprogrammas vēstures, lai Leo sniegtu plašāku kontekstu sarunai.</translation>
 <translation id="220541218939267992">Lapas saturs tiks nosūtīts Leo kopā ar jūsu ziņojumiem.</translation>
-<translation id="1446346932629101482">Pievienot cilņu saturu kontekstam. Saturs tiks nosūtīts Leo kopā ar jūsu ziņojumiem.</translation>
-<translation id="7193316103691252734">Nav atbilstošu cilņu</translation>
+<translation id="8164365899016970783">Pievienojiet cilnes un grāmatzīmju saturu kontekstam. Saturs tiks nosūtīts Leo kopā ar ziņojumiem.</translation>
+<translation id="6237410387937453423">Nav atbilstošu pielikumu</translation>
+<translation id="8076492880354921740">Cilnes</translation>
 <translation id="2315654674554095762">Leo tagad iegaumēs jūsu sarunas, lai jūs varat tās pārskatīt nākotnē. Tās tiek saglabātas jūsu ierīcē šifrētā veidā, un jūs varat tās dzēst jebkurā laikā.</translation>
 <translation id="7821251979960635244">Kolīdz sāksiet sarunu, jūsu sarunu vēsture tiks parādīta šeit.</translation>
 <translation id="887511360213807449">Vēstures saglabāšana ir atspējota</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Ekrānuzņēmums</translation>
 <translation id="7949596341600215809">Pilnas lapas ekrānuzņēmums</translation>
 <translation id="6332876390231524389">Pašreizējās cilnes saturs</translation>
-<translation id="7742969455167760092">Atvērt cilnes...</translation>
+<translation id="6397861830483632092">Atvērt cilnes…</translation>
+<translation id="802080272588201037">Grāmatzīmes…</translation>
+<translation id="2716127283451902393">Vēsture…</translation>
 <translation id="49269513399674318">Izmantot mikrofonu</translation>
 <translation id="3895031624234442305">Pielāgoti modeļi</translation>
 <translation id="4572010449071015143">Sākt jaunu sarunu</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Pārvaldīt visu</translation>
 <translation id="8410199626695516952">Labi, es to neiegaumēšu</translation>
 <translation id="8419849467765474535">Neizdevās saglabāt atmiņā. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="5517580030864973329">Pārvietošanās no tīmekļa lapas uz jaunu adresi</translation>
+<translation id="8832457834975923266">Virzījās uz tīmekļa lapu <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progress</translation>
+<translation id="8332385567036775056">Soļi</translation>
+<translation id="4521931942079977149">Noklikšķinot uz lapas</translation>
+<translation id="7732267913911704962">Velkšana un nomešana lapā</translation>
+<translation id="7703800915509570212">Navigācija atpakaļ</translation>
+<translation id="4875586490950981498">Virzība uz priekšu</translation>
+<translation id="738881387603843066">Peles pārvietošana</translation>
+<translation id="4850669014075537160">Ritināšana</translation>
+<translation id="1265072406500460724">Atlasīšana no izlaižamajā logā</translation>
+<translation id="7573920298077917439">Teksta ievadīšana</translation>
+<translation id="4089034800311309656">Lapas gaidīšana</translation>
+<translation id="4798146464408730445">Nav atrastas nekādas prasmes. Izveidojiet jaunu, nospiežot pogu "Jauns".</translation>
+<translation id="271033894570825754">Jauns</translation>
+<translation id="8266605059880650542">Dažas informācijas pierakstīšana par lapu, lai vēlāk to varētu izmantot.</translation>
 <translation id="3486480638399578250">Saglabājiet savas personīgās e-pasta adreses konfidencialitāti</translation>
 <translation id="7765422154906712751">Izveidojiet unikālas, uzģenerētas adreses, kas pārsūta ziņojumus uz jūsu Brave konta e-pastu un var tikt dzēstas jebkurā laikā. Saglabājiet savu faktisko e-pasta adresi konfidenciālu un nepieejamu reklāmdevējiem.</translation>
 <translation id="5222676887888702881">Izrakstīties</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">No Brave kontu servisa nav saņemts verifikācijas marķieris</translation>
 <translation id="3179527991526213624">Nav atbildes no Brave kontu servisa</translation>
 <translation id="7911439408853154309">E-pasta verifikācija neizdevās</translation>
+<translation id="2595463802839066496">E-pasta aizstājvārdu pakalpojuma atbilde nav saņemta</translation>
+<translation id="367191282389216837">Nederīga atbilde no pakalpojuma E-pasta aizstājvārdi</translation>
+<translation id="7203490731644771170">E-pasta aizstājvārdu pakalpojuma kļūda: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Kļūda: Lietotājvārds nav pieejams</translation>
 <translation id="8370801182970639038">Automātiski (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Iespējotās meklētājprogrammas</translation>
 <translation id="8285901519864208412">Slēpt kartīti “Rewards”</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Iespējot Brave aizsargus</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Vairogi ir IESLĒGTI<ph name="STATUS_AFTER"/> šai vietnei</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Vairogi ir IZSLĒGTI<ph name="STATUS_AFTER"/> šai vietnei</translation>
-<translation id="5623354834493649144">Ja vietne nedarbojas pareizi, pamēģiniet izslēgt Aizsargus.
-   <ph name="NOTE_BEFORE"/>Piezīme: tas var mazināt Brave privātuma aizsardzības funkcijas.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Ja šķiet, ka šī vietne ir bojāta, mēģiniet noņemt vairogus.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Piezīme: tas var samazināt Brave konfidencialitātes aizsardzību.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Vai jums ir problēmas ar šo vietni?</translation>
+<translation id="9176447766421988172">Lai uzlabotu vietnes saderību, izmēģinām eksperimentu, kurā tiek ieslēgta tikai reklāmu bloķēšana. Brīdinājums: tiek atceltas visas privātuma aizsardzības iespējas. Vai vēlaties to izmēģināt? <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Lūdzu, ņemiet vērā, ka atsevišķām vietnēm, kurās netiek izmantota Brave konfidencialitātes aizsardzība, varat iestatīt vairogus uz NOLEMT.</translation>
+<translation id="1836572675775891780">Ieslēgt tikai reklāmu bloķēšanas režīmu</translation>
+<translation id="6623668214089604469">Vai vietne tagad darbojas pareizi?</translation>
+<translation id="8978860854770042258">Lūdzu, apsveriet iespēju iesniegt ziņojumu, ja šī vietne joprojām ir bojāta.</translation>
+<translation id="4677356505199464553">Izskatās labi</translation>
+<translation id="1992750560347846445">Ziņot par vietni</translation>
+<translation id="2887186586339544116">Ieslēgts tikai reklāmu bloķēšanas režīms</translation>
+<translation id="673665019618844072">Pašlaik izmantojat tikai reklāmu bloķēšanas režīmu. Šis režīms nodrošina tikai reklāmu bloķēšanas aizsardzību. Ja vēlaties atgriezties pie pilnas vairogu funkcijas režīma, atspējojiet šo režīmu iestatījumos.</translation>
+<translation id="4820891023903368625">Bloķētas reklāmas <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Izsekotāji, reklāmas un vairāk bloķētu <ph name="LINK_BEFORE"/> Uzzināt vairāk <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nav aizsargāts ar Brave aizsargiem <ph name="LINK_BEFORE"/> Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Papildu vadīklas</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Atļaut pirkstu nospiedumu ņemšanu</translation>
 <translation id="7638541189782135885">Neatjaunināt HTTP savienojumus</translation>
 <translation id="2570787596946026998">Izveidot savienojumu tikai ar HTTPS</translation>
-<translation id="1992750560347846445">Ziņot par vietni</translation>
 <translation id="2387532482048804818">Ziņojiet mums, ja vietne ar aktivizētiem aizsargiem nedarbojas pareizi.</translation>
 <translation id="3795015906457257780">Jūsu skatāt šo vietni, neizmantojot Brave privātuma aizsardzību.</translation>
 <translation id="7194012750329511146">Brave aizsargi

@@ -2,48 +2,9 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="lo">
 <translation id="7630214457764713113">ຄັດລອກລິ້ງທີ່ສະອາດ</translation>
-<translation id="3478449063771497234">ການແຈ້ງເຕືອນຖືກປິດ</translation>
-<translation id="2862978891748913252">ເລືອກປະເທດຂອງທ່ານ</translation>
-<translation id="3970520675790340955">ເລືອກປະເທດຂອງທ່ານເພື່ອໃຫ້ພວກເຮົາສາມາດສະແດງຕົວເລືອກແລະໂຄສະນາທີ່ຖືກຕ້ອງສໍາລັບພື້ນທີ່ຂອງທ່ານ.</translation>
 <translation id="721490496276866468">ນໍາເຂົ້າລະຫັດຜ່ານ</translation>
 <translation id="8178175542325151321">ເລືອກໄຟລ໌ .csv ທີ່ມີລະຫັດຜ່ານຂອງທ່ານເພື່ອນໍາເຂົ້າໄປຫາຕົວຈັດການລະຫັດຜ່ານຂອງ Brave</translation>
-<translation id="7301741773883122509">ຕອນນີ້ທ່ານສາມາດໄດ້ຮັບລາງວັນເພື່ອການເບິ່ງໂຄສະນາ. ທ່ານກຳລັງຊ່ວຍໃຫ້ເວັບໄຊທ໌ເປັນທີ່ດີສຳລັບທຸກຄົນ. ແລະນັ້ນມັນດີເດີ!</translation>
-<translation id="6439128034594289376">ຍິນດີດ້ວຍ! ທ່ານພ້ອມແລ້ວ!</translation>
-<translation id="370665806235115550">ກຳລັງໂຫຼດ...</translation>
-<translation id="7931127789630755251">ຮັບໂທເຄັນຈາກໂຄສະນາສ່ວນຕົວທີ່ທ່ານເຫັນໃນ Brave</translation>
-<translation id="7859066142771796818">ໃຊ້ໂທເຄັນເພື່ອຊື້ບັດຂອງຂວັນ, ແລກປ່ຽນສະກຸນເງິນອື່ນ, ສະໜັບສະໜູນຄຣີເອີເຕີ້ ແລະ ອື່ນໆອີກຫຼາກຫຼາຍ.</translation>
-<translation id="3863981251715594911">ວິທີໃຊ້ງານເປັນແນວໃດ?</translation>
-<translation id="5547108999862247665">Brave Rewards ເຮັດວຽກແນວໃດ?</translation>
-<translation id="2965798296974325760">ເລີ່ມໃຊ້ງານລະບົບ Rewards</translation>
-<translation id="8220484609979012449">\n\nທ່ານຍັງສາມາດສົ່ງເງິນເຂົ້າໃຫ້ຜູ້ສ້າງນີ້ໄດ້ໂດຍການໃຊ້ກະເປົາ Web3 ຂອງທ່ານ.</translation>
-<translation id="6385969012847057348">ຜູ້ສ້າງນີ້ບໍ່ອາດຮັບເງິນບໍ່ໄດ້ຈາກ <ph name="CUSTODIAN"/>.</translation>
-<translation id="735733310778086206">ຜູ້ສ້າງນີ້ຍັງບໍ່ທີ່ຈະຮັບການບໍລິຊາບຄານ Web3 ຫຼືການບໍລິຊາບຄານຄຣິບໂຕ.</translation>
-<translation id="6268134562674951939">ທ່ານບໍ່ມີໂທເຄັນພຽງພໍ</translation>
-<translation id="4529874892536380156">ກຳນົດໃຫ້ເປັນການສ່ວນຮ່ວມເດືອນ ແບບເປັນປະຈຳ. ທ່ານສາມາດຍົກເລີກໄດ້ທຸກເວລາ.</translation>
-<translation id="5562948772940025260">ທ່ານສາມາດສົ່ງໄດ້ເຖິງ <ph name="AMOUNT"/> BAT ໂດຍໃຊ້ຍອດເງິນ Brave Rewards ຂອງທ່ານ.</translation>
-<translation id="5012991400231464322">ການສ່ວນຮ່ວມເດືອນ</translation>
-<translation id="5907051927340164207">ທ່ານກຳລັງສົ່ງການສ່ວນຮ່ວມປະຈຳເດືອນໃຫ້ນັກສ້າງລາຍນີ້ແລ້ວ</translation>
-<translation id="4848906651275579475">ທ່ານຍັງສາມາດສົ່ງການບຍາຍໄດ້ໃນປະຈຸບັນ ແລະທ່ານສາມາດຍົກເລີກເງິນອອກເປົ້າຂອງທ່ານໂດຍຖອກຜູ້ສ້າງອອກຈາກ <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
-<translation id="5379685283876547860">ການມອບຖວາຍຖືກສົ່ງແລ້ວ!</translation>
-<translation id="1041398280582063935">ແບ່ງປັນການສະໜັບສະໜູນຂອງທ່ານ</translation>
-<translation id="8855543392451028706">ຍິນດີຕ້ອນຮັບ! ຜູ້ໃຊ້ສາມາດໃຫ້ການສະໜັບສະໜູນແກ່ຜູ້ສ້າງເນື້ອຫາຄົນນີ້ໂດຍສົ່ງການມອບຖວາຍໃຫ້ພວກເຂົາ ນີ້ແມ່ນວິທີໃນການຂອບໃຈພວກເຂົາສໍາລັບການສ້າງເນື້ອຫາທີ່ຢອດຢ່ຽມ.</translation>
-<translation id="1235176624390585199"><ph name="TITLE"/> ໃນ <ph name="PROVIDER"/></translation>
-<translation id="3699420827646925694">ອອກຈາກ <ph name="CUSTODIAN"/></translation>
-<translation id="9038728316393235637">ເຂົ້າລະຫັດກັບ <ph name="CUSTODIAN"/></translation>
-<translation id="7063168612616047608">ຂອບໃຈທີ່ໃຫ້ການສະໜັບສະໜູນແກ່ຜູ້ສ້າງເນື້ອຫາທີ່ທ່ານມັກ</translation>
-<translation id="3796032246917966749">ເບີ່ງເຫັນດັບວ່າທ່ານອອກຈາກ <ph name="CUSTODIAN"/> ສຳລັບ Brave Rewards. ເຂົ້າລະຫັດຄືນເພື່ອດຳເນີນການຕໍ່.</translation>
-<translation id="5202112619925434373">ຜູ້ສ້າງນີ້ບໍ່ໄດ້ກວ່າດອກການກວດສອບກັບ Brave Creators. ຕໍ່ໄປນີ້, ທ່ານຈະສາມາດພະນັ້ນໃຫ້ເຂົາໄດ້, ຫຼັງຈາກນີ້ຂຶ້ນ. <ph name="LEARN_MORE"/></translation>
-<translation id="3733094367889291358">ສົ່ງການມອບຖວາຍ</translation>
-<translation id="1899434873745933492">ບໍ່ສາມາດສົ່ງການມອບຖວາຍຂອງທ່ານໄດ້</translation>
-<translation id="1794046983410841192">ໃຊ້ Brave Rewards</translation>
-<translation id="8037118277449189044">ໃຊ້ກະເປົາ Web3</translation>
-<translation id="9059356165618961685">ສະສົມຂອງ Brave Rewards</translation>
-<translation id="86107454835395919">ກໍານົດເປັນການມອບຖວາຍປະເດືອນ</translation>
 <translation id="1177863135347784049">ກຳນົດເອງ</translation>
-<translation id="4827581232860040208">ເກີດບັນຫາໃນການສົ່ງການມອບຖວາຍຂອງທ່ານ</translation>
-<translation id="3259723213051400722">ກະລຸນາລອງອີກຄັ້ງ.</translation>
-<translation id="5298965408768377685">ຜູ້ສ້າງນີ້ໄດ້ລົງທະບຽນກັບ Brave ແລະສາມາດຮັບເງິນຈາກແຕ່ຄົນທີ່ໃຊ້ Brave Rewards. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave Rewards ອາດຈະບໍ່ທຳງານເມື່ອການແຈ້ງເຕືອນຖືກປິດ.</translation>
 <translation id="6112331814131703370">ບໍ່ສົ່ງການແຈ້ງເຕືອນ 'Switch to App'</translation>
 <translation id="4744921452903670666">ບອກເຮົາວ່າທ່ານຄິດຢູ່ໜ້າ</translation>
 <translation id="2524310205387880526">ໃຫ້ຄະແນນ Brave</translation>
@@ -58,7 +19,6 @@
 <translation id="5488843227043643519">ໃຫ້ຄະແນນ Play Store ບໍ່?</translation>
 <translation id="5867854497245948308">ຂອບໃຈສຳລັບຄຳໂຕຕອບຂອງທ່ານ!</translation>
 <translation id="4935400164159327304">ບອກເຮົາວ່າບໍ່ຫາທ່ານເຮົາແນວໃດໄດ້.</translation>
-<translation id="1420756770787071946">ສະໜັບສະໜູນຜູ້ສ້າງເນື້ອຫານີ້</translation>
 <translation id="8966035543003363155">Brave notifications ວຽນເວວໜ້າຢູ່ເບື້ອງລວງໜ້າ</translation>
 <translation id="7662771815233894695">ຄົບເຮັດເປັນຕົວຂອງເຈົ້າແກ່ນ້ຳແຝົ້າ: ຖ້າທ່ານມີໃຈແຕ່ຄິດບານ, Brave Rewards</translation>
 <translation id="4265429476391459783">ຄົບເຮັດສະພາມ: ບໍ່ຮັບບໍ່ດຶງເເຄະ &amp; Privacy Reports</translation>
@@ -75,11 +35,9 @@
 <translation id="325187916104529570">ເປີດການຕັ້ງຄ່າແລະເປີດການແຈ້ງເຕືອນນິວັດຂອງອຸປະກອນສຳລັບ Brave Ads.</translation>
 <translation id="5744802588121897886">ເປີດການແຈ້ງເຕືອນ Brave</translation>
 <translation id="7307834434086582547">ເປີດ/ປິດ Brave Shields</translation>
+<translation id="15346379325756892">ເຂົ້າໂໝດພາບໃນພາບ</translation>
 <translation id="6945863270524203017">ຮັບການປັບປຸງຄວາມເປັນສ່ວນຕົວທຸກອາທິດໃນດ້ານການປິດແລະການໂຄສະນາຮຸກຫຼາບ.</translation>
 <translation id="4324735664183300693">ເປີດການແຈ້ງເຕືອນ</translation>
-<translation id="6395059271589866759">Brave ເກັບຢ່າງຫນໍ້າ 5% ຂອງຈຳນວນທີ່ສົ່ງເພື່ອເປັນຄ່າບໍລິການ.</translation>
-<translation id="6661699662755460155">ແລກປ່ຽນ</translation>
-<translation id="6790981891677399838">ຂ້ອຍພິເສດຢູ່ <ph name="AMOUNT"/> BAT ໂດຍໃຊ້ Brave Browser. ເບິ່ງວ່າທ່ານຈະສາມາດຊ່ວຍສະເຫລີມລະບົບທີ່ທ່ານມັກແຫຼະເວັບໄຊທ໌ທີ່ທ່ານມັກໄດ້ຢ່າງໃດ: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">ການນຳທາງໜ້າ AMP ດ້ວຍລວມ</translation>
 <translation id="5197219128592971597">ເຂົ້າເບິ່ງ URL ຫນ້າທີ່ເປັນຕົ້ນສາທານະ (ທີ່ບໍ່ແມ່ນ AMP) ຊ່ວຍເຉື້ອນໄຫວໄປທີ່ໜ້າ Mobີລ (AMP)ຂອງກູເກິລ.</translation>
 <translation id="920638232916443453">ການນຳທາງ URL ການຕິດຕາມອັດຕະໂນມັດ</translation>
@@ -104,6 +62,8 @@
 <translation id="5713644099811900409">ບັນຊີ Brave</translation>
 <translation id="4472575034687746823">ເລີ່ມຕົ້ນໃຊ້ງານ</translation>
 <translation id="1799030480311994998">ຄຸນສົມບັດ</translation>
+<translation id="1919345977826869612">Ads</translation>
+<translation id="2839742394543397416">ຂໍ້ມູນວິເຄາະ</translation>
 <translation id="2005732746077850308">Brave Shields &amp; ຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="4692623383562244444">ເຄື່ອງມືຄົ້ນຫາ</translation>
 <translation id="1468415711258933398">ແທັບມາດຕານ</translation>
@@ -114,8 +74,6 @@
 <translation id="6285118765755298263">ດັດສະນີເຄື່ອງມືຄົ້ນຫາອື່ນໆ</translation>
 <translation id="919715748352669592">ເຮັດໃຫ້ເວັບໄຊທີ່ຕາມ OpenSearch ຖືກສະເຫນິຕະໄປທາງໃໝ່ຢ່າງອັດໂມດ.</translation>
 <translation id="9148058034647219655">ອອກ</translation>
-<translation id="8047754398610073499">ປິດແຈ້ງການເຫີຍຄຸກຄີ້</translation>
-<translation id="2621893359845808115">ປິດປ່ອງຂອງເວັບໄຊທ໌ທີ່ຂໍໃຫ້ທ່ານຍອມຮັບ / ປະຕິເສດຄຸກຄີ້</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">ຕົວກ່ອງການຟິນເຕີປິ້ນໃນເນື່ອງຫມາຍ</translation>
 <translation id="2398817776566547893">ເຮັດໃຫ້ຕັ້ງຄົ້ນຂອງທ່ານສາມາດປິດຄຳວ່າແລະທີ່ຂອງພາສາ</translation>
@@ -136,6 +94,7 @@
 <translation id="8580328754808744073">ສ້າງການຄັດກອງແບບແບບສັ່ງສິນຄ້າແທ້</translation>
 <translation id="6532106788206463496">ບັນທຶກການປ່ຽນແປງ</translation>
 <translation id="5132969826889386652">ບັນທຶກຮຽບຮ້ອຍແລ້ວ</translation>
+<translation id="4335929145384293789">ເພີ່ມຕົວກັ່ນແບບກຳນົດເອງທີ່ທ່ານໄດ້ສ້າງໄວ້ ໃສ່ແຖວລະຫຼັກໃນຊ່ອງດ້ານເທິງ. ກະລຸນາແນ່ໃຈວ່າໄດ້ໃຊ້ <ph name="ADBLOCK_FILTER_SYNTAX"/>.</translation>
 <translation id="5023212862780303376">ນິວຕິບັດອາດຈະຮ້ອນແລະເທິລາມວືດ.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
@@ -246,10 +205,10 @@
 <translation id="7818938154803162778">ໄດ້ເລີຍ, ຂ້ອຍຍິນດີຊ່ວຍ.</translation>
 <translation id="3545804467215833536">ກົດເພື່ອເບິ່ງ Brave Shields</translation>
 <translation id="1724327820822194498">ເຫັນທຸກ ຄວາມສາມາດທີ່ Brave ປ້ອງກັນໄດ້, ທຸກອ່ອນປະເງີນ, ໃຫ້ Shields.</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> ແລະ <ph name="TRACKER"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> ແລະ Brave &amp; ຕົວຕິດຕາມອື່ນໆທີ່ຖືກປ້ອງກັນ</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
 <translation id="8281886186245836920">ຂ້າມ</translation>
-<translation id="1377600615067678409">ຂ້າມໄປກ່ອນ</translation>
 <translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="986879628471635371">ການລົງທະບຽນມື້ໃໝ່</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -261,6 +220,7 @@
 <translation id="6871397658902960384">ເລີ່ມການຮູນເສື່ອງ</translation>
 <translation id="454386012157232640">ຂ້ອມມູນບໍ່ໄດ້ຄຳນຶງ</translation>
 <translation id="1448877943847791441">Brave ກຳລັງສະແດງໂຄສະນາແຕກໃນ</translation>
+<translation id="4410793187232041318">ດຽວນີ້ທ່ານຈະໄດ້ຮັບໂທເຄນຈາກ Brave Ads.</translation>
 <translation id="6511854390690723657">ນີ້ແມ່ນໂຄສະນາແທັບທີທ່ານສະແດງ. ກົດເພື່ອຮຽນຫຼາຍຂຶ້ນ.</translation>
 <translation id="2070991379950719711">ເລີ່ມນໍາໃຊ້ Brave Rewards</translation>
 <translation id="48520986898237073">ຕໍ່ໄປຍັງ wallet</translation>
@@ -271,7 +231,6 @@
 <translation id="1545749641540134597">ໃຊ້ QR Code</translation>
 <translation id="5317781812114905957">ຄໍາແນະນຳ</translation>
 <translation id="8515319483805157233">ແມ່ນແຕ້ QR Code, ປັດງານໃນການຂໍໍ້ຂວາງ</translation>
-<translation id="2734870894159530879">ຂໍໃຫ້ <ph name="WALLET_PROVIDER"/> ມີທີ່ສະເຫນີສະເຊາະ</translation>
 <translation id="7658239707568436148">ຍົກເລີກ</translation>
 <translation id="1201402288615127009">ຖັດໄປ</translation>
 <translation id="8481779960444041069">ເພື່ອພັດທະນາຄວາເປັນມີມະນັງານ, ຕັດາ ເປັນ Browser Start</translation>
@@ -300,16 +259,7 @@
 <translation id="7002271985859760052">ການດໍາເນີນການໜ້າເວັບ</translation>
 <translation id="7104487676473617844">ຫົວຂໍ້ຂ້າງລຸ່ມນີ້ຈະມອງເຫັນຢູ່ໃນເມນູພຽງແຕ່ໃນເວັບໄຊທີ່ເປີດຢູ່ສະໜັບສະໜຸນ</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">ການຕັ້ງຄ່າ</translation>
-<translation id="6020176662032623904">ຜູ້ສ້າງທີ່ຢືນຢັນແລ້ວ</translation>
-<translation id="2369994359029526515">ຜູ້ສ້າງທີ່ບໍ່ໄດ້ຢືນຢັນ</translation>
-<translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="1848737374354350807">ຍອດເງິນ</translation>
-<translation id="4781696154289395607">ທ່ານໄດ້ສະເຫນີ <ph name="BAT_VALUE"/> BAT.</translation>
-<translation id="2429828319207652823">ເກີດປັນຫາໃນການປະມວນຜົນການບໍລິຈາກຂອງທ່ານ.</translation>
-<translation id="683765328936486920">ໃນ YouTube</translation>
-<translation id="8969049974285901797">ໃນ Twitch</translation>
 <translation id="8038539967102225446">Brave Ads ມາຮອດແລ້ວ!</translation>
 <translation id="222883304157347087">(ອຸປະກອນນີ້)</translation>
 <translation id="4157741509680155021">ອຸປະກອນທີ່ເຊື່ອມໃນກຸ່ມ</translation>
@@ -373,7 +323,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="4114170343590425996">ການລືມາດຽນຂອງ Brave Rewards ໄດ້ເກິດຂື້ນ. ກະລຸນາຮີສູຼ໌ Brave ແລະພຽງທ້ັງຫມົດນີ້.</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5611966874859284786">ສະແດງປ່າຢາງທີ່ Brave ບໍ່ແມ່ນໃຊ້ງານ</translation>
-<translation id="6606319453795180219">ອັນຕິ້ນໃຫ້ລືມຂອງທ່ານ​​​ແລະປົວຂອງນາມ Brave Rewards ທັງໝົດ</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>ປັບໃຫມ່ຂໍ້ມູນຂອງ Brave Rewards…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>ປັກປອໄຟເຄົາຂອງ Brave Ads…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">ເພີ່ມບຸກມາກ</translation>
@@ -417,12 +366,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1413177583895309156">Brave VPN ເຂົ້າລະຫັດ ແລະ ປົກປ້ອງທຸກກິດຈະກຳອອນລາຍຂອງທ່ານ, ເຖິງແມ່ນວ່າໃຊ້ງານນອກບຣາວເຊີ້ Brave.</translation>
 <translation id="3974348661685061050">ທົດລອງໃຊ້ຟຣີ 7 ມື້</translation>
 <translation id="5789441016350810005">Brave Ads ຫຼາຍຮູປ</translation>
-<translation id="4973347371961481083">ການບໍລິຈາກ</translation>
-<translation id="7047578174221019462">ການບໍລິຈາກປະຈໍາເດືອນຂອງທ່ານໄດ້ຖືກປະມວນຜົນແລ້ວ.</translation>
-<translation id="3124090095880236567">ເປີດແຖຂອສະນາ</translation>
-<translation id="2975780980638932742">ທີ່ສະເຕັມບອມຈ</translation>
-<translation id="7541582550122501404">ການມອບໝາຍກຳລັງລໍຖ້າ</translation>
-<translation id="8520059774736886747">ຜູ້ສ້າງ <ph name="PUBLISHER_NAME"/> ໄດ້ຮັບການຢືນຢັນເໝາະສົນໃໝ່</translation>
 <translation id="1486343603936278248">ໂທເກັນ</translation>
 <translation id="7781069478569868053">ໜ້າແທັບໃໝ່</translation>
 <translation id="5927196110206824867">ພາບພື້ນຫຼັງທີ່ໄດ້ຮັບການສະໜັບສະໜູນໄດ້ສະໜັບສະໜູນພັນທະກິດຂອງ Brave ທີ່ຈະສ້າງເວັບທີ່ເປັນເອກະລາດ ແລະສົນໃຈຜູ້ໃຊ້ກ່ອນ. ແລະບໍ່ເຫມືອນບໍລິສັດ Big Tech ພວກເຮົາວັດຜົນໂຄສະນາຢ່າງບໍ່ລະບຸຕົວເພື່ອປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງທ່ານ.</translation>
@@ -438,26 +381,14 @@ Enter the sync chain code words shown below.</translation>
 <translation id="2898634658146274982">ເປີດລິ້ງຈາກພາຍນອກດ້ວຍ Brave</translation>
 <translation id="5616508928556767259">ເປີດລິ້ງຈາກແອັບອື່ນຜ່ານ Brave Webview. ໝາຍເຫດ: ຕ້ອງຕັ້ງຄ່າໃຫ້ Brave ເປັນບຣາວເຊີ້ເລີ່ມຕົ້ນກ່ອນ.</translation>
 <translation id="2394961582378297792">ອອກຈາກລະບົບແລ້ວ</translation>
-<translation id="5308380583665731573">ເຊື່ອມຕໍ່</translation>
 <translation id="3368922792935385530">ເຊື່ອມຕໍ່ແລ້ວ</translation>
-<translation id="6569877533335686968">Uphold</translation>
-<translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="6011108706830742093">ZebPay</translation>
-<translation id="1665118090708049096">ເຂົ້າໄປທີ່ <ph name="WALLET_PROVIDER"/> ຂອງຂ້ອຍ</translation>
-<translation id="4858636682078269312">ເຂົ້າລະບົບໄປທີ່ <ph name="WALLET_PROVIDER"/> ຂອງທ່ານ</translation>
 <translation id="8874184842967597500">ບໍ່ໄດ້ເຊື່ອມຕໍ່</translation>
-<translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">ແບ່ງປັນ Brave ໃຫ້ເພື່ອນຂອງທ່ານ!</translation>
 <translation id="717952606991220586">ຕາຍຫຼາຍ, ມີບາງຢ່າງຜິດພາດ. ກະລຸນາລອງອີກຄັ້ງຫຼັງ.</translation>
 <translation id="987264212798334818">ທົ່ວໄປ</translation>
 <translation id="1116694919640316211">ກ່ຽວກັບ</translation>
 <translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
 <translation id="1275213816424141989">ເອົາໄວ້ພາຍຫຼັງ</translation>
-<translation id="8164992819127316581">ການຈ່າຍເງິນສໍາລັບ <ph name="CURRENT_MONTH"/> rewards ຈະລຶບການການປະ່ບປົວໄປຖເຖີດ <ph name="PAYOUT_DATE"/>.</translation>
-<translation id="33967210973550414">ການຈ່າຍເງິນສໍາລັບ <ph name="CURRENT_MONTH"/> rewards ກຳລັງປະເສີດ. <ph name="CHECK_STATUS"/></translation>
-<translation id="1622952853310946314">ການຈ່າຍເງິນສໍາລັບ <ph name="CURRENT_MONTH"/> rewards ແມ່ນສົມບູນແລ້ວ. <ph name="SUPPORT"/></translation>
-<translation id="7717357606512850995">ກວດສະຖານະ</translation>
 <translation id="3624048886326677117">ບລັອກເຈົ້າກອງຕາມ &amp; ຂ່າວ (Aggressive)</translation>
 <translation id="7151914815476509258">ບລັອກເຈົ້າກອງຕາມ &amp; ຂ່າວ (Standard)</translation>
 <translation id="7384778069178817075">ອະນຸຍາດໃຫ້ tracker ແລະຂໍ້ສະເໜີທັງໝົດ</translation>
@@ -564,31 +495,8 @@ Enter the sync chain code words shown below.</translation>
 <translation id="13296465911709339">ຂໍຄວາມຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
 <translation id="2735834606413553397">ທີ່ຢູ່ສາທານາຂອງທ່ານຖືກ​ສຳ​ນຳ​ບາງ​ເລືອນ​ສະ​ຂອງ​ໄລບາດ.</translation>
 <translation id="2977461003134694205">ສະຖິຕິຄວາມເປັນສ່ວນຕົວ</translation>
-<translation id="2956070106555335453">ສະຫຼຸບ</translation>
-<translation id="7465614181960492526">ຮັບ Tokens &amp; ໃຫ້ກັບຄືນ</translation>
-<translation id="2731539192954672606">ຮັບເຫັນໂທກອນເພືອນການເບິ່ງການສະໜອບໂຄສະນາທີ່ຮັກແພະຄວາມສິດຖິນິຍາກໃຫ້ທ່ານແກ້ຄອຍ.</translation>
-<translation id="631124996535890460">ໂດຍພາຍໄປ, ທ່ານເປັນຄົນຫວັດກຸນຈຸດໃນເຖິງການບໍ່ບັນນາມ <ph name="TERMS_OF_SERVICE"/> &amp; <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">ນະໂຍບາຍຄວາມສ່ວນຕົວ</translation>
-<translation id="8363792084628930008">ເມື່ອເປີດໃຊ້ງານ Rewards, ຖືວ່າທ່ານຍອມຮັບ <ph name="TERMS_OF_SERVICE"/> ແລະ <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="185034574799484512">ອັບເດດທອດສຽງເໂດ້ວ</translation>
-<translation id="7930505144430343145">ຍິນດີຕ້ອນຮັບ Brave Rewards!</translation>
-<translation id="3477340970981564961">Brave Ads rewards you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</translation>
-<translation id="6973095375773523904">ໃຈ້ໂຄສະນາຕາງໆ?</translation>
-<translation id="4328028439561659455">Brave Ads appears as notifications on your screen. You control how often you see these ads.</translation>
-<translation id="7712287524451429139">ທ້າຍທີ່ການໃຫ້ຄວາມສຸດ້າໆ</translation>
-<translation id="105037569026952831">Creater receives your token contributions automatically based on your engagement levels that we measure as ‘Attension’.</translation>
-<translation id="3025802705256919103">ຊາບຄິວ້າມທາງຂໍຂອງທ່ານ</translation>
-<translation id="8235783939971604011">Tipping is a way to enjoy and support content creators that you love. Get tips!</translation>
-<translation id="4215679190414901888">ສາຍຂວາ້ນແບບໃໝ່</translation>
-<translation id="3494356595346329740">Your changes are ready.</translation>
-<translation id="3286390186030710347">ແທັບ</translation>
-<translation id="3115702351969988294">ທ່ານຕ້ອງການທຼກໂຄສະນາບໍ່</translation>
-<translation id="2353222426385080466">ໂຄສະນາສ່ວນຕົວມາກຂຶ້ນ, ລາງວັນຫຼາຍຂຶ້ນ.</translation>
-<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> ໂຄສະນາຕໍ່ຊົ່ວໂມງ</translation>
-<translation id="827315274423079662">ຍິນດີ, ທ່ານພ້ອມແລ້ວ!</translation>
-<translation id="3895246934788932488">ໂດຍການໃຊ້ງານ Brave Rewards, ທ່ານກໍາລັງປ້ອງກັນຄວາມເປັນສ່ວນຕົວຂອງທ່ານ ແລະ ຊ່ວຍໃຫ້ເວັບໄຊທ໌ເປັນສະຖານທີ່ດີຂຶ້ນສໍາລັບທຸກຄົນ. ແລະມັນຍອດເຢັ້ຽ!</translation>
 <translation id="5705882733397021510">ກັບໄປ</translation>
-<translation id="3985567919248057638">ມາລອງສໍາຫຼວດດູບໍ?</translation>
 <translation id="7889432931837317731">ເປີດອັດຕະໂນມັດເມື່ອເປັນໄປໄດ້</translation>
 <translation id="1029304566263314007">ສະແດງການແຈ້ງເຕືອນຄວາມຄືບໜ້າການດາວໂຫລດ</translation>
 <translation id="2910433761530295035">ຖາມທີ່ຈະບັນທຶກໄຟລ໌ (ຖ້າພົບເຫັນ SD ກາດ)</translation>
@@ -606,7 +514,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1822560017823072927">ໄອທີແລະເຄື່ອງມືແບບສາທາແລະເອກະຊົນ</translation>
 <translation id="5825943197137337319">ໄອທີເທົ່າກັບຂອງສາທາເທົ່ານັ້ນ</translation>
 <translation id="1689062823386843231">ປິດ UDP ບໍ່ຜ່ານ Proxy</translation>
-<translation id="6915830896450988084">ສົ່ງດ້ວຍ <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">ສົ່ງ</translation>
 <translation id="538450413584738399">ແລກປ່ຽນ</translation>
 <translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
@@ -634,6 +541,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1537175937716697987">ເບິ່ງແມ່ນ recovery ຄຳ</translation>
 <translation id="5303015959766064022">ຂ້ອຍຈະສຳຮອງໃນພາຍຫຼັງ</translation>
 <translation id="7345730059518887993">ມທົບສອບກັນ</translation>
+<translation id="7640406249038879146">ປ້ອນຄໍາໃນຕໍາແໜ່ງ <ph name="WORD_POSITION"/> ຂອງຄໍາແຫ່ງມູນນິເຊີຂອງທ່ານ.</translation>
 <translation id="2598171223363459366">ທ່ານສາມາດຂ້າມຂັ້ນຕອນນີ້ໄປກ່ອນ ແຕ່ຍັງຈໍາເປັນຕ້ອງສຳຮອງວາລະກົດການກູ້ຄືນເພື່ອໃຫ້ບັນຊີຂອງທ່ານປອດໄພ.</translation>
 <translation id="8100001366858145406">ເປີດອ້າຍທົດ?</translation>
 <translation id="5493402808936397665">ເຜີດໃຊ້ໂດຍບໍ່ໃຊ້ລະຫັດຜ່ານ.</translation>
@@ -757,6 +665,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="755448900483975096">ຜູ້ຈັດການສັນຍາອີເฟອນ</translation>
 <translation id="1279441577056010362">ດຳເນີນຕໍ່ອີເມລ</translation>
 <translation id="7125582363614011660">ການສະໜອງການຊ່ວຍເຫລືອໄດ້ດ້ວຍການຊ່ວຍເໝືອດຂອງທີມ Guardian.\n\nກະລຸນາເລືອກຂໍ້ມູນທີ່ທ່ານພໍໃຈແບ່ງປັນໃຫ້ພວກເຮົາ.\n\nຫາກເຈົ້າແບ່ງປັນຂໍ້ມູນທີ່ເພິ່ມມາມາກຂຶ້ນໃນຕອນທຳອິດ,ການແກ້ໄຂຂໍ້ຂັດຂ້ອງຂອງເຈົ້າກັບບຸກຄະລາກອນໃນການສະໜອງການຊ່ວຍເຫລືອຂອງພວກເຮົາຈະງ່າຍຂຶ້ນ.</translation>
+<translation id="8813171284214934811">ເລືອກພື້ນທີ່ເຊີບເວີ VPN ໃກ້ທີ່ສຸດອັດຕະໂນມັດຕາມເຂດເວລາຂອງທ່ານ. ຕົວເລືອກນີ້ແນະນຳໃຫ້ໃຊ້ເພື່ອໃຫ້ຄວາມໄວອິນເຕີເນັດສູງສຸດ.</translation>
 <translation id="3199127022143353223">ເຄື່ອງມື</translation>
 <translation id="5431902940483264007">ເຫມາະສົມ</translation>
 <translation id="6527596624419285047">ໃຊ້ເຊີບເວີທີ່ດີທີ່ສຸດທີ່ມີຢູ່</translation>
@@ -825,14 +734,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="7373308452149471621">ຂີດຈຳກັດລາຄາຕໍ່ gas (Gwei)</translation>
 <translation id="5891811606602061966">ນຳເຂົ້າບັນຊີບໍ່ສຳເລັດ ກະລຸນາລອງໃໝ່.</translation>
 <translation id="4351811224047421378">ຕຳແໜ່ງທສີບທີ່ມີຄວາມລະອຽດ</translation>
-<translation id="3494964159182650590">ສະຫຼຸບລາງວັນ</translation>
-<translation id="590733288489975971">ລາງວັນຈາກໂຄສະນາ</translation>
-<translation id="1450735350187803276">ໂຄສະນາທີ່ທ່ານເຫັນໃນເດືອນນີ້</translation>
-<translation id="1767561995429774671">ໃຫ້ສະເຫນີ</translation>
-<translation id="6727102863431372879">ຕັ້ງຄ່າ</translation>
-<translation id="3074127054582480056">ຄວາມໃສ່ໃຈ</translation>
-<translation id="2280319752798785157">ການໃຫ້ປະຈຳເດືອນ</translation>
-<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="1241283133946520352">ເຄືອຂ່າຍ</translation>
 <translation id="1062463687579789365">ການປັບແຕ່ງເຄືອຂ່າຍຂອງ Wallet</translation>
 <translation id="2512821599885971349">ເພີ່ມເຄືອຂ່າຍ</translation>
@@ -859,6 +760,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="4945690646623486292">ເລືອກເຄືອຂ່າຍ</translation>
 <translation id="5233638681132016545">ເປີດໃນແທັບໃໝ່</translation>
 <translation id="8006088103295786154">ເຂົ້າເຖິງ Brave Wallet</translation>
+<translation id="5308380583665731573">ເຊື່ອມຕໍ່</translation>
 <translation id="8030169304546394654">ຕັດການເຊື່ອມຕໍ່ສຳເລັດ</translation>
 <translation id="3423275441470187644">ເຊື່ອມໄວ້ແລ້ວ</translation>
 <translation id="2391762656119864333">ຍົກເລີກເຊື່ອມຕໍ່</translation>
@@ -943,6 +845,7 @@ Enter the sync chain code words shown below.</translation>
 <translation id="9023148942866814328">ໂຊເຖົາໄຜ່ຂອງໂພຼໄວ້</translation>
 <translation id="5472400694702418949">ເພີ້ມໂພຼໃໝ່ຂັບລອກເປີດເມືອງວີເປ!</translation>
 <translation id="7002577172732106572">ການໂຫລດໂນນາຊີ້</translation>
+<translation id="8181161042860463420">ບັນຊີໂທເຄນທີ່ໂຍງມາຍັງຍັງບໍ່ມີ. ຈະມີການໃຊ້ເງິນ SOL ເພື່ອສ້າງແລະຈັດສັນ. <ph name="CLICK_START"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">ກຳລັງອັບເດັດຄີ້ນຫ້າງ VPN...</translation>
 <translation id="4784306439879850873">ບົວທີ່ມີນໄລຍະຕອງເຄື່ອນໄຂໃນໃນບັດຄັນ</translation>
 <translation id="3474375934783434676">ລົງຊື່ດ້ວຍຄວາມສ່ຽງຂອງທ່ານເອງ</translation>
@@ -998,9 +901,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="8382368767453083629">ເລີ່ມຕົ້ນ multisig 2</translation>
 <translation id="77243237706803459">ເລີ່ມຕົ້ນການສ້າງເງິນ 2</translation>
 <translation id="583281660410589416">ບໍ່ຮູ້ຈັກ</translation>
-<translation id="909076461795862330">ຂໍອະໄພ, ເກີດຂໍ້ຜິດພາດໃນຂະນະຂະຫນາດຈັດຕັ້ງ Brave Rewards. ກະລຸນາລອງໃໝ່.</translation>
-<translation id="7352651011704765696">ມີບາງຢ່າງຜິດພາດ</translation>
-<translation id="7144878232160441200">ລອງໃໝ່</translation>
 <translation id="6040143037577758943">ປິດ</translation>
 <translation id="7710469167917867539">ຄ່າທຳນຽມທຸລະກຳ</translation>
 <translation id="7843211152394841558">Max Retries:</translation>
@@ -1032,41 +932,25 @@ Enter the sync chain code words shown below.</translation>
 <translation id="6365389672683343144">ການຕັ້ງຄ່າ Brave VPN ຂອງທ່ານສົນບັນຍາດໃຫ້ປົກປ້ອງໄດ້ຮອດ 5 ອຸປະກອນຕ່າງໆ, ທີ່ເປັນ Android, iOS ແລະ Desktop. ເພື່ອໃຊ້ໄດ້ທ່ານຕ້ອງເຊື່ອມການຊື້ເວັນມາຈາກ Play Store ຂອງ Google ກັບບັນຊີ Brave ຂອງທ່ານ.</translation>
 <translation id="6610899852831463073">ບໍ່ສາມາດເປີດໃຊ້ໃນການຄົ້ນຫາປອດໄພແລ້ວ</translation>
 <translation id="7954263306665462056">ການຄົ້ນຫາປອດໄພໄດ້ຖືກປິດໃນອຸປະກອນຂອງທ່ານ. ເພື່ອເປີດໃຊ້, ກະລຸນາເຮັດໃຫ້ແນ່ໃຈວ່າ Google Play Services ໄດ້ຕິດຕັ້ງແລ້ວ ແລະເປັນຂັ້ນຕອນຫລຸດໄປຫຼ້າສຸດ.</translation>
-<translation id="6605147707233193230">ເປີດໃຊ້ເພື່ອຊ່ວຍເປັນກຳລັງໃຫ້ຜູ້ສາມາດ.</translation>
-<translation id="5899814466108868020">ທ່ານກຳລັງສະໜັບສະໜູນ Brave ແລະ ຊຸມຊົນ BAT</translation>
-<translation id="6067959437127691361">ການໃຊ້ Brave Rewards ຊ່ວຍສະຫນັບສະຫນຸນນັກສ້າງເນື້ອຫາ, ແລະໃຫ້ທ່ານຮັບ BAT.</translation>
-<translation id="3264975266761862670">ພ້ອມເລີ່ມຮັບລາຍໄດ້ແລ້ວຫຼືບໍ່?</translation>
-<translation id="265337947574975838">ເຊື່ອມຕໍ່ ຫຼື ສ້າງບັນຊີຜ່ານພາດເນີ້ຂອງພວກເຮົາ.</translation>
-<translation id="654447476965480878">ເບິ່ງວິທີສະສົມ BAT ເພີ່ມເຕີມ</translation>
-<translation id="6278643716658443228">ການຕັ້ງຄ່າລະບົບ Rewards</translation>
-<translation id="6516984207843289176">ເຊື່ອມບັນຊີ</translation>
-<translation id="4272136334824111854">ເດືອນນີ້, ທ່ານເຂົ້າເບິ່ງຄຣີເອເຕີ້ <ph name="CREATOR_COUNT"/> ຄົນທີ່ໄດ້ຮັບການສະໜັບສະໜູນຜ່ານ Brave Rewards</translation>
-<translation id="6845311459433734326">ເຊື່ອມບັນຊີບັນຫຍ້າເພື່ອທ່ານສາມາດໄດ້ຮັບລາງວັນ BAT ບາດໄດ້ ແລະນຳອອກລາງວັນຂອງທ່ານໄປສູ່ທີ່ໄດ້ໄດ້.</translation>
-<translation id="928980476243133540">ເຮັດໃນຍາມຕໍ່ມາ</translation>
-<translation id="579702532610384533">ເຊື່ອມຕື່ນຊຶ້ງຄືນ!</translation>
-<translation id="1619753851206150396">ທ່ານຖືກເຂົ້າລະບົບອອກແລ້ວ</translation>
-<translation id="8208669151660770401">ເຮັດຊື່ນຍ້ອມຄວາມປອດໄພບັນຊີຂອງທ່ານ. ກົດທາງລຸ່ມເພື່ອຕື່ນກັບຄືນໃໝ່.</translation>
-<translation id="6390041270339783491">ການມອບສ່ວນຮ່ວມປະຈໍາເດືອນລົ້ມເຫຼວ</translation>
-<translation id="9074594632540931067">ຄວາມຜິດພາດ: BAT ບໍ່ພ້ອມໃຊ້</translation>
-<translation id="5382684862562314222">BAT ຍັງບໍ່ມີການຮອງຮັບໃນພື້ນທີ່ຂອງທ່ານໃນ Uphold.</translation>
-<translation id="6996157559236886133">ຄວາມຜິດພາດ: ຂິດຈຳກັດຂອງບັນຊີ Uphold</translation>
-<translation id="1677961202754619328">ຕາມຂໍ້ມູນຈາກ Uphold, ປັດຈຸບັນມີຂິດຈຳກັດບາງຢ່າງໃນບັນຊີ Uphold ຂອງທ່ານ. ກະລຸນາເຂົ້າສູ່ລະບົບບັນຊີ Uphold ຂອງທ່ານແລະກວດສອບວ່າມີຄຳແນະນຳຫຼືເງື່ອນໄຂໃດທີ່ຍັງຄ້າງຄາຢູ່ ແລ້ວລອງເຮັດອີກຄັ້ງ.</translation>
-<translation id="5425006356459378415">ບໍ່ມີ Brave Rewards ຢູ່</translation>
-<translation id="833643743158564518">ການລົງທະບຽນສໍາລັບ Brave Rewards ຂະນະນີ້ຖືກປິດໃນເຂດພື້ນທີ່ຂອງທ່ານ. ແຕ່ໜ້າພາບທາງທາງອື່ນເວລນີ້ກກຉົນລອງ. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">ເນັດແທັກຄັ້ງຕິດຕາມເລບຍນ</translation>
 <translation id="2781668117338732220">ເນັດແທັກຄັ້ງຮອດໄດ້ຮອດ</translation>
 <translation id="282560918037172384">ເນັດແທັກຄັ້ງເຕັສ</translation>
-<translation id="8949422576126100041">ເອງລ່າທາງບ້ານນີ້ ພາຄືນຢາກ ພາຂຽນເວີນ</translation>
-<translation id="3435896845095436175">ເປີດໃຊ້ງານ</translation>
-<translation id="5296840868251496327">ເອາທັນທຕິດຕາມສົນຕ່າງໆທີ່ເລືອກແອັບຂອງ</translation>
-<translation id="591648995518106347">ໃຊ້ຫນັງສືຂອງທ່ານໃຫ້ເຂົ້າໃນຕໍ້າໃນຂັ້ນການຕອບສົດເພີງ</translation>
-<translation id="1295796122927221823">ອ່ານໃນຮູບແບບນຳສາໝວດທີ່</translation>
 <translation id="7568430944629653319">ເປີດການຄົ້ນພົບ NFT</translation>
 <translation id="622372328961630111">ເພີ່ມເອງ NFTs ທີ່ທ່ານເປັນເອງທີ່ບ່າຍເລື່ອງຈາກ API ທາງທີ່ສາມ. <ph name="BEGIN_LINK_1"/> ເພີ່ມເຕີນ. <ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">ບັນຊີຕາຕະລາງຄົ້ນຫາທີ່ຢູ່:</translation>
 <translation id="7659483790930268440">ດັດຊະນີຕາຕະລາງຄົ້ນຫາທີ່ຢູ່:</translation>
 <translation id="5494920125229734069">ເລືອກທັງໝົດ</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="944736176598169208">Rewards</translation>
+<translation id="4272190451231642425">ສົ່ງລາຍງານຄວາມຜິດພາດໂດຍອັດຕະໂນມັດ</translation>
+<translation id="1199170151481311646">ຂໍ້ມູນວິເຄາະທີ່ປົກປ້ອງຄວາມເປັນສ່ວນຕົວ</translation>
+<translation id="1706715315466634757">ອີເມວອະລາການ</translation>
+<translation id="6709133671862442373">ຂ່າວສານ</translation>
+<translation id="5990642573624858459">ການລາຍງານສະຖິຕິ</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2441719842399509963">ຕັ້ງຄ່າທັງຫມົດໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນ</translation>
+<translation id="4922034974043704366">ຟີເຈີນີ້ໄດ້ຖືກເປີດໃຊ້ເພາະທ່ານເລືອກເຂົ້າຮ່ວມ</translation>
+<translation id="3144818380093107753">Brave Origin ແມ່ນຮູບແບບການສະໝັກສະມາຊິກທີ່ເປີດໃຫ້ປິດໃຊ້ຄຸນສົມບັດທີ່ສ້າງລາຍຮັບ ທີ່ປົກກະຕິຊ່ວຍສະໜັບສະໜູນທຸລະກິດ Brave. ຜູ້ສະໝັກ Brave Origin ຈະຍັງຄົງໄດ້ຮັບຜົນປະໂຫຍດຈາກການປົກປ້ອງຄວາມເປັນສ່ວນຕົວ, ມິຕິການປິດໂຄສະນາ, ແລະຄວາມໄວ (ຜ່ານ Brave Shields), ພ້ອມກັບການອັບເດດຊອຟແວທົ່ວໄປ, ຊ່ອງວ່າງ Chromium ແລະການປັບປຸງຄວາມປອດໄພ ແລະ ຄວາມເປັນສ່ວນຕົວ. ທ່ານຍັງສາມາດປົດລັອກຕົວເລືອກເພື່ອປິດໃຊ້ເຊັ່ນ Brave Leo, News, Rewards, Wallet, VPN, ໂດເມນ Web3 ແລະອື່ນໆ.&lt;br/&gt;&lt;br/&gt;ສະມາຊິກຈະເຫັນແຜງຄວບຄຸມໃໝ່ໃນເມນູການຕັ້ງຄ່າບຣາວເຊີ. ຄຸນສົມບັດທີ່ມີຢູ່ ແລະທີ່ຈະເພີ່ມໃນອະນາຄົດຈະປາກົດຢູ່ນີ້ແລະຖືກປິດໄວ້ເປັນຄ່າເລີ່ມຕົ້ນ.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;ໝາຍເຫດ: Brave Origin ຈະບໍ່ປິດຄຸນສົມບັດບຣາວເຊີທີ່ທ່ານກຳລັງໃຊ້ ແລະຈະບໍ່ສົມພັນຄຸນສົມບັດ Brave Search ຫຼື Brave Search Ads.&lt;/b&gt;</translation>
 <translation id="8613144770663526433">ເຂົ້າລະບົບດ້ວຍ Brave Wallet</translation>
 <translation id="3696514931437952995">ທ່ານກຳລັງທິດໃຊ້ຢູ່ທີ່ <ph name="ORIGIN"/>. Brave Wallet ສົ່ງເບີນໄອດີຂອງທ່ານຕໍ່ <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">ເບິ່ງລາຍລະອຽດ</translation>
@@ -1158,8 +1042,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="5543505256451301851">ລອງໃຊ້ຟຣີ 7 ມື້</translation>
 <translation id="614530507403667291">ໂມເດວເລີ່ມຕົ້ນສຳລັບການສົນທະນາໃໝ່</translation>
 <translation id="4071849832011229600">ໂມເດວເລີ່ມຕົ້ນ</translation>
-<translation id="4185473179105062442">ຮັບ BAT ໂດຍກົງໄປຫາທີ່ຢູ່ຄຣີບໂຕ crypto ຂອງທ່ານເອງ</translation>
-<translation id="5802986777701714573">ພວກເຮົາໄດ້ເພີ່ມວິທີໃໝ່ໃນການຮັບລາງວັນ BAT ລາຍເດືອນຂອງທ່ານ. ຕໍ່ເຊື່ອມບັນຊີຈາກພາກສ່ວນຮ່ວມຂອງພວກເຮົາ ຫລື ໃຊ້ທາງເລືອກທີ່ຮັກສາຄີເພື່ອເລີ່ມຮັບລາງວັນໄດ້ເລີຍຕອນນີ້.</translation>
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
 <translation id="5538904824395606812">ການໃຊ້ບໍລິການໃນປັດຈຸບັນຄົບຄືນຫຼື Quad9</translation>
 <translation id="6393423486818299209">ການໃຊ້ບໍລິການໃນປັດຈຸບັນຄົບຄືນຫຼື Wikimedia DNS</translation>
@@ -1190,10 +1072,6 @@ Enter the sync chain code words shown below.</translation>
 <translation id="8051552210542030943">ລະຫັດ PIN</translation>
 <translation id="5233247193491045452">ລະຫັດໄປສະນີ</translation>
 <translation id="3300502432153878901">zip</translation>
-<translation id="4130750466177569591">ຂ້ອຍຍອມຮັບ</translation>
-<translation id="3251885322612056119">ໄດ້ປັບປຸງເງື່ອນໄຂການໃຊ້ບໍລິການ</translation>
-<translation id="4049035689681585146">ເຮົາໄດ້ອັບເດດ Terms of Service ສຳລັບ Brave Rewards. ເຮົາໄດ້ເຮັດການອັບເດດເຫຼົ່ານີ້ໃນການອະທິບາຍຄຳກ່າວຂອງພວກເຮົາແລະເພື່ອເຮັດໃຫ້ຄຳກ່າວຄອບຄຸມຄຸນສົມບັດໃໝ່. ຖ້າທ່ານຍັງໃຊ້້ບໍລິການຂອງ Brave Rewards, ນີ້ແມ່ນຄຳເຫັນດີແລະຕໍ່ໃນທີ່ຢູ່ໃໝ່. ຖ້າບໍ່ເຫັນດີ, ທ່ານສາມາດ <ph name="RESET_START"/>reset<ph name="RESET_END"/> Brave Rewards.</translation>
-<translation id="2165953574528546737">ເບິ່ງ <ph name="TOS_START"/>ເງື່ອນໄຂການໃຊ້ງານຂອງ Brave Rewards<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">ເປີດໜ້າຕ່າງຫຼາຍຫນ້າ</translation>
 <translation id="6167344249617630304">ເປີດຫນ້າຕ່າງໄດ້ຖຶງ 5 ຫນ້າພ້ອມກັນ ແລະ ຍ້າຍແທັບໄປຫາຫນ້າຕ່າງອື່ນ</translation>
 <translation id="1063948063403254568">ພົບຫນ້າຕ່າງຫຼາຍຫນ້າ</translation>
@@ -1218,10 +1096,9 @@ Enter the sync chain code words shown below.</translation>
 <translation id="2735247450315842119">ເະົາຈັບພາບຢູ່ໃນແທັບສ່ວນຕົວ</translation>
 <translation id="8420414929552321089">ຖ້າອະນຸຍາດ, ແທັບສ່ວນຕົວຈະເຫັນ ຂ້ອງໃນຂະແໜງຜູ້ໃຊ້ຂອງທ່ານ.</translation>
 <translation id="7956713633345437162">ທີ່ຄັ່ນໜ້າມືອຖື</translation>
-<translation id="3176467469116060712">ສະໜັບສະໜູນວຽກງານຊັ້ນນຳຂອງອຸດສາຫະກຳຂອງ Brave ສຳລັບຄວາມເປັນສ່ວນຕົວເທິງເວັບໄຊສ໌ ແລະ ລາຍການບລັອກໂຄສະນາໂອເພັນຊ໋ອດ</translation>
-<translation id="5896375129784311037">ປັບໃຫ້ເໝາະສົມສຳລັບອິນເຕີເຟັສບຣາວເຊີທີ່ລຽບງ່າຍຂື້ນ</translation>
-<translation id="746156554966264308">ຄວາມສຳຄັນຂອງ ໂລ້ກັນ Brave ສຳລັບການບລັອກໂຄສະນາ, ຄວາມເປັນສ່ວນຕົວ ແລະ ຄວາມໄວ</translation>
-<translation id="1432661650699782509">ການສະໜັບສະໜູນນະໂຍບາຍທີ່ບໍລິຫານຈັດການໂດຍໄອທີໃນບ່ອນເຮັດວຽກ</translation>
+<translation id="6261139507111008244">ສະໜັບສະໜູນພັນທະກິດ &amp; ການພັດທະນາໂຄງການເປີດແຫຼ່ງ</translation>
+<translation id="7882690061170175552">ລະບົບ UI ບຣາວເຊີທີ່ຖືກອອກແບບໃຫ້ສະໜອງການປົກປ້ອງ</translation>
+<translation id="2267973897341040743">ຮັກສາຄວາມສາມາດໃນການປິດໂຄສະນາ, ຄວາມເປັນສ່ວນຕົວ, &amp; ຄວາມໄວ</translation>
 <translation id="1361157028850796410">ຄຸ້ມຄ່າທີ່ສຸດ</translation>
 <translation id="7280825497485894053">ແພັກເກັດປະຈຳເດືອນ</translation>
 <translation id="4570901726096223030">ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບ Origin</translation>

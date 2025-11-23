@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Hjálpaðu okkur að bæta Brave með því að segja okkur hvers vegna þú leyfðir fótspor þriðju aðila. <ph name="BEGIN_LINK"/>Senda ábendingu<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Þú getur beðið um að sjá borðtölvuútgáfu vefsvæða</translation>
 <translation id="9183227624343766158">Nota Brave sjálfgefið</translation>
+<translation id="113098737392899175">Skoða síður með textabendli þegar lyklaborðið er tengt</translation>
 <translation id="1178015372320901893">Blað neðst í flýtileiðunum mínum</translation>
 <translation id="1178581264944972037">Gera hlé</translation>
 <translation id="1181037720776840403">Fjarlægja</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Halda áfram</translation>
 <translation id="904887679952026733">Nota dökkt þema fyrir vefsvæði þegar Brave notar dökkt þema, sé þess kostur</translation>
 <translation id="2390272837142897736">Auka aðdrátt</translation>
+<translation id="2397689164757137845">Leyft • Nákvæm</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Nákvæm</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{„<ph name="PERMISSION_1"/>“, „<ph name="PERMISSION_2"/>“ og <ph name="NUM_MORE"/> í viðbót leyft}one{„<ph name="PERMISSION_1"/>“, „<ph name="PERMISSION_2"/>“ og <ph name="NUM_MORE"/> í viðbót leyft}other{„<ph name="PERMISSION_1"/>“, „<ph name="PERMISSION_2"/>“ og <ph name="NUM_MORE"/> í viðbót leyft}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Hjálp og ábendingar</translation>
 <translation id="2501278716633472235">Fara til baka</translation>
 <translation id="2533138527374486328">Ef kveikt er á þessu geta vefsvæði beðið um að tengjast hvaða tæki sem er á staðarnetinu þínu. Þegar slökkt er á þessu geta vefsvæði ekki tengst tækjum á staðarnetinu þínu.</translation>
+<translation id="2536779053640817375">Leyft í þetta skipti • Nákvæm</translation>
 <translation id="2544997614631598250">Þemalitur dökkur</translation>
 <translation id="2546283357679194313">Fótspor og gögn vefsvæða</translation>
 <translation id="2570922361219980984">Einnig er slökkt á aðgangi að staðsetningu fyrir þetta tæki. Kveiktu á honum í <ph name="BEGIN_LINK"/>stillingum Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">Útilokaðar á sumum vefsvæðum</translation>
 <translation id="3132996321662585180">Uppfæra daglega</translation>
 <translation id="3143754809889689516">Spila frá byrjun</translation>
+<translation id="3164169438034704658">Þú getur kveikt á nákvæmri staðsetningu í <ph name="BEGIN_LINK"/>stillingum Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Leyfa vefsvæði að nota fótspor þriðju aðila</translation>
 <translation id="3167868116600277716">Tillögustraumur</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> af vistuðum gögnum</translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Brave mun aftur takmarka fótspor í dag</translation>
 <translation id="4338831206024587507">Öll vefsvæði undir <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Ekki leyfa vefsvæðum að senda tilkynningar</translation>
+<translation id="4341577178275615435">Notaðu F7 flýtilykilinn til að kveikja eða slökkva á skoðun með textabendli</translation>
 <translation id="4402755511846832236">Lokaðu á að vefsvæði geti séð hvenær þú notar þetta tæki</translation>
 <translation id="8382883799082236806">Blað neðst í Brave-litum opnað í hálfri hæð</translation>
 <translation id="4412992751769744546">Leyfa fótspor þriðja aðilla</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">Gera hlé á spilun</translation>
 <translation id="5877248419911025165">Minnka allar beiðnir</translation>
 <translation id="5878945009165002849">Útiloka innskráningartilkynningar frá auðkenningarþjónustum</translation>
+<translation id="588258955323874662">Allur skjárinn</translation>
 <translation id="5884085660368669834">Stilling vefsvæðis</translation>
 <translation id="5887687176710214216">Síðast opnað í gær</translation>
 <translation id="5908617755156109052">Ekki leyfa vefsvæðum að búa til þrívíddarkort af umhverfi þínu eða rekja stöðu myndavélar</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">Í lagi</translation>
 <translation id="6980861169612950611">Eyða vefsvæðagögnum? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Aðgengi</translation>
+<translation id="6991142177939282156">Leyft • Notar áætlaða</translation>
 <translation id="6992289844737586249">Spyrja áður en vefsvæðum er veitt heimild til að nota hljóðnemann þinn (ráðlagt)</translation>
 <translation id="7000754031042624318">Slökkt í stillingum Android</translation>
 <translation id="8683151724374457021">Þetta vefsvæði áætlar áhugasvið þitt og sendir svo öðrum vefsvæðum auglýsingatillögur. Þetta vefsvæði fær einnig upplýsingar um umfjöllunarefni auglýsinga frá Brave til að birta þér viðeigandi auglýsingar.</translation>
+<translation id="7036823721811529709">Hlustaðu í bakgrunninum</translation>
 <translation id="7044081119134178347">Myndavél leyfð í þetta skipti</translation>
 <translation id="7053983685419859001">Setja á bannlista</translation>
 <translation id="7055552182600664515">Vefsvæði kunna að nota efnisverndarþjónustu til að spila höfundarréttavarið efni <ph name="BEGIN_LINK"/>Nánar<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">Þessi stilling virkar án þess að auðkenna þig eða leyfa vefsvæðum að sjá vafraferilinn þinn en vefsvæði geta þó deilt litlu magni upplýsinga sem hluta af staðfestingunni</translation>
 <translation id="7409735910987429903">Vefsvæði gætu sent sprettiglugga til að birta auglýsingar eða notað framsendingu til að leiða þig inn á vefsvæði sem þú vilt hugsanlega ekki skoða</translation>
 <translation id="7412160840120117304">Aðallitur (sextándakerfi)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Stækka}one{Stækka: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{Stækka: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Spyrja fyrst</translation>
 <translation id="7423538860840206698">Lokað fyrir lestur klippiborðs</translation>
 <translation id="7425915948813553151">Dökkt þema fyrir vefsvæði</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">Eyða</translation>
 <translation id="8284326494547611709">Skjátextar</translation>
 <translation id="8300705686683892304">Stjórnað af forriti</translation>
+<translation id="8301363963630676147">Leyft í þetta skipti • Notar áætlaða</translation>
 <translation id="8315509175050791576">Deilir flipa</translation>
 <translation id="8324158725704657629">Ekki spyrja aftur</translation>
 <translation id="8362795839483915693">Þú getur aukið eða minnkað aðdrátt á vefsvæðum sem þú opnar</translation>

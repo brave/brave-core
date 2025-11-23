@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">ਸਾਨੂੰ ਇਹ ਦੱਸ ਕੇ Brave ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰੋ ਕਿ ਤੁਸੀਂ ਤੀਜੀ-ਧਿਰ ਦੀਆਂ ਕੁਕੀਜ਼ ਦੀ ਆਗਿਆ ਕਿਉਂ ਦਿੱਤੀ ਹੈ। <ph name="BEGIN_LINK"/>ਵਿਚਾਰ ਭੇਜੋ<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">ਤੁਸੀਂ ਸਾਈਟਾਂ ਦੇ ਡੈਸਕਟਾਪ ਵਰਜਨ ਨੂੰ ਦੇਖਣ ਲਈ ਪੁੱਛ ਸਕਦੇ ਹੋ</translation>
 <translation id="9183227624343766158">Brave ਨੂੰ ਪੂਰਵ-ਨਿਰਧਾਰਿਤ ਤੌਰ 'ਤੇ ਵਰਤੋ</translation>
+<translation id="113098737392899175">ਕੀ-ਬੋਰਡ ਕਨੈਕਟ ਹੋਣ 'ਤੇ ਲਿਖਤ ਕਰਸਰ ਨਾਲ ਪੰਨਿਆਂ 'ਤੇ ਨੈਵੀਗੇਟ ਕਰੋ</translation>
 <translation id="1178015372320901893">ਮੇਰੇ ਸ਼ਾਰਟਕੱਟਾਂ ਦੀ ਹੇਠਲੀ ਸ਼ੀਟ</translation>
 <translation id="1178581264944972037">ਰੋਕੋ</translation>
 <translation id="1181037720776840403">ਹਟਾਓ</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">ਜਾਰੀ ਰੱਖੋ</translation>
 <translation id="904887679952026733">ਜਦੋਂ ਵੀ ਸੰਭਵ ਹੋਵੇ, Brave ਵੱਲੋਂ ਗੂੜ੍ਹਾ ਥੀਮ ਵਰਤੇ ਜਾਣ 'ਤੇ ਸਾਈਟਾਂ ਲਈ ਗੂੜ੍ਹਾ ਥੀਮ ਲਾਗੂ ਕਰੋ</translation>
 <translation id="2390272837142897736">ਜ਼ੂਮ ਵਧਾਓ</translation>
+<translation id="2397689164757137845">ਆਗਿਆ ਦਿੱਤੀ ਗਈ • ਸਟੀਕ</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">ਸਟੀਕ</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ਅਤੇ <ph name="NUM_MORE"/> ਹੋਰ ਦੀ ਇਜਾਜ਼ਤ ਦਿੱਤੀ ਗਈ}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ਅਤੇ <ph name="NUM_MORE"/> ਹੋਰ ਦੀ ਇਜਾਜ਼ਤ ਦਿੱਤੀ ਗਈ}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ਅਤੇ <ph name="NUM_MORE"/> ਹੋਰ ਦੀ ਇਜਾਜ਼ਤ ਦਿੱਤੀ ਗਈ}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">ਮਦਦ ਅਤੇ ਪ੍ਰਤੀਕਰਮ</translation>
 <translation id="2501278716633472235">ਪਿੱਛੇ ਜਾਓ</translation>
 <translation id="2533138527374486328">ਚਾਲੂ ਹੋਣ 'ਤੇ, ਸਾਈਟਾਂ ਤੁਹਾਡੇ ਸਥਾਨਕ ਨੈੱਟਵਰਕ 'ਤੇ ਕਿਸੇ ਵੀ ਡੀਵਾਈਸ ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਲਈ ਪੁੱਛ ਸਕਦੀਆਂ ਹਨ। ਬੰਦ ਹੋਣ 'ਤੇ, ਸਾਈਟਾਂ ਤੁਹਾਡੇ ਸਥਾਨਕ ਨੈੱਟਵਰਕ 'ਤੇ ਕਿਸੇ ਵੀ ਡੀਵਾਈਸ ਨਾਲ ਕਨੈਕਟ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ।</translation>
+<translation id="2536779053640817375">ਇਸ ਸਮੇਂ ਆਗਿਆ ਦਿੱਤੀ ਗਈ • ਸਟੀਕ</translation>
 <translation id="2544997614631598250">ਥੀਮ ਦਾ ਰੰਗ ਗੂੜ੍ਹਾ</translation>
 <translation id="2546283357679194313">ਕੁਕੀਜ਼ ਅਤੇ ਸਾਈਟ ਡਾਟਾ</translation>
 <translation id="2570922361219980984">ਇਸ ਡੀਵਾਈਸ ਲਈ ਟਿਕਾਣਾ ਪਹੁੰਚ ਵੀ ਬੰਦ ਹੈ। ਇਸਨੂੰ <ph name="BEGIN_LINK"/>Android ਸੈਟਿੰਗਾਂ<ph name="END_LINK"/> ਵਿੱਚ ਚਾਲੂ ਕਰੋ।</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">ਕੁਝ ਸਾਈਟਾਂ 'ਤੇ ਬਲਾਕ ਕੀਤੇ ਗਏ</translation>
 <translation id="3132996321662585180">ਰੋਜ਼ਾਨਾ ਰਿਫ੍ਰੈਸ਼ ਕਰੋ</translation>
 <translation id="3143754809889689516">ਸ਼ੁਰੂ ਤੋਂ ਚਲਾਓ</translation>
+<translation id="3164169438034704658">ਤੁਸੀਂ <ph name="BEGIN_LINK"/>Android ਸੈਟਿੰਗਾਂ<ph name="END_LINK"/> ਵਿੱਚ ਸਟੀਕ ਟਿਕਾਣਾ ਚਾਲੂ ਕਰ ਸਕਦੇ ਹੋ।</translation>
 <translation id="3165022941318558018">ਕਿਸੇ ਸਾਈਟ ਨੂੰ ਤੀਜੀ-ਧਿਰ ਦੀਆਂ ਕੁਕੀਜ਼ ਵਰਤਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</translation>
 <translation id="3167868116600277716">Discover ਫ਼ੀਡ</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> ਸਟੋਰ ਕੀਤਾ ਡਾਟਾ</translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">Brave ਕੁਕੀਜ਼ ਨੂੰ ਅੱਜ ਦੁਬਾਰਾ ਸੀਮਤ ਕਰ ਦੇਵੇਗਾ</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> ਅਧੀਨ ਸਾਰੀਆਂ ਸਾਈਟਾਂ</translation>
 <translation id="4340799661701629185">ਸਾਈਟਾਂ ਨੂੰ ਸੂਚਨਾਵਾਂ ਭੇਜਣ ਦੀ ਇਜਾਜ਼ਤ ਨਾ ਦਿਓ</translation>
+<translation id="4341577178275615435">ਕੈਰਟ ਬ੍ਰਾਊਜ਼ਿੰਗ ਨੂੰ ਚਾਲੂ ਜਾਂ ਬੰਦ ਕਰਨ ਲਈ, F7 ਸ਼ਾਰਟਕੱਟ ਵਰਤੋ</translation>
 <translation id="4402755511846832236">ਸਾਈਟਾਂ ਨੂੰ ਇਹ ਜਾਣਨ ਤੋਂ ਰੋਕਣ ਲਈ ਬਲਾਕ ਕਰੋ ਕਿ ਤੁਸੀਂ ਕਿਰਿਆਸ਼ੀਲ ਤੌਰ 'ਤੇ ਇਸ ਡੀਵਾਈਸ ਦੀ ਵਰਤੋਂ ਕਦੋਂ ਕਰਦੇ ਹੋ</translation>
 <translation id="8382883799082236806">Brave ਦੀ ਰੰਗਾਂ ਵਾਲੀ ਹੇਠਲੀ ਸ਼ੀਟ ਅੱਧੀ ਉਚਾਈ ਤੱਕ ਖੁੱਲ੍ਹੀ ਹੈ</translation>
 <translation id="4412992751769744546">ਤੀਜੀ-ਪਾਰਟੀ ਕੁਕੀਜ਼ ਦੀ ਆਗਿਆ ਦਿਓ</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">ਵੀਡੀਓ ਰੋਕੋ</translation>
 <translation id="5877248419911025165">ਸਾਰੀਆਂ ਬੇਨਤੀਆਂ ਨੂੰ ਸਮੇਟੋ</translation>
 <translation id="5878945009165002849">ਪਛਾਣ ਸੰਬੰਧੀ ਸੇਵਾਵਾਂ ਵੱਲੋਂ ਸਾਈਨ-ਇਨ ਕਰਨ ਦੇ ਪ੍ਰੋਂਪਟਾਂ ਨੂੰ ਬਲਾਕ ਕਰੋ</translation>
+<translation id="588258955323874662">ਫੁਲਸਕ੍ਰੀਨ</translation>
 <translation id="5884085660368669834">ਸਾਈਟ ਦੀ ਤਰਜੀਹ</translation>
 <translation id="5887687176710214216">ਪਿਛਲੀ ਵਾਰ ਕੱਲ੍ਹ ਦੇਖੀ ਗਈ</translation>
 <translation id="5908617755156109052">ਸਾਈਟਾਂ ਨੂੰ ਤੁਹਾਡੇ ਆਲੇ-ਦੁਆਲੇ ਦਾ 3D ਨਕਸ਼ਾ ਬਣਾਉਣ ਜਾਂ ਕੈਮਰੇ ਦੀ ਸਥਿਤੀ ਨੂੰ ਟਰੈਕ ਕਰਨ ਦੀ ਆਗਿਆ ਨਾ ਦਿਓ</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">ਠੀਕ</translation>
 <translation id="6980861169612950611">ਕੀ ਸਾਈਟ ਡਾਟਾ ਮਿਟਾਉਣਾ ਹੈ? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ਪਹੁੰਚਯੋਗਤਾ</translation>
+<translation id="6991142177939282156">ਆਗਿਆ ਦਿੱਤੀ ਗਈ • ਅੰਦਾਜ਼ਨ ਟਿਕਾਣਾ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਹੈ</translation>
 <translation id="6992289844737586249">ਸਾਈਟਾਂ ਨੂੰ ਤੁਹਾਡੇ ਮਾਈਕ੍ਰੋਫੋਨ ਦੀ ਵਰਤੋਂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਡੀ ਇਜਾਜ਼ਤ ਲੈਣ ਨੂੰ ਜ਼ਰੂਰੀ ਬਣਾਓ (ਸਿਫ਼ਾਰਸ਼ੀ)</translation>
 <translation id="7000754031042624318">Android ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਬੰਦ ਕੀਤੀ ਗਈ</translation>
 <translation id="8683151724374457021">ਇਹ ਸਾਈਟ ਤੁਹਾਡੀਆਂ ਮਨਪਸੰਦ ਚੀਜ਼ਾਂ ਨੂੰ ਨਿਰਧਾਰਿਤ ਕਰਦੀ ਹੈ ਅਤੇ ਫਿਰ ਦੂਜੀਆਂ ਸਾਈਟਾਂ ਨੂੰ ਵਿਗਿਆਪਨਾਂ ਦੇ ਸੁਝਾਅ ਦਿੰਦੀ ਹੈ। ਤੁਹਾਨੂੰ ਜ਼ਿਆਦਾ ਢੁਕਵੇਂ ਵਿਗਿਆਪਨ ਦਿਖਾਉਣ ਲਈ, ਇਹ ਸਾਈਟ Brave ਤੋਂ ਵੀ ਤੁਹਾਡੇ ਵਿਗਿਆਪਨ ਦੇ ਵਿਸ਼ਿਆਂ ਬਾਰੇ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਕਰਦੀ ਹੈ।</translation>
+<translation id="7036823721811529709">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਸੁਣੋ</translation>
 <translation id="7044081119134178347">ਇਸ ਸਮੇਂ ਕੈਮਰੇ ਦੀ ਆਗਿਆ ਹੈ</translation>
 <translation id="7053983685419859001">ਬਲੌਕ ਕਰੋ</translation>
 <translation id="7055552182600664515">ਕਾਪੀਰਾਈਟ ਵੱਲੋਂ ਸੁਰੱਖਿਅਤ ਕੀਤੀ ਸਮੱਗਰੀ ਨੂੰ ਚਲਾਉਣ ਲਈ, ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਸਾਈਟਾਂ ਨੂੰ ਸਮੱਗਰੀ ਦੀ ਸੁਰੱਖਿਆ ਸੇਵਾ ਵਰਤਣ ਦੀ ਲੋੜ ਪਵੇ। <ph name="BEGIN_LINK"/>ਹੋਰ ਜਾਣੋ<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">ਇਹ ਸੈਟਿੰਗ ਤੁਹਾਡੀ ਪਛਾਣ ਕੀਤੇ ਬਿਨਾਂ ਜਾਂ ਸਾਈਟਾਂ ਨੂੰ ਤੁਹਾਡਾ ਬ੍ਰਾਊਜ਼ਿੰਗ ਇਤਿਹਾਸ ਦੇਖਣ ਦੀ ਆਗਿਆ ਦਿੱਤੇ ਬਿਨਾਂ ਕੰਮ ਕਰਦੀ ਹੈ, ਹਾਲਾਂਕਿ ਸਾਈਟਾਂ ਪੁਸ਼ਟੀਕਰਨ ਦੇ ਹਿੱਸੇ ਵਜੋਂ ਕੁਝ ਜਾਣਕਾਰੀ ਨੂੰ ਸਾਂਝਾ ਕਰ ਸਕਦੀਆਂ ਹਨ</translation>
 <translation id="7409735910987429903">ਸਾਈਟਾਂ ਵਿਗਿਆਪਨ ਦਿਖਾਉਣ ਲਈ ਪੌਪ-ਅੱਪ ਭੇਜ ਸਕਦੀਆਂ ਹਨ ਜਾਂ ਤੁਹਾਨੂੰ ਅਜਿਹੀਆਂ ਵੈੱਬਸਾਈਟਾਂ 'ਤੇ ਲਿਜਾਣ ਲਈ ਰੀਡਾਇਰੈਕਟ ਦੀ ਵਰਤੋਂ ਕਰ ਸਕਦੀਆਂ ਹਨ ਜਿਨ੍ਹਾਂ 'ਤੇ ਤੁਸੀਂ ਸ਼ਾਇਦ ਨਾ ਜਾਣਾ ਚਾਹੁੰਦੇ ਹੋਵੋ</translation>
 <translation id="7412160840120117304">ਮੁੱਖ ਰੰਗ ਦਾ ਹੈਕਸ ਕੋਡ</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{ਜ਼ੂਮ}one{ਜ਼ੂਮ: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{ਜ਼ੂਮ: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">ਪਹਿਲਾਂ ਪੁੱਛੋ</translation>
 <translation id="7423538860840206698">ਕਲਿੱਪਬੋਰਡ ਪੜ੍ਹਨ ਤੋਂ ਬਲਾਕ ਕੀਤਾ ਗਿਆ</translation>
 <translation id="7425915948813553151">ਸਾਈਟਾਂ ਲਈ ਗੂੜ੍ਹਾ ਥੀਮ</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">ਮਿਟਾਓ</translation>
 <translation id="8284326494547611709">ਸੁਰਖੀਆਂ</translation>
 <translation id="8300705686683892304">ਐਪ ਵੱਲੋਂ ਪ੍ਰਬੰਧਿਤ</translation>
+<translation id="8301363963630676147">ਇਸ ਸਮੇਂ ਆਗਿਆ ਦਿੱਤੀ ਗਈ • ਅੰਦਾਜ਼ਨ ਟਿਕਾਣਾ ਵਰਤਿਆ ਜਾ ਰਿਹਾ ਹੈ</translation>
 <translation id="8315509175050791576">ਟੈਬ ਨੂੰ ਸਾਂਝਾ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</translation>
 <translation id="8324158725704657629">ਦੁਬਾਰਾ ਨਾ ਪੁੱਛੋ</translation>
 <translation id="8362795839483915693">ਤੁਸੀਂ ਤੁਹਾਡੇ ਵੱਲੋਂ ਦੇਖੀਆਂ ਜਾਂਦੀਆਂ ਸਾਈਟਾਂ 'ਤੇ ਜ਼ੂਮ ਵਧਾ ਜਾਂ ਘਟਾ ਸਕਦੇ ਹੋ</translation>

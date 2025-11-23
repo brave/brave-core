@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Wyskakujące okienko newslettera</translation>
 <translation id="6136090320163235283">Widżet społecznościowy</translation>
 <translation id="6657720240983439091">Widżet czatu</translation>
+<translation id="3597441883564676263">Przeglądarka nie jest obsługiwana</translation>
 <translation id="7138678301420049075">Inne</translation>
 <translation id="4046860372562593546">Zarządzaj reklamami Brave</translation>
 <translation id="5136973036012418831">Decyduj o rodzaju reklam Brave i częstotliwości ich wyświetlania.</translation>
@@ -2235,6 +2236,24 @@
 <translation id="7488762544858401571">Zmodyfikowano</translation>
 <translation id="5604254791550001355">Edytuj komunikat</translation>
 <translation id="8115786586976830777">Skopiuj komunikat</translation>
+<translation id="3666616415490815310">Zapisz jako umiejętność</translation>
+<translation id="6574544364990812112">Moje umiejętności</translation>
+<translation id="6696824203401957025">Nowa umiejętność</translation>
+<translation id="6410279677882692627">Umiejętności pojawią się w narzędziach [/] i będą dostępne po wpisaniu "/name", które ustawiono poniżej.</translation>
+<translation id="1344606707744657196">Model podpowiedzi</translation>
+<translation id="8458341576712814616">Skrót</translation>
+<translation id="1326559827339317236">Proszę wpisać tutaj swój skrót</translation>
+<translation id="5032574515228824816">Podpowiedź</translation>
+<translation id="2573797314568446575">Proszę wpisać tutaj swój monit</translation>
+<translation id="900733896273558337">Umiejętność edycji</translation>
+<translation id="7662963028545588801">Usunąć umiejętność</translation>
+<translation id="4209790625997566418">Czy na pewno chce Pan/Pani usunąć tę umiejętność? Tej czynności nie można cofnąć.</translation>
+<translation id="7161540406494327389">Skrót jest wymagany</translation>
+<translation id="3722223049736774445">Skrót może zawierać tylko litery, cyfry, podkreślenie i myślnik</translation>
+<translation id="6997214168632888867">Skrót nie może zawierać więcej niż 64 znaki</translation>
+<translation id="2806891468525657116">Skrót już istnieje</translation>
+<translation id="5497501845974700950">Wymagana jest odpowiedź</translation>
+<translation id="5642369858603376334">Prośba nie może zawierać więcej niż 5000 znaków</translation>
 <translation id="1406205536570262057">Edytuj odpowiedź</translation>
 <translation id="3386725253392845084">Spróbuj ponownie za pomocą tego samego modelu</translation>
 <translation id="2461822463642141190">Obecny</translation>
@@ -2272,13 +2291,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> więcej…</translation>
 <translation id="8103700533980268469">Zamknij to powiadomienie</translation>
 <translation id="3417835166382867856">Wyszukaj karty</translation>
+<translation id="3828029223314399057">Zakładki wyszukiwania</translation>
+<translation id="381480092025168632">Historia wyszukiwania w przeglądarce</translation>
 <translation id="7311244614769792472">Brak wyników</translation>
 <translation id="3112448569149476523">Spróbuj innego wyszukiwania</translation>
 <translation id="1352836459737874921">Załącz treść z innych kart</translation>
+<translation id="7173836072258346701">Dołączanie zawartości z zakładek</translation>
+<translation id="163680814308917875">Dołączanie zawartości z historii przeglądarki</translation>
 <translation id="7039179822221107025">Dodaj treść stron z kart przeglądarki, by dać Leo więcej informacji kontekstowych do rozmowy.</translation>
+<translation id="1602382615168212961">Proszę wysłać zawartość strony z zakładek, aby dać Leo więcej kontekstu do rozmowy.</translation>
+<translation id="4808122506413075135">Proszę wysłać zawartość strony z historii przeglądarki, aby dać Leo więcej kontekstu do rozmowy.</translation>
 <translation id="220541218939267992">Zawartość strony zostanie wysłana do Leo wraz z Twoimi wiadomościami.</translation>
-<translation id="1446346932629101482">Dodaj zawartość karty dla kontekstu. Zawartość zostanie wysłana do Leo wraz z Twoimi wiadomościami.</translation>
-<translation id="7193316103691252734">Brak pasujących zakładek</translation>
+<translation id="8164365899016970783">Proszę dodać zawartość karty i zakładki dla kontekstu. Zawartość zostanie wysłana do Leo wraz z Państwa wiadomościami.</translation>
+<translation id="6237410387937453423">Brak pasujących załączników</translation>
+<translation id="8076492880354921740">Karty</translation>
 <translation id="2315654674554095762">Leo będzie teraz zapamiętywać rozmowy, by można było do nich wracać. Są one zaszyfrowane na twoim urządzeniu i możesz je w każdej chwili usunąć.</translation>
 <translation id="7821251979960635244">Historia rozmowy pojawi się tutaj, gdy rozpoczniesz rozmowę.</translation>
 <translation id="887511360213807449">Historia jest wyłączona</translation>
@@ -2337,7 +2363,9 @@
 <translation id="4250229828105606438">Zrzut ekranu</translation>
 <translation id="7949596341600215809">Zrzutu ekranu pełnej strony</translation>
 <translation id="6332876390231524389">Zawartość bieżącej karty</translation>
-<translation id="7742969455167760092">Otwórz karty…</translation>
+<translation id="6397861830483632092">Otwarte karty…</translation>
+<translation id="802080272588201037">Zakładki…</translation>
+<translation id="2716127283451902393">Historia…</translation>
 <translation id="49269513399674318">Skorzystaj z mikrofonu</translation>
 <translation id="3895031624234442305">Modele niestandardowe</translation>
 <translation id="4572010449071015143">Rozpocznij nową rozmowę</translation>
@@ -2349,6 +2377,22 @@
 <translation id="2593275000606533518">Zarządzaj wszystkimi</translation>
 <translation id="8410199626695516952">Ok, nie będę tego pamiętać</translation>
 <translation id="8419849467765474535">Nie udało się usunąć wspomnienia. Spróbuj ponownie.</translation>
+<translation id="5517580030864973329">Przejście do nowego adresu strony internetowej</translation>
+<translation id="8832457834975923266">Przejście do strony <ph name="URL"/></translation>
+<translation id="5095252080770652994">Postęp</translation>
+<translation id="8332385567036775056">Kroki</translation>
+<translation id="4521931942079977149">Kliknięcie na stronie</translation>
+<translation id="7732267913911704962">Przeciąganie i upuszczanie na stronie</translation>
+<translation id="7703800915509570212">Nawigacja wstecz</translation>
+<translation id="4875586490950981498">Nawigacja do przodu</translation>
+<translation id="738881387603843066">Poruszanie myszą</translation>
+<translation id="4850669014075537160">Przewijanie</translation>
+<translation id="1265072406500460724">Wybór z listy rozwijanej</translation>
+<translation id="7573920298077917439">Wpisywanie tekstu</translation>
+<translation id="4089034800311309656">Oczekiwanie na stronę</translation>
+<translation id="4798146464408730445">Nie znaleziono żadnych umiejętności. Proszę utworzyć nową, klikając przycisk "Nowa".</translation>
+<translation id="271033894570825754">Nowy</translation>
+<translation id="8266605059880650542">Zanotowanie pewnych informacji o stronie na później</translation>
 <translation id="3486480638399578250">Zachowaj prywatność swojego adresu e-mail</translation>
 <translation id="7765422154906712751">Twórz unikalne, losowe adresy, które przekierowują na twój e-mail w Brave i mogą być usunięte w dowolnym momencie. Dzięki temu ochronisz swój właściwy adres e-mail przed ujawnieniem i użyciem przez reklamodawców.</translation>
 <translation id="5222676887888702881">Wyloguj się</translation>
@@ -2394,6 +2438,10 @@
 <translation id="7508412964869396375">Nie otrzymano tokenu weryfikacyjnego z usługi konta Brave</translation>
 <translation id="3179527991526213624">Nie otrzymano odpowiedzi z usługi konta Brave</translation>
 <translation id="7911439408853154309">Weryfikacja adresu e-mail nie powiodła się</translation>
+<translation id="2595463802839066496">Brak odpowiedzi z usługi aliasy e-mail</translation>
+<translation id="367191282389216837">Nieprawidłowa odpowiedź z usługi Aliasy e-mail</translation>
+<translation id="7203490731644771170">Błąd usługi aliasu e-mail: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Błąd: Alias niedostępny</translation>
 <translation id="8370801182970639038">Automatycznie (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Włączone wyszukiwarki</translation>
 <translation id="8285901519864208412">Ukryj kartę Nagród</translation>
@@ -2439,8 +2487,19 @@
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Tarcze są WŁĄCZONE<ph name="STATUS_AFTER"/> dla tej witryny</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Tarcze są WYŁĄCZONE<ph name="STATUS_AFTER"/> dla tej witryny</translation>
-<translation id="5623354834493649144">Jeśli ta strona nie działa, wyłącz Tarcze.
-   <ph name="NOTE_BEFORE"/>Uwaga: to może zmniejszyć ochronę prywatności zapewnianą przez Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Jeśli strona wydaje się być uszkodzona, proszę spróbować wyłączyć Shields.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Uwaga: może to zmniejszyć ochronę prywatności Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Czy mają Państwo problemy z tą stroną?</translation>
+<translation id="9176447766421988172">Wypróbowujemy eksperyment, aby zwiększyć kompatybilność witryny, w którym włączamy tylko blokowanie reklam. Ostrzeżenie: usuwa wszystkie zabezpieczenia prywatności. Czy chcą Państwo go wypróbować? <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Proszę pamiętać, że dla poszczególnych witryn, które nie są objęte ochroną prywatności Brave, można ustawić Shields na DOWN.</translation>
+<translation id="1836572675775891780">Proszę włączyć tryb Tylko blokowanie reklam</translation>
+<translation id="6623668214089604469">Czy strona działa teraz poprawnie?</translation>
+<translation id="8978860854770042258">Proszę rozważyć przesłanie raportu, jeśli ta strona jest nadal uszkodzona.</translation>
+<translation id="4677356505199464553">Wygląda dobrze</translation>
+<translation id="1992750560347846445">Zgłoś stronę</translation>
+<translation id="2887186586339544116">Włączony tryb tylko blokowania reklam</translation>
+<translation id="673665019618844072">Obecnie korzystają Państwo z trybu Tylko blokowanie reklam. Tryb ten zapewnia jedynie ochronę przed blokowaniem reklam. Jeśli chcą Państwo powrócić do pełnego trybu Shields, proszę wyłączyć ten tryb w ustawieniach.</translation>
+<translation id="4820891023903368625">Reklamy zablokowane <ph name="LINK_BEFORE"/>Proszę dowiedzieć się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Zablokowane skrypty śledzące, reklamy i inne <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nie jest chronione przez Tarcze Brave <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Zaawansowane sterowanie</translation>
@@ -2474,7 +2533,6 @@
 <translation id="8034285923190068220">Zezwól na zbieranie odcisków palców</translation>
 <translation id="7638541189782135885">Nie uaktualniaj połączeń HTTP</translation>
 <translation id="2570787596946026998">Łącz tylko za pomocą HTTPS</translation>
-<translation id="1992750560347846445">Zgłoś stronę</translation>
 <translation id="2387532482048804818">Poinformuj nas, jeśli strona nie działała poprawnie z włączonymi Tarczami.</translation>
 <translation id="3795015906457257780">Przeglądasz stronę bez zabezpieczeń prywatności Brave.</translation>
 <translation id="7194012750329511146">Tarcze Brave

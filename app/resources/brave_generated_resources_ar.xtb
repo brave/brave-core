@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
 <translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
-<translation id="8594912907680633924">فتح الرابط في العرض المقسم</translation>
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
-<translation id="3795436270513738622">فتح الرابط في العرض المقسم</translation>
 <translation id="2545072023356206691">بدءًا من 1 ديسمبر 2023، لن تتلقى قناة Brave Dev تحديثات المتصفح بعد الآن. نوصي المستخدمين بالانتقال إلى إصدارات Nightly أو Beta أو Release من Brave.</translation>
 <translation id="474217410105706308">تجاهل علامة التبويب</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 <translation id="8487693399751278191">استيراد الإشارات المرجعية الآن...</translation>
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
-<translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
-<translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
-<translation id="7537601449003285327">التثبيت على شريط المهام</translation>
-<translation id="2307973900865360088">حفظ في المرسى</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">تم الاستيراد من <ph name="BROWSER_NAME"/>.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -398,6 +392,7 @@
 <translation id="5219886318310413094">إظهار علامات التبويب المُثبّتة في جميع النوافذ</translation>
 <translation id="2396127686705429331">عرض زر الإشارات المرجعية</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
+<translation id="4749586705247636385">إظهار الزوايا المستديرة في مناطق المحتوى الرئيسية</translation>
 <translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
 <translation id="4579877808890085926">الاقتراحات على الجهاز</translation>
 <translation id="7859704718976024901">تاريخ التصفح</translation>
@@ -426,9 +421,11 @@
 <translation id="3719826155360621982">الصفحة الرئيسية</translation>
 <translation id="5448570825852364919">صفحة فارغة</translation>
 <translation id="8244387390464017490">تخصيص صفحة علامة تبويب جديدة</translation>
+<translation id="7537601449003285327">التثبيت على شريط المهام</translation>
 <translation id="7461924472993315131">تثبيت</translation>
 <translation id="735832369569964359">انقر فوق Pin "تثبيت"، وقم بالتأكيد في إشعار Windows التالي</translation>
 <translation id="7506648566440714944">يتم تثبيت Brave بالفعل</translation>
+<translation id="2307973900865360088">حفظ في المرسى</translation>
 <translation id="239275665037555969">المرسى</translation>
 <translation id="4057614912106618659">منصة Brave موجودة بالفعل في المرسى</translation>
 <translation id="3195845168740336657">إعدادات الدروع</translation>
@@ -500,10 +497,30 @@
 <translation id="2718718846210516552">لم يتم العثور على النص البرمجي.</translation>
 <translation id="4088315951291671239">لا تقم بلصق تعليمات برمجية لا تفهمها أو لم تقم بمراجعتها بنفسك هنا. قد يسمح هذا للمهاجمين بسرقة هويتك أو السيطرة على حاسوبك.</translation>
 <translation id="3020183492814296499">الاختصارات</translation>
+<translation id="2935698011275148880">الأصل الشجاع</translation>
+<translation id="2587535830241068901">تخصيص متصفحك مع الاستمرار في دعم Brave</translation>
+<translation id="553273341094971255">يساعدك Brave Origin على ضبط Brave حسب رغبتك ويزيل جميع العروض الترويجية داخل التطبيق والإعلانات ذات العلامات التجارية وحتى تحليلاتنا المجهولة التي ربما تكون قد قمت بتمكينها أثناء التثبيت.</translation>
+<translation id="534725333104202278">ستظل أي إضافات أو ميزات سبق لك تمكينها أو استخدامها مرئية ومتكاملة، بينما سيتم تعطيل الباقي. استمر في ضبط Brave بينما نقدم ميزات جديدة في المتصفح. ستظهر بشكل صامت ومخفية بشكل افتراضي في لوحة تحكم Brave Origin.</translation>
+<translation id="1919345977826869612">الإعلانات</translation>
+<translation id="944736176598169208">Rewards</translation>
+<translation id="2839742394543397416">التحليلات</translation>
+<translation id="1799030480311994998">الميزات</translation>
+<translation id="6709133671862442373">الأخبار</translation>
+<translation id="6297791103122079275">محادثة</translation>
+<translation id="1458638489455808030">آلة الاسترجاع</translation>
+<translation id="1199170151481311646">تحليلات الحفاظ على الخصوصية</translation>
+<translation id="5990642573624858459">إعداد التقارير الإحصائية</translation>
+<translation id="2441719842399509963">إعادة التعيين إلى الإعدادات الافتراضية</translation>
 <translation id="5567412479632285879">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="1051600834033686945">فتح إعدادات Brave Rewards بالكامل</translation>
 <translation id="8826461509529116322">إظهار زر مكافآت Brave</translation>
+<translation id="3328713589982547433">وضع حظر الإعلانات فقط</translation>
+<translation id="1574253307550419595">استخدام وضع حظر الإعلانات فقط</translation>
+<translation id="738717058053657696">يحتفظ وضع حظر الإعلانات فقط بقواعد حظر الإعلانات الأساسية في Brave Shields. تحذير: يزيل جميع وسائل حماية الخصوصية. يُرجى ملاحظة أنه بالنسبة لمواقع الويب الفردية التي تعطلها حماية الخصوصية في Brave، يمكنك ضبط الدروع على "أسفل". هذا هو الوضع التجريبي. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">خيارات الدروع معطلة حالياً.</translation>
+<translation id="516439939408671102">يحتفظ وضع حظر الإعلانات فقط بقواعد حظر الإعلانات الأساسية لدروع Brave Shields ويوقف تشغيل حماية الخصوصية. إذا كنت ترغب في تمكين الدروع القياسية، يُرجى تعطيل هذا الوضع.</translation>
+<translation id="177233004755519660">إيقاف تشغيل وضع حظر الإعلانات فقط</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="7791141927430186653">السماح بتضمين X (Twitter سابقًا) للتغريدات المضمنة</translation>
