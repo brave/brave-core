@@ -2532,6 +2532,12 @@
 # expects chrome://new-tab-page
 -ExtensionTabsTest.TabsUpdate_WebToAboutNewTab
 
+# These test fail because we override the default NTP shortcut type from "custom
+# links" to "most visited".
+-All/NewTabPageUtilTileTypesEnterpriseShortcutsDisabledBrowserTest.GetEnabledTileTypes/*
+-All/NewTabPageUtilTileTypesEnterpriseShortcutsEnabledAllowMixingBrowserTest.GetEnabledTileTypes/*
+-All/NewTabPageUtilTileTypesEnterpriseShortcutsEnabledNoMixingBrowserTest.GetEnabledTileTypes/*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
