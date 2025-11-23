@@ -48,7 +48,7 @@ TopSitesFacade::TopSitesFacade(
   pref_change_registrar_.Add(ntp_prefs::kNtpShortcutsVisible,
                              base::BindRepeating(&TopSitesFacade::OnPrefChanged,
                                                  weak_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(ntp_prefs::kNtpShortcutsType,
+  pref_change_registrar_.Add(ntp_prefs::kNtpCustomLinksVisible,
                              base::BindRepeating(&TopSitesFacade::OnPrefChanged,
                                                  weak_factory_.GetWeakPtr()));
 
@@ -68,20 +68,15 @@ void TopSitesFacade::SetTopSitesVisible(bool visible) {
 }
 
 mojom::TopSitesListKind TopSitesFacade::GetListKind() {
-  auto tile_type = static_cast<ntp_tiles::TileType>(
-      pref_service_->GetInteger(ntp_prefs::kNtpShortcutsType));
-  if (tile_type == ntp_tiles::TileType::kCustomLinks) {
+  if (pref_service_->GetBoolean(ntp_prefs::kNtpCustomLinksVisible)) {
     return mojom::TopSitesListKind::kCustom;
   }
   return mojom::TopSitesListKind::kMostVisited;
 }
 
 void TopSitesFacade::SetListKind(mojom::TopSitesListKind list_kind) {
-  pref_service_->SetInteger(
-      ntp_prefs::kNtpShortcutsType,
-      static_cast<int>(list_kind == mojom::TopSitesListKind::kMostVisited
-                           ? ntp_tiles::TileType::kTopSites
-                           : ntp_tiles::TileType::kCustomLinks));
+  pref_service_->SetBoolean(ntp_prefs::kNtpCustomLinksVisible,
+                            list_kind == mojom::TopSitesListKind::kCustom);
 }
 
 void TopSitesFacade::GetSites(GetSitesCallback callback) {
@@ -166,10 +161,12 @@ void TopSitesFacade::OnURLsAvailable(
 void TopSitesFacade::OnIconMadeAvailable(const GURL& site_url) {}
 
 void TopSitesFacade::SyncMostVisitedSites() {
+  auto list_kind = GetListKind();
   most_visited_sites_->SetShortcutsVisible(GetTopSitesVisible());
   most_visited_sites_->EnableTileTypes(
-      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
-          GetListKind() == mojom::TopSitesListKind::kCustom));
+      ntp_tiles::MostVisitedSites::EnableTileTypesOptions()
+          .with_custom_links(list_kind == mojom::TopSitesListKind::kCustom)
+          .with_top_sites(list_kind == mojom::TopSitesListKind::kMostVisited));
 }
 
 void TopSitesFacade::OnPrefChanged(const std::string& path) {
