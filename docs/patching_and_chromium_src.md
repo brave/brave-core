@@ -81,6 +81,8 @@ https://github.com/brave/brave-core/commit/a85a399a16df59b99b18382e2a4106d63e1a3
 
 If you want to provide a completely different implementation of a file, it is often not safe, but sometimes applicable. You can just provide the alternate implementation inside the `src/brave/chromium_src` directory.
 
+One usage that is generally acceptable is to replace a class with a stub implementation for code/features we want to completely disable. This is often done when disabling features for privacy reasons or to disable google-specific services.
+
 One way electron went wrong is they copied entire files for changes inside a similar setup, do NOT do this. This will lead to newer Chromium rebases over time using old stale code which causes problems and makes rebasing much harder.
 
 No BUILD.gn changes are needed for this.
