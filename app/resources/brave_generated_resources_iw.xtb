@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
-<translation id="8594912907680633924">פתח את הקישור בתצוגה מפוצלת</translation>
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
-<translation id="3795436270513738622">פתח את הקישור בתצוגה מפוצלת</translation>
 <translation id="2545072023356206691">החל מ-1 בדצמבר 2023, ערוץ Brave Dev לא יקבל עוד עדכוני דפדפן. אנו ממליצים למשתמשים לעבור לגרסאות Nightly, Beta או Release של Brave.</translation>
 <translation id="474217410105706308">השתק כרטיסייה</translation>
 <translation id="2804710924397009224">הסתר את סמלון Brave Rewards</translation>
@@ -252,10 +250,6 @@
 <translation id="796831669370432378">כדי להוסיף סימנייה, לחצו על כפתור הסימנייה שליד שורת הכתובת</translation>
 <translation id="8487693399751278191">ייבא סימניות עכשיו...</translation>
 <translation id="2557899542277210112">לגישה מהירה, יש למקם את הסימניות שלך כאן בסרגל הסימניות.</translation>
-<translation id="1968543937259008435">מוכנים לפרטיות הטובה ביותר ברשת?</translation>
-<translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
-<translation id="7537601449003285327">הצמד לשורת המשימות</translation>
-<translation id="2307973900865360088">שמירה בעגינה</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">יובא מ-<ph name="BROWSER_NAME"/>.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -396,6 +390,7 @@
 <translation id="5219886318310413094">הראה את הלשונות הצמודות בכל החלונות</translation>
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
+<translation id="4749586705247636385">הצג פינות מעוגלות באזורי התוכן העיקריים</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="4579877808890085926">הצעות מקומיות במכשיר</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
@@ -424,9 +419,11 @@
 <translation id="3719826155360621982">דף הבית</translation>
 <translation id="5448570825852364919">עמוד ריק</translation>
 <translation id="8244387390464017490">התאם אישית את דף הכרטיסייה החדשה</translation>
+<translation id="7537601449003285327">הצמד לשורת המשימות</translation>
 <translation id="7461924472993315131">הצמד</translation>
 <translation id="735832369569964359">לחץ על הסיכה ואשר בהודעת Windows הבאה</translation>
 <translation id="7506648566440714944">Brave כבר נעוץ</translation>
+<translation id="2307973900865360088">שמירה בעגינה</translation>
 <translation id="239275665037555969">עגינה</translation>
 <translation id="4057614912106618659">Brave כבר נמצא בעגינה</translation>
 <translation id="3195845168740336657">הגדרות Shields</translation>
@@ -498,10 +495,30 @@
 <translation id="2718718846210516552">קטע קוד לא נמצא.</translation>
 <translation id="4088315951291671239">אין להדביק כאן קוד שאינך מבינ/ה או שלא בדקת בעצמך. זה יוכל לאפשר לתוקפים לגנוב את הזדהות שלך או להשתלט לך על המחשב.</translation>
 <translation id="3020183492814296499">קיצור דרך</translation>
+<translation id="2935698011275148880">מקור אמיץ</translation>
+<translation id="2587535830241068901">התאם אישית את הדפדפן שלך תוך המשך תמיכה ב-Brave</translation>
+<translation id="553273341094971255">Brave Origin עוזר לך להתאים את Brave להעדפותיך ומסיר את כל ההצעות השיווקיות בתוך האפליקציה, פרסומות ממותגות ואפילו את ניתוח הנתונים האנונימי שלנו, שאולי הפעלת במהלך ההתקנה.</translation>
+<translation id="534725333104202278">כל התוספים או התכונות שהפעלת או השתמשת בהם בעבר יישארו גלויים ומשולבים, בעוד שהשאר יושבתו. המשך לכוון את Brave ככל שאנו מוסיפים תכונות חדשות לדפדפן. הן יופיעו באופן שקט ומוסתר כברירת מחדל בלוח הבקרה של Brave Origin.</translation>
+<translation id="1919345977826869612">מודעות</translation>
+<translation id="944736176598169208">פרסים</translation>
+<translation id="2839742394543397416">אנליטיקה</translation>
+<translation id="1799030480311994998">תכונות</translation>
+<translation id="6709133671862442373">חדשות</translation>
+<translation id="6297791103122079275">דברו</translation>
+<translation id="1458638489455808030">מכונת זמן</translation>
+<translation id="1199170151481311646">ניתוח נתונים תוך שמירה על פרטיות</translation>
+<translation id="5990642573624858459">דיווח סטטיסטי</translation>
+<translation id="2441719842399509963">אפס להגדרות ברירת מחדל</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
 <translation id="8826461509529116322">הצג את לחצן Brave Rewards</translation>
+<translation id="3328713589982547433">מצב חסימת מודעות בלבד</translation>
+<translation id="1574253307550419595">השתמש במצב חסימת מודעות בלבד</translation>
+<translation id="738717058053657696">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של Brave Shields. אזהרה: מסיר את כל הגנות הפרטיות. שימו לב שבאתרים בודדים שנפגעים מהגנות הפרטיות של Brave, תוכלו להגדיר את Shields למצב DOWN. זהו מצב ניסיוני. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">אפשרויות המגנים מושבתות כרגע.</translation>
+<translation id="516439939408671102">מצב חסימת מודעות בלבד שומר על כללי חסימת המודעות הבסיסיים של Brave Shields ומבטל את הגנות הפרטיות. אם ברצונך להפעיל את Shields הסטנדרטי, אנא השבת מצב זה.</translation>
+<translation id="177233004755519660">כבה את מצב חסימת פרסומות בלבד</translation>
 <translation id="9185018653595759199">חסימת רשתות חברתיות</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="7791141927430186653">אפשר ציוצים מוטבעים של X (לשעבר Twitter)</translation>

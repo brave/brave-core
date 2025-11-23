@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">নিউজলেটার পপআপ</translation>
 <translation id="6136090320163235283">সোশ্যাল উইজেট</translation>
 <translation id="6657720240983439091">চ্যাট উইজেট</translation>
+<translation id="3597441883564676263">ব্রাউজার সমর্থিত নয়</translation>
 <translation id="7138678301420049075">অন্যান্য</translation>
 <translation id="4046860372562593546">Brave বিজ্ঞাপন পরিচালনা করুন</translation>
 <translation id="5136973036012418831">আপনি যে ধরনের Brave বিজ্ঞাপনগুলি দেখেন এবং সেটা কত ঘন ঘন দেখেন তা নিয়ন্ত্রণ করেন।</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">এডিট করা হয়েছে</translation>
 <translation id="5604254791550001355">প্রম্পট সম্পাদনা করুন</translation>
 <translation id="8115786586976830777">প্রম্পট কপি করুন</translation>
+<translation id="3666616415490815310">দক্ষতা হিসেবে সংরক্ষণ করুন</translation>
+<translation id="6574544364990812112">আমার দক্ষতাগুলি</translation>
+<translation id="6696824203401957025">নতুন দক্ষতা</translation>
+<translation id="6410279677882692627">দক্ষতাগুলি আপনার [/] টুলসমূহে প্রদর্শিত হবে এবং আপনি নিচের "/name" টাইপ করে এগুলি অ্যাক্সেস করতে পারবেন।</translation>
+<translation id="1344606707744657196">প্রম্পটের জন্য মডেল</translation>
+<translation id="8458341576712814616">শর্টকাট</translation>
+<translation id="1326559827339317236">এখানে আপনার শর্টকাট লিখুন</translation>
+<translation id="5032574515228824816">প্রম্পট</translation>
+<translation id="2573797314568446575">এখানে একটি প্রম্পট লিখুন</translation>
+<translation id="900733896273558337">দক্ষতা সম্পাদনা করুন</translation>
+<translation id="7662963028545588801">দক্ষতা মুছে ফেলুন</translation>
+<translation id="4209790625997566418">আপনি কি সত্যি এই দক্ষতাটি মুছতে চান? এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না।</translation>
+<translation id="7161540406494327389">শর্টকাট প্রয়োজন</translation>
+<translation id="3722223049736774445">শর্টকাট শুধু অক্ষর, সংখ্যা, আন্ডারস্কোর এবং হাইফেন ধারণ করতে পারে</translation>
+<translation id="6997214168632888867">শর্টকাট ৬৪ অক্ষর বা এর কম হতে হবে</translation>
+<translation id="2806891468525657116">শর্টকাট ইতিমধ্যে বিদ্যমান</translation>
+<translation id="5497501845974700950">প্রম্পট প্রয়োজন</translation>
+<translation id="5642369858603376334">প্রম্পটে ৫০০০ অক্ষর বা তার কম হতে হবে</translation>
 <translation id="1406205536570262057">উত্তর সম্পাদনা করুন</translation>
 <translation id="3386725253392845084">একই মডেল পুনরায় চেষ্টা করুন</translation>
 <translation id="2461822463642141190">বর্তমান</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949">আরও <ph name="COUNT"/> টি…</translation>
 <translation id="8103700533980268469">এই নোটিসটি বন্ধ করুন</translation>
 <translation id="3417835166382867856">ট্যাবগুলি সন্ধান করুন</translation>
+<translation id="3828029223314399057">বুকমার্ক অনুসন্ধান করুন</translation>
+<translation id="381480092025168632">ব্রাউজার ইতিহাস অনুসন্ধান করুন</translation>
 <translation id="7311244614769792472">কোনও ফলাফল পাওয়া যায়নি।</translation>
 <translation id="3112448569149476523">অনুগ্রহ করে অন্য অনুসন্ধান চেষ্টা করুন</translation>
 <translation id="1352836459737874921">অন্যান্য ট্যাবগুলি থেকে বিষয়বস্তু সংযুক্ত করুন</translation>
+<translation id="7173836072258346701">বুকমার্ক থেকে বিষয়বস্তু সংযুক্ত করুন</translation>
+<translation id="163680814308917875">ব্রাউজার ইতিহাস থেকে বিষয়বস্তু সংযুক্ত করুন</translation>
 <translation id="7039179822221107025">কথোপকথনটির জন্য Leo-কে আরও প্রসঙ্গ সরবরাহ করতে আপনার ব্রাউজার ট্যাবগুলি থেকে পেজের বিষয়বস্তু পাঠান.</translation>
+<translation id="1602382615168212961">কথোপকথনের জন্য Leo-কে আরও প্রসঙ্গ দিতে আপনার বুকমার্ক ট্যাব থেকে পৃষ্ঠার বিষয়বস্তু পাঠান।</translation>
+<translation id="4808122506413075135">কথোপকথনের জন্য Leo-কে আরও প্রসঙ্গ দিতে আপনার ব্রাউজার ইতিহাস থেকে পৃষ্ঠার বিষয়বস্তু পাঠান।</translation>
 <translation id="220541218939267992">পৃষ্ঠার বিষয়বস্তু Leo-কে আপনার বার্তার সাথে পাঠানো হবে।</translation>
-<translation id="1446346932629101482">প্রসঙ্গের জন্য ট্যাব কন্টেন্টগুলি যোগ করুন। কন্টেন্টগুলি আপনার বার্তার সাথে Leo-র কাছে পাঠানো হবে।</translation>
-<translation id="7193316103691252734">কোনো মিলযুক্ত ট্যাব নেই</translation>
+<translation id="8164365899016970783">প্রসঙ্গের জন্য ট্যাব এবং বুকমার্ক কন্টেন্টগুলি যোগ করুন। কন্টেন্টগুলি আপনার বার্তার সাথে Leo-র কাছে পাঠানো হবে।</translation>
+<translation id="6237410387937453423">কোনো মিলযুক্ত সংযুক্তি নেই</translation>
+<translation id="8076492880354921740">ট্যাবগুলি</translation>
 <translation id="2315654674554095762">Leo এখন আপনার কথোপকথন মনে রাখবে যাতে আপনি তাদের কাছে ফিরে যেতে পারেন। সেগুলি এনক্রিপ্ট করা অবস্থায় আপনার ডিভাইসে সংরক্ষিত হয় এবং আপনি সেগুলি যে কোনো সময় মুছতে পারবেন।</translation>
 <translation id="7821251979960635244">আপনি একটি কথোপকথন শুরু করলে আপনার কথোপকথনের ইতিহাস এখানে প্রদর্শিত হবে।</translation>
 <translation id="887511360213807449">ইতিহাস নিষ্ক্রিয় রয়েছে</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">স্ক্রিনশট</translation>
 <translation id="7949596341600215809">পুরো পৃষ্ঠার স্ক্রিনশট</translation>
 <translation id="6332876390231524389">বর্তমান ট্যাবের বিষয়বস্তু</translation>
-<translation id="7742969455167760092">ট্যাবগুলি খোলে...</translation>
+<translation id="6397861830483632092">ট্যাবগুলি খোলে…</translation>
+<translation id="802080272588201037">বুকমার্কগুলি…</translation>
+<translation id="2716127283451902393">ইতিহাস…</translation>
 <translation id="49269513399674318">মাইক্রোফোন ব্যবহার করুন</translation>
 <translation id="3895031624234442305">কাস্টম মডেলগুলি</translation>
 <translation id="4572010449071015143">নতুন কথোপকথন শুরু করুন</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">সব পরিচালনা করুন</translation>
 <translation id="8410199626695516952">ঠিক আছে, আমি সেটি মনে রাখব না</translation>
 <translation id="8419849467765474535">মেমরি সেভ করতে পারেনি। আবার চেষ্টা করুন।</translation>
+<translation id="5517580030864973329">ওয়েব পৃষ্ঠাটি একটি নতুন ঠিকানায় নেওয়া হচ্ছে</translation>
+<translation id="8832457834975923266">ওয়েব পৃষ্ঠাটি <ph name="URL"/> এ নেওয়া হয়েছে</translation>
+<translation id="5095252080770652994">উন্নয়ন-অবস্থা</translation>
+<translation id="8332385567036775056">ধাপসমূহ</translation>
+<translation id="4521931942079977149">পাতায় ক্লিক করা হচ্ছে</translation>
+<translation id="7732267913911704962">পাতায় ড্র্যাগ ও ড্রপ করা হচ্ছে</translation>
+<translation id="7703800915509570212">ইতিহাস অনুযায়ী পিছনে নেভিগেট করা হচ্ছে</translation>
+<translation id="4875586490950981498">ইতিহাস অনুযায়ী সামনে নেভিগেট করা হচ্ছে</translation>
+<translation id="738881387603843066">মাউস সরানো হচ্ছে</translation>
+<translation id="4850669014075537160">স্ক্রোল করা হচ্ছে</translation>
+<translation id="1265072406500460724">ড্রপডাউন থেকে নির্বাচন করা হচ্ছে</translation>
+<translation id="7573920298077917439">লেখা টাইপ করা হচ্ছে</translation>
+<translation id="4089034800311309656">পৃষ্ঠার জন্য অপেক্ষা করা হচ্ছে</translation>
+<translation id="4798146464408730445">কোনো দক্ষতা পাওয়া যায়নি। "নতুন" বোতামে ক্লিক করে একটি তৈরি করুন।</translation>
+<translation id="271033894570825754">নতুন</translation>
+<translation id="8266605059880650542">পৃষ্ঠাটি সম্পর্কে পরবর্তীতে ব্যবহারের জন্য কিছু তথ্য সংরক্ষণ করা হচ্ছে</translation>
 <translation id="3486480638399578250">আপনার ব্যক্তিগত ইমেল ঠিকানা গোপনীয় রাখুন</translation>
 <translation id="7765422154906712751">অনন্য, এলোমেলো ঠিকানাগুলি তৈরি করুন যা আপনার Brave অ্যাকাউন্ট ইমেলে ফরোয়ার্ড করা হয় এবং যেকোন সময় মুছে ফেলা যেতে পারে। আপনার আসল ইমেল ঠিকানা বিজ্ঞাপনদাতাদের কাছে প্রকাশ বা তাদের দ্বারা ব্যবহৃত হওয়া এড়ান।</translation>
 <translation id="5222676887888702881">সাইন আউট করুন</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Brave অ্যাকাউন্ট পরিষেবা থেকে কোনো যাচাইকরণ টোকেন পাওয়া যায়নি</translation>
 <translation id="3179527991526213624">Brave অ্যাকাউন্ট পরিষেবা থেকে কোনো প্রতিক্রিয়া নেই</translation>
 <translation id="7911439408853154309">ইমেল যাচাইকরণ করা যায়নি</translation>
+<translation id="2595463802839066496">Email Aliases পরিষেবা থেকে কোনো প্রতিক্রিয়া নেই</translation>
+<translation id="367191282389216837">Email Aliases পরিষেবা থেকে অবৈধ প্রতিক্রিয়া</translation>
+<translation id="7203490731644771170">Email Aliases পরিষেবা ত্রুটি: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">ত্রুটি: ছদ্মনাম উপলভ্য নয়</translation>
 <translation id="8370801182970639038">স্বয়ংক্রিয় (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">সার্চ ইঞ্জিনগুলি সক্রিয় রয়েছে</translation>
 <translation id="8285901519864208412">পুরস্কারের কার্ড লুকান</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Brave শিল্ড চালু করুন</translation>
 <translation id="8443488493738411048">এই সাইটের জন্য <ph name="STATUS_BEFORE"/>রক্ষাকবচগুলি চালু রয়েছে<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">এই সাইটের জন্য <ph name="STATUS_BEFORE"/>রক্ষাকবচগুলি বন্ধ রয়েছে<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">যদি মনে হয় যে এই সাইটটি ভেঙে গেছে তাহলে রক্ষাকবচ বন্ধ করার চেষ্টা করুন।
-   <ph name="NOTE_BEFORE"/>নোট: এটি Brave এর গোপনীয়তা রক্ষা কমাতে পারে।<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">যদি এই সাইটটি বিচ্ছিন্ন দেখায়, শিল্ডগুলি নীচে করার চেষ্টা করুন।</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>দ্রষ্টব্য: এটি Brave-এর গোপনীয়তা সুরক্ষা হ্রাস করতে পারে।<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">আপনি কি এই সাইটে সমস্যা অনুভব করছেন?</translation>
+<translation id="9176447766421988172">ওয়েবসাইটের উপযুক্ততা বাড়ানোর জন্য আমরা একটি পরীক্ষা করছি, যেখানে শুধু বিজ্ঞাপন ব্লকিং চালু রাখা হচ্ছে। সতর্কতা: এতে সমস্ত গোপনীয়তা সুরক্ষা অপসারিত হবে। আপনি কি এটি ব্যবহার করতে চান? <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/>।</translation>
+<translation id="5372101283158221516">যে নির্দিষ্ট ওয়েবসাইটগুলি Brave-এর গোপনীয়তা সুরক্ষা দ্বারা ক্ষতিগ্রস্ত হয়েছে, সেগুলির জন্য আপনি রক্ষাকবচকে নিচে সেট করতে পারেন।</translation>
+<translation id="1836572675775891780">শুধুমাত্র বিজ্ঞাপন ব্লক মোড চালু করুন</translation>
+<translation id="6623668214089604469">এই সাইটটি এখন সঠিকভাবে কাজ করছে কি?</translation>
+<translation id="8978860854770042258">যদি এই সাইটটি এখনও খারাপভাবে কাজ করে থাকে, দয়া করে একটি প্রতিবেদন জমা দেওয়া বিবেচনা করুন।</translation>
+<translation id="4677356505199464553">ভালো দেখাচ্ছে</translation>
+<translation id="1992750560347846445">সাইট রিপোর্ট করুন</translation>
+<translation id="2887186586339544116">শুধুমাত্র বিজ্ঞাপন ব্লক মোড সক্রিয়</translation>
+<translation id="673665019618844072">আপনি বর্তমানে শুধুমাত্র বিজ্ঞাপন ব্লকিং মোড ব্যবহার করছেন। এই মোড শুধুমাত্র বিজ্ঞাপন ব্লকিং সুরক্ষা প্রদান করে। আপনি যদি সম্পূর্ণ রক্ষাকবচ মোডে ফিরতে চান, সেটিংস থেকে এই মোডটি নিষ্ক্রিয় করুন।</translation>
+<translation id="4820891023903368625">বিজ্ঞাপন ব্লক করা হয়েছে <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ট্র্যাকার, বিজ্ঞাপন এবং আরও অনেক কিছু ব্লক করা হয়েছে, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave শিল্ড দিয়ে সুরক্ষিত নয়, <ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">উন্নত ধরনের নিয়ন্ত্রণসমূহ</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">আঙ্গুলের ছাপ নেওয়ার অনুমতি দিন</translation>
 <translation id="7638541189782135885">HTTP সংযোগগুলি আপগ্রেড করবেন না</translation>
 <translation id="2570787596946026998">শুধুমাত্র HTTPS দিয়ে সংযোগ করে</translation>
-<translation id="1992750560347846445">সাইট রিপোর্ট করুন</translation>
 <translation id="2387532482048804818">শিল্ড আপের সাথে সাইটটি সঠিকভাবে কাজ না করলে আমাদের বলুন।</translation>
 <translation id="3795015906457257780">আপনি Brave এর গোপনীয়তা সুরক্ষা ছাড়াই এই সাইটটি দেখছেন।</translation>
 <translation id="7194012750329511146">Brave শিল্ড

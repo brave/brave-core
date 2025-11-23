@@ -2,47 +2,48 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
 <translation id="7630214457764713113">ចម្លងតំណស្អាត</translation>
-<translation id="2862978891748913252">ជ្រើសរើសប្រទេសរបស់អ្នក</translation>
-<translation id="3970520675790340955">ជ្រើសប្រទេសរបស់អ្នក ដូច្នេះយើងអាចបង្ហាញជម្រើសត្រឹមត្រូវ និងការផ្សាយពាណិជ្ជកម្មសម្រាប់តំបន់របស់អ្នក។</translation>
-<translation id="6439128034594289376">អស្ចារ្យមែន! រួចរាល់ហើយ!</translation>
-<translation id="370665806235115550">កំពុងដំណើរការ...</translation>
-<translation id="7931127789630755251">ទទួលបានថូខឹនសម្រាប់ការផ្សាយពាណិជ្ជកម្មឯកជនដែលអ្នកឃើញនៅក្នុង Brave</translation>
-<translation id="7859066142771796818">ប្រើថូខឹនដើម្បីទិញកាតកាដូ ប្តូររូបិយបណ្ណផ្សេងៗទៀត គាំទ្រអ្នកបង្កើតមាតិកា និងអ្វីៗជាច្រើនទៀត។</translation>
-<translation id="3863981251715594911">តើ​វា​ដំណើរការ​ដោយ​របៀប​ណា?</translation>
-<translation id="5547108999862247665">តើរង្វាន់ Brave ដំណើរការដោយរបៀបណា?</translation>
-<translation id="2965798296974325760">ចាប់ផ្តើមប្រើប្រាស់រង្វាន់</translation>
-<translation id="6268134562674951939">អ្នកមិនមានថូខឹនគ្រប់គ្រាន់ទេ</translation>
-<translation id="4529874892536380156">ធ្វើ​ឱ្យ​វា​ជា​ការ​រួម​ចំណែក​ប្រចាំ​ខែ។ អ្នកអាចបោះបង់វាបានគ្រប់ពេល។</translation>
-<translation id="5562948772940025260">អ្នកអាចផ្ញើ BAT បានដល់ទៅ <ph name="AMOUNT"/> ដោយប្រើសមតុល្យរង្វាន់ Brave របស់អ្នក។</translation>
-<translation id="5012991400231464322">ការរួមចំណែកប្រចាំខែ</translation>
-<translation id="5907051927340164207">អ្នកកំពុងផ្ញើការរួមចំណែកប្រចាំខែដល់អ្នកបង្កើតនេះរួចហើយ</translation>
-<translation id="5379685283876547860">បានផ្ញើការរួមចំណែក!</translation>
-<translation id="1041398280582063935">ចែករំលែកការគាំទ្ររបស់អ្នក</translation>
-<translation id="8855543392451028706">សូមស្វាគមន៍! អ្នកប្រើប្រាស់អាចគាំទ្រអ្នកបង្កើតមាតិកានេះដោយផ្ញើការរួមចំណែកដល់ពួកគេ។ វា​ជា​វិធី​អរគុណ​ពួកគេ​សម្រាប់​ការ​បង្កើត​ខ្លឹមសារ​ដ៏​អស្ចារ្យ។</translation>
-<translation id="1235176624390585199"><ph name="TITLE"/> នៅលើ <ph name="PROVIDER"/></translation>
-<translation id="3699420827646925694">បានចាកចេញពី <ph name="CUSTODIAN"/></translation>
-<translation id="9038728316393235637">ចូលទៅ <ph name="CUSTODIAN"/></translation>
-<translation id="7063168612616047608">សូមអរគុណសម្រាប់ការគាំទ្រអ្នកបង្កើតដែលអ្នកចូលចិត្ត</translation>
-<translation id="3733094367889291358">ផ្ញើការរួមចំណែក</translation>
-<translation id="1899434873745933492">មិនអាចផ្ញើការរួមចំណែករបស់អ្នកបានទេ</translation>
-<translation id="86107454835395919">កំណត់ជាការរួមចំណែកប្រចាំខែ</translation>
+<translation id="721490496276866468">នាំចូលពាក្យសម្ងាត់</translation>
+<translation id="8178175542325151321">ជ្រើស​ឯកសារ .csv ដែល​មាន​ពាក្យសម្ងាត់​របស់អ្នក ដើម្បីនាំចូល​ទៅ​កម្មវិធី​គ្រប់គ្រង​ពាក្យសម្ងាត់​របស់ Brave។</translation>
 <translation id="1177863135347784049">ប្ដូរតាមបំណង</translation>
-<translation id="4827581232860040208">មានបញ្ហាក្នុងការផ្ញើការរួមចំណែករបស់អ្នក</translation>
-<translation id="3259723213051400722">សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="6112331814131703370">រារាំងការជូនដំណឹង 'ប្ដូរទៅកម្មវិធី'</translation>
+<translation id="4744921452903670666">ប្រាប់ពួកយើងថាអ្នកគិតយ៉ាងដូចម្តេច!</translation>
 <translation id="2524310205387880526">វាយតម្លៃ Brave</translation>
 <translation id="4104400246019119780">សូមអរគុណ!</translation>
+<translation id="5202255382948179481">បន្ថែមការណែនាំរបស់អ្នក</translation>
+<translation id="7759809451544302770">ស្រេចចិត្ត</translation>
 <translation id="4748689412569009273">ជ្រើសរើសរូបអារម្មណ៍មួយដើម្បីប្រាប់ពីបទពិសោធន៍របស់អ្នកជាមួយ Brave។</translation>
 <translation id="7335142069363686805">វាយតម្លៃឥឡូវនេះ</translation>
 <translation id="6681362094306959654">ចូលចិត្ត Brave មែនទេ?</translation>
+<translation id="8041093619605951337">សប្បាយរីករាយ</translation>
+<translation id="6826743502395386800">មានទុក្ខសោក</translation>
 <translation id="5488843227043643519">ផ្តល់ការវាយតម្លៃនៅលើ Play Store មែនទេ?</translation>
-<translation id="1420756770787071946">គាំទ្រអ្នកបង្កើតនេះ</translation>
+<translation id="5867854497245948308">អរគុណសម្រាប់មតិយោបល់របស់អ្នក!</translation>
+<translation id="4935400164159327304">ប្រាប់ពួកយើង​ថាអ្នកគិតថាពួកយើងអាចកែលម្អ Brave ប្រក់ក្បាលបានយ៉ាងដូចម្តេច។</translation>
+<translation id="8966035543003363155">ការជូនដំណឹង Brave ធ្វើឱ្យមានភាពងាយស្រួល</translation>
+<translation id="7662771815233894695">គ្រប់គ្រងការទាញយក ហានរោយ ផ្ញើរ ឬឃើញស្ថិតិការប្រើប្រាស់ប្រចាំសប្ដាហ៍ និងច្រើនទៀត។</translation>
 <translation id="4265429476391459783">អ្នកមិនទទួលបានរង្វាន់ ឬទទួលបានរបាយការណ៍ឯកជនភាពទេ</translation>
+<translation id="1305714751384738456">អ្នកមិនទទួលបាន រង្វាន់ Brave ទេ</translation>
 <translation id="1483391942610220726">អ្នកមិនទទួលបានរបាយការណ៍ភាពឯកជន</translation>
+<translation id="4683790942451502796">បើកការជូនដំណឹងវិញ ប្រសិនបើអ្នកចង់បន្តទទួល BAT និងទទួលបានរបាយការណ៍ផ្នែកឯកជនភាពប្រចាំសប្ដាហ៍។</translation>
+<translation id="8618359751943259593">បើកការជូនដំណឹងវិញ ប្រសិនបើអ្នកចង់បន្តទទួល BAT។</translation>
+<translation id="760355165169399836">បើកការជូនដំណឹងវិញ ប្រសិនបើអ្នកចង់បន្តទទួលបានរបាយការណ៍ផ្នែកឯកជនភាពប្រចាំសប្ដាហ៍។</translation>
+<translation id="6268959058971634697">អ្នកមិនទទួលបាន រង្វាន់ ទេ</translation>
+<translation id="1088637159642753509">បើកការជូនដំណឹងពីឧបករណ៍ ដើម្បីទទួលបាន រង្វាន់ Brave និង មើលរបាយការណ៍ផ្នែកឯកជនភាព។</translation>
+<translation id="312404770066229090">បើកការជូនដំណឹងពីឧបករណ៍ ដើម្បីទទួលបាន រង្វាន់ Brave។</translation>
+<translation id="2241529840361230499">បើកការជូនដំណឹងពីឧបករណ៍ ដើម្បីទទួលបាន របាយការណ៍ផ្នែកឯកជនភាព Brave។</translation>
+<translation id="4930155581888391118">បើកការជូនដំណឹងពី Brave ដើម្បីទទួល រង្វាន់ Brave។</translation>
+<translation id="325187916104529570">បើកការកំណត់ ហើយបើកការជូនដំណឹងពីឧបករណ៍សម្រាប់ ការផ្សាយពាណិជ្ជកម្ម Brave។</translation>
+<translation id="5744802588121897886">បើកការជូនដំណឹង Brave</translation>
 <translation id="7307834434086582547">ភ្ជាប់/ផ្ដាច់ ខែលការពារ Brave</translation>
+<translation id="15346379325756892">បញ្ចូលស្ថានភាពរូបភាពក្នុងរូបភាព</translation>
+<translation id="6945863270524203017">ទទួលបានរបាយការណ៍បន្ត្វិចផ្នែកឯកជនភាពសារី អំពីការរារាំងអ្នកតាមដាន ន និង ការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="4324735664183300693">បើកការជូនដំណឹង</translation>
 <translation id="5510493033031835532">ប្តូរទិសទំព័រ AMP ដោយស្វ័យប្រវត្តិ</translation>
+<translation id="5197219128592971597">ពេល​ដែងទៅ​ទំព័រ URL ដើម (មិនមែន AMP) របស់ Google</translation>
 <translation id="920638232916443453">បញ្ជូនបន្តតំណតាមដានដោយស្វ័យប្រវត្តិ</translation>
 <translation id="1118970888826017401">បើកដំណើរការជំនួយសម្រាប់ការរំលងតំណតាមដានការបញ្ជូនបន្តកម្រិតកំពូល។</translation>
 <translation id="94154759592465111">រារាំងស្គ្រីប</translation>
+<translation id="7714773920987474116">រារាំង JavaScript (អាច​បង្ក​ប្រមោទ​រុករក)</translation>
 <translation id="2233004324252915283">ទប់ស្កាត់មាតិកាដែលបានណែនាំរបស់ YouTube</translation>
 <translation id="1005372663692637999">ទប់ស្កាត់ធាតុកាតបន្ទាប់ និងចុងនៅលើ youtube.com។</translation>
 <translation id="5152595963250646670">ទប់ស្កាត់ធាតុរំខាន YouTube</translation>
@@ -61,57 +62,99 @@
 <translation id="5713644099811900409">គណនី Brave</translation>
 <translation id="4472575034687746823">ចាប់ផ្តើម</translation>
 <translation id="1799030480311994998">លក្ខណៈពិសេស</translation>
+<translation id="1919345977826869612">ពាណិជ្ជកម្ម</translation>
+<translation id="2839742394543397416">វិភាគ</translation>
 <translation id="2005732746077850308">ខែលការពារ Brave &amp; ឯកជនភាព</translation>
 <translation id="4692623383562244444">ម៉ាស៊ីនស្វែងរក</translation>
 <translation id="1468415711258933398">ផ្ទាំងស្ដង់ដារ</translation>
 <translation id="3377025655491224618">ផ្ទាំងអនាមិក</translation>
+<translation id="7304425663107214334">បង្ហាញ​ទ្បសិត​ចូលក្រោម​កម្មវិធី​រុករក</translation>
+<translation id="8982438328166986164">បង្ហាញ​ណែនាំ​របាយការណ៍គេហទំព័រ​ដោយដាក់ចូល​ក្នុង​បញ្ជី​ទាំងចាស់ និង​ Browsing History</translation>
+<translation id="924029461438529367">បង្ហាញការណែនាំក្នុងការស្វែងរក</translation>
 <translation id="6285118765755298263">សន្ទស្សន៍ម៉ាស៊ីនស្វែងរកផ្សេងទៀត</translation>
 <translation id="919715748352669592">ធ្វើលិបិក្រមគេហទំព័រដែលធ្វើតាមលក្ខណៈពិសេស OpenSearch ដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="9148058034647219655">ចាកចេញ</translation>
 <translation id="7534079972563542000">Domainយ៉ាងអាចលោតបាន</translation>
+<translation id="6486983549008741930">តម្រងមាតិកា</translation>
+<translation id="2398817776566547893">បើក​ការបើក​ការ​តំរង​ប្ដូរ​លើ​ការតាមដាន</translation>
 <translation id="8578397014396032341">តម្រងមាតិកា</translation>
 <translation id="4516904298421534459">តម្រងបញ្ជី</translation>
 <translation id="4435215931544457255">បញ្ជីសហគមន៍ពេញនិយមបន្ថែម។ សូមកត់សម្គាល់ថាការបើកកម្រិតពុំច្រើនពេកអាចបន្ថយល្បឿនណាវីង។</translation>
+<translation id="2033882091175404255">បញ្ជីៈតំរងមានពត៌មាន​បន្ថែម​</translation>
+<translation id="3657456536609186343">បញ្ជីៈតំរងកំណត់</translation>
+<translation id="5086877031935002480">បន្ថែមបញ្ជីៈតំរងចិន្តារបស់អ្នក</translation>
+<translation id="4180818901996404761">បញ្ជីៈតំរងកំណត់ URL</translation>
+<translation id="7558501402160423480">បញ្ចូលក្នុង URL អាសយដ្ឋានចូលលើកនេះ</translation>
 <translation id="8775144690796719618">URL មិនត្រឹមត្រូវ</translation>
+<translation id="1841059687646820793">កែតំរងកំណត់</translation>
+<translation id="5075097652958438037">បន្ថែមបញ្ជីៈបន្ថែមដោយ​ និង​តុទុក​ ផលិតកម្មទុកចិត្ត</translation>
+<translation id="3365863382631355729">ធ្វើបច្ចុប្បន្នភាព​ចុងក្រោយ <ph name="TIME"/></translation>
 <translation id="802154636333426148">បានបរាជ័យក្នុងការទាញយក</translation>
+<translation id="7824440849056209910"><ph name="TIME"/> បានបរាជ័យ</translation>
 <translation id="8580328754808744073">បង្កើតតម្រងផ្ទាល់ខ្លួន</translation>
 <translation id="6532106788206463496">រក្សាទុកការផ្លាស់ប្តូរ</translation>
+<translation id="5132969826889386652">បាន​រក្សាទុក​របាយការណ៍​ដោយ​ជោគជ័យ</translation>
+<translation id="4335929145384293789">បន្ថែមតម្រងផ្ទាល់ខ្លួនដែលអ្នកបានបង្កើត មួយសម្រាប់មួយជួរដោយដាក់គ្នា នៅក្នុងវាលខាងលើ។ ត្រូវប្រាកដថាប្រើ <ph name="ADBLOCK_FILTER_SYNTAX"/>។</translation>
+<translation id="5023212862780303376">Adblock filter syntax</translation>
 <translation id="6513892817556267573">សេវាកម្មឈ្មោះ Ethereum</translation>
 <translation id="531747189990625622">សេវាកម្មឈ្មោះ Solana</translation>
 <translation id="3894650624018948468">វិធីសាស្រ្តដោះស្រាយ</translation>
+<translation id="8410806609595910352">ENS offchain lookup</translation>
 <translation id="2356070529366658676">សួរ</translation>
 <translation id="4176463684765177261">បានបិទដំណើរការ</translation>
 <translation id="59174027418879706">បានបើកដំណើរការ</translation>
 <translation id="6920492760024499150">រឿងរ៉ាវកំពូលៗថ្ងៃនេះនៅក្នុងមតិព័ត៌មានឯកជន សម្រាប់តែអ្នកប៉ុណ្ណោះ។</translation>
 <translation id="8300751939969131609">បើក Brave News ហើយកុំខកខានរឿង</translation>
 <translation id="7627131190984957214">ព័ត៌មាន Brave ត្រូវបានគាំទ្រដោយការផ្សាយពាណិជ្ជកម្មជាមួយនឹងការផ្សាយពាណិជ្ជកម្មឯកជន និងអនាមិកដែលត្រូវគ្នានៅលើឧបករណ៍របស់អ្នក។</translation>
+<translation id="7699565323725789472">បន្ថែម​អ្នក​ជំរុញ​បន្ទាប​នៅក្នុងការ​បញ្ញីរ</translation>
 <translation id="1765217911817124376">បើក Brave ព័ត៌មាន</translation>
 <translation id="8981973962043893066">ស្វែងរកគេហទំព័រ ថាទីក៍ ឬ អាដាប់ធ័រ RSS</translation>
 <translation id="3225021799163709119">ពេញនិយម</translation>
+<translation id="3673348851739109493">បញ្ជី​នៃ​ដលកើត</translation>
 <translation id="4750394297954878236">សំណូមពរ</translation>
+<translation id="1031536812594716160">ប្រភព​ដែល​អ្នកអាច​ចូលចិត្ត​</translation>
 <translation id="1498364270401875204">ឆានែល</translation>
+<translation id="3923595176124806911">ដំណែនាប៉ែន​បន្ថែម​ដែល​ធ្វើ​ការចាប់អារម្មណ៍</translation>
 <translation id="8032569120109842252">តាម</translation>
+<translation id="7264627851715038916">គ្រប់គ្រងប្រភពនៅក្នុងវាយ​ល�rect</translation>
 <translation id="4108314971463891922">តាម</translation>
 <translation id="3861486700625780712">បញ្ឈប់តាម</translation>
+<translation id="7813788390976857515">ទទួលនាពេលវេលា</translation>
+<translation id="3405580543478883040">ទទួលនាពេលវេលា...</translation>
+<translation id="7461899062138731833">ប្រភព</translation>
+<translation id="6150420917380577651">មិនមានតំណផ្សាទេនៅ <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Ad</translation>
 <translation id="7823038307453615214">បង្ហាញ Brave ព័ត៌មាន</translation>
 <translation id="6527303717912515753">ចែករំលែក</translation>
 <translation id="1654539412343893324">ស្វែងយល់បន្ថែមអំពីទិន្នន័យរបស់អ្នក</translation>
 <translation id="2989805286512600854">បើកក្នុងផ្ទាំងថ្មី</translation>
 <translation id="3709782636417497984">បើកនៅក្នុងផ្ទាំងអនាមិកថ្មី</translation>
+<translation id="2014017248518069982">ពណ៏​មាតិកា​មកពី <ph name="PUBLISHER"/></translation>
+<translation id="6332791358521956870"><ph name="PUBLISHER"/> ត្រូវបាន​ផ្ដាច់</translation>
 <translation id="1276592121036104130">ផ្ទុកមាតិកាថ្មី</translation>
 <translation id="3189348785087463371">បានផ្សព្វផ្សាយ</translation>
 <translation id="7554145152551782675">ការផ្តល់ជូនពី Brave ផ្សេងទៀត</translation>
+<translation id="254100925533869330">គ្មាន​មាតិកា</translation>
+<translation id="7172792761509429092">ព័ត៌មាន Brave​គ្មាន​មាតិកា​បង្ហាញ</translation>
+<translation id="1771307734839364850">ជ្រើស​រើស​ប្រភព​មាតិកា</translation>
+<translation id="6891769200437737956">បរិសូណៃ​ការរកតាមអង្ហីយ៉ាដៃ</translation>
 <translation id="7459000603787995422">បិទផ្ទាំងនៅពេលចាកចេញ</translation>
 <translation id="4448697385961650078">ទប់ស្កាត់អ្នកតាមដាន &amp; ads</translation>
 <translation id="2448893613530489637">បង្អាក់អ្នកតាមដាន &amp; ads ពីការផ្ទុកឡើង និងការបង្ហាញក្នុងទំព័រវែប</translation>
 <translation id="1025207378813960343">ធ្វើឱ្យនូវការតភ្ជាប់ទៅកាន់គេហទំព័រត្រូវបានការ។</translation>
 <translation id="3570081523466826008">តំឡើងការតភ្ជាប់ទៅជា HTTPS</translation>
+<translation id="6686219838158572786">ទាមទា​រ​រាល់​លេខ​កូន​តុន​ប្រើ HTTPS (strict)</translation>
+<translation id="4221284400051835823">បង្កប់ទៅ HTTPS​នៅពេលដែលអាច (default)</translation>
+<translation id="4690906712010847708">មិនធ្វើការតំឡើងការតភ្ជាប់ទៅ HTTPS (បានផ្ដាច់)</translation>
 <translation id="693506469193748756">ភ្លេចខ្ញុំនៅពេលខ្ញុំបិទភ្ជាប់នេះ</translation>
+<translation id="6975864539539353406">ជម្រះខូគីស៍ និងទិន្នន័យគេហទំព័រផ្សេងទៀតនៅពេលអ្នកបិទគេហទំព័រ</translation>
+<translation id="1680858055899097121">មិនរក្សាទុកផ្ទាំងរវាងសម័យការរុករក</translation>
 <translation id="7142548388914389999">អនុញ្ញាតវិភាគផលិតផល​ការពារ​ភាពឯកជន (P3A)</translation>
+<translation id="5254037869598726291">ព័ត៌មាន P3A ដែលបានយកអនាមិកជួយ Brave ប៉ាន់ស្មានការប្រើប្រាស់សរុប និងធានាថា យើងកំពុងធ្វើឱ្យលក្ខណៈពិសេសសំខាន់ៗកាន់តែប្រសើរ។</translation>
 <translation id="4174337572777167894">គម្រោងស្វែងរកគេហទំព័រ</translation>
 <translation id="8659271182272561965">ចូលរួមចំណែកការស្វែងរកអនាមិកមួយចំនួន &amp; ការរុករកទិន្នន័យដើម្បីកែលម្អ Brave ស្វែងរក។</translation>
 <translation id="933652931229970927">ផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ</translation>
+<translation id="5987838417172370108">ជួយកែលម្អស្ថិរភាពផលិតផលរបស់ Brave ដោយផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ នៅពេលដែលកម្មវិធីរុករក Brave គាំង ឬបង្កក។</translation>
 <translation id="7977176350719484850">ប៉ាន់ស្មាន ទិន្នន័យ\nបានរក្សាទុក</translation>
 <translation id="9008534313521214777">ប៉ាន់ស្មាន រយះពេល\nបានរក្សាទុក</translation>
 <translation id="8347743943525229984">អនុញ្ញាតឱ្យមានការស្ទង់មតិ Brave</translation>
@@ -128,32 +171,48 @@
 <translation id="4172219483893066798">គេហទំព័រអាចស្នើសុំចូលប្រើធនធាន localhost</translation>
 <translation id="7181706637590665047">កុំអនុញ្ញាតឱ្យចូលប្រើធនធាន localhost</translation>
 <translation id="1485435696620658073">អនុញ្ញាតឱ្យចូលប្រើធនធាន localhost</translation>
+<translation id="181905442828471321">លំនាំដើមសកលរបស់ខែលការពារ Brave</translation>
 <translation id="2675679258824361492">ការកំណត់ឯកជនភាពផ្សេងទៀត</translation>
 <translation id="8026334261755873520">ជម្រះទិន្នន័យរុករក</translation>
 <translation id="1690924763769415936">ការចាក់ផ្ទៃខាងក្រោយ</translation>
 <translation id="6332924730165919598">ការបិទផ្ទាំងទាំងអស់ក្រោយពេលបិទ Brave</translation>
 <translation id="8308305244351876417">អនុញ្ញាតឱ្យសំឡេងលេងនៅពេលអ្នកប្តូរទៅផ្ទាំងផ្សេងទៀតនៅក្នុង Brave ឬកម្មវិធីផ្សេងទៀត ឬអេក្រង់ឧបករណ៍របស់អ្នកបិទ។</translation>
+<translation id="49147335255967913">បើកតំណភ្ជាប់ YouTube ក្នុង Brave</translation>
 <translation id="4150201353443180367">ការបង្ហាញ</translation>
 <translation id="4275663329226226506">កំសាន្ត</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
+<translation id="6716942308303275900">ប្រើសមាសភាគការគ្រប់គ្រងសិទ្ធិឌីជីថល Widevine (DRM) ដើម្បីមើលមាតិកាមេដៀដែលបានការពារនៅក្នុងកម្មវិធីរុករក។</translation>
+<translation id="255204363133978824">អនុញ្ញាតមាតិកាដែលបានការពារ</translation>
+<translation id="4736073408974888559"><ph name="BEGIN_LINK"/>ស្វែង​យល់​បន្ថែម​អំពី Widevine<ph name="END_LINK"/></translation>
+<translation id="6961369821791548622">អនុញ្ញាត (បើកដំណើរការឡើងវិញឥឡូវនេះ)</translation>
 <translation id="2433507940547922241">លក្ខណៈខាងក្រៅ</translation>
+<translation id="9040069796107003510">រូបតំណាងរង្វាន់ Brave</translation>
+<translation id="6333347122924254968">បង្ហាញរូបតំណាងរង្វាន់ Brave នៅក្នុងរបារព្រួញ</translation>
+<translation id="1215433243238902715">បើករបារខាងក្រោម</translation>
+<translation id="1422686363939271829">ការកំណត់នេះត្រូវបានផ្ដាច់ នៅពេលដែលបានជ្រើសរើសទីតាំងរបារអាសយដ្ឋានខាងក្រោម</translation>
 <translation id="6587448235155023666">ការផ្លាស់ប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលបើកដំណើរការ Brave ឡើងវិញពេលក្រោយ។</translation>
+<translation id="8701563696941209024">បើកដំណើរការឡើងវិញឥឡូវនេះ</translation>
 <translation id="834487290629916192">ពេលក្រោយ</translation>
 <translation id="4117451092682672487">ផ្តល់ជូននូវដំណោះស្រាយដែលផ្តោតលើឯកជនភាព</translation>
 <translation id="7909375417585209817">តាមរយៈការកំណត់ Brave ជាលំនាំដើម រាល់តំណភ្ជាប់ដែលអ្នកចុចនឹងភ្ជាប់មកជាមួយការការពារឯកជនភាពរបស់ Brave។</translation>
+<translation id="7370959926683925817">រារាំងការផ្សាយពាណិជ្ជកម្ម សន្សំព័ត៌មានទិន្នន័យ រាល់ថ្ងៃៗ</translation>
 <translation id="7281027579943912834">តាមរយៈការកំណត់ Brave ជាលំនាំដើម រាល់តំណភ្ជាប់ដែលអ្នកចុចនឹងភ្ជាប់មកជាមួយការការពារនៃការទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្មរបស់ Brave។ រាល់ទំព័រ វីដេអូ និងស្ទ្រីម។</translation>
 <translation id="5148943178722443958">ជួយធ្វើឱ្យ Brave កាន់តែប្រសើរឡើង។</translation>
 <translation id="6718362830686703942">ផ្ញើរបាយការណ៍វិភាគ ប្រសិនបើអ្នកជួបប្រទះការគាំង ឬបង្កក។</translation>
 <translation id="8616157231067364693">ចែករំលែកការយល់ដឹងអំពីផលិតផលឯកជន និងអនាមិកអំពីមុខងារអ្វីខ្លះដែលកំពុងត្រូវបានប្រើប្រាស់ដោយអ្នកប្រើប្រាស់របស់ Brave។</translation>
+<translation id="2888496576732880897">ជួយកែប្រើ Brave ស្វែងរក</translation>
 <translation id="7044431516245362795">ចូលរួមក្នុងគម្រោងស្វែងរកគេហទំព័រដើម្បីជួយបង្កើនសន្ទស្សន៍ និងកែលម្អលទ្ធផលស្វែងរក។ <ph name="LEARN_MORE_START"/>ស្វែងយល់បន្ថែម។<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">ប្រាកដណាស់ ខ្ញុំនឹងជួយ</translation>
 <translation id="3545804467215833536">ចុចដើម្បីមើលខែលការពារ Brave</translation>
+<translation id="1724327820822194498">មើលរាល់រឿងអាក្រក់ដែល Brave បានរារាំងក្នុងគេហទំព័រទាំងអស់ជាមួយនឹងខែលការពារ។</translation>
+<translation id="5386259141409498372"><ph name="BIG_TECH"/> និង <ph name="TRACKER"/> ការផ្សាយពាណិជ្ជកម្ម &amp; ឧបករណ៍តាមដានផ្សេងទៀតត្រូវបានរារាំង</translation>
+<translation id="7256200875155794202"><ph name="BIG_TECH"/> និង ការផ្សាយពាណិជ្ជកម្ម &amp; ឧបករណ៍តាមដានផ្សេងទៀតត្រូវបានរារាំង</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ការផ្សាយពាណិជ្ជកម្ម &amp; amp; ឧបករណ៍តាមដានត្រូវបានរារាំង</translation>
 <translation id="8281886186245836920">រំលង</translation>
-<translation id="1377600615067678409">រំលងភ្លាម</translation>
 <translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="986879628471635371">ការដោះស្រាយបញ្ហាតែដំណើរការ</translation>
 <translation id="5806601733251372221">ខែលការពារ Brave</translation>
+<translation id="8537217141725709400">រក <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">កម្មវិធី Brave Rewards</translation>
 <translation id="5870330605209713397">ដោយការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពឯកជនភាព និងគាំទ្រគេហទំព័រដែលអ្នកចូលចិត្ត និងអ្នកបង្កើតតាមលំនាំដើម។</translation>
 <translation id="5302488867897327287">ដោយការប៉ះ ចាប់ផ្តើមប្រើប្រាស់ Brave Rewards អ្នកបានយល់ព្រមនឹង</translation>
@@ -165,11 +224,20 @@
 <translation id="6511854390690723657">នេះជាការផ្សាយពាណិជ្ជកម្ម Brave ដំបូងរបស់អ្នក។  ចុចដើម្បីស្វែងយល់បន្ថែម។</translation>
 <translation id="2070991379950719711">ចាប់ផ្តើមប្រើ Brave Rewards</translation>
 <translation id="48520986898237073">បន្តទៅកាបូប</translation>
+<translation id="6213254277250932867">ខ្ញុំមានមន្តសម្ងាត់ពាក្យ១០២</translation>
+<translation id="4225265925807365011">ខ្ញុំមានមន្តសម្ងាត់ពាក្យ២៤២</translation>
 <translation id="3570367516044491911">កំណត់ជាកម្មវិធីរុករកតាមលំនាំដើម</translation>
+<translation id="6800338374677644736">កំណត់ជាកម្មវិធីរុករកតាមលំនាំដើម</translation>
+<translation id="1545749641540134597">ស្កេន QR Code</translation>
 <translation id="5317781812114905957">សេចក្ដីណែនាំ</translation>
+<translation id="8515319483805157233">ដើម្បីស្វែងរកដោយ QR Code សូមស្កេនលេខ QR Code នៅកណ្តាលនៃគ្រាប់ចុច។</translation>
 <translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="1201402288615127009">បន្ទាប់</translation>
+<translation id="8481779960444041069">ដើម្បីកែលម្អភាពឯកជនភាពរបស់អ្នក កំណត់ Brave ជាកម្មវិធីរុករកតាមលំនៅដើម</translation>
+<translation id="1938402585819943124">ជ្រើសរើស Brave នៅលើអេក្រង់បន្ទាប់។</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
+<translation id="745974920645827035">ការស្វែងរកឯករាជ្យជាមួយនឹងភាពឯកជនភាពប្រសើរជាងមុន</translation>
+<translation id="2773167297815493692">Brave ស្វែងរកមិនបង្កើតពហុភាពលើអ្នក។</translation>
 <translation id="5240031343741051161">សាកល្បង Brave Search</translation>
 <translation id="5234764350956374838">ច្រានចោល</translation>
 <translation id="6639570430554986719">ខែមករា</translation>
@@ -186,32 +254,94 @@
 <translation id="4254029385847607686">ខែធ្នូ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave ព័ត៌មាន</translation>
+<translation id="2518692840036393666">ប្ដូរតំរូវតាមបំណងម៉ឺនុយ</translation>
+<translation id="5582839680698949063">ម៉ឺនុយ​មេ</translation>
+<translation id="7002271985859760052">សកម្មភាព​ទំព័រ</translation>
+<translation id="7104487676473617844">ធាតុ​ខាងក្រោម​នឹង​មើលឃើញ​នៅ​ក្នុងម៉ឺនុយ ប្រសិន​បើ​គេហទំព័រ​បច្ចុប្បន្ន​គាំទ្រ។</translation>
+<translation id="4159764849281393303">កម្មវិធីវែប</translation>
 <translation id="8428213095426709021">ការកំណត់</translation>
-<translation id="6020176662032623904">អ្នកបង្កើតដែលបានផ្ទៀងផ្ទាត់</translation>
-<translation id="2369994359029526515">អ្នកបង្កើតដែលមិនបានផ្ទៀងផ្ទាត់</translation>
-<translation id="6112368337882254910">ការបរិច្ចាគស្វ័យប្រវត្តិ</translation>
-<translation id="1848737374354350807">តុល្យភាព</translation>
-<translation id="2429828319207652823">មានបញ្ហាក្នុងដំណើរការបរិច្ចាគរបស់អ្នក។</translation>
-<translation id="683765328936486920">លើ YouTube</translation>
-<translation id="8969049974285901797">លើ Twitch</translation>
+<translation id="8038539967102225446">ការផ្សាយពាណិជ្ជកម្ម Brave មកដល់ហើយ!</translation>
 <translation id="222883304157347087">( ឧបករណ៍នេះ )</translation>
+<translation id="4157741509680155021">ឧបករណ៍ការការពារ Brave សមប់</translation>
+<translation id="279635009973773843">ពេលជំពូកនេះកំពុងដំណើរការ...</translation>
+<translation id="6394333525003604181">ចាកចេញពីប្រព័ន្ធសមកាលកម្ម...</translation>
 <translation id="2569646144216067185">ការរាប់ពាក្យ: <ph name="WORD_COUNT"/></translation>
+<translation id="7507533586185621084">លេខកូដសមកាលកម្មខុស</translation>
+<translation id="8284063834901328650">QR Code សមកាលកម្មខុស</translation>
 <translation id="859506441384380749">លេខកូដនេះត្រូវបានផលិតដោយកំណែដែលចោរសសនាមនេះ, សូមធ្វើអត្ថបតបានោកុំព្យូទ័ររបស់អ្នក</translation>
 <translation id="3132642509209154999">លេខកូដនេះបានផុតកំណត់ហើយ។ សូមផលិតថ្មីលើកុំព្យូទ័ររបស់អ្នកនិងសាកល្បងម្ដងទៀត</translation>
 <translation id="2859229680945501779">លេខកូដនេះមិនត្រឹមត្រូវទេ។ សូមពិនិត្យមើលពេលវេលានិងលំនាំសោះនៅលើឧបករណ៍របស់អ្នកថាត្រូវតាមលំនាំបញ្ជាក់នៃការត្រឹមត្រូវ</translation>
+<translation id="3149880132460839085">Brave សមកាលកម្ម</translation>
 <translation id="348794064910142198">Brave សមកាលកម្មអនុញ្ញាតឱ្យអ្នកធ្វើសមកាលកម្មទិន្នន័យចំណាំជាលក្ខណៈឯកជនរវាងកម្មវិធីរុករក Brave របស់អ្នកនៅលើឧបករណ៍ផ្សេងៗរបស់អ្នក។\n\nគ្រាន់តែស្កេនកូដពីខ្សែសង្វាក់សមកាលកម្មរបស់អ្នកដែលអ្នកបានបង្កើតនៅលើឧបករណ៍ផ្សេងទៀត។ ឬចាប់ផ្តើមខ្សែសង្វាក់សមកាលកម្មថ្មី។</translation>
+<translation id="2614069607859982576">ការប្រើឧបករណ៍ដែលបានសមកាលកម្ម រួចបើកការកំណត់ របស់ Brave ហើយទៅកាន់ ការកំណត់ &gt; សមកាលកម្ម។ ជ្រើសរើស "បន្ថែមឧបករណ៍ថ្មី" ហើយស្កេនលេខកូដ QR ដែលបានបង្ហាញនៅលើអេក្រង់។</translation>
+<translation id="5241263629636958324">បានចម្លងទៅក្ដារតម្បៀតខ្ទាស់</translation>
 <translation id="5817918615728894473">ផ្គូផ្គង</translation>
+<translation id="3429575397891106447">ជម្រើសសមកាលកម្ម</translation>
 <translation id="1680065323266179640">លុបគណនី Sync</translation>
+<translation id="8397325856045820212">ការលុបគណនីរបស់អ្នកនឹងរំលាយទិន្នន័យដែលបានអ៊ិនគ្រីបពីម៉ាស៊ីនមេរបស់ Brave ហើយបិទសមកាលកម្មលើឧបករណ៍ទាំងអស់របស់អ្នកដែលបានភ្ជាប់។ វាមិនមានប៉ុន្តែរំលាយទិន្នន័យដែលមាននៅលើឧបករណ៍ទាំងនោះទេ។
+
+ការលុបនេះគឺជាការអចិន្រ្តៃយ៍ហើយវាមិនមានវិធីណាអាចស្ដារឡើងវិញទិន្នន័យឡើយ។ ប្រសិនបើអ្នកសំរេចចិត្តចាប់ផ្តើមប្រើសមកាលកម្មម្តងទៀត អ្នកនឹងត្រូវបង្កើតគណនីថ្មី និងបន្ថែមឧបករណ៍នីមួយៗម្តងរាប់មួយៗ។</translation>
 <translation id="9064376100690171155">លុបគណនីជាអចិន្ត្រៃយ៍</translation>
+<translation id="2740516568641790390">គណនីសមកាលកម្មត្រូវបានលុបដោយជោគជ័យ</translation>
+<translation id="7006136453627651236">បានបរាជ័យក្នុងការលុបគណនីសមកាលកម្ម</translation>
+<translation id="728334460283296316">ដកឧបករណ៍</translation>
+<translation id="1178128181015923849">តើអ្នកប្រាកដថាអ្នកចង់លុបឧបករណ៍ '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">ស្កេន ឬបញ្ចូលលេខកូដសមកាលកម្ម</translation>
 <translation id="1602067095281698985">ចាប់ផ្តើមខ្សែសង្វាក់សមកាលកម្មថ្មី</translation>
+<translation id="1475223680121592371">បន្ថែមឧបករណ៍ចល័ត</translation>
+<translation id="2965377893636908578">បន្ថែមកុំព្យូទ័រ</translation>
+<translation id="4701589725270449523">ប្រើទូរស័ព្ទ ឬថេប្លេតទីពីរ រួចទៅកាន់ ការកំណត់ របស់ Brave &gt; សមកាលកម្ម &gt; ស្កេន។
+
+នៅលើឧបករណ៍ចល័តរបស់អ្នក ទៅកាន់ Brave សមកាលកម្ម ក្នុងបន្ទះការកំណត់ ហើយចុចប៊ូតុង "ស្កេនលេខកូដសមកាលកម្ម"។ ប្រើកាមេរ៉ារបស់អ្នកដើម្បីស្កេនលេខកូដ QR ខាងក្រោម។</translation>
+<translation id="67114562351518315">នៅលើកុំព្យូទ័ររបស់អ្នក ទៅកាន់ ការកំណត់ Brave &gt; សមកាលកម្ម។ ជ្រើសរើស "បញ្ចូលលេខកូដសមកាលកម្ម"។
+
+នៅលើកុំព្យូទ័រកំណត់មុខងាររបស់អ្នក ទៅកាន់ Brave សមកាលកម្ម ក្នុងការកំណត់ ហើយចុចប៊ូតុង "ខ្ញុំមានលេខកូដសមកាលកម្ម"។
+បញ្ចូលពាក្យកូដសមកាលកម្មដែលបានបង្ហាញខាងក្រោម។</translation>
+<translation id="65315202420929965">ស្កេនលេខកូដសមកាលកម្មនេះ</translation>
+<translation id="6764016175302339802">កំណត់ចន្លោះលេខកូដនេះដូចជាពាក្យសម្ងាត់។ ប្រសិនបើអ្នកណាម្នាក់បានយកវា ពួកគេអាចអាន និងកែប្រែទិន្នន័យសមកាលកម្មរបស់អ្នក។</translation>
+<translation id="2731921493694251495">បញ្ចូលពាក្យកូដសមកាលកម្ម</translation>
 <translation id="2175927920773552910">កូដ QR</translation>
+<translation id="8653433343015102968">ពាក្យកូដ</translation>
 <translation id="8624315169751085215">ចម្លងទៅកាន់ក្តារតម្រៀប</translation>
 <translation id="8730621377337864115">រួចរាល់</translation>
+<translation id="6174119914106813304">សមកាលកម្មនៅលើឧបករណ៍នេះ</translation>
+<translation id="6776430845975754238">ការផ្លាស់ប្តូរការកំណត់នេះនឹងរំលាយចំពោះទិន្នន័យដែលឧបករណ៍នេះចែករំលែកជាមួយអ្នកដទៃ។</translation>
 <translation id="1061533051865606843">បន្ថែមឧបករណ៍ថ្មី</translation>
+<translation id="7539985410310934287">បញ្ចូលពាក្យកូដ</translation>
+<translation id="2886391679017857869">ការប្រើឧបករណ៍ដែលបានសមកាលកម្ម រួចបើកការកំណត់ របស់ Brave ហើយទៅកាន់ ការកំណត់ &gt; សមកាលកម្ម។ ជ្រើសរើស "បន្ថែមឧបករណ៍ថ្មី" រួច "បង្ហាញពាក្យកូដវិញ"។</translation>
 <translation id="8131740175452115882">អះអាង</translation>
+<translation id="4973653569293835178">ខ្ញុំនឹងប្រើកាមេរ៉ារបស់ខ្ញុំ...</translation>
+<translation id="326454632686131209">ឧបករណ៍សមកាលកម្ម</translation>
+<translation id="3122158728238634723">បង្កើតលេខកូដថ្មី</translation>
+<translation id="4358805443781965194">លេខកូដបានផុតកំណត់។ បង្កើតលេខថ្មីដោយចុចប៊ូតុងខាងក្រោម។</translation>
+<translation id="318164877797885563">លេខកូដជាបណ្តោះអាសន្ននេះមានសុពលភាពសម្រាប់ពេលបន្ទាប់ <ph name="TIME_AMOUNT"/></translation>
+<translation id="327726072512457161">ចាកចេញពីការកំណត់</translation>
+<translation id="8050847734948770789">បើករង្វាន់ Brave</translation>
+<translation id="9187185473011056079">ខ្ញុំយល់ព្រម!</translation>
+<translation id="8185825081026121627">ទទួល ថូខិនគ្រីបតូជារង្វាន់ ដោយការមើលការផ្សាយពាណិជ្ជកម្មដែលថែរក្សាឯកជនភាព ជាមួយរង្វាន់ Brave</translation>
+<translation id="5321518976657560663">កំហុសក្នុងការកំណត់រង្វាន់ផ្សង Brave</translation>
+<translation id="4114170343590425996">មានកំហុសក្នុងការកំណត់រង្វាន់ Brave។ សូមបើកដំណើរការឡើងវិញ និងព្យាយាមម្ដងទៀត។</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
+<translation id="5611966874859284786">បង្ហាញការផ្សាយពាណិជ្ជកម្មនៅពេលដែល Brave មិនបានប្រើ</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>កំណត់ទិន្នន័យរង្វាន់ Brave ផ្សង…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>ជម្រះទិន្នន័យការផ្សាយពាណិជ្ជកម្ម Brave…<ph name="END_LINK1"/></translation>
+<translation id="8293206222192510085">បន្ថែម ចំណាំ</translation>
+<translation id="340492034650766959">លុបចំណាំគេហទំព័រ</translation>
 <translation id="2149973817440762519">កែចំណាំ</translation>
+<translation id="6819319915092566548">មើលចំណាំគេហទំព័រ</translation>
+<translation id="8457451314607652708">នាំចូលចំណាំគេហទំព័រ</translation>
+<translation id="1008186147501209563">នាំចេញចំណាំគេហទំព័រ</translation>
+<translation id="6680516947641001448">ជ្រើសរើសឯកសារ​ដើម្បីនាំ​ចូលចំណាំគេហទំព័រ</translation>
+<translation id="2353910600995338714">នាំចេញបានជោគជ័យ</translation>
+<translation id="229319993704311844">ចំណាំបាននាំចេញទៅ <ph name="EXPORT_FILE_PATH"/></translation>
+<translation id="8050098462121217351">នាំចេញបរាជ័យ</translation>
+<translation id="1166543535974380311">ការបញ្ជាការនាំចេញចំណាំបរាជ័យ។ សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="6154243540085290880">នាំចូលបានជោគជ័យ</translation>
+<translation id="7028125942261647795">ចំណាំគេហទំព័របាននាំចូលបានដោយជោគជ័យ។</translation>
+<translation id="4803910478683254032">នាំចូលបរាជ័យ</translation>
+<translation id="8325139248201792113">ការបញ្ជារគារនាំចូលចំណាំគេហទំព័របរាជ័យ។ សូម​ព្យាយាម​ម្តង​ទៀត។</translation>
+<translation id="2803313416453193357">បើកថត</translation>
+<translation id="8985635554450124959">Brave សមកាលកម្មមិនអាចតំឡើងពុម្ភបាន</translation>
 <translation id="7173114856073700355">បើកការកំណត់</translation>
 <translation id="496896260395129787">គណនី Sync របស់អ្នកត្រូវបានលុបពីឧបករណ៍ផ្សេង។ ប្រសិនបើអ្នកមិនមានបំណងបិទ Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>បង្កើតគណនីម្តងទៀត</translation>
@@ -219,6 +349,18 @@
 <translation id="4908081302669157000">លេខទូរស័ព្ទ អ៊ីមែល និងអាសយដ្ឋាន</translation>
 <translation id="1056898198331236512">ការព្រមាន</translation>
 <translation id="1426410128494586442">បាទ/ចាស</translation>
+<translation id="7811264919113243207">អំពីនឹងចែករំលែកទិន្នន័យ Brave របស់អ្នក រួមមានបាចាំបាតពាក្យសម្ងាត់ទៅអករណ៍នាកើ QR code ដែលបានប្រកាសនេះ។
+សូមពិនិត្យ​ឡើងវិញមុននឹង QR code បានប្រកាសដោយឧបករណ៍ដែលអ្នកប្ដូល
+តើអ្នកប្រាកដចង់ធ្វើឱ្យមានវាតើង?</translation>
+<translation id="3097089005389027085">អំពីនឹងចែករំលែកទិន្នន័យ Brave របស់អ្នក រួមមានបាចាំបាតពាក្យសម្ងាត់ទៅអករណ៍ដែលបានបង្កើណ៍ទៅ។ 
+សូមពិនិត្យ​ឡើងវិញមុននឹង code បានបង្កើណ៍ដោយឧបករណ៍ដែលអ្នកប្ដូល
+តើអ្នកប្រាកដចង់ធ្វើឱ្យមានវាតើង?</translation>
+<translation id="4550208292810542331">ការអនុញ្ញាតកាមេរ៉ាមិនត្រូវបានផ្ដល់​ទេ</translation>
+<translation id="6470233139461745039">ដើម្បីអនុញ្ញាតការសមម្លាកពាក្យសម្ងាត់ យកកំណត់ការស្នាក់សោលើឧបករណ៍​របស់អ្នកជាមុនសិន</translation>
+<translation id="3063783274005996079">ប្អកដឹងភាពក្នុងការអនុញ្ញាតការសមកាលកមួយបើកនូវពាក្យសម្ងាត់។ អំពីការសម្ភី​យកនូវខណៈកំណត់អ្នកក្នុងធ្ធាការរង់ប្រកប្បន្នភាព។</translation>
+<translation id="7551563084530025179">មុននឹងប្អកស្កម្នាក់លក់កមួយបើកតំបន់ំិសរ វាយពាក្យសមងាត់សម្រាប់ការសំល្តៅដាក់គ្រប់ប័តអកដូរ៉ានាយស្រោχισលឺលានតាមបណ្តែ.</translation>
+<translation id="6925081665778864449">ស្ត្រានតាមពាក្យសមងាត់ អ្នកកាត់ឬធូកសម្ជាលស្ទៈបាន</translation>
+<translation id="597993392929850353">លិខទៅវិឯនាប្រាវើងៀលៗ។</translation>
 <translation id="6336451774241870485">ផ្ទាំងអនាមិកថ្មី</translation>
 <translation id="3110967157686007724">ផ្ទាំង​អនាមិក</translation>
 <translation id="944340256927461196">កុំទុកដាននៅលើឧបករណ៍របស់អ្នក</translation>
@@ -227,41 +369,60 @@
 <translation id="8670344404057978375">សូមចំណាំថា ទោះបីជានៅក្នុងបង្អួចឯកជនក៏ដោយ សកម្មភាពរុករករបស់អ្នកអាចនៅតែអាចមើលឃើញដោយ ISP របស់អ្នក អ្នកសង្កេតការណ៍បណ្តាញ ឬនិយោជករបស់អ្នក (ប្រសិនបើអ្នកកំពុងប្រើឧបករណ៍/បណ្តាញការងារ)។</translation>
 <translation id="1413177583895309156">Brave VPN អ៊ិនគ្រីប និងការពារអ្វីដែលអ្នកធ្វើនៅលើអ៊ីនធឺណិត សូម្បីតែនៅខាងក្រៅកម្មវិធីរុករក Brave ក៏ដោយ។</translation>
 <translation id="3974348661685061050">សាកល្បងដោយឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
-<translation id="4973347371961481083">ការរួមចំណែក</translation>
-<translation id="7047578174221019462">ការបរិច្ចាគរបស់អ្នក ត្រូវបានដំណើរការ។</translation>
+<translation id="5789441016350810005">កំណាពាក្យរវើគណនាបាកម្នាវាបៀណ</translation>
 <translation id="1486343603936278248">តោកខឹន</translation>
 <translation id="7781069478569868053">ទំព័រផ្ទាំងថ្មី</translation>
 <translation id="5927196110206824867">រូបភាពផ្ទៃខាងក្រោយដែលបានព្រមានគាំទ្រគោលដៅរបស់ Brave ដើម្បីតស៊ូឱ្យមាន Web ដែលមានភាពឯករាជ្យ និងប្រើប្រាស់អ្នកប្រើប្រាស់ជាដំបូង ហើយខុសពី Big Tech យើងវាស់បញ្ចាំងផ្សាយពាណិជ្ជកម្មដោយមិនដឹងខ្លួនដើម្បីរក្សាភាពឯកជនរបស់អ្នក។</translation>
 <translation id="8748471354357836070">ស្វែងយល់បន្ថែម / ជម្រើសឈប់លេង</translation>
+<translation id="3171669670217312786">រូបភាពផ្ទៃខាងក្រោយ</translation>
 <translation id="8522669544471808198">បង្ហាញរូបភាពផ្ទៃក្រោយ</translation>
+<translation id="6258554626602400736">បង្ហាញការផ្សាយពាណិជ្ជកម្មទំព័រថ្មី</translation>
+<translation id="9001530744369687550">ស្វែងយល់បន្ថែមអំពីការផ្សាយពាណិជ្ជកម្មទំព័រថ្មី</translation>
+<translation id="8793108040181436796">វិចិត្រេអាវក្នុងនាងួមាន</translation>
+<translation id="8643377320501056697">បង្ហាញតំបន់ចំបាច់</translation>
 <translation id="7275773481201277457">បង្ហាញស្ថិតិ Brave</translation>
+<translation id="8297488609722895137">រូបភាពដោយ <ph name="PHOTO_BY"/></translation>
 <translation id="2898634658146274982">បើកតំណភ្ជាប់ខាងក្រៅនៅក្នុង Brave</translation>
 <translation id="5616508928556767259">បើកតំណភ្ជាប់ពីកម្មវិធីផ្សេងៗទៀតនៅក្នុងទិដ្ឋភាពបណ្តាញ Brave។ ចំណាំ៖ អ្នកត្រូវតែកំណត់ Brave ជាកម្មវិធីរុករកតាមអ៊ីនធឺណិតលំនាំដើមរបស់អ្នក។</translation>
 <translation id="2394961582378297792">បានចាកចេញ</translation>
-<translation id="5308380583665731573">ភ្ជាប់</translation>
 <translation id="3368922792935385530">បានភ្ជាប់</translation>
-<translation id="6569877533335686968">Uphold</translation>
-<translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="6011108706830742093">ZebPay</translation>
 <translation id="8874184842967597500">មិនបានភ្ជាប់ទេ</translation>
+<translation id="9132378787893584761">ចែករំលែក Brave សម្រាប់ ពាន្រការ!</translation>
 <translation id="717952606991220586">អូ៎ មានអ្វីមួយខុសប្រក្រតី។ សូមព្យាយាមម្តង​ទៀតនៅ​ពេលក្រោយ។</translation>
 <translation id="987264212798334818">ទូទៅ</translation>
 <translation id="1116694919640316211">អំពី</translation>
 <translation id="7961015016161918242">មិនដែល</translation>
 <translation id="1275213816424141989">ប្រហែលជាពេលក្រោយ</translation>
-<translation id="7717357606512850995">ពិនិត្យស្ថានភាព</translation>
+<translation id="3624048886326677117">ទប់ស្កាត់អ្នកតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្ម (ប្រឹងប្រែង)</translation>
+<translation id="7151914815476509258">ទប់ស្កាត់អ្នកតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្ម (ស្តង់ដារ)</translation>
 <translation id="7384778069178817075">អនុញ្ញាតអ្នកតាមដាននិងការផ្សាយពាណិជ្ជកម្មទាំងអស់</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>ជម្រើស "ទប់ទងខូគីថ្នាក់ទី" ត្រូវបានចោល។ ដើម្បីស្វែង​យល់​បន្ថែម​ថា​របៀប​រំលាត​ចូល​នេះ ​​សូមរបិនផ្ជាប់<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>នៅនៅផ្នែកជំនួយរបស់យើង<ph name="END_LINK_1"/></translation>
+<translation id="3763681089644577874">ទប់ស្កាត់ខូគីស៍</translation>
+<translation id="614747795780742163">បង្ហាញពីការទទួលស្គាល់អំពីការទស្សនាមុនៗរបស់អ្នក</translation>
 <translation id="6883611015375728278">បិទខូគីទាំងអស់</translation>
 <translation id="6196640612572343990">រារាំង​ខូគី​ភាគី​ទីបី</translation>
 <translation id="5657156137487675418">អនុញ្ញាតខូគីទាំងអស់</translation>
+<translation id="1553643198679271031">ស្នើសុំ Off-The-Record</translation>
 <translation id="4891600875049212418">ទៅ Off-The-Record នៅពេលចូលទៅគេហទំព័រដែលមានន័យសំខាន់</translation>
+<translation id="1388619247102737054">បិទប្រវត្តិរុករក និងការផ្ទុកតំបន់ដៅក្នុងកម្មវិធីរុករកនៅពេលដែលតំបន់ត្រូវការវា</translation>
+<translation id="1876882294512858963">តែងតែផ្លាស់ប្តូរ Off-The-Record</translation>
+<translation id="554464532999080267">សួរមុនពេលផ្លាស់ប្តូរ Off-The-Record (ស្តង់ដារ)</translation>
+<translation id="926857659063503456">មិនព្រមទុក Off-The-Record</translation>
+<translation id="3895527457258986253">ទប់ស្កាត់ការស្កេនស្នាមម្រាមដៃ</translation>
+<translation id="7854108565842971747">នេះគឺជាការកំណត់ខែលការពារ Brave សម្រាប់តំបន់ថ្មី ។ ការផ្លាស់ប្តូរនេះមិនប៉ះពាល់ដល់ការកំណត់តំបន់តែមួយទេ។</translation>
+<translation id="218587021686734263">បង្ការ fingerprinting តាមរយៈការកំណត់ភាសា</translation>
+<translation id="1706099589708266367">កាត់បន្ថយការមើលពីតំបន់តាមការកំណត់ភាសារបស់កម្មវិធីរុករករបស់អ្នក។</translation>
 <translation id="6486971767955110687">រក្សាទុកព័ត៌មានទំនាក់ទំនងសម្រាប់ការរាយការណ៍នៃគេហទំព័រដែលខូច</translation>
 <translation id="4085787265464238844">ប្រសិនបើអ្នកផ្ដល់ព័ត៌មានទំនាក់ទំនង នោះវានឹងត្រូវបានរក្សាទុកសម្រាប់ការរាយការណ៍អនាគត</translation>
+<translation id="4721088070859595932">បន្ថែមការទទួលស្គាល់ពីដំណើររបស់អ្នក</translation>
 <translation id="7445306466605902444">បិទការចាប់ប្រភេទឆ្វែល (strict, អាចធ្វើឱ្យគេហទំព័រវិលចង់នឹងមិនដំណើរការ)</translation>
 <translation id="5582686930349810484">បិទការចាប់ប្រភេទឆ្វែល (standart)</translation>
 <translation id="769702552748212954">អនុញ្ញាតគ្រប់ផ្នែកចាប់ប្រភេទ</translation>
 <translation id="876424292214881779">ការផ្សាយពាណិជ្ជកម្ម និងអ្វីដែលគួរឱ្យខ្លាចផ្សេងៗទៀតត្រូវបានទប់ស្កាត់</translation>
+<translation id="6849027612978668678">តំបន់បណ្តាញជាច្រើនរួមបញ្ចូលខូឃី និង script ដែលព្យាយាមសម្គាល់អ្នក និងឧបករណ៍របស់អ្នក។ ពួកគេទាមទារធ្វើការត្រួតពិនិត្យអ្នក និងតាមដានអ្នកនៅលើអ៊ីនធឺណិត ភ្ជាប់នឹងអ្វីដែលអ្នកធ្វើនៅក្នុងគេហទំព័រ។
+
+Brave រារាំងអ្វីៗទាំងនេះដើម្បីឱ្យអ្នកអាចរុករកដោយគ្មានអ្នកតាម។</translation>
+<translation id="8553998445606452168">អំពីខែលការពារ Brave</translation>
 <translation id="8912304686498704084">បើក</translation>
 <translation id="4963218453264888510">បិទ</translation>
 <translation id="7474113515179313724">អ្នកកំពុងរុករកគេហទំព័រនេះដោយគ្មានការការពារឯកជនភាពរបស់ Brave។ តើវាដំណើរការមិនប្រក្រតីនៅពេលបើកខែលការពារឬ?</translation>
@@ -273,6 +434,7 @@
 <translation id="7898672232170410330">បិទធាតុ</translation>
 <translation id="1209739344687072997">រាយការណ៍ពីគេហទំព័រដែលមិនដំណើរការ</translation>
 <translation id="8510478288840333677">សូមឲ្យក្រុមអភិវឌ្ឍន៍ Brave ដឹងថា គេហទំព័រនេះមិនដំណើរការល្អជាមួយ Shields:</translation>
+<translation id="1653405824851871276">សូមអរគុណចំពោះការជួយធ្វើឱ្យ Brave មានកាន់តែប្រសើរឡើងសម្រាប់គ្រប់គ្នា។ របាយការណ៍នេះគ្រាន់តែរួមបញ្ចូលព័ត៌មានចាំបាច់សម្រាប់យើងដើម្បីជួសជុលគេហទំព័រនេះតែប៉ុណ្ណោះ។ <ph name="LEARN_MORE"/></translation>
 <translation id="8759753423332885148">ស្វែងយល់​បន្ថែម.</translation>
 <translation id="8740275226259417070">នេះជាទំព័រកំហុស។ វាមិនអាចរាយការណ៍ជាគេហទំព័រដែលខូចបានទេ។</translation>
 <translation id="721949491455392748">រួមបញ្ចូលរូបភាពអេក្រង់នៃទំព័របច្ចុប្បន្ន</translation>
@@ -283,8 +445,17 @@
 <translation id="7616645803364270729">អ៊ីមែល, Twitter, មួយទៀត</translation>
 <translation id="5299848999918506028">អរគុណអ្នក!</translation>
 <translation id="76550953340008122">សូមអរគុណដែលបានជូនដំណឹងដល់ក្រុមអភិវឌ្ឍន៍របស់ Brave អំពីបញ្ហាមួយនោះនៅលើគេហទំព័រនេះ។ យើងនឹងព្យាយាមល្អបំផុតដើម្បីជួសជុលវា!</translation>
+<translation id="3037432377946455872">បញ្ហាចម្បangen្ឆាបធំជាងគេដែលអ្នកកំពុងតែប្រទះទាំងអស់?</translation>
+<translation id="8731661215617360873">ជ្រើសរើសមួយជម្រើស</translation>
 <translation id="650318023204990401">ការគ្រប់គ្រងកម្រិតខ្ពស់</translation>
 <translation id="7205939464631857223">សំអាតធាតុដែលបានបិទទាំងអស់</translation>
+<translation id="5370478469168390143">រក្សាទិន្នន័យនៅលើអ៊ីនធឺណិត</translation>
+<translation id="1118508688433541158">រុករកលឿនជាង និងរារាំងការផ្សាយពាណិជ្ជកម្មជាមួយ Brave</translation>
+<translation id="7427391215172269363">រាល់ថ្ងៃ ខ្ញុំសន្សំទិន្នន័យដោយការរុករក Web ជាមួយ Brave។</translation>
+<translation id="357198789571802914">មើល YouTube មិនមើលការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="2154817758398495571">បើកតំណ YouTube ក្នុង Brave ដើម្បីទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="1580816390443799567">បើក​ឥឡូវ​នេះ</translation>
+<translation id="8589748782214271192">ទេ អរគុណ</translation>
 <translation id="8374242949413616101">ការការពារឯកជនភាព</translation>
 <translation id="4955406228638026265">Brave បញ្ឈប់ការផ្សាយពាណិជ្ជកម្ម &amp; ឧបករណ៍តាមដានពីការប្រមូលព័ត៌មានអំពីអ្នកដោយគ្មានការយល់ព្រមពីអ្នក។</translation>
 <translation id="752842701893882688">សន្សំទិន្នន័យ និងថ្ម</translation>
@@ -294,21 +465,54 @@
 <translation id="8903462729414407077">ទទួលបានព័ត៌មានថ្មីៗប្រចាំសប្តាហ៍</translation>
 <translation id="7450323860390658083">ទទួលបានព័ត៌មានអំពីគេហទំព័រណាដែលអ្នកចូលមើលដែលបំពានឯកជនភាពបំផុត។\n\nមានតែអ្នកប៉ុណ្ណោះដែលអាចមើលស្ថិតិឯកជនភាពទាំងនេះបាន។ ជាមួយកម្មវិធីរុករក Brave ទិន្នន័យផ្ទាល់ខ្លួន ឬប្រវត្តិរុកររបស់អ្នកត្រូវបានរក្សាទុក និងការពារនៅលើឧបករណ៍របស់អ្នកជានិច្ច។</translation>
 <translation id="6170159749517116894">បើកការរាយការណ៍ឯកជនភាព</translation>
+<translation id="1669047024429367828">ភាព​ទំនើប</translation>
+<translation id="5966707198760109579">សប្តាហ៍</translation>
 <translation id="8987927404178983737">ខែ</translation>
 <translation id="4302754476737420523">៣ ខែ</translation>
 <translation id="8248593573177859437">ការរាយការណ៍ឯកជនភាព</translation>
+<translation id="1274039301958114163">ការជូន​ដំណឹង​របាយការណ៍​ឯកជន</translation>
+<translation id="453601949003770390">កម្មវិធីតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្មត្រូវបានរារាំង</translation>
+<translation id="1581614543353331529">គ្មានទិន្នន័យត្រូវបង្ហាញបន្ទាប់</translation>
+<translation id="2401984885421380890">កម្មវិធីតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្ម
+ត្រូវបានរារាំង</translation>
+<translation id="2662183408296991265">ទិន្នន័យត្រូវបានសន្សំ
+(<ph name="DATA_SAVED"/>)</translation>
+<translation id="3180928261057583677">ទិន្នន័យត្រូវបានសន្សំ (<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">សន្សំពេលវេលា</translation>
+<translation id="3694122362646626770">គេហទំព័រ</translation>
+<translation id="2225863440766607138">កម្មវិធីតាមដាន</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">អ្នកបានរារាំង <ph name="COUNT"/> កម្មវិធីតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្មជាមួយកម្មវិធីរុករក Brave ក្នុងរយៈពេល 3 საათი។</translation>
+<translation id="5005713153542196658">រុករកលឿនដល់ទ្វេដងក្នុងគេហទំព័រព័ត៌មានធំៗជាមួយ Brave ដោយការរុករកកម្មវិធីតាមដាន និងការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="7427567994475794038">បើករបាយការណ៍ឯកជនដើម្បីមើលចំនួនកម្មវិធីតាមដាន និងការផ្សាយពាណិជ្ជកម្មដែលត្រូវបានរារាំងក្នុងរយៈពេល 3 საათი។</translation>
+<translation id="2053891538879944400">អ្នកបានសន្សំ <ph name="DATA"/> <ph name="DATA_TEXT"/> ទិន្នន័យជាមួយកម្មវិធីរុករក Brave។</translation>
+<translation id="8640064498452534195">បើកកាណត្រង់ឯកជនដើម្បីមើលចំនួនទិន្នន័យដែលអ្នកបានសន្សំ។</translation>
+<translation id="2252497442547961651">កម្មវិធីរុករក Brave ប្រើថ្មតិចជាង 40% ជាមធ្យម។🔋</translation>
+<translation id="1945330434665345785">អ្នកបានរារាំង <ph name="COUNT"/> កម្មវិធីតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្មជាមួយកម្មវិធីរុករក Brave ទៅសប្តាហ៍កន្លងទៅនេះ។</translation>
+<translation id="2883868922264431515">រកថូខិនដោយការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពឯកជនភាព និងគាំទ្រគេហទំព័រដែលអ្នកចូលចិត្ត។</translation>
+<translation id="7408493389591475748">ចាប់ផ្តើមរុករកដើម្បីមើលរបាយការណ៍ឯកជន</translation>
+<translation id="1390943217516275883">អនុញ្ញាតឱ្យ Brave បង្ហាញស្ថិតិឯកជនភាពរបស់អ្នក</translation>
+<translation id="1763352720905582220">ផ្ញើរបាយការណ៍ឯកជនភាពប្រចាំសប្តាហ៍</translation>
+<translation id="1811691435325545066">ជម្រះ​ទិន្នន័យរបាយការណ៍​ឯកជន​ទាំងអស់​</translation>
+<translation id="5966003059662780423">ជម្រះទិន្នន័យនៅពេល​ចាកចេញ​</translation>
+<translation id="3980704343258720102">ជម្រះទិន្នន័យ​រុករកទាំងអស់​</translation>
+<translation id="8089997572759938512">កំណត់របាយការណ៍​ឯកជន​របស់អ្នកទៅជាសូន្យ​</translation>
+<translation id="2718046830255553131">ទិន្នន័យរបាយការណ៍​ឯកជន​ត្រូវបានជម្រះ​</translation>
+<translation id="8376263745431603066">បើក "របៀបយប់" (ល្បីល្បាញ)​</translation>
 <translation id="1383876407941801731">ស្វែងរក</translation>
 <translation id="13296465911709339">អត្ថបទរបស់អ្នកត្រូវបានចម្លងទៅក្ដារតម្បៀត។</translation>
 <translation id="2735834606413553397">អាសយដ្ឋានសាធារណៈ ត្រូវបានចម្លងទៅក្ដារតម្រៀប។</translation>
 <translation id="2977461003134694205">ស្ថិតិឯកជនភាព</translation>
-<translation id="2956070106555335453">របាយការណ៍សង្ខេប</translation>
-<translation id="2731539192954672606">រក Token ដោយការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពឯកជនភាព និងគាំទ្រគេហទំព័រដែលអ្នកចូលចិត្ត និងអ្នកបង្កើតមាតិកាដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="8804164990146287819">គោលនយោបាយឯកជនភាព</translation>
-<translation id="8363792084628930008">តាមរយៈការបើករង្វាន់ អ្នកយល់ព្រមនឹង <ph name="TERMS_OF_SERVICE"/> និង <ph name="PRIVACY_POLICY"/></translation>
-<translation id="7930505144430343145">សូមស្វាគមន៍មកកាន់ Brave Rewards!</translation>
-<translation id="3115702351969988294">តើអ្នកចង់ឃើញ ads ញឹកញាប់ប៉ុណ្ណា?</translation>
 <translation id="5705882733397021510">ទៅក្រោយវិញ</translation>
+<translation id="7889432931837317731">បើកដោយស្វ័យប្រវត្តិនៅពេលអាចធ្វើបាន​</translation>
+<translation id="1029304566263314007">បង្ហាញការជូនដំណឹងវឌ្ឃនភាពទាញយក</translation>
+<translation id="2910433761530295035">សួរ ថាចង់រក្សាទុកឯកសារនៅណា (បើសិនជាទទួលបានកាត SD)</translation>
+<translation id="2977501775944575564">ការផ្ទុកផ្សេងគ្នា</translation>
+<translation id="6224180438946945617">បើកការផ្ទុកផ្ទុកសម្រាប់រហ័សល្បឿនទាញយក</translation>
+<translation id="8967385052772844086">មើលរបាយការណ៍​ឯកជនពេញលេញ​</translation>
 <translation id="3479552764303398839">មិនមែនឥឡូវនេះទេ</translation>
+<translation id="7138272885617540195">អនុញ្ញាតតំណភ្ជាប់កម្មវិធីឲ្យបើកនៅក្នុងកម្មវិធីខាងក្រៅ Brave</translation>
 <translation id="4954512758656527938">កាបូប Ethereum ដើម</translation>
 <translation id="7701023802820268122">កាបូប Solana ដើម</translation>
 <translation id="7701040980221191251">គ្មាន</translation>
@@ -320,19 +524,39 @@
 <translation id="1689062823386843231">បិទ UDP ពីរឿងផ្សេង</translation>
 <translation id="1483493594462132177">ផ្ញើ</translation>
 <translation id="538450413584738399">ប្តូរ</translation>
+<translation id="4556086616242530072">កម្មវិធីរុករកតាមអ៊ីនធឺណេតមាន​ដៃគូ​សុខភាព
+គ្រប់គ្រង​ភ្ញាក់ផ្អើល។
+និង​រៀប​លំអិត​ពហុខ្សែសង្វាក់។</translation>
+<translation id="7909462264772842773">ទទួលការគ្រប់គ្រងសុខភាព និងNFTs របស់​អ្នក។ កាបូប Brave គាំទ្រ​ Ethereum, ដីការចាក់សោ EVM, Solana, Filecoin, និង​ច្រើនទៀត</translation>
 <translation id="165255193061631296">ត្រូវការកាបូបថ្មីមែនទេ?</translation>
+<translation id="3485737865439729577">ចាប់ផ្ដើមការកំណត់កាបូប Brave របស់​អ្នកក្នុងរយៈពេលប៉ុន្មាននាទី</translation>
 <translation id="2540568096903252632">បញ្ចូលពាក្យសម្ងាត់ដើម្បីបន្ត</translation>
 <translation id="3356580495013324916">បញ្ចូលពាក្យសម្ងាត់ Leoរបស់អ្នកដើម្បីចាប់ផ្ដើមការកីឡាងតារាង។</translation>
 <translation id="2359808026110333948">បន្ត</translation>
 <translation id="5488357322146334497">សារ</translation>
 <translation id="5333225216561354793">យើងតម្រូវឲ្យអ្នកបញ្ជាក់របស់ខាងក្រោម</translation>
 <translation id="6937275455070754004">ជ្រើសយកបណ្តាញដែលត្រូវប្រើក្នុងកាបូប Leoរបស់អ្នក។</translation>
+<translation id="1645800479814134195">ខ្ញុំយល់បញ្ជាក់ នេះជាកាបូប​រក្សាទុកដោយខ្លួនឯង ហើយខ្ញុំមានសិទ្ធិទទួលយកការចំណាយទាំងអស់ដែលទាក់ទងឬគណនី និងធ្វើសកម្មភាពគ្រប់គ្រងការការពារកាបូប។ ខ្ញុំយល់ព្រមថា Brave មិនអាចចូលទៅកាន់កាបូបរបស់ខ្ញុំតាមកាបូបនេះ និងដោះសោធ្វើប្រតិបត្តិការ។</translation>
+<translation id="4565891212173086999">ខ្ញុំបានអាននិងយល់ព្រមទៅលើ <ph name="CLICK_START"/>លក្ខខណ្ឌប្រើប្រាស់<ph name="CLICK_END"/>។</translation>
 <translation id="3259102562570606417">រក្សាទុកវាចោលឲ្យបានសុវត្ថិភាពនៅកន្លែងដែលមិនអាចឱ្យអ្នកដទៃចូលមកបានហើយព្យាយាមកុំចែករំលែកវាជាមួយនរណាម្នាក់។</translation>
+<translation id="4339981001593889376">ពាក្យរំលឹករបស់​អ្នកគឺជាគន្លឹះដើម្បីចូលទៅកាន់កាបូបរបស់​អ្នកនៅពេល​អ្នកភ្លេច​លេខសំងាត់ឬបាត់ឧបករណ៍របស់​អ្នក។</translation>
 <translation id="426648489149930289">រក្សាទុកពាក្យរំលឹករបស់អ្នក</translation>
+<translation id="3726490322412361740">បញ្ចូល​លេខសំងាត់</translation>
+<translation id="1566412704591731844">កំពុងបង្កើតកាបូបរបស់អ្នក...</translation>
+<translation id="7779823116893018906">វាអាចចំណាយពេលប៉ុន្មានវិនាទី...</translation>
+<translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> គណនី <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">បន្ថែមគណនី</translation>
+<translation id="3448492834076427715">ធ្វើបច្ចុប្បន្នភាពគណនី</translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
+<translation id="1537175937716697987">មើលពាក្យសម្ងាត់ដឹកជញ្ជូនរបស់ខ្ញុំ</translation>
 <translation id="5303015959766064022">ខ្ញុំនឹងរក្សាទុកក្រោយ</translation>
 <translation id="7345730059518887993">ឲ្យពិនិត្យ</translation>
+<translation id="7640406249038879146">បញ្ចូលពាក្យនៅក្នុងចំណាត់ថ្នាក់ទី <ph name="WORD_POSITION"/> ពីពាក្យសម្ងាត់ដឹកជញ្ជូនរបស់អ្នក។</translation>
 <translation id="2598171223363459366">អ្នកអាចរំលងជំហាននេះពេលនេះ ប៉ុន្តាយ៉ាងណាក៏ដោយ អ្នកត្រូវការរក្សាទុកពាក្យរំលឹករបស់អ្នកដើម្បីធានាបាននូវសុវត្ថិភាពគណនីរបស់អ្នក។</translation>
+<translation id="8100001366858145406">បើកចូលតាមស្នាមម្រាមដៃ?</translation>
+<translation id="5493402808936397665">បើកបច្ចេកទេសបង្ហាញស្នាមម្រាមដៃដើម្បីដោះសោកាបូបរបស់អ្នកឱ្យបានលឿនដោយមិនបញ្ចូលពាក្យសម្ងាត់។</translation>
+<translation id="8030647312184163932">ការចូលតាមស្នាមម្រាមដៃ</translation>
+<translation id="4090490645603511157">ប្រើបច្ចេកទេសបង្ហាញស្នាមម្រាមដៃដើម្បីដោះសោកាបូបរបស់អ្នកឱ្យបានលឿនដោយមិនបញ្ចូលពាក្យសម្ងាត់។</translation>
 <translation id="1544192797660353713">កាបូប</translation>
 <translation id="2321396552035646646">អ្នកអាចបិទពាក្យរំលឹករបស់អ្នកទាំងមូលចូលក្នុងវាលណាមួយ៕</translation>
 <translation id="3961126209136843111">នាំចូលកាបូបដែលមានរួចរាល់</translation>
@@ -342,31 +566,66 @@
 <translation id="2502258949541727762">មុនពេលយើងចាប់ផ្ដើម</translation>
 <translation id="4303748097351941030">បណ្ដាញដែលគាំទ្រ</translation>
 <translation id="4204268048253692928">អ្នកអាចបន្ថែមបណ្តាញភ្លាមៗកន្លែងកំណត់។</translation>
+<translation id="2523174693142405417">ស្វែងរកបណ្ដាញ</translation>
 <translation id="1164748583090434571">បង្ហាញបណ្ដាញសាកល្បង</translation>
+<translation id="935220650946301698">បន្តជាមួយបណ្ដាញ <ph name="NUMBER"/></translation>
+<translation id="4052668782430384783">ពាក្យ #<ph name="NUMBER"/></translation>
+<translation id="8248460961680233459">បង្កើតពាក្យសម្ងាត់</translation>
+<translation id="2789310860394340571">អ្នកនឹងប្រើពាក្យសម្ងាត់នេះដើម្បីចូលទៅកាន់កាបូបរបស់អ្នក។</translation>
 <translation id="2136372518715274136">បញ្ចូលពាក្យសម្ងាត់ថ្មី</translation>
 <translation id="4450951602553063001">បញ្ចូលពាក្យសម្ងាត់ម្តងទៀត</translation>
+<translation id="8532036315398875940">ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងតិច ៨តួអក្សរ។</translation>
+<translation id="5098216864434824711">ពាក្យសម្ងាត់មិនត្រូវគ្នា។</translation>
+<translation id="4917385247580444890">រឹងមាំ</translation>
 <translation id="8297006494302853456">ចង្អល</translation>
 <translation id="574392208103952083">មធ្យម</translation>
+<translation id="6697810017029555732">ត្រូវគ្នា!</translation>
+<translation id="5981303441790732480">នាំចូលកាបូបដែលមានរួចរាល់</translation>
 <translation id="9111102763498581341">ដោះសោរ</translation>
 <translation id="6657585470893396449">ពាក្យសម្ងាត់</translation>
 <translation id="7553242001898162573">បញ្ចូលពាក្យសម្ងាត់របស់អ្នក</translation>
+<translation id="5619264711680220002">ការចូលតាមសំណូមពរបង្ហាញស្នាមម្រាមដៃ</translation>
 <translation id="9195657745688986798">បើកកាបូប</translation>
 <translation id="5168349973342709369">បញ្ចូលពាក្យសម្ងាត់ដើម្បីបើកកាបូប</translation>
 <translation id="1144810021918451336">មិនការពារអ្នកពីគេហទំព័រ ដែលគំរាមកំហែង ការទាញយក និងផ្នែកបន្ថែម។</translation>
+<translation id="9085712756417277119">ពាក្យសម្ងាត់ដឹកជញ្ជូនមិនត្រូវគ្នា</translation>
+<translation id="2360588547830602174">ការពារ៉ាកាបូបបានបរាជ័យ។ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="1987317783729300807">គណនី</translation>
 <translation id="6284218950354553099">ផ្ញើពាក្យ ping ដោយស្វែងរកការប្រើប្រាស់ប្រចាំថ្ងៃទៅ Brave ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="2181060149810222381">Ping បុគ្គលរបស់និយត Brave បានការប៉ាន់ស្មានពីអ្នកប្រើប្រាស់សកម្ម។</translation>
+<translation id="6725413948756358325">ឈ្មោះគណនី</translation>
 <translation id="3240773103344793224">បានស្នើសុំផ្លាស់ប្តូរការកាន់កាប់គណនី</translation>
 <translation id="8041423758956015568">ប្រតិបត្តិការនេះនឹងផ្លាស់ប្តូរការកាន់កាប់គណនីទៅកាន់កម្មវិធីថ្មី។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ ហើយអាចបណ្តាលឱ្យមានការបាត់បង់ទុន។</translation>
+<translation id="6062431965141524986">អ្នកអាចបង្កើតគណនីប្រតិបត្តិការថ្មីដោយនាំចូលលេខសម្ងាត់ឯកជនរបស់អ្នក។</translation>
+<translation id="3952797765659730604">បញ្ចូល ចម្លង ឬនាំចូលឯកសារឬតួអក្សរ JSON លេខគ្រីបតូឯកជនរបស់អ្នក។</translation>
+<translation id="569068482611873351">នាំចូល...</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
 <translation id="3114681061018999547">ការពារ</translation>
+<translation id="3784455785234192852">ចាក់សោ</translation>
 <translation id="4412698727486357573">មជ្ឈមណ្ឌលជំនួយ</translation>
 <translation id="8239147115686034860">ចាក់សោ Brave Wallet ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="414639769490080648">ចំនួននាទីដែលត្រូវរង់ចាំរហូតដល់ Brave Wallet ចាក់សោដោយស្វ័យប្រវត្តិ</translation>
 <translation id="2326850911705720398">កំណត់ប្រតិបត្តិការហើយសំអាតទិន្នន័យ Wallet</translation>
+<translation id="6567712397896147805">តើអ្នកប្រាកដថាចង់កំណត់បន្តិចកាបូប Brave របស់អ្នកទេ? ប្រសិនបើកាបូបរបស់អ្នកមិនត្រូវបានគាំទ្រ ការកំណត់ជាថ្មីនឹងបណ្តាលឱ្យអ្នកបាត់បង់ទិន្នន័យគណនីទាំងអស់ (រួមទាំងមូលនិធិដែលពាក់ព័ន្ធណាមួយជាមួយ)។ វាយ "<ph name="CONFIRMATION_PHRASE"/>" ដើម្បីបញ្ជាក់។</translation>
+<translation id="4862812525895306758">សម្អាតព័ត៌មានប្រតិបត្តិការ &amp; គុណលក្ខណៈ</translation>
 <translation id="5693968582510626466">ការសំអាតប្រតិបត្តិការអាចមានប្រយោជន៍សម្រាប់អ្នកអភិវឌ្ឍន៍ ឬពេលសំអាតស្ថានភាពនៅលើម៉ាស៊ីនមូលដ្ឋាន</translation>
+<translation id="5421107279168565467">តើអ្នកប្រាកដថាចង់កំណត់ព័ត៌មានគុណលក្ខណៈនិងប្រតិបត្តិការជាថ្មីទេ? ជម្រើសនេះភាគច្រើនត្រូវបានប្រើដោយអ្នកបង្កើតកម្មវិធីដែលដំណើរការតាមម៉ាស៊ីនបង្ហាញស្មោះ។ វាយ "<ph name="CONFIRMATION_PHRASE"/>" ដើម្បីបញ្ជាក់។</translation>
+<translation id="930472263779999522">{MINUTES, plural, =1 {# នាទី} other {# នាទី}}</translation>
+<translation id="8146860193318415026">ស្ទ្រីមវីដេអូ។ គ្មានការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="6311019535466417620">គ្មានការផ្សាយពាណិជ្ជកម្មមុនវីដេអូរបស់អ្នក</translation>
+<translation id="4274652342814424451">គ្មានការផ្សាយពាណិជ្ជកម្មក្នុងអំឡុងពេលវីដេអូរបស់អ្នក</translation>
+<translation id="1721710839767183848">គ្មានការផ្សាយពាណិជ្ជកម្មនៅលើទំព័រ</translation>
+<translation id="4647035642622555398">គ្មានការរំខាន</translation>
+<translation id="4122515759479497554">ស្វែងរកវីដេអូ</translation>
+<translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">ដំឡើងទៅជា VPN ដើម្បីការពារការតភ្ជាប់របស់អ្នក និងទប់ស្កាត់ឧបករណ៍តាមដានដែលឈ្លានពានគ្រប់ទីកន្លែង។</translation>
 <translation id="8814357473522731680">ដំណើរការដោយ</translation>
+<translation id="5892534145504632332">ការការពារឱ្យបានទាល់តែបញ្ចប់កម្មវិធីទាំងអស់នៅលើឧបករណ៍របស់អ្នក</translation>
+<translation id="7195416926059527505">មានសុវត្ថិភាពជាងនៅផ្ទះឬ Wi-Fi សាធារណៈ</translation>
+<translation id="1354700000739359839">ល្បឿនបន្ថែម រហូតដល់ 100 Mbps</translation>
+<translation id="3510283489391432976">ជ្រើសទីតាំងភូមិសាស្ត្ររបស់អ្នក</translation>
+<translation id="7695158478627528928">Brave មិនកត់ត្រាសកម្មភាពរបស់អ្នកទេ</translation>
+<translation id="4575683170451975058">ការពារឧបករណ៍ 5 នៅលើការជាវ 1</translation>
 <translation id="755045397420611731">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ</translation>
 <translation id="4520128772974831415">លាក់ពិធីការអ៊ីនធឺណិត (IP) របស់អ្នក &amp; ផ្លាស់ប្តូរទីតាំងរបស់អ្នក</translation>
 <translation id="2044418816479192294">ម៉ាស៊ីនមេរាប់រយនៅជុំវិញពិភពលោក</translation>
@@ -375,88 +634,182 @@
 <translation id="4882693590083943563">គម្រោងទាំងអស់រួមមាន <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">សាកល្បង 7 ថ្ងៃដោយឥតគិតថ្លៃ!</translation>
 <translation id="1532536259167115948">ការជាវប្រចាំខែ <ph name="TRIAL_TEXT"/></translation>
+<translation id="6344668702581136255">ការជាវប្រចាំឆ្នាំ <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">បន្តប្រចាំខែ</translation>
 <translation id="112929124115834557">បន្តប្រចាំឆ្នាំ</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /ខែ</translation>
 <translation id="1163809943099641131">មួយឆ្នាំ</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/> សន្សំ <ph name="PERCENTAGE_AMOUNT"/> %% <ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /ឆ្នាំ</translation>
 <translation id="2786538705804257030">ការជាវនឹងត្រូវបានគិតប្រាក់តាមរយៈគណនី Google របស់អ្នក។ ផ្នែកណាមួយនៃការសាកល្បងឥតគិតថ្លៃដែលមិនបានប្រើ ប្រសិនបើត្រូវបានផ្តល់ជូន នឹងបាត់បង់ នៅពេលអ្នកទិញការជាវ។\n\nការជាវរបស់អ្នកនឹងបន្តដោយស្វ័យប្រវត្តិ លុះត្រាតែវាត្រូវបានបោះបង់យ៉ាងហោចណាស់ 24 ម៉ោងមុនពេលចុងបញ្ចប់នៃរយៈពេលបច្ចុប្បន្ន។\n\nអ្នកអាចគ្រប់គ្រងការជាវរបស់អ្នកនៅក្នុងការកំណត់។\n\nតាមរយៈការប្រើប្រាស់ Brave អ្នកយល់ព្រមនឹងលក្ខខណ្ឌប្រើប្រាស់ និងគោលការណ៍ឯកជនភាព។</translation>
 <translation id="5035172357624830412">បានទិញរួចហើយនៅលើ brave.com?</translation>
 <translation id="713136183174551885">ផ្ទុកព័ត៌មានសម្ងាត់របស់អ្នកឡើងវិញ</translation>
 <translation id="6053992191006521518">សាកល្បងដោយឥតគិតថ្លៃ</translation>
 <translation id="5903391101107992067">សាកល្បង 7 ថ្ងៃដោយឥតគិតថ្លៃ</translation>
+<translation id="721747358270435486">តំឡើង VPN</translation>
+<translation id="836074276610740314">តំឡើងប្រវត្តិ VPN</translation>
+<translation id="8021842065465097929">Brave នឹងតំឡើងប្រវត្តិ VPN ឥឡូវនេះ។</translation>
+<translation id="229286271464650057">ប្រវត្តិនេះអនុញ្ញាតឲ្យ VPN តភ្ជាប់ដោយស្វ័យប្រវត្តិ និងការពារចរាចរណ៍នៅលើឧបករណ៍របស់អ្នក — នៅក្នុងកម្មវិធីទាំងអស់ ចាប់ពីពេលណារហូតដល់ពេលណាមានឧបករណ៍។ ការតភ្ជាប់ VPN នេះនឹងត្រូវបានអ៊ិនគ្រីបហើយផ្លូវចូលតាមរបាំងការពារគ្មានតម្លៃរបស់ Guardian ដើម្បីរារាំងការផ្សាយពាណិជ្ជកម្ម និងអ្នកតាមដាន។</translation>
 <translation id="9073255657908892407">ទាក់ទងអ្នកបច្ចេកទេសគាំទ្រ</translation>
+<translation id="1139934321138152517">VPN ត្រូវបានបើក</translation>
+<translation id="7678718921266217759">ការងារមួយចំនួន...</translation>
+<translation id="7267573208549764106">ការតភ្ជាប់ VPN មុនរបស់អ្នកត្រូវបានផ្ដាច់។ ដើម្បីតភ្ជាប់វិញទៅនឹង VPN អ្នកត្រូវតែទទួលចំណាត់ការការតភ្ជាប់នេះ។
+
+ប្រសិនបើអ្នកមិនទទួលការស្នើសុំនេះ VPN នឹងមិនតភ្ជាប់វិញ និងការតភ្ជាប់អ៊ីនធឺណិតរបស់អ្នកនឹងមិនត្រូវបានការពារទេ។</translation>
+<translation id="2429299231491852747">ទទួលចំណាត់ការការតភ្ជាប់</translation>
+<translation id="3428909627460825679">ការបង្កើតប្រវត្តិ VPN បានបរាជ័យ។ សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="1264320790738638119">ការជាវរបស់អ្នកបានផុតកំណត់។ អ្នកអាចជាវវិញពេលណាក៏បាន។</translation>
 <translation id="8681480718817027245">ការជាវ</translation>
 <translation id="7805768142964895445">ស្ថានភាព</translation>
 <translation id="5747552184818312860">ផុតកំណត់</translation>
 <translation id="1656814355341174523">គ្រប់គ្រងការជួញដូរ</translation>
+<translation id="1919008675977575793">ម៉ាស៊ីនមេ</translation>
 <translation id="5646376287012673985">ទីតាំង</translation>
+<translation id="8375573361134671513">កំណត់ឡើងវិញការកំណត់</translation>
+<translation id="850405162932416400">គាំទ្រ VPN</translation>
+<translation id="6772117549627334582">បរាជ័យក្នុងការទាញទីតាំងម៉ាស៊ីនមេ សូមព្យាយាមម្តងទៀតក្រោយនេះ។</translation>
+<translation id="5863914199331127413">VPN Hostname</translation>
+<translation id="5499653136178260315">ប្រភេទការជាវ</translation>
+<translation id="4741058112780154119">កំណែកម្មវិធី</translation>
+<translation id="7286066816862208787">បង្កាន់ដៃ</translation>
+<translation id="2552966063069741410">វេលាម៉ោង</translation>
+<translation id="4395361077929528480">ប្រភេទបណ្ដាញ</translation>
+<translation id="755448900483975096">អ្នកផ្តល់សេវាអ៊ីនធឺណិតចល័ត</translation>
+<translation id="1279441577056010362">បន្តទៅអ៊ីមែល</translation>
+<translation id="7125582363614011660">ការគាំទ្រត្រូវបានផ្តល់ជូនដោយក្រុម Guardian.
+
+សូមជ្រើសរើសព័ត៌មានដែលអ្នករាប់អានជាមួយពួកយើង។
+
+ឥណពិស្តខ្វៗៅញ្ជូនប្រាងនៃប្រើម៉ឺនសង្ខេបរបស់ប្រឈាដបាេីចន្លះប្រព័ន្ធរួចហូត់វគ្គនៅហ្ស៊ុនណ</translation>
+<translation id="8813171284214934811">ជម្រើសអាសយដ្ឋានម៉ាស៊ីុនដែលនៅជិតអ្នកបំផុតដោយផ្អែកលើវេលាអាសយដ្ឋានលំនៅសម្រាប់តំាងលំនៅ័ងអ៊ីនធឺណិត។ ជម្រើសនេះត្រូវបានណែនាំដើម្បីបង្កើនល្បឿនអ៊ីនធឺណិត។</translation>
+<translation id="3199127022143353223">ម៉ាស៊ីនមេ</translation>
 <translation id="5431902940483264007">ល្អបំផុត</translation>
 <translation id="6527596624419285047">ប្រើម៉ាស៊ីនមេល្អបំផុតដែលមាន</translation>
+<translation id="6789157560111825412">ម៉ាស៊ីនមេខល</translation>
+<translation id="5823953367746119927">តំបន់ម៉ាស៊ីនមេ</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> ម៉ាស៊ីនមេ</translation>
+<translation id="4397083831618200686">ជ្រើសរើសបញ្ហា</translation>
 <translation id="6687228121145903051">មិនអាចភ្ជាប់ទៅ VPN (កំហុសផ្សេងទៀត)</translation>
 <translation id="9184988385244077767">គ្មានអ៊ីនធឺណិតនៅពេលដែលបានភ្ជាប់</translation>
 <translation id="21570240866965662">ភ្ជាប់យឺត</translation>
 <translation id="1219475260382643267">គេហទំព័រមិនដំណើរការ</translation>
 <translation id="7138678301420049075">ផ្សេងទៀត</translation>
+<translation id="4827315939627587219">កំណត់ឡើងវិញការកំណត់ VPN</translation>
+<translation id="1705662265912724430">តើអ្នកប្រាកដថាចង់កំណត់ឡើងវិញការកំណត់ VPN មែនទេ?</translation>
 <translation id="604124094241169006">ស្វ័យប្រវត្តិ</translation>
+<translation id="7475580600756356589">កំពុងតភ្ជាប់ទៅម៉ាស៊ីនមេរបស់អ្នក។ ត្រូវតែចំណាយអំឡុងធ្នាក់តែមួយប៉ុណ្ណោះ...</translation>
+<translation id="669072536454692117">ការជាវត្រូវបានប្រើប្រាស់ដោយជោគជ័យ</translation>
+<translation id="1187506504156101449">បានបរាជ័យក្នុងការទទួលស្គាល់ការទិញ :</translation>
+<translation id="8420522105268941892">អ្នកបានជាវរួចហើយការជាវប្រចាំខែការជាវរបស់អ្នក។ សូមព្យាយាមស្ដារវិញការជាវវិញ។</translation>
+<translation id="404414664190867625">អ្នកបានបញ្ឈប់ការជាវការជាវរបស់អ្នក។</translation>
+<translation id="3515141458161417228">ការទិញបានបរាជ័យ។ សូមទាក់ទង Google Play សម្រាប់ការគាំទ្រ។</translation>
 <translation id="6452181791372256707">បដិសេធ</translation>
 <translation id="8030852056903932865">យល់ព្រម</translation>
+<translation id="1597199892790541240">ថ្លៃឧស្ម័ន</translation>
 <translation id="1634828734222219955">សរុប</translation>
+<translation id="7995708795274219641">ចំនួន + ថ្លៃឧស្ម័ន</translation>
 <translation id="2186011161688824046">ចំនួនទឹកប្រាក់ + កម្រៃ</translation>
+<translation id="1950052789869821983">ប្រតិបត្តិការ</translation>
 <translation id="2304783958703511257">ការកំណត់កម្រិតខ្ពស់</translation>
 <translation id="4220062530885628403">កំណត់លេខតែប</translation>
 <translation id="1924965034964265193">បញ្ចូលតម្លៃកំណត់លេខតែបផ្ទាល់ខ្លួន</translation>
 <translation id="5317780077021120954">រក្សាទុក</translation>
+<translation id="4979796155378508955">ប្រតិបត្តិការអាចមិនត្រូវបានបញ្ចូនទៅបណ្តាញថោករឺថៃ្ងផ្សេងៗមានកំហុស។</translation>
+<translation id="750843150060816463">ថ្លៃឧស្ម័ន (Gwei)</translation>
 <translation id="1426320910664514906">ដែនកំណត់ហ្គាស</translation>
-<translation id="9065203028668620118">កែប្រែ</translation>
+<translation id="6389441740143786465">ទប់ស្កាត់ការចែករំលែក</translation>
 <translation id="473775607612524610">ធ្វើបច្ចុប្បន្នភាព</translation>
+<translation id="479795390141144417">ការផ្លាស់ប្តូរក្នុងគណនីបានបរាជ័យ។</translation>
+<translation id="8084782383392198011">ឈ្មោះគណនីមិនអាចទទេ។</translation>
 <translation id="5045550434625856497">ពាក្យសម្ងាត់មិនត្រឹមត្រូវ</translation>
+<translation id="1367951781824006909">ជ្រើសរើសឯកសារ</translation>
+<translation id="1133619932669546254">បើក <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">ប្រភេទមុខងារៈ <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">គ្មានទិន្នន័យ</translation>
+<translation id="1105525362447173583">ប្រតិបត្តិការចុះហត្ថលេខា Dapp Solana</translation>
+<translation id="2561824823738097741">តើអ្នកកំពុងប្រើកម្មវិធីរុករកបណ្តាញលឿនបំផុតទេ?</translation>
+<translation id="2065971949051836200">អ៊ីនធឺណិតលឿនជាង 3x គឺមានក្នុងទូរស័ព្ទរបស់អ្នករួចទៅហើយ។ ប្រើ Brave សម្រាប់ការរុករកបណ្តាញទាំងស្រុង។</translation>
+<translation id="2888278614497184977">Brave = ការរុករកបណ្តាញលឿនជាង 3x</translation>
+<translation id="6887232551109532144">ទទួលបានអាយុកាលមេគុណបន្ថែមគ្រប់ការសាកមួយៗ</translation>
+<translation id="5388885352353494741">ការសន្សំថាមពលគឺមានត្រឹមប៉ុស្តិ៍តែមួយប៉ុណ្ណោះ។ ប្រើ Brave សម្រាប់ការរុករកបណ្តាញទាំងស្រុង។</translation>
+<translation id="3164151360474408351">Brave = អាយុកាលបន្ថែមគ្រប់ការសាកមួយធាតុ</translation>
+<translation id="3211051910418903298">បំពេញទិន្នន័យទូរស័ព្ទរបស់អ្នកតិចជាងមុន</translation>
+<translation id="1092355580602106002">ការផ្សាយពាណិជ្ជកម្មតិចជាង = ទិន្នន័យតិចជាងទាំងបណ្ដាគេហទំព័រដែលអ្នកផ្ទុក។ ប្រើ Brave សម្រាប់ការរុករកបណ្តាញទាំងស្រុង។</translation>
+<translation id="623962032102267945">Brave = ទិន្នន័យទូរស័ព្ទតិចជាងទាំងបណ្ដាការពិតរបស់អ្នក</translation>
+<translation id="4355217341028673744">• ការឯកជនភាពកាន់តែប្រសើរ</translation>
+<translation id="3679020972083025535">• មិនមានការផ្សាយពាណិជ្ជកម្មរំខាន</translation>
 <translation id="8047527352810290817">កែសម្រួលហ្គាស</translation>
+<translation id="7358989216567322955">ថ្លៃអាទិភាពអតិបរមា</translation>
 <translation id="9091334651803050473">បើ មិនមែនការធានា កម្មករសូករវាងគ្នានឹងកំណត់អាទិភាពអំពីប្រតិបត្តិការរបស់អ្នក ប្រសិនបើអ្នកកំណត់កម្រៃខ្ពស់ជាង។</translation>
 <translation id="2941112035454246133">ទាប</translation>
 <translation id="7304030187361489308">ខ្ពស់</translation>
+<translation id="4853037749278079787">ថ្លៃអតិបរមា៖ ~$<ph name="FIAT_VALUE"/> (<ph name="ASSET_VALUE"/> ETH)</translation>
+<translation id="5939983758912255310">បច្ចុប្បន្នថ្លៃមូលដ្ឋាន៖ <ph name="ASSET_VALUE"/> Gwei</translation>
+<translation id="1011713837432053857">ដែនកំណត់ចំនួនឧស្ម័ន</translation>
 <translation id="1254969878422524947">ដែនកំណត់ផ្ទាំងបុរីជាងគេ (Gwei)</translation>
 <translation id="7373308452149471621">ដែនកំណត់បុរីហ៊ីណូកស៊ី (Gwei)</translation>
 <translation id="5891811606602061966">នាំចូលគណនីមិនបានទេ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="4351811224047421378">ខ្ទង់លេខនៃភាពជាក់លាក់</translation>
-<translation id="3494964159182650590">របាយការណ៍រង្វាន់សង្ខេប</translation>
-<translation id="590733288489975971">រង្វាន់មកពី Ads</translation>
-<translation id="1450735350187803276">ការផ្សាយពាណិជ្ជកម្មដែលបានឃើញក្នុងខែនេះ</translation>
-<translation id="1767561995429774671">ចូលរួម</translation>
-<translation id="6727102863431372879">កំណត់</translation>
-<translation id="3074127054582480056">ប្រុងប្រយ័ត្ន</translation>
-<translation id="2280319752798785157">ការចូលរួមចំណែកប្រចាំខែ</translation>
 <translation id="1241283133946520352">បណ្ដាញ</translation>
 <translation id="1062463687579789365">ប្តូរបណ្តាញ Wallet</translation>
+<translation id="2512821599885971349">បន្ថែមបណ្តាញ</translation>
+<translation id="1330032157352961756">លេខសម្គាល់នៃខ្សែសងការភ្ជាប់ថ្មី</translation>
+<translation id="8104880458203052748">ទ្រង់ទ្រាយមិនត្រឹមត្រូវ រឿងខ្សែសងការត្រូវតែជាលេខវិជ្ជមាន</translation>
 <translation id="3423620355610881890">លេខទស្សន៍ទាយវិជ្ជាសាតេមបរិមាណវិជ្ជា</translation>
+<translation id="726121047592132939">ឈ្មោះនៃខ្សែសងការភ្ជាប់ថ្មី</translation>
 <translation id="1034112277864078119">បញ្ចូលឈ្មោះបណ្តាញ</translation>
+<translation id="6003394258999088868">ប្រអប់នេះមិនអាចចន្លោះទេ</translation>
 <translation id="4672314527143443556">ឈ្មោះរូបិយប័ណ្ណរបស់បណ្តាញ</translation>
 <translation id="4652114030688989556">បញ្ចូលឈ្មោះរូបិយប័ណ្ណ</translation>
 <translation id="1079960017149736097">និមិត្តរូបរូបិយប័ណ្ណរបស់បណ្តាញ</translation>
 <translation id="1288105009659846362">បញ្ចូលនិមិត្តរូប</translation>
 <translation id="665660671251623018">លេខទស្សន៍ម្មា</translation>
+<translation id="182619028057179895">ទ្រង់ទ្រាយមិនត្រឹមត្រូវ ចំនួនទសភាគគឺជាលេខវិជ្ជមាន</translation>
 <translation id="2978054488731497946">បញ្ចូលលេខទស្សន៍</translation>
 <translation id="7642841516562576649">URL រូបតំណាង</translation>
 <translation id="4693057234255364395">URL ដែកទិន្នន័យ</translation>
 <translation id="7059127752542505809">បញ្ចូល URL</translation>
 <translation id="2156993118928861787">អាសយដ្ឋានមិនត្រឹមត្រូវ</translation>
 <translation id="7791543448312431591">បន្ថែម</translation>
+<translation id="6889920539620318793">កំណត់ជាសកម្ម</translation>
 <translation id="2653659639078652383">ដាក់ស្នើ</translation>
+<translation id="4945690646623486292">ជ្រើសរើសបណ្តាញ</translation>
 <translation id="5233638681132016545">ផ្ទាំងថ្មី</translation>
+<translation id="8006088103295786154">ចូលប្រើកាបូប Brave</translation>
+<translation id="5308380583665731573">ភ្ជាប់</translation>
 <translation id="8030169304546394654">បានផ្ដាច់</translation>
 <translation id="3423275441470187644">ជឿជាក់</translation>
 <translation id="2391762656119864333">ដកកំហិត</translation>
+<translation id="3432029672560911238">គណនីអ្នកប្រើប្រាស់</translation>
+<translation id="5753378322046059140">ប្ដូគណនី</translation>
+<translation id="3897092660631435901">ម៉ឺនុយ</translation>
 <translation id="42981349822642051">ពង្រីក</translation>
 <translation id="3586752056660754651">ចុះហត្ថលេខា</translation>
 <translation id="3950820424414687140">ចូល</translation>
+<translation id="6592721981110586529">ភ្ជាប់ជាមួយកាបូប Brave</translation>
+<translation id="329813193938846695">ជ្រើសរើសគណនី(ន)</translation>
+<translation id="291375746846291973">ភ្ជាប់តែលើតំណរដែលអ្នកទុកចិត្តប៉ុណ្ណោះ។</translation>
 <translation id="385051799172605136">ថយក្រោយ</translation>
 <translation id="1060221736464994328">អនុញ្ញាតគេហទំព័រនេះដើម្បីប្ដូរតំបន់បណ្ដាញ?</translation>
 <translation id="2478788592457735063">វានឹងប្ដូរតំបន់បណ្ដាញទៅនឹងតំបន់បណ្ដាញដែលបានបន្ថែមមុននេះ។</translation>
 <translation id="8756686998207163764">ប្ដូរតំបន់បណ្តាញ</translation>
+<translation id="5324095733417835490">បើកតំណនៅក្នុងក្រុមផ្ទាំងបច្ចុប្បន្នតែមួយគត់</translation>
+<translation id="2620277345862119868">បើកគ្រប់តំណដោយស្វ័យប្រវត្តិនៅក្នុងក្រុមផ្ទាំងបច្ចុប្បន្ន</translation>
+<translation id="5242300593039211344">ចាក់សោកាបូប</translation>
 <translation id="1108298724135935307">បានភ្ជាប់គេហទំព័រ</translation>
 <translation id="4255623233927788178">មើលលើអ្នកស្វែងរកប្លុក</translation>
+<translation id="8274201358637112807">ទំព័រនេះចង់ឱ្យកាបូប Brave មានប្រតិបត្តិការជាមួយវិបសាយ</translation>
+<translation id="3355936511340229503">កំហុសសន្ទាន</translation>
 <translation id="1531836666020185856">ពិសេស</translation>
+<translation id="4891604214809245310">មិនអាចកំណត់បណ្ដាញទៅនេះ: <ph name="NETWORK_NAME"/></translation>
+<translation id="685345388423515592">វាពាក់កណ្តាលចុង VPN ផ្សេងទៀតនៅលើឧបករណ៍នេះដែលត្រង់ “ខ្នងពេញ”។ ដើម្បីបើក Brave Firewall + VPN ចូរបិទការកំណត់ “ខ្នងពេញ” របស់ VPN ផ្សេងទៀតសិនមុនពេលភ្ជាប់ម្ដងទៀត។ បើបញ្ហាទៅលថ្មី ព្យាយាមដំឡើង VPN ផ្សេងទៀតផ្ទុកពីលើ.</translation>
+<translation id="85136472535634474">បើកការកំណត់ VPN</translation>
+<translation id="8352805003811526272">កំពុងកំណត់បុគ្គលិកបញ្ហារូបមន្ត...</translation>
+<translation id="6809312301323611382">អ្នកបានជ្រើសរើសម៉ាស៊ីនម្នាក់ដដែលរួចហើយ។</translation>
+<translation id="5665084657857645952">អ្នកបានបញ្ឈប់ការតំឡើងលទ្ធភាព VPN.</translation>
 <translation id="9106265941552476098">បដិសេធ <ph name="TRANSACTION_LENGTH"/> កិច្ចការណា</translation>
+<translation id="523862956770478816">ការអនុញ្ញាតរបស់ហ្វាសាយ</translation>
+<translation id="2141313140218636977"><ph name="VALUE"/> គណនីដែលបានភ្ជាប់</translation>
 <translation id="3890989020011724401">គណនីថ្មី</translation>
 <translation id="4305817255990598646">ប្ដូរ</translation>
 <translation id="4804818685124855865">ផ្ដាច់</translation>
@@ -469,23 +822,64 @@
 <translation id="4822132585477111396">លេខសម្គាល់ច្រក</translation>
 <translation id="7131971375297699539">និមិត្តរូបរូបិយប័ណ្ណ</translation>
 <translation id="7982789257301363584">បណ្តាញ</translation>
+<translation id="6936860995365507185">នេះនឹងអនុញ្ញាតបណ្ដាញនេះដើម្បីប្រើនៅក្នុងកាបូប Brave។ <ph name="CLICK_START"/>ស្វែង​យល់បន្ថែម<ph name="CLICK_END"/>.</translation>
 <translation id="4717431746210146708">អនុញ្ញាតគេហទំព័រនេះដើម្បីបន្ថែមបណ្តាញ?</translation>
+<translation id="4857321293515555666">DApp នេះចង់អានសារនេះដើម្បីបំពេញសំណើរបស់អ្នក។</translation>
 <translation id="714506544401754321">បកស្រាយសារដែលបានអុបទិក</translation>
 <translation id="5039804452771397117">អនុញ្ញាត</translation>
 <translation id="3378339846292573874">បន្ថែមម៉ាញ័ធនាគិតថលដែលបានណែនាំ</translation>
 <translation id="2322227405137827074">តើអ្នកចង់នាំចូលម៉ាញ័​ធ្នុង?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
+<translation id="6044189892950611565">ប៉ុស្តិ៍ជូនដំណឹងសម្រាប់កំម្មវិធី Brave</translation>
+<translation id="4556601961751528347">ផ្លាស់ប្ដូរគណនីដែលបានភ្ជាប់</translation>
+<translation id="8922793255489232731">មិនអាចស្ទង់មេដែកក្នុងតំបន់របស់សម្រាប់នេះ: <ph name="VALUE"/></translation>
+<translation id="6471216025161697462">បានភ្ជាប់ទៅ <ph name="VALUE"/></translation>
+<translation id="1968852757206592413">សាកល្បង</translation>
+<translation id="6458565248779152483">បិទ Brave VPN</translation>
+<translation id="9080536793704001825">ផ្អាករយៈពេល 15 នាទី</translation>
+<translation id="803706420145725977">ផ្អាករយៈពេល 1 ម៉ោង</translation>
 <translation id="4394049700291259645">បិទដំណើរការ</translation>
+<translation id="7733890291091968191">បង្ហាញការជូនដំណឹង Web3</translation>
+<translation id="1371627247679035769">#### Brave មិនតាមដានអ្នកឬដឹងថាអ្នកប្រើកម្មវិធីរបស់យើងយ៉ាងណាទេ ដូច្នេះយើងមិនដឹងថាអ្នកបានកំណត់ VPN យ៉ាងណាទេ។ សូមចែករំលែកទិន្នន័យអំពីបញ្ហាដែលអ្នកកំពុងជួបប្រទះ និងយើងនឹងអស់កំលាំងលើយើងដើម្បីដោះស្រាយវាបណ្តើៗតាមដែលអាចធ្វើបាន។ ####</translation>
+<translation id="3367162038532116157">VPN Hostname
+ <ph name="VALUE"/></translation>
+<translation id="6173438324126027458">ប្រភេទការជាវ
+ <ph name="VALUE"/></translation>
+<translation id="1478875290576741766">Playstore Token
+ <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">App Version
+ <ph name="VALUE"/></translation>
+<translation id="2282835936933247509">Timezone</translation>
+<translation id="8107843365677337047">ប្រភេទបណ្ដាញ</translation>
+<translation id="5334952096674914470">ក្រុមហ៊ុនបណ្តាញ​</translation>
+<translation id="5393042357629679588">បញ្ហាផ្សេងទៀត</translation>
+<translation id="8095666712177294104">វេទិកា</translation>
 <translation id="7080614857771109950">គាំទ្រ សំណង់អត្ថប្រយោជន៍ EVM នៅលើ បន្ថែមEthereum (គូទ(ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">គាំទ្រ សំណង់អត្ថប្រយោជន៍ SPL នៅលើ បន្ថែមSolana</translation>
 <translation id="4541295941776129088">រក្សា FIL asset</translation>
 <translation id="6575120282593094155">អ្នកមិនទាន់មានគណនី <ph name="ACCOUNT_TYPE"/>. បង្កើតមួយឥឡូវនេះ?</translation>
 <translation id="4250680216510889253">ទេ</translation>
+<translation id="1599766910146472906">កម្មវិធីដែលដែលមិនត្រូវជ្រលំ</translation>
+<translation id="8463269357637177759">កម្មវិធីធម្មតាដែលអាចប្រើបាន</translation>
+<translation id="4554726425645556940">កម្មវិធីប្រព័ន្ធដែលអាចប្រើបាន</translation>
+<translation id="9023148942866814328">បង្ហាញកម្មវិធីប្រព័ន្ធ</translation>
+<translation id="5472400694702418949">បន្ថែមកម្មវិធីដើម្បីមិនរួមបញ្ចូលក្នុងចរាចររបស់ VPN។</translation>
+<translation id="7002577172732106572">ការបំបែកលំនាំសម្រាប់</translation>
+<translation id="8181161042860463420">គណនីថូខិនលAssociate ជាមិនទន្ទឹងមិនទាន់មាន។ ចំនួនតិចតួច SOL នឹងត្រូវចំណាយដើម្បីបង្កើតនិងផ្ដល់ថវិកាបន្ទាប់ដែលភ្ជាប់យើងទៀត។ <ph name="CLICK_START"/>ស្វែងយល់បន្ថែម<ph name="CLICK_END"/></translation>
+<translation id="168154537623654021">កំពុងធ្វើបច្ចុប្បន្នភាពប្រវត្តិ VPN ...</translation>
+<translation id="4784306439879850873">ចំណាំថា Brave មិនអាចផ្ទៀងផ្ទាត់បាននូវអ្វីដែលនឹងកើតមានប្រសិនបើអ្នកចុំពាក្យស្នេហា។ ពាក្យស្នេហាគឺអាចអនុញ្ញាតប្រតិបត្តិការទៅលើគណនីរបស់អ្នក ឬដោយបំពេញដោយងឹងរួមបញ្ចូលដៃមិនគិតថ្លៃតែម្តងទេ។ អាចាប្រាក់ចំណូលកាន់គណនីរបស់អ្នកនិងទ្រព្យសម្បត្តិគ្រីបតូទៅទីតាំងដែលបានធ្វើតាមសំណើការងារ។ ចុំពាក្យស្នេហានេះចុ nominalពីតែលើបើអ្នកប្រាកដចង់ប្រតិបត្តិការក្នុងមុខងារនេះ។</translation>
 <translation id="3474375934783434676">ចុះហត្ថលេខារបស់អ្នកដោយខុសរើស</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> នៃ <ph name="SIZE"/></translation>
 <translation id="756701799684433105">អនុញ្ញាតគេហទំព័រ</translation>
 <translation id="6450792191436242818">កម្មវិធីប្រព័ន្ធ</translation>
+<translation id="5318067544026930166">បើក Brave Wallet ជាមួយការផ្ទៀងផ្ទាត់តាមមុខមាត់</translation>
+<translation id="2629767022373384291">តើអ្នកចង់ប្រើការផ្ទៀងផ្ទាត់តាមមុខមាត់ដើម្បីបើក Brave Wallet របស់អ្នកទេ?</translation>
+<translation id="4782919977106118997">ប្រើការបើកដោយស្ដាត​ដៃ</translation>
+<translation id="2054995875643283428">រំលងសម្រាប់ឥឡូវ</translation>
 <translation id="2610561535971892504">សូមចុចដើម្បីចម្លង</translation>
+<translation id="2522605225061484799">ចូលទៅកាន់ផតភូលីអូរបស់ខ្ញុំ</translation>
 <translation id="1148624853678088576">អ្នកបានរៀបចំ!</translation>
+<translation id="4131445988101719379">Brave Wallet របស់អ្នកត្រៀមរួចជាស្រេច</translation>
 <translation id="6252742184395380448">កម្មវិធីកំណត់រចនាសម្ព័ន្ធ</translation>
 <translation id="5358970666412490132">កម្មវិធីរ៉ាក់</translation>
 <translation id="346636227344244984">កម្មវិធីបោះឆ្នោត</translation>
@@ -493,18 +887,54 @@
 <translation id="2334098351242742927">កម្មវិធី Ed25519</translation>
 <translation id="6421371987002247943">កម្មវិធីម៉ាញ័ធ</translation>
 <translation id="8780753288764281797">កម្មវិធី Secp256k1 សម្រាប់ Solana</translation>
+<translation id="8504640708321980506">ទិន្នន័យ</translation>
+<translation id="3723411967118253067">ID កម្មវិធី</translation>
 <translation id="4771176409524282426">បង្កើតគណនី</translation>
+<translation id="1755120947324658439">បញ្ជាបត្តជាតិ</translation>
+<translation id="7588707273764747927">ផ្ទេរ</translation>
+<translation id="5328067049293286962">បង្កើតគណនីជាមួយពពណ៌នុយេីរ</translation>
+<translation id="1512366326138054636">ជំរុញគណនីជាមួយការប្រកាស</translation>
+<translation id="7042202638449257311">ដកគណនីជាមួយការប្រកាស</translation>
+<translation id="6586085653712983224">ដាក់តូនស័ឆ្មុនគណនីជាមួយពពណ៌ បង្គន់</translation>
+<translation id="8790312855368673743">​អនុវត្តគណនីជាមួយពពណ៌បង្គន់</translation>
+<translation id="5312748886432335174">ចុះបញ្ជី</translation>
+<translation id="7678705217826797696">បំពេញដោយប្រើគ្រាប់ពូជ</translation>
+<translation id="7436137523759921028">បញ្ជារស្មាត​ការដឹកជញ្ជូនជាមួយពពណ៌</translation>
+<translation id="3360695936886670509">ផ្ទេរស្មាត​ការដឹកជញ្ជូនជាមួយពពណ៌</translation>
+<translation id="7323636209143541483">លំអ៊ូណេអូជាមួយពពណ៌</translation>
+<translation id="616021855350068202">ដាក់បង្កើតជាម្ចាស់អេម។</translation>
+<translation id="4377316227435786423">ចាប់ផ្តើមគណនី</translation>
+<translation id="7474306790151660826">ចាប់ផ្តើម multisig</translation>
+<translation id="363258595406850968">កំណត់អំណាច</translation>
+<translation id="2091563464450586155">ចុះហត្ថលេខាទៅ</translation>
+<translation id="1252941298291625577">បំផ្លាញ</translation>
+<translation id="5211196599627796093">បិទគណនី</translation>
+<translation id="6988707241715050556">ចាក់សោគណនី</translation>
+<translation id="857250415816680832">រកកម្រិតគណនីឡើងវិញ</translation>
+<translation id="5453172892735755262">ផ្ទៀងផ្ទាត់ការផ្ទេរ</translation>
+<translation id="471669767157904431">ផ្ទៀងផ្ទាត់ការអនុញ្ញាត</translation>
+<translation id="3530340583186873359">ចាក់ស្ក្រីបស្តង់ដា</translation>
+<translation id="5068456869800056740">ត្រៀមបំផ្លាញ</translation>
+<translation id="3004830385467519189">ដាស់នូវគណនី 2</translation>
+<translation id="8026488633670875516">ការសមកាលកម្មជាប្រព័ន្ធដើម</translation>
+<translation id="2024649614526778327">ចាប់ផ្តើមគណនី​ ៣</translation>
+<translation id="8382368767453083629">ចាប់ផ្តើមភាពជាឧអាង ២</translation>
+<translation id="77243237706803459">ចាប់ផ្តើមសាច់ប្រាក់ ២</translation>
 <translation id="583281660410589416">មិនស្គាល់</translation>
-<translation id="909076461795862330">ជាអកុសល ខុសឡើង ខណៈពេលព្យាយាមកំណត់ប្រាកដ Brave Rewards របស់អ្នក។ សូមព្យាយាមម្តងទៀត។</translation>
-<translation id="7352651011704765696">មានអ្វីមួយមិនត្រឹមត្រូវ</translation>
-<translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="6040143037577758943">បិទ</translation>
 <translation id="7710469167917867539">កម្រៃប្រតិបត្តិការ</translation>
 <translation id="7843211152394841558">ព្យាយាមអតិបរមា:</translation>
 <translation id="8496335570810457">កត់បញ្ញើអំណោយភាពមុន:</translation>
 <translation id="5100124500279922001">រំលងអំណោយភាពមុន:</translation>
+<translation id="7152095322071766507">គេហទំព័រដែលបានចូលច្រើនជាងគេ</translation>
 <translation id="5456039738087398178">ផ្ទាំងវិចិត្រអេក្រង់ដើម</translation>
+<translation id="703185154752046151">វិចិត្រចនាដែលបានបន្ថែមទៅផ្ទាំងគេហៈំព័រ</translation>
+<translation id="4635094429202343515">សាកល្បងវីជិតស្វែងរក Brave</translation>
+<translation id="4809681171446727314">ចូលដំណើរការស្វែងរកឯករាជ្យ​ខ្លួន​ឯង​តាមផ្ទះរបស់អ្នក។</translation>
+<translation id="7751715172931488388">បន្ថែមវិចិត្រទៀត</translation>
+<translation id="7285167584112910782">ស្វែងរកសកម្មភាពរហ័សរបស់ Brave</translation>
 <translation id="2326703104633309781">ប្រើ Brave បកប្រែ</translation>
+<translation id="5802752138057422257">មានតួអក្សរមិនមែន ASCII!'</translation>
 <translation id="442709594176931966">មើលសារដើម</translation>
 <translation id="2239252396088484499">មើលសារឱ្យនៅក្នុងការអាំងកូដខ្លះ ASCII</translation>
 <translation id="4530494379350999373">ប្រភពដើម</translation>
@@ -516,29 +946,33 @@
 <translation id="7902225556763260253">ពេលវេលាអស់សិទ្ធ</translation>
 <translation id="1908159733454294871">ជម្រាបគ្រោះថ្នាក់សន្តិសុខ</translation>
 <translation id="5658257029899993935">ភ្ជាប់ការជួញដូរសម្រាប់គណនី Brave របស់អ្នក</translation>
-<translation id="5899814466108868020">អ្នកកំពុងជួយគាំទ្រ Brave និងសហគមន៍ BAT</translation>
-<translation id="6067959437127691361">ការប្រើប្រាស់ Brave Rewards មិនមែនជាដើម្បីគាំទ្រអ្នកបង្កើតមាតិកាឡើយ ហើយអាចឱ្យអ្នករកប៊ីត្តិ BAT ទេ។</translation>
-<translation id="3264975266761862670">ត្រៀម​ខ្លួន​ដើម្បី​ចាប់​ផ្តើ​ម​រក​ប្រាក់​ឬនៅ?</translation>
-<translation id="265337947574975838">ភ្ជាប់ ឬបង្កើតគណនីជាមួយដៃគូររបស់យើង។</translation>
-<translation id="654447476965480878">ស្វែងយល់បន្ថែមអំពីការទទួលបាន BAT</translation>
-<translation id="6278643716658443228">ការកំណត់រង្វាន់</translation>
-<translation id="6516984207843289176">ភ្ជាប់គណនី</translation>
-<translation id="4272136334824111854">ខែនេះ អ្នកបានចូលមើល <ph name="CREATOR_COUNT"/> អ្នកបង្កើតដែលត្រូវបានគាំទ្រដោយរង្វាន់ Brave</translation>
-<translation id="579702532610384533">ភ្ជាប់ឡើងវិញ</translation>
-<translation id="1619753851206150396">អ្នកបានចេញពីប្រព័ន្ធ</translation>
-<translation id="6390041270339783491">ការបរិច្ចាគប្រចាំខែបានបរាជ័យ</translation>
-<translation id="9074594632540931067">កំហុស: BAT មិនអាចប្រើបាន</translation>
-<translation id="5382684862562314222">BAT មិនបានគាំទ្រនៅក្នុងតំបន់របស់អ្នកនៅ Uphold មកទាន់ពេលនេះទេ។</translation>
-<translation id="6996157559236886133">កំហុស: លំដាប់គិតគូរគណនិធិ Uphold មិនបានគ្រប់គ្រាន់</translation>
-<translation id="1677961202754619328">តាម Uphold, សព្វថ្ងៃនេះមានការរឹតបន្តឹងលើគណនី Uphold របស់អ្នក។ សូមចូលទៅក្នុងគណនី Uphold របស់អ្នកនិងស្វែងរកដូចឆវងាយវាងមានក្ិត្រូវាយរាយៗប្រាធវបីបានសញ្ជា,ហើយត្រលប់មកហើយព្យាយើងោចាស្យា।</translation>
-<translation id="5425006356459378415">Brave Rewards មិនអាចប្រើបាន</translation>
-<translation id="3435896845095436175">បើក</translation>
+<translation id="1187061015547219282">ភ្ជាប់ការទិញពី Play Store របស់អ្នកទៅគណនី Brave របស់អ្នកដើម្បីប្រើ Brave VPN នៅលើឧបករណ៍ផ្សេងៗ។</translation>
+<translation id="6662142137695589205">ភ្ជាប់ការជាវ VPN របស់អ្នក</translation>
+<translation id="2674077112509133024">ពង្រឹងការការពារចាក់កាត់វីភាព + VPN របស់អ្នក</translation>
+<translation id="6365389672683343144">ការជាវ VPN Brave របស់អ្នកអាចការពារសរុបទៅដល់ ៥ ឧបករណ៍ ទាំងក្នុង Android, iOS, និងកុំព្យូទ័រ។ គ្រាន់តែភ្ជាប់ការជាវ Google Play របស់អ្នកទៅគណនី Brave របស់អ្នក។</translation>
+<translation id="6610899852831463073">មិនអាចបើកការស្វែងរកនាំឱ្យសុវត្ថិភាព</translation>
+<translation id="7954263306665462056">ការស្វែងរកនាំឱ្យសុវត្ថិភាពត្រូវបានបិទនៅលើឧបករណ៍របស់អ្នក។ ដើម្បីបើកវា ស្បត់ពួកគេ​ធានាថា Google Play Services ត្រូវបានតំឡើង និងឥឡូវនេះគឺគ្រប់យ៉ាងនៅតែតាមបច្ចុប្បន្នភាព។</translation>
+<translation id="7748944510530490017">ប្រព័ន្ធបណ្ដាញមូលដ្ឋាន</translation>
+<translation id="2781668117338732220">ប្រព័ន្ធបណ្ដាញក្រោម</translation>
+<translation id="282560918037172384">ប្រព័ន្ធបណ្ដាញសាកល្បង</translation>
 <translation id="7568430944629653319">បើកការរុករក NFT</translation>
+<translation id="622372328961630111">បន្ថែមក្រាផ្ដាច់ដ៏ជំនួសឡុងមួយដែលអ្នកជំនាត់​ដើម្បីបន្ថែម NFT តាមអត្ថបន្ថែមភាព ៣ របស់អ្នក។ <ph name="BEGIN_LINK_1"/>ស្វែង​យល់​បន្ថែម។<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">គណនីស្វែងរកអាសយដ្ឋាន:</translation>
 <translation id="7659483790930268440">សូវដែលនៅលើតុស្វែងរកអាសយដ្ឋាន:</translation>
 <translation id="5494920125229734069">ជ្រើសរើសទាំងអស់</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="944736176598169208">រង្វាន់</translation>
+<translation id="4272190451231642425">ផ្ញើរបាយការណ៍បញ្ហាគាំងដោយស្វ័យប្រវត្តិ</translation>
+<translation id="1199170151481311646">វិភាគការពារសិទ្ធិឯកជន</translation>
+<translation id="1706715315466634757">ឈ្មោះអ៊ីមែល</translation>
+<translation id="6709133671862442373">ព័ត៌មាន</translation>
+<translation id="5990642573624858459">របាយការណ៍ស្ថិតិ</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2441719842399509963">កំណត់ទៅលំនាំដើម</translation>
+<translation id="4922034974043704366">លក្ខណៈពិសេស​នេះ​ត្រូវ​បានបើក​ដោយ​សារ​តែ​អ្នក​បាន​រើសចូលរួមប្រើវា</translation>
+<translation id="3144818380093107753">Brave Origin គឺជាការជាវផ្តោតលើបិទលក្ខណៈពាណិជ្ជកម្មចំណូលដែលតែងតែគាំទ្រជំនួសការផ្គត់ផ្គង់ Brave ជាជំនួញ។ អ្នកជាវ Brave Origin នឹងនៅតែទទួលបានអត្ថប្រយោជន៍ពីភាពឯកជន ការបិទផ្សាយពាណិជ្ជកម្ម និងល្បឿនដែលជាអ្នកដឹកនាំឧស្សាហកម្មជាមួយ (ខែលការពារ Brave) ព្រមទាំងការធ្វើបច្ចុប្បន្នភាពកម្មវិធីជាទៀងទាត់ ការបង្រឹង Chromium និងការកែលម្អសន្តិសុខនិងឯកជនភាព។ ពួកគេនឹងដោះសោរជម្រើសក្នុងការបិទលក្ខណៈពិសេសដូចជា Brave Leo ព័ត៌មាន Rewards Wallet VPN ក្នុង Web3 ដែន និងច្រើនទៀត។&lt;br/&gt;&lt;br/&gt;អ្នកជាវនឹងឃើញបន្ទះគ្រប់គ្រងថ្មីនៅក្នុងម៉ឺនុយការកំណត់របស់កម្មវិធីរុករក។ លក្ខណៈពិសេសដែលមាននៅស្រាប់ — និងលក្ខណៈពិសេសថ្មីណាមួយដែលយើងនឹងដាក់បង្ហាញនៅពេលក្រោយ — នឹងបង្ហាញនៅត្រង់នេះ ហើយត្រូវបានបិទជាលំនាំដើម។&lt;br/&gt;&lt;br/&gt;&lt;b&gt;ចំណាំ៖ Brave Origin នឹងមិនបិទលក្ខណៈពិសេសរបស់កម្មវិធីរុករកដែលអ្នកកំពុងប្រើបច្ចុប្បន្នទេ ហើយមិនមានผลដល់លក្ខណៈពិសេស Brave ស្វែងរក ឬ Brave ស្វែងរកការផ្សាយពាណិជ្ជកម្មទេ។&lt;/b&gt;</translation>
 <translation id="8613144770663526433">ចុះឈ្មោះជាមួយ Brave Wallet</translation>
+<translation id="3696514931437952995">អ្នកកំពុងចុះឈ្មោះទៅ <ph name="ORIGIN"/>។ កាបូប Brave នឹងចែករំលែកអាសយដ្ឋានកាបូបរបស់អ្នកជាមួយ <ph name="ORIGIN"/>។</translation>
 <translation id="1028781062521375153">មើលលម្អិត</translation>
 <translation id="6759710362319508545">ធនធាន</translation>
 <translation id="2471230424465522689">មិនមុន</translation>
@@ -546,30 +980,76 @@
 <translation id="1179407411385015942">Leo គឺជាជំនួយការឆ្លាតវៃ ដំណើរការដោយ AI ដែលត្រូវបានបង្កើតឡើងនៅក្នុងកម្មវិធីរុករក</translation>
 <translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
 <translation id="4109670531935487117">បង្ហាញការណែនាំអំពីការបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងរបារអាសយដ្ឋាន</translation>
+<translation id="4983005227524068187">បង្ហាញក្នុងឈ្នុករក៍ស្វែងរកលឿន​</translation>
+<translation id="8514910864411336826">បើក​ប៊ីយូណិច​ស្វិតនង្គើ​ ដើម្បី​បើក​នៅក្នុង​ឈ្នុក​ស្វែងរក​ថ្មី។</translation>
 <translation id="6106701981952170121">លុបទិន្នន័យសន្ទនា Leo AI ទាំងអស់</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="423600389315522551">ក្រុម​នឹង​តម្រូវ​ឲ្យ​អ្នក​ចុះ​ឈ្មោះ​​ប្រើ Brave Leo AI ជាអនាគត និងលុប​ប្រវត្តិ​បំបូក​។ ការលុបប្រវត្តិសន្ទនា​នឹង​លុប​ចេញ​នូវ​ការ​សន្ទនា​មុនៗ​ទាំងអស់​ជាមួយ Brave Leo AI។ សកម្មភាពនេះមិនអាចត្រឡប់តាមបានវិញទេ។</translation>
+<translation id="6742599753610126012">លុបប្រវត្តិសន្ទនា</translation>
+<translation id="3443052382074796867">ការបិទការដាក់សន្ទនានឹងលុបចេញនូវព័ត៌មានចូលផ្សារ​​។ សកម្មភាពនេះមិនអាចត្រឡប់តាមបានវិញទេ។</translation>
+<translation id="3692772534525889713">ភ្ជាប់ការទិញដោយលោកកំពុងប្រើទស្សនានៅក្នុង Play Store របស់អ្នកទៅកាន់គណនី Brave របស់អ្នកដើម្បីប្រើការវាយយោលពីអំពូលរបស់ Brave ក្នុងឧបករណ៍ផ្សេងៗ។</translation>
+<translation id="592831784390389506">Leo AI ជាន់ខ្ពស់</translation>
 <translation id="1028627582482425924">មួយឆ្នាំ</translation>
 <translation id="2985392169397572983">តម្លៃពិសេសបំផុត</translation>
 <translation id="1166682575529520472">ប្រចាំខែ</translation>
-<translation id="451189393813405346">សំនួរ Leo</translation>
+<translation id="2206846767762985925">សួរ Leo AI</translation>
+<translation id="7322560193401221004">ចង​ចាំ​កាត្រឡាប់ការទាញយក​វីដេអូ​តាម​ប្រទេស</translation>
+<translation id="7505951907514709271">ហ្វ័យឡានគឺ, ចាប់ផ្តើមវត្តមាន​ពីចំណុចចុងក្រោយនៃការបើកហ្វាយឡាន</translation>
+<translation id="6835165453349969605">ចងចាំវត្តមាន។</translation>
+<translation id="6344103698928069918">ចងចាំវត្តមាន។ ការចាប់ផ្តើមពីចំណុចចុងក្រោយនៃការថយក្រោយធ្វើអ្នកអានឲ្យចាប់​ផ្តើម​ពី​ចំណុច​ចុង​ក្រោយ​នៃ​ការ​ទាម​ទារ។</translation>
+<translation id="8141583471142904652">ត្រឡាប់នឹងភាពវាយដោយស្វ័យប្រវត្តិ</translation>
+<translation id="851432578283946230">វាយតម្លៃភាទៀតគ្រប់វីដេអូក្នុងបញ្ជីចាក់របស់អ្នក​វា</translation>
+<translation id="295620834661738195">បញ្ជីចាក់ Brave</translation>
 <translation id="4850886885716139402">មើល</translation>
+<translation id="7392941176393379100">បានបញ្ចូលក្នុង '<ph name="PLAYLIST_NAME"/>'</translation>
 <translation id="349846214503465941">បើកបញ្ជីចាក់</translation>
+<translation id="1309636029062006520">ធ្វើបញ្ជីចាក់មាតិកាអូឌីយ៉ូ និងវីដេអូសំណព្វចិត្តរបស់អ្នក ហើយភ្ជាប់បានគ្រប់ពេល គ្រប់ទីកន្លែង។</translation>
+<translation id="7899390017499980820">បន្ថែមទៅបញ្ជីចាក់</translation>
+<translation id="6901152954398668317">បង្ហាញឬលាក់ប៊ូតុង "បន្ថែមទៅបញ្ជីចាក់" សម្រាប់ចូលរួមយ៉ាងឆាប់រហ័សដើម្បីបន្ថែមឬយកមីឌាចេញ។</translation>
 <translation id="5939518447894949180">កំណត់ឡើងវិញ</translation>
+<translation id="8199028711686989861">យកវីដេអូទាំងអស់ចេញពីបញ្ជីចាក់ រួមទាំងការផ្ទុកក្នុងរបៀបក្រៅបណ្តាញ។</translation>
 <translation id="4590997608186539865">បញ្ជីចាក់</translation>
 <translation id="7525067979554623046">បង្កើត</translation>
 <translation id="8525248723479742219">ចាក់ហើយ</translation>
+<translation id="7453007860684252933">រកមើលនិងបន្ថែម</translation>
+<translation id="9014883386413828317">បន្ថែមមាតិកាសំណព្វចិត្តរបស់អ្នក។ រកមើលប៊ូតុង ( + ) នៅផ្នែកខាងក្រោមស្ដាំនៃអេក្រង់របស់អ្នក។</translation>
+<translation id="5928669500312007783">រកមើលសម្រាប់មេឌា</translation>
 <translation id="8152485753254079984">បញ្ជីចាក់ថ្មី</translation>
 <translation id="9130105487623071247">បញ្ជីចាក់ឈ្មោះ</translation>
+<translation id="726581235416249619">បញ្ជីចាក់គ្មានចំណងជើង</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> ត្រូវបានជ្រើសរើស</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> ឯកសារ</translation>
+<translation id="2317629745818459803">ចាក់ទាំងអស់</translation>
 <translation id="7544853251252956727">អ៊ចាស់// shuffle</translation>
+<translation id="2881339830231736485">បានចាក់ចុងក្រោយ</translation>
 <translation id="8120600068258956006">បន្ថែមក្នុង​បញ្ជីចាក់</translation>
+<translation id="39991094779686024">បញ្ជីចាក់</translation>
+<translation id="1710072605877822603">បន្ថែមមេឌា</translation>
+<translation id="3874252678044305931">បន្ថែមវីដេអូទៅបញ្ជីចាក់ Brave ។ ចាក់នៅពេលណាក៏បាន។ សូម្បីតែក្រៅបណ្តាញ។</translation>
+<translation id="8973629800378391099">បង្កើតបញ្ជីចាក់សម្រាប់មាតិកាសំណព្វចិត្តរបស់អ្នក។ សន្សំពាណិជ្ជកម្មស្មាតហ្វូន។ និងចាក់ដោយគ្មានការផ្សាយពាណិជ្ជកម្ម។</translation>
+<translation id="4936812987266342401">គ្រាន់តែចុចប៊ូតុងដើម្បីបន្ថែមវីដេអូទៅក្នុងបញ្ជីចាក់</translation>
+<translation id="6263657785571415306">ស្ថិតក្នុងស្ថានភាព៖ បន្ថែមវីដេអូខណៈដែលអ្នកកំពុងរកមើល បន្ទាប់មកមើល។</translation>
+<translation id="2839555636100404687">ការចាក់នៅក្នុងបញ្ជីចាក់ល្អបំផុត</translation>
+<translation id="9079526681359439081">ចាក់នៅខាងក្រោយ។ គ្រប់គ្រងពីអេក្រង់鎖នៅលើ។ និងច្រើនទៀត…</translation>
+<translation id="3620862810055853183">បើកបញ្ជីចាក់</translation>
+<translation id="3861012838874771868">បើកការកំណត់បញ្ជីចាក់</translation>
+<translation id="5220099266891491416">លាក់ប៊ូតុងបញ្ជីចាក់</translation>
+<translation id="7416347631175891923">សាកល្បងវា!</translation>
+<translation id="9065203028668620118">កែប្រែ</translation>
 <translation id="1173894706177603556">ប្តូរឈ្មោះ</translation>
 <translation id="3596306474342941843">លុបបញ្ជីចាក់</translation>
 <translation id="7765158879357617694">ផ្លាស់ទី</translation>
 <translation id="6896758677409633944">ចម្លង</translation>
+<translation id="3803384303807438047">លុបទិន្នន័យក្រៅបណ្តាញរបស់ធាតុ</translation>
 <translation id="4195643157523330669">បើកនៅក្នុងផ្ទាំងថ្មី</translation>
 <translation id="4243710787042215766">បើកនៅក្នុងផ្ទាំងអនាមិក</translation>
 <translation id="8261506727792406068">លុប</translation>
-<translation id="5474757891469990756">បញ្ចេញថាមពលពេញលេញរបស់ Leo ជាមួយ Premium៖</translation>
+<translation id="377872456482681602">សូមជ្រើសរើសធាតុជាមុនសិន</translation>
+<translation id="286472539388773794">សូមបញ្ចូលឈ្មោះបញ្ជីចាក់ត្រឹមត្រូវ</translation>
+<translation id="2824489375399072491">ចែករំលែកជាមួយ:</translation>
+<translation id="5319532905552885478">មាតិកាមេឌាត្រូវបានបន្ថែមទៅបញ្ជីចាក់លំនាំដើមរួចហើយ</translation>
+<translation id="4802584673094436231">កំពុងរៀបចំ…</translation>
+<translation id="481455355267255546">បន្ទាប់</translation>
+<translation id="3721790899869840343">ដោះស្រាយ​សមត្ថភាព​ទាំងអស់​របស់ Leo AI ជាមួយជម្រើស Premium:</translation>
 <translation id="4173478269537830374">ស្វែងរកម៉ូដែល AI ផ្សេងៗគ្នា</translation>
 <translation id="3453542753968940696">ការចូលប្រើជាអាទិភាពចំពោះម៉ូដែលដ៏មានឥទ្ធិពលដែលមានជំនាញផ្សេងៗគ្នា។</translation>
 <translation id="3245401959451976966">ដោះសោភាពច្នៃប្រឌិតរបស់អ្នក</translation>
@@ -582,25 +1062,65 @@
 <translation id="5543505256451301851">សាកល្បង 7 ថ្ងៃដោយឥតគិតថ្លៃ</translation>
 <translation id="614530507403667291">ម៉ូដែលលំនាំដើមសម្រាប់ការសន្ទនាថ្មីៗ</translation>
 <translation id="4071849832011229600">ម៉ូដែលលំនាំដើម</translation>
-<translation id="4185473179105062442">ទទួល BAT ដោយផ្ទាល់ទៅអាសយដ្ឋាន crypto</translation>
-<translation id="5802986777701714573">យើងបានបន្ថែមវិធីថ្មីសម្រាប់អ្នកក្នុងការទទួលប្រាក់រង្វាន់ BAT ប្រចាំខែរបស់អ្នក។ ភ្ជាប់គណនីពីមួយក្នុងចំណោមដៃគូរបស់យើង ឬប្រើជម្រើសរក្សាទុកដោយខ្លួនឯងថ្មីដើម្បីចាប់ផ្ដើមរកប្រាក់ឥឡូវនេះ។</translation>
 <translation id="7557539689487606886">ដំឡើងទៅ Premium</translation>
+<translation id="5538904824395606812">ប្រើក្រុមហ៊ុនផ្គត់ផ្គង់សេវាបច្ចុប្បន្នរបស់អ្នកឬ Quad9</translation>
+<translation id="6393423486818299209">ប្រើក្រុមហ៊ុនផ្គត់ផ្គង់សេវាបច្ចុប្បន្នរបស់អ្នកឬ Wikimedia DNS</translation>
+<translation id="3401384982562827787">ប្រើក្រុមហ៊ុនផ្គត់ផ្គង់សេវាបច្ចុប្បន្នរបស់អ្នកឬ Cloudflare</translation>
+<translation id="8812367543786936496">ប្រសិនបើក្រុមហ៊ុនផ្គត់ផ្គង់សេវាបច្ចុប្បន្នរបស់អ្នកគ្មានសុវត្ថិភាព Brave គឺប្រើ DNS ផ្សេងទៀតដែលមានសុវត្ថិភាពជំនួស</translation>
+<translation id="5680678411439841197">ទីក្រុង</translation>
+<translation id="8185518433273977704">ទីរួម</translation>
+<translation id="4528386452965343421">ខណ្ឌ</translation>
+<translation id="1589122976691792535">តំបន់</translation>
+<translation id="2221292964468054123">រដ្ឋ</translation>
+<translation id="3801482889636327368">អង្គភាព</translation>
+<translation id="1425162721525518064">ក្រុមហ៊ុន</translation>
+<translation id="7568794877555549044">ប្រទេស</translation>
+<translation id="5982110855572850497">ស្លាកសញ្ញា</translation>
+<translation id="6848689413353508904">container</translation>
 <translation id="1496514951988037011">ឈ្មោះអ្នកប្រើ</translation>
+<translation id="6155129418108337061">login</translation>
+<translation id="4038523199754403233">ល.ស.</translation>
 <translation id="901834265349196618">អ៊ីម៉េល</translation>
 <translation id="3488199663160411179">ឈ្មោះ</translation>
 <translation id="793994607260936590">នាមខ្លួន</translation>
+<translation id="1782612111936779655">នាក់ចុងក្រោយ</translation>
+<translation id="7628132737455466188">ពេញ</translation>
 <translation id="8621068256433641644">ទូរស័ព្ទ</translation>
+<translation id="5993210100509955931">ចល័ត</translation>
 <translation id="598301471034819706">អាសយដ្ឋាន</translation>
-<translation id="4130750466177569591">យល់ព្រម</translation>
-<translation id="3251885322612056119">លក្ខខណ្ឌសេវាកម្មដែលបានកែប្រែ</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="5557821203571216370">អាផាតឹម</translation>
+<translation id="8051552210542030943">លេខកូដ</translation>
+<translation id="5233247193491045452">លេខ​កូដ​ប្រៃ​ស​ម្ពន្ធ</translation>
+<translation id="3300502432153878901">ZIP</translation>
+<translation id="1381108437654541567">​​បើក​ច្រើន​បង្អួច</translation>
+<translation id="6167344249617630304">បើកបង្អួចបានរហូតដល់ 5 នៅពេលមួយ និងផ្លាស់ផ្ទាំងពីបង្អួចមួយទៅបង្អួចមួយវិញ</translation>
+<translation id="1063948063403254568">បានរកឃើញបង្អួចច្រើន</translation>
+<translation id="4661882208707630158">សូមបញ្ចូលផ្ទាំងទៅក្នុងបង្អួច Brave ជាន្វាយ ដោយបិទបង្អួច Brave ផ្សេងទៀត មុនពេលបិទមុខងារច្រើនបង្អួច។</translation>
+<translation id="6891382640886173702">បញ្ចូលបង្អួច</translation>
+<translation id="2912247081180973411">បិទបង្អួច</translation>
+<translation id="4010699428656610296">សូមបញ្ចូលផ្ទាំងផ្សេងទៀតទៅបង្អួច Brave ។</translation>
+<translation id="4306918392910017801">រំលាយ VPN ស្វ័យ​ជា​រ</translation>
+<translation id="1599073346542156922">របៀបបើក៖</translation>
+<translation id="7001163334415463127">១. បើកការកំណត់ឧបករណ៍របស់អ្នកពី drawer កម្មវិធីនៃប៊ូតុងខាងក្រោម។</translation>
+<translation id="887443138775437899">២. រាំងសុវត្ថិភាព VPN Brave ហើយចុចនៅរូបកំណត់នៅខាងស្តាំ។</translation>
+<translation id="7546805138087561624">៣. បំពេញ <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>ដោយរួមបញ្ចូល VPN មួយទៀតដោយស្វ័យប្រវត្តិ<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> ដើម្បីបើកវា។</translation>
+<translation id="2446001600399646984">សូមទុកចិត្តការពារការតភ្ជាប់ដោយ VPN។ <ph name="LEARN_MORE_START"/>ស្វែង​យល់​បន្ថែម។<ph name="LEARN_MORE_END"/></translation>
+<translation id="4776146737004271126">បើកការកំណត់ Android</translation>
+<translation id="2728518864712716830">បានទាញយកកម្មវិធីបច្ចុប្បន្នភាព។</translation>
+<translation id="8403338849301491865">បញ្ជីតម្រងត្រូវបានបច្ចុប្បន្នភាពដោយជោគជ័យ</translation>
+<translation id="4650851936784160359">បញ្ជីតម្រងមិនអាចធ្វើបច្ចុប្បន្នភាព។ សូមព្យាយាមម្តងទៀត</translation>
+<translation id="3098054327870766317">បង្ហាញប៊ូតុងមកវិញនៅពេលបិទផ្ទាំង</translation>
+<translation id="1336494649091412226">តើ​អ្នក​ប្រាកដ​ថា​ចង់​ចាក​ចេញ​ពី Brave ទេ?</translation>
 <translation id="7942415993090181327">ប្រវត្តិការជជែក</translation>
+<translation id="6859935199732075666">បង្ហាញកំហុសការសមន្ត្រីទំងែសកម្មភាព</translation>
+<translation id="2735247450315842119">អនុញ្ញាតការបរិច្ឆេទក្នុងផ្ទាំងបែបកម្មឯកជន</translation>
+<translation id="8420414929552321089">ប្រសិនបើបានអនុញ្ញាត ផ្ទាំងឯកជនក៏នឹងមើលឃើញបានដែរ នៅពេលកម្មវិធីជាច្រើនបានបើក។</translation>
 <translation id="7956713633345437162">កត់ចំណាំចល័ត</translation>
-<translation id="3176467469116060712">គាំទ្រការងារឈានមុខគេក្នុងឧស្សាហកម្មរបស់ Brave សម្រាប់ភាពឯកជនគេហទំព័រ និងបញ្ជីបិទបាំងប្រភពបើកចំហ</translation>
-<translation id="5896375129784311037">ធ្វើឱ្យប្រសើរសម្រាប់ចំណុចប្រទាក់កម្មវិធីរុករកតិចតួចបំផុត</translation>
-<translation id="746156554966264308">ស្នូលនៃខែលការពារ Brave សម្រាប់មុខងារទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម ឯកជនភាព និងល្បឿន</translation>
-<translation id="1432661650699782509">ការគាំទ្រសម្រាប់គោលការណ៍គ្រប់គ្រងដោយបច្ចេកវិទ្យាព័ត៌មាននៅកន្លែងធ្វើការ</translation>
+<translation id="6261139507111008244">គាំទ្របេសកម្ម និងការងារបើកប្រភពរបស់យើង</translation>
+<translation id="7882690061170175552">UI កម្មវិធីរុករកអប្បបរមា មានផ្ដោតទៅលើខែលការពារ</translation>
+<translation id="2267973897341040743">រក្សាទុកខ្លឹមក្ដីបិទផ្សាយ ព័ត៌មានឯកជន និងល្បឿនស្នូរ</translation>
 <translation id="1361157028850796410">តម្លៃល្អបំផុត</translation>
+<translation id="7280825497485894053">ការជាវប្រចាំខែ</translation>
 <translation id="4570901726096223030">ស្វែងយល់បន្ថែមអំពីប្រភពដើម</translation>
 <translation id="1943432128510653496">រក្សាទុកពាក្យសម្ងាត់</translation>
 <translation id="2100273922101894616">ចូលស្វ័យប្រវត្តិ</translation>
@@ -613,6 +1133,22 @@
 <translation id="5139940364318403933">ស្វែងយល់​ពីរបៀប​ប្រើកម្មវិធី Brave Software ថាស</translation>
 <translation id="729975465115245577">ឧបករណ៍​របស់អ្នក​មិន​មាន​កម្មវិធី ដើម្បី​ផ្ទុក​ឯកសារ​ពាក្យសម្ងាត់​ទេ។</translation>
 <translation id="1129510026454351943">ព័ត៌មានលម្អិត៖ <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">ជ្រើស​ឯកសារ</translation>
+<translation id="3744219658596020825">ពាក្យសម្ងាត់​របស់អ្នក​មិនត្រូវ​បាននាំចូល​ទេ</translation>
+<translation id="8258027225380843424">ការនាំចូលទទួលបានជោគជ័យ!</translation>
+<translation id="766635563210446220">មិន​អាច​នាំចូល​ពាក្យសម្ងាត់​បាន​ទេ។ សូមពិនិត្យ <ph name="FILENAME"/> ហើយធានាថា​វាត្រូវបាន​ធ្វើទ្រង់ទ្រាយ​ត្រឹមត្រូវ។ <ph name="BEGIN_LINK"/>ស្វែងយល់​បន្ថែម<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">មិនអាចនាំចូលពាក្យសម្ងាត់បានទេ។ ទំហំ​ឯកសារ​គួរតែតិចជាង 1 MB។</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {មិនអាចនាំចូលពាក្យសម្ងាត់បានទេ។ អ្នកអាចនាំចូលបាន 1 ពាក្យសម្ងាត់ក្នុងពេលតែមួយ។}
+        other {មិនអាចនាំចូលពាក្យសម្ងាត់បានទេ។ អ្នកអាចនាំចូលបានដល់ <ph name="COUNT_MANY"/> ពាក្យសម្ងាត់ក្នុងពេលតែមួយ។}}</translation>
+<translation id="3748424433435232460">ពាក្យសម្ងាត់​សម្រាប់​គណនី​នេះ​ត្រូវបានរក្សាទុក​នៅលើ​ឧបករណ៍​នេះរួចហើយ</translation>
+<translation id="6438475350605608554">អ្នកកំពុងនាំចូលពាក្យសម្ងាត់​ក្នុង​ផ្ទាំង​ផ្សេងទៀតរួចហើយ</translation>
+<translation id="3482868954775580230">បានបរាជ័យ​ក្នុង​ការ​អាន​ឯកសារ​ដែល​បាន​ជ្រើស។ <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {បាននាំចូលដំណើរការឌីកែបនាទីបានមួយ។}
+        other {បាននាំចូលដំណើរការឌីកំបាតាច្រើន <ph name="IMPORT_COUNT_MANY"/> ។}}</translation>
+<translation id="4637949129057123593">ការនាំចូលបានបរាជ័យ។</translation>
+<translation id="4300452012226767715">កម្មវិធី​គ្រប់គ្រង​ពាក្យសម្ងាត់​មិនអាច​ប្រើបាន។</translation>
 <translation id="6221633008163990886">ដោះសោ​ដើម្បី​នាំពាក្យ​សម្ងាត់​របស់​អ្នកចេញ</translation>
 <translation id="5245792669563792664">ពាក្យសម្ងាត់</translation>
 <translation id="10614374240317010">មិនដែលបានរក្សាទុក</translation>

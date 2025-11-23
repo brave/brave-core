@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">請說明你允許使用第三方 Cookie 的原因，協助我們改善 Brave。<ph name="BEGIN_LINK"/>傳送意見<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">你可要求查看桌面版網站</translation>
 <translation id="9183227624343766158">預設為使用 Brave</translation>
+<translation id="113098737392899175">接駁鍵盤後，使用文字游標瀏覽頁面</translation>
 <translation id="1178015372320901893">我嘅捷徑頁底面板</translation>
 <translation id="1178581264944972037">暫停</translation>
 <translation id="1181037720776840403">移除</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">繼續</translation>
 <translation id="904887679952026733">當 Brave 採用深色主題背景時，盡可能對網站套用深色主題背景</translation>
 <translation id="2390272837142897736">放大</translation>
+<translation id="2397689164757137845">已允許 • 精確位置</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">精確位置</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{已允許「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}other{已允許「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">說明和意見反映</translation>
 <translation id="2501278716633472235">返回</translation>
 <translation id="2533138527374486328">開咗之後，網站可以要求連線至區域網絡上嘅任何裝置。閂咗之後，網站就唔可以連線至區域網絡上嘅裝置。</translation>
+<translation id="2536779053640817375">這次允許 • 精確位置</translation>
 <translation id="2544997614631598250">主題顏色深色</translation>
 <translation id="2546283357679194313">Cookie 和網站數據</translation>
 <translation id="2570922361219980984">此裝置的位置資訊存取權亦已關閉，請在「<ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>」中開啟。</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">在部分網站上設定封鎖</translation>
 <translation id="3132996321662585180">每日重新整理</translation>
 <translation id="3143754809889689516">從頭開始播放</translation>
+<translation id="3164169438034704658">你可以在「<ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>」中開啟精確位置。</translation>
 <translation id="3165022941318558018">允許網站使用第三方 Cookie</translation>
 <translation id="3167868116600277716">探索動態消息</translation>
 <translation id="3198916472715691905">已使用 <ph name="STORAGE_AMOUNT"/> 儲存空間</translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Brave 將於今天再次限制 Cookie</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> 下的所有網站</translation>
 <translation id="4340799661701629185">不允許網站傳送通知</translation>
+<translation id="4341577178275615435">如要開啟或關閉「鍵盤瀏覽」功能，請使用快速鍵 F7</translation>
 <translation id="4402755511846832236">禁止網站取得此裝置的使用狀態</translation>
 <translation id="8382883799082236806">Brave 顏色頁底面板宜家顯示喺畫面下半部</translation>
 <translation id="4412992751769744546">允許第三方 Cookie</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">暫停影片</translation>
 <translation id="5877248419911025165">收合所有要求</translation>
 <translation id="5878945009165002849">封鎖來自身分服務的登入提示</translation>
+<translation id="588258955323874662">全螢幕</translation>
 <translation id="5884085660368669834">網站偏好設定</translation>
 <translation id="5887687176710214216">上次瀏覽日期：昨天</translation>
 <translation id="5908617755156109052">不允許網站建立你周遭環境的 3D 地圖或追蹤攝錄機位置</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">確定</translation>
 <translation id="6980861169612950611">要刪除網站資料嗎？<ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">協助工具</translation>
+<translation id="6991142177939282156">已允許 • 正在使用概略位置</translation>
 <translation id="6992289844737586249">允許網站使用麥克風前先詢問您 (建議)</translation>
 <translation id="7000754031042624318">已在「Android 設定」中關閉</translation>
 <translation id="8683151724374457021">此網站會判斷您喜歡的內容，以便向其他網站建議廣告。此網站亦會從 Brave 取得您的廣告主題，以便為您顯示更相關的廣告。</translation>
+<translation id="7036823721811529709">繼續喺背景播放</translation>
 <translation id="7044081119134178347">呢次批准用相機</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="7055552182600664515">如要播放受版權保護的內容，網站可能需要使用內容保護服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">此設定運作時不需識別您的身份或允許網站查看您的瀏覽記錄，不過網站可在驗證過程中分享少量資料</translation>
 <translation id="7409735910987429903">網站可傳送彈出式視窗以顯示廣告，或將您重新導向至非預期的網站</translation>
 <translation id="7412160840120117304">主顏色 (十六進制)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{縮放}other{縮放：<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">事先詢問</translation>
 <translation id="7423538860840206698">禁止讀取剪貼簿</translation>
 <translation id="7425915948813553151">網站深色主題背景</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">刪除</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8300705686683892304">由應用程式管理</translation>
+<translation id="8301363963630676147">這次允許 • 使用概略位置</translation>
 <translation id="8315509175050791576">正在分享分頁</translation>
 <translation id="8324158725704657629">不要再詢問</translation>
 <translation id="8362795839483915693">您可在瀏覽時縮放網站內容</translation>

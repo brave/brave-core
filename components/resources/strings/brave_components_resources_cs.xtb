@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Vyskakovací okno s nabídkou odběru zpravodaje</translation>
 <translation id="6136090320163235283">Widget sociálních médií</translation>
 <translation id="6657720240983439091">Widget chatu</translation>
+<translation id="3597441883564676263">Prohlížeč není podporován</translation>
 <translation id="7138678301420049075">Jiné</translation>
 <translation id="4046860372562593546">Spravovat reklamy Brave</translation>
 <translation id="5136973036012418831">Mějte kontrolu nad tím, jaké druhy reklam a jak často se vám zobrazují.</translation>
@@ -2240,6 +2241,24 @@ other {# zdrojů}
 <translation id="7488762544858401571">Upraveno</translation>
 <translation id="5604254791550001355">Upravit výzvu</translation>
 <translation id="8115786586976830777">Zkopírovat výzvu</translation>
+<translation id="3666616415490815310">Uložit jako dovednost</translation>
+<translation id="6574544364990812112">Moje dovednosti</translation>
+<translation id="6696824203401957025">Nová dovednost</translation>
+<translation id="6410279677882692627">Dovednosti se zobrazí v nástrojích [/] a jsou přístupné pouhým zadáním níže nastaveného "/name".</translation>
+<translation id="1344606707744657196">Model pro pohotové řešení</translation>
+<translation id="8458341576712814616">Zkratka</translation>
+<translation id="1326559827339317236">Zde zadejte svou zkratku</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Zde zadejte svou výzvu</translation>
+<translation id="900733896273558337">Upravit dovednost</translation>
+<translation id="7662963028545588801">Odstranit dovednost</translation>
+<translation id="4209790625997566418">Opravdu chcete tuto dovednost odstranit? Tuto akci nelze vzít zpět.</translation>
+<translation id="7161540406494327389">Je vyžadována zkratka</translation>
+<translation id="3722223049736774445">Zkratka může obsahovat pouze písmena, číslice, podtržítko a pomlčku.</translation>
+<translation id="6997214168632888867">Zkratka musí mít maximálně 64 znaků</translation>
+<translation id="2806891468525657116">Zkratka již existuje</translation>
+<translation id="5497501845974700950">Je vyžadována výzva</translation>
+<translation id="5642369858603376334">Výzva musí mít maximálně 5000 znaků</translation>
 <translation id="1406205536570262057">Upravit odpověď</translation>
 <translation id="3386725253392845084">Opakovat stejný model</translation>
 <translation id="2461822463642141190">Aktuální</translation>
@@ -2277,13 +2296,20 @@ other {# zdrojů}
 <translation id="7307396647043599949"><ph name="COUNT"/> další(ch)…</translation>
 <translation id="8103700533980268469">Zavřít toto oznámení</translation>
 <translation id="3417835166382867856">Vyhledávat v kartách</translation>
+<translation id="3828029223314399057">Vyhledávání záložek</translation>
+<translation id="381480092025168632">Historie vyhledávání v prohlížeči</translation>
 <translation id="7311244614769792472">Nebyly nalezeny žádné výsledky</translation>
 <translation id="3112448569149476523">Zkuste jiný vyhledávač</translation>
 <translation id="1352836459737874921">Připnutí obsahu z ostatních karet</translation>
+<translation id="7173836072258346701">Připojení obsahu ze záložek</translation>
+<translation id="163680814308917875">Připojení obsahu z historie prohlížeče</translation>
 <translation id="7039179822221107025">Pošlete obsah internetových stránek z karty prohlížeče, a poskytněte tak Leovi více kontextu pro konverzaci.</translation>
+<translation id="1602382615168212961">Odesílejte obsah stránek z karet v záložkách, abyste Leovi poskytli více souvislostí pro konverzaci.</translation>
+<translation id="4808122506413075135">Odešlete obsah stránky z historie prohlížeče, abyste Leovi poskytli více souvislostí pro konverzaci.</translation>
 <translation id="220541218939267992">Obsah stránky bude odeslán Leovi společně s vašimi zprávami.</translation>
-<translation id="1446346932629101482">Pro lepší souvislosti přidejte obsah karty. Obsah bude odeslán Leovi spolu s vašimi zprávami.</translation>
-<translation id="7193316103691252734">Žádné odpovídající karty</translation>
+<translation id="8164365899016970783">Přidání obsahu karty a záložky pro kontext. Obsah bude odeslán Leovi spolu s vašimi zprávami.</translation>
+<translation id="6237410387937453423">Žádné odpovídající přílohy</translation>
+<translation id="8076492880354921740">Karty</translation>
 <translation id="2315654674554095762">Leo si nyní bude pamatovat vaše konverzace, abyste se k nim mohli vracet. Jsou uloženy šifrované ve vašem zařízení a můžete je kdykoli smazat.</translation>
 <translation id="7821251979960635244">Po zahájení konverzace se zde zobrazí historie vašich konverzací.</translation>
 <translation id="887511360213807449">Historie je vypnutá</translation>
@@ -2342,7 +2368,9 @@ other {# zdrojů}
 <translation id="4250229828105606438">Snímek obrazovky</translation>
 <translation id="7949596341600215809">Snímek celé stránky</translation>
 <translation id="6332876390231524389">Obsah aktuální karty</translation>
-<translation id="7742969455167760092">Otevřené karty...</translation>
+<translation id="6397861830483632092">Otevřené karty…</translation>
+<translation id="802080272588201037">Záložky…</translation>
+<translation id="2716127283451902393">Historie…</translation>
 <translation id="49269513399674318">Použít mikrofon</translation>
 <translation id="3895031624234442305">Vlastní modely</translation>
 <translation id="4572010449071015143">Zahájit novou konverzaci</translation>
@@ -2354,6 +2382,22 @@ other {# zdrojů}
 <translation id="2593275000606533518">Spavovat vše</translation>
 <translation id="8410199626695516952">Dobře, to si nebudu pamatovat</translation>
 <translation id="8419849467765474535">Nepodařilo se uložit paměť. Zkuste to prosím znovu.</translation>
+<translation id="5517580030864973329">Přechod na novou adresu webové stránky</translation>
+<translation id="8832457834975923266">Navigace na webovou stránku <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progress</translation>
+<translation id="8332385567036775056">Kroky</translation>
+<translation id="4521931942079977149">Kliknutí na stránku</translation>
+<translation id="7732267913911704962">Přetahování na stránce</translation>
+<translation id="7703800915509570212">Navigace zpět</translation>
+<translation id="4875586490950981498">Navigace vpřed</translation>
+<translation id="738881387603843066">Pohyb myší</translation>
+<translation id="4850669014075537160">Rolování</translation>
+<translation id="1265072406500460724">Výběr z rozevírací nabídky</translation>
+<translation id="7573920298077917439">Psaní textu</translation>
+<translation id="4089034800311309656">Čekání na stránku</translation>
+<translation id="4798146464408730445">Nebyly nalezeny žádné dovednosti. Vytvořte novou kliknutím na tlačítko "Nová".</translation>
+<translation id="271033894570825754">Nový</translation>
+<translation id="8266605059880650542">Zaznamenání některých informací o stránce pro pozdější použití</translation>
 <translation id="3486480638399578250">Chraňte svou osobní e-mailovou adresu</translation>
 <translation id="7765422154906712751">Vytvářejte jedinečné, náhodné adresy, které přeposílají na váš Brave účet a mohou být kdykoli odstraněny. Uchovejte skutečnou e-mailovou adresu skrytou před inzerenty.</translation>
 <translation id="5222676887888702881">Odhlásit se</translation>
@@ -2399,6 +2443,10 @@ other {# zdrojů}
 <translation id="7508412964869396375">Ze služby Brave Accounts nebyl obdržen žádný ověřovací token.</translation>
 <translation id="3179527991526213624">Žádná odpověď ze služby Brave Accounts</translation>
 <translation id="7911439408853154309">Ověření e-mailu se nezdařilo</translation>
+<translation id="2595463802839066496">Služba Email Aliases neodpovídá</translation>
+<translation id="367191282389216837">Neplatná odpověď služby Email Aliases</translation>
+<translation id="7203490731644771170">Chyba služby Email Aliases: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Chyba: Alias není k dispozici</translation>
 <translation id="8370801182970639038">Automaticky (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Povolit vyhledávače</translation>
 <translation id="8285901519864208412">Skrýt kartu Odměny</translation>
@@ -2444,8 +2492,19 @@ other {# zdrojů}
 <translation id="8458987127502506209">Aktivovat štíty Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Štíty jsou zapnuty<ph name="STATUS_AFTER"/> pro tuto stránku</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Štíty jsou vypnuty<ph name="STATUS_AFTER"/> pro tuto stránku</translation>
-<translation id="5623354834493649144">Pokud se stránka nezobrazuje správně, zkuste vypnout Štíty.
-   <ph name="NOTE_BEFORE"/>Poznámka: to může způsobit omezení ochrany soukromí Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Pokud se vám tento web zdá nefunkční, zkuste vypnout štít.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Poznámka: může to omezit ochranu soukromí Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Máte s tímto webem problémy?</translation>
+<translation id="9176447766421988172">Zkoušíme experiment, který má zvýšit kompatibilitu webových stránek a při kterém ponecháváme povoleno pouze blokování reklam. Upozornění: Odstraní všechny ochrany soukromí. Chcete to vyzkoušet? <ph name="LINK_BEFORE"/>Více informací<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Vezměte prosím na vědomí, že u jednotlivých webových stránek, které jsou narušeny ochranou soukromí Brave, můžete nastavit štít na hodnotu DOLŮ.</translation>
+<translation id="1836572675775891780">Povolení režimu Pouze blokování reklam</translation>
+<translation id="6623668214089604469">Funguje nyní web správně?</translation>
+<translation id="8978860854770042258">Pokud je tato stránka stále nefunkční, zvažte prosím zaslání zprávy.</translation>
+<translation id="4677356505199464553">Vypadá to dobře</translation>
+<translation id="1992750560347846445">Stránka pro nahlašování</translation>
+<translation id="2887186586339544116">Režim Pouze blokování reklam povolen</translation>
+<translation id="673665019618844072">V současné době používáte režim Pouze blokování reklam. Tento režim nabízí pouze ochranu před blokováním reklam. Pokud se chcete vrátit k plnému režimu štítů, vypněte tento režim v nastavení.</translation>
+<translation id="4820891023903368625">Blokování reklam <ph name="LINK_BEFORE"/>Více informací<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Počet zablokovaných sledovačů, reklam, atd. <ph name="LINK_BEFORE"/>Další informace<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Ochrana štíty Brave není zapnuta <ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
@@ -2479,7 +2538,6 @@ other {# zdrojů}
 <translation id="8034285923190068220">Povolit fingerprinting</translation>
 <translation id="7638541189782135885">Neupgradovat HTTP připojení.</translation>
 <translation id="2570787596946026998">Připojit pouze přes HTTPS.</translation>
-<translation id="1992750560347846445">Stránka pro nahlašování</translation>
 <translation id="2387532482048804818">Dejte nám vědět, pokud se stránka nezobrazovala správně se zapnutými štíty.</translation>
 <translation id="3795015906457257780">Tuto stránku procházíte bez ochrany soukromí Brave.</translation>
 <translation id="7194012750329511146">Štíty Brave odrazily

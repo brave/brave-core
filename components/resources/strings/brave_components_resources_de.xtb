@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Newsletter-Popup</translation>
 <translation id="6136090320163235283">Social-Widget</translation>
 <translation id="6657720240983439091">Chat-Widget</translation>
+<translation id="3597441883564676263">Browser wird nicht unterstützt</translation>
 <translation id="7138678301420049075">Sonstiges</translation>
 <translation id="4046860372562593546">Brave Anzeigen verwalten</translation>
 <translation id="5136973036012418831">Steuern Sie, welche Arten von Brave-Anzeigen Sie sehen und wie oft.</translation>
@@ -2229,6 +2230,24 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7488762544858401571">Bearbeitet</translation>
 <translation id="5604254791550001355">Prompt bearbeiten</translation>
 <translation id="8115786586976830777">Prompt kopieren</translation>
+<translation id="3666616415490815310">Als Skill speichern</translation>
+<translation id="6574544364990812112">Meine Skills</translation>
+<translation id="6696824203401957025">Neuer Skill</translation>
+<translation id="6410279677882692627">Skills werden in deinen [/] Werkzeugen angezeigt und sind einfach durch Eingabe des unten festgelegten "/Namens" erreichbar.</translation>
+<translation id="1344606707744657196">Modell für Prompt</translation>
+<translation id="8458341576712814616">Verknüpfung</translation>
+<translation id="1326559827339317236">Tastenkombination hier eingeben</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Prompt hier eingeben</translation>
+<translation id="900733896273558337">Skill bearbeiten</translation>
+<translation id="7662963028545588801">Skill löschen</translation>
+<translation id="4209790625997566418">Bist du sicher, dass du diesen Skill löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.</translation>
+<translation id="7161540406494327389">Tastenkombination ist erforderlich</translation>
+<translation id="3722223049736774445">Tastenkombination darf nur Buchstaben, Zahlen, Unterstriche und Bindestriche enthalten</translation>
+<translation id="6997214168632888867">Tastenkombination darf maximal 64 Zeichen lang sein</translation>
+<translation id="2806891468525657116">Tastenkombination existiert bereits</translation>
+<translation id="5497501845974700950">Prompt ist erforderlich</translation>
+<translation id="5642369858603376334">Prompt darf maximal 5000 Zeichen lang sein</translation>
 <translation id="1406205536570262057">Antwort bearbeiten</translation>
 <translation id="3386725253392845084">Erneut mit demselben Modell versuchen</translation>
 <translation id="2461822463642141190">Aktuell</translation>
@@ -2266,13 +2285,20 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7307396647043599949"><ph name="COUNT"/> Mehr...</translation>
 <translation id="8103700533980268469">Diese Mitteilung schließen</translation>
 <translation id="3417835166382867856">Tabs durchsuchen</translation>
+<translation id="3828029223314399057">Lesezeichen durchsuchen</translation>
+<translation id="381480092025168632">Browserverlauf durchsuchen</translation>
 <translation id="7311244614769792472">Keine Suchergebnisse gefunden</translation>
 <translation id="3112448569149476523">Bitte versuche eine andere Suche</translation>
 <translation id="1352836459737874921">Inhalte aus anderen Tabs anhängen</translation>
+<translation id="7173836072258346701">Inhalte aus Lesezeichen anhängen</translation>
+<translation id="163680814308917875">Inhalte aus Browserverlauf anhängen</translation>
 <translation id="7039179822221107025">Sende den Seiteninhalt deiner Browser-Tabs, um Leo mehr Kontext für das Gespräch zu geben.</translation>
+<translation id="1602382615168212961">Seiteninhalte aus den Lesezeichen-Tabs senden, um Leo mehr Kontext für das Gespräch zu geben.</translation>
+<translation id="4808122506413075135">Seiteninhalte aus deinem Browserverlauf senden, um Leo mehr Kontext für das Gespräch zu geben.</translation>
 <translation id="220541218939267992">Der Inhalt dieser Seite wird zusammen mit deinen Nachrichten an Leo gesendet.</translation>
-<translation id="1446346932629101482">Füge Registerkarteninhalte für den Kontext hinzu. Die Inhalte werden zusammen mit deinen Nachrichten an Leo gesendet.</translation>
-<translation id="7193316103691252734">Keine passenden Tabs</translation>
+<translation id="8164365899016970783">Tab- und Lesezeicheninhalte für den Kontext hinzufügen. Die Inhalte werden zusammen mit deinen Nachrichten an Leo gesendet.</translation>
+<translation id="6237410387937453423">Keine passenden Anhänge</translation>
+<translation id="8076492880354921740">Tabs</translation>
 <translation id="2315654674554095762">Leo merkt sich jetzt deine Unterhaltungen, damit du zu ihnen zurückkehren kannst. Sie werden verschlüsselt auf deinem Gerät gespeichert, und du kannst sie jederzeit löschen.</translation>
 <translation id="7821251979960635244">Dein Konversationsverlauf wird hier angezeigt, sobald du eine Konversation beginnst.</translation>
 <translation id="887511360213807449">Verlauf ist deaktiviert</translation>
@@ -2331,7 +2357,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4250229828105606438">Screenshot</translation>
 <translation id="7949596341600215809">Vollbild-Screenshot</translation>
 <translation id="6332876390231524389">Inhalt des aktuellen Tabs</translation>
-<translation id="7742969455167760092">Geöffnete Tabs...</translation>
+<translation id="6397861830483632092">Geöffnete Tabs…</translation>
+<translation id="802080272588201037">Lesezeichen…</translation>
+<translation id="2716127283451902393">Verlauf…</translation>
 <translation id="49269513399674318">Mikrofon benutzen</translation>
 <translation id="3895031624234442305">Benutzerdefinierte Modelle</translation>
 <translation id="4572010449071015143">Neue Unterhaltung starten</translation>
@@ -2343,6 +2371,22 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="2593275000606533518">Alle verwalten</translation>
 <translation id="8410199626695516952">Okay, das merke ich mir nicht</translation>
 <translation id="8419849467765474535">Speichern des Speichers fehlgeschlagen. Bitte versuche es erneut.</translation>
+<translation id="5517580030864973329">Navigieren zu einer neuen Adresse auf der Website</translation>
+<translation id="8832457834975923266">Website zu <ph name="URL"/> navigiert</translation>
+<translation id="5095252080770652994">Fortschritt</translation>
+<translation id="8332385567036775056">Schritte</translation>
+<translation id="4521931942079977149">Auf die Seite klicken</translation>
+<translation id="7732267913911704962">Auf der Seite ziehen und ablegen</translation>
+<translation id="7703800915509570212">Zurück navigieren</translation>
+<translation id="4875586490950981498">Vorwärts navigieren</translation>
+<translation id="738881387603843066">Maus bewegen</translation>
+<translation id="4850669014075537160">Scrollen</translation>
+<translation id="1265072406500460724">Aus einem Dropdown auswählen</translation>
+<translation id="7573920298077917439">Text eingeben</translation>
+<translation id="4089034800311309656">Auf Seite warten</translation>
+<translation id="4798146464408730445">Keine Skills gefunden. Erstelle einen neuen, indem du auf „Neu“ klickst.</translation>
+<translation id="271033894570825754">Neu</translation>
+<translation id="8266605059880650542">Informationen über die Seite für später notieren</translation>
 <translation id="3486480638399578250">Schütze deine private E-Mail-Adresse</translation>
 <translation id="7765422154906712751">Erstelle einzigartige, zufällige Adressen, die an deine Brave-Konto-E-Mail weitergeleitet werden und jederzeit gelöscht werden können. So bleibt deine echte E-Mail-Adresse vor Werbetreibenden verborgen und wird nicht weitergegeben.</translation>
 <translation id="5222676887888702881">Abmelden</translation>
@@ -2388,6 +2432,10 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7508412964869396375">Kein Verifizierungstoken vom Brave Accounts-Dienst erhalten</translation>
 <translation id="3179527991526213624">Keine Antwort vom Brave Accounts-Dienst</translation>
 <translation id="7911439408853154309">E-Mail-Verifizierung fehlgeschlagen</translation>
+<translation id="2595463802839066496">Keine Antwort vom Dienst für E-Mail-Aliase</translation>
+<translation id="367191282389216837">Ungültige Antwort vom Dienst für E-Mail-Aliase</translation>
+<translation id="7203490731644771170">Fehler im Dienst für E-Mail-Aliase: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Fehler: Alias nicht verfügbar</translation>
 <translation id="8370801182970639038">Automatisch (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Aktivierte Suchmaschinen</translation>
 <translation id="8285901519864208412">Rewards‑Karte ausblenden</translation>
@@ -2433,7 +2481,19 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8458987127502506209">Brave Schutz aktivieren</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields sind AKTIV<ph name="STATUS_AFTER"/> für diese Seite</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields sind NICHT AKTIV<ph name="STATUS_AFTER"/> für diese Seite</translation>
-<translation id="5623354834493649144">Wenn die Seite nicht richtig funktioniert, versuche, Shields zu deaktivieren.<ph name="NOTE_BEFORE"/>Hinweis: Dies könnte die Datenschutzfunktionen von Brave verringern.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Falls diese Site nicht zu funktionieren scheint, versuche es, wenn Shields aus ist.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Hinweis: Dadurch werden möglicherweise Brave's Datenschutzfunktionen reduziert.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Hast du Probleme mit dieser Site?</translation>
+<translation id="9176447766421988172">Wir testen ein Experiment zur Verbesserung der Website-Kompatibilität, bei dem nur noch Werbeblocker aktiviert bleiben. Warnung: Entfernt alle Datenschutzfunktionen. Möchtest du es ausprobieren? <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Bitte beachte, dass du bei individuellen Websites, die durch Brave's Datenschutzfunktionen beeinträchtigt sind, den Schutz auf AUS setzen kannst.</translation>
+<translation id="1836572675775891780">Nur-Ad-Block-Modus aktivieren</translation>
+<translation id="6623668214089604469">Funktioniert die Site jetzt korrekt?</translation>
+<translation id="8978860854770042258">Bitte sende einen Bericht, falls diese Site weiterhin nicht funktioniert.</translation>
+<translation id="4677356505199464553">Sieht gut aus</translation>
+<translation id="1992750560347846445">Website melden</translation>
+<translation id="2887186586339544116">Nur-Ad-Block-Modus aktiviert</translation>
+<translation id="673665019618844072">Du verwendest derzeit den Nur-Ad-Block-Modus. Dieser Modus bietet nur Schutz vor Werbung. Wenn du zur vollständigen Shields-Funktion zurückkehren möchtest, deaktiviere diesen Modus in den Einstellungen.</translation>
+<translation id="4820891023903368625">Ads blockiert <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Tracker, Werbung und mehr blockiert <ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nicht geschützt durch Brave Schutz <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
@@ -2467,7 +2527,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8034285923190068220">Fingerabdrucknahme erlauben</translation>
 <translation id="7638541189782135885">Kein Upgrade für HTTP-Verbindungen durchführen</translation>
 <translation id="2570787596946026998">Nur mit HTTPS verbinden</translation>
-<translation id="1992750560347846445">Website melden</translation>
 <translation id="2387532482048804818">Teilen Sie uns mit, wenn die Website mit aktiviertem Schutz nicht ordnungsgemäß funktioniert hat.</translation>
 <translation id="3795015906457257780">Sie betrachten diese Website ohne den Datenschutz von Brave.</translation>
 <translation id="7194012750329511146">Brave Schutz
@@ -2513,7 +2572,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="7207456302801184289">Willkommen bei Brave</translation>
 <translation id="293854220404217065">Mitternachtsdesign</translation>
 <translation id="2422927186524098759">Seitenleiste</translation>
-<translation id="2361906291514218784">Leo-KI</translation>
+<translation id="2361906291514218784">Brave Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Werkzeugleiste</translation>
 <translation id="6225572914528673855">Adressleiste</translation>

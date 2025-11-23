@@ -19,6 +19,7 @@
 <translation id="1035509598913574970">सायन ३</translation>
 <translation id="1035709686865413354">वाटर फिल्टर तथा प्युरिफायर</translation>
 <translation id="1036348656032585052">अफ गर्नुहोस्</translation>
+<translation id="1036436692654972538">तपाईंको डिभाइसमा सेभ गरिएको जानकारी</translation>
 <translation id="1036881361735705143">Envelope C4</translation>
 <translation id="1038842779957582377">अज्ञात नाम</translation>
 <translation id="1041998700806130099">कार्य पानासम्बन्धी सन्देश</translation>
@@ -78,6 +79,7 @@
 <translation id="1132735979845538847"><ph name="ORIGIN"/> – फुल स्क्रिनबाट बाहिरिन सिरानबाट ड्र्याग गर्नुहोस् र "पछाडि जानुहोस्" बटनमा टच गर्नुहोस्</translation>
 <translation id="1138458427267715730">इन्टरनेटमा भएको कुनै पनि साइटमा उत्पादनको मूल्य घटेका खण्डमा अलर्ट प्राप्त गर्नुहोस्</translation>
 <translation id="1142713751288681188">पेपरको प्रकार</translation>
+<translation id="1142965388643537393">यात्रासम्बन्धी जानकारी</translation>
 <translation id="1144136880160289237">तपाईंको सूचीमा हालसम्म कुनै पनि सक्रिय विषय छैन</translation>
 <translation id="1149617035358809955">Brave ले तपाईंको भुक्तानीसम्बन्धी जानकारी भर्न सकोस् भन्नाका लागि आफ्नो पहिचान पुष्टि गर्नुहोस्</translation>
 <translation id="1150565364351027703">शीतल चस्मा</translation>
@@ -176,6 +178,7 @@
 <translation id="1285320974508926690">यो साइट कहिले पनि अनुवाद नगर्नुहोस्</translation>
 <translation id="1292571435393770077">ट्रे १६</translation>
 <translation id="1209478311331937175">"तपाईंको कम्प्युटरमा रहेको सफ्टवेयरले Brave लाई सुरक्षित रूपमा वेबमा जडान हुनबाट रोकिरहेको छ" (Windows कम्प्युटरहरू मात्र)</translation>
+<translation id="1293556467332435079">फाइलहरू</translation>
 <translation id="1293797321964802402">Envelope 9 x 11 in</translation>
 <translation id="129553762522093515">हालैमा बन्द गरिएको</translation>
 <translation id="1296930489679394997">बिक्री</translation>
@@ -209,7 +212,6 @@
           <ph name="LIST_ITEM"/>तपाईंको रोजगारदाता वा विद्यालय
           <ph name="LIST_ITEM"/>तपाईंको इन्टरनेट सेवा प्रदायक
         <ph name="END_LIST"/></translation>
-<translation id="1335042910556016570">यो वस्तु ट्र्याक गर्नुहोस्</translation>
 <translation id="1337692097987160377">यो ट्याब सेयर गर्नुहोस्</translation>
 <translation id="1339601241726513588">भर्ती डोमेन:</translation>
 <translation id="1340482604681802745">पिकअपको ठेगाना</translation>
@@ -284,6 +286,7 @@
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{० रिभ्यू हेर्नुहोस्}=1{एउटा रिभ्यू हेर्नुहोस्}other{सबै # वटा रिभ्यू हेर्नुहोस्}}</translation>
 <translation id="1458059624921545588">जनता तथा समाज</translation>
 <translation id="1458140305240870199">भित्री वस्त्रहरू</translation>
+<translation id="1458770162980644530">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" का सेवाका सर्तहरू देखाइएको स्क्रिन। किबोर्ड लुकाइएको छ।</translation>
 <translation id="1459693405370120464">मौसम</translation>
 <translation id="1461041542809785877">प्रदर्शन</translation>
 <translation id="1462245070427461050">JIS B9</translation>
@@ -318,7 +321,6 @@
 <translation id="5524011986660000129">Brave पाना</translation>
 <translation id="1524669537550112617">फर्निचर भाडामा लिने सेवा</translation>
 <translation id="1527263332363067270">जडानको लागि प्रतिक्षा गर्दै...</translation>
-<translation id="1528311629279578926">तपाईंको निजी नेटवर्कमा भएका डिभाइस वा सर्भरहरूमा सार्वजनिक पेजमार्फत कनेक्ट गर्ने प्रयास गरिएको हुनाले कनेक्सन ब्लक गरिएको छ। कनेक्ट गर्ने अनुमति दिन यो पेज रिलोड गर्नुहोस्।</translation>
 <translation id="1529789484829130889">ट्रे ८</translation>
 <translation id="1530707389502320859">तपाईंले भर्खरै भ्रमण गर्न खोज्नुभएको साइट नक्कली हो जस्तो छ। आक्रमणकारीहरूले कहिलेकाहीँ URL मा ससाना, स्पष्ट नदेखिने परिवर्तनहरू गरी नक्कली साइट सिर्जना गर्न सक्छन्।</translation>
 <translation id="1532118530259321453">यो पृष्ठले यसो भन्छ</translation>
@@ -478,7 +480,6 @@
 <translation id="1762779605905950734">सडकको नाम</translation>
 <translation id="1763864636252898013">यो सर्भर हो भनेर प्रमाणित गर्न सकेन <ph name="DOMAIN"/>; यसको सुरक्षा प्रमाणपत्रलाई तपाईंको डिभाइसको अपरेटिङ सिस्टमले विश्वास गरेन। यो एक गलत कन्फिगुरेसन वा तपाईंको जडान अवरोध गर्न खोज्ने आक्रमणकारीको हुनसक्छ।</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Windows नेटवर्क सम्बन्धी निदान चलाएर हेर्नुहोस्<ph name="END_LINK"/>।</translation>
-<translation id="1771254328977666895">मूल्यको हिस्ट्री हेर्नुहोस्</translation>
 <translation id="1777422078676229054">फोटो (अर्काइभल)</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1785118555253503473">वेब एपहरू इन्स्टल गर्ने हो?</translation>
@@ -786,6 +787,7 @@
 <translation id="22792995594807632">डाउनलोड गर्नुअघि समीक्षा गर्नु पर्ने हुन्छ</translation>
 <translation id="2283340219607151381">ठेगाना सुरक्षित गरी फारम भर्नुहोस्</translation>
 <translation id="2283447177162560884">'<ph name="PAGE_TITLE"/>' मेटाइएको छ</translation>
+<translation id="2283599456633275070">यात्रा</translation>
 <translation id="2286383991450886080">३४ x ४४ इन्च</translation>
 <translation id="2288422996159078444">तपाईंले टाइप गर्ने हरेक कुरा, तपाईंले हेर्ने हरेक पृष्ठ वा तपाईंले वेबमा गर्ने अन्य कुनै पनि गतिविधिमाथि निगरानी राखिन्छ र यी साइटका सामग्री तपाईंले थाहै नपाई परिवर्तन गर्न सकिन्छ।</translation>
 <translation id="2289385804009217824">छाँटकाँट गर्नुहोस्</translation>
@@ -810,6 +812,7 @@
 <translation id="2320564945062300737">फेस केयर उत्पादनहरू</translation>
 <translation id="2321291402658100099">जानकारी व्यवस्थापन गर्नुहोस्</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{एउटा विन्डो}other{# वटा विन्डो}}</translation>
+<translation id="4848600035394410348">तपाईं अब Brave Wallet का थप विवरणहरू स्वतः भर्न सक्नुहुन्छ</translation>
 <translation id="2328651992442742497">अनुमति दिनुहोस् (डिफल्ट)</translation>
 <translation id="2328955282645810595">कन्स्ट्रक्सन तथा पावर टुलहरू</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, <ph name="EXPIRATION_DATE_ABBR"/> मा म्याद समाप्त हुन्छ</translation>
@@ -820,6 +823,7 @@
 <translation id="2346319942568447007">तपाईंले प्रतिलिपि गर्नुभएको फोटो</translation>
 <translation id="2347764072711098973">किस्तामा भुक्तानी गर्न Affirm, Zip वा Klarna प्रयोग गर्नुहोस्</translation>
 <translation id="2348509731468399833">मूल्य ट्र्याक गर्ने कार्य रोकियो।</translation>
+<translation id="2348836501965732644">आफ्नो जानकारी व्यवस्थापन गर्नुहोस् वा सेटिङमा गई यी सुझावहरू अफ गर्नुहोस्</translation>
 <translation id="2350796302381711542"><ph name="HANDLER_HOSTNAME"/> लाई <ph name="REPLACED_HANDLER_TITLE"/> को सट्टामा सबै <ph name="PROTOCOL"/> लिङ्कहरू खोल्ने अनुमति दिनुहोस् ?</translation>
 <translation id="2353297238722298836">क्यामेरा तथा माइक्रोफोन प्रयोग गर्ने अनुमति छ</translation>
 <translation id="2354001756790975382">अन्य बुकमार्कहरू</translation>
@@ -828,6 +832,7 @@
 <translation id="2357481397660644965"><ph name="DEVICE_MANAGER"/> ले तपाईंको यन्त्र व्यवस्थापन गर्छ र <ph name="ACCOUNT_MANAGER"/> ले तपाईंको खाता व्यवस्थापन गर्छ।</translation>
 <translation id="2359629602545592467">बहु मुद्राहरू</translation>
 <translation id="2359808026110333948">जारी राख्नुहोस्</translation>
+<translation id="236000571258713023">सवारी साधनहरू</translation>
 <translation id="2361263712565360498">२७५ x ३९५ मि.मि.</translation>
 <translation id="236340516568226369">आकार बदल्ने टगल मेनु</translation>
 <translation id="2365355378251437925"><ph name="FIELD"/> हाल्नुहोस्</translation>
@@ -872,6 +877,7 @@
 <translation id="2436976580469434549">फाइबर तथा वस्त्र कलाहरू</translation>
 <translation id="4819123264415400027">यो कार्डसम्बन्धी जानकारी तपाईंको Brave खातामा सेभ गर्न सकिएन। यसलाई बरु यो डिभाइसको Brave मा सेभ गरिएको छ।</translation>
 <translation id="2438874542388153331">दायाँतिर चार प्वाल</translation>
+<translation id="2440855519769445271">पछि भुक्तानी गर्ने विकल्पहरू लुकाउन <ph name="BEGIN_LINK"/>भुक्तानीसम्बन्धी सेटिङ<ph name="END_LINK"/>मा जानुहोस्</translation>
 <translation id="2441854154602066476">एक पटक टच गरेकै भरमा विवरण भर्न मिल्ने भुक्तानी विधिहरूको सूची। किबोर्ड लुकाइएको छ।</translation>
 <translation id="2448295565072560657">तपाईं लग इन भएका बेला यो डिभाइससँग एट्याच गरिएका सहायक डिभाइसहरू</translation>
 <translation id="7174054574169352743">Brave Wallet मा भण्डारण गरिएका भुक्तानी विधि र अन्य जानकारी</translation>
@@ -965,6 +971,7 @@
 <translation id="2595719060046994702">कुनै कम्पनी वा अन्य सङ्गठनले यो डिभाइस वा खाताको व्यवस्थापन गर्दैन।</translation>
 <translation id="2597378329261239068">यो कागजात पासवर्ड सुरक्षित छ। कृपया पासवर्ड प्रविष्टि गर्नुहोस्।</translation>
 <translation id="8100082401435090746">यो कार्डको विवरण Google Pay मा प्रयोग गर्नका निम्ति सेभ गरिएका खण्डमा Brave बाट गरिने खरिदका हकमा सो विवरण स्वतः भरिन्छ</translation>
+<translation id="2602283642570832995">तपाईंले यो कार्य गर्नुभयो <ph name="DOMAIN"/> का नीतिहरूको उल्लङ्घन हुन सक्छ</translation>
 <translation id="2605979593348332811">फोनेटिक नाम</translation>
 <translation id="2606760465469169465">स्वतः पुष्टि गर्ने अनुमति</translation>
 <translation id="2608019759319359258">कुनै विषय ब्लक गरियो भने विज्ञापन पर्सनलाइज गर्न उक्त विषय प्रयोग गरिने छैन</translation>
@@ -1212,6 +1219,7 @@
 <translation id="8418829431154568330">Brave को रिमोट डेस्कटपसम्बन्धी इतिहास (जस्तै, टाइमस्ट्याम्प, होस्ट र क्लाइन्ट सेसन ID)</translation>
 <translation id="2396578282884469363">तपाईं प्रायः जसो साइटहरूमा सुरक्षित रूपमा कनेक्ट गर्नुहुन्छ तर Brave ले अहिले सुरक्षित कनेक्सन प्रयोग गर्न सकेन। ह्याकरले तपाईंको नेटवर्क कनेक्सन निगरानी गर्न वा परिमार्जन गर्न खोजिरहेको हुन सक्छ। <ph name="BEGIN_LEARN_MORE_LINK"/>यो चेतावनीका बारेमा थप जान्नुहोस्<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> को मूल्य <ph name="PRICE_DROP"/> घटेको छ</translation>
+<translation id="3056660797732519147">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" मा त्रुटि देखिएको कुरा जानकारी दिने स्क्रिन। किबोर्ड लुकाइएको छ।</translation>
 <translation id="3061707000357573562">प्याचसम्बन्धी सेवा</translation>
 <translation id="3062655045399308513">ब्राउजिङ डेटा मेटाउनुहोस्...</translation>
 <translation id="3063453392496098461">VPN का ब्याकग्राउन्डमा चल्ने सेवाहरू इन्स्टल गर्न सकिएन।</translation>
@@ -1377,7 +1385,6 @@
 <translation id="3325662270238538525">फाइलका नाम, फाइलमा भएको सामग्रीको डिजिटल फिंगरप्रिन्ट, डाउनलोड गरिने फाइलको स्रोत र मेटाडेटालगायतका हालसालै एक्सेस तथा परिमार्जन गरिएका फाइलहरू</translation>
 <translation id="3329013043687509092">संतृप्तीकरण</translation>
 <translation id="3333762389743153920">भर्चुअल कार्डका रूपमा प्रयोग गर्न मिल्दैन</translation>
-<translation id="3336044043987989409">आफ्नो निजी नेटवर्कमा भएका डिभाइस वा सर्भरहरूमा कनेक्ट गर्ने अनुमति दिन "रिलोड गर्नुहोस्" बटन थिच्नुहोस्।</translation>
 <translation id="3338095232262050444">सुरक्षित छ</translation>
 <translation id="333839153442689579">हाई इन्टेन्सिटी इन्टरभल ट्रेनिङ</translation>
 <translation id="3339446062576134663">क्लाउड (Ash)</translation>
@@ -1421,6 +1428,7 @@
 <translation id="340924996148642843">अहिले तुलना गर्न मिल्दैन</translation>
 <translation id="3409896703495473338">सुरक्षासम्बन्धी सेटिङ मिलाउनुहोस्</translation>
 <translation id="3411091017011773343"><ph name="HOURS"/> घण्टामा अपलोड गर्नुहोस्</translation>
+<translation id="341134412449102894">तपाईंको जानकारी <ph name="ACCOUNT"/> को <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> मा सेभ गरिन्छ</translation>
 <translation id="3413466783792948876">तपाईं कुनै सार्वजनिक Wi-Fi नेटवर्क प्रयोग गर्दै हुनुहुन्छ भने आफ्नो जानकारीको सुरक्षार्थ यो साइट पछि खोल्नु राम्रो हुन्छ। तपाईंको घर वा कार्यस्थलको Wi-Fi जस्ता विश्वसनीय नेटवर्क प्रयोग गर्दा जोखिम कम हुन्छ।</translation>
 <translation id="3414275587143250384">डिस्ट्रिब्युटेड एन्ड क्लाउड कम्प्युटिङ</translation>
 <translation id="3414952576877147120">आकार:</translation>
@@ -1797,6 +1805,7 @@
 <translation id="4014895360827978999">व्यापारी सेवा र भुक्तानी प्राणाली</translation>
 <translation id="4018819349042761761">सार्वजनिक की</translation>
 <translation id="4023431997072828269">असुरक्षित इन्टरनेट प्रयोग गरेर यो फारम पेस गरिँदै गरेका हुनाले अरूले तपाईंको जानकारी देख्न सक्ने छन्।</translation>
+<translation id="4024673763872230929">आफ्नो जानकारी सेभ गर्नुहोस् र अझ छिटो फाराम भर्नुहोस्। तपाईंको डिभाइसमा सेभ गरिन्छ।</translation>
 <translation id="4025325634010721551">नीतिहरू रिलोड गरिएका छन्</translation>
 <translation id="4025338605225449265">मुद्रा तथा विदेशी विनिमय</translation>
 <translation id="4025777154208238692">उल्टो क्रममा</translation>
@@ -1938,6 +1947,7 @@
 <translation id="4242981939686657948">अझ शक्तिशाली तरिकाले ब्राउजिङ हिस्ट्री खोज्न यसलाई अन गर्नुहोस्:</translation>
 <translation id="4244926541863471678">फिल्म</translation>
 <translation id="4246517972543675653">वैदेशिक अध्ययन</translation>
+<translation id="4250343410682686342">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" मा त्रुटि देखिएको कुरा जानकारी दिने स्क्रिन पूरै स्क्रिनमा खोलिएको छ।</translation>
 <translation id="4250431568374086873">यस साइटमा तपाईँको जडान पूर्णतया सुरक्षित छैन</translation>
 <translation id="4250680216510889253">होइन</translation>
 <translation id="4250716950689692560">A4x4</translation>
@@ -1964,6 +1974,7 @@
 <translation id="4281998142035485137">{0,plural, =1{गोप्य फाइल खोल्ने हो?}other{गोप्य फाइलहरू खोल्ने हो?}}</translation>
 <translation id="4282280603030594840">सवारी साधन खरिद</translation>
 <translation id="4282346679996504092">यो उत्पादनका हकमा अलर्ट पठाउने सुविधा अफ गरिएको छ र बुकमार्क हटाइएको छ</translation>
+<translation id="4284885181066817063"><ph name="DOMAIN"/> ले ब्लक गरेको छ</translation>
 <translation id="4285498937028063278">अनपिन गर्नुहोस्</translation>
 <translation id="2820825061680010514">Brave मा विज्ञापनसम्बन्धी गोपनीयता बढाउने परिष्कृत सुविधा</translation>
 <translation id="4288101205645068104">सवारी साधनको जानकारी मेटाउनुहोस्</translation>
@@ -2134,6 +2145,7 @@
 <translation id="4598556348158889687">भण्डारणको व्यवस्थापन</translation>
 <translation id="459914240367517409">वेब डिजाइन तथा विकास</translation>
 <translation id="4602465984861132303">बलिङ</translation>
+<translation id="4603727370377253901">उडानका रिजर्भेसनहरू</translation>
 <translation id="8338928872956435647">Brave का सुझावहरू हेर्नुहोस्</translation>
 <translation id="460848736049414407">एड्मिनले ब्लक गर्नुभएको छ</translation>
 <translation id="4610279718074907952">यो साइट <ph name="SET_OWNER"/> ले बनाएको त्यस्तो समूहमा छ जुन समूहले तपाईंको गतिविधि हेर्न सक्छ</translation>
@@ -2142,6 +2154,7 @@
 <translation id="4619564267100705184">यो व्यक्ति तपाईं नै हो भन्ने कुरा पुष्टि गर्नुहोस्</translation>
 <translation id="4622292761762557753">जे भए पनि ट्रान्स्फर गर्नुहोस्</translation>
 <translation id="4622647778991854660">Notification Center मा गई नोटिफिकेसन प्राप्त गर्ने सुविधा अन गर्नुहोस्। <ph name="LINK"/> खोल्नुहोस्।</translation>
+<translation id="4623894491222334521">पहिचान खुलाउने कागजातहरू</translation>
 <translation id="6398431831028858802">यो नीति Brave को प्रोफाइल स्तरमा लागू गर्न मिल्दैन, त्यसैले यो नीतिको बेवास्ता गरिने छ।</translation>
 <translation id="4628678854894591460">बिदासम्बन्धी प्रस्तावहरू</translation>
 <translation id="4628948037717959914">तस्बिर</translation>
@@ -2159,6 +2172,7 @@
 <translation id="4648262692072505866">ह्यास अनिवार्य रूपमा SHA-256 फर्म्याटमा हुनु पर्छ।</translation>
 <translation id="4652266463001779298">अनुमति दिइएको छैन</translation>
 <translation id="4652440160515225514">यो साइटले कुनै नीतिको उल्लङ्घन गरेको हुनाले तपाईंको सङ्गठनले यो साइट ब्लक गरेको छ।</translation>
+<translation id="4654457557264366314">भुक्तानी योजनाहरू उपलब्ध हुनका निम्ति निश्चित योग्यता पूरा गर्नु पर्ने हुन्छ।</translation>
 <translation id="4658638640878098064">सिरानको बायाँपट्टि स्टिच</translation>
 <translation id="4660592918803576381">Drive मा खोल्नुहोस्</translation>
 <translation id="4661556981531699496">घरपालुवा तथा अन्य जनावरहरू</translation>
@@ -2204,6 +2218,7 @@
 <translation id="4732860731866514038"><ph name="LANGUAGE"/> ल्याङ्ग्वेज प्याक डाउनलोड गरिँदै छ.. .<ph name="PERCENT"/>%</translation>
 <translation id="4733082559415072992"><ph name="URL"/> तपाईंको डिभाइसको स्थान प्रयोग गर्न चाहन्छ</translation>
 <translation id="473414950835101501">क्यामेरा प्रयोग गर्न</translation>
+<translation id="4734343956394152985"><ph name="BEGIN_BOLD"/>हालको डिफल्ट सर्च इन्जिन<ph name="END_BOLD"/> · <ph name="MARKETING_SNIPPET"/></translation>
 <translation id="4736934858538408121">भर्चुअल कार्ड</translation>
 <translation id="473775607612524610">अपडेट गर्नुहोस्</translation>
 <translation id="4738601419177586157"><ph name="TEXT"/> को खोजसम्बन्धी सुझाव</translation>
@@ -2226,6 +2241,7 @@
 <translation id="4758311279753947758">सम्पर्क बारे जानकारी थप्नुहोस्</translation>
 <translation id="4761326898079498987">थप विवरणका लागी समीक्षा गर्नुहोस्</translation>
 <translation id="1980929286541331105">Brave को सुरक्षा जाँच गर्नुहोस्</translation>
+<translation id="4762097990764616058"><ph name="BNPL_ISSUER_NAME"/> मार्फत भुक्तानी गरिराख्ने हो?</translation>
 <translation id="4763196677855776703"><ph name="URL"/> ले उपलब्ध गराएका सर्तहरू</translation>
 <translation id="4764680219299728632">रेन्ज, कुकटप तथा ओभनहरू</translation>
 <translation id="4764776831041365478"><ph name="URL"/> को वेबपेज अस्थायी रूपमा बन्द भएको हुन सक्छ वा त्यो स्थायी रूपमा एउटा नयाँ वेब ठेगानामा सरेको हुन सक्छ।</translation>
@@ -2263,6 +2279,7 @@
 <translation id="4822493756793346865">औसत मूल्य वेबमा रहेका विभिन्न स्टोरहरूबाट विगत ९० दिनमा प्राप्त गरिएको जानकारीमा आधारित हुन्छ।</translation>
 <translation id="4822922322149719535">त्रुटिको लगको समीक्षा गर्नुहोस्</translation>
 <translation id="4823699521959851389"><ph name="SHORT_PRODUCT_NAME"/> लाई तपाईंको डिभाइसको <ph name="PERMISSION"/> को एक्सेस दिनु पर्ने हुन्छ</translation>
+<translation id="4825311006392962663">चेकआउट गर्दा पछि भुक्तानी गर्ने विकल्पहरू देखाउनुहोस्</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Sheets प्रयोग गरी तुरुन्तै नयाँ पाना बनाउन Tab थिच्नुहोस् अनि Enter थिच्नुहोस्</translation>
 <translation id="4826588772550366629">क्यामेरा र माइक्रोफोन</translation>
 <translation id="4827283332383516812">कार्ड मेटाउनुहोस्</translation>
@@ -2447,6 +2464,7 @@
 <translation id="5122786942953798871">इन्भलप (कटन)</translation>
 <translation id="5123063207673082822">सप्ताहान्त</translation>
 <translation id="5123433949759960244">बास्केटबल</translation>
+<translation id="5124797626438336458">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" मा त्रुटि देखिएको कुरा जानकारी दिने स्क्रिन आधा स्क्रिनमा खोलिएको छ।</translation>
 <translation id="5125575917473813637">परिचय पत्र सम्पादन गर्नुहोस्</translation>
 <translation id="5125751979347152379">अवैध URL।</translation>
 <translation id="512592033764059484">फुटबल</translation>
@@ -2749,6 +2767,7 @@
 <translation id="5617949217645503996"><ph name="HOST_NAME"/> ले तपाईँलाई धेरै पटक रिडिरेक्ट गर्यो।</translation>
 <translation id="5619721953841297650">पूर्वनिर्धारित</translation>
 <translation id="5624120631404540903">पासवर्डहरू व्यवस्थापन गर्नुहोस्</translation>
+<translation id="5109810772708173100">Brave का विभिन्न उत्पादनमा कामहरू अझ छिटो पूरा गर्न आफ्नो जानकारी सेभ गर्नुहोस्। तपाईंको जानकारी <ph name="ACCOUNT"/> को <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> मा सेभ गरिन्छ।</translation>
 <translation id="5629630648637658800">नीति सेटिङहरू लोड गर्न असफल</translation>
 <translation id="3863024219771184526">"Brave लाई यो पेजका बारेमा प्रश्न सोध्नुहोस्" बटन, Brave लाई यो पेजका बारेमा प्रश्न सोध्न यो बटन एक्टिभेट गर्नुहोस्</translation>
 <translation id="5631439013527180824">अवैध यन्त्र व्यवस्थापन टोकन</translation>
@@ -2848,9 +2867,9 @@
 <translation id="5813119285467412249">थप्ने कार्य &amp;पुन: गर्नुहोस्</translation>
 <translation id="5813753398265398978">भौतिक विज्ञान</translation>
 <translation id="5817918615728894473">जोडा  बनाउनुहोस्</translation>
-<translation id="5820625124144807242">तपाईंले आफ्नो अर्डरको समीक्षा गरेपछि तपाईंले अनिवार्य रूपमा <ph name="BNPL_ISSUER_NAME"/> खातामा साइन इन गर्नु पर्ने हुन्छ वा यो खाता छैन भने नयाँ खाता बनाउनु पर्ने हुन्छ। यो खाता Google Pay मा स्वतः लिंक गरिने छ।</translation>
 <translation id="5826507051599432481">साझा नाम (CN)</translation>
 <translation id="5830698870816298009">क्यामेराको प्रयोग र हलचल</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="5832976493438355584">लक गरिएको</translation>
 <translation id="5837220895135257862">फेरि प्रयास गर्नुअघि <ph name="CLOUD_PROVIDER"/> मा ठाउँ खाली गर्नुहोस्</translation>
@@ -3238,6 +3257,7 @@
 <translation id="6433501201775827830">आफ्नो सर्च इन्जिन छनौट गर्नुहोस्</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> ले जडान गर्न अस्वीकार गर्यो।</translation>
 <translation id="6433797564277305076">अबदेखि डिभाइस अनलक प्रयोग गरेर आफ्ना कार्डहरू अझ चाँडो पुष्टि गर्नुहोस्</translation>
+<translation id="6436994298828707228">कुनै सार्वजनिक पेजले तपाईंको लोकल नेटवर्कमा भएका डिभाइस वा सर्भरहरूमा कनेक्ट गर्ने प्रयोजनका लागि सुरु गरेको हुनाले यो कनेक्सन ब्लक गरिएको छ।</translation>
 <translation id="4314443819377484539">Brave रेखाचित्र</translation>
 <translation id="643917412048333145">पोसाकहरू</translation>
 <translation id="6440503408713884761">उपेक्षित</translation>
@@ -3297,6 +3317,7 @@
 <translation id="6521745193039995384">सक्रिय छैन</translation>
 <translation id="6522682797352430154">शास्त्रीय सङ्गीत</translation>
 <translation id="7379829935006425840">एस्सेसिबिलिटी सेटिङ मिलाउने बटन, Brave का सेटिङमा गई एस्सेसिबिलिटी टुलहरू पर्सनलाइज गर्न यो बटन थिच्नुहोस्</translation>
+<translation id="6525222262307262764">हालको डिफल्ट सर्च इन्जिन नै कायम राख्नुहोस्</translation>
 <translation id="6527049834925947126">खाद्यवस्तुको उत्पादन</translation>
 <translation id="6529173248185917884">सातौँ रोल</translation>
 <translation id="6529602333819889595">मेटाउने कार्य &amp;पुन: गर्नुहोस्</translation>
@@ -3309,6 +3330,7 @@
 <translation id="6547208576736763147">बायाँपट्टि दुई प्वाल</translation>
 <translation id="6549443526281184652">पोसाक</translation>
 <translation id="6550245281449521513">माउस लक गर्ने अनुमति दिन अस्वीकार गरिएको छ</translation>
+<translation id="6552566579578780089">भुक्तानीहरू</translation>
 <translation id="6554732001434021288">पछिल्लो पटक <ph name="NUM_DAYS"/> दिनअघि खोलिएको</translation>
 <translation id="6556866813142980365">फेरि गर्नुहोस्</translation>
 <translation id="6557715786897013164">१४ x १७ इन्च</translation>
@@ -3316,6 +3338,7 @@
 <translation id="6567832540451970450">तपाईंका एड्मिनले यो साइटलाई <ph name="PERMISSION"/> प्रयोग गर्ने अनुमति दिएका छन्</translation>
 <translation id="3720758671413152948">भुक्तानी विधिहरू व्यवस्थापन गर्ने बटन, Brave का सेटिङमा गई आफ्ना भुक्तानीसम्बन्धी जानकारी तथा क्रेडिट कार्डसम्बन्धी जानकारी व्यवस्थापन गर्न यो बटन थिच्नुहोस्</translation>
 <translation id="6569060085658103619">तपाईं एउटा विस्तार सम्बन्धी पृष्ठ हेर्दै हुनुहुन्छ</translation>
+<translation id="6571992525120410251"><ph name="ENGINE_NAME"/> लाई जुनसुकै कुरा सोध्नुहोस्</translation>
 <translation id="6572867903637058088">यो उपयोगी लाग्यो?</translation>
 <translation id="6573200754375280815">दायाँपट्टि दुई प्वाल</translation>
 <translation id="6575408526598156416">खातामा सेभ गर्नुहोस्</translation>
@@ -3355,6 +3378,7 @@
 <translation id="6649510485211003056">१९५ x २७० मिलिमिटर</translation>
 <translation id="6651270836885078973">व्यवस्थापक:</translation>
 <translation id="6652101503459149953">Windows Hello प्रयोग गर्नुहोस्</translation>
+<translation id="6653684225271066234"><ph name="BNPL_ISSUER_NAME"/> ले तपाईंको योग्यता जाँच गर्ने छ (यसो गर्दा तपाईंको क्रेडिट स्कोर घटबढ हुँदैन)। तपाईंले योग्यताका मापदण्ड पूरा गर्नुभएका खण्डमा <ph name="BNPL_ISSUER_NAME"/> ले तपाईंको खरिद पूरा गर्ने प्रयोजनका लागि सम्भावित भुक्तानी योजना(हरू) उपलब्ध गराउने छ।</translation>
 <translation id="6654224358955673568">औपचारिक बनाउनुहोस्</translation>
 <translation id="6654244995031366386">ग्लास (टेक्स्चर्ड)</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
@@ -3364,6 +3388,7 @@
 <translation id="666259744093848177">(x86_64 अनुवादित)</translation>
 <translation id="6665553082534466207">दायाँपट्टि तीन प्वाल</translation>
 <translation id="6668389483194953109">कागजको आकारको नाम "कस्टम" राखिएको पाइयो तर "custom_size" प्रोपर्टी भने खाली वा अवैध छ।</translation>
+<translation id="6670729408462528018">ग्यालेरी</translation>
 <translation id="6671169470640320959">अटो फाइनान्सिङ</translation>
 <translation id="6675846980676550611">AR प्रयोग गर्ने अनुमति दिइएको छैन</translation>
 <translation id="6677351035258626477">फास्ट फुड</translation>
@@ -3403,7 +3428,6 @@
 <translation id="6716039223770814796"><ph name="COMPARE_SET_NAME"/> को तुलना गर्नुहोस् · <ph name="ITEMS"/> वटा सामग्री</translation>
 <translation id="6716672519412350405"><ph name="URL"/> ले तपाईं वरपरको ठाउँको 3D नक्सा बनाउन र क्यामेराको अवस्था पत्ता लगाउन चाहन्छ</translation>
 <translation id="6717692133381953670"><ph name="DEVICE_NAME"/> बाट पठाइएको ट्याब</translation>
-<translation id="6718524733720986924">अर्को पटक अटोफिलले धेरै फिल्ड भर्न सकोस् भन्नाका लागि आफ्नो जानकारी सेभ गर्नुहोस्</translation>
 <translation id="6718612893943028815">क्यामेरा प्रयोग गर्ने हो?</translation>
 <translation id="6721164594124191969">लेबल (ग्लसी)</translation>
 <translation id="6726832600570791992">(32-bit emulated)</translation>
@@ -3455,6 +3479,7 @@
 <translation id="6817217109584391709">JavaScript</translation>
 <translation id="6820143000046097424">सिरियल पोर्टहरू</translation>
 <translation id="6820686453637990663">CVC</translation>
+<translation id="6820949753458790123">सजिलैसँग किस्तामा भुक्तानी गर्नुहोस्</translation>
 <translation id="6825578344716086703">तपाईंले <ph name="DOMAIN"/> मा पुग्ने प्रयत्न गर्नुभयो, तर सर्भरले एउटा कमजोर हस्ताक्षर एल्गोरिदम (जस्तै SHA-1) प्रयोग गरेर हस्ताक्षर गरिएको प्रमाणपत्र प्रस्तुत गर्‍यो। यसको अर्थ सर्भरले प्रस्तुत गरेको सुरक्षासम्बन्धी पत्यारपत्रहरू जाली हुन सक्छन् र उक्त सर्भर तपाईंले अपेक्षा गर्नुभएको सर्भर नहुन पनि सक्छ (तपाईं कुनै आक्रमणकारीसँग सञ्चारण गरिरहनुभएको हुनसक्छ)।</translation>
 <translation id="6826993739343257035">AR लाई अनुमति दिने हो?</translation>
 <translation id="6828150717884939426">कल गर्नुहोस्</translation>
@@ -3515,6 +3540,7 @@
 <translation id="6925267999184670015">North American B+</translation>
 <translation id="6926216138694948720">शरीरमा बनाइने कला</translation>
 <translation id="692638818576287323">व्यावसायिक प्रयोजनका लागि प्रयोग हुने सवारी साधन</translation>
+<translation id="6180127155218089557">तपाईंले आफ्नो अर्डरको समीक्षा गरेपछि तपाईंले अनिवार्य रूपमा <ph name="BNPL_ISSUER_NAME"/> खातामा साइन इन गर्नु पर्ने हुन्छ वा यो खाता छैन भने नयाँ खाता बनाउनु पर्ने हुन्छ। यो खाता तपाईंको Brave खातासँग स्वतः लिंक गरिने छ।</translation>
 <translation id="6930607614725241390">साइड प्यानलमा खोज्नुहोस्</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>तपाईं आफ्नो डिफल्ट सर्च इन्जिन प्रयोग गरेर वेबमार्फत सामग्री खोज्न र Brave का सुविधाहरू<ph name="END_BOLD"/> (जस्तै, वेबपेजमा उपलब्ध एड्रेस बार तथा फोटोहरू प्रयोग गरेर सामग्री खोज्ने सुविधा) प्राप्त गर्न सक्नुहुन्छ। तपाईंको सर्च इन्जिनमा काम नगर्ने सुविधा उपलब्ध नहुन सक्छ।</translation>
 <translation id="6722453239914327220">यो नाम तपाईंको Brave खाताबाट लिइएको हो</translation>
@@ -3566,6 +3592,7 @@
 <translation id="6997288673234694149">बेसबल तथा सफ्टबल उपकरण</translation>
 <translation id="6998512609912910179">फारामहरू अझ छिटो भर्नुहोस्</translation>
 <translation id="6999480632062519056">फिटनेससम्बन्धी निर्देशन तथा व्यक्तिगत प्रशिक्षण</translation>
+<translation id="7002897669829306463">घरको ठेगाना, <ph name="ADDRESS"/></translation>
 <translation id="7003278537452757231">रग तथा कार्पेटहरू</translation>
 <translation id="7003322000677139268">गाडीका पाटपुर्जा तथा सहायक उपकरणहरू</translation>
 <translation id="7004499039102548441">हालका ट्याबहरू</translation>
@@ -3582,6 +3609,7 @@
 <translation id="7020464868401003526">यो सर्टकटको URL मा तोकिएको अधिकतम वर्ण सङ्ख्या अर्थात् <ph name="MAX_LENGTH"/> भन्दा बढी वर्ण समावेश गरिएका छन्।</translation>
 <translation id="8683151724374457021">यो साइटले तपाईंलाई मन पर्ने कुराहरू निर्धारण गरेर अन्य साइटहरूलाई विज्ञापनहरू सिफारिस गर्छ। यो साइटले तपाईंलाई थप सान्दर्भिक विज्ञापनहरू देखाउने प्रयोजनका लागि तपाईंले Brave छनौट गर्नुभएका विज्ञापनका विषयसम्बन्धी जानकारी पनि प्राप्त गर्छ।</translation>
 <translation id="7023162328967545559">एड्मिनले दिएका चेतावनी</translation>
+<translation id="7023765275461720661">खाता लिंक गरी <ph name="BNPL_ISSUER_NAME"/> मार्फत भुक्तानी गर्ने हो?</translation>
 <translation id="7029809446516969842">पासवर्डहरू</translation>
 <translation id="7030164307377592766">भुक्तानी विधिसम्बन्धी जानकारी भर्नका निम्ति सेटिङ मिलाउनुहोस्</translation>
 <translation id="7031110846419387930">तपाईंका ब्राउजर, OS, डिभाइस, इन्स्टल गरिएका सफ्टवेयर, फाइल र IP एड्रेसका बारेमा जानकारी</translation>
@@ -3858,7 +3886,6 @@
 <translation id="7485085230273446323">व्यापार तथा उद्योगधन्दा</translation>
 <translation id="7485870689360869515">कुनैपनि डाटा भेटिएन।</translation>
 <translation id="7486880426035242089">OneDrive</translation>
-<translation id="7489255442002627311"><ph name="BNPL_ISSUER_NAME"/> ले तपाईंको योग्यता जाँच गर्ने छ (यसो गर्दा तपाईंको क्रेडिट स्कोर घटबढ हुँदैन)। स्वीकृत गरिएका खण्डमा <ph name="BNPL_ISSUER_NAME"/> ले तपाईंलाई छनौट गर्न मिल्ने भुक्तानी योजनाहरू उपलब्ध गराउने छ। त्यसपछि तपाईं भुक्तानी योजना छनौट गरेर खरिद प्रक्रिया पूरा गर्न सक्नुहुन्छ।</translation>
 <translation id="7489392576326061356">स्याम्पु तथा कन्डिसनर</translation>
 <translation id="7489919936111034362">तपाईंको Google Drive को भण्डारण भरिएको छ</translation>
 <translation id="7495528107193238112">यो सामग्रीलाई रोक लगाइएको छ। यो समस्या समाधान गर्न उक्त साइटका मालिकसँग सम्पर्क गर्नुहोस्।</translation>
@@ -3894,6 +3921,7 @@
 <translation id="796823723482603597">Brave ले सञ्चालन गरेको</translation>
 <translation id="1015559447832000638">Brave को अटोफिलमा सेभ गरिएको तपाईंको घरको ठेगाना हटाउने हो?</translation>
 <translation id="7537536606612762813">अनिवार्य</translation>
+<translation id="7541043894191476250">सान्दर्भिक कार्यहरू</translation>
 <translation id="7543525346216957623">आफ्नो अभिभावकलाई सोध्नुहोस्</translation>
 <translation id="7546409722674205727">‍<ph name="APP_NAME"/> सुरु गरिँदै छ</translation>
 <translation id="7548892272833184391">जडानसम्बन्धी त्रुटिहरू ठिक गर्नुहोस्</translation>
@@ -4092,6 +4120,7 @@
 <translation id="7860345425589240791"><ph name="SIDE_OF_CARD"/> रहेको म्याद सकिने नयाँ मिति र CVC हाल्नुहोस्</translation>
 <translation id="7862185352068345852">साइट छाड्ने हो?</translation>
 <translation id="7865448901209910068">उत्कृष्ट गति</translation>
+<translation id="7865482168955081228">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" मा त्रुटि देखिएको कुरा जानकारी दिने स्क्रिन बन्द गरिएको छ।</translation>
 <translation id="7870281855125116701">छुट पाइयो</translation>
 <translation id="7971990257511863579">आफ्नो Brave खाताको पासवर्ड बदल्नुहोस्</translation>
 <translation id="5478215009057706238">ट्याब समूह सेयर गर्न, तिनमा सामेल हुन र आइडियाहरूमा मिलेर काम गर्न Brave मा साइन इन गर्नुहोस्</translation>
@@ -4119,6 +4148,8 @@
 <translation id="7916162853251942238">फ्लेक्सो बेस</translation>
 <translation id="791698251820376781">तपाईंको सङ्गठनले तपाईंलाई साइन इन गर्ने अनुमति दिएको छैन</translation>
 <translation id="7926503317156566022">उड्डयन उद्योग</translation>
+<translation id="7930282586031445870">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" सुविधाका सेवाका सर्तहरू देखाइएको स्क्रिन बन्द गरिएको छ।</translation>
+<translation id="7932035970207573919">कार्यस्थलको ठेगाना, <ph name="ADDRESS"/></translation>
 <translation id="793209273132572360">ठेगाना बदल्ने हो?</translation>
 <translation id="7932579305932748336">कोट</translation>
 <translation id="79338296614623784">मान्य फोन नम्बर प्रविष्टि गर्नुहोस्</translation>
@@ -4413,6 +4444,7 @@
 <translation id="8406071103346257942">पासवर्डहरू हाल्नका निम्ति स्क्रिन लक प्रयोग गर्न छाड्नुहोस्</translation>
 <translation id="8407031780528483338">कुकवेयर</translation>
 <translation id="8409413588194360210">भुक्तानी ह्यान्ड्लरहरू</translation>
+<translation id="8410956920192583322">मासिक रूपमा वा ४ वटा किस्तामा भुक्तानी गर्नुहोस्</translation>
 <translation id="8412145213513410671">क्रयासहरू (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">तपाइँले एउटै पासफ्रेज दुईटपक प्रविष्ट गर्नुपर्छ।</translation>
 <translation id="8414322570408428950">एक्स्टेन्सनसम्बन्धी गतिविधि गरिन्छ</translation>
@@ -4527,6 +4559,7 @@
 <translation id="5748651208190537252"><ph name="BEGIN_BOLD"/>के कस्ता जानकारी प्रयोग गरिन्छ:<ph name="END_BOLD"/> तपाईंले यो डिभाइसमा Brave प्रयोग गरी खोल्ने साइटमा गर्ने गतिविधिसम्बन्धी जानकारी।</translation>
 <translation id="8601456038554914806">पानीमा खेलिने खेलसम्बन्धी उपकरण</translation>
 <translation id="8601782593888534566">विज्ञान कथा तथा स्वैरकल्पना</translation>
+<translation id="8604103095921958091">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" का सेवाका सर्तहरू देखाइएको स्क्रिन पूरै स्क्रिनमा खोलिएको छ।</translation>
 <translation id="5017966143250326204">"विज्ञापनका विषयहरू" अन गरिएका खण्डमा साइटहरूले तपाईंको ब्राउजिङ हिस्ट्री तथा पहिचान सुरक्षित राखेर तपाईंलाई सान्दर्भिक विज्ञापनहरू देखाउन सक्छन्। Brave ले तपाईंको हालसालैको ब्राउजिङ हिस्ट्रीका आधारमा तपाईंका रुचिका विषयहरू थाहा पाउन सक्छ। तपाईंले यसपछि खोल्ने साइटले Brave सँग तपाईंलाई देखाइने विज्ञापनहरू पर्सनलाइज गर्ने प्रयोजनका लागि सान्दर्भिक विषयसम्बन्धी जानकारी माग्न सक्छ।</translation>
 <translation id="8612919051706159390">अनलाइन समुदायहरू</translation>
 <translation id="8617269623452051934">तपाईंको डिभाइसको प्रयोग</translation>
@@ -4698,6 +4731,7 @@
 <translation id="8922734931659847428">तपाईंले खोलेका <ph name="BEGIN_LINK"/>लिगेसी प्रविधिसम्बन्धी कार्यक्रमहरू<ph name="END_LINK"/> देखाइएका पेजका URL हरूको सीमित सूची</translation>
 <translation id="892588693504540538">सिरानको दायाँपट्टि प्वाल</translation>
 <translation id="8926389886865778422">फेरि नसोध्नुहोस्</translation>
+<translation id="8926400492587758246">मासिक रूपमा थोरै रकमको किस्तामा भुक्तानी गर्नुहोस्</translation>
 <translation id="8932102934695377596">तपाईंको घडी ढिला छ</translation>
 <translation id="893332455753468063">नाम थप्नुहोस्</translation>
 <translation id="8938242527120341116">तपाईंको डिभाइसका सामग्रीसम्बन्धी फिल्टरहरूले <ph name="BLOCKED_URL"/> ब्लक गरेका छन्</translation>
@@ -4762,6 +4796,7 @@
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9046578823518542618"><ph name="URL"/> तपाईंको स्थानीय नेटवर्कमा भएको जुनसुकै डिभाइस खोज्न र त्यसमा कनेक्ट हुन चाहन्छ</translation>
 <translation id="9046864189129893978">माइक्रोफोनहरू (<ph name="MICS_COUNT"/>)</translation>
+<translation id="9046865906192819796">"अहिले किन्नुहोस्, पछि तिर्नुहोस्" का सेवाका सर्तहरू भएको स्क्रिन आधा स्क्रिनमा खोलिएको छ।</translation>
 <translation id="9047528041803621289">तपाईं डिफल्ट सर्च इन्जिनमार्फत वेबमा कुनै कुरा खोज्न सक्नुहुन्छ। तपाईं सेटिङमा गई यो कुरा बदल्न सक्नुहुन्छ।</translation>
 <translation id="9048035366624198823">यी कारबाही गर्न <ph name="POLICY_NAME"/> नामक नीति बदलेर <ph name="POLICY_VALUE"/> बनाउनु पर्ने हुन्छ: <ph name="ACTION_LIST"/>।</translation>
 <translation id="9048662076076074925">२४ x ३६ इन्च</translation>

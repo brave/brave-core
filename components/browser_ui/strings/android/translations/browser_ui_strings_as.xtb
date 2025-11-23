@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">আপুনি তৃতীয় পক্ষৰ কুকিসমূহক কিয় অনুমতি দিছে সেয়া আমাক জনাই আমি Brave উন্নত কৰাত সহায় কৰক। <ph name="BEGIN_LINK"/>মতামত পঠিয়াওক<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">আপুনি ছাইটসমূহৰ ডেস্কটপ সংস্কৰণ চাবলৈ ক’ব পাৰে</translation>
 <translation id="9183227624343766158">ডিফ’ল্ট হিচাপে Brave ব্যৱহাৰ কৰক</translation>
+<translation id="113098737392899175">কোনো কীব’ৰ্ড সংলগ্ন কৰিলে পাঠৰ কাৰ্ছৰৰ জৰিয়তে পৃষ্ঠাসমূহ নেভিগে’ট কৰক</translation>
 <translation id="1178015372320901893">মোৰ শ্বৰ্টকাটৰ তলৰ শ্বীট</translation>
 <translation id="1178581264944972037">পজ কৰক</translation>
 <translation id="1181037720776840403">আঁতৰাওক</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">অব্যাহত ৰাখক</translation>
 <translation id="904887679952026733">সম্ভৱ হ’লে, Braveএ গাঢ় ৰঙৰ থীম ব্যৱহাৰ কৰাৰ সময়ত ছাইটত গাঢ় ৰঙৰ থীম প্ৰয়োগ কৰক</translation>
 <translation id="2390272837142897736">জুম বঢ়াওক</translation>
+<translation id="2397689164757137845">অনুমতি দিয়া হৈছে • সঠিক</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> এম. বি.</translation>
 <translation id="2403474027143565107">সঠিক</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> আৰু <ph name="NUM_MORE"/> টাৰ অনুমতি দিয়া আছে}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> আৰু <ph name="NUM_MORE"/> টাৰ অনুমতি দিয়া আছে}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> আৰু <ph name="NUM_MORE"/> টাৰ অনুমতি দিয়া আছে}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">সহায় আৰু মতামত</translation>
 <translation id="2501278716633472235">উভতি যাওক</translation>
 <translation id="2533138527374486328">অন কৰা থাকিলে, ছাইটসমূহে আপোনাৰ স্থানীয় নেটৱৰ্কৰ যিকোনো ডিভাইচৰ সৈতে সংযোগ কৰিবলৈ অনুমতি বিচাৰিব পাৰে। অফ থাকিলে, ছাইটসমূহে আপোনাৰ স্থানীয় নেটৱৰ্কৰ ডিভাইচৰ সৈতে সংযোগ কৰিব নোৱাৰে।</translation>
+<translation id="2536779053640817375">এইবাৰ অনুমতি দিয়ক • সঠিক</translation>
 <translation id="2544997614631598250">থীমৰ ৰং গাঢ়</translation>
 <translation id="2546283357679194313">কুকি আৰু ছাইট ডেটা</translation>
 <translation id="2570922361219980984">এই ডিভাইচটোৰ বাবে অৱস্থান এক্সেছো অফ কৰা আছে। ইয়াক <ph name="BEGIN_LINK"/>Android ছেটিংসমূহ<ph name="END_LINK"/>-লৈ গৈ অন কৰক।</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">কিছুমান ছাইটত অৱৰোধ কৰা আছে</translation>
 <translation id="3132996321662585180">দৈনিক ৰিফ্ৰেশ্ব কৰক</translation>
 <translation id="3143754809889689516">আৰম্ভণিৰ পৰা প্লে’ কৰক</translation>
+<translation id="3164169438034704658">আপুনি <ph name="BEGIN_LINK"/>Android ছেটিঙ<ph name="END_LINK"/>ত সঠিক অৱস্থান অন কৰিব পাৰে।</translation>
 <translation id="3165022941318558018">এটা ছাইটক তৃতীয় পক্ষৰ কুকি ব্যৱহাৰ কৰিবলৈ দিয়ক</translation>
 <translation id="3167868116600277716">ডিস্ক’ভাৰৰ ফীড</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> ডেটা ষ্ট’ৰ কৰা আছে</translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Braveএ আজি পুনৰ কুকি সীমিত কৰিব</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/>ৰ অধীনত থকা আটাইবোৰ ছাইট</translation>
 <translation id="4340799661701629185">ছাইটক জাননী পঠিওৱাৰ অনুমতি নিদিব</translation>
+<translation id="4341577178275615435">কেৰেট ব্ৰাউজিং অন অথবা অফ কৰিবলৈ শ্বৰ্টকাট F7 ব্যৱহাৰ কৰক</translation>
 <translation id="4402755511846832236">আপুনি এই ডিভাইচটো সক্ৰিয়ভাৱে ব্যৱহাৰ কৰি থকাৰ বিষয়ে ছাইটসমূহে জনাটো অৱৰোধ কৰক</translation>
 <translation id="8382883799082236806">Brave Colorsৰ তলৰ শ্বীটখন অৰ্ধ উচ্চতাত খোলা হৈছে</translation>
 <translation id="4412992751769744546">তৃতীয় পক্ষৰ কুকিৰ অনুমতি দিয়ক</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">ভিডিঅ’ পজ কৰক</translation>
 <translation id="5877248419911025165">আটাইবোৰ অনুৰোধ সংকোচন কৰক</translation>
 <translation id="5878945009165002849">পৰিচয় সেৱাসমূহৰ পৰা ছাইন-ইনৰ প্ৰম্প্‌ট অৱৰোধ কৰক</translation>
+<translation id="588258955323874662">পূৰ্ণস্ক্ৰীণ</translation>
 <translation id="5884085660368669834">ছাইটৰ অগ্ৰাধিকাৰ</translation>
 <translation id="5887687176710214216">শেষবাৰ কালি চাইছিল</translation>
 <translation id="5908617755156109052">ছাইটসমূহক আপোনাৰ চৌপাশৰ ঠাইসমূহৰ এখন 3D মেপ সৃষ্টি কৰিবলৈ বা কেমেৰাৰ দিশ ট্ৰেক কৰিবলৈ অনুমতি নিদিব</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">ঠিক আছে</translation>
 <translation id="6980861169612950611">ছাইটৰ ডেটা মচিবনে? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">সাধ্য সুবিধাসমূহ</translation>
+<translation id="6991142177939282156">অনুমতি দিয়া হৈছে • আনুমানিক</translation>
 <translation id="6992289844737586249">ছাইটসমূহে আপোনাৰ ডিভাইচৰ মাইক্ৰফ'ন ব্যৱহাৰ কৰাৰ পূর্বে অনুমতি ল'বলৈ দিয়ক (এয়া চুপাৰিছ কৰা হয়)</translation>
 <translation id="7000754031042624318">Androidৰ ছেটিংসমূহত অফ কৰা আছে</translation>
 <translation id="8683151724374457021">এই ছাইটে আপুনি ভাল পোৱা বস্তুবোৰ নিৰ্ধাৰণ কৰে আৰু তাৰ পাছত অন্য ছাইটসমূহক বিজ্ঞাপনৰ বাবে পৰামৰ্শ দিয়ে। আপোনাক অধিক প্ৰাসংগিক বিজ্ঞাপন দেখুৱাবলৈ এই ছাইটটোৱে Braveৰ পৰাও আপোনাৰ বিজ্ঞাপনৰ বিষয়সমূহ লাভ কৰে।</translation>
+<translation id="7036823721811529709">নেপথ্যত শুনক</translation>
 <translation id="7044081119134178347">এইবাৰ কেমেৰা ব্যৱহাৰৰ অনুমতি দিয়া হৈছে</translation>
 <translation id="7053983685419859001">অৱৰোধ কৰক</translation>
 <translation id="7055552182600664515">স্বত্বাধিকাৰৰ জৰিয়তে সুৰক্ষিত সমল প্লে’ কৰিবলৈ, ছাইটে কোনো সমল সুৰক্ষা সেৱা ব্যৱহাৰ কৰিবলগীয়া হ’ব পাৰে। <ph name="BEGIN_LINK"/>অধিক জানক<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">এই ছেটিংটোৱে আপোনাক চিনাক্ত নকৰাকৈ অথবা ছাইটসমূহক আপোনাৰ ব্ৰাউজিঙৰ ইতিহাস চোৱাৰ অনুমতি নিদিয়াকৈ কাম কৰে, যদিও ছাইটসমূহে সত্যাপন প্ৰক্ৰিয়াৰ অংশ হিচাপে সামান্য পৰিমাণৰ তথ্য শ্বেয়াৰ কৰিব পাৰে</translation>
 <translation id="7409735910987429903">আপুনি যিবোৰ ৱেবছাইট হয়তো চাবলৈ নিবিচাৰে, ছাইটসমূহে সেইবোৰ ৱেবছাইটলৈ আপোনাক নিবলৈ বিজ্ঞাপন দেখুওৱাৰ বাবে পপ-আপ পঠিয়াব আৰু ৰিডাইৰেক্টসমূহ ব্যৱহাৰ কৰিব পাৰে</translation>
 <translation id="7412160840120117304">প্ৰাথমিক ৰঙৰ হেক্স</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{জুম}one{জুম: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{জুম: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">প্ৰথমে সোধক</translation>
 <translation id="7423538860840206698">ক্লিপব’ৰ্ড পঢ়াৰ সুবিধা অৱৰোধ কৰা হৈছে</translation>
 <translation id="7425915948813553151">ছাইটৰ বাবে গাঢ় ৰঙৰ থীম</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">মচক</translation>
 <translation id="8284326494547611709">কেপশ্বন</translation>
 <translation id="8300705686683892304">এপৰ দ্বাৰা পৰিচালিত</translation>
+<translation id="8301363963630676147">এইবাৰ অনুমতি দিয়ক • আনুমানিক</translation>
 <translation id="8315509175050791576">এটা টেব শ্বেয়াৰ কৰি থকা হৈছে</translation>
 <translation id="8324158725704657629">পুনৰ নুসুধিব</translation>
 <translation id="8362795839483915693">আপুনি চোৱা ছাইটসমূহত জুম ইন অথবা জুম আউট কৰিব পাৰে</translation>

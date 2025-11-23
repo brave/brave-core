@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Aidake meil Brave’i täiustada, andes teada, miks lubasite kolmanda osapoole küpsisefailid. <ph name="BEGIN_LINK"/>Tagasiside saatmine<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Saate paluda saitide lauaarvuti versiooni nägemist</translation>
 <translation id="9183227624343766158">Vaikimisi Brave'i kasutamine</translation>
+<translation id="113098737392899175">Lehtedel navigeerimine tekstikursoriga, kui klaviatuur on ühendatud</translation>
 <translation id="1178015372320901893">Minu otseteede alumine leht</translation>
 <translation id="1178581264944972037">Peata</translation>
 <translation id="1181037720776840403">Eemalda</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Jätka</translation>
 <translation id="904887679952026733">Kui Brave kasutab tumedat teemat, rakendatakse saitidele võimaluse korral tume teema</translation>
 <translation id="2390272837142897736">Suumi suurendamine</translation>
+<translation id="2397689164757137845">Lubatud • Täpne</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Täpne</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/> on lubatud}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ja veel <ph name="NUM_MORE"/> on lubatud}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Abi ja tagasiside</translation>
 <translation id="2501278716633472235">Mine tagasi</translation>
 <translation id="2533138527374486328">Kui see on sisse lülitatud, saavad saidid küsida luba ühenduse loomiseks mis tahes seadmega teie kohalikus võrgus. Kui see on välja lülitatud, ei saa saidid teie kohalikus võrgus seadmetega ühendust luua.</translation>
+<translation id="2536779053640817375">Lubatud sel korral • Täpne</translation>
 <translation id="2544997614631598250">Tume teemavärv</translation>
 <translation id="2546283357679194313">Küpsised ja saidi andmed</translation>
 <translation id="2570922361219980984">Ka juurdepääs asukohale on selle seadme puhul välja lülitatud. Lülitage see sisse <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="3123473560110926937">Blokeeritud teatud saitidel</translation>
 <translation id="3132996321662585180">Värskendatakse iga päev</translation>
 <translation id="3143754809889689516">Esita algusest</translation>
+<translation id="3164169438034704658">Täpse asukoha saate sisse lülitada <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Saidil lubatakse kasutada kolmanda osapoole küpsisefaile</translation>
 <translation id="3167868116600277716">Discoveri voog</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> salvestatud andmeid</translation>
@@ -308,6 +312,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="8601682686806697614">Brave piirab täna küpsisefaile uuesti</translation>
 <translation id="4338831206024587507">Kõik saidid domeenil <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Ära luba saitidel saata märguandeid</translation>
+<translation id="4341577178275615435">Sisestusmärgiga sirvimise sisse- ja väljalülitamiseks võite kasutada kiirklahvi F7</translation>
 <translation id="4402755511846832236">Keelake saitidel selle tuvastamine, millal seda seadet aktiivselt kasutate</translation>
 <translation id="8382883799082236806">Brave'i värvide alumine leht on avatud poolel kõrgusel</translation>
 <translation id="4412992751769744546">Luba kolmanda osapoole küpsisefailid</translation>
@@ -436,6 +441,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="5876056640971328065">Video peatamine</translation>
 <translation id="5877248419911025165">Ahenda kõik taotlused</translation>
 <translation id="5878945009165002849">Sisselogimisviibad identiteedihaldusteenustest blokeeritakse</translation>
+<translation id="588258955323874662">Täisekraan</translation>
 <translation id="5884085660368669834">Saidi eelistus</translation>
 <translation id="5887687176710214216">Viimati külastati eile</translation>
 <translation id="5908617755156109052">Ärge lubage saitidel luua oma ümbrusest 3D-kaarti ega jälgida kaamera asendit</translation>
@@ -531,9 +537,11 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Kas kustutada saidi andmed? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Juurdepääsetavus</translation>
+<translation id="6991142177939282156">Lubatud • Kasutab ligikaudset asukohta</translation>
 <translation id="6992289844737586249">Küsi enne saitidele minu mikrofoni kasutamiseks juurdepääsu lubamist (soovitatav)</translation>
 <translation id="7000754031042624318">Androidi seadetes välja lülitatud</translation>
 <translation id="8683151724374457021">See sait tuvastab asjad, mis teile meeldivad, ja soovitab seejärel teistele saitidele reklaame. Samuti hangib see sait Brave'ist teie reklaamiteemad, et näidata teile asjakohasemaid reklaame.</translation>
+<translation id="7036823721811529709">Kuulake taustal</translation>
 <translation id="7044081119134178347">Kaamera seekord lubatud</translation>
 <translation id="7053983685419859001">Blokeeri</translation>
 <translation id="7055552182600664515">Autoriõigustega kaitstud sisu esitamiseks peavad saidid võib-olla kasutama sisukaitseteenust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="7406113532070524618">See seade toimib ilma teid tuvastamata ega luba saitidel vaadata teie sirvimisajalugu, kuid saidid võivad kontrollimistoimingu käigus jagada väikest hulka teavet</translation>
 <translation id="7409735910987429903">Saidid võivad kuvada hüpikaknaid või reklaame või kasutada ümbersuunamisi, et suunata teid veebisaitidele, mida te võib-olla ei soovi külastada</translation>
 <translation id="7412160840120117304">Kuueteistkümnendsüsteemis põhivärv</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Suum}other{Suum: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Esmalt küsib</translation>
 <translation id="7423538860840206698">Lõikelaua lugemine on blokeeritud</translation>
 <translation id="7425915948813553151">Tume teema saitide jaoks</translation>
@@ -639,6 +648,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:
 <translation id="8261506727792406068">Kustuta</translation>
 <translation id="8284326494547611709">Subtiitrid</translation>
 <translation id="8300705686683892304">Neid haldab rakendus</translation>
+<translation id="8301363963630676147">Lubatud sel korral • Kasutab ligikaudset asukohta</translation>
 <translation id="8315509175050791576">Vahelehe jagamine</translation>
 <translation id="8324158725704657629">Ära enam küsi</translation>
 <translation id="8362795839483915693">Saate külastatavatel saitidel sisse ja välja suumida</translation>
