@@ -104,7 +104,7 @@ class TestBraveShieldsSettings: BraveShieldsSettings {
   func autoShredMode(for url: URL) -> BraveShields.AutoShredMode {
     return _autoShredMode?(url) ?? defaultAutoShredMode
   }
-  func setAutoShredMode(_ fingerprintMode: BraveShields.AutoShredMode, for url: URL!) {
-    _setAutoShredMode?(fingerprintMode, url)
+  func setAutoShredMode(_ autoShredMode: BraveShields.AutoShredMode, for url: URL!) {
+    _setAutoShredMode?(autoShredMode, url)
   }
 }
