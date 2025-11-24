@@ -10,6 +10,7 @@
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -75,13 +76,16 @@ class CardanoMaxSendSolverUnitTest : public testing::Test {
     return tx_input;
   }
 
-  uint64_t send_amount() const { return 1000; }
+  uint64_t send_amount() const { return 1000001; }
   uint64_t min_fee_coefficient() const { return 44; }
   uint64_t min_fee_constant() const { return 155381; }
+  uint64_t coins_per_utxo_size() const { return 4310; }
+
   cardano_rpc::EpochParameters latest_epoch_parameters() {
     return cardano_rpc::EpochParameters{
         .min_fee_coefficient = min_fee_coefficient(),
-        .min_fee_constant = min_fee_constant()};
+        .min_fee_constant = min_fee_constant(),
+        .coins_per_utxo_size = coins_per_utxo_size()};
   }
   uint32_t dust_change_threshold() const { return 3036; }
 
@@ -116,8 +120,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
 
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 227u);
-    EXPECT_EQ(min_fee, 165369u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 228u);
+    EXPECT_EQ(min_fee, 165413u);
 
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -155,7 +159,28 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     EXPECT_FALSE(tx->ChangeOutput());
   }
 
-  // Sending one tenth of send_amount.
+  // Sending slightly less than send_amount.
+  {
+    uint32_t min_fee =
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 228u);
+    EXPECT_EQ(min_fee, 165413u);
+
+    uint32_t total_input = send_amount() - 1000 + min_fee;
+    std::vector<CardanoTransaction::TxInput> inputs;
+    inputs.push_back(MakeMockTxInput(total_input, 0));
+    CardanoMaxSendSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    auto tx = solver.Solve();
+    ASSERT_TRUE(tx.has_value());
+
+    // We have exactly send amount + fee.
+    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
+    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
+    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount() - 1000);
+    EXPECT_EQ(tx->TargetOutput()->amount, send_amount() - 1000);
+    EXPECT_FALSE(tx->ChangeOutput());
+  }
+
+  // Sending one tenth of send_amount fails min value req.
   {
     uint32_t min_fee =
         MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 227u);
@@ -166,14 +191,9 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     inputs.push_back(MakeMockTxInput(total_input, 0));
     CardanoMaxSendSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
-    ASSERT_TRUE(tx.has_value());
+    ASSERT_FALSE(tx.has_value());
 
-    // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount() / 10);
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount() / 10);
-    EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_EQ(tx.error(), WalletInsufficientBalanceErrorMessage());
   }
 }
 
@@ -182,16 +202,15 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
 
   // Fee for typical 1 input -> 1 output transaction.
   uint32_t min_fee =
-      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13886u);
-  EXPECT_EQ(min_fee, 766365u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13884u);
+  EXPECT_EQ(min_fee, 766277u);
 
-  EXPECT_EQ(send_amount() % 100, 0u);
   {
-    uint32_t total_input = send_amount() + min_fee;
+    uint32_t total_input = 100 * send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(send_amount() / 100 + min_fee, 0));
+    inputs.push_back(MakeMockTxInput(send_amount() + min_fee, 0));
     for (int i = 1; i < 100; ++i) {
-      inputs.push_back(MakeMockTxInput(send_amount() / 100, i));
+      inputs.push_back(MakeMockTxInput(send_amount(), i));
     }
     CardanoMaxSendSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
@@ -200,8 +219,9 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
     // We have exactly send amount + fee.
     EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
     EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
+    EXPECT_EQ(tx->inputs().size(), 100u);
+    EXPECT_EQ(tx->TotalOutputsAmount(), 100 * send_amount());
+    EXPECT_EQ(tx->TargetOutput()->amount, 100 * send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
   }
 }

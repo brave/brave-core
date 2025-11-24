@@ -86,15 +86,17 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
     return tx_input;
   }
 
-  uint64_t send_amount() const { return 10000; }
+  uint64_t send_amount() const { return 1000001; }
   uint64_t min_fee_coefficient() const { return 44; }
   uint64_t min_fee_constant() const { return 155381; }
+  uint64_t coins_per_utxo_size() const { return 4310; }
   cardano_rpc::EpochParameters latest_epoch_parameters() {
     return cardano_rpc::EpochParameters{
         .min_fee_coefficient = min_fee_coefficient(),
-        .min_fee_constant = min_fee_constant()};
+        .min_fee_constant = min_fee_constant(),
+        .coins_per_utxo_size = coins_per_utxo_size()};
   }
-  uint32_t dust_change_threshold() const { return 3036; }
+  uint32_t dust_change_threshold() const { return 969750; }
 
   CardanoHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
                             mojom::KeyringId::kCardanoMainnet};
@@ -127,8 +129,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
 
   // Fee for typical 1 input -> 1 output transaction.
   uint32_t min_fee =
-      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 222u);
-  EXPECT_EQ(min_fee, 165149u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
+  EXPECT_EQ(min_fee, 165237u);
 
   {
     uint32_t total_input = send_amount() + min_fee;
@@ -181,8 +183,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
 
   // Fee for typical 1 input -> 2 outputs transaction.
   uint32_t min_fee =
-      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 285u);
-  EXPECT_EQ(min_fee, 167921u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 289u);
+  EXPECT_EQ(min_fee, 168097u);
 
   {
     uint32_t total_input = send_amount() + min_fee + dust_change_threshold();

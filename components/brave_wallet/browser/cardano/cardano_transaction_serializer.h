@@ -50,13 +50,28 @@ class CardanoTransactionSerializer {
       const CardanoTransaction& tx,
       const cardano_rpc::EpochParameters& epoch_parameters);
 
+  // Calculates minimum ADA required for the output.
+  std::optional<uint64_t> CalcMinAdaRequired(
+      const CardanoTransaction::TxOutput& output,
+      const cardano_rpc::EpochParameters& epoch_parameters);
+
+  // Validate minimum ADA required for the output.
+  bool ValidateMinValue(const CardanoTransaction::TxOutput& output,
+                        const cardano_rpc::EpochParameters& epoch_parameters);
+
  private:
   Options options_ = {};
 
   cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx);
+  cbor::Value::ArrayValue SerializeOutput(
+      const CardanoTransaction::TxOutput& output);
   cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx);
   cbor::Value SerializeTxBody(const CardanoTransaction& tx);
   cbor::Value SerializeWitnessSet(const CardanoTransaction& tx);
+
+  std::optional<uint64_t> CalcRequiredCoin(
+      const CardanoTransaction::TxOutput& output,
+      const cardano_rpc::EpochParameters& epoch_parameters);
 };
 
 }  // namespace brave_wallet

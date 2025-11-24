@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_max_send_solver.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -129,17 +130,15 @@ void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
 void CardanoCreateTransactionTask::RunSolverForTransaction() {
   CHECK(IsAllRequiredDataFetched());
 
-  base::expected<CardanoTransaction, std::string> solved_transaction;
   transaction_.set_invalid_after(latest_block_->slot + kTxValiditySeconds);
+  transaction_.AddOutput(CreateTargetOutput());
 
+  base::expected<CardanoTransaction, std::string> solved_transaction;
   if (sending_max_amount_) {
-    transaction_.AddOutput(CreateTargetOutput());
-
     CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
                                 TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   } else {
-    transaction_.AddOutput(CreateTargetOutput());
     transaction_.AddOutput(CreateChangeOutput());
 
     CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
@@ -149,6 +148,12 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
 
   if (!solved_transaction.has_value()) {
     StopWithError(solved_transaction.error());
+    return;
+  }
+
+  if (!CardanoTransactionSerializer().ValidateMinValue(
+          *solved_transaction->TargetOutput(), *latest_epoch_parameters_)) {
+    StopWithError(WalletAmountTooSmallErrorMessage());
     return;
   }
 

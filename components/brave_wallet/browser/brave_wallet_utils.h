@@ -119,6 +119,7 @@ std::string WalletInternalErrorMessage();
 std::string WalletParsingErrorMessage();
 std::string WalletInsufficientBalanceErrorMessage();
 std::string WalletUserRejectedRequestErrorMessage();
+std::string WalletAmountTooSmallErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);

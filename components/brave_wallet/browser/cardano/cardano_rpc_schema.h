@@ -29,6 +29,7 @@ struct EpochParameters {
 
   uint64_t min_fee_coefficient = 0;
   uint64_t min_fee_constant = 0;
+  uint64_t coins_per_utxo_size = 0;
 
   static std::optional<EpochParameters> FromBlockfrostApiValue(
       std::optional<blockfrost_api::EpochParameters> api_epoch_parameters);
