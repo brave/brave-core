@@ -97,6 +97,7 @@ class MockToolProvider : public ToolProvider {
   ~MockToolProvider() override = default;
 
   MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
+  MOCK_METHOD(void, OnGenerationCompleteWithNoToolsToHandle, (), (override));
   MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
   MOCK_METHOD(void, StopAllTasks, (), (override));
 
@@ -3314,10 +3315,6 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
     return tools;
   });
 
-  // Expect our tool provider will be informed of the new generation loop
-  // starting.
-  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop).Times(1);
-
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
   // Expect three calls to GenerateAssistantResponse:
@@ -3327,6 +3324,13 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   base::RunLoop run_loop;
 
   testing::Sequence seq;
+
+  // Expect our tool provider will be informed of the new generation loop
+  // starting when the initial message is submitted.
+  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop)
+      .Times(1)
+      .InSequence(seq);
+
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
@@ -3407,6 +3411,12 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                         std::nullopt)));
                 run_loop.Quit();
               })));
+
+  // `OnGenerationCompleteWithNoToolsToHandle` should only be called once and
+  // only at the end of the tool loop.
+  EXPECT_CALL(*mock_tool_provider_, OnGenerationCompleteWithNoToolsToHandle)
+      .Times(1)
+      .InSequence(seq);
 
   // Submit human entry to start the flow
   conversation_handler_->SubmitHumanConversationEntry("Use multiple tools",
