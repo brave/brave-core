@@ -45,7 +45,7 @@ bool BraveDoSomething(...) {
 ```
 
 brave/browser/sources.gni
-```
+```gn
 deps += [ "//brave/browser/chrome_feature" ]
 ```
 
