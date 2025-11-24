@@ -39,8 +39,8 @@ BINARY_CHECKSUMS = {
         '3d9b283fde540cfc91afdc3949bb52ac64262592099c301a8da0d125f87bf552'),
 }
 
-# Installation directory (relative to brave core)
-INSTALL_DIR = brave_chromium_utils.wspath('//brave/third_party/opengrep')
+# Download directory (relative to brave core)
+INSTALL_DIR = brave_chromium_utils.wspath('//brave/third_party/opengrep/bin')
 
 
 def GetPlatformDistName():
@@ -78,8 +78,8 @@ def GetPlatformDistName():
     return None, None
 
 
-def IsOpengrepInstalled(binary_name):
-    """Check if opengrep is already installed with the correct version."""
+def IsOpengrepDownloaded(binary_name):
+    """Check if opengrep is already downloaded with the correct version."""
     binary_path = os.path.join(INSTALL_DIR, binary_name)
     version_file = os.path.join(INSTALL_DIR, '.version')
 
@@ -90,7 +90,7 @@ def IsOpengrepInstalled(binary_name):
         with open(version_file, 'r') as f:
             installed_version = f.read().strip()
             if installed_version == OPENGREP_VERSION:
-                print(f'Opengrep {OPENGREP_VERSION} already installed')
+                print(f'Opengrep {OPENGREP_VERSION} already downloaded')
                 return True
     except IOError:
         pass
@@ -112,13 +112,13 @@ def VerifyChecksum(file_path, expected_checksum):
         )
 
 
-def InstallOpengrep():
-    """Download and install opengrep binary."""
+def DownloadOpengrep():
+    """Download opengrep binary."""
     dist_name, binary_name = GetPlatformDistName()
     if not dist_name:
         return 1
 
-    if IsOpengrepInstalled(binary_name):
+    if IsOpengrepDownloaded(binary_name):
         return 0
 
     binary_path = os.path.join(INSTALL_DIR, binary_name)
@@ -128,12 +128,13 @@ def InstallOpengrep():
     url = (f'https://github.com/opengrep/opengrep/releases/download/'
            f'{OPENGREP_VERSION}/{dist_name}')
 
-    print(f'Installing opengrep {OPENGREP_VERSION}...')
+    print(f'Downloading opengrep {OPENGREP_VERSION}...')
 
-    # Create installation directory
+    # Create download directory
     deps.EnsureDirExists(INSTALL_DIR)
 
     # Download to temporary file
+    tmp_path = None
     try:
         import tempfile
         with tempfile.NamedTemporaryFile(delete=False, dir=INSTALL_DIR) as tmp:
@@ -142,13 +143,13 @@ def InstallOpengrep():
 
         # Verify checksum
         expected_checksum = BINARY_CHECKSUMS.get(dist_name)
-        if expected_checksum:
-            print('Verifying checksum...')
-            VerifyChecksum(tmp_path, expected_checksum)
-        else:
-            print(
-                'Warning: No checksum available for verification. Proceeding anyway.'
+        if not expected_checksum:
+            raise RuntimeError(
+                f'No checksum available for {dist_name}. Cannot verify download.'
             )
+
+        print('Verifying checksum...')
+        VerifyChecksum(tmp_path, expected_checksum)
 
         # Make executable (Unix-like systems)
         if platform.system() != 'Windows':
@@ -160,22 +161,30 @@ def InstallOpengrep():
         if os.path.exists(binary_path):
             os.remove(binary_path)
         os.rename(tmp_path, binary_path)
+        tmp_path = None  # Successfully moved, don't clean up
 
         # Write version file
         with open(version_file, 'w') as f:
             f.write(OPENGREP_VERSION + '\n')
 
-        print(f'Successfully installed opengrep to {binary_path}')
+        print(f'Successfully downloaded opengrep to {binary_path}')
         return 0
 
     except Exception as e:
-        print(f'Error installing opengrep: {e}')
+        print(f'Error downloading opengrep: {e}')
         return 1
+    finally:
+        # Clean up temporary file if it still exists
+        if tmp_path and os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass  # Best effort cleanup
 
 
 def main():
     """Entry point."""
-    return InstallOpengrep()
+    return DownloadOpengrep()
 
 
 if __name__ == '__main__':
