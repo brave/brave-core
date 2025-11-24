@@ -829,7 +829,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         TextView blockElementsText =
                 mSecondaryLayout.findViewById(R.id.brave_shields_block_element_text);
         blockElementsText.setVisibility(
-                !isPrivateWindow
+                (!isPrivateWindow
+                                        || BraveShieldsContentSettings
+                                                .getAllowElementBlockerInPrivateModeEnabledPref())
                                 && ChromeFeatureList.isEnabled(
                                         BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
                         ? View.VISIBLE
