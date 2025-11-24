@@ -10,17 +10,17 @@
 #include <tuple>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
 using FeedItems = std::vector<mojom::FeedItemPtr>;
-using ETags = base::flat_map<std::string, std::string>;
+using ETags = absl::flat_hash_map<std::string, std::string>;
 using FetchFeedCallback = base::OnceCallback<void(FeedItems items, ETags tags)>;
 using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
