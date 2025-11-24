@@ -10,5 +10,5 @@ crate-type = ["cdylib"]
 argon2 = { version = "0.5", default-features = false, features = ["alloc"] }
 hex = "0.4"
 opaque-ke = { version = "3.0.0", features = [ "argon2", "std" ] }
-rand = { version = "*", features = [ "getrandom" ] }
+rand = { version = "0.8", features = [ "getrandom" ] }
 wasm-bindgen = "=0.2.100" # Must match the wasm-bindgen-cli version under brave/tools/crates!
