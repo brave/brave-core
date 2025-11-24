@@ -209,7 +209,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL_SUBLABEL" desc="Description for shields panel toggle label that would allow element blocker in private mode.">
-    Using block elements feature in private browsing mode writes data to the normal browsing profile mode.
+    Using the Block Elements feature in Private Windows writes data to the normal browsing profile.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
