@@ -5,6 +5,7 @@
 
 #include "brave/browser/ai_chat/code_execution_tool.h"
 
+#include <queue>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -17,8 +18,10 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "code_execution_tool.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -51,12 +54,66 @@ class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
     console_messages_.push_back(base::UTF16ToUTF8(message));
   }
 
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    LOG(ERROR) << "CodeSandboxWebContentsObserver: DidFinishNavigation "
+               << navigation_handle->GetURL() << " "
+               << navigation_handle->HasCommitted() << " "
+               << navigation_handle->IsErrorPage() << " "
+               << navigation_handle->IsInPrimaryMainFrame();
+    if (navigation_handle->HasCommitted() &&
+        !navigation_handle->IsErrorPage() &&
+        navigation_handle->IsInPrimaryMainFrame() &&
+        navigation_handle->GetURL() == GURL(kAIChatCodeSandboxUIURL)) {
+      navigated_ = true;
+      ExecuteQueuedScripts();
+    }
+  }
+
+  void EnqueueScript(const std::string& script,
+                     base::OnceCallback<void(base::Value)> callback) {
+    script_queue_.push(std::make_pair(script, std::move(callback)));
+    ExecuteQueuedScripts();
+  }
+
+  void ExecuteQueuedScripts() {
+    LOG(ERROR) << "CodeSandboxWebContentsObserver: ExecuteQueuedScripts "
+               << script_queue_.size();
+    if (!navigated_) {
+      return;
+    }
+
+    while (!script_queue_.empty()) {
+      auto& pair = script_queue_.front();
+      auto& script = pair.first;
+      auto& callback = pair.second;
+
+      auto* rfh = web_contents()->GetPrimaryMainFrame();
+      if (!injector_.is_bound()) {
+        rfh->GetRemoteAssociatedInterfaces()->GetInterface(&injector_);
+      }
+
+      auto wrapped_js_utf16 = base::UTF8ToUTF16(script);
+      LOG(ERROR) << "wrapped_js_utf16: " << wrapped_js_utf16;
+      injector_->RequestAsyncExecuteScript(
+          content::ISOLATED_WORLD_ID_GLOBAL, wrapped_js_utf16,
+          blink::mojom::UserActivationOption::kActivate,
+          blink::mojom::PromiseResultOption::kAwait, std::move(callback));
+
+      script_queue_.pop();
+    }
+  }
+
   std::string GetConsoleContents() const {
     return base::JoinString(console_messages_, "\n");
   }
 
  private:
+  bool navigated_ = false;
   std::vector<std::string> console_messages_;
+  std::queue<std::pair<std::string, base::OnceCallback<void(base::Value)>>>
+      script_queue_;
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
 };
 
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
@@ -139,14 +196,14 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
     return;
   }
 
-  auto wrapped_js =
-      base::StrCat({"(function(window, location) { try {", *script,
-                    "} catch (error) {console.error('Error:', "
-                    "error.toString()); } })(undefined, undefined)"});
+  auto wrapped_js = *script;
+  // base::StrCat({"(function(window, location) { try {", *script,
+  //               "} catch (error) {console.error('Error:', "
+  //               "error.toString()); } })(undefined, undefined)"});
 
-  auto otr_profile_id = Profile::OTRProfileID::CreateUniqueForCodeSandbox();
-  auto* otr_profile = profile_->GetOffTheRecordProfile(
-      otr_profile_id, true /* create_if_needed */);
+  // auto otr_profile_id = Profile::OTRProfileID::CreateUniqueForCodeSandbox();
+  auto* otr_profile =
+      profile_->GetPrimaryOTRProfile(true /* create_if_needed */);
 
   content::WebContents::CreateParams create_params(otr_profile);
   auto web_contents = content::WebContents::Create(create_params);
@@ -158,21 +215,13 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
   request_it->observer = std::make_unique<CodeSandboxWebContentsObserver>(
       request_it->web_contents.get());
 
-  auto* rfh = request_it->web_contents->GetPrimaryMainFrame();
-  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&request_it->injector);
+  request_it->observer->EnqueueScript(
+      wrapped_js, base::BindOnce(&CodeExecutionTool::HandleScriptResult,
+                                 weak_ptr_factory_.GetWeakPtr(), request_it));
 
   request_it->web_contents->GetController().LoadURL(
       GURL(kAIChatCodeSandboxUIURL), content::Referrer(),
       ui::PAGE_TRANSITION_TYPED, std::string());
-
-  wrapped_js = "(function() { return 'Hello, world!'; })()";
-  auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js);
-  request_it->injector->RequestAsyncExecuteScript(
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL, wrapped_js_utf16,
-      blink::mojom::UserActivationOption::kActivate,
-      blink::mojom::PromiseResultOption::kAwait,
-      base::BindOnce(&CodeExecutionTool::HandleScriptResult,
-                     weak_ptr_factory_.GetWeakPtr(), request_it));
 
   auto time_limit =
       execution_time_limit_for_testing_.value_or(kExecutionTimeLimit);

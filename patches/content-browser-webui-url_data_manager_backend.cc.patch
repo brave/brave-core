@@ -1,0 +1,12 @@
+diff --git a/content/browser/webui/url_data_manager_backend.cc b/content/browser/webui/url_data_manager_backend.cc
+index e997f0e31edd191d7a8e00f30ee397cb91a14635..148ec6764f9862aa3b61da98aa3289759953308d 100644
+--- a/content/browser/webui/url_data_manager_backend.cc
++++ b/content/browser/webui/url_data_manager_backend.cc
+@@ -192,6 +192,7 @@ scoped_refptr<net::HttpResponseHeaders> URLDataManagerBackend::GetHeaders(
+         network::mojom::CSPDirectiveName::MediaSrc,
+         network::mojom::CSPDirectiveName::ObjectSrc,
+         network::mojom::CSPDirectiveName::RequireTrustedTypesFor,
++        network::mojom::CSPDirectiveName::Sandbox,
+         network::mojom::CSPDirectiveName::ScriptSrc,
+         network::mojom::CSPDirectiveName::StyleSrc,
+         network::mojom::CSPDirectiveName::TrustedTypes,

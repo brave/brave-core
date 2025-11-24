@@ -89,29 +89,29 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, HelloWorld) {
   std::string output;
-  ExecuteCode("console.log('hello world')", &output);
+  ExecuteCode("'hello world'", &output);
   EXPECT_EQ(output, "hello world");
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
                        BlocksNetworkRequest) {
   std::string script = base::StrCat({
-      R"(
+      R"((function() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', ')",
       test_server_url(),
       R"(', false);
         try {
           xhr.send();
-          console.log('Request succeeded: ' + xhr.responseText);
+          return 'Request succeeded: ' + xhr.responseText;
         } catch (e) {
-          console.log('Error: ' + e.message);
+          return 'Error: ' + e.message;
         }
-      )"});
+  })())"});
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_THAT(output, HasSubstr("action has been blocked"));
+  EXPECT_THAT(output, HasSubstr("Failed to load"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {

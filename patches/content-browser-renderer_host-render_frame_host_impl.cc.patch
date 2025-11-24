@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index e2d7faad75be6d633ca1f7ce5040a54c1a6b8197..40d634da87ca9295dba5a00df493a0b4c23e211b 100644
+index e2d7faad75be6d633ca1f7ce5040a54c1a6b8197..f64b5d1fc4e869bd58eeb76c0c04d35695298dd4 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -5311,6 +5311,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
@@ -34,3 +34,12 @@ index e2d7faad75be6d633ca1f7ce5040a54c1a6b8197..40d634da87ca9295dba5a00df493a0b4
    if (IsCredentialless() || IsNestedWithinFencedFrame() ||
        CoopSuppressOpener(/*opener=*/this)) {
      params->opener_suppressed = true;
+@@ -11671,7 +11675,7 @@ CanCommitStatus RenderFrameHostImpl::CanCommitOriginAndUrl(
+   // set OriginIsolationRequest to kNone (this is implicitly done by the
+   // UrlInfoInit constructor).
+   if (!Navigator::CheckWebUIRendererDoesNotDisplayNormalURL(
+-          this, UrlInfo(UrlInfoInit(url).WithOrigin(origin).WithIsPdf(is_pdf)),
++          this, UrlInfo(UrlInfoInit(url).WithOrigin(origin).WithIsPdf(is_pdf).WithSandbox(is_sandboxed)),
+           /*is_renderer_initiated_check=*/true)) {
+     return CanCommitStatus::CANNOT_COMMIT_URL;
+   }
