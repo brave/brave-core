@@ -25,7 +25,6 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NtpUtil;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -47,7 +46,6 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
-    public static final String PREF_BACKGROUND_IMAGES_CATEGORY = "background_images";
     public static final String PREF_OPENING_SCREEN = "opening_screen_option";
     public static final String PREF_OPENING_SCREEN_CATEGORY = "opening_screen";
 
@@ -109,12 +107,6 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                             getContext().getString(R.string.sponsored_images_learn_more));
             spannableString.setSpan(chromeClickableSpan, 0, spannableString.length(), 0);
             mLearnMorePreference.setSummary(spannableString);
-        }
-        if (!NTPBackgroundImagesBridge.enableSponsoredImages()) {
-            PreferenceCategory preferenceCategory =
-                    (PreferenceCategory) findPreference(PREF_BACKGROUND_IMAGES_CATEGORY);
-            preferenceCategory.removePreference(mShowSponsoredImagesPref);
-            preferenceCategory.removePreference(mLearnMorePreference);
         }
 
         mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
