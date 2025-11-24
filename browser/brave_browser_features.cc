@@ -66,7 +66,7 @@ BASE_FEATURE(kBraveAndroidDynamicColors,
 // Enable fresh NTP display after idle expiration on Android.
 // This feature allows showing a refreshed NTP when the app has been idle
 // for a specified duration.
-BASE_FEATURE(kBraveFreshNtpAfterIdleExpirement,
+BASE_FEATURE(kBraveFreshNtpAfterIdleExperiment,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -78,8 +78,8 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
 
 #if BUILDFLAG(IS_ANDROID)
 // The variant of the fresh NTP experiment. i.e. A, B, C, etc.
-const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExpirementVariant{
-    &kBraveFreshNtpAfterIdleExpirement,
+const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExperimentVariant{
+    &kBraveFreshNtpAfterIdleExperiment,
     /*name=*/"variant",
     /*default_value=*/"A"};
 #endif  // BUILDFLAG(IS_ANDROID)
