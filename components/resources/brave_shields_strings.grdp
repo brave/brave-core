@@ -205,7 +205,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL" desc="Shields panel toggle label that would allow element blocker in private mode.">
-    Allow Element blocking in Private Browsing mode
+    Allow element blocking in Private Windows
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL_SUBLABEL" desc="Description for shields panel toggle label that would allow element blocker in private mode.">
