@@ -108,6 +108,8 @@ static constexpr auto kSimpleQueryStringTrackers =
             "srsltid",
             // https://github.com/brave/brave-browser/issues/24988
             "ss_email_id",
+            // https://github.com/brave/brave-browser/issues/50532
+            "syclid",
             // https://github.com/brave/brave-browser/issues/48226
             "ttclid",
             // https://github.com/brave/brave-browser/issues/18020
