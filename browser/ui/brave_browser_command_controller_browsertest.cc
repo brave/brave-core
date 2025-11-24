@@ -23,6 +23,7 @@
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -37,6 +38,7 @@
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
+#include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -194,6 +196,15 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
+
+  void WaitForPostedTasks() {
+    // Post a dummy task in the current thread and wait for its completion so
+    // that any already posted tasks are completed.
+    base::RunLoop run_loop;
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, run_loop.QuitClosure());
+    run_loop.Run();
+  }
 
  private:
   policy::MockConfigurationPolicyProvider provider_;
@@ -439,6 +450,20 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* command_controller = browser()->command_controller();
   auto* tsm = browser()->tab_strip_model();
 
+  // This test sometimes crashes on exit. The stack trace shows that when
+  // InProcessBrowserTest::QuitBrowsers is executing it triggers
+  // TabGroupSyncService to initialize in order to save the tab groups. In the
+  // process of doing that the TabGroupSyncService attempts to retrieve Browser*
+  // which has already been destroyed and CHECKs. Initializing
+  // TabGroupSyncService early here is an attempt to prevent the race between
+  // the service being initialized and the browser being destroyed.
+  tab_groups::TabGroupSyncService* service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(service);
+  service->SetIsInitializedForTesting(true);
+  EXPECT_EQ(0u, service->GetAllGroups().size());
+
   GURL url("https://example.com");
   chrome::AddTabAt(browser(), url, 1, false);
   chrome::AddTabAt(browser(), url, 2, false);
@@ -448,6 +473,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_EQ(5, tsm->count());
   command_controller->ExecuteCommand(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP);
   EXPECT_EQ(5, tsm->count());
+  // Make sure TabGroupSyncService completed all its tasks so that it doesn't
+  // have to wait on anything when the test exits.
+  WaitForPostedTasks();
+  EXPECT_EQ(1u, service->GetAllGroups().size());
 
   // All tabs should have the same group.
   auto group = tsm->GetTabGroupForTab(0);
