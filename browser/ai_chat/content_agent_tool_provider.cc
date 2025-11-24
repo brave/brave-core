@@ -65,7 +65,11 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   CreateTools();
 }
 
-ContentAgentToolProvider::~ContentAgentToolProvider() = default;
+ContentAgentToolProvider::~ContentAgentToolProvider() {
+  // When this tool provider and its owned uses (e.g. conversation)are closed,
+  // we should hand back state of the tab to regular uses of the browser.
+  StopAllTasks();
+}
 
 std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
   // Note: We don't have the ability to filter tools based on conversation
