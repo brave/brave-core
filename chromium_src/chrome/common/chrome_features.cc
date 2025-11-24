@@ -18,6 +18,11 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
+    // Actor: Show handoff button when user takes control at least until we
+    // implement a resume mechanism in the AI Chat UI itself, if this flag ever
+    // gets removed and is in the "enabled" state. Whilst it's in disabled
+    // state, a "resume control" button is shown on the Tab.
+    {kGlicHandoffButtonHiddenClientControl, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
