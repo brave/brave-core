@@ -13,7 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_map.h"
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
@@ -46,6 +45,7 @@
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 

@@ -10,11 +10,9 @@
 #include <list>
 #include <map>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -33,6 +31,7 @@
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/gurl.h"
 
 namespace brave_news {

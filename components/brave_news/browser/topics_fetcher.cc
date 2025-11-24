@@ -11,7 +11,6 @@
 #include <variant>
 #include <vector>
 
-#include "absl/container/flat_hash_map.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -20,6 +19,7 @@
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 

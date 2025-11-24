@@ -10,13 +10,13 @@
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/gurl.h"
 
 namespace brave_news {

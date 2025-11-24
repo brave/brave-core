@@ -10,10 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -31,6 +29,7 @@
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 namespace {
