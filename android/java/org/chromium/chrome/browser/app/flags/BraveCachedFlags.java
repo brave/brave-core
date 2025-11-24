@@ -20,26 +20,26 @@ import java.util.List;
 public class BraveCachedFlags extends ChromeCachedFlags {
     // Cached feature flag for fresh NTP after idle expiration - safe to access before native is
     // ready
-    public static final CachedFlag sBraveFreshNtpAfterIdleExpirementEnabled =
+    public static final CachedFlag sBraveFreshNtpAfterIdleExperimentEnabled =
             new CachedFlag(
                     ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT,
+                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
                     false);
 
     // Cached variant parameter for fresh NTP experiment - safe to access before native is ready
-    public static final StringCachedFeatureParam sBraveFreshNtpAfterIdleExpirementVariant =
+    public static final StringCachedFeatureParam sBraveFreshNtpAfterIdleExperimentVariant =
             new StringCachedFeatureParam(
                     ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT,
+                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
                     "variant",
                     "A");
 
     // List of cached flags for Brave features - safe to access before native is ready
     private static final List<CachedFlag> sBraveFlagsCached =
-            List.of(sBraveFreshNtpAfterIdleExpirementEnabled);
+            List.of(sBraveFreshNtpAfterIdleExperimentEnabled);
     // List of cached feature params for Brave features - safe to access before native is ready
     private static final List<CachedFeatureParam<?>> sBraveFeatureParamsCached =
-            List.of(sBraveFreshNtpAfterIdleExpirementVariant);
+            List.of(sBraveFreshNtpAfterIdleExperimentVariant);
 
     BraveCachedFlags() {
         BraveCachedFeatureParam.setBraveParams(sBraveFeatureParamsCached);

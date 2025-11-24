@@ -20,7 +20,7 @@ public class BraveFreshNtpHelper {
      *     flag, so it's safe to call even before native is ready.
      */
     public static boolean isEnabled() {
-        return BraveCachedFlags.sBraveFreshNtpAfterIdleExpirementEnabled.isEnabled();
+        return BraveCachedFlags.sBraveFreshNtpAfterIdleExperimentEnabled.isEnabled();
     }
 
     /**
@@ -31,6 +31,6 @@ public class BraveFreshNtpHelper {
      * @return The variant string.
      */
     public static String getVariant() {
-        return BraveCachedFlags.sBraveFreshNtpAfterIdleExpirementVariant.getValue();
+        return BraveCachedFlags.sBraveFreshNtpAfterIdleExperimentVariant.getValue();
     }
 }
