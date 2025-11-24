@@ -722,3 +722,15 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
   func accountsAdded(addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
+
+// MARK: Wallet WebUI action handlers
+extension BrowserViewController {
+  func showWalletBackupUI() {
+  }
+
+  func unlockWalletUI() {
+  }
+
+  func showOnboarding(_ isNewWallet: Bool) {
+  }
+}
