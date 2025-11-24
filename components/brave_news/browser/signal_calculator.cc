@@ -86,7 +86,7 @@ void SignalCalculator::OnGotHistory(
     }
   }
 
-  base::flat_map<std::string_view, std::vector<std::string>> origin_visits;
+  absl::flat_hash_map<std::string_view, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
     auto host = item.url().host();
     origin_visits[host].push_back(item.url().spec());

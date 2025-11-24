@@ -779,6 +779,8 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                          return std::make_pair(item.first,
                                                item.second->Clone());
                        });
+                   //  Create a flat map using O(N log N) ctor instead of O(N^2)
+                   //  insertion
                    base::flat_map<std::string, Signal> signals(
                        std::move(signals_pairs));
                    std::move(callback).Run(std::move(signals));
