@@ -167,13 +167,14 @@ patches/*.java.patch @brave/java-patch-reviewers
 third_party/bitcoin-core/BUILD.gn @brave/sec-team
 
 # Files related to the installer and differential updates on Windows
-installer/mini_installer/brave_mini_installer_constants_unittest.cc @mherrmann
-installer/setup/ @mherrmann
-installer/util/chromium_index_helper_begin.h @mherrmann
-installer/util/chromium_index_helper_end.h @mherrmann
-test/filters/installer_util_unittests.filter @mherrmann
-test/filters/setup_unittests.filter @mherrmann
-third_party/bspatch/ @mherrmann
+/chromium_src/chrome/installer/setup/resources/ @mkarolin
+/installer/mini_installer/brave_mini_installer_constants_unittest.cc @mherrmann
+/installer/setup/ @mherrmann
+/installer/util/chromium_index_helper_begin.h @mherrmann
+/installer/util/chromium_index_helper_end.h @mherrmann
+/test/filters/installer_util_unittests.filter @mherrmann
+/test/filters/setup_unittests.filter @mherrmann
+/third_party/bspatch/ @mherrmann
 
 # Boost imports (i.e. config, multiprecision)
 third_party/boost @brave/deps-reviewers
