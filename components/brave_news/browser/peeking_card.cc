@@ -14,7 +14,6 @@
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/time/time.h"
@@ -22,6 +21,7 @@
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 

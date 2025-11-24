@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "absl/container/flat_hash_map.h"
 #include "base/containers/span.h"
 #include "base/memory/raw_span.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -20,6 +19,7 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 

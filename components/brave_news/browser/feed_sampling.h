@@ -13,12 +13,12 @@
 #include <utility>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
