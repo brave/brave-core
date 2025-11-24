@@ -1440,6 +1440,7 @@ if (is_android) {
     deps = [
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.crypto_wallet",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.referrer",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabbed_mode",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.toolbar",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.vpn",
