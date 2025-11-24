@@ -10,12 +10,12 @@
 #include <string>
 #include <vector>
 
-#include "absl/container/flat_hash_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "url/gurl.h"
 
 class PrefService;

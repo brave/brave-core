@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -21,6 +20,7 @@
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news::p3a {
 
