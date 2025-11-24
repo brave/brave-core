@@ -9,7 +9,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -29,18 +32,28 @@ TestFiltersProvider::TestFiltersProvider(const std::string& rules)
     : TestFiltersProvider(rules, true, 0) {}
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          bool engine_is_default,
-                                         uint8_t permission_mask,
-                                         bool is_initialized)
-    : AdBlockFiltersProvider(engine_is_default),
+                                         uint8_t permission_mask)
+    : AdBlockFiltersProvider(
+          engine_is_default,
+          nullptr),  // must be set later by RegisterToFiltersProviderManager
       rules_(rules),
       permission_mask_(permission_mask),
-      is_initialized_(is_initialized) {
-  if (is_initialized_) {
-    NotifyObservers(engine_is_default_);
-  }
-}
+      is_initialized_(false) {}
 
 TestFiltersProvider::~TestFiltersProvider() = default;
+
+void TestFiltersProvider::RegisterAsSourceProvider(
+    AdBlockService* ad_block_service) {
+  RegisterAsSourceProvider(ad_block_service->filters_provider_manager());
+}
+
+void TestFiltersProvider::RegisterAsSourceProvider(
+    AdBlockFiltersProviderManager* filters_provider_manager) {
+  AdBlockFiltersProvider::filters_provider_manager_ = filters_provider_manager;
+  AdBlockFiltersProvider::filters_provider_manager_->AddProvider(
+      this, engine_is_default_);
+  Initialize();
+}
 
 std::string TestFiltersProvider::GetNameForDebugging() {
   return "TestFiltersProvider";
