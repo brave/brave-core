@@ -33,6 +33,7 @@ import {
   selectAllVisibleUserAssetsFromQueryResult, //
   selectHiddenNftsFromQueryResult,
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import { useRoute } from '../../../../common/hooks/use_route'
 
 // Styled Components
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
@@ -43,6 +44,7 @@ import { StyledWrapper } from './style'
 export const PortfolioNftAsset = () => {
   // routing
   const history = useHistory()
+  const { openOrPushRoute } = useRoute()
   const { assetId } = useParams<{
     assetId?: string
   }>()
@@ -125,8 +127,8 @@ export const PortfolioNftAsset = () => {
       return
     }
 
-    history.push(makeSendRoute(selectedAssetFromParams, ownerAccount))
-  }, [selectedAssetFromParams, ownerAccount, history])
+    openOrPushRoute(makeSendRoute(selectedAssetFromParams, ownerAccount))
+  }, [selectedAssetFromParams, ownerAccount, openOrPushRoute])
 
   // asset not found
   if (
