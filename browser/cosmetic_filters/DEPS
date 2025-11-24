@@ -1,3 +1,0 @@
-include_rules = [
-  "+brave/components/infobars/core/brave_confirm_infobar_delegate.h",
-]
