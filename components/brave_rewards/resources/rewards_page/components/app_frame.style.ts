@@ -35,7 +35,7 @@ export const style = scoped.css`
         background:
           color-mix(in srgb, ${color.container.background} 60% , transparent);
         border-bottom-color: ${color.divider.subtle};
-        box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.08);
+        box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.1);
       }
     }
 
@@ -65,9 +65,10 @@ export const style = scoped.css`
 
     footer {
       flex: 0 0 auto;
+      position: relative;
       background: ${color.container.background};
       padding: 8px;
-      box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
+      box-shadow: 0px -4px 16px rgba(0, 0, 0, 0.08);
     }
 
     ul {
