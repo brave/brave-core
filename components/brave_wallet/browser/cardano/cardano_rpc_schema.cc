@@ -57,6 +57,20 @@ std::optional<Block> Block::FromBlockfrostApiValue(
   return result;
 }
 
+UnspentOutput::Token::Token() = default;
+UnspentOutput::Token::~Token() = default;
+UnspentOutput::Token::Token(const UnspentOutput::Token&) = default;
+UnspentOutput::Token::Token(UnspentOutput::Token&&) = default;
+UnspentOutput::Token& UnspentOutput::Token::operator=(const Token&) = default;
+UnspentOutput::Token& UnspentOutput::Token::operator=(Token&&) = default;
+
+UnspentOutput::UnspentOutput() = default;
+UnspentOutput::UnspentOutput(const UnspentOutput&) = default;
+UnspentOutput::UnspentOutput(UnspentOutput&&) = default;
+UnspentOutput& UnspentOutput::operator=(const UnspentOutput&) = default;
+UnspentOutput& UnspentOutput::operator=(UnspentOutput&&) = default;
+UnspentOutput::~UnspentOutput() = default;
+
 // static
 std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
     CardanoAddress address_to,
@@ -76,12 +90,28 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
   }
   bool found_lovelace = false;
   for (const auto& asset : api_unspent_output->amount) {
+    uint64_t amount = 0;
+    if (!base::StringToUint64(asset.quantity, &amount)) {
+      return std::nullopt;
+    }
+
     if (asset.unit == kNativeLovelaceToken) {
-      if (!base::StringToUint64(asset.quantity, &result.lovelace_amount)) {
+      result.lovelace_amount = amount;
+      found_lovelace = true;
+    } else {
+      std::vector<uint8_t> policy_and_name;
+      if (!base::HexStringToBytes(asset.unit, &policy_and_name)) {
         return std::nullopt;
       }
-      found_lovelace = true;
-      break;
+      if (policy_and_name.size() < 28) {
+        return std::nullopt;
+      }
+      auto [policy, name] = base::span(policy_and_name).split_at<28>();
+
+      UnspentOutput::Token token;
+      base::span(token.policy_id).copy_from(policy);
+      base::span(token.name).copy_from(name);
+      result.tokens.emplace(std::move(token), amount);
     }
   }
 
