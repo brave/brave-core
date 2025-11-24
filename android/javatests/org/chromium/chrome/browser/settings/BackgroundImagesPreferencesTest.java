@@ -49,12 +49,12 @@ public class BackgroundImagesPreferencesTest {
     // Test for Opening Screen preference when feature is disabled. It should not be shown.
     @Test
     @SmallTest
-    @DisableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT)
+    @DisableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testOpeningScreenPrefNotShownWhenFeatureDisabled() {
         Assert.assertFalse(
-                "BraveFreshNtpAfterIdleExpirement feature should be disabled",
+                "BraveFreshNtpAfterIdleExperiment feature should be disabled",
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT));
+                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
         startSettings();
 
         // Wait for async preference updates to complete
@@ -94,12 +94,12 @@ public class BackgroundImagesPreferencesTest {
     // The preference should not be shown when variant is "A" (the default).
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT)
+    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testOpeningScreenPrefNotShownWhenFeatureEnabledButVariantIsA() {
         Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExpirement feature should be enabled",
+                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT));
+                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
         startSettings();
 
         // Wait for async preference updates to complete
@@ -140,12 +140,12 @@ public class BackgroundImagesPreferencesTest {
     // The preference should be shown when variant is not "A".
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT + ":variant/B")
+    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/B")
     public void testOpeningScreenPrefShownWhenFeatureEnabledAndVariantIsB() {
         Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExpirement feature should be enabled",
+                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT));
+                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
         startSettings();
 
         // Wait for async preference updates to complete
@@ -187,12 +187,12 @@ public class BackgroundImagesPreferencesTest {
     // The preference should be shown when variant is not "A".
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT + ":variant/C")
+    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/C")
     public void testOpeningScreenPrefShownWhenFeatureEnabledAndVariantIsC() {
         Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExpirement feature should be enabled",
+                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT));
+                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
         startSettings();
 
         // Wait for async preference updates to complete
@@ -234,12 +234,12 @@ public class BackgroundImagesPreferencesTest {
     // The preference should be shown when variant is not "A".
     @Test
     @SmallTest
-    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT + ":variant/D")
+    @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT + ":variant/D")
     public void testOpeningScreenPrefShownWhenFeatureEnabledAndVariantIsD() {
         Assert.assertTrue(
-                "BraveFreshNtpAfterIdleExpirement feature should be enabled",
+                "BraveFreshNtpAfterIdleExperiment feature should be enabled",
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT));
+                        BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT));
         startSettings();
 
         // Wait for async preference updates to complete

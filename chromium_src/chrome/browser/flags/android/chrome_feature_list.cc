@@ -74,7 +74,7 @@
     &brave_shields::features::kBraveShieldsElementPicker,                      \
     &features::kBraveAndroidDynamicColors,                                     \
     &features::kNewAndroidOnboarding,                                          \
-    &features::kBraveFreshNtpAfterIdleExpirement,                              \
+    &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &brave_ads::kNewTabPageAdFeature,                                          \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_account::features::kBraveAccount,                                   \
