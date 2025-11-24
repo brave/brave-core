@@ -48,10 +48,10 @@ double ProjectToRange(double value, double min, double max) {
   return value * range + min;
 }
 
-base::flat_map<std::string_view, double> GetVisitWeightings(
+absl::flat_hash_map<std::string_view, double> GetVisitWeightings(
     const history::QueryResults& history) {
   // Score hostnames from browsing history by how many times they appear
-  base::flat_map<std::string_view, double> weightings;
+  absl::flat_hash_map<std::string_view, double> weightings;
   for (const auto& entry : history) {
     weightings[entry.url().host()] += 1;
   }
@@ -76,7 +76,7 @@ base::flat_map<std::string_view, double> GetVisitWeightings(
 // Get score for having visited a source.
 double GetVisitWeighting(
     const mojom::PublisherPtr& publisher,
-    const base::flat_map<std::string_view, double>& visit_weightings) {
+    const absl::flat_hash_map<std::string_view, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto* weight = base::FindOrNull(visit_weightings, host_name);
   if (!weight) {
@@ -185,7 +185,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(history);
-  base::flat_map<std::string_view, double> scores;
+  absl::flat_hash_map<std::string_view, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     std::vector<std::string> locales;

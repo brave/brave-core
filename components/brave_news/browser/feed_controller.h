@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
@@ -19,6 +18,7 @@
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace history {
 class HistoryService;
@@ -81,7 +81,7 @@ class FeedController {
 
   // A map from feed locale to the last known etag for that feed. Used to
   // determine when we have available updates.
-  base::flat_map<std::string, std::string> locale_feed_etags_;
+  absl::flat_hash_map<std::string, std::string> locale_feed_etags_;
   bool is_update_in_progress_ = false;
 
   base::WeakPtrFactory<FeedController> weak_ptr_factory_{this};
