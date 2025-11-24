@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 
 import {
   getProviderPayoutStatus,
@@ -65,7 +65,7 @@ export function PayoutStatusView() {
       <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
-          {formatMessage(getString('payoutCompletedText'), [getPayoutMonth()])}
+          {formatString(getString('payoutCompletedText'), [getPayoutMonth()])}
           &nbsp;
           <span className='rewards-payment-link'>
             <NewTabLink href={urls.contactSupportURL}>
@@ -82,7 +82,7 @@ export function PayoutStatusView() {
       <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
-          {formatMessage(getString('payoutProcessingText'), [getPayoutMonth()])}
+          {formatString(getString('payoutProcessingText'), [getPayoutMonth()])}
           &nbsp;
           <span className='rewards-payment-link'>
             <NewTabLink href={urls.payoutStatusURL}>
@@ -100,7 +100,7 @@ export function PayoutStatusView() {
       <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
-          {formatMessage(getString('payoutPendingText'), [
+          {formatString(getString('payoutPendingText'), [
             getPayoutMonth(),
             formatPayoutDate(adsInfo.nextPaymentDate),
           ])}

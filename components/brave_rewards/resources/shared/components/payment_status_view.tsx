@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
-import { LocaleContext, formatMessage } from '../lib/locale_context'
+import { LocaleContext } from '../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { ProviderPayoutStatus } from '../lib/provider_payout_status'
 
 import { NewTabLink } from './new_tab_link'
@@ -96,7 +98,7 @@ export function PaymentStatusView (props: Props) {
         <div><PaymentCompleteIcon /></div>
         <div>
           {
-            formatMessage(getString('rewardsPaymentCompleted'), [
+            formatString(getString('rewardsPaymentCompleted'), [
               getPaymentMonth()
             ])
           }&nbsp;
@@ -115,7 +117,7 @@ export function PaymentStatusView (props: Props) {
       <div className='rewards-payment-processing'>
         <div>
           {
-            formatMessage(getString('rewardsPaymentProcessing'), [
+            formatString(getString('rewardsPaymentProcessing'), [
               getPaymentMonth()
             ])
           }&nbsp;
@@ -136,7 +138,7 @@ export function PaymentStatusView (props: Props) {
         <div><MoneyBagIcon /></div>
         <div>
           {
-            formatMessage(getString('rewardsPaymentPending'), [
+            formatString(getString('rewardsPaymentPending'), [
               getPaymentMonth(),
               formatPaymentDate(props.nextPaymentDate)
             ])

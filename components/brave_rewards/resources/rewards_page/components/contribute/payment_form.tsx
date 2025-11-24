@@ -11,7 +11,7 @@ import RadioButton from '@brave/leo/react/radioButton'
 
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
@@ -100,7 +100,7 @@ export function PaymentForm(props: Props) {
     if (sendValue > balance.valueOr(0)) {
       return getString('contributeInsufficientFundsButtonLabel')
     }
-    return formatMessage(getString('contributeSendAmountButtonLabel'), [
+    return formatString(getString('contributeSendAmountButtonLabel'), [
       sendValue,
     ])
   }
@@ -149,12 +149,12 @@ export function PaymentForm(props: Props) {
           <Icon name='warning-triangle-filled' />
           <div className='content'>
             <h4>
-              {formatMessage(getString('contributeLoggedOutTitle'), [
+              {formatString(getString('contributeLoggedOutTitle'), [
                 providerName,
               ])}
             </h4>
             <p>
-              {formatMessage(getString('contributeLoggedOutText'), [
+              {formatString(getString('contributeLoggedOutText'), [
                 providerName,
               ])}
             </p>
@@ -167,7 +167,7 @@ export function PaymentForm(props: Props) {
               model.beginExternalWalletLogin(provider)
             }}
           >
-            {formatMessage(getString('contributeLoginButtonLabel'), [
+            {formatString(getString('contributeLoginButtonLabel'), [
               providerName,
             ])}
           </Button>

@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 
 import { EnableRewardsResult } from '../../lib/app_state'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { Modal } from '../common/modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -32,17 +32,12 @@ export function OnboardingErrorModal(props: Props) {
     if (props.result === 'wallet-generation-disabled') {
       return {
         header: getString('onboardingErrorDisabledTitle'),
-        text: formatMessage(getString('onboardingErrorDisabledText'), {
-          tags: {
-            $1: (content) => (
-              <NewTabLink
-                key='link'
-                href={urls.walletCreationDisabledURL}
-              >
-                {content}
-              </NewTabLink>
-            ),
-          },
+        text: formatString(getString('onboardingErrorDisabledText'), {
+          $1: (content) => (
+            <NewTabLink href={urls.walletCreationDisabledURL}>
+              {content}
+            </NewTabLink>
+          ),
         }),
       }
     }

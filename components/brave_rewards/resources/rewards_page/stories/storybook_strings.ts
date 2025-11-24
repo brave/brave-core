@@ -68,17 +68,17 @@ export const localeStrings: { [K in StringKey]: string } = {
     'Connecting to selected custodian temporarily unavailable',
   authorizeProviderUnavailableText1:
     'It looks like connecting $1 to Brave Rewards is temporarily unavailable. Please try again later.',
-  authorizeProviderUnavailableText2: 'You can view $2service status here$3.',
+  authorizeProviderUnavailableText2: 'You can view $1service status here/$1.',
   authorizeRegionNotSupportedText1:
     "Your $1 account can't be connected to your Brave Rewards profile at this time. Your $1 account is registered in a country that's not currently supported for connecting to Brave Rewards.",
   authorizeRegionNotSupportedText2:
-    'See the $2current list of supported regions and learn more$3 about connecting a custodial account to Brave Rewards.',
+    'See the $1current list of supported regions and learn more/$1 about connecting a custodial account to Brave Rewards.',
   authorizeRegionNotSupportedTitle: 'Region currently not supported',
   authorizeSignatureVerificationErrorText:
-    'There was a problem validating your request to connect your $1 account to Brave Rewards. You can $2contact support$3 for more help.',
+    'There was a problem validating your request to connect your $1 account to Brave Rewards. You can $2contact support/$2 for more help.',
   authorizeSignatureVerificationErrorTitle: 'Request could not be validated',
   authorizeUnexpectedErrorText:
-    'We weren’t able to complete your request. Please try again, and $2contact support$3 if the problem persists.',
+    'We weren’t able to complete your request. Please try again, and $1contact support/$1 if the problem persists.',
   authorizeUnexpectedErrorTitle: 'Something went wrong',
   authorizeUpholdBatNotAllowedText:
     'BAT is not yet supported in your region on Uphold.',
@@ -102,7 +102,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   captchaSupportButtonLabel: 'Contact support',
   closeButtonLabel: 'Close',
   communityTitle: 'Community',
-  connectedAdsViewedText: "You're earning for seeing $1# Ads$2 this month",
+  connectedAdsViewedText: "You're earning for seeing $1# Ads/$1 this month",
   connectAccountSubtext: 'Connect a payout account',
   connectAccountText: 'Ready to start earning?',
   connectButtonLabel: 'Connect account',
@@ -115,7 +115,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   connectSelfCustodyError: 'Something went wrong. Please try again',
   connectSelfCustodyNote:
     'With self-custody, BAT earnings will be paid out as SPL-BAT on the Solana network.',
-  connectSelfCustodyTerms: '$1Terms of Use$2 and $3Privacy Policy$4',
+  connectSelfCustodyTerms: '$1Terms of Use/$1 and $2Privacy Policy/$2',
   connectSelfCustodyTitle: 'Self-custody',
   connectSelfCustodyTooltip:
     'Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.',
@@ -184,7 +184,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   onboardingErrorCountryDeclaredText:
     'Unfortunately, there was an error while trying to set your country. Please try again.',
   onboardingErrorDisabledText:
-    'New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. $1Learn more$2',
+    'New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. $1Learn more/$1',
   onboardingErrorDisabledTitle: 'Brave Rewards not available',
   onboardingErrorText:
     'Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.',
@@ -195,7 +195,7 @@ export const localeStrings: { [K in StringKey]: string } = {
     'Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!',
   onboardingSuccessTitle: "Woohoo! You're all set!",
   onboardingTermsText:
-    'By enabling Rewards, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
+    'By enabling Rewards, you agree to the $1Terms of Service/$1 and $2Privacy Policy/$2.',
   onboardingTextItem1: 'Get paid for private ads you see in Brave',
   onboardingTextItem2: 'Get special benefits and discounts',
   onboardingTitle: 'Turn on Brave Rewards',
@@ -219,17 +219,17 @@ export const localeStrings: { [K in StringKey]: string } = {
   removeButtonLabel: 'Remove',
   resetButtonLabel: 'Reset',
   resetConsentText:
-    "I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the $1support article about resetting$2.",
+    "I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the $1support article about resetting/$1.",
   resetExternalWalletButtonLabel: 'Reset now',
   resetExternalWalletNote:
     'Don’t worry: Any BAT already in your $1 account won’t be affected by resetting.',
   resetExternalWalletText:
     'You will not earn for ads while connected to $1. Reset Brave Rewards and '
-    + 'connect a different payout account to keep earning. $2Learn more$3',
+    + 'connect a different payout account to keep earning. $2Learn more/$2',
   resetExternalWalletTitle: '$1 account no longer supported.',
   resetRewardsButtonLabel: 'Disable and reset Rewards',
   resetRewardsText:
-    'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
+    'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting/$1 for more details.',
   resetRewardsTitle: 'Reset Brave Rewards',
   rewardsPageTitle: 'Rewards',
   selfCustodyInviteDismissButtonLabel: 'Not now',
@@ -247,11 +247,11 @@ export const localeStrings: { [K in StringKey]: string } = {
   switchAccountTitle:
     'Your $1 account will be disconnected, and your Brave Rewards profile will be reset.',
   tosUpdateAcceptButtonLabel: 'I agree',
-  tosUpdateLink: 'See $1Brave Rewards Terms of Service$2',
+  tosUpdateLink: 'See $1Brave Rewards Terms of Service/$1',
   tosUpdateRequiredText:
-    'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
+    'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset/$1 Brave Rewards, which will disable the feature.',
   tosUpdateRequiredTitle: 'Updated Terms of Service',
-  unconnectedAdsViewedText: "You've seen $1# Ads$2 this month",
+  unconnectedAdsViewedText: "You've seen $1# Ads/$1 this month",
   unsupportedRegionText1:
     'Unfortunately, it looks like you’re in a region where Brave Rewards is not available.',
   unsupportedRegionText2: 'Don’t worry.',
@@ -259,7 +259,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   unsupportedRegionTitle: 'Sorry, Brave Rewards is not available',
   viewStoreLink: 'View Store',
   wdpCheckboxLabel:
-    'Yes, I’d also like to contribute to Brave Search and opt in to $1Web Discovery Project$2.',
+    'Yes, I’d also like to contribute to Brave Search and opt in to $1Web Discovery Project/$1.',
   wdpOptInText:
     'Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.',
   wdpOptInTitle: 'Web Discovery Project',

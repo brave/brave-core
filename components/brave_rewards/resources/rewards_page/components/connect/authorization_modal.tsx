@@ -10,7 +10,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import { RouterContext } from '../../lib/router'
 import { ConnectExternalWalletResult } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
@@ -106,7 +106,7 @@ export function AuthorizationModal() {
       case 'device-limit-reached':
         return (
           <span>
-            {formatMessage(getString('authorizeDeviceLimitReachedText'), [
+            {formatString(getString('authorizeDeviceLimitReachedText'), [
               providerName,
             ])}{' '}
             <NewTabLink href={urls.deviceLimitLearnMoreURL}>
@@ -130,14 +130,14 @@ export function AuthorizationModal() {
           </>
         )
       case 'kyc-required':
-        return formatMessage(getString('authorizeKycRequiredText'), [
+        return formatString(getString('authorizeKycRequiredText'), [
           providerName,
         ])
       case 'mismatched-countries':
         return (
           <>
             <p>
-              {formatMessage(getString('authorizeMismatchedCountriesText'), [
+              {formatString(getString('authorizeMismatchedCountriesText'), [
                 providerName,
               ])}
             </p>
@@ -152,7 +152,7 @@ export function AuthorizationModal() {
         return (
           <>
             <p>
-              {formatMessage(
+              {formatString(
                 getString('authorizeMismatchedProviderAccountsText'),
                 [providerName],
               )}
@@ -168,22 +168,15 @@ export function AuthorizationModal() {
         return (
           <>
             <p>
-              {formatMessage(getString('authorizeProviderUnavailableText1'), [
+              {formatString(getString('authorizeProviderUnavailableText1'), [
                 providerName,
               ])}
             </p>
             <p>
-              {formatMessage(getString('authorizeProviderUnavailableText2'), {
-                tags: {
-                  $2: (content) => (
-                    <NewTabLink
-                      key='link'
-                      href={urls.braveStatusURL}
-                    >
-                      {content}
-                    </NewTabLink>
-                  ),
-                },
+              {formatString(getString('authorizeProviderUnavailableText2'), {
+                $1: (content) => (
+                  <NewTabLink href={urls.braveStatusURL}>{content}</NewTabLink>
+                ),
               })}
             </p>
           </>
@@ -192,22 +185,17 @@ export function AuthorizationModal() {
         return (
           <>
             <p>
-              {formatMessage(getString('authorizeRegionNotSupportedText1'), [
+              {formatString(getString('authorizeRegionNotSupportedText1'), [
                 providerName,
               ])}
             </p>
             <p>
-              {formatMessage(getString('authorizeRegionNotSupportedText2'), {
-                tags: {
-                  $2: (content) => (
-                    <NewTabLink
-                      key='link'
-                      href={urls.supportedWalletRegionsURL}
-                    >
-                      {content}
-                    </NewTabLink>
-                  ),
-                },
+              {formatString(getString('authorizeRegionNotSupportedText2'), {
+                $1: (content) => (
+                  <NewTabLink href={urls.supportedWalletRegionsURL}>
+                    {content}
+                  </NewTabLink>
+                ),
               })}
             </p>
           </>
@@ -216,22 +204,15 @@ export function AuthorizationModal() {
       case 'uphold-transaction-verification-failure':
         return (
           <p>
-            {formatMessage(
+            {formatString(
               getString('authorizeSignatureVerificationErrorText'),
               {
-                placeholders: {
-                  $1: providerName,
-                },
-                tags: {
-                  $2: (content) => (
-                    <NewTabLink
-                      key='link'
-                      href={urls.contactSupportURL}
-                    >
-                      {content}
-                    </NewTabLink>
-                  ),
-                },
+                $1: providerName,
+                $2: (content) => (
+                  <NewTabLink href={urls.contactSupportURL}>
+                    {content}
+                  </NewTabLink>
+                ),
               },
             )}
           </p>
@@ -243,17 +224,10 @@ export function AuthorizationModal() {
       case 'unexpected-error':
         return (
           <p>
-            {formatMessage(getString('authorizeUnexpectedErrorText'), {
-              tags: {
-                $2: (content) => (
-                  <NewTabLink
-                    key='link'
-                    href={urls.contactSupportURL}
-                  >
-                    {content}
-                  </NewTabLink>
-                ),
-              },
+            {formatString(getString('authorizeUnexpectedErrorText'), {
+              $1: (content) => (
+                <NewTabLink href={urls.contactSupportURL}>{content}</NewTabLink>
+              ),
             })}
           </p>
         )

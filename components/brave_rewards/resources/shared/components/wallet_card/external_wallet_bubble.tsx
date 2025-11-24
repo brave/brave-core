@@ -10,7 +10,8 @@ import Icon from '@brave/leo/react/icon'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ExternalWalletAction } from './external_wallet_action'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { LocaleContext } from '../../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { WalletProviderIcon } from '../icons/wallet_provider_icon'
 
 import * as style from './external_wallet_bubble.style'
@@ -42,7 +43,7 @@ export function ExternalWalletBubble (props: Props) {
       return (
         <button onClick={actionHandler('reconnect')}>
           {
-            formatMessage(getString('walletLogIntoYourAccount'), [
+            formatString(getString('walletLogIntoYourAccount'), [
               providerName
             ])
           }
@@ -53,7 +54,7 @@ export function ExternalWalletBubble (props: Props) {
     return (
       <button onClick={actionHandler('view-account')}>
         <span>
-          {formatMessage(getString('walletAccountLink'), [providerName])}
+          {formatString(getString('walletAccountLink'), [providerName])}
         </span>
         <Icon name='launch' />
       </button>

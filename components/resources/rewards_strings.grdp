@@ -12,10 +12,10 @@
     Reset Brave Rewards
   </message>
   <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">
-    By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph> for more details.
+    By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">/$1</ph> for more details.
   </message>
   <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">
-    I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.
+    I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">/$1</ph>.
   </message>
   <message name="IDS_REWARDS_RESET_REWARDS_BUTTON_LABEL" desc="">
     Disable and reset Rewards
@@ -29,7 +29,7 @@
     Don't worry: Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account won't be affected by resetting.
   </message>
   <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TEXT" desc="">
-    You will not earn for ads while connected to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Reset Brave Rewards and connect a different payout account to keep earning. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">$3</ph>
+    You will not earn for ads while connected to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Reset Brave Rewards and connect a different payout account to keep earning. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>
   </message>
   <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TITLE" desc="">
     <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account no longer supported.
@@ -71,7 +71,7 @@
 
   <!-- Rewards "card-and-summary" -->
   <message name="IDS_REWARDS_LOG_IN_TO_SEE_BALANCE" desc="">
-    <ph name="BEGIN_BOLD">$1</ph>Log in to <ph name="PROVIDER">$2<ex>Uphold</ex></ph><ph name="END_BOLD">$3</ph> to see your balance
+    <ph name="BEGIN_BOLD">$1</ph>Log in to <ph name="PROVIDER">$2<ex>Uphold</ex></ph><ph name="END_BOLD">/$1</ph> to see your balance
   </message>
   <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
     Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
@@ -118,7 +118,7 @@
     Connect account
   </message>
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
-    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect an account so we have a place to send your earnings.
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">/$1</ph> Connect an account so we have a place to send your earnings.
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
     Send contributions with Brave Rewards
@@ -140,16 +140,16 @@
   </message>
   <message name="IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT" desc="">
     {ADS_VIEWED, plural,
-      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
-      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> you've seen this month.}
-      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> you've seen this month.}
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
+      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> you've seen this month.}
+      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> you've seen this month.}
     }
   </message>
   <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="">
     {ADS_VIEWED, plural,
-      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
-      =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> this month}
-      other {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
+      =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> this month}
+      other {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
     }
   </message>
 
@@ -179,7 +179,7 @@
     Select your country
   </message>
   <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
-    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">/$1</ph>
   </message>
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards
@@ -348,7 +348,7 @@
     Unfortunately, there was an error while trying to set your country. Please try again.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
-    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
     Select your country
@@ -375,7 +375,7 @@
     Press the <ph name="BAT_ICON">$1</ph> BAT icon in the URL bar to start.
   </message>
   <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
-    By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+    By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
   </message>
   <message name="IDS_REWARDS_COUNTRY_SELECT_TITLE" desc="">
     Select your region
@@ -387,7 +387,7 @@
     Start using Brave Rewards
   </message>
   <message name="IDS_REWARDS_ONBOARDING_TERMS_TEXT" desc="">
-    By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+    By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
   </message>
   <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="">
     Get paid for private ads you see in Brave
@@ -407,7 +407,7 @@
     Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
   </message>
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
-    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph>
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>
   </message>
   <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
     Don’t worry.
@@ -464,13 +464,13 @@
     Updated Terms of Service
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
-    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Brave Rewards, which will disable the feature.
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">/$1</ph> Brave Rewards, which will disable the feature.
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_NTP_TEXT" desc="">
     We’ve updated our Terms of Service. To keep using Brave Rewards, please review and agree to the updated terms.
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
-    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">$2</ph>
+    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">/$1</ph>
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
     I agree
@@ -520,7 +520,7 @@
     You're already sending monthly contributions to this creator
   </message>
   <message name="IDS_REWARDS_TIP_MONTHLY_SET_TEXT" desc="">
-    You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">$2</ph>.
+    You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">/$1</ph>.
   </message>
   <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TITLE" desc="">
     Can't send your contribution
@@ -633,7 +633,7 @@
     Or other wallet that supports Solana
   </message>
   <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TERMS" desc="">
-    <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+    <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
   </message>
   <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_ERROR" desc="">
     Something went wrong. Please try again
@@ -692,7 +692,7 @@
     It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
-    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.
+    You can view <ph name="BEGIN_LINK">$1</ph>service status here<ph name="END_LINK">/$1</ph>.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
     Connecting to selected custodian temporarily unavailable
@@ -701,7 +701,7 @@
     Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
-    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.
+    See the <ph name="LINK_BEGIN">$1</ph>current list of supported regions and learn more<ph name="END_LINK">/$1</ph> about connecting a custodial account to Brave Rewards.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
     Region currently not supported
@@ -719,7 +719,7 @@
     Limited Uphold account functionality
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
-    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">/$2</ph> for more help.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
     Request could not be validated
@@ -728,7 +728,7 @@
     Something went wrong
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
-    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$1</ph>contact support<ph name="LINK_END">/$1</ph> if the problem persists.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
     Your request is still being processed, please wait.
@@ -954,7 +954,7 @@
   </message>
 
   <message name="IDS_REWARDS_WDP_CHECKBOX_LABEL" desc="">
-    Yes, I’d also like to contribute to Brave Search and opt in to <ph name="LINK_BEGIN">$1</ph>Web Discovery Project<ph name="LINK_END">$2</ph>.
+    Yes, I’d also like to contribute to Brave Search and opt in to <ph name="LINK_BEGIN">$1</ph>Web Discovery Project<ph name="LINK_END">/$1</ph>.
   </message>
   <message name="IDS_REWARDS_WDP_OPT_IN_TEXT" desc="">
     Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.

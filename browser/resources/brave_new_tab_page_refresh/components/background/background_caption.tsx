@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { formatString } from '$web-common/locale'
+import { formatString } from '$web-common/formatString'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
 import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'

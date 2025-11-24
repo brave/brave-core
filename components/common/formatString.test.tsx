@@ -5,7 +5,7 @@
 
 import * as assert from 'assert'
 import * as React from 'react'
-import { formatString } from './locale'
+import { formatString } from './formatString'
 
 // Note: We need to unmock the locale module here because we want to test it!
 jest.unmock('$web-common/locale')

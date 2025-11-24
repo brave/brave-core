@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 
-export { default as formatMessage } from '$web-common/formatMessage'
-
 export interface Locale<K extends string = string> {
   getString: (key: K) => string
   getPluralString: (key: K, count: number) => Promise<string>

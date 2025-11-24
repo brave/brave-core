@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/formatString'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { useSwitchAccountRouter } from '../../lib/connect_account_router'
@@ -43,14 +43,7 @@ export function ResetExternalWalletCard() {
     if (!url) {
       return null
     }
-    return (
-      <NewTabLink
-        key='learn-more'
-        href={url}
-      >
-        {content}
-      </NewTabLink>
-    )
+    return <NewTabLink href={url}>{content}</NewTabLink>
   }
 
   return (
@@ -59,19 +52,19 @@ export function ResetExternalWalletCard() {
         <Icon name='warning-triangle-filled' />
       </div>
       <h3>
-        {formatMessage(getString('resetExternalWalletTitle'), [providerName])}
+        {formatString(getString('resetExternalWalletTitle'), [providerName])}
       </h3>
       <p>
-        {formatMessage(getString('resetExternalWalletText'), {
-          placeholders: { $1: providerName },
-          tags: { $2: renderLearnMore },
+        {formatString(getString('resetExternalWalletText'), {
+          $1: providerName,
+          $2: renderLearnMore,
         })}
       </p>
       <Button onClick={openSwitchAccount}>
         {getString('resetExternalWalletButtonLabel')}
       </Button>
       <p className='note'>
-        {formatMessage(getString('resetExternalWalletNote'), [providerName])}
+        {formatString(getString('resetExternalWalletNote'), [providerName])}
       </p>
     </div>
   )

@@ -5,7 +5,8 @@
 
 import * as React from 'react'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { LocaleContext } from '../../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { NewTabLink } from '../new_tab_link'
 import { TermsOfService } from '../terms_of_service'
 import { LoadingIcon } from '../icons/loading_icon'
@@ -55,16 +56,11 @@ export function RewardsOptIn (props: Props) {
     if (result === 'wallet-generation-disabled') {
       return {
         header: getString('onboardingErrorHeaderDisabled'),
-        text: formatMessage(getString('onboardingErrorTextDisabled'), {
-          tags: {
-            $1: (content) =>
-              <NewTabLink
-                key='link'
-                href='https://support.brave.app/hc/en-us/articles/9312922941069'
-              >
-                {content}
-              </NewTabLink>
-          }
+        text: formatString(getString('onboardingErrorTextDisabled'), {
+          $1: (content) =>
+            <NewTabLink href='https://support.brave.app/hc/en-us/articles/9312922941069'>
+              {content}
+            </NewTabLink>
         })
       }
     }

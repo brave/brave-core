@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { Modal } from '../common/modal'
 
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -36,31 +36,15 @@ export function TosUpdateModal(props: Props) {
       <Modal.Header title={getString('tosUpdateRequiredTitle')} />
       <div data-css-scope={style.scope}>
         <div>
-          {formatMessage(getString('tosUpdateRequiredText'), {
-            tags: {
-              $1: (content) => (
-                <button
-                  key='reset'
-                  onClick={props.onReset}
-                >
-                  {content}
-                </button>
-              ),
-            },
+          {formatString(getString('tosUpdateRequiredText'), {
+            $1: (content) => <button onClick={props.onReset}>{content}</button>,
           })}
         </div>
         <div ref={onMount}>
-          {formatMessage(getString('tosUpdateLink'), {
-            tags: {
-              $1: (content) => (
-                <NewTabLink
-                  key='link'
-                  href={urls.termsOfServiceURL}
-                >
-                  {content}
-                </NewTabLink>
-              ),
-            },
+          {formatString(getString('tosUpdateLink'), {
+            $1: (content) => (
+              <NewTabLink href={urls.termsOfServiceURL}>{content}</NewTabLink>
+            ),
           })}
         </div>
       </div>

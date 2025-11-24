@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -6,7 +7,8 @@ import * as React from 'react'
 
 import Button from '@brave/leo/react/button'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { LocaleContext } from '../../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { GeoPinIcon } from '../icons/geo_pin_icon'
 import { NewTabLink } from '../new_tab_link'
 import { privacyPolicyURL } from '../../lib/rewards_urls'
@@ -26,13 +28,11 @@ export function SelectCountryCard (props: Props) {
       </style.header>
       <style.text>
         {
-          formatMessage(getString('rewardsSelectCountryText'), {
-            tags: {
-              $1: (content) =>
-                <NewTabLink key='link' href={privacyPolicyURL}>
-                  {content}
-                </NewTabLink>
-            }
+          formatString(getString('rewardsSelectCountryText'), {
+            $1: (content) =>
+              <NewTabLink href={privacyPolicyURL}>
+                {content}
+              </NewTabLink>
           })
         }
       </style.text>

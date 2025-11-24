@@ -7,7 +7,8 @@ import * as React from 'react'
 
 import Button from '@brave/leo/react/button'
 
-import { LocaleContext, formatMessage } from '../lib/locale_context'
+import { LocaleContext } from '../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { NewTabLink } from './new_tab_link'
 
 import * as urls from '../lib/rewards_urls'
@@ -27,31 +28,26 @@ export function TosUpdateNotice (props: Props) {
       </style.heading>
       <style.text>
         {
-          formatMessage(getString('rewardsTosUpdateText'), {
-            tags: {
-              $1: (content) => (
-                <button
-                  key='reset'
-                  className='rewards-tos-update-reset-button'
-                  onClick={props.onResetRewards}
-                >
-                  {content}
-                </button>
-              )
-            }
+          formatString(getString('rewardsTosUpdateText'), {
+            $1: (content) => (
+              <button
+                className='rewards-tos-update-reset-button'
+                onClick={props.onResetRewards}
+              >
+                {content}
+              </button>
+            )
           })
         }
       </style.text>
       <style.text>
         {
-          formatMessage(getString('rewardsTosUpdateLinkText'), {
-            tags: {
-              $1: (content) => (
-                <NewTabLink key='link' href={urls.termsOfServiceURL}>
-                  {content}
-                </NewTabLink>
-              )
-            }
+          formatString(getString('rewardsTosUpdateLinkText'), {
+            $1: (content) => (
+              <NewTabLink href={urls.termsOfServiceURL}>
+                {content}
+              </NewTabLink>
+            )
           })
         }
       </style.text>

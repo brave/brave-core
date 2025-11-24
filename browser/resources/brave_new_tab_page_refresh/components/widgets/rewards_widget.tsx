@@ -17,8 +17,7 @@ import { Link, openLink } from '../common/link'
 import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
 import { getExternalWalletProviderName } from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../../../../components/brave_rewards/resources/shared/lib/provider_payout_status'
-import { formatString } from '$web-common/locale'
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/formatString'
 
 import * as urls from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
@@ -236,16 +235,12 @@ export function RewardsWidget() {
     return (
       <div className='ads-viewed'>
         {
-          // `adsViewedString` uses the tagged placeholder format understood by
-          // the `formatMessage` API.
-          formatMessage(adsViewedString, {
-            tags: {
-              $1: (content) => (
-                <span key='ad-count' className='ad-count'>
-                  {content}
-                </span>
-              )
-            }
+          adsViewedString && formatString(adsViewedString, {
+            $1: (content) => (
+              <span className='ad-count'>
+                {content}
+              </span>
+            )
           })
         }
         <Tooltip mode='default'>

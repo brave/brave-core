@@ -8,7 +8,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { LocaleContext } from '../../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { UserType } from '../../lib/user_type'
 import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
@@ -104,13 +105,9 @@ export function RewardsCard (props: Props) {
       return (
         <style.disconnected onClick={onClick}>
           {
-            formatMessage(getString('rewardsLogInToSeeBalance'), {
-              placeholders: {
-                $2: getExternalWalletProviderName(externalWallet.provider)
-              },
-              tags: {
-                $1: (content) => <strong key='1'>{content}</strong>
-              }
+            formatString(getString('rewardsLogInToSeeBalance'), {
+              $1: (content) => <strong>{content}</strong>,
+              $2: getExternalWalletProviderName(externalWallet.provider)
             })
           }
           <style.disconnectedArrow>
@@ -307,10 +304,8 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.connect>
           {
-            formatMessage(getString('rewardsConnectAccountText'), {
-              tags: {
-                $1: (content) => <strong key='bold'>{content}</strong>
-              }
+            formatString(getString('rewardsConnectAccountText'), {
+              $1: (content) => <strong>{content}</strong>
             })
           }
           <style.connectAction>

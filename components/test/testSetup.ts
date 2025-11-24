@@ -11,9 +11,6 @@ jest.mock('$web-common/locale', () => ({
   getLocale: (key: string) => {
     return key
   },
-  formatMessage: (message: string) => {
-    return message
-  },
   formatLocale: (key: string) => {
     return key
   }
