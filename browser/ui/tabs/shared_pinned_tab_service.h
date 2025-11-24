@@ -59,13 +59,14 @@ class SharedPinnedTabService : public KeyedService,
 
   void TabDraggingEnded(Browser* browser);
 
+  void BrowserClosing(TabStripModel* tab_strip_model);
+
   // KeyedService:
   void Shutdown() override;
 
   // BrowserListObserver:
   void OnBrowserAdded(Browser* browser) override;
   void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserClosing(Browser* browser) override;
   void OnBrowserRemoved(Browser* browser) override;
 
   // TabStripModelObserver:

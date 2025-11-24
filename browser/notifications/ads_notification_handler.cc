@@ -83,9 +83,7 @@ void AdsNotificationHandler::OpenSettings(Profile* profile,
   did_click_notification_ad_ = true;
 
   CHECK(origin.has_query());
-  const std::string id = origin.query();
-
-  ads_service->OnNotificationAdClicked(id);
+  ads_service->OnNotificationAdClicked(std::string(origin.query()));
 }
 
 }  // namespace brave_ads

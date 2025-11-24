@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
+index 1ca569f4c6e201abf074d578cb3e286fab58d150..bfc64653187d1bff78acf7d59025158c56fed83e 100644
+--- a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
++++ b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
+@@ -582,6 +582,7 @@ void PopulateChromeWebUIFrameInterfaceBrokersTrustedPartsDesktop(
+ 
+   registry
+       .ForWebUI<settings::SettingsUI>()
++          BRAVE_POPULATE_CHROME_WEBUI_FRAME_INTERFACE_BROKERS_TRUSTED_PARTS_DESKTOP
+ #if !BUILDFLAG(IS_CHROMEOS)
+       .Add<theme_color_picker::mojom::ThemeColorPickerHandlerFactory>()
+ #endif  // !BUILDFLAG(IS_CHROMEOS)

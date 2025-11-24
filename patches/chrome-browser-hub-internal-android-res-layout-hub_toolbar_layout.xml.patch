@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
+index 943892a524e9c19d8595511ac640f06960ccd540..2a675f197bd819c1025fb135a7a2fd3645bd1c29 100644
+--- a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
++++ b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
+@@ -21,7 +21,7 @@ found in the LICENSE file.
+     android:background="@android:color/white"
+     android:visibility="gone" />
+ 
+-  <org.chromium.chrome.browser.hub.HubToolbarView
++  <org.chromium.chrome.browser.hub.BraveHubToolbarView
+     android:id="@+id/hub_toolbar"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+@@ -150,5 +150,5 @@ found in the LICENSE file.
+         android:gravity="top"
+         android:importantForAccessibility="no"
+         android:visibility="gone"/>
+-  </org.chromium.chrome.browser.hub.HubToolbarView>
++  </org.chromium.chrome.browser.hub.BraveHubToolbarView>
+ </FrameLayout>

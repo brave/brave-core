@@ -1391,8 +1391,15 @@ class Upgrade(Versioned):
 
         self._run_update_patches_with_no_deletions()
 
-        apply_record.stage_all_patches(ignore_deleted_files=True)
-        has_changes = repository.brave.has_staged_changed()
+        # There are rare cases where we can end up hitting a continuation where
+        # a patch gets deleted due a cherry-pick finally being made obsolete,
+        # which means no apply records ever occurred, and therefore this value
+        # is None.
+        if apply_record:
+            apply_record.stage_all_patches(ignore_deleted_files=True)
+            has_changes = repository.brave.has_staged_changed()
+        else:
+            has_changes = False
 
         if not has_changes and not no_conflict_continuation:
             raise InvalidInputException(

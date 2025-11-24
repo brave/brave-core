@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 035cef53fec4760b281b3cd3252cd1d2d6b4b96c..b22e88adf9592f449db1c7f06afa6232ba9f19a4 100644
+index 971a66bd820793aa0bdbfa6197993fcb07d16039..563c4bb0c3d7d3c22880add352ff8073fc4920cf 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -192,7 +192,7 @@ class AppBrowserController;
+@@ -207,7 +207,7 @@ class AiModePageActionController;
  class BrowserWindowFeatures {
   public:
    BrowserWindowFeatures();

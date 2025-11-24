@@ -65,6 +65,7 @@ class CommandUtilsBrowserTest : public InProcessBrowserTest {
 // in which case we can just add it to the ignored commands list.
 IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
                        DISABLED_AllCommandsShouldBeExecutableWithoutCrash) {
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
   // Some commands, particularly those that create dialogs introduce some test
   // flakes, so we disable them.
   static constexpr auto kKnownGoodCommandsThatSometimesBreakTest =
@@ -118,7 +119,7 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 
     // Use the first browser instance for each command.
-    SelectFirstBrowser();
+    SetBrowser(browser_created_observer.Wait());
 
     SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
     LOG(INFO) << command << ": " << commands::GetCommandName(command);

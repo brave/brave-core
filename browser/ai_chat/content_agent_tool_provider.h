@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
+#include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 
 namespace ai_chat {
 

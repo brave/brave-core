@@ -548,7 +548,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
 
@@ -799,7 +799,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
-    panel_ui->Close();
+    panel_ui->Close(SidePanelEntry::PanelType::kContent);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !GetSidePanel()->GetVisible(); }));
     return;
@@ -1093,7 +1093,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
 
   // Close panel and wait till panel closing animation ends. Panel is hidden
   // when closing completes.
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
   EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
@@ -1150,7 +1150,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
 
   // No panel when activated tab at 1 because we don't open any global panel.
   tab_model()->ActivateTabAt(1);
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -1306,8 +1307,9 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  panel_ui->Close();
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
   // Check one shot panel is not opened anymore.
   EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
@@ -1315,7 +1317,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       browser(), GURL("https://www.brave.com/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   observation_.Reset();

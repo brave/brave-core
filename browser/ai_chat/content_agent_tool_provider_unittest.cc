@@ -135,7 +135,9 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
 
   // Verify task is now in inactive tasks
   EXPECT_EQ(actor_service_->GetActiveTasks().count(task_id), 0u);
-  EXPECT_EQ(actor_service_->GetInactiveTasks().count(task_id), 1u);
+  // With kActorDoNotStoreCompletedTasks feature turned on by default upstream,
+  // completed tasks aren't stored in inactive tasks.
+  EXPECT_EQ(actor_service_->GetInactiveTasks().count(task_id), 0u);
 }
 
 // NOTE: GetOrCreateTabHandleForTask or ExecuteActions with valid actions cannot

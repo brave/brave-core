@@ -1,5 +1,5 @@
 diff --git a/.rustfmt.toml b/.rustfmt.toml
-index f94e79babc090bc2cb4cdaae19db2d4f72618359..4065e4a5d8bd3d13d1e85fd84db93c608e6109bc 100644
+index 0f9d300d83a7c90f9c39506cad4b71c2662cb67b..8450ac92d83ed1af39e94f11dc91e6101d8956b8 100644
 --- a/.rustfmt.toml
 +++ b/.rustfmt.toml
 @@ -24,4 +24,7 @@ use_small_heuristics = "Max"

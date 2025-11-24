@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index 37ea1c5b0a1aecc22ceab792e1286c4caf047137..f0edfef5a97cdd6c3f5bd2414f7ad947f335a9a2 100644
+index ae0964539b36830ec117a8c748e1c893d42f843d..1696f70392e55594d029161a5bb52af55b5cd524 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -82,6 +82,7 @@ public class SiteSettingsCategory {

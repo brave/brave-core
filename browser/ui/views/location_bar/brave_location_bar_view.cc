@@ -27,6 +27,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -271,7 +272,8 @@ void BraveLocationBarView::RefreshBackground() {
 
   if (shadow_) {
     const bool show_shadow =
-        IsMouseHovered() && !omnibox_view_->model()->is_caret_visible();
+        IsMouseHovered() &&
+        !GetOmniboxController()->edit_model()->is_caret_visible();
     shadow_->SetVisible(show_shadow);
     return;
   }

@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"

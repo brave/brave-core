@@ -83,7 +83,7 @@ bool IsGooglePhotosUrl(const GURL& url) {
   };
 
   for (const char* const suffix : kGooglePhotosHostSuffixes) {
-    if (base::EndsWith(url.host_piece(), suffix)) {
+    if (base::EndsWith(url.host(), suffix)) {
       return true;
     }
   }
@@ -159,12 +159,12 @@ std::string SanitizedImageSource::GetSource() const {
 }
 
 void SanitizedImageSource::StartDataRequest(
-    const std::string& path,
+    std::string_view path,
     web::URLDataSourceIOS::GotDataCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   GURL url = GURL(chrome::kChromeUIImageURL).GetWithEmptyPath().Resolve(path);
-  std::string image_url_or_params = url.query();
+  std::string_view image_url_or_params = url.query();
   if (url != GURL(base::StrCat(
                  {chrome::kChromeUIImageURL, "?", image_url_or_params}))) {
     std::move(callback).Run(nullptr);
@@ -302,7 +302,7 @@ void SanitizedImageSource::StartImageDownload(
       network::SimpleURLLoader::kMaxBoundedStringDownloadSize);
 }
 
-std::string SanitizedImageSource::GetMimeType(const std::string& path) const {
+std::string SanitizedImageSource::GetMimeType(std::string_view path) const {
   return "image/png";
 }
 
@@ -325,8 +325,8 @@ void SanitizedImageSource::OnImageLoaded(
   }
 
   if (loader->NetError() == net::OK && body &&
-      request_attributes.image_url.host_piece() == pcdn_domain_ &&
-      request_attributes.image_url.path_piece().ends_with(".pad")) {
+      request_attributes.image_url.host() == pcdn_domain_ &&
+      request_attributes.image_url.path().ends_with(".pad")) {
     std::string_view body_payload(body->data(), body->size());
     if (!brave::private_cdn::RemovePadding(&body_payload)) {
       std::move(callback).Run(nullptr);

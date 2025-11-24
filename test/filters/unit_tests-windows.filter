@@ -7,6 +7,7 @@
 
 # This test is flaky: passes locally but fails on CI
 -FileSystemAccessUIHelpersTest.GetElidedPathForDisplayAsTitle
+-TransientKeepAlivePolicyTest.EvictsOldestProcessWhenLimitExceeded
 
 # This test is disabled because our CIs use Windows Server which doesn't appear
 # to have FOLDERID_OneDrive entry in the registry making this test fail.

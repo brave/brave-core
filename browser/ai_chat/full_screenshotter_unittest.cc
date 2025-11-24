@@ -192,8 +192,8 @@ class MockPaintPreviewCompositorService
         base::OnTaskRunnerDeleter(task_runner_));
   }
 
-  void OnMemoryPressure(base::MemoryPressureListener::MemoryPressureLevel
-                            memory_pressure_level) override {
+  void OnMemoryPressure(
+      base::MemoryPressureLevel memory_pressure_level) override {
     // no-op.
   }
 

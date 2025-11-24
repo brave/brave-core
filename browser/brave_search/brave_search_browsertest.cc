@@ -159,7 +159,7 @@ class BraveSearchTest : public InProcessBrowserTest {
     }
 
     GURL url = request.GetURL();
-    auto path = url.path_piece();
+    std::string_view path = url.path();
 
     if (path == "/" || path == "/sw.js" || path == kBraveSearchPath ||
         path == kPageWithCookie || path == kPageWithoutCookie ||
@@ -169,7 +169,7 @@ class BraveSearchTest : public InProcessBrowserTest {
 
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
-    if (url.path() + "?" + url.query() ==
+    if (base::StrCat({url.path(), "?", url.query()}) ==
         "/search?q=test&start=10&hl=en&gl=us&safe=active") {
       auto cookie_header_it =
           request.headers.find(net::HttpRequestHeaders::kCookie);
@@ -353,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeader) {
         EXPECT_TRUE(request.headers.contains(kSearchAdsHeader));
         EXPECT_EQ(kSearchAdsDisabledValue,
                   request.headers.at(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -376,7 +376,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderRewardsDisabled) {
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
         EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -398,7 +398,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsSearchResultAdsEnabled) {
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
         EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -421,7 +421,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderNotAllowedDomain) {
          const net::test_server::HttpRequest& request) {
         const GURL url = request.GetURL();
         EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -452,7 +452,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderForFetchRequest) {
         EXPECT_TRUE(request.headers.contains(kSearchAdsHeader));
         EXPECT_EQ(kSearchAdsDisabledValue,
                   request.headers.at(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -481,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, FetchRequestForNonBraveSearchTab) {
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },
@@ -504,7 +504,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, SearchAdsHeaderIncognitoBrowser) {
       [](base::OnceClosure loop_closure,
          const net::test_server::HttpRequest& request) {
         EXPECT_FALSE(request.headers.contains(kSearchAdsHeader));
-        if (request.GetURL().path_piece() == kBraveSearchPath) {
+        if (request.GetURL().path() == kBraveSearchPath) {
           std::move(loop_closure).Run();
         }
       },

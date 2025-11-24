@@ -161,14 +161,14 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         << "Found a request to google backend " << request.GetURL();
 
     if (request.GetURL().path() == "/translate") {
-      const auto query = request.GetURL().query();
-      EXPECT_NE(
-          query.find(absl::StrFormat("&key=%s", BUILDFLAG(BRAVE_SERVICES_KEY))),
-          std::string::npos)
+      EXPECT_NE(request.GetURL().query().find(
+                    absl::StrFormat("&key=%s", BUILDFLAG(BRAVE_SERVICES_KEY))),
+                std::string::npos)
           << "bad brave api key for request " << request.GetURL();
     }
 
-    const auto response = backend_request_.Call(request.GetURL().path());
+    const auto response =
+        backend_request_.Call(std::string(request.GetURL().path()));
     if (std::get<0>(response) == 0)
       return nullptr;
 

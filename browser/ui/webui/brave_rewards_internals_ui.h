@@ -12,7 +12,7 @@
 
 class BraveRewardsInternalsUI : public content::WebUIController {
  public:
-  BraveRewardsInternalsUI(content::WebUI* web_ui, const std::string& host);
+  BraveRewardsInternalsUI(content::WebUI* web_ui, std::string_view host);
   ~BraveRewardsInternalsUI() override;
   BraveRewardsInternalsUI(const BraveRewardsInternalsUI&) = delete;
   BraveRewardsInternalsUI& operator=(const BraveRewardsInternalsUI&) = delete;

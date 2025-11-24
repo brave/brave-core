@@ -60,8 +60,13 @@ void MakeActiveTabReloadOnlyForSplitTab(
 #define BRAVE_RELOAD_INTERNAL \
   MakeActiveTabReloadOnlyForSplitTab(tab_strip_model, tabs_to_reload);
 
+// Don't show toast when user tries to close a pinned tab via the keyboard
+// accelerator.
+#define BRAVE_CLOSE_TAB toast_controller = nullptr;
+
 #include <chrome/browser/ui/browser_commands.cc>
 
+#undef BRAVE_CLOSE_TAB
 #undef BRAVE_RELOAD_INTERNAL
 #undef kChromeUISplitViewNewTabPageURL
 #undef ReloadBypassingCache

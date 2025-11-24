@@ -53,7 +53,8 @@ namespace {
 // A helper method which parses a string_view and returns the JSON or a
 // base::Value object if the JSON is invalid.
 base::Value ParseOrStringValue(const std::string& json) {
-  auto maybe_json = base::JSONReader::Read(json);
+  auto maybe_json =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!maybe_json.has_value()) {
     return base::Value(json);
   }

@@ -106,7 +106,7 @@ void OpenJapanWelcomePage(Profile* profile) {
 
 }  // namespace
 
-BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
+BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
     : WebUIController(web_ui) {
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveWelcomeGenerated, IDR_BRAVE_WELCOME_HTML,

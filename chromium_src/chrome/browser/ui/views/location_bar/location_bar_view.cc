@@ -30,13 +30,17 @@
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS \
   auto right_most_trailing_views = GetRightMostTrailingViews();        \
   for (auto* item : base::Reversed(right_most_trailing_views)) {       \
-    add_trailing_decoration(item, /*intra_item_padding=*/0);           \
+    add_trailing_decoration(                                           \
+        item, /*intra_item_padding=*/0,                                \
+        /*edge_padding=*/trailing_decorations_edge_padding);           \
   }
 
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS \
   auto left_most_trailing_views = GetLeftMostTrailingViews();         \
   for (auto* item : base::Reversed(left_most_trailing_views)) {       \
-    add_trailing_decoration(item, /*intra_item_padding=*/0);          \
+    add_trailing_decoration(                                          \
+        item, /*intra_item_padding=*/0,                               \
+        /*edge_padding=*/trailing_decorations_edge_padding);          \
   }
 
 #define BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY \

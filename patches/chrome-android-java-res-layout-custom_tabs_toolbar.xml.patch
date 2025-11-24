@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index cd3b0d6b206be032d0e2a694db48dee5ce0e0168..77743394c897fa0b460d05d66451363e96e36904 100644
+index dba6102dbd4770bf3110c8159530c394ece6eafb..86fd17d8ee75f72b36fb4b1f8b9ce6550865fe1c 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-@@ -150,6 +150,7 @@ found in the LICENSE file.
+@@ -149,6 +149,7 @@ found in the LICENSE file.
              style="@style/ToolbarHoverableButton" />
      </LinearLayout>
  

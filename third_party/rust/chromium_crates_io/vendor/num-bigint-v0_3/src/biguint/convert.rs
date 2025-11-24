@@ -723,7 +723,7 @@ pub(crate) fn to_str_radix_reversed(u: &BigUint, radix: u32) -> Vec<u8> {
 #[inline]
 fn get_radix_base(radix: u32, bits: u8) -> (BigDigit, usize) {
     mod gen {
-        include! { concat!("../", env!("OUT_DIR"), "/radix_bases.rs") }
+        include! { concat!(env!("OUT_DIR"), "/radix_bases.rs") }
     }
 
     debug_assert!(

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts b/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
+index 8756d61d1d83d09a5a55dadc1d21821f5634cda3..225c1854830a0a6593ffd336359278dfb3940773 100644
+--- a/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
++++ b/chrome/browser/resources/settings/site_settings/site_settings_browser_proxy.ts
+@@ -83,6 +83,7 @@ export interface RawSiteException {
+   description?: string;
+   setting: ContentSetting;
+   source: SiteSettingSource;
++  braveCookieType?: undefined | "shields down" | "shields settings" | "google sign-in";  // See BraveGetExceptionForPage (site_settings_helper.cc)
+ }
+ 
+ /**
+@@ -100,6 +101,7 @@ export interface SiteException {
+   description?: string;
+   enforcement: chrome.settingsPrivate.Enforcement|null;
+   controlledBy: chrome.settingsPrivate.ControlledBy;
++  braveCookieType?: RawSiteException['braveCookieType'];
+ }
+ 
+ /**

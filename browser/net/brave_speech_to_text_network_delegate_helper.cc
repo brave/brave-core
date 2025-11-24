@@ -40,9 +40,7 @@ void AddSpeechToTextBraveHeaders(network::ResourceRequest* request) {
   const auto authorization = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_STT), headers, request->url, request->method,
       {kRequestKey, kRequestDate});
-  if (authorization) {
-    request->headers.SetHeader(authorization->first, authorization->second);
-  }
+  request->headers.SetHeader(authorization.first, authorization.second);
 }
 
 }  // namespace
@@ -62,14 +60,14 @@ void OnBeforeURLRequest_SpoofSpeechToText(network::ResourceRequest* request) {
   }
   const GURL stt_url = GURL(stt::kSttUrl.Get());
   GURL::Replacements replacements;
-  replacements.SetSchemeStr(stt_url.scheme_piece());
-  replacements.SetHostStr(stt_url.host_piece());
+  replacements.SetSchemeStr(stt_url.scheme());
+  replacements.SetHostStr(stt_url.host());
   if (stt_url.has_port()) {
-    replacements.SetPortStr(stt_url.port_piece());
+    replacements.SetPortStr(stt_url.port());
   }
-  if (request->url.path_piece() == "/speech-api/full-duplex/v1/down") {
+  if (request->url.path() == "/speech-api/full-duplex/v1/down") {
     replacements.SetPathStr("down");
-  } else if (request->url.path_piece() == "/speech-api/full-duplex/v1/up") {
+  } else if (request->url.path() == "/speech-api/full-duplex/v1/up") {
     replacements.SetPathStr("up");
   }
   request->url = request->url.ReplaceComponents(replacements);

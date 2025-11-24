@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "keychain_password_mac_browsertest\.mm": [
+    "+components/os_crypt/common/keychain_password_mac.h",
+  ],
+}

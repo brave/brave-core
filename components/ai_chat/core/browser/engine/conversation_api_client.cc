@@ -362,10 +362,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   auto result = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
       net::HttpRequestHeaders::kPostMethod, {"digest"});
-  if (result) {
-    std::pair<std::string, std::string> authorization_header = result.value();
-    headers.emplace(authorization_header.first, authorization_header.second);
-  }
+  headers.emplace(result.first, result.second);
 
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.
@@ -552,10 +549,10 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
         continue;
       }
       // Validate favicon is private source
-      if (favicon_url && (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
-                          base::CompareCaseInsensitiveASCII(
-                              item_favicon_url.host_piece(),
-                              kAllowedWebSourceFaviconHost) != 0)) {
+      if (favicon_url &&
+          (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
+           base::CompareCaseInsensitiveASCII(
+               item_favicon_url.host(), kAllowedWebSourceFaviconHost) != 0)) {
         DVLOG(2) << "webSource event contained disallowed host or scheme: "
                  << item.DebugString();
         continue;

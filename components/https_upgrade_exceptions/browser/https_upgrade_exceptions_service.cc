@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
@@ -65,7 +64,7 @@ bool HttpsUpgradeExceptionsService::CanUpgradeToHTTPS(const GURL& url) {
     return false;
   }
   // Allow upgrade only if the domain is not on the exceptions list.
-  return !base::Contains(exceptional_domains_, url.host());
+  return !exceptional_domains_.contains(url.host());
 }
 
 // implementation of LocalDataFilesObserver

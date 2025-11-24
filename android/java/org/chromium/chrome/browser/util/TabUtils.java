@@ -221,7 +221,7 @@ public class TabUtils {
             return;
         }
         selector.getModel(isIncognito).commitAllTabClosures();
-        braveActivity.getTabCreator(isIncognito).launchNtp();
+        braveActivity.getTabCreator(isIncognito).launchNtp(TabLaunchType.FROM_CHROME_UI);
     }
 
     public static void openUrlInNewTab(boolean isIncognito, String url) {
