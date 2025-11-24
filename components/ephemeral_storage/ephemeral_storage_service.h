@@ -84,7 +84,7 @@ class EphemeralStorageService : public KeyedService {
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
 
-  void CleanupTLDEphemeralStorage(
+  void CleanupTLDFirstPartyStorage(
       content::WebContents* contents,
       const content::StoragePartitionConfig& storage_partition_config,
       const bool enforced_by_user);

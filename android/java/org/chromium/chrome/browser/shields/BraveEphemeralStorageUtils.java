@@ -5,13 +5,10 @@
 
 package org.chromium.chrome.browser.shields;
 
-import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.tab.Tab;
 
 @JNINamespace("ephemeral_storage")
@@ -19,12 +16,12 @@ import org.chromium.chrome.browser.tab.Tab;
 public class BraveEphemeralStorageUtils {
     private static final String TAG = "EphemeralStorageUtil";
 
-    public static void cleanupTLDEphemeralStorage(Tab tab) {
-        BraveEphemeralStorageUtilsJni.get().cleanupTLDEphemeralStorage(tab);
+    public static void cleanupTLDFirstPartyStorage(Tab tab) {
+        BraveEphemeralStorageUtilsJni.get().cleanupTLDFirstPartyStorage(tab);
     }
 
     @NativeMethods
     interface Natives {
-        void cleanupTLDEphemeralStorage(Tab tab);
+        void cleanupTLDFirstPartyStorage(Tab tab);
     }
 }

@@ -58,7 +58,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (const GURL& url),
               (const override));
   MOCK_METHOD(void,
-              CloseTabsForDomainAndSubdomains,
+              PrepareTabsForStorageCleanup,
               (const std::string& ephemeral_domain),
               (override));
 

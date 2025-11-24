@@ -482,7 +482,7 @@ void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
   }
 
   // Start manual cleanup.
-  ephemeral_storage_service_->CleanupTLDEphemeralStorage(
+  ephemeral_storage_service_->CleanupTLDFirstPartyStorage(
       web_contents(), site_instance->GetStoragePartitionConfig(), true);
 }
 

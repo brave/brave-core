@@ -265,7 +265,7 @@ void EphemeralStorageService::RemoveObserver(
   observer_list_.RemoveObserver(observer);
 }
 
-void EphemeralStorageService::CleanupTLDEphemeralStorage(
+void EphemeralStorageService::CleanupTLDFirstPartyStorage(
     content::WebContents* contents,
     const content::StoragePartitionConfig& storage_partition_config,
     const bool enforced_by_user) {
@@ -285,7 +285,7 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
 
   const auto ephemeral_domain =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  delegate_->CloseTabsForDomainAndSubdomains(std::move(ephemeral_domain));
+  delegate_->PrepareTabsForStorageCleanup(std::move(ephemeral_domain));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

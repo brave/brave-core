@@ -13,14 +13,14 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/android/chrome_jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
-#include "content/public/browser/site_instance.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "content/public/browser/site_instance.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace ephemeral_storage {
 
-static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
+static void JNI_BraveEphemeralStorageUtils_CleanupTLDFirstPartyStorage(
     JNIEnv* env,
     const jni_zero::JavaRef<jobject>& tab_object) {
   // Validate that GetNativeTab returned a valid TabAndroid pointer
@@ -42,12 +42,13 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
     return;
   }
 
-  ephemeral_storage_service->CleanupTLDEphemeralStorage(
+  ephemeral_storage_service->CleanupTLDFirstPartyStorage(
       web_contents,
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 
-void CloseTabsWithTLD(Profile* current_profile, const std::string& etldplusone) {
+void CloseTabsWithTLD(Profile* current_profile,
+                      const std::string& etldplusone) {
   CHECK(current_profile);
   if (etldplusone.empty() ||
       !net::registry_controlled_domains::HostHasRegistryControlledDomain(
@@ -83,7 +84,7 @@ void CloseTabsWithTLD(Profile* current_profile, const std::string& etldplusone) 
                   web_contents);
           ephemeral_storage_tab_helper) {
         // Enforce storage cleaning before closing the tab.
-        ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+        ephemeral_storage_tab_helper->EnforceFirstPartyStorageClean();
 
         tabs_to_close.push_back(tab);
       }
@@ -91,8 +92,8 @@ void CloseTabsWithTLD(Profile* current_profile, const std::string& etldplusone) 
   }
 
   // Close all collected tabs
-  for(TabAndroid* tab : tabs_to_close) {
-    if(!tab){
+  for (TabAndroid* tab : tabs_to_close) {
+    if (!tab) {
       continue;
     }
     tab->Close();

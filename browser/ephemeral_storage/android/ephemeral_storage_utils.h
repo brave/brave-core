@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_ANDROID_EPHEMERAL_STORAGE_UTILS_H_
 
 #include <string>
+
 #include "chrome/browser/profiles/profile.h"
 
 namespace ephemeral_storage {

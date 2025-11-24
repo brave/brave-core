@@ -57,7 +57,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
   void SetShieldsStateOnHost(std::string_view host, bool enabled);
-  void EnforceEphemeralStorageClean();
+  void EnforceFirstPartyStorageClean();
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;

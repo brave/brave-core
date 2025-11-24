@@ -157,7 +157,7 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 }
 #endif
 
-void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
+void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
     const std::string& ephemeral_domain) {
 #if !BUILDFLAG(IS_ANDROID)
   auto* profile = Profile::FromBrowserContext(context_);
@@ -190,7 +190,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
                   contents)) {
         closing_tab_indices.push_back(
             tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
-        ephemeral_storage_tab_helper->EnforceEphemeralStorageClean();
+        ephemeral_storage_tab_helper->EnforceFirstPartyStorageClean();
       }
     }
     tab_strip->CloseTabs(base::span<int>(closing_tab_indices));

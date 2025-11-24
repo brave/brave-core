@@ -55,7 +55,7 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   ActiveTLDStorageAreas().erase(key_);
 }
 
-void TLDEphemeralLifetime::EnforceEphemeralStorageClean() {
+void TLDEphemeralLifetime::EnforceFirstPartyStorageClean() {
   ephemeral_storage_clean_enforced_ = true;
 }
 
