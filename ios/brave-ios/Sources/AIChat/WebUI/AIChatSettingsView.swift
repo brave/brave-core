@@ -37,6 +37,7 @@ public struct AIChatSettingsView: View {
           }
         }
         .tint(.accentColor)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         NavigationLink {
           ModelListPicker(
             modelsWithSubtitles: viewModel.modelsWithSubtitles,
@@ -53,15 +54,12 @@ public struct AIChatSettingsView: View {
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.AIChat.advancedSettingsHeaderTitle)
           .textCase(nil)
       }
-      if let defaultModelWithSubtitle = viewModel.defaultModelWithSubtitle {
-        Text(defaultModelWithSubtitle.model.displayName)
-          .foregroundColor(Color(.braveLabel))
-          .font(.caption)
-      }
+
       SubscriptionSummarySection(viewModel: viewModel)
 
       Section {
@@ -70,6 +68,7 @@ public struct AIChatSettingsView: View {
         } label: {
           Text(Strings.AIChat.resetLeoDataActionTitle)
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .confirmationDialog(
           Strings.AIChat.resetLeoDataErrorTitle,
           isPresented: $isResetConfirmationDialogPresented
@@ -85,6 +84,8 @@ public struct AIChatSettingsView: View {
     .navigationTitle(Strings.AIChat.leoNavigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: viewModel.premiumStatus)
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
   }
 
   private struct ModelListPicker: View {
@@ -131,10 +132,12 @@ public struct AIChatSettingsView: View {
               }
             }
           }
-          .tag(modelWithSubtitle)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
       .navigationTitle(Strings.AIChat.advancedSettingsDefaultModelTitle)
+      .scrollContentBackground(.hidden)
+      .background(Color(.braveGroupedBackground))
     }
   }
 
