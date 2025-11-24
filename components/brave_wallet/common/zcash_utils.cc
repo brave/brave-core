@@ -362,15 +362,16 @@ std::optional<DecodedZCashTransparentAddress> DecodeZCashTransparentAddress(
   return result;
 }
 
-std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
-                                                bool is_testnet) {
+std::optional<std::vector<uint8_t>> ZCashAddressToScriptPubkey(
+    const std::string& address,
+    bool is_testnet) {
   auto decoded_address = DecodeZCashTransparentAddress(address);
   if (!decoded_address) {
-    return {};
+    return std::nullopt;
   }
 
   if (is_testnet != decoded_address->testnet) {
-    return {};
+    return std::nullopt;
   }
 
   BtcLikeSerializerStream stream;

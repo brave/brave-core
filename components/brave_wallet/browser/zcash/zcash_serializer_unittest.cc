@@ -163,8 +163,9 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
     tx_input.n_sequence = 4294967295;
     tx_input.utxo_value = 751000;
     tx_input.utxo_address = "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi";
-    tx_input.script_pub_key = ZCashAddressToScriptPubkey(
-        "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false);
+    tx_input.script_pub_key =
+        ZCashAddressToScriptPubkey("t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false)
+            .value();
 
     tx.transparent_part().inputs.push_back(std::move(tx_input));
   }
@@ -173,8 +174,9 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
     ZCashTransaction::TxOutput tx_output;
     tx_output.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
     tx_output.amount = 100000;
-    tx_output.script_pubkey = ZCashAddressToScriptPubkey(
-        "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi", false);
+    tx_output.script_pubkey =
+        ZCashAddressToScriptPubkey("t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi", false)
+            .value();
 
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
@@ -183,8 +185,9 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
     ZCashTransaction::TxOutput tx_output;
     tx_output.address = "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi";
     tx_output.amount = 649000;
-    tx_output.script_pubkey = ZCashAddressToScriptPubkey(
-        "t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false);
+    tx_output.script_pubkey =
+        ZCashAddressToScriptPubkey("t1cRrYHciuivZZ32jceb7btTpakYBaPW7yi", false)
+            .value();
 
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
@@ -221,7 +224,8 @@ TEST(ZCashSerializerTest, OrchardBundle) {
                                    224, 171, 144, 37,  183, 59,  192, 63};
     tx_input.utxo_outpoint.index = 1;
     tx_input.utxo_value = 115000;
-    tx_input.script_pub_key = ZCashAddressToScriptPubkey(address, false);
+    tx_input.script_pub_key =
+        ZCashAddressToScriptPubkey(address, false).value();
 
     tx.transparent_part().inputs.push_back(std::move(tx_input));
   }
