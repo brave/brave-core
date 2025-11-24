@@ -21,11 +21,7 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
           placeholder="$i18n{braveAccountEmailInputPlaceholder}"
           @input=${this.onEmailInput}
         >
-          <div
-            class="label ${this.email.length !== 0 && !this.isEmailValid
-              ? 'error'
-              : ''}"
-          >
+          <div class="label ${this.shouldShowEmailError ? 'error' : ''}">
             $i18n{braveAccountEmailInputLabel}
           </div>
         </leo-input>

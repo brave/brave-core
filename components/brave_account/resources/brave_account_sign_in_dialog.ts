@@ -33,19 +33,16 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   static override get properties() {
     return {
       email: { type: String },
-      isEmailValid: { type: Boolean },
-      isPasswordValid: { type: Boolean },
+      password: { type: String },
     }
   }
 
   protected onEmailInput(detail: { value: string }) {
     this.email = detail.value.trim()
-    this.isEmailValid = isEmailValid(this.email)
   }
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.isPasswordValid = this.password.length !== 0
   }
 
   // The reason this happens here (rather than in BraveAccountService) is that
@@ -98,11 +95,22 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor email: string = ''
-  protected accessor isEmailValid: boolean = false
-  protected password: string = ''
-  protected accessor isPasswordValid: boolean = false
   protected login = new Login()
+
+  protected accessor email: string = ''
+  protected accessor password: string = ''
+
+  protected get isEmailValid(): boolean {
+    return isEmailValid(this.email)
+  }
+
+  protected get shouldShowEmailError(): boolean {
+    return this.email.length !== 0 && !this.isEmailValid
+  }
+
+  protected get isPasswordValid(): boolean {
+    return this.password.length !== 0
+  }
 }
 
 declare global {
