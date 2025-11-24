@@ -34,9 +34,11 @@ using TabDragControllerBrave = TabDragController;
 #define GetLocalProcessWindow virtual GetLocalProcessWindow
 #define DetachAndAttachToNewContext virtual DetachAndAttachToNewContext
 #define StartDraggingTabsSession virtual StartDraggingTabsSession
+#define RestoreAttachedWindowForDrag virtual RestoreAttachedWindowForDrag
 
 #include <chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h>  // IWYU pragma: export
 
+#undef RestoreAttachedWindowForDrag
 #undef StartDraggingTabsSession
 #undef DetachAndAttachToNewContext
 #undef GetLocalProcessWindow
