@@ -10,45 +10,6 @@ If changes can be made inside existing subclasses and code inside `src/brave`, t
 
 ## Changes inside Chromium
 
-### Minimize dependencies
-
-We want to avoid creating new dependencies in the chrome code when possible. gn
-dependency checks also don't currently run for chromium_src so unlike other
-targets, it won't fail if you add includes that do not have deps listed for the
-original source file target. We also want to avoid patching gn to add
-dependencies. One way to avoid these is with forward declarations. For most code
-in chrome you can forward declare classes or methods that have their
-implementation in brave. Code in `component` gn target types doesn't lend itself
-to this technique in general. This also applies to patches in general including
-plaster.
-
-chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
-```cpp
-bool BraveDoSomething(...);
-
-#define DoSomething DoSomething_ChromiumImpl
-
-bool ChromeFeature::DoSomething(...) {
-  if (BraveDoSomething(...)) {
-    return true;
-  }
-
-  return DoSomething_ChromiumImpl(...);
-}
-```
-
-brave/browser/some_feature/my_feature_override.cc
-```cpp
-bool BraveDoSomething(...) {
-  ...
-}
-```
-
-brave/browser/sources.gni
-```gn
-deps += [ "//brave/browser/chrome_feature" ]
-```
-
 ### Introduction to `chromium_src` overrides
 
 When you can't make a change directly in existing `src/brave` code, different approaches can be used to alter an upstream implementation. Many of them are based on `src/brave/chromium_src` overrides. The content of this directory is prioritized over upstream files during compilation. The basic rules are:
@@ -284,4 +245,43 @@ In general we prefer to avoid patching, but Chromium makes a lot of class method
 ```ts
 const classWeNeedInternalsFrom = new UpstreamClass();
 (classWeNeedInternalsFrom as any).callPrivateMethod();
+```
+
+### Minimize dependencies
+
+We want to avoid creating new dependencies in the chrome code when possible. gn
+dependency checks also don't currently run for chromium_src so unlike other
+targets, it won't fail if you add includes that do not have deps listed for the
+original source file target. We also want to avoid patching gn to add
+dependencies. One way to avoid these is with forward declarations. For most code
+in chrome you can forward declare classes or methods that have their
+implementation in brave. Code in `component` gn target types doesn't lend itself
+to this technique in general. This also applies to patches in general including
+plaster.
+
+chromium_src/chrome/browser/chrome_feature/chrome_feature.cc
+```cpp
+bool BraveDoSomething(...);
+
+#define DoSomething DoSomething_ChromiumImpl
+
+bool ChromeFeature::DoSomething(...) {
+  if (BraveDoSomething(...)) {
+    return true;
+  }
+
+  return DoSomething_ChromiumImpl(...);
+}
+```
+
+brave/browser/some_feature/my_feature_override.cc
+```cpp
+bool BraveDoSomething(...) {
+  ...
+}
+```
+
+brave/browser/sources.gni
+```gn
+deps += [ "//brave/browser/chrome_feature" ]
 ```
