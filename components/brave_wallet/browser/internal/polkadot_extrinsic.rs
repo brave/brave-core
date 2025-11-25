@@ -34,7 +34,13 @@ const POLKADOT_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
 const POLKADOT_ASSET_HUB_MAINNET_BALANCES_PALLET: u8 = 10;
 const POLKADOT_ASSET_HUB_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
 
-const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 4 + 32 + 1;
+const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
+                                                   + 1  /* pallet index */
+                                                   + 1  /* call index */
+                                                   + 1  /* MultiAddress type */
+                                                   + 32 /* recipient pubkey */
+                                                   + 1  /* SCALE-encoded send amount */
+                                                   ;
 
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
@@ -236,10 +242,17 @@ fn decode_unsigned_transfer_allow_death_impl(
     if input[0] != MULTIADDRESS_TYPE {
         return Err(Error::InvalidMetadata);
     }
+    input = &input[1..];
+
+    // The above length check should've caught this, but we want to be explicit
+    // (pubkey length + 1 minimum byte required for send amount).
+    if input.len() < (32 + 1) {
+        return Err(Error::InvalidLength);
+    }
 
     let mut recipient = [0_u8; 32];
-    recipient.copy_from_slice(&input[1..1 + 32]);
-    input = &input[1 + 32..];
+    recipient.copy_from_slice(&input[0..32]);
+    input = &input[32..];
 
     let Ok(send_amount) = Compact::<u128>::decode(&mut input) else {
         return Err(Error::InvalidScale);
