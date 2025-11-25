@@ -16,6 +16,7 @@ import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
 // these commands must be side-effect-free.
 enum Command {
   kOpenRewardsOnboarding = 1,
+  [EnableIf=enable_brave_wallet]
   kOpenWalletOnboarding = 2,
   kOpenVPNOnboarding = 3,
   [EnableIf=enable_ai_chat]
