@@ -42,9 +42,9 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
@@ -98,6 +98,10 @@
 #include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -626,18 +630,20 @@ void BraveBrowserView::ShowWaybackMachineBubble() {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
-}
-
-void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
-  GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
 
 views::View* BraveBrowserView::GetWalletButtonAnchorView() {
   return static_cast<BraveToolbarView*>(toolbar())
       ->wallet_button()
       ->GetAsAnchorView();
+}
+#endif
+
+void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
+  GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
 
 void BraveBrowserView::OnAcceleratorsChanged(
@@ -682,6 +688,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
@@ -697,6 +704,7 @@ void BraveBrowserView::CloseWalletBubble() {
     GetWalletButton()->CloseWalletBubble();
   }
 }
+#endif
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();

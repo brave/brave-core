@@ -11,12 +11,11 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
-#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/ai_chat/features.h"
@@ -24,6 +23,11 @@
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
+#endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
@@ -36,6 +40,7 @@
       FEATURE_VALUE_TYPE(skus::features::kSkusFeature), \
   })
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
@@ -172,6 +177,10 @@
       flags_ui::kOsIos,                                                 \
       FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIIOS), \
   })
+#else
+#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
+#define BRAVE_WALLET_FEATURE_ENTRIES
+#endif
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM

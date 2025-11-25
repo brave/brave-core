@@ -5,6 +5,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
@@ -167,6 +168,7 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
     EXPECT_EQ(CONTENT_SETTING_BLOCK, info->GetInitialDefaultSetting());
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   {
     SCOPED_TRACE("Content setting: BRAVE_ETHEREUM");
     info = registry()->Get(ContentSettingsType::BRAVE_ETHEREUM);
@@ -184,6 +186,7 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
     info = registry()->Get(ContentSettingsType::BRAVE_CARDANO);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // TODO(bridiver) - DEFAULT is not a valid setting, but leaving it for
   // now because this requires more extensive changes to fix correctly

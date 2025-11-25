@@ -17,6 +17,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -42,7 +43,9 @@ namespace {
 constexpr sidebar::SidebarItem::BuiltInItemType
     kDefaultBuiltInItemTypesForTest[] = {
         sidebar::SidebarItem::BuiltInItemType::kBraveTalk,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
         sidebar::SidebarItem::BuiltInItemType::kWallet,
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
         sidebar::SidebarItem::BuiltInItemType::kChatUI,
 #endif
@@ -557,6 +560,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   // Make prefs already have old-style builtin items before service
   // initialization.
@@ -602,7 +606,9 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   auto talk_item = *talk_iter;
   EXPECT_EQ(talk_item.url, kBraveTalkURL);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // Make prefs already have ALL old-style builtin items before service
   // initialization. This tests that when not adding anything to the new pref
@@ -696,9 +702,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   EXPECT_EQ(3, index);
 #endif
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 // Verify service has migrated the previous pref format where built-in items
 // had url stored and not built-in-item-type.
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // Make prefs already have old-style builtin items before service
   // initialization.
@@ -752,6 +760,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   EXPECT_EQ(service_->items().size(),
             GetDefaultItemCount() + 1 /*for custom item added above*/);
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
   // Verify default state
@@ -1027,7 +1036,9 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
 
   EXPECT_TRUE(
       ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
                                     SidebarItem::BuiltInItemType::kWallet,
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
                                     SidebarItem::BuiltInItemType::kChatUI,
 #endif
@@ -1048,7 +1059,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       SidebarItem::BuiltInItemType::kWallet,
+#endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kBraveTalk,
@@ -1058,6 +1071,11 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 
 #if !BUILDFLAG(ENABLE_AI_CHAT)
   // JSON includes kChatUI, but it won't be loaded when AI Chat is disabled
+  expected_count--;
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // JSON includes kWallet, but it won't be loaded when Wallet is disabled
   expected_count--;
 #endif
 
@@ -1114,13 +1132,20 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
       SidebarItem::BuiltInItemType::kChatUI,
 #endif
       SidebarItem::BuiltInItemType::kReadingList,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       SidebarItem::BuiltInItemType::kWallet,
+#endif
   };
 
   auto expected_count = sidebar_items->size();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat is not listed in JSON but will be added
   expected_count++;
+#endif
+
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // JSON includes kWallet, but it won't be loaded when Wallet is disabled
+  expected_count--;
 #endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

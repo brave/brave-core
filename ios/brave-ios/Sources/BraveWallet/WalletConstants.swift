@@ -118,10 +118,10 @@ public struct WalletConstants {
       // TF public build can use BraveCore Switches in Browser Settings,
       // Debug section in order to enable Bitcoin.
       result = [.eth, .sol, .fil]
-      if FeatureList.kBraveWalletBitcoinFeature.enabled {
+      if FeatureList.kBraveWalletBitcoinFeature?.enabled == true {
         result.append(.btc)
       }
-      if FeatureList.kBraveWalletZCashFeature.enabled {
+      if FeatureList.kBraveWalletZCashFeature?.enabled == true {
         result.append(.zec)
       }
     case .dapps:
@@ -295,10 +295,10 @@ public struct WalletConstants {
       "ARBITRUM",
       "AVAXC",
     ]
-    if FeatureList.kBraveWalletBitcoinFeature.enabled {
+    if FeatureList.kBraveWalletBitcoinFeature?.enabled == true {
       result.append("BTC")
     }
-    if FeatureList.kBraveWalletZCashFeature.enabled {
+    if FeatureList.kBraveWalletZCashFeature?.enabled == true {
       result.append("ZEC")
     }
     return result

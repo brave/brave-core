@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -32,9 +33,12 @@ void NewTorConnectionForSite(Browser*);
 
 void ToggleAIChat(Browser* browser);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
+#endif
+
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);

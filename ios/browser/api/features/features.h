@@ -57,9 +57,12 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
-@property(class, nonatomic, readonly) Feature* kBraveWalletAnkrBalancesFeature;
-@property(class, nonatomic, readonly) Feature* kBraveWalletBitcoinFeature;
-@property(class, nonatomic, readonly) Feature* kBraveWalletZCashFeature;
+@property(class, nonatomic, readonly, nullable)
+    Feature* kBraveWalletAnkrBalancesFeature;
+@property(class, nonatomic, readonly, nullable)
+    Feature* kBraveWalletBitcoinFeature;
+@property(class, nonatomic, readonly, nullable)
+    Feature* kBraveWalletZCashFeature;
 @property(class, nonatomic, readonly) Feature* kConstellationEnclaveAttestation;
 @property(class, nonatomic, readonly)
     Feature* kCosmeticFilteringExtraPerfMetrics;
@@ -68,7 +71,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveAccount;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
-@property(class, nonatomic, readonly) Feature* kNativeBraveWalletFeature;
+@property(class, nonatomic, readonly, nullable)
+    Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
@@ -80,7 +84,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViews;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
 @property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
-@property(class, nonatomic, readonly) Feature* kBraveWalletWebUIIOS;
+@property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
 @property(class, nonatomic, readonly) Feature* kAIChatWebUIEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
 @property(class, nonatomic, readonly)
