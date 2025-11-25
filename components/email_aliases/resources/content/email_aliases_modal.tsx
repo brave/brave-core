@@ -26,6 +26,7 @@ import {
   EmailAliasesServiceInterface,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import './strings'
 
 const ModalCol = styled(Col)`
   row-gap: ${spacing['2Xl']};
@@ -374,6 +375,7 @@ export const EmailAliasModal = ({
         <span>
           {bubble && (
             <Button
+              id='manage-button'
               onClick={() => {
                 onReturnToMain({
                   type: EmailAliasModalResultType.ShouldManageAliases,
@@ -385,6 +387,7 @@ export const EmailAliasModal = ({
             </Button>
           )}
           <Button
+            id='cancel-button'
             onClick={() =>
               onReturnToMain({ type: EmailAliasModalResultType.Cancelled })
             }
@@ -393,6 +396,7 @@ export const EmailAliasModal = ({
             {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
           </Button>
           <Button
+            id='create-alias-button'
             kind='filled'
             isDisabled={
               awaitingUpdate

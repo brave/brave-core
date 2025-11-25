@@ -61,6 +61,16 @@ const BeforeSendingEmailForm = ({
       setErrorMessage(errorMessage as string)
     }
   }
+
+  const emailRef = React.useRef<HTMLInputElement>()
+  React.useEffect(() => {
+    const input = emailRef.current
+    if (!input) {
+      return
+    }
+    setTimeout(() => input.focus())
+  }, [])
+
   return (
     <SpacedCol>
       <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT)}</h4>
@@ -69,7 +79,8 @@ const BeforeSendingEmailForm = ({
       </div>
       <LoginRow>
         <StretchyInput
-          autofocus
+          id='email-input'
+          ref={emailRef}
           onInput={(detail) => setEmail(detail.value)}
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
           name='email'
@@ -80,6 +91,7 @@ const BeforeSendingEmailForm = ({
           value={email}
         />
         <Button
+          id='get-login-link-button'
           onClick={requestAuthentication}
           type='submit'
           kind='filled'
