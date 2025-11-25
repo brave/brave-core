@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 #include <utility>
@@ -31,13 +30,12 @@ constexpr uint32_t kDefaultContextSize = 8192;
 
 }  // namespace
 
-OllamaModelFetcher::OllamaModelFetcher(
-    ModelService& model_service,
-    PrefService* prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+OllamaModelFetcher::OllamaModelFetcher(ModelService& model_service,
+                                       PrefService* prefs,
+                                       OllamaService* ollama_service)
     : model_service_(model_service),
       prefs_(prefs),
-      ollama_service_(std::make_unique<OllamaService>(url_loader_factory)) {
+      ollama_service_(ollama_service) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveAIChatOllamaFetchEnabled,

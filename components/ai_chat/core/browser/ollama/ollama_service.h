@@ -24,6 +24,8 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
+class OllamaModelFetcher;
+
 // Handles network communication with a local Ollama instance.
 // Implements the mojom::OllamaService interface for UI communication.
 class OllamaService : public KeyedService, public mojom::OllamaService {
@@ -64,6 +66,11 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
   virtual void ShowModel(const std::string& model_name,
                          ModelDetailsCallback callback);
 
+  // Set the model fetcher that will be owned by this service.
+  // This should be called after construction when the service is created
+  // through the factory.
+  void SetModelFetcher(std::unique_ptr<OllamaModelFetcher> model_fetcher);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_Valid);
   FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_InvalidJSON);
@@ -102,6 +109,7 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::OllamaService> receivers_;
+  std::unique_ptr<OllamaModelFetcher> model_fetcher_;
   base::WeakPtrFactory<OllamaService> weak_ptr_factory_{this};
 };
 

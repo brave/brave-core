@@ -13,10 +13,12 @@ static_library("ollama") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser/ollama",
     "//brave/components/ai_chat/core/common",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/user_prefs",
     "//content/public/browser",
   ]
 }

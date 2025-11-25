@@ -63,13 +63,13 @@ class OllamaModelFetcherTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
 
-    ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
-        *model_service_, &pref_service_, shared_url_loader_factory_);
+    // Create mock OllamaService first
+    mock_ollama_service_ =
+        std::make_unique<MockOllamaService>(shared_url_loader_factory_);
 
-    // Inject mock OllamaService for testing
-    auto mock = std::make_unique<MockOllamaService>(shared_url_loader_factory_);
-    mock_ollama_service_ = mock.get();
-    ollama_model_fetcher_->ollama_service_ = std::move(mock);
+    // Pass mock service to OllamaModelFetcher
+    ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
+        *model_service_, &pref_service_, mock_ollama_service_.get());
   }
 
   void TearDown() override { OSCryptMocker::TearDown(); }
@@ -84,7 +84,9 @@ class OllamaModelFetcherTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable* pref_service() {
     return &pref_service_;
   }
-  MockOllamaService* mock_ollama_service() { return mock_ollama_service_; }
+  MockOllamaService* mock_ollama_service() {
+    return mock_ollama_service_.get();
+  }
 
  private:
   base::test::TaskEnvironment task_environment_;
@@ -92,8 +94,8 @@ class OllamaModelFetcherTest : public testing::Test {
   std::unique_ptr<ModelService> model_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<MockOllamaService> mock_ollama_service_;
   std::unique_ptr<OllamaModelFetcher> ollama_model_fetcher_;
-  raw_ptr<MockOllamaService> mock_ollama_service_;
 };
 
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {

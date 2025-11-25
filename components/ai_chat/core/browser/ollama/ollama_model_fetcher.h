@@ -10,11 +10,11 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
@@ -24,10 +24,9 @@ class ModelService;
 // ModelService.
 class OllamaModelFetcher {
  public:
-  OllamaModelFetcher(
-      ModelService& model_service,
-      PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  OllamaModelFetcher(ModelService& model_service,
+                     PrefService* prefs,
+                     OllamaService* ollama_service);
   ~OllamaModelFetcher();
 
   OllamaModelFetcher(const OllamaModelFetcher&) = delete;
@@ -62,7 +61,7 @@ class OllamaModelFetcher {
   // (https://github.com/brave/brave-core/commit/dadaf97432efd7d64289bd92b7d31cc6e16722f0)
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
-  std::unique_ptr<OllamaService> ollama_service_;
+  raw_ptr<OllamaService> ollama_service_;
   PrefChangeRegistrar pref_change_registrar_;
   std::map<std::string, PendingModelInfo> pending_models_;
   base::WeakPtrFactory<OllamaModelFetcher> weak_ptr_factory_{this};

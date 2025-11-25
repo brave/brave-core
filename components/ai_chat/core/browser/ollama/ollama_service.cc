@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_model_fetcher.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -100,6 +101,11 @@ OllamaService::OllamaService(
     : url_loader_factory_(std::move(url_loader_factory)) {}
 
 OllamaService::~OllamaService() = default;
+
+void OllamaService::SetModelFetcher(
+    std::unique_ptr<OllamaModelFetcher> model_fetcher) {
+  model_fetcher_ = std::move(model_fetcher);
+}
 
 void OllamaService::BindReceiver(
     mojo::PendingReceiver<mojom::OllamaService> receiver) {
