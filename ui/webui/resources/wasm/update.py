@@ -18,6 +18,28 @@ import toml
 
 import brave_chromium_utils
 
+PRESERVE_PATTERNS = [
+    'vendor/.clang-format',
+    'vendor/*/README.chromium',
+]
+
+
+def back_up_files(patterns):
+    backed_up_files = {}
+    for pattern in patterns:
+        for path in Path().glob(pattern):
+            print(f'Backing up: {path}')
+            backed_up_files[str(path)] = path.read_text(encoding='utf-8')
+    return backed_up_files
+
+
+def restore_files(backed_up_files):
+    for path_str, content in backed_up_files.items():
+        path = Path(path_str)
+        print(f'Restoring: {path}')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding='utf-8')
+
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
     CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
@@ -37,6 +59,9 @@ CONFIG_TOML = {
 
 def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
+    backed_up_files = back_up_files(PRESERVE_PATTERNS)
+
     members = toml.load('Cargo.toml')['workspace']['members']
 
     shutil.rmtree('vendor', ignore_errors=True)
@@ -48,6 +73,8 @@ def main():
         Path(f'{member}/.cargo').mkdir(exist_ok=True)
         with open(Path(f'{member}/.cargo/config.toml'), 'w') as f:
             toml.dump(CONFIG_TOML, f)
+
+    restore_files(backed_up_files)
 
 
 if __name__ == '__main__':
