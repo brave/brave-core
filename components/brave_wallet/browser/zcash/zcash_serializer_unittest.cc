@@ -492,7 +492,8 @@ TEST(ZCashSerializerTest, OrchardToTransparentBundle) {
     tx_output.address = "tmFDtouv8PyCYZjky6Y4z7Y67fXKka82bA9";
     tx_output.amount = 5000000000u;
     tx_output.script_pubkey =
-        ZCashAddressToScriptPubkey("tmFDtouv8PyCYZjky6Y4z7Y67fXKka82bA9", true);
+        ZCashAddressToScriptPubkey("tmFDtouv8PyCYZjky6Y4z7Y67fXKka82bA9", true)
+            .value();
     tx.transparent_part().outputs.push_back(std::move(tx_output));
   }
 
