@@ -35,10 +35,11 @@ struct ControllableCloseButtonState final {
   bool showing_close_button = false;
 };
 
-#define kMinimumContentsWidthForCloseButtons \
-  kMinimumContentsWidthForCloseButtons = 55; \
-  friend class ::BraveTabTest;               \
-  friend class ::BraveTab;                   \
+#define kMinimumContentsWidthForCloseButtons      \
+  kMinimumContentsWidthForCloseButtons = 55;      \
+  bool IsTabMuteIndicatorNotClickable() override; \
+  friend class ::BraveTabTest;                    \
+  friend class ::BraveTab;                        \
   static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
 
 #define GetWidthOfLargestSelectableRegion \

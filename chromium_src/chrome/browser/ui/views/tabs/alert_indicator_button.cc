@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -21,15 +20,7 @@
 
 void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
   const bool was_enabled = GetEnabled();
-  auto* browser = GetTab()->controller()->GetBrowser();
-
-  // We have clickable mute indicators enabled by default. Thus, if our pref is
-  // disabled we can force the indicator off.
-  // Note: We have a test which checks the feature is enabled by default. If
-  // that changes this may need to as well.
-  // Note: |browser| is |nullptr| in some unit_tests.
-  if (browser && browser->profile()->GetPrefs()->GetBoolean(
-                     kTabMuteIndicatorNotClickable)) {
+  if (delegate_->IsTabMuteIndicatorNotClickable()) {
     if (was_enabled)
       SetEnabled(false);
     return;
