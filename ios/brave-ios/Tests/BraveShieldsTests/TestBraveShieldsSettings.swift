@@ -31,6 +31,8 @@ class TestBraveShieldsSettings: BraveShieldsSettings {
   var _autoShredMode: ((URL) -> BraveShields.AutoShredMode)?
   var _setAutoShredMode: ((BraveShields.AutoShredMode, URL) -> Void)?
 
+  var _isShieldsDisabledOnAnyHostMatchingDomain: ((URL) -> Bool)?
+
   // MARK: Brave ShieldsEnabled
 
   func isBraveShieldsEnabled(for url: URL) -> Bool {
@@ -106,5 +108,9 @@ class TestBraveShieldsSettings: BraveShieldsSettings {
   }
   func setAutoShredMode(_ autoShredMode: BraveShields.AutoShredMode, for url: URL!) {
     _setAutoShredMode?(autoShredMode, url)
+  }
+
+  func isShieldsDisabledOnAnyHostMatchingDomain(of url: URL) -> Bool {
+    return _isShieldsDisabledOnAnyHostMatchingDomain?(url) ?? false
   }
 }
