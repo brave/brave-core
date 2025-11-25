@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -28,7 +29,6 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatCredentialManager;
-class ConversationAPIV2Client;
 
 namespace mojom {
 class LeoModelOptions;
@@ -87,6 +87,12 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
                     GetFocusTabsCallback callback) override;
+
+  void SetAPIForTesting(
+      std::unique_ptr<ConversationAPIV2Client> api_for_testing) {
+    api_ = std::move(api_for_testing);
+  }
+  ConversationAPIV2Client* GetAPIForTesting() { return api_.get(); }
 
  private:
   std::unique_ptr<ConversationAPIV2Client> api_ = nullptr;
