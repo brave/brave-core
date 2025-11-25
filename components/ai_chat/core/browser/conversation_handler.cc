@@ -344,22 +344,11 @@ const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   if (!model) {
     // Model no longer exists (e.g., custom model was deleted)
-    // Fall back to the default model
+    // Fall back to the automatic model
     DVLOG(1) << "Model " << model_key_
-             << " no longer exists, falling back to default model";
-    const std::string default_key = model_service_->GetDefaultModelKey();
-    model = model_service_->GetModel(default_key);
-    if (model) {
-      // Update our model key to the default
-      model_key_ = default_key;
-    } else {
-      // If even the default model doesn't exist, get the first available model
-      const auto& all_models = model_service_->GetModels();
-      CHECK(!all_models.empty()) << "No models available in ModelService";
-      model = all_models[0].get();
-      model_key_ = model->key;
-      DVLOG(1) << "Falling back to first available model: " << model_key_;
-    }
+             << " no longer exists, falling back to automatic model";
+    model_key_ = features::kAIModelsDefaultKey.Get();
+    model = model_service_->GetModel(model_key_);
   }
   CHECK(model);
   return *model;
