@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
 
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -38,17 +38,10 @@ export function ResetModal(props: Props) {
           <Icon name='warning-triangle-filled' />
         </div>
         <div className='text'>
-          {formatMessage(getString('resetRewardsText'), {
-            tags: {
-              $1: (content) => (
-                <NewTabLink
-                  key='link'
-                  href={urls.resetSupportURL}
-                >
-                  {content}
-                </NewTabLink>
-              ),
-            },
+          {formatString(getString('resetRewardsText'), {
+            $1: (content) => (
+              <NewTabLink href={urls.resetSupportURL}>{content}</NewTabLink>
+            ),
           })}
         </div>
         <div>
@@ -57,17 +50,10 @@ export function ResetModal(props: Props) {
             onChange={({ checked }) => setConsented(checked)}
           >
             <div>
-              {formatMessage(getString('resetConsentText'), {
-                tags: {
-                  $1: (content) => (
-                    <NewTabLink
-                      key='link'
-                      href={urls.resetSupportURL}
-                    >
-                      {content}
-                    </NewTabLink>
-                  ),
-                },
+              {formatString(getString('resetConsentText'), {
+                $1: (content) => (
+                  <NewTabLink href={urls.resetSupportURL}>{content}</NewTabLink>
+                ),
               })}
             </div>
           </Checkbox>

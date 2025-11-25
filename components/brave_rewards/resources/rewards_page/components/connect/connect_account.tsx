@@ -11,7 +11,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { RouterContext } from '../../lib/router'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
@@ -215,25 +215,13 @@ export function ConnectAccount() {
           )}
         <p className='self-custody-note'>
           {getString('connectSelfCustodyNote')}{' '}
-          {formatMessage(getString('connectSelfCustodyTerms'), {
-            tags: {
-              $1: (content) => (
-                <NewTabLink
-                  key='terms'
-                  href={urls.termsOfServiceURL}
-                >
-                  {content}
-                </NewTabLink>
-              ),
-              $3: (content) => (
-                <NewTabLink
-                  key='privacy-policy'
-                  href={urls.privacyPolicyURL}
-                >
-                  {content}
-                </NewTabLink>
-              ),
-            },
+          {formatString(getString('connectSelfCustodyTerms'), {
+            $1: (content) => (
+              <NewTabLink href={urls.termsOfServiceURL}>{content}</NewTabLink>
+            ),
+            $2: (content) => (
+              <NewTabLink href={urls.privacyPolicyURL}>{content}</NewTabLink>
+            ),
           })}
         </p>
       </>

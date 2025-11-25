@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { useLocaleContext } from '../../lib/locale_strings'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { ExternalWalletDisconnectedNotification } from '../../lib/app_state'
 import { NotificationViewProps } from './notification_view'
 
@@ -23,7 +23,7 @@ export function ExternalWalletDisconnected(props: NotificationViewProps) {
         {getString('notificationWalletDisconnectedTitle')}
       </Title>
       <Body>
-        {formatMessage(getString('notificationWalletDisconnectedText'), [
+        {formatString(getString('notificationWalletDisconnectedText'), [
           getExternalWalletProviderName(provider),
         ])}
       </Body>

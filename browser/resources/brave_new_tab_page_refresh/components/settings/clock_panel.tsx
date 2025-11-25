@@ -10,7 +10,7 @@ import Toggle from '@brave/leo/react/toggle'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { ClockFormat } from '../../state/new_tab_state'
 import { getString } from '../../lib/strings'
-import { formatString } from '$web-common/locale'
+import { formatString } from '$web-common/formatString'
 
 import { style } from './clock_panel.style'
 

@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { CountrySelectModal } from './country_select_modal'
 import { OnboardingErrorModal } from './onboarding_error_modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
@@ -129,25 +129,13 @@ export function Onboarding(props: Props) {
         </NewTabLink>
       </div>
       <div className='terms'>
-        {formatMessage(getString('onboardingTermsText'), {
-          tags: {
-            $1: (content) => (
-              <NewTabLink
-                key='terms'
-                href={urls.termsOfServiceURL}
-              >
-                {content}
-              </NewTabLink>
-            ),
-            $3: (content) => (
-              <NewTabLink
-                key='privacy'
-                href={urls.privacyPolicyURL}
-              >
-                {content}
-              </NewTabLink>
-            ),
-          },
+        {formatString(getString('onboardingTermsText'), {
+          $1: (content) => (
+            <NewTabLink href={urls.termsOfServiceURL}>{content}</NewTabLink>
+          ),
+          $2: (content) => (
+            <NewTabLink href={urls.privacyPolicyURL}>{content}</NewTabLink>
+          ),
         })}
       </div>
       {renderModal()}

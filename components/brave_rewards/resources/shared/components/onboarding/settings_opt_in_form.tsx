@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
+import { LocaleContext } from '../../lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { NewTabLink } from '../new_tab_link'
 import { TermsOfService } from '../terms_of_service'
 import { BatIcon } from '../icons/bat_icon'
@@ -38,7 +40,7 @@ export function SettingsOptInForm (props: Props) {
             ? <MainButton onClick={props.onEnable}>
                 {getString('onboardingStartUsingRewards')}
               </MainButton>
-            : formatMessage(getString('onboardingStartUsingRewardsTextOnly'), [
+            : formatString(getString('onboardingStartUsingRewardsTextOnly'), [
                 <BatIcon key='icon' />
               ])
         }

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
 
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { AdType } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
@@ -53,7 +53,7 @@ export function AdsSettingsModal(props: Props) {
     if (n === 0) {
       return getString('adsSettingsAdsPerHourNoneText')
     }
-    return formatMessage(getString('adsSettingsAdsPerHourText'), [n])
+    return formatString(getString('adsSettingsAdsPerHourText'), [n])
   }
 
   function onNotificationAdsPerHourChange(

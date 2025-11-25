@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
 
 import { useLocaleContext } from '../../lib/locale_strings'
-import { formatMessage } from '../../../shared/lib/locale_context'
+import { formatString } from '$web-common/formatString'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -38,17 +38,10 @@ export function WdpOptInModal(props: Props) {
           onChange={({ checked }) => setChecked(checked)}
         >
           <div className='checkbox-text'>
-            {formatMessage(getString('wdpCheckboxLabel'), {
-              tags: {
-                $1: (content) => (
-                  <NewTabLink
-                    key='link'
-                    href={urls.wdpLearnMoreURL}
-                  >
-                    {content}
-                  </NewTabLink>
-                ),
-              },
+            {formatString(getString('wdpCheckboxLabel'), {
+              $1: (content) => (
+                <NewTabLink href={urls.wdpLearnMoreURL}>{content}</NewTabLink>
+              ),
             })}
           </div>
         </Checkbox>

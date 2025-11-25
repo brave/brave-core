@@ -14,7 +14,7 @@ import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { BackgroundTypePanel } from './background_type_panel'
 import { Link } from '../common/link'
-import { formatString } from '$web-common/locale'
+import { formatString } from '$web-common/formatString'
 import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
 import {
@@ -162,11 +162,7 @@ export function BackgroundPanel() {
                     getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
                     {
                       $1: (content) => (
-                        <Link
-                          key='learn-more'
-                          url={settingsURL}
-                          openInNewTab
-                        >
+                        <Link url={settingsURL} openInNewTab>
                           {content}
                         </Link>
                       )

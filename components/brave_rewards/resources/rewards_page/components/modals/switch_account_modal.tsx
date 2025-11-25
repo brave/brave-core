@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_state'
 import { useLocaleContext } from '../../lib/locale_strings'
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/formatString'
 import { AppModelContext } from '../../lib/app_model_context'
 import { getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
 import { BatIcon } from '../../../shared/components/icons/bat_icon'
@@ -107,12 +107,10 @@ export function SwitchAccountModal(props: Props) {
             <WalletProviderIcon provider={provider} />
           </span>
         </div>
-        <h4>
-          {formatMessage(getString('switchAccountTitle'), [providerName])}
-        </h4>
+        <h4>{formatString(getString('switchAccountTitle'), [providerName])}</h4>
         <ul>
           <li>
-            {formatMessage(getString('switchAccountText1'), [providerName])}
+            {formatString(getString('switchAccountText1'), [providerName])}
           </li>
           <li>{getString('switchAccountText2')}</li>
           <li>{getString('switchAccountText3')}</li>
