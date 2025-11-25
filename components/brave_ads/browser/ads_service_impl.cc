@@ -14,7 +14,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/circular_deque.h"
-#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -65,10 +64,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/network_change_notifier.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
@@ -76,28 +71,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
-
 constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
-
-std::string URLMethodToRequestType(
-    mojom::UrlRequestMethodType mojom_url_request_method) {
-  CHECK(mojom::IsKnownEnumValue(mojom_url_request_method));
-
-  switch (mojom_url_request_method) {
-    case mojom::UrlRequestMethodType::kGet: {
-      return "GET";
-    }
-
-    case mojom::UrlRequestMethodType::kPost: {
-      return "POST";
-    }
-
-    case mojom::UrlRequestMethodType::kPut: {
-      return "PUT";
-    }
-  }
-}
 
 bool WriteOnFileTaskRunner(const base::FilePath& path,
                            const std::string& data) {
@@ -140,46 +114,15 @@ bool DeletePathOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path);
 }
 
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("ads_service_impl", R"(
-      semantics {
-        sender: "Brave Ads Service"
-        description:
-          "This service is used to communicate with Brave servers "
-          "to send and retrieve information for Ads."
-        trigger:
-          "Triggered by user viewing ads or at various intervals."
-        data:
-          "Ads catalog and Confirmations."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "You can enable or disable this feature by visiting brave://rewards."
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
-}
-
-void OnUrlLoaderResponseStartedCallback(
-    const GURL& /*final_url*/,
-    const network::mojom::URLResponseHead& mojom_url_response_head) {
-  if (mojom_url_response_head.headers->response_code() == -1) {
-    VLOG(6) << "Response headers are malformed!!";
-  }
-}
-
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
     PrefService* prefs,
     PrefService* local_state,
+    std::unique_ptr<NetworkClient> network_client,
     std::unique_ptr<VirtualPrefProvider::Delegate>
         virtual_pref_provider_delegate,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader,
     std::string_view channel_name,
     const base::FilePath& profile_path,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -196,7 +139,7 @@ AdsServiceImpl::AdsServiceImpl(
           prefs_,
           local_state_,
           std::move(virtual_pref_provider_delegate))),
-      url_loader_(std::move(url_loader)),
+      network_client_(std::move(network_client)),
       channel_name_(channel_name),
       history_service_(history_service),
       host_content_settings_map_(host_content_settings_map),
@@ -1073,45 +1016,6 @@ void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
   retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
-void AdsServiceImpl::URLRequestCallback(
-    SimpleURLLoaderList::iterator url_loader_iter,
-    UrlRequestCallback callback,
-    const std::unique_ptr<std::string> response_body) {
-  auto url_loader = std::move(*url_loader_iter);
-  url_loaders_.erase(url_loader_iter);
-
-  int response_code = -1;
-
-  base::flat_map<std::string, std::string> headers;
-
-  if (!url_loader->ResponseInfo()) {
-    VLOG(6) << "ResponseInfo was never received";
-  } else if (!url_loader->ResponseInfo()->headers) {
-    VLOG(6) << "Failed to obtain headers from the network stack";
-  } else {
-    const scoped_refptr<net::HttpResponseHeaders> headers_list =
-        url_loader->ResponseInfo()->headers;
-    response_code = headers_list->response_code();
-
-    size_t iter = 0;
-    std::string key;
-    std::string value;
-
-    while (headers_list->EnumerateHeaderLines(&iter, &key, &value)) {
-      key = base::ToLowerASCII(key);
-      headers[key] = value;
-    }
-  }
-
-  mojom::UrlResponseInfoPtr mojom_url_response = mojom::UrlResponseInfo::New();
-  mojom_url_response->url = url_loader->GetFinalURL();
-  mojom_url_response->status_code = response_code;
-  mojom_url_response->body = response_body ? *response_body : "";
-  mojom_url_response->headers = std::move(headers);
-
-  std::move(callback).Run(std::move(mojom_url_response));
-}
-
 void AdsServiceImpl::ShowScheduledCaptchaCallback(
     const std::string& payment_id,
     const std::string& captcha_id) {
@@ -1159,7 +1063,9 @@ void AdsServiceImpl::ShutdownAdsService() {
   bat_ads_client_associated_receiver_.reset();
   bat_ads_service_remote_.reset();
 
-  url_loaders_.clear();
+  if (network_client_) {
+    network_client_->CancelRequests();
+  }
 
   idle_state_timer_.Stop();
 
@@ -1637,42 +1543,11 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
       &history_service_task_tracker_);
 }
 
-void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
                                 UrlRequestCallback callback) {
-  CHECK(mojom_url_request);
-  CHECK(mojom_url_request->url.is_valid());
-
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = mojom_url_request->url;
-  resource_request->method = URLMethodToRequestType(mojom_url_request->method);
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  for (const auto& header : mojom_url_request->headers) {
-    resource_request->headers.AddHeaderFromString(header);
+  if (network_client_) {
+    network_client_->UrlRequest(std::move(url_request), std::move(callback));
   }
-
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotationTag());
-
-  if (!mojom_url_request->content.empty()) {
-    url_loader->AttachStringForUpload(mojom_url_request->content,
-                                      mojom_url_request->content_type);
-  }
-
-  url_loader->SetOnResponseStartedCallback(
-      base::BindOnce(&OnUrlLoaderResponseStartedCallback));
-
-  url_loader->SetRetryOptions(
-      kMaximumNumberOfTimesToRetryNetworkRequests,
-      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-
-  url_loader->SetAllowHttpErrorResults(true);
-
-  auto url_loader_iter =
-      url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
-  url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_.get(), base::BindOnce(&AdsServiceImpl::URLRequestCallback,
-                                        base::Unretained(this), url_loader_iter,
-                                        std::move(callback)));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
