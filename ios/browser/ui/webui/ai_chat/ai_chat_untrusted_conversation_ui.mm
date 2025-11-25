@@ -10,10 +10,12 @@
 
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -208,6 +210,23 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddLocalizedStrings(webui::kAiChatStrings);
 
   source->AddBoolean("isMobile", true);
+
+  // If the feature is not enabled then don't add the origin to the CSP.
+  if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::FrameSrc,
+        base::StrCat({"frame-src ",
+                      ai_chat::features::kRichSearchWidgetsOrigin.Get(),
+                      "/embed.html;"}));
+  }
+
+  // If the feature is not enabled don't specify an origin for loading the rich
+  // search widgets.
+  source->AddString(
+      "richSearchWidgetsOrigin",
+      base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)
+          ? ai_chat::features::kRichSearchWidgetsOrigin.Get()
+          : "");
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
