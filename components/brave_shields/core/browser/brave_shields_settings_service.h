@@ -59,6 +59,8 @@ class BraveShieldsSettingsService : public KeyedService {
   void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
   mojom::AutoShredMode GetAutoShredMode(const GURL& url);
 
+  bool IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const;
+
   bool IsJsBlockingEnforced(const GURL& url);
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingOverriddenData(
       const GURL& url);
