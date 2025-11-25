@@ -101,7 +101,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.fusebox.NavigationAttachmentsCoordinator;
+import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -1586,7 +1586,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
                         DeferredIMEWindowInsetApplicationCallback.class,
-                        NavigationAttachmentsCoordinator.class,
+                        FuseboxCoordinator.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1723,7 +1723,7 @@ public class BytecodeTest {
                         Supplier.class,
                         ObservableSupplier.class,
                         PageZoomIndicatorCoordinator.class,
-                        NavigationAttachmentsCoordinator.class,
+                        FuseboxCoordinator.class,
                         MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
