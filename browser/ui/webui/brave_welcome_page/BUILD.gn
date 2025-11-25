@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("brave_welcome_page") {
+  sources = [
+    "brave_welcome_page_ui.cc",
+    "brave_welcome_page_ui.h",
+  ]
+
+  deps = [
+    "//brave/browser/resources/brave_welcome_page:generated_resources",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui:webui_util",
+    "//content/public/browser",
+    "//ui/webui",
+  ]
+}

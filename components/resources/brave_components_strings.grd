@@ -838,6 +838,7 @@
         <part file="brave_new_tab_page_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
+        <part file="brave_welcome_page_strings.grdp" />
         <part file="customize_chrome_ui_strings.grdp" />
         <part file="customize_toolbar_ui_strings.grdp" />
       </if>

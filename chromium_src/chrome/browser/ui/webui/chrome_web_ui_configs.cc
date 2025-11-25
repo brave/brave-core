@@ -31,6 +31,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -93,6 +94,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
+  map.AddWebUIConfig(std::make_unique<BraveWelcomePageUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());

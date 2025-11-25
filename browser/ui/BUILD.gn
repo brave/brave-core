@@ -357,6 +357,7 @@ source_set("ui") {
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
       "//brave/common",
       "//brave/components/brave_account",

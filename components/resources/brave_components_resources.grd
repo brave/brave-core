@@ -96,6 +96,7 @@
       <if expr="not is_android">
         <part file="brave_blank_page_resources.grdp" />
         <part file="brave_new_tab_page_resources.grdp" />
+        <part file="brave_welcome_page_resources.grdp" />
       </if>
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />
