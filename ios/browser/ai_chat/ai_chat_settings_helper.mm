@@ -107,12 +107,14 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
 
 - (void)fetchPremiumStatus:(void (^)(AiChatPremiumStatus status,
                                      AiChatPremiumInfo* info))handler {
-  _aiChatService->GetPremiumStatus(base::BindOnce(^(
-      ai_chat::mojom::PremiumStatus status,
-      ai_chat::mojom::PremiumInfoPtr info) {
-    handler(static_cast<AiChatPremiumStatus>(status),
-            [[AiChatPremiumInfo alloc] initWithPremiumInfoPtr:std::move(info)]);
-  }));
+  _aiChatService->GetPremiumStatus(
+      base::BindOnce(^(ai_chat::mojom::PremiumStatus status,
+                       ai_chat::mojom::PremiumInfoPtr info) {
+        handler(static_cast<AiChatPremiumStatus>(status),
+                info ? [[AiChatPremiumInfo alloc]
+                           initWithPremiumInfoPtr:std::move(info)]
+                     : nil);
+      }));
 }
 
 - (void)resetLeoData {
