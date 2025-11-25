@@ -149,14 +149,18 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   CHECK(!(amount_ == kZCashFullAmount) || (pick_result->change == 0));
 
   // Calculate the amount to send.
+  // ValueOrDie is correct here since PickZCashOrchardInputs already
+  // selects correct inputs and corresponding fee\change.
   uint64_t actual_send_amount =
       base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
                                zcash_transaction.fee(), pick_result->change)
           .ValueOrDie();
   transparent_output.amount = actual_send_amount;
-  transparent_output.script_pubkey = ZCashAddressToScriptPubkey(
-      transparent_output.address,
-      IsZCashTestnetKeyring(context_.account_id->keyring_id));
+  transparent_output.script_pubkey =
+      ZCashAddressToScriptPubkey(
+          transparent_output.address,
+          IsZCashTestnetKeyring(context_.account_id->keyring_id))
+          .value();
 
   // Create Orchard change output if needed.
   CHECK(context_.account_internal_addr);
