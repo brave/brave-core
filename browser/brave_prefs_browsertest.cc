@@ -149,9 +149,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kCloudPrintProxyEnabled));
 #if !BUILDFLAG(IS_ANDROID)
-  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
-                ntp_prefs::kNtpShortcutsType),
-            static_cast<int>(ntp_tiles::TileType::kTopSites));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      ntp_prefs::kNtpCustomLinksVisible));
 #endif
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       policy::policy_prefs::kHideWebStoreIcon));
