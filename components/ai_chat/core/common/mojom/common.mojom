@@ -186,6 +186,9 @@ struct WebSourcesEvent {
   // that this data is simply passed through to a renderer that does understand the data
   // format and is updated more frequently than the browser.
   array<string> rich_results;
+
+  // See https://api-dashboard.search.brave.com/app/documentation/web-search/responses#GraphInfobox
+  array<string> info_boxes;
 };
 
 struct CompletionEvent {

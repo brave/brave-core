@@ -555,6 +555,20 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
           mojom::WebSource::New(*title, item_url, item_favicon_url));
     }
 
+    // Info Boxes
+    if (auto* info_boxes = response_event.FindList("info_boxes")) {
+      for (auto& item : *info_boxes) {
+        if (!item.is_dict()) {
+          continue;
+        }
+
+        // Pass through the raw JSON - we don't care what's in it.
+        std::string json;
+        base::JSONWriter::Write(item, &json);
+        web_sources_event->info_boxes.push_back(json);
+      }
+    }
+
     // Rich Data
     const base::Value::List* rich_results =
         response_event.FindList("rich_results");

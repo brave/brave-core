@@ -1909,6 +1909,169 @@ TEST_F(ConversationAPIUnitTest,
   EXPECT_EQ(result->model_key, "chat-basic");
 }
 
+TEST_F(ConversationAPIUnitTest,
+       ParseResponseEvent_ParsesWebSourcesEventWithInfoBoxes) {
+  // Test webSources event with valid info_boxes data
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com",
+        "favicon": "https://imgs.search.brave.com/favicon.ico"
+      }
+    ],
+    "info_boxes": [
+      {
+        "type": "knowledge_graph",
+        "title": "Knowledge Graph Title",
+        "description": "Some description"
+      },
+      {
+        "type": "infobox",
+        "title": "Info Box Title",
+        "data": "Some data"
+      }
+    ]
+  })");
+
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
+
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_sources_event());
+
+  auto& sources_event = result->event->get_sources_event();
+  EXPECT_EQ(sources_event->sources.size(), 1u);
+  EXPECT_EQ(sources_event->sources[0]->title, "Example Source");
+
+  // Verify info_boxes were parsed
+  ASSERT_EQ(sources_event->info_boxes.size(), 2u);
+
+  // Verify first info box using IsJson
+  EXPECT_THAT(sources_event->info_boxes[0], base::test::IsJson(R"({
+                "type": "knowledge_graph",
+                "title": "Knowledge Graph Title",
+                "description": "Some description"
+              })"));
+
+  // Verify second info box using IsJson
+  EXPECT_THAT(sources_event->info_boxes[1], base::test::IsJson(R"({
+                "type": "infobox",
+                "title": "Info Box Title",
+                "data": "Some data"
+              })"));
+
+  EXPECT_EQ(result->model_key, "chat-basic");
+}
+
+TEST_F(ConversationAPIUnitTest,
+       ParseResponseEvent_WebSourcesEventWithInvalidInfoBoxes) {
+  // Test that invalid info_boxes items are skipped gracefully
+  // Note: Must construct manually to test invalid structures
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ]
+  })");
+
+  // Add info_boxes with various invalid items
+  base::Value::List info_boxes;
+
+  // Invalid: not a dict
+  info_boxes.Append("invalid_string");
+
+  // Valid info box
+  info_boxes.Append(base::test::ParseJsonDict(R"({"id": "valid_item1"})"));
+
+  // Invalid: not a dict
+  info_boxes.Append(123);
+
+  // Valid info box
+  info_boxes.Append(base::test::ParseJsonDict(R"({"id": "valid_item2"})"));
+
+  event.Set("info_boxes", std::move(info_boxes));
+
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
+
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_sources_event());
+
+  auto& sources_event = result->event->get_sources_event();
+  // Should only have 2 valid info boxes
+  ASSERT_EQ(sources_event->info_boxes.size(), 2u);
+
+  // Verify the valid items were parsed correctly using IsJson
+  EXPECT_THAT(sources_event->info_boxes[0],
+              base::test::IsJson(R"({"id": "valid_item1"})"));
+  EXPECT_THAT(sources_event->info_boxes[1],
+              base::test::IsJson(R"({"id": "valid_item2"})"));
+}
+
+TEST_F(ConversationAPIUnitTest,
+       ParseResponseEvent_WebSourcesEventWithoutInfoBoxes) {
+  // Test that webSources event works fine without info_boxes
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ]
+  })");
+
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
+
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_sources_event());
+
+  auto& sources_event = result->event->get_sources_event();
+  EXPECT_EQ(sources_event->sources.size(), 1u);
+  EXPECT_EQ(sources_event->info_boxes.size(), 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
+}
+
+TEST_F(ConversationAPIUnitTest,
+       ParseResponseEvent_WebSourcesEventWithEmptyInfoBoxes) {
+  // Test that empty info_boxes list is handled correctly
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ],
+    "info_boxes": []
+  })");
+
+  std::optional<EngineConsumer::GenerationResultData> result =
+      ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
+
+  ASSERT_TRUE(result);
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_sources_event());
+
+  auto& sources_event = result->event->get_sources_event();
+  EXPECT_EQ(sources_event->sources.size(), 1u);
+  EXPECT_EQ(sources_event->info_boxes.size(), 0u);
+  EXPECT_EQ(result->model_key, "chat-basic");
+}
+
 TEST_F(ConversationAPIUnitTest, ParseResponseEvent_InvalidEventType) {
   base::Value::Dict invalid_event;
   invalid_event.Set("type", "unknownThisIsTheWayEvent");

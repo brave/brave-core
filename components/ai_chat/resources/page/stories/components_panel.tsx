@@ -96,7 +96,7 @@ function getWebSourcesEvent(
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    sourcesEvent: { sources, richResults: [] },
+    sourcesEvent: { sources, richResults: [], infoBoxes: [] },
   }
 }
 
