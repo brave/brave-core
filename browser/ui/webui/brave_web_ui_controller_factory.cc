@@ -45,6 +45,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
@@ -127,6 +128,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
         brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
+  } else if (host == kBraveWelcomePageHost && !profile->IsGuestSession()) {
+    return new BraveWelcomePageUI(web_ui);
   } else if (host == chrome::kChromeUINewTabHost) {
     // For private profiles the webui handling kChromeUINewTabHost is configured
     // with RegisterChromeWebUIConfigs, so we should not get called here with a
@@ -203,6 +206,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host() == chrome::kChromeUISettingsHost ||
       ((url.host() == kWelcomeHost || url.host() == kWelcomeURL) &&
        !profile->IsGuestSession()) ||
+      (url.host() == kBraveWelcomePageHost && !profile->IsGuestSession()) ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host() == kTorInternalsHost ||

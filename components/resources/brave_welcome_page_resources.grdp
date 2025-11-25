@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_WELCOME_PAGE_HTML" file="../../browser/resources/brave_welcome_page/brave_welcome_page.html" type="BINDATA" />
+</grit-part>
