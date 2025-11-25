@@ -124,4 +124,10 @@
       static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode), gurl);
 }
 
+- (BOOL)isShieldsDisabledOnAnyHostMatchingDomainOf:(NSURL*)url {
+  GURL gurl = net::GURLWithNSURL(url);
+  return _braveShieldsSettings->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      gurl);
+}
+
 @end
