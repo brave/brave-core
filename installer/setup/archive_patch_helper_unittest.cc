@@ -20,33 +20,28 @@ namespace {
 
 class ArchivePatchHelperTest : public testing::Test {
  protected:
-  static void SetUpTestCase() {
+  void SetUp() override {
     // This requires chrome::RegisterPathProvider() to have been called.
     ASSERT_TRUE(base::PathService::Get(chrome::DIR_TEST_DATA, &data_dir_));
     data_dir_ = data_dir_.AppendASCII("installer");
     ASSERT_TRUE(base::PathExists(data_dir_));
-  }
 
-  static void TearDownTestCase() { data_dir_.clear(); }
-
-  void SetUp() override {
     // Create a temp directory for testing.
     ASSERT_TRUE(test_dir_.CreateUniqueTempDir());
   }
 
   void TearDown() override {
+    data_dir_.clear();
     // Clean up test directory manually so we can fail if it leaks.
     ASSERT_TRUE(test_dir_.Delete());
   }
 
   // The path to input data used in tests.
-  static base::FilePath data_dir_;
+  base::FilePath data_dir_;
 
   // The temporary directory used to contain the test operations.
   base::ScopedTempDir test_dir_;
 };
-
-base::FilePath ArchivePatchHelperTest::data_dir_;
 
 }  // namespace
 
