@@ -39,6 +39,12 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   mojom_event->rich_results.push_back(
       R"({"type":"video","url":"https://example.com/video.mp4"})");
 
+  // Add info_boxes
+  mojom_event->info_boxes.push_back(
+      R"({"title":"Test Info Box","content":"Test content"})");
+  mojom_event->info_boxes.push_back(
+      R"({"title":"Another Info Box","items":["item1","item2"]})");
+
   // Serialize to proto
   store::WebSourcesEventProto proto_event;
   SerializeWebSourcesEvent(mojom_event, &proto_event);
@@ -60,6 +66,13 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
             R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
   EXPECT_EQ(proto_event.rich_results(1),
             R"({"type":"video","url":"https://example.com/video.mp4"})");
+
+  // Verify info_boxes in proto
+  ASSERT_EQ(proto_event.info_boxes_size(), 2);
+  EXPECT_EQ(proto_event.info_boxes(0),
+            R"({"title":"Test Info Box","content":"Test content"})");
+  EXPECT_EQ(proto_event.info_boxes(1),
+            R"({"title":"Another Info Box","items":["item1","item2"]})");
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
@@ -134,6 +147,7 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_EmptySources) {
   // Verify empty proto
   EXPECT_EQ(proto_event.sources_size(), 0);
   EXPECT_EQ(proto_event.rich_results_size(), 0);
+  EXPECT_EQ(proto_event.info_boxes_size(), 0);
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
@@ -141,6 +155,7 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_EmptySources) {
   // Verify empty mojom
   EXPECT_EQ(deserialized_event->sources.size(), 0u);
   EXPECT_EQ(deserialized_event->rich_results.size(), 0u);
+  EXPECT_EQ(deserialized_event->info_boxes.size(), 0u);
 }
 
 TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResults) {
@@ -177,6 +192,40 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResults) {
   EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
+TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_InfoBoxes) {
+  // Test with complex nested JSON in info_boxes
+  auto mojom_event = mojom::WebSourcesEvent::New();
+
+  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
+                                      GURL("https://example.com/favicon.ico"));
+  mojom_event->sources.push_back(std::move(source));
+
+  // Add complex nested JSON structures
+  mojom_event->info_boxes.push_back(R"({
+    "title":"Python Programming",
+    "category":"Programming Language",
+    "details":{
+      "year":1991,
+      "creator":"Guido van Rossum",
+      "paradigms":["Object-oriented","Imperative","Functional"]
+    },
+    "links":[
+      {"title":"Official Site","url":"https://python.org"},
+      {"title":"Documentation","url":"https://docs.python.org"}
+    ]
+  })");
+
+  // Serialize to proto
+  store::WebSourcesEventProto proto_event;
+  SerializeWebSourcesEvent(mojom_event, &proto_event);
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
+
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
 TEST(ProtoConversionTest,
      SerializeDeserializeWebSourcesEvent_EmptyRichResultStrings) {
   // Test with empty strings in rich_results
@@ -190,6 +239,31 @@ TEST(ProtoConversionTest,
   mojom_event->rich_results.push_back(R"({"type":"valid_data"})");
   mojom_event->rich_results.push_back("");  // empty string
   mojom_event->rich_results.push_back(R"({"type":"another_valid"})");
+
+  // Serialize to proto
+  store::WebSourcesEventProto proto_event;
+  SerializeWebSourcesEvent(mojom_event, &proto_event);
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
+
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
+}
+
+TEST(ProtoConversionTest,
+     SerializeDeserializeWebSourcesEvent_EmptyInfoBoxStrings) {
+  // Test with empty strings in info_boxes
+  auto mojom_event = mojom::WebSourcesEvent::New();
+
+  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
+                                      GURL("https://example.com/favicon.ico"));
+  mojom_event->sources.push_back(std::move(source));
+
+  // Add valid and empty info_boxes
+  mojom_event->info_boxes.push_back(R"({"title":"valid_data"})");
+  mojom_event->info_boxes.push_back("");  // empty string
+  mojom_event->info_boxes.push_back(R"({"title":"another_valid"})");
 
   // Serialize to proto
   store::WebSourcesEventProto proto_event;

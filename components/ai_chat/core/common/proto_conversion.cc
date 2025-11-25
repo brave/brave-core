@@ -45,6 +45,11 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
     mojom_event->rich_results.push_back(rich_result);
   }
 
+  mojom_event->info_boxes.reserve(proto_event.info_boxes_size());
+  for (const auto& info_box : proto_event.info_boxes()) {
+    mojom_event->info_boxes.push_back(info_box);
+  }
+
   return mojom_event;
 }
 
@@ -72,6 +77,11 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
   proto_event->clear_rich_results();
   for (const auto& rich_result : mojom_event->rich_results) {
     proto_event->add_rich_results(rich_result);
+  }
+
+  proto_event->clear_info_boxes();
+  for (const auto& info_box : mojom_event->info_boxes) {
+    proto_event->add_info_boxes(info_box);
   }
 }
 

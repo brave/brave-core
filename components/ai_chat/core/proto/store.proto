@@ -48,6 +48,7 @@ message WebSourceProto {
 message WebSourcesEventProto {
   repeated WebSourceProto sources = 1;
   repeated string rich_results = 2;
+  repeated string info_boxes = 3;
 }
 
 message SkillEntryProto {
