@@ -225,24 +225,24 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig& storage_partition_config,
     bool shields_disabled_on_one_of_hosts,
-    bool ephemeral_storage_clean_enforced) {
+    bool first_party_storage_cleanup_enforced) {
   DVLOG(1) << __func__ << " " << ephemeral_domain << " "
            << storage_partition_config;
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
-      !shields_disabled_on_one_of_hosts || ephemeral_storage_clean_enforced;
+      !shields_disabled_on_one_of_hosts || first_party_storage_cleanup_enforced;
   const bool cleanup_first_party_storage_area =
       FirstPartyStorageAreaNotInUse(ephemeral_domain, storage_partition_config,
                                     shields_disabled_on_one_of_hosts) ||
-      ephemeral_storage_clean_enforced;
+      first_party_storage_cleanup_enforced;
 
-  if (ephemeral_storage_clean_enforced ||
+  if (first_party_storage_cleanup_enforced ||
       base::FeatureList::IsEnabled(
           net::features::kBraveEphemeralStorageKeepAlive)) {
     auto cleanup_timer = std::make_unique<base::OneShotTimer>();
     cleanup_timer->Start(
         FROM_HERE,
-        ephemeral_storage_clean_enforced ? base::Milliseconds(500)
+        first_party_storage_cleanup_enforced ? base::Milliseconds(500)
                                          : tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
