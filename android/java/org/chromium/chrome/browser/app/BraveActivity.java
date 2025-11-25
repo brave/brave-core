@@ -1476,6 +1476,12 @@ public abstract class BraveActivity extends ChromeActivity
                 TemplateUrlServiceFactory.getForProfile(getCurrentProfile());
         Runnable onTemplateUrlServiceReady =
                 () -> {
+                    if (ChromeSharedPreferences.getInstance()
+                            .readBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, false)) {
+                        // If the install originated from the Search Choice Screen, keep Brave as
+                        // default
+                        return;
+                    }
                     if (isActivityFinishingOrDestroyed()) return;
                     TemplateUrl yahooJpTemplateUrl =
                             BraveSearchEngineUtils.getTemplateUrlByShortName(
@@ -1781,6 +1787,11 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void checkForYandexSE() {
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, false)) {
+            // If the install originated from the Search Choice Screen, keep Brave as default
+            return;
+        }
         String countryCode = Locale.getDefault().getCountry();
         if (sYandexRegions.contains(countryCode)) {
             Profile lastUsedRegularProfile = ProfileManager.getLastUsedRegularProfile();

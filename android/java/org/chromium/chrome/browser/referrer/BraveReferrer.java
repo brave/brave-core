@@ -20,6 +20,7 @@ import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
@@ -41,6 +42,10 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private static final String APP_CHROME_DIR = "app_chrome";
     private static final String PROMO_CODE_FILE_NAME = "promoCode";
     private static final String BRAVE_REFERRER_RECEIVED = "brave_referrer_received";
+    private static final String UTM_SOURCE_EEA_SEARCH_CHOICE = "eea-search-choice";
+    private static final String UTM_SOURCE_EEA_BROWSER_CHOICE = "eea-browser-choice";
+    private static final String SEARCH_CHOICE_SCREEN_REFERRAL_CODE = "SCS001";
+    private static final String BROWSER_CHOICE_SCREEN_REFERRAL_CODE = "BCS001";
     private static final String PLAY_STORE_AD_REFERRAL_CODE = "UAC001";
     private static final String GOOGLE_SEARCH_AD_REFERRAL_CODE = "UAC002";
     private static final String PLAY_STORE_AD_GBRAID_REFERRAL_CODE = "UAC003";
@@ -192,6 +197,16 @@ public class BraveReferrer implements InstallReferrerStateListener {
         String urpc = uri.getQueryParameter("urpc");
         if (!isNullOrEmpty(urpc)) {
             return urpc;
+        }
+
+        String utmSource = uri.getQueryParameter("utm_source");
+        if (UTM_SOURCE_EEA_SEARCH_CHOICE.equals(utmSource)) {
+            // Set flag to indicate that the install originated from the Search Choice Screen
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, true);
+            return SEARCH_CHOICE_SCREEN_REFERRAL_CODE;
+        } else if (UTM_SOURCE_EEA_BROWSER_CHOICE.equals(utmSource)) {
+            return BROWSER_CHOICE_SCREEN_REFERRAL_CODE;
         }
 
         String gclid = uri.getQueryParameter("gclid");

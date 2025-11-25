@@ -6,8 +6,11 @@
 package org.chromium.chrome.browser.settings;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -74,11 +77,21 @@ public class BraveSearchEngineUtils {
             final TemplateUrlService templateUrlService =
                     TemplateUrlServiceFactory.getForProfile(profile);
 
-            TemplateUrl templateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
+            String defaultSearchEngineName;
+
+            // If install originated from Search Choice Screen, set Brave Search as default
+            if (sharedPreferences.readBoolean(
+                    BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, false)) {
+                defaultSearchEngineName = OnboardingPrefManager.BRAVE;
+            } else {
+                TemplateUrl templateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
+                defaultSearchEngineName = templateUrl.getShortName();
+            }
+
             sharedPreferences.writeString(
-                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, templateUrl.getShortName());
+                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, defaultSearchEngineName);
             sharedPreferences.writeString(
-                    BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, templateUrl.getShortName());
+                    BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, defaultSearchEngineName);
         }
     }
 
@@ -108,5 +121,10 @@ public class BraveSearchEngineUtils {
 
     public static TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
         return BraveSearchEngineAdapter.getTemplateUrlByShortName(profile, name, null);
+    }
+
+    @VisibleForTesting
+    static void initializeDSEPrefsForTesting(Profile profile) {
+        initializeDSEPrefs(profile);
     }
 }
