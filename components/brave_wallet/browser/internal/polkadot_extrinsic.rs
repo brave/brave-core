@@ -81,6 +81,8 @@ mod ffi {
 #[macro_export]
 macro_rules! impl_result {
     ($t:ident, $r:ident) => {
+        struct $r(Result<$t, Error>);
+
         impl $r {
             fn error_message(self: &$r) -> String {
                 match &self.0 {
@@ -138,10 +140,7 @@ struct CxxPolkadotChainMetadata {
     transfer_allow_death_call_index: u8,
 }
 
-struct CxxPolkadotChainMetadataResult(Result<CxxPolkadotChainMetadata, Error>);
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
-
-struct CxxPolkadotDecodeUnsignedTransferResult(Result<CxxPolkadotDecodeUnsignedTransfer, Error>);
 impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransferResult);
 
 fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
