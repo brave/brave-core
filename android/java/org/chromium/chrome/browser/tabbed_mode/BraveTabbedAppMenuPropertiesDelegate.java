@@ -312,22 +312,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
         }
 
-        if (ChromeFeatureList.sAndroidPinnedTabs.isEnabled()) {
-            // Pin
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.pin_tab_menu_id, R.string.menu_pin_tab, 0)));
-
-            // Unpin
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.unpin_tab_menu_id, R.string.menu_unpin_tab, 0)));
-        }
-
         // New Window
         if (!DeviceInfo.isAutomotive()) {
             modelList.add(
