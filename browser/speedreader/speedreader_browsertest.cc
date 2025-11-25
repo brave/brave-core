@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -98,7 +99,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeaturesAndParameters(
-        {{speedreader::features::kSpeedreaderFeature,
+        {{features::kBraveRoundedCornersByDefault, {}},
+         {speedreader::features::kSpeedreaderFeature,
           {{speedreader::features::kSpeedreaderTTS.name, "true"}}}
 #if BUILDFLAG(ENABLE_AI_CHAT)
          ,

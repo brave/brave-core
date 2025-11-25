@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -510,7 +511,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   registry->RegisterBooleanPref(kShowFullscreenReminder, true);
-  registry->RegisterBooleanPref(kWebViewRoundedCorners, true);
+  registry->RegisterBooleanPref(
+      kWebViewRoundedCorners,
+      base::FeatureList::IsEnabled(features::kBraveRoundedCornersByDefault));
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
