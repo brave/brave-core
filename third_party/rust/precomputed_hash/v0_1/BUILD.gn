@@ -25,6 +25,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/emilio/precomputed-hash"
   cargo_pkg_version = "0.1.1"
 
+  allow_unsafe = false
+
   rustenv = []
   rustflags = []
 

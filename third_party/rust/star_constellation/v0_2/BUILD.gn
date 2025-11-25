@@ -31,6 +31,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/brave/constellation"
   cargo_pkg_version = "0.2.5"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/bincode/v1:lib",
     "//brave/third_party/rust/lazy_static/v1:lib",
