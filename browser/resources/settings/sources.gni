@@ -6,6 +6,7 @@
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -47,13 +48,7 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
   "brave_survey_panelist_page/brave_survey_panelist_page.ts",
-  "brave_wallet_page/add_wallet_network_dialog.ts",
-  "brave_wallet_page/brave_wallet_page.ts",
-  "brave_wallet_page/wallet_networks_list.ts",
-  "brave_wallet_page/wallet_networks_subpage.ts",
-  "brave_wallet_page/wallet_page_index.ts",
   "brave_default_extensions_page/brave_extensions_page_index.ts",
-  "brave_web3_domains_page/brave_web3_domains_page.ts",
   "default_brave_shields_page/brave_adblock_subpage.ts",
   "default_brave_shields_page/components/brave_adblock_editor.ts",
   "default_brave_shields_page/components/brave_adblock_scriptlet_editor.ts",
@@ -68,9 +63,6 @@ brave_settings_web_component_files = [
   "site_settings/site_settings_localhost.ts",
   "site_settings/site_settings_google.ts",
   "site_settings/site_settings_shields.ts",
-  "site_settings/site_settings_cardano.ts",
-  "site_settings/site_settings_ethereum.ts",
-  "site_settings/site_settings_solana.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]
@@ -137,8 +129,6 @@ brave_settings_ts_files = [
   "brave_routes.ts",
   "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
   "brave_sync_page/brave_sync_browser_proxy.ts",
-  "brave_wallet_page/brave_wallet_browser_proxy.ts",
-  "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
   "email_aliases_page/email_aliases_page.ts",
@@ -171,6 +161,24 @@ if (enable_tor) {
     "brave_tor_page/brave_tor_subpage.ts",
   ]
   brave_settings_ts_files += [ "brave_tor_page/brave_tor_browser_proxy.ts" ]
+}
+
+if (enable_brave_wallet) {
+  brave_settings_web_component_files += [
+    "brave_wallet_page/add_wallet_network_dialog.ts",
+    "brave_wallet_page/brave_wallet_page.ts",
+    "brave_wallet_page/wallet_networks_list.ts",
+    "brave_wallet_page/wallet_networks_subpage.ts",
+    "brave_wallet_page/wallet_page_index.ts",
+    "brave_web3_domains_page/brave_web3_domains_page.ts",
+    "site_settings/site_settings_cardano.ts",
+    "site_settings/site_settings_ethereum.ts",
+    "site_settings/site_settings_solana.ts",
+  ]
+  brave_settings_ts_files += [
+    "brave_wallet_page/brave_wallet_browser_proxy.ts",
+    "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
+  ]
 }
 
 if (enable_ai_chat) {

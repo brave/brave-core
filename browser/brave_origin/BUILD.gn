@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -26,7 +27,7 @@ source_set("brave_origin") {
     "//brave/components/brave_policy",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/ipfs/buildflags",
@@ -62,6 +63,10 @@ source_set("brave_origin") {
 
   if (deprecate_ipfs) {
     deps += [ "//brave/components/ipfs" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:pref_names" ]
   }
 }
 

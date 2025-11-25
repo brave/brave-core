@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -116,14 +117,11 @@ source_set("extensions") {
     "//brave/components/brave_search/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_wallet/browser:pref_names",
-    "//brave/components/brave_wallet/browser:utils",
-    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",
-    "//brave/components/decentralized_dns/core",
     "//brave/components/ntp_background_images/common",
     "//brave/components/playlist/core/common",
     "//brave/components/request_otr/common",
@@ -191,11 +189,15 @@ source_set("extensions") {
     deps += [ "//brave/components/windows_recall" ]
   }
 
-  deps += [
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common:buildflags",
-    "//components/prefs",
-  ]
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/decentralized_dns/core",
+    ]
+  }
 
   allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
 }

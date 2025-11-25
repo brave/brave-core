@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 source_set("features") {
   sources = [
     "features.h",
@@ -22,8 +24,7 @@ source_set("features") {
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync:features",
     "//brave/components/brave_user_agent/common",
-    "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",
     "//brave/components/ntp_background_images/browser",
@@ -31,7 +32,6 @@ source_set("features") {
     "//brave/components/playlist/core/common",
     "//brave/components/skus/common",
     "//brave/ios/browser/api/translate:features",
-    "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/ui/commerce:features",
     "//brave/ios/browser/ui/tab_tray:features",
     "//brave/ios/browser/ui/web_view:features",
@@ -39,6 +39,13 @@ source_set("features") {
     "//build:blink_buildflags",
     "//net",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/common",
+      "//brave/ios/browser/brave_wallet",
+    ]
+  }
 
   frameworks = [ "Foundation.framework" ]
 }

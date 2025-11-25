@@ -3,9 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
+
+assert(enable_brave_wallet)
 
 transpile_web_ui("brave_wallet_script_resources") {
   output_module = false
