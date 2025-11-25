@@ -13,7 +13,7 @@
 
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"

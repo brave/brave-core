@@ -14,7 +14,9 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
 class GURL;
 
