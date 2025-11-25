@@ -316,6 +316,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"vpnPageTitle", IDS_SETTINGS_VPN_PAGE_TITLE},
       {"useWireguardLabel", IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE},
       {"sublabelVpnConnected", IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED},
+      {"showInSystemTrayWindows",
+       IDS_SETTINGS_VPN_PAGE_SHOW_IN_SYSTEM_TRAY_WINDOWS},
+      {"showInSystemTrayWindowsSubLabel",
+       IDS_SETTINGS_VPN_PAGE_SHOW_IN_SYSTEM_TRAY_WINDOWS_SUBLABEL},
 #endif
 #if BUILDFLAG(IS_MAC)
       {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},

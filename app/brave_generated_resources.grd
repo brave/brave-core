@@ -1034,6 +1034,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED" desc="Title of the WireGuard sub label on the vpn settings page when brave vpn connected">
           This setting cannot be changed while Brave VPN is connected.
         </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SHOW_IN_SYSTEM_TRAY_WINDOWS" desc="Title of the 'Show system tray' option on the vpn settings page for Windows customers">
+          Show VPN Tray Icon
+        </message>
+        <message name="IDS_SETTINGS_VPN_PAGE_SHOW_IN_SYSTEM_TRAY_WINDOWS_SUBLABEL" desc="Sub title for the 'Show system tray' option on the vpn settings page for Windows customers">
+          When enabled, the Windows taskbar will show the tray icon for Brave VPN.
+        </message>
         <message name="IDS_SETTINGS_SHOW_VPN_BUTTON" desc="The label for showing vpn button in the toolbar">
           Show VPN button
         </message>

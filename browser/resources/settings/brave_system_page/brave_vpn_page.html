@@ -18,6 +18,14 @@
         disabled="[[braveVpnConnected_]]">
       </settings-toggle-button>
 
+      <if expr="is_win">
+        <settings-toggle-button id="toggleShowInSystemTray"
+          pref="[[showInSystemTrayPref_]]"
+          label="$i18n{showInSystemTrayWindows}"
+          on-settings-boolean-control-change="onToggleShowInSystemTrayChange_"
+          sub-label="$i18n{showInSystemTrayWindowsSubLabel}">
+        </settings-toggle-button>
+      </if>
     </settings-vpn-page>
   </settings-section>
 </if>
