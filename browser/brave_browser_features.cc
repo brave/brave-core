@@ -29,6 +29,12 @@ BASE_FEATURE(kBraveCopyCleanLinkByDefault,
 BASE_FEATURE(kBraveCopyCleanLinkFromJs,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Enables rounded corners on the main content areas by default (when the user
+// has not explicitly set the pref).
+BASE_FEATURE(kBraveRoundedCornersByDefault,
+             "brave-web-view-rounded-corners",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Disable download warnings for dangerous files when Safe Browsing is
 // disabled.
 BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
