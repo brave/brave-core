@@ -7,7 +7,7 @@ import { color, effect } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
-  & {
+  :scope {
     --self-fade-duration: 120ms;
 
     position: fixed;
