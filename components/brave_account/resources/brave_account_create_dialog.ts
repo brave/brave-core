@@ -209,7 +209,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       this.fire('error-occurred', {
         flow: 'register',
         details,
-      } satisfies Error<'register'>)
+      } satisfies Extract<Error, { flow: 'register' }>)
     }
   }
 

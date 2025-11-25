@@ -111,6 +111,12 @@
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_SERVER_ERROR" translateable="false" desc="">
     Internal server error (HTTP=<ph name="STATUS_CODE">$1</ph><ph name="ERROR_CODE">$2</ph>). Please try again later.
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_EMAIL" translateable="false" desc="">
+    No account found for that email address. Please try again, or create a new account.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_INCORRECT_PASSWORD" translateable="false" desc="">
+    Incorrect password. Please try again.
+  </message>
   <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS" translateable="false" desc="">
     An account already exists for this email address. Try logging in instead of creating an account.
   </message>

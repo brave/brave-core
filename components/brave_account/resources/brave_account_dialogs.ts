@@ -13,7 +13,7 @@ import { getHtml } from './brave_account_dialogs.html.js'
 import { Error } from './brave_account_common.js'
 
 export type Dialog =
-  | { type: 'NONE' | 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
+  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
   | { type: 'ERROR'; error: Error }
 
 export class BraveAccountDialogs extends CrLitElement {
@@ -28,7 +28,6 @@ export class BraveAccountDialogs extends CrLitElement {
   static override get properties() {
     return {
       dialog: { type: Object },
-      signedIn: { type: Boolean, reflect: true },
     }
   }
 
@@ -47,7 +46,6 @@ export class BraveAccountDialogs extends CrLitElement {
     BraveAccountBrowserProxyImpl.getInstance()
 
   protected accessor dialog: Dialog = { type: 'ENTRY' }
-  protected accessor signedIn: boolean = false
 }
 
 declare global {
