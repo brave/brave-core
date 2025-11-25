@@ -30,6 +30,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/dtolnay/proc-macro-hack"
   cargo_pkg_version = "0.5.20+deprecated"
 
+  allow_unsafe = false
+
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/build.rs" ]
   rustenv = []

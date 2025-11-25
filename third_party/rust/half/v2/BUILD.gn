@@ -38,6 +38,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/VoidStarKat/half-rs"
   cargo_pkg_version = "2.6.0"
 
+  allow_unsafe = true
+
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   rustenv = []
   rustflags = []

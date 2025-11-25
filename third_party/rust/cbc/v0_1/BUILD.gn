@@ -30,6 +30,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/RustCrypto/block-modes"
   cargo_pkg_version = "0.1.2"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/cipher/v0_4:lib" ]
   rustenv = []
   rustflags = []
