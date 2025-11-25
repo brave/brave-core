@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -51,7 +52,6 @@ if (!is_android) {
       "//brave/browser/ui/speedreader",
       "//brave/browser/ui/views/frame/split_view",
       "//brave/components/ai_chat/core/common/buildflags",
-      "//brave/components/brave_wallet/browser:utils",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/browser/ui:ui_features",
@@ -65,6 +65,10 @@ if (!is_android) {
 
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/core/common" ]
+    }
+
+    if (enable_brave_wallet) {
+      deps += [ "//brave/components/brave_wallet/browser:utils" ]
     }
   }
 }

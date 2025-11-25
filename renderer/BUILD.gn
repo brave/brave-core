@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -22,14 +23,19 @@ source_set("renderer") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search/renderer",
     "//brave/components/brave_shields/core/common",
-    "//brave/components/brave_wallet/renderer",
     "//brave/components/cosmetic_filters/renderer",
-    "//brave/renderer/brave_wallet/",
     "//v8",
   ]
 
   if (enable_ai_rewriter) {
     deps += [ "//brave/components/ai_rewriter/renderer" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/renderer",
+      "//brave/renderer/brave_wallet/",
+    ]
   }
 
   if (enable_speedreader) {

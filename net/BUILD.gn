@@ -2,16 +2,20 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
   testonly = true
   sources = [
     "base/brave_host_port_pair_unittest.cc",
-    "decentralized_dns/constants_unittest.cc",
     "http/partitioned_host_state_map_unittest.cc",
     "http/transport_security_state_unittest.cc",
   ]
+
+  if (enable_brave_wallet) {
+    sources += [ "decentralized_dns/constants_unittest.cc" ]
+  }
 
   if (enable_tor) {
     sources += [

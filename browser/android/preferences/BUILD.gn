@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
 source_set("preferences") {
@@ -45,7 +46,6 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/de_amp/common/pref_names.cc",
     "//brave/components/de_amp/common/pref_names.h",
     "//brave/components/debounce/core/common/pref_names.h",
-    "//brave/components/decentralized_dns/core/pref_names.h",
     "//brave/components/ntp_background_images/common/pref_names.h",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
@@ -54,6 +54,10 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/search_engines/brave_search_engines_pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
+
+  if (enable_brave_wallet) {
+    sources += [ "//brave/components/decentralized_dns/core/pref_names.h" ]
+  }
 
   template =
       "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"

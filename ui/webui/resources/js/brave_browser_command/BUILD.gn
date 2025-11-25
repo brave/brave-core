@@ -6,6 +6,7 @@
 # based on //ui/webui/resources/js/browser_command/BUILD.gn
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("mojo_bindings") {
@@ -14,6 +15,9 @@ mojom("mojo_bindings") {
   enabled_features = []
   if (enable_ai_chat) {
     enabled_features += [ "enable_ai_chat" ]
+  }
+  if (enable_brave_wallet) {
+    enabled_features += [ "enable_brave_wallet" ]
   }
 
   public_deps = []
