@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/autofill/BUILD.gn b/chrome/browser/autofill/BUILD.gn
+index b8497dc4ce24a7879d2332a3dcf214aa5cf88682..b777be6c7f7d27d0cecff8b84f06cbb94caced13 100644
+--- a/chrome/browser/autofill/BUILD.gn
++++ b/chrome/browser/autofill/BUILD.gn
+@@ -4,6 +4,7 @@
+ 
+ import("//build/buildflag_header.gni")
+ import("//build/config/ui.gni")
++import("//chrome/common/features.gni")
+ import("//components/optimization_guide/features.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ 
+@@ -187,7 +188,7 @@ static_library("test_support") {
+     ]
+   }
+ 
+-  if (!is_android) {
++  if (!is_android && enable_glic) {
+     deps += [ "//chrome/browser/autofill/glic:test_support" ]
+   }
+ }

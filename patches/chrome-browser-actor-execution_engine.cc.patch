@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/actor/execution_engine.cc b/chrome/browser/actor/execution_engine.cc
+index d5be4c9a9986268dd7d718e95c5274595081bc94..2e6967cccb77406ab016c613f6fb7756b6aae32b 100644
+--- a/chrome/browser/actor/execution_engine.cc
++++ b/chrome/browser/actor/execution_engine.cc
+@@ -47,6 +47,7 @@
+ #include "chrome/common/actor/action_result.h"
+ #include "chrome/common/actor/journal_details_builder.h"
+ #include "chrome/common/actor/task_id.h"
++#include "chrome/common/buildflags.h"
+ #include "chrome/common/chrome_features.h"
+ #include "components/keyed_service/core/service_access_type.h"
+ #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
+@@ -169,8 +170,10 @@ void ExecutionEngine::SetOwner(ActorTask* task) {
+   task_ = task;
+   TRACE_EVENT0("actor", "ExecutionEngine::SetOwner");
+   actor_login_service_ = std::make_unique<actor_login::ActorLoginServiceImpl>();
++#if BUILDFLAG(ENABLE_GLIC)
+   actor_form_filling_service_ =
+       std::make_unique<autofill::ActorFormFillingServiceImpl>();
++#endif  // BUILDFLAG(ENABLE_GLIC)
+   tool_controller_ = std::make_unique<ToolController>(*task_, *this);
+ }
+ 

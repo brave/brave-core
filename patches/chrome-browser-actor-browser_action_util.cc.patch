@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/actor/browser_action_util.cc b/chrome/browser/actor/browser_action_util.cc
+index e281bdc7a7edb4c06cf359a1ebffc5cea449d18c..0b1dcb7f05f80db80b0784fb4eea70d4fde28ff5 100644
+--- a/chrome/browser/actor/browser_action_util.cc
++++ b/chrome/browser/actor/browser_action_util.cc
+@@ -46,6 +46,7 @@
+ #include "chrome/common/actor/actor_constants.h"
+ #include "chrome/common/actor/actor_logging.h"
+ #include "chrome/common/actor/journal_details_builder.h"
++#include "chrome/common/buildflags.h"
+ #include "chrome/common/chrome_features.h"
+ #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
+ #include "components/optimization_guide/proto/features/actions_data.pb.h"
+@@ -454,6 +455,7 @@ std::unique_ptr<ToolRequest> CreateAttemptLoginRequest(
+   return std::make_unique<AttemptLoginToolRequest>(tab_handle);
+ }
+ 
++#if BUILDFLAG(ENABLE_GLIC)
+ std::unique_ptr<ToolRequest> CreateAttemptFormFillingRequest(
+     const AttemptFormFillingAction& action) {
+   if (!base::FeatureList::IsEnabled(features::kGlicActorAutofill)) {
+@@ -521,6 +523,12 @@ std::unique_ptr<ToolRequest> CreateAttemptFormFillingRequest(
+   return std::make_unique<AttemptFormFillingToolRequest>(tab_handle,
+                                                          std::move(requests));
+ }
++#else
++std::unique_ptr<ToolRequest> CreateAttemptFormFillingRequest(
++    const AttemptFormFillingAction& action) {
++  return nullptr;
++}
++#endif  // BUILDFLAG(ENABLE_GLIC)
+ 
+ std::unique_ptr<ToolRequest> CreateScriptToolRequest(
+     const ScriptToolAction& action) {

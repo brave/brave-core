@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/actor/BUILD.gn b/chrome/browser/actor/BUILD.gn
+index b58dca876b3f8c7e099e8a94e5f36f0b48f611e7..05433c5fdc0c3960a578bbe54b6dbe5fb80291ba 100644
+--- a/chrome/browser/actor/BUILD.gn
++++ b/chrome/browser/actor/BUILD.gn
+@@ -153,7 +153,6 @@ source_set("impl") {
+     "//chrome/browser:browser_process",
+     "//chrome/browser/actor/ui",
+     "//chrome/browser/actor/ui:event_dispatcher",
+-    "//chrome/browser/autofill/glic",
+     "//chrome/browser/favicon",
+     "//chrome/browser/optimization_guide",
+     "//chrome/browser/page_content_annotations:fetcher",
+@@ -189,7 +188,10 @@ source_set("impl") {
+   ]
+ 
+   if (enable_glic) {
+-    deps += [ "//chrome/browser/glic" ]
++    deps += [
++      "//chrome/browser/autofill/glic",
++      "//chrome/browser/glic",
++    ]
+   }
+ }
+ 
+@@ -331,7 +333,6 @@ source_set("browser_tests") {
+     ":test_support",
+     ":tools_test_support",
+     "ui:event_dispatcher",
+-    "//chrome/browser/autofill/glic:test_support",
+     "//chrome/browser/optimization_guide:test_support",
+     "//chrome/browser/safe_browsing",
+     "//chrome/browser/ui",
+@@ -382,6 +383,7 @@ source_set("browser_tests") {
+       "tools/window_management_tool_browsertest.cc",
+     ]
+     deps += [
++      "//chrome/browser/autofill/glic:test_support",
+       "//chrome/browser/glic",
+       "//chrome/browser/glic/test_support",
+       "//components/page_load_metrics/browser:test_support",
