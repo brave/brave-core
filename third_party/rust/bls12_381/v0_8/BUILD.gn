@@ -50,6 +50,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zkcrypto/bls12_381"
   cargo_pkg_version = "0.8.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/digest/v0_9:lib",
     "//brave/third_party/rust/ff/v0_13:lib",

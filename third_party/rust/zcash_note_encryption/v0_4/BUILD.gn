@@ -27,6 +27,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zcash/librustzcash"
   cargo_pkg_version = "0.4.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/chacha20/v0_9:lib",
     "//brave/third_party/rust/chacha20poly1305/v0_10:lib",

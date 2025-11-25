@@ -24,6 +24,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/shssoichiro/maybe-rayon"
   cargo_pkg_version = "0.1.1"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   rustenv = []
   rustflags = []

@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/brave/sta-rs"
   cargo_pkg_version = "0.3.2"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/adss/v0_2:lib",
     "//brave/third_party/rust/ppoprf/v0_4:lib",
