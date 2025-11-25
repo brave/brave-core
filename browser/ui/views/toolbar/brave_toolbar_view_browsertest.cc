@@ -12,9 +12,8 @@
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/skus/common/features.h"
@@ -58,6 +57,11 @@
 #include "content/public/test/test_utils.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/views/toolbar/ai_chat_button.h"
@@ -144,12 +148,14 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     return bookmark_button->GetVisible();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   bool is_wallet_button_shown(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
     WalletButton* wallet_button = toolbar_view_->wallet_button();
     return wallet_button->GetVisible();
   }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   bool is_ai_chat_button_shown(Browser* browser) {
@@ -504,6 +510,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(is_bookmark_button_shown());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        WalletButtonCanBeToggledWithPrefInPrivateTabs) {
   auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
@@ -539,3 +546,4 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Normal winwow still has visible button.
   EXPECT_TRUE(is_wallet_button_shown(browser()));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

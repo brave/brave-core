@@ -17,7 +17,7 @@
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
@@ -41,6 +41,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace policy {
@@ -115,11 +119,13 @@ constexpr auto kBraveOriginProfileMetadata =
              true,
              /*user_settable=*/false)},
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
         // Brave Wallet preferences
         {brave_wallet::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
         // AI Chat preferences

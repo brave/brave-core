@@ -14,6 +14,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "build/buildflag.h"
 
 class BraveStatsUpdaterTest;
 class GURL;
@@ -52,7 +54,9 @@ class BraveStatsUpdaterParams {
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   std::string GetWalletEnabledParam() const;
+#endif
   GURL GetUpdateURL(const GURL& base_update_url,
                     std::string_view platform_id,
                     std::string_view channel_name,
@@ -78,8 +82,10 @@ class BraveStatsUpdaterParams {
   bool first_check_made_;
   std::string week_of_installation_;
   base::Time date_of_installation_;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   base::Time wallet_last_unlocked_;
   base::Time last_reported_wallet_unlock_;
+#endif
   std::string referral_promo_code_;
   static base::Time g_current_time;
   static bool g_force_first_run;
