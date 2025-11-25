@@ -20,6 +20,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -32,22 +33,18 @@
 #define BookmarkBarView BraveBookmarkBarView
 #define MultiContentsView BraveMultiContentsView
 
+#define UpdateExclusiveAccessBubble(...)             \
+  UpdateExclusiveAccessBubble(__VA_ARGS__) override; \
+  virtual void UpdateExclusiveAccessBubble_ChromiumImpl(__VA_ARGS__)
+
 #define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
   if (dst->GetWidget() != src->GetWidget()) {        \
     return false;                                    \
   }
 
-// Show/Hide full screen reminder bubble based on our settings preference
-// for tab-initiated ones.
-#define EXCLUSIVE_ACCESS_CONTEXT_IMPL_UPDATE_EXCLUSIVE_ACCESS_BUBBLE    \
-  if (!GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder) && \
-      params.type ==                                                    \
-          EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION) {   \
-    return;                                                             \
-  }
-
 #include <chrome/browser/ui/views/frame/browser_view.cc>
 
+#undef UpdateExclusiveAccessBubble
 #undef MultiContentsView
 #undef BookmarkBarView
 #undef TabStripRegionView
@@ -55,7 +52,6 @@
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
-#undef EXCLUSIVE_ACCESS_CONTEXT_IMPL_UPDATE_EXCLUSIVE_ACCESS_BUBBLE
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
@@ -65,4 +61,17 @@ void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
       << "The |widget| should be child of BrowserView's widget.";
 
   widget->SetNativeWindowProperty(kBrowserViewKey, this);
+}
+
+void BrowserView::ExclusiveAccessContextImpl::UpdateExclusiveAccessBubble(
+    const ExclusiveAccessBubbleParams& params,
+    ExclusiveAccessBubbleHideCallback first_hide_callback) {
+  // Show/Hide full screen reminder bubble based on our settings preference
+  // for tab-initiated ones.
+  if (!GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder) &&
+      params.type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION) {
+    return;
+  }
+  UpdateExclusiveAccessBubble_ChromiumImpl(params,
+                                           std::move(first_hide_callback));
 }
