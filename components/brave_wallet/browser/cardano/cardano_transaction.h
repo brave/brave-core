@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/numerics/checked_math.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -114,22 +115,19 @@ class CardanoTransaction {
   bool IsSigned() const;
 
   // Sum of all inputs' amounts.
-  uint64_t TotalInputsAmount() const;
+  base::CheckedNumeric<uint64_t> GetTotalInputsAmount() const;
 
   // Sum of all outputs' amounts.
-  uint64_t TotalOutputsAmount() const;
-
-  // Checks if sum of inputs is GE than sum of outputs plus fee.
-  bool AmountsAreValid(uint64_t min_fee) const;
-
-  // Fee is calculated as sum of inputs which minus sum of outputs.
-  uint64_t EffectiveFeeAmount() const;
+  base::CheckedNumeric<uint64_t> GetTotalOutputsAmount() const;
 
   const CardanoAddress& to() const { return to_; }
   void set_to(CardanoAddress to) { to_ = std::move(to); }
 
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }
+
+  uint64_t fee() const { return fee_; }
+  void set_fee(uint64_t fee) { fee_ = fee; }
 
   bool sending_max_amount() const { return sending_max_amount_; }
   void set_sending_max_amount(bool sending_max_amount) {
@@ -154,9 +152,6 @@ class CardanoTransaction {
   TxOutput* TargetOutput();
   TxOutput* ChangeOutput();
 
-  // Adjust amount of change output so transaction fee is equal to `min_fee`.
-  bool MoveSurplusFeeToChangeOutput(uint64_t min_fee);
-
   uint32_t invalid_after() const { return invalid_after_; }
   void set_invalid_after(uint32_t invalid_after) {
     invalid_after_ = invalid_after;
@@ -173,6 +168,7 @@ class CardanoTransaction {
   uint32_t invalid_after_ = 0;
   CardanoAddress to_;
   uint64_t amount_ = 0;
+  uint64_t fee_ = 0;
   bool sending_max_amount_ = false;
 };
 

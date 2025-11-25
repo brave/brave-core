@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -83,6 +84,12 @@ class CardanoCreateTransactionTaskUnitTest : public testing::Test {
     return cardano_account_->account_id.Clone();
   }
 
+  cardano_rpc::EpochParameters latest_epoch_parameters() {
+    return cardano_rpc::EpochParameters{.min_fee_coefficient = 44,
+                                        .min_fee_constant = 155381,
+                                        .coins_per_utxo_size = 4310};
+  }
+
  protected:
   base::test::ScopedFeatureList scoped_cardano_feature_{
       features::kBraveWalletCardanoFeature};
@@ -111,7 +118,9 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount) {
   auto tx = tx_future.Take().value();
   EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
   EXPECT_EQ(tx.ChangeOutput()->amount, 5831859u);
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
+  EXPECT_EQ(tx.fee(), 168141u);
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      tx, latest_epoch_parameters()));
 }
 
 TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
@@ -129,7 +138,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(),
+              WalletInsufficientBalanceErrorMessage());
   }
 
   {
@@ -141,7 +151,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(),
+              WalletInsufficientBalanceErrorMessage());
   }
 
   {
@@ -153,7 +164,8 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(),
+              WalletInsufficientBalanceErrorMessage());
   }
 
   {
@@ -168,7 +180,9 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     auto tx = tx_future.Take().value();
     EXPECT_EQ(tx.TargetOutput()->amount, 969750u);
     EXPECT_EQ(tx.ChangeOutput()->amount, 5862109u);
-    EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
+    EXPECT_EQ(tx.fee(), 168141u);
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        tx, latest_epoch_parameters()));
   }
 
   {
@@ -183,7 +197,9 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     auto tx = tx_future.Take().value();
     EXPECT_EQ(tx.TargetOutput()->amount, 969751u);
     EXPECT_EQ(tx.ChangeOutput()->amount, 5862108u);
-    EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
+    EXPECT_EQ(tx.fee(), 168141u);
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        tx, latest_epoch_parameters()));
   }
 }
 
@@ -196,9 +212,11 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, MaxValue) {
   task.Start(tx_future.GetCallback());
 
   auto tx = tx_future.Take().value();
-  EXPECT_EQ(tx.TargetOutput()->amount, 7476808u);
+  EXPECT_EQ(tx.TargetOutput()->amount, 9792413u);
   EXPECT_EQ(tx.ChangeOutput(), nullptr);
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 177513u);
+  EXPECT_EQ(tx.fee(), 177337u);
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      tx, latest_epoch_parameters()));
 }
 
 TEST_F(CardanoCreateTransactionTaskUnitTest, InsufficientBalance) {

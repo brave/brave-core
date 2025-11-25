@@ -19,14 +19,6 @@ class CardanoTransactionSerializer {
  public:
   // Serialization options flags.
   struct Options {
-    // Used to estimate transaction size when target output value is not yet
-    // known.
-    bool max_value_for_target_output = false;
-    // Used to estimate transaction size when change output value is not yet
-    // known.
-    bool max_value_for_change_output = false;
-    // Used to estimate transaction size when transaction fee is not yet known.
-    bool max_value_for_fee = false;
     // Used to estimate transaction size which is not signed yet.
     bool use_dummy_witness_set = false;
   };
@@ -56,8 +48,20 @@ class CardanoTransactionSerializer {
       const cardano_rpc::EpochParameters& epoch_parameters);
 
   // Validate minimum ADA required for the output.
-  bool ValidateMinValue(const CardanoTransaction::TxOutput& output,
-                        const cardano_rpc::EpochParameters& epoch_parameters);
+  static bool ValidateMinValue(
+      const CardanoTransaction::TxOutput& output,
+      const cardano_rpc::EpochParameters& epoch_parameters);
+
+  // Adjusts fee and outputs for the transaction to cover the transaction costs.
+  static bool AdjustFeeAndOutputsForTx(
+      CardanoTransaction& tx,
+      const cardano_rpc::EpochParameters& epoch_parameters);
+
+  // Validate that inputs match outputs and fees. Also validates that the
+  // outputs conform minimum ADA value limit.
+  static bool ValidateAmounts(
+      CardanoTransaction& tx,
+      const cardano_rpc::EpochParameters& epoch_parameters);
 
  private:
   Options options_ = {};

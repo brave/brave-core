@@ -30,9 +30,8 @@ mojom::CardanoTxDataPtr ToCardanoTxData(CardanoTransaction& tx) {
         mojom::CardanoTxOutput::New(output.address.ToString(), output.amount));
   }
   return mojom::CardanoTxData::New(
-      tx.to().ToString(), tx.amount(), tx.sending_max_amount(),
-      tx.EffectiveFeeAmount(), std::move(mojom_inputs),
-      std::move(mojom_outputs));
+      tx.to().ToString(), tx.amount(), tx.sending_max_amount(), tx.fee(),
+      std::move(mojom_inputs), std::move(mojom_outputs));
 }
 }  // namespace
 

@@ -10,61 +10,17 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/numerics/clamped_math.h"
 #include "base/rand_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
-#include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
 namespace {
 
 constexpr int kCardanoKnapsackSolverIterations = 1000;
-constexpr int kSetFeeAndChangeForTransactionIterations = 10;
-
-bool SetFeeAndChangeForTransaction(
-    CardanoTransaction& tx,
-    const cardano_rpc::EpochParameters& latest_epoch_parameters) {
-  CHECK(tx.ChangeOutput());
-
-  // Fee depends on tx size, but tx size depends on fee value, and change output
-  // value.
-  // Start with `min_fee` calculated from tx with output and fee fields
-  // requiring most possible bytes. That would be the largest fee for given
-  // inputs and outputs.
-  // Then run some iterations trying to find minimal fee which fits matches tx
-  // size.
-  auto min_fee =
-      CardanoTransactionSerializer({.max_value_for_change_output = true,
-                                    .max_value_for_fee = true,
-                                    .use_dummy_witness_set = true})
-          .CalcMinTransactionFee(tx, latest_epoch_parameters);
-  if (!tx.MoveSurplusFeeToChangeOutput(min_fee)) {
-    return false;
-  }
-
-  for (int i = 0; i < kSetFeeAndChangeForTransactionIterations; i++) {
-    uint64_t min_fee_next =
-        CardanoTransactionSerializer({.use_dummy_witness_set = true})
-            .CalcMinTransactionFee(tx, latest_epoch_parameters);
-
-    if (min_fee_next >= min_fee) {
-      return true;
-    }
-
-    min_fee = min_fee_next;
-
-    if (!tx.MoveSurplusFeeToChangeOutput(min_fee)) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 }  // namespace
 
@@ -113,40 +69,20 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
         CardanoTransaction next_transaction = cur_transaction;
         next_transaction.AddInput(inputs_[input_index]);
 
-        if (next_transaction.ChangeOutput()) {
-          // Calculate tx fee and move everything surplus to change output.
-          // Throw away possible transaction if fee requirements could no be
-          // satisfied.
-          if (!SetFeeAndChangeForTransaction(next_transaction,
-                                             latest_epoch_parameters_)) {
-            continue;
-          }
-
-          // Throw away possible transaction if resulting change amount is
-          // less than min ADA for output threshold.
-          if (!CardanoTransactionSerializer().ValidateMinValue(
-                  *next_transaction.ChangeOutput(), latest_epoch_parameters_)) {
-            continue;
-          }
-        }
-
-        // Minimum fee required for this transaction to be accepted.
-        // Depends on transaction's size and current fee rate.
-        uint64_t min_fee =
-            CardanoTransactionSerializer({.use_dummy_witness_set = true})
-                .CalcMinTransactionFee(next_transaction,
-                                       latest_epoch_parameters_);
-
-        if (next_transaction.AmountsAreValid(min_fee)) {
-          has_valid_transaction_for_iteration = true;
-          if (!current_best_solution_ ||
-              current_best_solution_->EffectiveFeeAmount() >
-                  next_transaction.EffectiveFeeAmount()) {
-            current_best_solution_ = next_transaction;
-          }
-        } else {
+        // Given set of inputs and outputs try to find valid outputs' amounts
+        // and fee. If it fails to find a valid transaction: proceed to the next
+        // iteration with current input. Otherwise check if it is the best
+        // tx so far and proceed to the next iteration without current input.
+        if (!CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+                next_transaction, latest_epoch_parameters_)) {
           picked_inputs[input_index] = true;
           cur_transaction = std::move(next_transaction);
+        } else {
+          has_valid_transaction_for_iteration = true;
+          if (!current_best_solution_ ||
+              current_best_solution_->fee() > next_transaction.fee()) {
+            current_best_solution_ = next_transaction;
+          }
         }
       }
     }

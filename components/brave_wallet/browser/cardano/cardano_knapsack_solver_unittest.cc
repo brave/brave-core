@@ -11,14 +11,14 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "components/grit/brave_components_strings.h"
 #include "crypto/hash.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -108,8 +108,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoInputs) {
   CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), {});
 
   // Can't send exactly what we have as we need to add some fee.
-  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
-            solver.Solve().error());
+  EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), solver.Solve().error());
 }
 
 TEST_F(CardanoKnapsackSolverUnitTest, NotEnoughInputsForFee) {
@@ -120,8 +119,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NotEnoughInputsForFee) {
   CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
 
   // Can't send exact amount of coin we have as we need to add some fee.
-  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
-            solver.Solve().error());
+  EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), solver.Solve().error());
 }
 
 TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
@@ -141,11 +139,13 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     ASSERT_TRUE(tx.has_value());
 
     // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount());
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount());
     EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 
   {
@@ -156,8 +156,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     auto tx = solver.Solve();
     // We have a bit less than send amount + fee. Can't create transaction.
     ASSERT_FALSE(tx.has_value());
-    EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
-              tx.error());
+    EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), tx.error());
   }
 
   {
@@ -166,15 +165,12 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     inputs.push_back(MakeMockTxInput(total_input, 0));
     CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
-    ASSERT_TRUE(tx.has_value());
 
-    // We have a bit more than send amount + fee. Still no change. Surplus goes
-    // to fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee + 1);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_FALSE(tx->ChangeOutput());
+    // We have a bit more than send amount - min_fee. Can't create transaction
+    // as it would require us raising fee, or creating change output which would
+    // have less than min utxo limit.
+    ASSERT_FALSE(tx.has_value());
+    EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), tx.error());
   }
 }
 
@@ -195,12 +191,14 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     ASSERT_TRUE(tx.has_value());
 
     // Change output is created and has exactly `dust_change_threshold` amount.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(),
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(),
               send_amount() + dust_change_threshold());
     EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
     EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 
   {
@@ -210,15 +208,11 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     inputs.push_back(MakeMockTxInput(total_input, 0));
     CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
-    ASSERT_TRUE(tx.has_value());
 
     // We have slightly less than needed for change output, so it is not created
-    // and surplus goes to fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee + dust_change_threshold() - 1);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount());
-    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
-    EXPECT_FALSE(tx->ChangeOutput());
+    // and we don't allow surplus going to fee.
+    ASSERT_FALSE(tx.has_value());
+    EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), tx.error());
   }
 
   {
@@ -232,12 +226,14 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
 
     // We have slightly more than needed for change output which all goes to
     // change.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(),
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(),
               send_amount() + dust_change_threshold() + 1);
     EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
     EXPECT_EQ(tx->ChangeOutput()->amount, dust_change_threshold() + 1);
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 }
 
@@ -259,6 +255,8 @@ TEST_F(CardanoKnapsackSolverUnitTest, DISABLED_RandomTest) {
   CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
   auto tx = solver.Solve();
   ASSERT_TRUE(tx.has_value());
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      *tx, latest_epoch_parameters()));
 }
 
 }  // namespace brave_wallet
