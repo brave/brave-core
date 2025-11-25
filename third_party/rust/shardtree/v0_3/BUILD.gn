@@ -35,6 +35,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zcash/incrementalmerkletree"
   cargo_pkg_version = "0.3.2"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
     "//brave/third_party/rust/either/v1:lib",

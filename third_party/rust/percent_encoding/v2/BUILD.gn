@@ -24,6 +24,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/servo/rust-url/"
   cargo_pkg_version = "2.2.0"
 
+  allow_unsafe = true
+
   features = [
     "alloc",
     "default",

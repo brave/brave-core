@@ -36,6 +36,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/paholg/typenum"
   cargo_pkg_version = "1.16.0"
 
+  allow_unsafe = false
+
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs" ]
   build_script_inputs = [

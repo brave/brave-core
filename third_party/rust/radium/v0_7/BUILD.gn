@@ -29,6 +29,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/bitvecto-rs/radium"
   cargo_pkg_version = "0.7.0"
 
+  allow_unsafe = false
+
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/radium-v0_7/build.rs"
   build_sources = [
