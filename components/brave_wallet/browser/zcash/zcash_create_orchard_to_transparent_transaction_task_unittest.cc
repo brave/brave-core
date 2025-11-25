@@ -31,7 +31,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kTransparentAddress[] = "t1dRJRY7GmyeiKTpdCbf2wHqw4gcgihnR1";
+constexpr char kTransparentAddress[] = "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
 
 class MockZCashWalletService : public ZCashWalletService {
  public:
