@@ -29,6 +29,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/dtolnay/thiserror"
   cargo_pkg_version = "1.0.65"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/thiserror_impl/v1:lib" ]
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v1/build.rs"

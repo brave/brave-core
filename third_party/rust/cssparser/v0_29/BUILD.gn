@@ -38,6 +38,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/servo/rust-cssparser"
   cargo_pkg_version = "0.29.6"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/cssparser_macros/v0_6:lib",
     "//brave/third_party/rust/dtoa_short/v0_3:lib",
