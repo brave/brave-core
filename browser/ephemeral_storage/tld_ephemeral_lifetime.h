@@ -57,7 +57,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
   void SetShieldsStateOnHost(std::string_view host, bool enabled);
-  void EnforceFirstPartyStorageClean();
+  void EnforceFirstPartyStorageCleanup();
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
@@ -66,7 +66,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
   TLDEphemeralLifetimeKey key_;
   base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
   absl::flat_hash_map<std::string, bool> shields_state_on_hosts_;
-  bool ephemeral_storage_clean_enforced_{false};
+  bool ephemeral_storage_cleanup_enforced_{false};
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };

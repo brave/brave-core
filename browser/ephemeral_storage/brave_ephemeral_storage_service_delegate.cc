@@ -190,7 +190,7 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
                   contents)) {
         closing_tab_indices.push_back(
             tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
-        ephemeral_storage_tab_helper->EnforceFirstPartyStorageClean();
+        ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
       }
     }
     tab_strip->CloseTabs(base::span<int>(closing_tab_indices));

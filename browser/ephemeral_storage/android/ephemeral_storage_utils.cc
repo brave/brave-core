@@ -84,7 +84,7 @@ void CloseTabsWithTLD(Profile* current_profile,
                   web_contents);
           ephemeral_storage_tab_helper) {
         // Enforce storage cleaning before closing the tab.
-        ephemeral_storage_tab_helper->EnforceFirstPartyStorageClean();
+        ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
 
         tabs_to_close.push_back(tab);
       }
