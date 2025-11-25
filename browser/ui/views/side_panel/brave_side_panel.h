@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -46,11 +47,9 @@ class BraveSidePanel : public views::View,
   enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(
-      BrowserView* browser_view,
-      SidePanelEntry::PanelType type,
-      bool has_border,
-      HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
+  explicit BraveSidePanel(BrowserView* browser_view,
+                          SidePanelEntry::PanelType type,
+                          bool has_border);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
   ~BraveSidePanel() override;
@@ -64,8 +63,7 @@ class BraveSidePanel : public views::View,
   bool ShouldRestrictMaxWidth() const;
   double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
-  HorizontalAlignment GetHorizontalAlignment();
-  bool IsRightAligned();
+  bool IsRightAligned() const;
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
@@ -73,6 +71,9 @@ class BraveSidePanel : public views::View,
   void RemoveHeaderView();
   void SetHeaderVisibility(bool visible);
   void SetOutlineVisibility(bool visible);
+  HorizontalAlignment horizontal_alignment() const {
+    return horizontal_alignment_;
+  }
 
   // Only used by tests.
   template <typename T>
@@ -117,6 +118,8 @@ class BraveSidePanel : public views::View,
   // This method is the shared implementation of Open/Close.
   void UpdateVisibility(bool should_be_open);
 
+  void UpdateHorizontalAlignment();
+
   // views::ViewObserver:
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
@@ -136,7 +139,7 @@ class BraveSidePanel : public views::View,
   base::ScopedMultiSourceObservation<View, ViewObserver> scoped_observation_{
       this};
 
-  HorizontalAlignment horizontal_alignment_ = HorizontalAlignment::kLeft;
+  HorizontalAlignment horizontal_alignment_;
   std::optional<int> starting_width_on_resize_;
 
   // If this is set, use this width for panel contents during the layout
@@ -148,14 +151,19 @@ class BraveSidePanel : public views::View,
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
-  // Owned by `this` indirectly through the views tree.
-  raw_ptr<views::View> content_parent_view_;
-  State state_ = State::kClosed;
 
   // The animation coordinator for the side panel. This controls all of the
   // animations that are tied to the side panel when triggering the show and
   // hide states.
   std::unique_ptr<SidePanelAnimationCoordinator> animation_coordinator_;
+
+  // Observes and listens to side panel alignment changes.
+  PrefChangeRegistrar pref_change_registrar_;
+
+  // Owned by `this` indirectly through the views tree.
+  raw_ptr<views::View> content_parent_view_;
+
+  State state_ = State::kClosed;
 };
 
 // Alias to the original `SidePanel` to the benefit of upstream code, as
