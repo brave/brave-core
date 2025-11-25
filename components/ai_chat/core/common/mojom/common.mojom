@@ -286,6 +286,24 @@ struct ConversationTurn {
   NEARVerificationStatus? near_verification_status;
 };
 
+// State of the tool loop task execution. A Task represents a loop of tool
+// execution, sending the results and receiving further tool use requests.
+enum TaskState {
+  // No active task, or task has been reset
+  kNone,
+  // Task is actively running its loop of executing tools, sending the results
+  // receiving more tool use requests, and repeating until there are no more
+  // tool use requests.
+  kRunning,
+  // Task has been paused by user or tool provider and will not execute
+  // any tool use requests or send the results until it is resumed or a new task
+  // is started.
+  kPaused,
+  // Task has been stopped and should not resume until reset via a new task
+  // starting.
+  kStopped,
+};
+
 // Represents an AI engine model choice, usually for the user to choose for a
 // Conversation. Display Name and Description should be provided by
 // localization.

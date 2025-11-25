@@ -67,7 +67,7 @@ class ToolProvider {
     virtual void OnContentTaskStarted(int32_t tab_id) {}
 
     // User requests that the task should be paused
-    virtual void OnTaskStateChanged() {}
+    virtual void OnTaskStateChanged(ToolProvider* tool_provider) {}
   };
 
   void AddObserver(Observer* observer);
@@ -84,8 +84,18 @@ class ToolProvider {
   // params here.
   virtual std::vector<base::WeakPtr<Tool>> GetTools() = 0;
 
+  // User has requested to pause any tasks including any currently executing
+  // tools and any long-running actions that are in an active state. Return
+  // control to the user temporarily, if applicable.
+  virtual void PauseAllTasks() {}
+
+  // User has requested to resume any long-running tasks. Prepare for possible
+  // tool execution. Take back control from the user, if applicable.
+  virtual void ResumeAllTasks() {}
+
   // Attempts to stops all current tasks started by Tools from this
-  // ToolProvider.
+  // ToolProvider. Tasks will not be resumed unless OnNewGenerationLoop is
+  // called.
   virtual void StopAllTasks() {}
 
  protected:

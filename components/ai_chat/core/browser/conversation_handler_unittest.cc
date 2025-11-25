@@ -142,6 +142,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
 
   MOCK_METHOD(void,
+              OnTaskStateChanged,
+              (mojom::TaskState task_state),
+              (override));
+
+  MOCK_METHOD(void,
               OnModelDataChanged,
               (const std::string& conversation_model_key,
                const std::string& default_model_key,
@@ -323,6 +328,12 @@ class ConversationHandlerUnitTest : public testing::Test {
     }
     conversation_handler_->SetChatHistoryForTesting(std::move(history));
     return expected_history;
+  }
+
+  mojom::ConversationStatePtr GetState() {
+    base::test::TestFuture<mojom::ConversationStatePtr> state_future;
+    conversation_handler_->GetState(state_future.GetCallback());
+    return state_future.Take();
   }
 
  protected:
@@ -5156,13 +5167,15 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
           testing::WithArg<7>(
-              [](EngineConsumer::GenerationDataCallback callback) {
+              [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool", "tool_id_1",
                                                  "{\"param\":\"value\"}",
                                                  std::nullopt, nullptr)),
                     std::nullopt));
+                // Pause after receiving the tool use event
+                mock_tool_provider_->SetIsPausedByUser(true);
               }),
           testing::WithArg<8>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
@@ -5172,15 +5185,18 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
                 run_loop.Quit();
               })));
 
-  // Pause the tool provider before submitting the entry
-  mock_tool_provider_->SetIsPausedByUser(true);
-
   // Tool should NOT be called since provider is paused
   EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  // Before generation, the task state represents no active task
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
   run_loop.Run();
+
+  // Since pause was called during generation, that should be the state
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
 
   // Verify response with tool requests was added even though tool execution was
   // paused.
@@ -5245,6 +5261,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
                                                       std::nullopt);
   first_loop.Run();
 
+  // Since pause was called during generation, that should be the state
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
+
   // Verify tool was not called yet
   const auto& history_paused = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history_paused.size(), 2u);
@@ -5268,7 +5287,10 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
       .InSequence(seq)
       .WillOnce(testing::DoAll(
           testing::WithArg<7>(
-              [](EngineConsumer::GenerationDataCallback callback) {
+              [&](EngineConsumer::GenerationDataCallback callback) {
+                EXPECT_EQ(GetState()->tool_use_task_state,
+                          mojom::TaskState::kRunning);
+
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Final response")),
@@ -5289,6 +5311,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
   mock_tool_provider_->SetIsPausedByUser(false);
   mock_tool_provider_->SetIsPausedByUser(false);
   second_loop.Run();
+
+  // The task ended naturally, so the task state should represent no active task
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   // Verify tool was executed and final response was generated
   const auto& history_final = conversation_handler_->GetConversationHistory();
@@ -5425,6 +5450,90 @@ TEST_F(ConversationHandlerUnitTest,
       tool_entry->events.value()[0]->get_tool_use_event()->output.has_value());
   EXPECT_TRUE(
       tool_entry->events.value()[1]->get_tool_use_event()->output.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, StopTask) {
+  // Test that when a task is stopped, it cannot be resumed and tools are not
+  // executed even if unpause is called.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  tool1->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Engine returns tool use event
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"param\":\"value\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+                // Pause during generation
+                mock_tool_provider_->SetIsPausedByUser(true);
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        nullptr, std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Tool should NOT be called since task will be stopped
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify task is paused
+  const auto& history_paused = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_paused.size(), 2u);
+  auto& assistant_entry_paused = history_paused.back();
+  ASSERT_TRUE(assistant_entry_paused->events.has_value());
+  EXPECT_FALSE(assistant_entry_paused->events.value()[0]
+                   ->get_tool_use_event()
+                   ->output.has_value());
+
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
+
+  // Stop the task
+  conversation_handler_->StopTask();
+
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
+
+  // Try to resume - this should not execute the tool because the task was
+  // stopped
+  mock_tool_provider_->SetIsPausedByUser(true);
+  mock_tool_provider_->SetIsPausedByUser(false);
+  conversation_handler_->PauseTask();
+  conversation_handler_->ResumeTask();
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
+
+  // Verify tool still has no output and was never executed
+  const auto& history_stopped = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_stopped.size(), 2u);
+  auto& assistant_entry_stopped = history_stopped.back();
+  ASSERT_TRUE(assistant_entry_stopped->events.has_value());
+  EXPECT_FALSE(assistant_entry_stopped->events.value()[0]
+                   ->get_tool_use_event()
+                   ->output.has_value());
 }
 
 }  // namespace ai_chat

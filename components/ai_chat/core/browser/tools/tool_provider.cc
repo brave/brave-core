@@ -25,7 +25,7 @@ void ToolProvider::RemoveObserver(Observer* observer) {
 
 void ToolProvider::NotifyTaskStateChanged() {
   for (auto& observer : observers_) {
-    observer.OnTaskStateChanged();
+    observer.OnTaskStateChanged(this);
   }
 }
 

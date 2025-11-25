@@ -144,6 +144,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
 
   MOCK_METHOD(void,
+              OnTaskStateChanged,
+              (mojom::TaskState task_state),
+              (override));
+
+  MOCK_METHOD(void,
               OnModelDataChanged,
               (const std::string& conversation_model_key,
                const std::string& default_model_key,

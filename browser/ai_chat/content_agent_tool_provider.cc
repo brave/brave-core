@@ -105,14 +105,27 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
 void ContentAgentToolProvider::OnGenerationCompleteWithNoToolsToHandle() {
   // Marks all tools for this round of the loop being completed, we can return
   // control back to the tab(s).
+  StopAllTasks();
+}
+
+void ContentAgentToolProvider::PauseAllTasks() {
+  // When user asks to pause the task, we can return control to the tabs.
   if (!task_id_.is_null()) {
-    actor_service_->GetTask(task_id_)->Pause(true);
+    actor_service_->GetTask(task_id_)->Pause(false);
   }
 }
+
+void ContentAgentToolProvider::ResumeAllTasks() {
+  if (!task_id_.is_null()) {
+    actor_service_->GetTask(task_id_)->Resume();
+  }
+}
+
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
-    // `success` sets whether the task ends as state kFinished or kCancelled
-    actor_service_->StopTask(task_id_,
+    actor::TaskId stopping_task_id = std::move(task_id_);
+    task_id_ = actor_service_->CreateTask();
+    actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
 }

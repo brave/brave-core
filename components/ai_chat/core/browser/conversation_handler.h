@@ -179,6 +179,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void SetTemporary(bool temporary) override;
+  void PauseTask() override;
+  void ResumeTask() override;
+  void StopTask() override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;
@@ -304,7 +307,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // ToolProvider::Observer
   void OnContentTaskStarted(int32_t tab_id) override;
-  void OnTaskStateChanged() override;
+  void OnTaskStateChanged(ToolProvider* tool_provider) override;
 
  private:
   friend class ::AIChatUIBrowserTest;
@@ -357,8 +360,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration();
 
-  bool IsToolLoopPausedByUser() const;
-
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
@@ -395,6 +396,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAPIRequestInProgressChanged();
+  void OnToolUseTaskStateChanged();
   void OnStateForConversationEntriesChanged();
 
   mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
@@ -429,6 +431,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Are we currently performing a loop of tool uses?
   bool is_tool_use_in_progress_ = false;
+  mojom::TaskState tool_use_task_state_ = mojom::TaskState::kNone;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|
@@ -450,10 +453,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool needs_new_entry_ = false;
 
   bool is_print_preview_fallback_requested_ = false;
-
-  // Remember whether the tool loop was previously paused by a ToolProvider
-  // so that we don't resume more than once on chatty state changes.
-  bool tool_loop_was_paused_by_tool_provider_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
