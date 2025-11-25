@@ -369,6 +369,7 @@ function ConversationEntries() {
                   )}
                   {isAIAssistant
                     && conversationContext.isLeoModel
+                    && !conversationContext.isGenerating
                     && !firstEntryEdit.selectedText
                     && !showEditInput && (
                       <ContextActionsAssistant

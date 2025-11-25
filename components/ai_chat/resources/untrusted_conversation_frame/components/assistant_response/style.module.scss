@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Import shared fade-in animation
+@import '../../../shared.module.scss';
+
 .actionInProgress {
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-primary);
@@ -13,6 +16,7 @@
   flex-direction: row;
   align-items: center;
   gap: 6px;
+  animation: $fade-in-animation;
 }
 
 .searchSummary {
@@ -24,6 +28,7 @@
   font: var(--leo-font-small-regular);
   line-height: 1.4;
   color: var(--leo-color-text-secondary);
+  animation: $fade-in-animation;
 }
 
 .searchQueryLink {

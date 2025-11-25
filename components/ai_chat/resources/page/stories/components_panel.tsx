@@ -1107,6 +1107,7 @@ function StoryContext(
   props: React.PropsWithChildren<{
     args: CustomArgs
     setArgs: (newArgs: Partial<CustomArgs>) => void
+    customHistory?: Mojom.ConversationTurn[]
   }>,
 ) {
   const isSmall = useIsSmall()
@@ -1289,11 +1290,13 @@ function StoryContext(
     conversationUuid: options.args.isNewConversation
       ? 'new-conversation'
       : CONVERSATIONS[1].uuid,
-    conversationHistory: options.args.hasConversation
-      ? options.args.useMemoryHistory
-        ? MEMORY_HISTORY
-        : HISTORY
-      : [],
+    conversationHistory: props.customHistory
+      ? props.customHistory
+      : options.args.hasConversation
+        ? options.args.useMemoryHistory
+          ? MEMORY_HISTORY
+          : HISTORY
+        : [],
     associatedContentInfo: [associatedContent],
     allModels: MODELS,
     currentModel,
@@ -1556,5 +1559,211 @@ export const _MemoryEvents: Story = {
     ...args,
     hasConversation: true,
     useMemoryHistory: true,
+  },
+}
+
+function StreamingTextStoryContent(props: {
+  setArgs: (newArgs: Partial<CustomArgs>) => void
+  currentArgs: CustomArgs
+}) {
+  const [streamingText, setStreamingText] = React.useState('')
+  const [isStreaming, setIsStreaming] = React.useState(false)
+
+  // Sample text to stream - split into chunks for realistic streaming
+  // Chunks can be full sentences, partial sentences, or multiple sentences
+  const chunks: string[] = React.useMemo(() => {
+    const fullText =
+      "Here's a comprehensive explanation of how text streaming works "
+      + 'in AI chat applications.\n\n'
+      + 'Text streaming allows users to see responses as they are '
+      + 'generated, rather than waiting for the entire response to '
+      + 'complete. This creates a more interactive and responsive user '
+      + 'experience.\n\n'
+      + '## How It Works\n\n'
+      + '1. **Server-Sent Events (SSE)**: The server sends text chunks '
+      + 'incrementally\n'
+      + '2. **Client Processing**: The client receives and displays each '
+      + 'chunk immediately\n'
+      + '3. **UI Updates**: The interface updates in real-time to show '
+      + 'the streaming text\n\n'
+      + '## Benefits\n\n'
+      + '- **Perceived Performance**: Users see results faster\n'
+      + '- **Better UX**: More engaging and interactive experience\n'
+      + '- **Transparency**: Users can see the AI "thinking" in '
+      + 'real-time\n\n'
+      + 'This simulation demonstrates how text appears in chunks, '
+      + 'simulating a real streaming response.'
+
+    // Split by sentence boundaries (periods, exclamation, question
+    // marks, newlines) but keep the delimiters with the sentences
+    const sentenceRegex = /([.!?]\s+|\n\n+)/g
+    const parts: string[] = []
+    let lastIndex = 0
+    let match
+
+    // First, split by major delimiters (newlines, sentence endings)
+    while ((match = sentenceRegex.exec(fullText)) !== null) {
+      const sentence = fullText.substring(
+        lastIndex,
+        match.index + match[0].length,
+      )
+      if (sentence.trim()) {
+        parts.push(sentence)
+      }
+      lastIndex = match.index + match[0].length
+    }
+    // Add remaining text
+    if (lastIndex < fullText.length) {
+      parts.push(fullText.substring(lastIndex))
+    }
+
+    // Now create chunks - sometimes full sentences, sometimes partial
+    // Use a deterministic pattern for consistent behavior
+    const result: string[] = []
+    let accumulated = ''
+    let splitCounter = 0
+
+    for (const part of parts) {
+      // Sometimes split sentences into smaller chunks (for longer sentences)
+      // Split every 3rd long sentence to simulate realistic chunking
+      const shouldSplit = part.length > 50 && splitCounter % 3 === 0
+      splitCounter++
+
+      if (shouldSplit) {
+        // Split sentence at a comma/clause boundary or roughly in half
+        const splitPoint = part.search(/[,;]\s+/)
+        const midPoint =
+          splitPoint > 0 ? splitPoint + 2 : Math.floor(part.length / 2)
+
+        const firstHalf = part.substring(0, midPoint)
+        const secondHalf = part.substring(midPoint)
+
+        accumulated += firstHalf
+        result.push(accumulated)
+
+        accumulated += secondHalf
+        result.push(accumulated)
+      } else {
+        // Add the full sentence/part
+        accumulated += part
+        result.push(accumulated)
+      }
+    }
+
+    return result
+  }, [])
+
+  React.useEffect(() => {
+    // Start streaming when component mounts
+    setIsStreaming(true)
+    props.setArgs({ isGenerating: true })
+    setStreamingText('')
+
+    let currentIndex = 0
+    const interval = setInterval(() => {
+      if (currentIndex < chunks.length) {
+        setStreamingText(chunks[currentIndex])
+        currentIndex++
+      } else {
+        // Streaming complete
+        clearInterval(interval)
+        setIsStreaming(false)
+        props.setArgs({ isGenerating: false })
+      }
+    }, 500) // Adjust speed: lower = faster, higher = slower
+
+    return () => {
+      clearInterval(interval)
+      setIsStreaming(false)
+      props.setArgs({ isGenerating: false })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // chunks is memoized and stable, setArgs is passed as prop
+
+  // Create conversation history with streaming text
+  const streamingHistory: Mojom.ConversationTurn[] = React.useMemo(
+    () => [
+      {
+        uuid: 'user-stream',
+        text: 'Explain how text streaming works',
+        characterType: Mojom.CharacterType.HUMAN,
+        actionType: Mojom.ActionType.QUERY,
+        prompt: undefined,
+        selectedText: undefined,
+        edits: [],
+        createdTime: { internalValue: BigInt('13278618001000000') },
+        events: [],
+        uploadedFiles: [],
+        fromBraveSearchSERP: false,
+        skill: undefined,
+        modelKey: '1',
+        nearVerificationStatus: undefined,
+      },
+      {
+        uuid: 'assistant-stream',
+        text: streamingText,
+        characterType: Mojom.CharacterType.ASSISTANT,
+        actionType: Mojom.ActionType.UNSPECIFIED,
+        prompt: undefined,
+        selectedText: undefined,
+        edits: [],
+        createdTime: { internalValue: BigInt('13278618001000001') },
+        events: [getCompletionEvent(streamingText)],
+        uploadedFiles: [],
+        fromBraveSearchSERP: false,
+        skill: undefined,
+        modelKey: '1',
+        nearVerificationStatus: undefined,
+      },
+    ],
+    [streamingText],
+  )
+
+  // Ensure isGenerating is synced with isStreaming state
+  React.useEffect(() => {
+    props.setArgs({ isGenerating: isStreaming })
+  }, [isStreaming, props.setArgs])
+
+  return (
+    <StoryContext
+      args={{
+        ...props.currentArgs,
+        hasConversation: true,
+        isGenerating: isStreaming,
+        isHistoryEnabled: false,
+        hasSuggestedQuestions: false,
+        currentErrorState: 'None',
+      }}
+      setArgs={props.setArgs}
+      customHistory={streamingHistory}
+    >
+      <div className={styles.container}>
+        <Main />
+      </div>
+    </StoryContext>
+  )
+}
+
+export const _SimulateTextStream: Story = {
+  args: {
+    ...args,
+    hasConversation: true,
+    isGenerating: false,
+  },
+  decorators: [
+    (Story, options) => {
+      // Use the existing decorator pattern but inject streaming functionality
+      const [, setArgs] = useArgs<CustomArgs>()
+      return (
+        <StreamingTextStoryContent
+          currentArgs={options.args}
+          setArgs={setArgs}
+        />
+      )
+    },
+  ],
+  render: () => {
+    // This won't be rendered due to custom decorator
+    return <div />
   },
 }
