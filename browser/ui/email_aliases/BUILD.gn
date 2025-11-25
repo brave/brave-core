@@ -11,10 +11,12 @@ source_set("email_aliases") {
 
   deps = [
     "//base",
+    "//brave/browser/ui/webui/email_aliases",
+    "//brave/components/constants",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui/views/bubble",
-    "//chrome/browser/ui/views/location_bar",
+    "//chrome/browser/ui/webui",
     "//components/autofill/content/browser",
+    "//ui/web_dialogs",
   ]
 }

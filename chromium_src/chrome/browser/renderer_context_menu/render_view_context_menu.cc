@@ -510,7 +510,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       break;
     case IDC_NEW_EMAIL_ALIAS:
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
-        email_aliases->ShowBubble(GetRenderFrameHost(),
+        email_aliases->ShowBubble(source_web_contents_, GetRenderFrameHost(),
                                   params_.field_renderer_id);
       }
       break;

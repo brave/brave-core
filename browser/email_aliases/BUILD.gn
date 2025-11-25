@@ -14,13 +14,14 @@ static_library("email_aliases") {
   deps = [
     "//base",
     "//brave/components/email_aliases:features",
-    "//brave/components/email_aliases:mojom",
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]
+
+  public_deps = [ "//brave/components/email_aliases:mojom" ]
 }
 
 source_set("unit_tests") {
