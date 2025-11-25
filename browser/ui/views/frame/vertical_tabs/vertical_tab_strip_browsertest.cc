@@ -10,6 +10,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -240,6 +241,8 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
+  base::test::ScopedFeatureList feature_list_{
+      features::kBraveRoundedCornersByDefault};
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
