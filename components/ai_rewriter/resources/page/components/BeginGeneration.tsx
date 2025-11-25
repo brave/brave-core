@@ -5,6 +5,7 @@
 import { spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
+import * as Mojom from '../../../../ai_chat/resources/common/mojom'
 import { extractQuery } from '../../../../ai_chat/resources/page/components/filter_menu/query'
 import ToolsMenu from '../../../../ai_chat/resources/page/components/filter_menu/tools_menu'
 import InputBox from '../../../../ai_chat/resources/page/components/input_box'
@@ -79,6 +80,10 @@ export default function BeginGeneration() {
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
+            toolUseTaskState: Mojom.TaskState.kNone,
+            pauseTask: () => {},
+            resumeTask: () => {},
+            stopTask: () => {},
             handleSkillClick: () => {},
             selectedSkill: undefined,
             skills: [],

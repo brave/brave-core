@@ -879,4 +879,13 @@
   <message name="IDS_AI_CHAT_VERIFIED_LABEL" desc="Label for the verified NEAR AI model" formatter_data="webui=AiChat">
     Verified
   </message>
+  <message name="IDS_CHAT_UI_PAUSE_TASK_BUTTON_LABEL" desc="Button label to pause a running task" formatter_data="webui=AiChat">
+    Pause
+  </message>
+  <message name="IDS_CHAT_UI_RESUME_TASK_BUTTON_LABEL" desc="Button label to resume a paused task" formatter_data="webui=AiChat">
+    Resume
+  </message>
+  <message name="IDS_CHAT_UI_STOP_TASK_BUTTON_LABEL" desc="Button label to stop a running task" formatter_data="webui=AiChat">
+    Stop
+  </message>
 </grit-part>

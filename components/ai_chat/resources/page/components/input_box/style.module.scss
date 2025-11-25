@@ -85,6 +85,20 @@
   --leo-icon-color: var(--leo-color-icon-interactive);
 }
 
+.taskStateActions {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  gap: var(--leo-spacing-m);
+  margin: var(--leo-spacing-m);
+  margin-bottom: 0;
+}
+
+.taskStateActionButtonStop {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  color: var(--leo-color-systemfeedback-error-text);
+}
+
 .attachmentWrapper {
   display: flex;
   flex-direction: column;

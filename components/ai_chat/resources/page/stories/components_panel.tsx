@@ -962,6 +962,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
 type CustomArgs = {
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
+  toolUseTaskState: keyof typeof Mojom.TaskState
   model: string
   inputText: Content
   hasConversation: boolean
@@ -1024,6 +1025,7 @@ const args: CustomArgs = {
   isPremiumUser: true,
   isPremiumUserDisconnected: false,
   currentErrorState: 'ConnectionIssue' satisfies keyof typeof Mojom.APIError,
+  toolUseTaskState: 'kNone' satisfies keyof typeof Mojom.TaskState,
   suggestionStatus:
     'None' satisfies keyof typeof Mojom.SuggestionGenerationStatus,
   model: MODELS[0].key,
@@ -1061,6 +1063,10 @@ const meta: Meta<CustomArgs> = {
     ...InferControlsFromArgs(args),
     currentErrorState: {
       options: getKeysForMojomEnum(Mojom.APIError),
+      control: { type: 'select' },
+    },
+    toolUseTaskState: {
+      options: getKeysForMojomEnum(Mojom.TaskState),
       control: { type: 'select' },
     },
     suggestionStatus: {
@@ -1299,6 +1305,7 @@ function StoryContext(
     currentModel,
     suggestedQuestions,
     isGenerating: options.args.isGenerating,
+    toolUseTaskState: Mojom.TaskState[options.args.toolUseTaskState],
     suggestionStatus:
       Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
     currentError,
@@ -1377,6 +1384,9 @@ function StoryContext(
     isDragOver: options.args.isDragOver,
     clearDragState: () => {},
     attachImages: (images: Mojom.UploadedFile[]) => {},
+    pauseTask: () => {},
+    resumeTask: () => {},
+    stopTask: () => {},
     unassociatedTabs: aiChatContext.tabs,
     associateDefaultContent: async () => {},
   }
