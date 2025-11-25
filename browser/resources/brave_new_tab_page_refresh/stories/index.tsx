@@ -6,8 +6,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import './storybook_locale'
-
 import '../../../../components/brave_new_tab_ui/stories/default/data/mockBraveNewsController'
 
 import { NewTabProvider } from '../context/new_tab_context'

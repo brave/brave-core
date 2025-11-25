@@ -56,13 +56,13 @@
   <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
     Check status
   </message>
-  <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="">
+  <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="" formatter_data="webui=BraveRewards">
     The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards has completed.
   </message>
   <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
     The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards will begin processing by <ph name="DATE">$2<ex>October 5</ex></ph>.
   </message>
-  <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="">
+  <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="" formatter_data="webui=BraveRewards">
     The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards is in progress.
   </message>
   <message name="IDS_REWARDS_PAYMENT_SUPPORT" desc="">
@@ -145,7 +145,7 @@
       other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> you've seen this month.}
     }
   </message>
-  <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="">
+  <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="" formatter_data="webui=BraveRewards">
     {ADS_VIEWED, plural,
       =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
       =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> this month}
@@ -389,10 +389,10 @@
   <message name="IDS_REWARDS_ONBOARDING_TERMS_TEXT" desc="">
     By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
   </message>
-  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="">
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="" formatter_data="webui=BraveRewards">
     Get paid for private ads you see in Brave
   </message>
-  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_2" desc="">
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_2" desc="" formatter_data="webui=BraveRewards">
     Get special benefits and discounts
   </message>
   <message name="IDS_REWARDS_ONBOARDING_TITLE" desc="">
@@ -460,14 +460,14 @@
   </message>
 
   <!-- Terms of Service update notification -->
-  <message name="IDS_REWARDS_TOS_UPDATE_HEADING" desc="">
+  <message name="IDS_REWARDS_TOS_UPDATE_HEADING" desc="" formatter_data="webui=BraveRewards">
     Updated Terms of Service
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
     We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">/$1</ph> Brave Rewards, which will disable the feature.
   </message>
-  <message name="IDS_REWARDS_TOS_UPDATE_NTP_TEXT" desc="">
-    We’ve updated our Terms of Service. To keep using Brave Rewards, please review and agree to the updated terms.
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_TEXT" desc="" formatter_data="webui=BraveRewards">
+    We've updated our Terms of Service. To keep using Brave Rewards, please review and agree to the updated terms.
   </message>
   <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
     See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">/$1</ph>
@@ -475,7 +475,7 @@
   <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
     I agree
   </message>
-  <message name="IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL" desc="">
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL" desc="" formatter_data="webui=BraveRewards">
     Review Terms
   </message>
 
@@ -797,7 +797,7 @@
   <message name="IDS_REWARDS_ADS_SETTINGS_TEXT" desc="">
     Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.
   </message>
-  <message name="IDS_REWARDS_ADS_VIEWED_TOOLTIP" desc="">
+  <message name="IDS_REWARDS_ADS_VIEWED_TOOLTIP" desc="" formatter_data="webui=BraveRewards">
     This shows the number of Brave Ads you've seen this month that qualify for earning BAT.
   </message>
   <message name="IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL" desc="">

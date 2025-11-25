@@ -175,27 +175,17 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 }
 
 void NewTabPageInitializer::AddStrings() {
-  static constexpr webui::LocalizedString kStrings[] = {
-      {"rewardsAdsViewedTooltip", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
-      {"rewardsFeatureText1", IDS_REWARDS_ONBOARDING_TEXT_ITEM_1},
-      {"rewardsFeatureText2", IDS_REWARDS_ONBOARDING_TEXT_ITEM_2},
-      {"rewardsPayoutCompletedText", IDS_REWARDS_PAYMENT_COMPLETED},
-      {"rewardsPayoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
-      {"rewardsTosUpdateButtonLabel", IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL},
-      {"rewardsTosUpdateText", IDS_REWARDS_TOS_UPDATE_NTP_TEXT},
-      {"rewardsTosUpdateTitle", IDS_REWARDS_TOS_UPDATE_HEADING},
-      {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION}};
-
-  source_->AddLocalizedStrings(kStrings);
   source_->AddLocalizedStrings(webui::kBraveNewTabPageStrings);
   source_->AddLocalizedStrings(webui::kBraveNewsStrings);
+  source_->AddLocalizedStrings(webui::kBraveRewardsStrings);
+  source_->AddLocalizedStrings(webui::kBraveOmniboxStrings);
 }
 
 void NewTabPageInitializer::AddPluralStrings() {
   auto handler = std::make_unique<PluralStringHandler>();
   handler->AddLocalizedString("BRAVE_NEWS_SOURCE_COUNT",
                               IDS_BRAVE_NEWS_SOURCE_COUNT);
-  handler->AddLocalizedString("rewardsConnectedAdsViewedText",
+  handler->AddLocalizedString("REWARDS_CONNECTED_ADS_VIEWED_TEXT",
                               IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT);
   web_ui_->AddMessageHandler(std::move(handler));
 }
