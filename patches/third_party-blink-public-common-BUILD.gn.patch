@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
+index 2e1ef341086348f75d226af883a96e2a78f82f4e..669450d4c6cc32cdfe6f0b0296797579b0a18057 100644
+--- a/third_party/blink/public/common/BUILD.gn
++++ b/third_party/blink/public/common/BUILD.gn
+@@ -391,6 +391,7 @@ source_set("headers") {
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
++  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_public_common_deps
+ }
+ 
+ if (is_android || is_win) {
