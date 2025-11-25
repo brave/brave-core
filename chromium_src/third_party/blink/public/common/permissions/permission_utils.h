@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_PERMISSIONS_PERMISSION_UTILS_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_PERMISSIONS_PERMISSION_UTILS_H_
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
 // clang-format off
 #define NUM                         \
   BRAVE_ADS,                        \

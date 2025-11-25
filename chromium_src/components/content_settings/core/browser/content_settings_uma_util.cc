@@ -5,6 +5,8 @@
 
 #include "components/content_settings/core/browser/content_settings_uma_util.h"
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
 // Leave a gap between Chromium values and our values in the kHistogramValue
 // array so that we don't have to renumber when new content settings types are
 // added upstream.
@@ -28,6 +30,11 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
               "the ones used by Brave.");
 
 // clang-format off
+#define BRAVE_WALLET_HISTOGRAM_VALUES \
+  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},  \
+  {ContentSettingsType::BRAVE_SOLANA, brave_value(10)},  \
+  {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},
+
 #define BRAVE_HISTOGRAM_VALUE_LIST                                        \
   , \
   {ContentSettingsType::BRAVE_ADS, brave_value(0)},                       \
@@ -39,8 +46,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_REFERRERS, brave_value(6)},                 \
   {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},                   \
   {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
-  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},                  \
-  {ContentSettingsType::BRAVE_SOLANA, brave_value(10)},                   \
+  BRAVE_WALLET_HISTOGRAM_VALUES                                            \
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)},           \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, brave_value(12)},            \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, brave_value(13)},      \
@@ -68,7 +74,6 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, brave_value(67)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(68)}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, brave_value(69)},  \
-  {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},  \
   {ContentSettingsType::BRAVE_PSST, brave_value(71)},
 // clang-format on
 
@@ -80,4 +85,5 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
 #include <components/content_settings/core/browser/content_settings_uma_util.cc>
 
 #undef BRAVE_HISTOGRAM_VALUE_LIST
+#undef BRAVE_WALLET_HISTOGRAM_VALUES
 #undef kDefaultProvider
