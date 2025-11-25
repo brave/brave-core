@@ -115,6 +115,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP =
             "brave_default_search_engine_migrated_jp";
 
+    public static final String SEARCH_CHOICE_SCREEN_INSTALL = "search_choice_screen_install";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider

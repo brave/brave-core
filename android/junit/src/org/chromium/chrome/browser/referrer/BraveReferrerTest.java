@@ -69,6 +69,24 @@ public class BraveReferrerTest {
 
     @Test
     @SmallTest
+    public void returnsSearchChoiceScreenCode() {
+        String result =
+                BraveReferrer.getReferralCodeForTesting(
+                        "utm_source=eea-search-choice&gclid=GCLIDTEST");
+
+        assertEquals("SCS001", result);
+    }
+
+    @Test
+    @SmallTest
+    public void returnsBrowserChoiceScreenCode() {
+        String result = BraveReferrer.getReferralCodeForTesting("utm_source=eea-browser-choice");
+
+        assertEquals("BCS001", result);
+    }
+
+    @Test
+    @SmallTest
     public void returnsNullWhenNothingMatches() {
         String result = BraveReferrer.getReferralCodeForTesting("utm_source=TESTSOURCE");
 
