@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 4c17ad720b1c95f91e6796d14ec88aee08a1df91..39659c6b9a6623b5a695c7941c5038a23aec3c08 100644
+index d5567456eded757b795cb07e2648a1e825a8d142..b0a7ccfee0ad2e0094721d3c12d1d9f002b49ea4 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -699,6 +699,7 @@ static_library("test_support") {
+@@ -693,6 +693,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
  
@@ -10,3 +10,22 @@ index 4c17ad720b1c95f91e6796d14ec88aee08a1df91..39659c6b9a6623b5a695c7941c5038a2
    data = []
    data_deps = []
  
+@@ -8376,7 +8377,6 @@ test("unit_tests") {
+       "//chrome/browser/actor:unit_tests",
+       "//chrome/browser/actor/ui:unit_tests",
+       "//chrome/browser/actor/ui/task_list_bubble:unit_tests",
+-      "//chrome/browser/autofill/glic:unit_tests",
+       "//chrome/browser/bluetooth",
+       "//chrome/browser/contextual_cueing:unit_tests",
+       "//chrome/browser/contextual_search",
+@@ -8485,6 +8485,10 @@ test("unit_tests") {
+       deps += [ "//chrome/browser/profiles/batch_upload:test_support" ]
+     }
+ 
++    if (enable_glic) {
++      deps += [ "//chrome/browser/autofill/glic:unit_tests" ]
++    }
++
+     if (is_chrome_branded) {
+       sources += [
+         "../browser/ui/webui/password_manager/promo_card_unittest.cc",
