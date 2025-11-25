@@ -5,9 +5,9 @@
 
 #include "chrome/browser/download/download_ui_context_menu.h"
 
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/download_commands.h"
 #include "chrome/browser/download/download_ui_model.h"
+#include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -28,9 +28,9 @@ void MaybeAddRemoveFromListCommand(DownloadUIModel& download,
 
   if (auto index =
           model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
-    model->InsertItemAt(*index + 1, DownloadCommands::REMOVE_FROM_LIST,
-                        l10n_util::GetStringUTF16(
-                            IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
+    model->InsertItemAt(
+        *index + 1, DownloadCommands::REMOVE_FROM_LIST,
+        l10n_util::GetStringUTF16(IDS_DOWNLOAD_DELETE_FROM_HISTORY));
   }
 }
 
