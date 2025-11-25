@@ -39,6 +39,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/google/flatbuffers"
   cargo_pkg_version = "25.2.10"
 
+  allow_unsafe = true
+
   deps = [ "//brave/third_party/rust/bitflags/v2:lib" ]
   build_deps = [ "//brave/third_party/rust/rustc_version/v0_4:buildrs_support" ]
   features = [

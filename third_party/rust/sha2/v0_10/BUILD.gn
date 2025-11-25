@@ -39,6 +39,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/RustCrypto/hashes"
   cargo_pkg_version = "0.10.8"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/digest/v0_10:lib",

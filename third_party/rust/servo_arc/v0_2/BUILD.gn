@@ -30,6 +30,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/servo/servo"
   cargo_pkg_version = "0.2.0"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/nodrop/v0_1:lib",
     "//brave/third_party/rust/stable_deref_trait/v1:lib",

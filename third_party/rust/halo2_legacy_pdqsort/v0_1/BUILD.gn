@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zcash/halo2_legacy_pdqsort"
   cargo_pkg_version = "0.1.0"
 
+  allow_unsafe = true
+
   rustenv = []
   rustflags = []
 

@@ -31,6 +31,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/orlp/foldhash"
   cargo_pkg_version = "0.1.5"
 
+  allow_unsafe = true
+
   rustenv = []
   rustflags = []
 

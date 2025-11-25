@@ -27,6 +27,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/RustCrypto/KDFs/"
   cargo_pkg_version = "0.11.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/digest/v0_9:lib",
     "//brave/third_party/rust/hmac/v0_11:lib",

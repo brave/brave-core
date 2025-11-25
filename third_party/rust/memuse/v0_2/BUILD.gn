@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/str4d/memuse"
   cargo_pkg_version = "0.2.1"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/nonempty/v0_7:lib" ]
   features = [ "nonempty" ]
   rustenv = []

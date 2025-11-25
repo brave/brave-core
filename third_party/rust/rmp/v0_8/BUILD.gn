@@ -46,6 +46,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/3Hren/msgpack-rust"
   cargo_pkg_version = "0.8.11"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/byteorder/v1:lib",
     "//brave/third_party/rust/num_traits/v0_2:lib",

@@ -24,6 +24,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/taiki-e/pin-project-lite"
   cargo_pkg_version = "0.2.9"
 
+  allow_unsafe = true
+
   rustenv = []
   rustflags = []
 

@@ -26,6 +26,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/rust-bitcoin/rust-bech32"
   cargo_pkg_version = "0.9.1"
 
+  allow_unsafe = false
+
   features = [
     "default",
     "std",

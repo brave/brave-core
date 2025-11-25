@@ -27,6 +27,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/akubera/bigdecimal-rs"
   cargo_pkg_version = "0.1.2"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/num_bigint/v0_2:lib",
     "//brave/third_party/rust/num_integer/v0_1:lib",

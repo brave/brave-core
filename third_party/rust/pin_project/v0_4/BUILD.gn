@@ -23,6 +23,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/taiki-e/pin-project"
   cargo_pkg_version = "0.4.30"
 
+  allow_unsafe = true
+
   deps = [ "//brave/third_party/rust/pin_project_internal/v0_4:lib" ]
   rustenv = []
   rustflags = []

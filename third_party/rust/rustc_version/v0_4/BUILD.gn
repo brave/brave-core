@@ -24,6 +24,8 @@ cargo_crate("buildrs_support") {
   cargo_pkg_repository = "https://github.com/djc/rustc-version-rs"
   cargo_pkg_version = "0.4.1"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/semver/v1:lib" ]
   rustenv = []
   rustflags = []

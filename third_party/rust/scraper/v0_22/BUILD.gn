@@ -40,6 +40,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/causal-agent/scraper"
   cargo_pkg_version = "0.22.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/cssparser/v0_34:lib",
     "//brave/third_party/rust/ego_tree/v0_10:lib",

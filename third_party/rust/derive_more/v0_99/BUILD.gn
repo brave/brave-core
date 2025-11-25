@@ -52,6 +52,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/JelteF/derive_more"
   cargo_pkg_version = "0.99.17"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/convert_case/v0_4:lib",
     "//brave/third_party/rust/proc_macro2/v1:lib",

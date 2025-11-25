@@ -24,6 +24,8 @@ cargo_crate("lib") {
       "Crunchy unroller: deterministically unroll constant loops"
   cargo_pkg_version = "0.2.2"
 
+  allow_unsafe = false
+
   features = [
     "default",
     "limit_128",

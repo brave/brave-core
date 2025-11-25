@@ -88,7 +88,6 @@ removed_cargo_template = "removed_Cargo.toml.hbs"
 removed_librs_template = "removed_lib.rs.hbs"
 
 [resolve]
-root = "chromium"
 # spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
 # use it and lazy_static is an upstream crate with a patch.crates-io so the
 # feature (and dependency) do not get added to the build anyway
@@ -106,6 +105,7 @@ remove_crates = [
   'windows_x86_64_gnu',
   'windows_x86_64_gnullvm',
 ]
+root = "chromium"
 
 [crate.adblock]
 extra_kv = { raw_gn = '''
@@ -119,58 +119,184 @@ if (is_ios) {
     ]
     deps += [ "//brave/third_party/rust/lifeguard/v0_6:lib" ]
   }
-'''}
+''', allow_unsafe = true }
 license_files = ['LICENSE']
+
+[crate.adblock-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.addchain]
+extra_kv = { allow_unsafe = false }
 
 [crate.adss]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.aead]
+extra_kv = { allow_unsafe = false }
+
+[crate.aes]
+extra_kv = { allow_unsafe = true }
+
+[crate.aho-corasick]
+extra_kv = { allow_unsafe = true }
+
+[crate.allocator-api2]
+extra_kv = { allow_unsafe = true }
+
+[crate.anonymous-credentials]
+extra_kv = { allow_unsafe = false }
 
 [crate.arrayref]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.arrayvec]
+extra_kv = { allow_unsafe = true }
+
+[crate.async-trait]
+extra_kv = { allow_unsafe = false }
 
 [crate.autocfg]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/autocfg-v1/LICENSE-APACHE']
+extra_kv = { allow_unsafe = false }
+
+[crate.base-x]
+extra_kv = { allow_unsafe = true }
+
+[crate.base64]
+extra_kv = { allow_unsafe = false }
+
+[crate.bech32]
+extra_kv = { allow_unsafe = false }
+
+[crate.bigdecimal]
+extra_kv = { allow_unsafe = false }
+
+[crate.bincode]
+extra_kv = { allow_unsafe = true }
+
+[crate.bitflags]
+extra_kv = { allow_unsafe = false }
 
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = true }
+
+[crate.blake2b_simd]
+extra_kv = { allow_unsafe = true }
+
+[crate.block-buffer]
+extra_kv = { allow_unsafe = true }
+
+[crate.bls-signatures]
+extra_kv = { allow_unsafe = true }
+
+[crate.bls12_381]
+extra_kv = { allow_unsafe = false }
+
+[crate.brave-miracl]
+extra_kv = { allow_unsafe = true }
+
+[crate.brave-news-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.brave_wallet]
+extra_kv = { allow_unsafe = false }
+
+[crate.byte-slice-cast]
+extra_kv = { allow_unsafe = true }
+
+[crate.byteorder]
+extra_kv = { allow_unsafe = true }
 
 [crate.bytes]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1/LICENSE']
+extra_kv = { allow_unsafe = true }
 
-[crate.cid]
-license_files = ['LICENSE']
+[crate.cbc]
+extra_kv = { allow_unsafe = false }
+
+[crate.cfg-if]
+extra_kv = { allow_unsafe = false }
 
 [crate.chacha20]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
 }
-''' }
+''' , allow_unsafe = true }
 
 [crate.chacha20poly1305]
 extra_input_roots = [ "../README.md" ]
+extra_kv = { allow_unsafe = false }
 
 [crate.challenge-bypass-ristretto]
 extra_input_roots = [ "../docs", "../README.md" ]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.challenge-bypass-ristretto-cxx]
+extra_kv = { allow_unsafe = false }
 
 [crate.chrono]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = true }
+
+[crate.ciborium]
+extra_kv = { allow_unsafe = false }
+
+[crate.ciborium-io]
+extra_kv = { allow_unsafe = false }
+
+[crate.ciborium-ll]
+extra_kv = { allow_unsafe = false }
+
+[crate.cid]
+license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.cipher]
+extra_kv = { allow_unsafe = true }
+
+[crate.const_format]
+extra_kv = { allow_unsafe = true }
+
+[crate.const_format_proc_macros]
+extra_kv = { allow_unsafe = false }
+
+[crate.constant_time_eq]
+extra_kv = { allow_unsafe = true }
+
+[crate.constellation-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.convert_case]
+extra_kv = { allow_unsafe = false }
+
+[crate.core2]
+extra_kv = { allow_unsafe = true }
 
 [crate.cpufeatures]
 extra_kv = { raw_gn = '''
 if (is_apple && target_cpu == "arm64") {
       deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
 }
-''' }
+''' , allow_unsafe = true }
 
 [crate.crunchy]
 build_script_outputs = [ "lib.rs" ]
 extra_kv = { raw_gn = '''
 # Remove features incorrectly added by half crate for spirv arch
 features -= [ "limit_128", "default" ]
-''' }
+''' , allow_unsafe = false }
+
+[crate.crypto-common]
+extra_kv = { allow_unsafe = false }
+
+[crate.crypto-mac]
+extra_kv = { allow_unsafe = false }
 
 [crate.cssparser]
 license_files = ['LICENSE']
@@ -179,43 +305,182 @@ if (epoch == "0.29") {
     build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_29/build/match_byte.rs" ]
     build_script_outputs = [ "tokenizer.rs" ]
   }
-''' }
+''' , allow_unsafe = true }
 
 [crate.cssparser-macros]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
 
 [crate.curve25519-dalek]
 extra_input_roots = [ "../docs", "../README.md" ]
+extra_kv = { allow_unsafe = true }
 
 [crate.curve25519-dalek-derive]
 extra_input_roots = [ "../README.md" ]
+extra_kv = { allow_unsafe = false }
+
+[crate.cxx]
+extra_kv = { allow_unsafe = true }
+
+[crate.cxxbridge-flags]
+extra_kv = { allow_unsafe = false }
+
+[crate.cxxbridge-macro]
+extra_kv = { allow_unsafe = false }
+
+[crate.data-encoding]
+extra_kv = { allow_unsafe = true }
+
+[crate.data-encoding-macro]
+extra_kv = { allow_unsafe = false }
+
+[crate.data-encoding-macro-internal]
+extra_kv = { allow_unsafe = false }
+
+[crate.derive_more]
+extra_kv = { allow_unsafe = false }
+
+[crate.digest]
+extra_kv = { allow_unsafe = false }
+
+[crate.document-extractor]
+extra_kv = { allow_unsafe = false }
+
+[crate.dtoa]
+extra_kv = { allow_unsafe = true }
 
 [crate.dtoa-short]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = true }
+
+[crate.ego-tree]
+extra_kv = { allow_unsafe = true }
+
+[crate.either]
+extra_kv = { allow_unsafe = true }
 
 [crate.encoding_rs]
 license_files = ['LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
 
 [crate.equivalent]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1/LICENSE-APACHE']
+extra_kv = { allow_unsafe = false }
+
+[crate.feed-rs]
+extra_kv = { allow_unsafe = false }
+
+[crate.ff]
+extra_kv = { allow_unsafe = false }
 
 [crate.ff_derive]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.filecoin-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.flatbuffers]
+extra_kv = { allow_unsafe = true }
+
+[crate.fnv]
+extra_kv = { allow_unsafe = false }
+
+[crate.foldhash]
+extra_kv = { allow_unsafe = true }
+
+[crate.fpe]
+extra_kv = { allow_unsafe = false }
 
 [crate.funty]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = false }
+
+[crate.futf]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures]
+extra_kv = { allow_unsafe = false }
+
+[crate.futures-channel]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-core]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-executor]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-io]
+extra_kv = { allow_unsafe = false }
+
+[crate.futures-macro]
+extra_kv = { allow_unsafe = false }
+
+[crate.futures-retry]
+extra_kv = { allow_unsafe = false }
+
+[crate.futures-sink]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-task]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-timer]
+extra_kv = { allow_unsafe = true }
+
+[crate.futures-util]
+extra_kv = { allow_unsafe = true }
 
 [crate.fxhash]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.generic-array]
+extra_kv = { allow_unsafe = true }
+
+[crate.getopts]
+extra_kv = { allow_unsafe = false }
 
 [crate.getrandom]
 license_files = ['LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
+
+[crate.getrandom_or_panic]
+extra_kv = { allow_unsafe = false }
+
+[crate.group]
+extra_kv = { allow_unsafe = false }
+
+[crate.half]
+extra_kv = { allow_unsafe = true }
 
 [crate.halo2_gadgets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.halo2_legacy_pdqsort]
+extra_kv = { allow_unsafe = true }
 
 [crate.halo2_proofs]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.hashbrown]
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
+
+[crate.hex]
+extra_kv = { allow_unsafe = false }
+
+[crate.hkdf]
+extra_kv = { allow_unsafe = false }
+
+[crate.hmac]
+extra_kv = { allow_unsafe = false }
+
+[crate.html5ever]
+extra_kv = { allow_unsafe = false }
 
 [crate.http]
 extra_kv = { raw_gn = '''
@@ -225,36 +490,113 @@ rustflags += [
   "-A",
   "dangerous_implicit_autorefs",
 ]
-''' }
+''' , allow_unsafe = true }
+
+[crate.idna]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.impl-trait-for-tuples]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.incrementalmerkletree]
+extra_kv = { allow_unsafe = false }
 
 [crate.indexmap]
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2/LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
+
+[crate.inout]
+extra_kv = { allow_unsafe = true }
+
+[crate.itertools]
+extra_kv = { allow_unsafe = true }
 
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
 
-[crate.hashbrown]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
+[crate.json-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.jubjub]
+extra_kv = { allow_unsafe = false }
+
+[crate.keccak]
+extra_kv = { allow_unsafe = true }
+
+[crate.kuchikiki]
+extra_kv = { allow_unsafe = true }
+
+[crate.lazy_static]
+extra_kv = { allow_unsafe = true }
+
+[crate.libc]
+extra_kv = { allow_unsafe = true }
 
 [crate.libm]
-extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
+extra_kv = { rustenv = [ "OPT_LEVEL=0" ], allow_unsafe = true }
 license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2/LICENSE.txt']
 
+[crate.lifeguard]
+extra_kv = { allow_unsafe = true }
+
 [crate.lock_api]
-extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }
+extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] , allow_unsafe = true }
+
+[crate.log]
+extra_kv = { allow_unsafe = true }
+
+[crate.lol_html]
+extra_kv = { allow_unsafe = false }
 
 [crate.mac]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.markup5ever]
 extra_build_script_src_roots = [ "entities.rs" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs", ]
+extra_kv = { allow_unsafe = true }
 
 [crate.match_token]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.matches]
+extra_kv = { allow_unsafe = false }
+
+[crate.maybe-rayon]
+extra_kv = { allow_unsafe = false }
+
+[crate.memchr]
+extra_kv = { allow_unsafe = true }
+
+[crate.memuse]
+extra_kv = { allow_unsafe = false }
 
 [crate.merlin]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = true }
+
+[crate.mime]
+extra_kv = { allow_unsafe = false }
+
+[crate.multibase]
+extra_kv = { allow_unsafe = false }
+
+[crate.multihash]
+extra_kv = { allow_unsafe = true }
+
+[crate.new_debug_unreachable]
+extra_kv = { allow_unsafe = false }
+
+[crate.nodrop]
+extra_kv = { allow_unsafe = true }
+
+[crate.nonempty]
+extra_kv = { allow_unsafe = false }
 
 [crate.num-bigint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -277,53 +619,189 @@ rustflags += [
 
 [crate.num-integer]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.num-traits]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
+extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] , allow_unsafe = false }
+
+[crate.once_cell]
+extra_kv = { allow_unsafe = true }
+
+[crate.opaque-debug]
+extra_kv = { allow_unsafe = false }
+
+[crate.orchard]
+extra_kv = { allow_unsafe = false }
+
+[crate.pairing]
+extra_kv = { allow_unsafe = false }
+
+[crate.parity-scale-codec]
+extra_input_roots = ['../README.md' ]
+extra_kv = { raw_gn = '''
+  build_deps -= [ "//brave/third_party/rust/rustversion/v1:buildrs_support" ]
+''', allow_unsafe = true }
+
+[crate.parking_lot]
+extra_kv = { allow_unsafe = true }
+
+[crate.parking_lot_core]
+extra_kv = { allow_unsafe = true }
+
+[crate.pasta_curves]
+extra_kv = { allow_unsafe = false }
+
+[crate.paste]
+extra_kv = { allow_unsafe = false }
+
+[crate.percent-encoding]
+extra_kv = { allow_unsafe = true }
+
+[crate.phf]
+extra_kv = { allow_unsafe = false }
+
+[crate.phf_codegen]
+extra_kv = { allow_unsafe = false }
+
+[crate.phf_generator]
+extra_kv = { allow_unsafe = false }
 
 [crate.phf_macros]
 extra_kv = { raw_gn = '''
 if (epoch == "0.11") {
   output_name = "phf_macros_v0_11"
 }
-''' }
+''' , allow_unsafe = false }
+
+[crate.phf_shared]
+extra_kv = { allow_unsafe = false }
+
+[crate.pin-project]
+extra_kv = { allow_unsafe = true }
+
+[crate.pin-project-internal]
+extra_kv = { allow_unsafe = true }
+
+[crate.pin-project-lite]
+extra_kv = { allow_unsafe = true }
+
+[crate.pin-utils]
+extra_kv = { allow_unsafe = false }
 
 [crate.poly1305]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
       deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
 }
-''' }
+''' , allow_unsafe = true }
 
 [crate.ppoprf]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.ppv-lite86]
+extra_kv = { allow_unsafe = true }
+
+[crate.precomputed-hash]
+extra_kv = { allow_unsafe = false }
+
+[crate.proc-macro-hack]
+extra_kv = { allow_unsafe = false }
+
+[crate.proc-macro2]
+extra_kv = { allow_unsafe = true }
+
+[crate.quick-xml]
+extra_kv = { allow_unsafe = false }
+
+[crate.quote]
+extra_kv = { allow_unsafe = false }
 
 [crate.radium]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = false }
 
 [crate.rand]
 license_files = ['LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
 
 [crate.rand_chacha]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = true }
 
 [crate.rand_core]
 license_files = ['LICENSE-APACHE']
+extra_kv = { allow_unsafe = true }
+
+[crate.rand_pcg]
+extra_kv = { allow_unsafe = false }
 
 [crate.readability]
 license_files = ['../../../../../../brave/components/speedreader/rust/lib/src/readability/LICENSE']
+extra_kv = { allow_unsafe = false }
 
 [crate.reddsa]
 extra_input_roots = [ "../README.md" ]
 license_files = ['LICENSE.Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.regex]
+extra_kv = { allow_unsafe = true }
+
+[crate.regex-automata]
+extra_kv = { allow_unsafe = true }
+
+[crate.regex-syntax]
+extra_kv = { allow_unsafe = false }
+
+[crate.rmp]
+extra_kv = { allow_unsafe = true }
+
+[crate.rmp-serde]
+extra_kv = { allow_unsafe = true }
+
+[crate.rustc-hash]
+extra_kv = { allow_unsafe = false }
 
 [crate.rustc_hash]
 license_files = ['LICENSE-APACHE']
 
+[crate.rustc_version]
+extra_kv = { allow_unsafe = false }
+
+[crate.rustversion]
+extra_kv = { allow_unsafe = false }
+
+[crate.ryu]
+extra_kv = { allow_unsafe = true }
+
+[crate.schnorrkel]
+extra_kv = { allow_unsafe = false }
+
+[crate.scopeguard]
+extra_kv = { allow_unsafe = true }
+
+[crate.scraper]
+extra_kv = { allow_unsafe = false }
+
+[crate.seahash]
+extra_kv = { allow_unsafe = true }
+
 [crate.selectors]
 build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
 license_files = ['../../../../../common/licenses/MPL-2.0']
+extra_kv = { allow_unsafe = true }
+
+[crate.semver]
+extra_kv = { allow_unsafe = true }
+
+[crate.serde]
+build_script_outputs = [ "private.rs" ]
+extra_kv = { allow_unsafe = false }
+
+[crate.serde_bytes]
+extra_kv = { allow_unsafe = true }
 
 [crate.serde_core]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -332,26 +810,73 @@ extra_kv = { allow_unsafe = true }
 
 [crate.serde_derive]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.serde]
-build_script_outputs = [ "private.rs" ]
 extra_kv = { allow_unsafe = false }
+
+[crate.serde_json]
+extra_kv = { allow_unsafe = true }
 
 [crate.servo_arc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = true }
+
+[crate.sha2]
+extra_kv = { allow_unsafe = true }
+
+[crate.shardtree]
+extra_kv = { allow_unsafe = false }
 
 [crate.siphasher]
 extra_input_roots = [ "../README.md" ]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = true }
+
+[crate.skus]
+extra_kv = { allow_unsafe = false }
+
+[crate.skus-cxx]
+extra_kv = { allow_unsafe = false }
+
+[crate.slab]
+extra_kv = { allow_unsafe = true }
+
+[crate.smallvec]
+extra_kv = { allow_unsafe = true }
+
+[crate.speedreader]
+extra_kv = { allow_unsafe = false }
+
+[crate.speedreader-ffi]
+extra_kv = { allow_unsafe = true }
 
 [crate.sta-rs]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.stable_deref_trait]
+extra_kv = { allow_unsafe = true }
 
 [crate.star-constellation]
 license_files = ['LICENSE']
+extra_kv = { allow_unsafe = false }
+
+[crate.star-sharks]
+extra_kv = { allow_unsafe = false }
+
+[crate.static_assertions]
+extra_kv = { allow_unsafe = false }
+
+[crate.string_cache]
+extra_kv = { allow_unsafe = true }
+
+[crate.string_cache_codegen]
+extra_kv = { allow_unsafe = false }
 
 [crate.strobe-rs]
 extra_input_roots = [ "../README.md" ]
+extra_kv = { allow_unsafe = false }
+
+[crate.subtle]
+extra_kv = { allow_unsafe = true }
 
 [crate.syn]
 extra_kv = { raw_gn = '''
@@ -367,76 +892,139 @@ if (target_name == "buildrs_support" && epoch == "1") {
     "//brave/third_party/rust/unicode_ident/v1:buildrs_support",
   ]
 }
-'''}
+''', allow_unsafe = true }
+
+[crate.synstructure]
+extra_kv = { allow_unsafe = true }
 
 [crate.tap]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = false }
+
+[crate.tendril]
+extra_kv = { allow_unsafe = true }
+
+[crate.thiserror]
+extra_kv = { allow_unsafe = false }
 
 [crate.thiserror-impl]
 extra_kv = { raw_gn = '''
 if (epoch == "2") {
   output_name = "thiserror_impl_v2"
 }
-''' }
+''' , allow_unsafe = false }
+
+[crate.tracing]
+extra_kv = { allow_unsafe = true }
+
+[crate.tracing-attributes]
+extra_kv = { allow_unsafe = false }
+
+[crate.tracing-core]
+extra_kv = { allow_unsafe = true }
+
+[crate.tracing-log]
+extra_kv = { allow_unsafe = true }
 
 [crate.typenum]
 extra_build_script_src_roots = [ "../build" ]
 build_script_outputs = [ "consts.rs", "op.rs" ]
-extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/op.rs" ] }
+extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/op.rs" ] , allow_unsafe = false }
 
 [crate.uint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.unicode-ident]
+extra_kv = { allow_unsafe = true }
 
 [crate.unicode-width]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.unicode-xid]
+extra_kv = { allow_unsafe = false }
+
+[crate.universal-hash]
+extra_kv = { allow_unsafe = true }
+
+[crate.unsigned-varint]
+extra_kv = { allow_unsafe = false }
 
 [crate.url]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
-[crate.idna]
-license_files = ['../../../../../common/licenses/Apache-2.0']
+[crate.urlencoding]
+extra_kv = { allow_unsafe = true }
+
+[crate.utf-8]
+extra_kv = { allow_unsafe = true }
+
+[crate.uuid]
+extra_kv = { allow_unsafe = true }
+
+[crate.version_check]
+extra_kv = { allow_unsafe = false }
 
 [crate.wasi]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.windows-targets]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
 [crate.windows_aarch64_msvc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.windows_i686_msvc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.windows_x86_64_msvc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.windows-targets]
-license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.wyz]
 license_files = ['LICENSE.txt']
+extra_kv = { allow_unsafe = true }
 
 [crate.zcash]
 license_files = ['../../../../../common/licenses/MPL-2.0']
-
-[crate.zcash_encoding]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.zcash_primitives]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.zcash_protocol]
-license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
 
 [crate.zcash_client_backend]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.zcash_encoding]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.zcash_note_encryption]
+extra_kv = { allow_unsafe = false }
+
+[crate.zcash_primitives]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.zcash_protocol]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = false }
+
+[crate.zcash_spec]
+extra_kv = { allow_unsafe = false }
 
 [crate.zerocopy]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+extra_kv = { allow_unsafe = true }
 
-[crate.impl-trait-for-tuples]
-license_files = ['../../../../../common/licenses/Apache-2.0']
+[crate.zeroize]
+extra_kv = { allow_unsafe = true }
 
-[crate.parity-scale-codec]
-extra_input_roots = ['../README.md' ]
-extra_kv = { raw_gn = '''
-  build_deps -= [ "//brave/third_party/rust/rustversion/v1:buildrs_support" ]
-'''}
+[crate.zeroize_derive]
+extra_kv = { allow_unsafe = false }
+
+[crate.zip32]
+extra_kv = { allow_unsafe = false }

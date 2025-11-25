@@ -29,6 +29,8 @@ cargo_crate("lib") {
       "https://github.com/RustCrypto/sponges/tree/master/keccak"
   cargo_pkg_version = "0.1.3"
 
+  allow_unsafe = true
+
   deps = []
   if (current_cpu == "arm64") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]

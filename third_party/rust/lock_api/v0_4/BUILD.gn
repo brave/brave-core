@@ -29,6 +29,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/Amanieu/parking_lot"
   cargo_pkg_version = "0.4.9"
 
+  allow_unsafe = true
+
   deps = [ "//brave/third_party/rust/scopeguard/v1:lib" ]
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/build.rs"

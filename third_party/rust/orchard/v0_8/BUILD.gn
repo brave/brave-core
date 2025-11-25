@@ -64,6 +64,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zcash/orchard"
   cargo_pkg_version = "0.8.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/aes/v0_8:lib",
     "//brave/third_party/rust/bitvec/v1:lib",

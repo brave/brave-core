@@ -46,6 +46,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/servo/stylo"
   cargo_pkg_version = "0.26.0"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
     "//brave/third_party/rust/cssparser/v0_34:lib",

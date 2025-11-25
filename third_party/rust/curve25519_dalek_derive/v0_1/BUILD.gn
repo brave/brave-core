@@ -24,6 +24,8 @@ cargo_crate("lib") {
       "https://github.com/dalek-cryptography/curve25519-dalek"
   cargo_pkg_version = "0.1.1"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",
