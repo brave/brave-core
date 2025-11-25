@@ -5,6 +5,27 @@
 
 #include "content/public/browser/permission_descriptor_util.h"
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_NUM_CASES                         \
+  case blink::PermissionType::BRAVE_ETHEREUM:          \
+    return CreatePermissionDescriptor(                 \
+        blink::mojom::PermissionName::BRAVE_ETHEREUM); \
+  case blink::PermissionType::BRAVE_SOLANA:            \
+    return CreatePermissionDescriptor(                 \
+        blink::mojom::PermissionName::BRAVE_SOLANA);   \
+  case blink::PermissionType::BRAVE_CARDANO:           \
+    return CreatePermissionDescriptor(                 \
+        blink::mojom::PermissionName::BRAVE_CARDANO);
+#else
+#define BRAVE_WALLET_NUM_CASES                \
+  case blink::PermissionType::BRAVE_ETHEREUM: \
+  case blink::PermissionType::BRAVE_SOLANA:   \
+  case blink::PermissionType::BRAVE_CARDANO:  \
+    NOTREACHED();
+#endif
+
 #define NUM                                                                   \
   BRAVE_ADS:                                                                  \
   return CreatePermissionDescriptor(blink::mojom::PermissionName::BRAVE_ADS); \
@@ -29,12 +50,7 @@
   case blink::PermissionType::BRAVE_SPEEDREADER:                              \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_SPEEDREADER);                     \
-  case blink::PermissionType::BRAVE_ETHEREUM:                                 \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_ETHEREUM);                        \
-  case blink::PermissionType::BRAVE_SOLANA:                                   \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_SOLANA);                          \
+    BRAVE_WALLET_NUM_CASES                                                    \
   case blink::PermissionType::BRAVE_GOOGLE_SIGN_IN:                           \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_GOOGLE_SIGN_IN);                  \
@@ -44,11 +60,9 @@
   case blink::PermissionType::BRAVE_OPEN_AI_CHAT:                             \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_OPEN_AI_CHAT);                    \
-  case blink::PermissionType::BRAVE_CARDANO:                                  \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_CARDANO);                         \
   case blink::PermissionType::NUM
 
 #include <content/browser/permissions/permission_descriptor_util.cc>
 
 #undef NUM
+#undef BRAVE_WALLET_NUM_CASES

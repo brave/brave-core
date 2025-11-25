@@ -3,8 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/extensions/extension_context_menu_model.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -18,6 +17,10 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/widget/widget.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "url/gurl.h"
 
 namespace {
@@ -49,6 +52,7 @@ void OnWindowClosing(views::Widget* anchor_widget) {
 }
 
 }  // namespace
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace views {
 class BraveBubbleDialogDelegateView : public views::BubbleDialogDelegateView {
@@ -57,16 +61,19 @@ class BraveBubbleDialogDelegateView : public views::BubbleDialogDelegateView {
 
   static views::Widget* CreateBubble(
       std::unique_ptr<BubbleDialogDelegateView> delegate) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     if (delegate) {
       delegate->RegisterWindowClosingCallback(
           base::BindOnce(&OnWindowClosing, delegate->anchor_widget()));
     }
+#endif
     return BubbleDialogDelegateView::CreateBubble(std::move(delegate));
   }
 };
 
 }  // namespace views
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace chrome {
 
 Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
@@ -91,6 +98,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 #define GetActiveWebContents                           \
   GetActiveWebContents() && !IsBravePanel(contents) && \
       browser->tab_strip_model()->GetActiveWebContents
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #define BubbleDialogDelegateView BraveBubbleDialogDelegateView
 
@@ -102,5 +110,7 @@ Browser* FindBrowserAndAdjustBubbleForBraveWalletPanel(
 
 #undef SetExtraView
 #undef BubbleDialogDelegateView
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #undef GetActiveWebContents
 #undef FindBrowserWithTab
+#endif
