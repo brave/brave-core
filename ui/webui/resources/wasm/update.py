@@ -38,7 +38,8 @@ def restore_files(backed_up_files):
         path = Path(path_str)
         print(f'Restoring: {path}')
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding='utf-8')
+        with open(path, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(content)
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import update_rust
