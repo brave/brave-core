@@ -31,6 +31,10 @@ inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
 // Model key for Claude Sonnet model.
 inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
 
+// Keys for custom model prefs
+inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
+inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_
