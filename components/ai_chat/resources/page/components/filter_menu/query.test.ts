@@ -8,27 +8,27 @@ import { extractQuery, matches } from './query'
 describe('query', () => {
   describe('matches', () => {
     it('should return true if the query is a substring of the text', () => {
-      expect(matches('hello', 'hello world')).toBe(true)
+      expect(matches('hello', 'hello world')).toBe(0)
     })
 
     it('should return false if the query is not a substring of the text', () => {
-      expect(matches('bye', 'hello world')).toBe(false)
+      expect(matches('bye', 'hello world')).toBe(-1)
     })
 
     it('should return true if the query substring of the text case insensitive', () => {
-      expect(matches('HELLO', 'HeLlO world')).toBe(true)
+      expect(matches('HELLO', 'HeLlO world')).toBe(0)
     })
 
     it('should match ignoring whitespace', () => {
-      expect(matches('HELLO', 'He LlO   world')).toBe(true)
+      expect(matches('HELLO', 'He LlO   world')).toBe(0)
     })
 
     it('empty string should match anything', () => {
-      expect(matches('', 'He LlO   world')).toBe(true)
+      expect(matches('', 'He LlO   world')).toBe(0)
     })
 
     it('empty strings should match', () => {
-      expect(matches('', '')).toBe(true)
+      expect(matches('', '')).toBe(0)
     })
   })
 

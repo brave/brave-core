@@ -20,7 +20,7 @@ describe('filter_menu', () => {
         entries: ['hello', 'world'],
       },
     ],
-    matchesQuery: (q, item) => item.includes(q),
+    matchesQuery: (q, item) => item.indexOf(q),
     children: () => null,
   }
 

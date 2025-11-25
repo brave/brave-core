@@ -39,7 +39,7 @@ function matchesQuery(query: string, entry: ExtendedActionEntry) {
   if (getIsSkill(entry)) {
     return matches(query, entry.shortcut)
   }
-  return false
+  return -1
 }
 
 export default function ToolsMenu(props: ToolsMenuProps) {
