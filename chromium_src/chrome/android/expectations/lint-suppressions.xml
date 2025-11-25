@@ -56,11 +56,32 @@
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_link_text` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_unlinked_title` appears to be unused" />
         <ignore regexp="The resource `R.string.autofill_bnpl_tos_linked_title` appears to be unused" />
+        
         <!-- Ignore these because we had replaced chrome/android/java/res/drawable/incognito_history_placeholder_image.xml -->
         <ignore regexp="The resource `R.color.incognito_history_placeholder_bottom_circle_color` appears to be unused" />
         <ignore regexp="The resource `R.color.incognito_history_placeholder_stroke_color` appears to be unused" />
+
+        <!-- These are used at brave/android/java/AndroidManifest.xml -->
+        <ignore regexp="The resource `R.style.BottomSheetActivityTheme` appears to be unused" />
+        <ignore regexp="The resource `R.style.BraveAccountTheme` appears to be unused" />
+        <ignore regexp="The resource `R.style.BottomSheetAnimation` appears to be unused" />
+
+        <!-- These are used at brave/android/java/brave-res/xml/quick_action_search_and_bookmark_widget_info.xml -->
+        <ignore regexp="The resource `R.xml.quick_action_search_and_bookmark_widget_info` appears to be unused" />
+        <ignore regexp="The resource `R.string.brave_quick_action_search` appears to be unused" />
+        <ignore regexp="The resource `R.drawable.ic_quick_action_search_and_bookmark_widget_preview` appears to be unused" />
+        <ignore regexp="The resource `R.drawable.widget_preview appears` appears to be unused" />
+        <ignore regexp="brave/android/java/brave-res/drawable-night-nodpi/widget_preview.png" />
+
+        <!-- Is used at brave_base_module_resources -->
+        <ignore regexp="The resource `R.drawable.themed_app_icon` appears to be unused" />
     </issue>
     <issue id="ImpliedQuantity">
         <ignore regexp="brave/build/android/android_brave_strings_grd"/>
+    </issue>
+
+    <!-- This is inherited from upstream -->
+    <issue id="DataExtractionRules">
+        <ignore regexp="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher." />
     </issue>
 </lint>
