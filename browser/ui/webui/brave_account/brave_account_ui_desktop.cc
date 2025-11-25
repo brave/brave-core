@@ -15,6 +15,7 @@
 #include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
@@ -50,16 +51,28 @@ BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
   auto* pref_service = CHECK_DEREF(Profile::FromWebUI(web_ui)).GetPrefs();
   CHECK(pref_service);
 
-  pref_verification_token_.Init(
-      brave_account::prefs::kBraveAccountVerificationToken, pref_service,
-      base::BindRepeating(&BraveAccountUIDesktop::OnVerificationTokenChanged,
+  pref_change_registrar_.Init(pref_service);
+  pref_change_registrar_.AddMultiple(
+      {brave_account::prefs::kBraveAccountAuthenticationToken,
+       brave_account::prefs::kBraveAccountVerificationToken},
+      base::BindRepeating(&BraveAccountUIDesktop::OnTokensChanged,
                           base::Unretained(this)));
 }
 
 BraveAccountUIDesktop::~BraveAccountUIDesktop() = default;
 
-void BraveAccountUIDesktop::OnVerificationTokenChanged() {
-  if (pref_verification_token_.GetValue().empty()) {
+// Closes the UI when registration or login completes in any tab.
+// The dialog closes when either token becomes non-empty.
+// Since prefs are profile-wide, this automatically closes dialogs across all
+// tabs.
+void BraveAccountUIDesktop::OnTokensChanged() {
+  if (const auto& pref_service = CHECK_DEREF(pref_change_registrar_.prefs());
+      pref_service
+          .GetString(brave_account::prefs::kBraveAccountAuthenticationToken)
+          .empty() &&
+      pref_service
+          .GetString(brave_account::prefs::kBraveAccountVerificationToken)
+          .empty()) {
     return;
   }
 
