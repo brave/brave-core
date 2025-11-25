@@ -21,6 +21,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -152,26 +153,18 @@ void OAIAPIClient::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
-    std::string completion = "";
     // We're checking for a value body in case for non-streaming API results.
     if (result.value_body().is_dict()) {
-      const base::Value::List* choices =
-          result.value_body().GetDict().FindList("choices");
-
-      if (choices && !choices->empty() && choices->front().is_dict()) {
-        const std::string* content =
-            choices->front().GetDict().FindStringByDottedPath(
-                "message.content");
-
-        if (content) {
-          completion = *content;
-        }
+      if (auto result_data = ParseOAICompletionResponse(
+              result.value_body().GetDict(), nullptr /* model_service */)) {
+        std::move(callback).Run(base::ok(std::move(*result_data)));
+        return;
       }
     }
 
     // May be an empty string if part of SSE request, and payload was invalid.
     auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(completion));
+        mojom::CompletionEvent::New(""));
     std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
         std::move(event), std::nullopt /* model_key */)));
     return;
@@ -208,29 +201,9 @@ void OAIAPIClient::OnQueryDataReceived(
     return;
   }
 
-  const base::Value::List* choices = result->GetDict().FindList("choices");
-
-  if (!choices || choices->empty()) {
-    VLOG(2) << "No choices list found in response, or it is empty.";
-    return;
-  }
-
-  if (choices->front().is_dict()) {
-    const base::Value::Dict* delta =
-        choices->front().GetDict().FindDict("delta");
-
-    if (!delta) {
-      VLOG(2) << "No delta info found in first completion choice.";
-      return;
-    }
-
-    const std::string* content = delta->FindString("content");
-
-    if (content) {
-      auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New(*content));
-      callback.Run({std::move(event), std::nullopt /* model_key */});
-    }
+  if (auto result_data = ParseOAICompletionResponse(
+          result->GetDict(), nullptr /* model_service */)) {
+    callback.Run(std::move(*result_data));
   }
 }
 

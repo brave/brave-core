@@ -8,7 +8,9 @@
 #include <string>
 #include <utility>
 
+#include "base/logging.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
 namespace ai_chat {
@@ -121,6 +123,49 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     tools_list.Append(std::move(tool_dict));
   }
   return tools_list;
+}
+
+std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
+    const base::Value::Dict& response,
+    ModelService* model_service) {
+  const base::Value::List* choices = response.FindList("choices");
+  if (!choices || choices->empty() || !choices->front().is_dict()) {
+    VLOG(2) << "No choices list found in response, or it is empty.";
+    return std::nullopt;
+  }
+
+  const base::Value::Dict& choice = choices->front().GetDict();
+
+  // Response can have either "delta" or "message" field
+  const base::Value::Dict* content_container = choice.FindDict("delta");
+  if (!content_container) {
+    content_container = choice.FindDict("message");
+  }
+
+  if (!content_container) {
+    VLOG(2) << "No delta or message info found in first completion choice.";
+    return std::nullopt;
+  }
+
+  const std::string* content = content_container->FindString("content");
+  if (!content) {
+    return std::nullopt;
+  }
+
+  // Handle model lookup if model_service provided, only supports Leo models
+  // and not custom models for now.
+  std::optional<std::string> model_key = std::nullopt;
+  if (model_service) {
+    const std::string* model = response.FindString("model");
+    if (model) {
+      model_key = model_service->GetLeoModelKeyByName(*model);
+    }
+  }
+
+  auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(*content));
+  return EngineConsumer::GenerationResultData(std::move(event),
+                                              std::move(model_key));
 }
 
 }  // namespace ai_chat
