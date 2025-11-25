@@ -13,23 +13,23 @@ const MULTIADDRESS_TYPE: u8 = 0;
 // "Balances" pallet lives at index 4:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
 // https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
-const POLKADOT_TESTNET_BALANCES_PALLET: u8 = 4;
-const POLKADOT_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
+const POLKADOT_TESTNET: CxxPolkadotChainMetadata =
+    CxxPolkadotChainMetadata { balances_pallet_index: 4, transfer_allow_death_call_index: 0 };
 
 // "Balances" pallet lives at index 10:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
-const POLKADOT_ASSET_HUB_TESTNET_BALANCES_PALLET: u8 = 10;
-const POLKADOT_ASSET_HUB_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
+const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata =
+    CxxPolkadotChainMetadata { balances_pallet_index: 10, transfer_allow_death_call_index: 0 };
 
 // "Balances" pallet lives at index 5:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
-const POLKADOT_MAINNET_BALANCES_PALLET: u8 = 5;
-const POLKADOT_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
+const POLKADOT_MAINNET: CxxPolkadotChainMetadata =
+    CxxPolkadotChainMetadata { balances_pallet_index: 5, transfer_allow_death_call_index: 0 };
 
 // "Balances" pallet lives at index 10:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
-const POLKADOT_ASSET_HUB_MAINNET_BALANCES_PALLET: u8 = 10;
-const POLKADOT_ASSET_HUB_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX: u8 = 0;
+const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata =
+    CxxPolkadotChainMetadata { balances_pallet_index: 10, transfer_allow_death_call_index: 0 };
 
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
@@ -145,24 +145,10 @@ impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransfe
 
 fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
     let metadata = match chain_name {
-        "Westend" => Ok(CxxPolkadotChainMetadata {
-            balances_pallet_index: POLKADOT_TESTNET_BALANCES_PALLET,
-            transfer_allow_death_call_index: POLKADOT_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-        }),
-        "Westend Asset Hub" => Ok(CxxPolkadotChainMetadata {
-            balances_pallet_index: POLKADOT_ASSET_HUB_TESTNET_BALANCES_PALLET,
-            transfer_allow_death_call_index:
-                POLKADOT_ASSET_HUB_TESTNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-        }),
-        "Polkadot Asset Hub" => Ok(CxxPolkadotChainMetadata {
-            balances_pallet_index: POLKADOT_ASSET_HUB_MAINNET_BALANCES_PALLET,
-            transfer_allow_death_call_index:
-                POLKADOT_ASSET_HUB_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-        }),
-        "Polkadot" => Ok(CxxPolkadotChainMetadata {
-            balances_pallet_index: POLKADOT_MAINNET_BALANCES_PALLET,
-            transfer_allow_death_call_index: POLKADOT_MAINNET_TRANSFER_ALLOW_DEATH_CALL_INDEX,
-        }),
+        "Westend" => Ok(POLKADOT_TESTNET),
+        "Westend Asset Hub" => Ok(POLKADOT_ASSET_HUB_TESTNET),
+        "Polkadot Asset Hub" => Ok(POLKADOT_ASSET_HUB_MAINNET),
+        "Polkadot" => Ok(POLKADOT_MAINNET),
         _ => Err(Error::ChainNameNotFound),
     };
 
