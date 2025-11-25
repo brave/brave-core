@@ -992,6 +992,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
+  isToolExecuting: boolean
   attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
@@ -1041,6 +1042,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
+  isToolExecuting: false,
   attachmentsDialog: null,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
@@ -1395,6 +1397,8 @@ function StoryContext(
     conversationHistory: conversationContext.conversationHistory,
     conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
     isGenerating: conversationContext.isGenerating,
+    isToolExecuting: args.isToolExecuting,
+    toolUseTaskState: conversationContext.toolUseTaskState,
     isLeoModel: conversationContext.isCurrentModelLeo,
     contentUsedPercentage: options.args.shouldShowLongPageWarning ? 48 : 100,
     visualContentUsedPercentage: options.args.shouldShowLongVisualContentWarning
@@ -1546,6 +1550,7 @@ export const _ToolUse = {
             <ToolEvent
               key={event.toolUseEvent!.id}
               toolUseEvent={event.toolUseEvent!}
+              isExecuting={args.isToolExecuting}
               isEntryActive
             ></ToolEvent>
           ))}

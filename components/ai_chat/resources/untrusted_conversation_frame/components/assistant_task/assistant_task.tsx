@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Tabs from '@brave/leo/react/tabs'
 import TabItem from '@brave/leo/react/tabItem'
@@ -13,7 +14,7 @@ import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
-import ToolEvent from '../assistant_response/tool_event'
+import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
 
@@ -25,12 +26,25 @@ interface Props {
   // the conversation). Informs whether interactivity is allowed.
   isActiveTask: boolean
 
+  // Passes to AssistantResponse
+  isLeoModel: boolean
+}
+
+interface TabProps {
   // Whether the task is actively still being generated. Informs whether the UI
   // displays as if it's still in progress.
   isGenerating: boolean
 
-  // Passes to AssistantResponse
-  isLeoModel: boolean
+  // Whether the most recent tool use request is being executed
+  isToolExecuting: boolean
+
+  // Whether the task is currently generating a response
+  isThinking: boolean
+
+  // What the state of the active task is
+  toolUseTaskState: Mojom.TaskState
+
+  taskData: TaskData
 }
 
 /**
@@ -84,8 +98,24 @@ export default function AssistantTask(props: Props) {
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
+  const isThinking =
+    props.isActiveTask
+    && !conversationContext.isToolExecuting
+    && conversationContext.toolUseTaskState === Mojom.TaskState.kRunning
+
+  const tabProps: TabProps = {
+    isGenerating: conversationContext.isGenerating,
+    isToolExecuting: conversationContext.isToolExecuting,
+    toolUseTaskState: conversationContext.toolUseTaskState,
+    isThinking: isThinking,
+    taskData: taskData,
+  }
+
   return (
-    <div className={styles.task}>
+    <div
+      className={styles.task}
+      data-testid='assistant-task'
+    >
       <Tabs
         onChange={() => setShowSteps(!showSteps)}
         value={showSteps ? 'steps' : 'progress'}
@@ -101,16 +131,44 @@ export default function AssistantTask(props: Props) {
           {showSteps && (
             <Steps
               {...props}
-              taskData={taskData}
+              {...tabProps}
             />
           )}
 
           {!showSteps && (
             <Progress
               {...props}
-              taskData={taskData}
+              {...tabProps}
             />
           )}
+
+          {props.isActiveTask
+            && conversationContext.toolUseTaskState
+              === Mojom.TaskState.kPaused && (
+              <Label
+                color='neutral'
+                mode='loud'
+                className={styles.taskStateLabel}
+              >
+                <span data-testid='assistant-task-paused-label'>
+                  {getLocale(S.IDS_CHAT_UI_TASK_STATE_PAUSED_LABEL)}
+                </span>
+              </Label>
+            )}
+
+          {props.isActiveTask
+            && conversationContext.toolUseTaskState
+              === Mojom.TaskState.kStopped && (
+              <Label
+                color='neutral'
+                mode='loud'
+                className={styles.taskStateLabel}
+              >
+                <span data-testid='assistant-task-stopped-label'>
+                  {getLocale(S.IDS_CHAT_UI_TASK_STATE_STOPPED_LABEL)}
+                </span>
+              </Label>
+            )}
         </div>
         {taskThumbnail && (
           <div className={styles.taskImage}>
@@ -122,7 +180,7 @@ export default function AssistantTask(props: Props) {
   )
 }
 
-function Progress(props: Props & { taskData: TaskData }) {
+function Progress(props: Props & TabProps) {
   // The Progress tab should show:
   // - Any last active complete "important" tool (TODO, navigate)
   // - the most recent completion event
@@ -155,6 +213,7 @@ function Progress(props: Props & { taskData: TaskData }) {
           key={index}
           toolUseEvent={event}
           isEntryActive={false}
+          isExecuting={false}
         />
       ))}
       {currentCompletionEvent && (
@@ -173,13 +232,15 @@ function Progress(props: Props & { taskData: TaskData }) {
           key={index}
           toolUseEvent={event.toolUseEvent!}
           isEntryActive={props.isActiveTask}
+          isExecuting={props.isToolExecuting}
         />
       ))}
+      {props.isThinking && <ToolEventThinking />}
     </div>
   )
 }
 
-function Steps(props: Props & { taskData: TaskData }) {
+function Steps(props: Props & TabProps) {
   // Render every event in the task, split by completion event
   // so that the LLM tells a story of the task by it's own progress
   // description.
@@ -189,7 +250,7 @@ function Steps(props: Props & { taskData: TaskData }) {
       props.isActiveTask && index === props.taskData.taskItems.length - 1
 
     // Are we generating this task item?
-    const isActive = isRunnable && props.isGenerating && props.isActiveTask
+    const isActive = isRunnable && props.isToolExecuting && props.isActiveTask
 
     // Are we waiting for this task item to be completed (shouldn't show as complete)
     const isPending =
@@ -198,6 +259,8 @@ function Steps(props: Props & { taskData: TaskData }) {
       && taskItem.some(
         (event) => event.toolUseEvent && !event.toolUseEvent.output,
       )
+
+    const isThinking = isRunnable && props.isThinking
 
     return (
       <div
@@ -222,6 +285,7 @@ function Steps(props: Props & { taskData: TaskData }) {
           allowedLinks={props.taskData.allowedLinks}
           isLeoModel={props.isLeoModel}
         />
+        {isThinking && <ToolEventThinking />}
       </div>
     )
   })

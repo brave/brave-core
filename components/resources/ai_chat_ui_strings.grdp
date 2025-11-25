@@ -888,4 +888,13 @@
   <message name="IDS_CHAT_UI_STOP_TASK_BUTTON_LABEL" desc="Button label to stop a running task" formatter_data="webui=AiChat">
     Stop
   </message>
+  <message name="IDS_CHAT_UI_TASK_STATE_PAUSED_LABEL" desc="Label for the paused task state" formatter_data="webui=AiChat">
+    Paused
+  </message>
+  <message name="IDS_CHAT_UI_TASK_STATE_STOPPED_LABEL" desc="Label for the stopped task state" formatter_data="webui=AiChat">
+    Stopped
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_THINKING" desc="Label for when the assistant is thinking" formatter_data="webui=AiChat">
+    Thinking
+  </message>
 </grit-part>

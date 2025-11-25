@@ -53,6 +53,11 @@ class ContentAgentToolProvider : public ToolProvider,
     return task_tab_handle_;
   }
 
+  Tool* AddToolForTesting(std::unique_ptr<Tool> tool) {
+    tools_.push_back(std::move(tool));
+    return tools_.back().get();
+  }
+
  private:
   friend class BrowserToolsTest;
   friend class ContentAgentToolProviderTest;

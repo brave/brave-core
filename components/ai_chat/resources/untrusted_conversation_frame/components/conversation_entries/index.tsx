@@ -192,7 +192,6 @@ function ConversationEntries() {
                   <AssistantTask
                     assistantEntries={group}
                     isActiveTask={isLastGroup}
-                    isGenerating={conversationContext.isGenerating}
                     isLeoModel={conversationContext.isLeoModel}
                   />
                 )}

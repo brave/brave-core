@@ -1925,8 +1925,9 @@ ConversationHandler::GetStateForConversationEntries() {
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
 
-  entries_state->is_generating =
-      IsRequestInProgress() || is_tool_use_in_progress_;
+  entries_state->is_generating = IsRequestInProgress();
+  entries_state->is_tool_executing = is_tool_use_in_progress_;
+  entries_state->tool_use_task_state = tool_use_task_state_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->all_models = std::move(models_copy);
   entries_state->current_model_key = model.key;
@@ -1997,8 +1998,7 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
 void ConversationHandler::OnAPIRequestInProgressChanged() {
   OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAPIRequestInProgress(is_request_in_progress_ ||
-                                   is_tool_use_in_progress_);
+    client->OnAPIRequestInProgress(is_request_in_progress_);
   }
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
@@ -2006,6 +2006,7 @@ void ConversationHandler::OnAPIRequestInProgressChanged() {
 }
 
 void ConversationHandler::OnToolUseTaskStateChanged() {
+  OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
     client->OnTaskStateChanged(tool_use_task_state_);
   }

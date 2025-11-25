@@ -20,6 +20,12 @@ interface Props {
    * what to do with partial input.
    */
   isEntryActive: boolean
+
+  /**
+   * Whether the tool use request is currently being executed. This is usually
+   * a short-lived state.
+   */
+  isExecuting: boolean
 }
 
 /**
@@ -158,11 +164,16 @@ export default function ToolEvent(props: Props) {
 
         const isExpandable = content.toolLabel && content.expandedContent
 
+        // Show as executing if this is an active entry, we are currently
+        // executing *a* tool, and this tool has no output yet.
+        const isExecuting =
+          props.isEntryActive && props.isExecuting && !props.toolUseEvent.output
+
         return (
           <div
             className={classnames(
               styles.toolUse,
-              props.isEntryActive && styles.isActive,
+              isExecuting && styles.isExecuting,
             )}
           >
             {isExpandable && (
@@ -203,5 +214,18 @@ function ToolContentExpandable(props: Props & ToolUseContent) {
         <div className={styles.expandedContent}>{props.expandedContent}</div>
       )}
     </>
+  )
+}
+
+export function ToolEventThinking() {
+  return (
+    <div
+      className={classnames(styles.toolUse, styles.isExecuting)}
+      data-testid='tool-event-thinking'
+    >
+      <div className={styles.toolLabel}>
+        {getLocale(S.IDS_CHAT_UI_TOOL_LABEL_THINKING)}
+      </div>
+    </div>
   )
 }

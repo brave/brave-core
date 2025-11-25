@@ -365,6 +365,10 @@ struct Model {
 struct ConversationEntriesState {
   // Whether an answer generation is in progress
   bool is_generating;
+  // Whether the most recent tool use request is being executed
+  bool is_tool_executing;
+  // State of any active tool loop task
+  TaskState tool_use_task_state;
   // Whether the current model is a built-in Leo model
   bool is_leo_model;
   array<Model> all_models;

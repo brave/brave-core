@@ -245,25 +245,30 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   base::OnceClosure SetupMockGenerateAssistantResponse(
       EngineConsumer::GenerationDataCallback* out_data_callback,
       EngineConsumer::GenerationCompletedCallback* out_completed_callback,
+      testing::Sequence* sequence = nullptr,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     auto run_loop = std::make_unique<base::RunLoop>();
     auto on_generate_called = run_loop->QuitClosure();
-    EXPECT_CALL(*mock_engine_,
-                GenerateAssistantResponse(_, _, _, _, _, _, _, _, _))
-        .Description(base::StrCat(
-            {"GenerateAssistantResponse mocked from ", location.ToString()}))
-        .WillOnce([out_data_callback, out_completed_callback,
-                   on_called = std::move(on_generate_called)](
-                      PageContentsMap page_contents,
-                      const EngineConsumer::ConversationHistory& history,
-                      const std::string& selected_language, bool is_temporary,
-                      const std::vector<base::WeakPtr<Tool>>& provided_tools,
-                      std::optional<std::string_view> preferred_tool_name,
-                      mojom::ConversationCapability capability,
-                      EngineConsumer::GenerationDataCallback data_cb,
-                      EngineConsumer::GenerationCompletedCallback
-                          complete_cb) mutable {
+    auto& expect =
+        EXPECT_CALL(*mock_engine_,
+                    GenerateAssistantResponse(_, _, _, _, _, _, _, _, _))
+            .Description(base::StrCat({"GenerateAssistantResponse mocked from ",
+                                       location.ToString()}));
+    if (sequence) {
+      expect.InSequence(*sequence);
+    }
+    expect.WillOnce(
+        [out_data_callback, out_completed_callback,
+         on_called = std::move(on_generate_called)](
+            PageContentsMap page_contents,
+            const EngineConsumer::ConversationHistory& history,
+            const std::string& selected_language, bool is_temporary,
+            const std::vector<base::WeakPtr<Tool>>& provided_tools,
+            std::optional<std::string_view> preferred_tool_name,
+            mojom::ConversationCapability capability,
+            EngineConsumer::GenerationDataCallback data_cb,
+            EngineConsumer::GenerationCompletedCallback complete_cb) mutable {
           *out_data_callback = std::move(data_cb);
           *out_completed_callback = std::move(complete_cb);
           std::move(on_called).Run();
@@ -280,6 +285,12 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
+                                    nullptr);
+  }
+
+  mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
+                                            const std::string& tool_id) {
+    return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
                                     nullptr);
   }
 
@@ -555,6 +566,154 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
         SetupMockGenerateAssistantResponse(&data_callback, &completed_callback);
     std::move(wait_for_generate).Run();
   }
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
+  // A task UI shows when there are 2 tool segments of a tool loop, i.e. the AI
+  // responds to a tool use result with another tool use request.
+  CreateConversationWithMockEngine();
+  std::string uuid = conversation_handler_->get_conversation_uuid();
+
+  NavigateToConversationUI(uuid);
+
+  // Inject our own Tool so that we can handle the tool execution and pause
+  auto* mock_tool = static_cast<NiceMock<MockTool>*>(
+      content_agent_tool_provider_->AddToolForTesting(
+          std::make_unique<NiceMock<MockTool>>("mock_tool", "Mock tool")));
+
+  testing::Sequence tool_call_seq;
+
+  // Submit first message
+  {
+    EngineConsumer::GenerationDataCallback data_callback;
+    EngineConsumer::GenerationCompletedCallback completed_callback;
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
+    conversation_handler_->SubmitHumanConversationEntry(
+        "Navigate to example.com", std::nullopt);
+    std::move(wait_for_generate).Run();
+    // Send first message response
+    // Simulate tool use event
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            CreateToolUseEvent("mock_tool", "tool_id_1")),
+        std::nullopt));
+
+    EXPECT_CALL(*mock_tool, UseTool)
+        .InSequence(tool_call_seq)
+        .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+          std::move(callback).Run(
+              CreateContentBlocksForText("1st tool result"));
+        }));
+
+    // Complete first message response
+    std::move(completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+
+  // No task UI should be shown with only one tool segment in the loop
+  EXPECT_FALSE(DoesElementExist("assistant-task", false));
+
+  // Handle the tool execution response with another tool use request.
+  {
+    EngineConsumer::GenerationDataCallback data_callback;
+    EngineConsumer::GenerationCompletedCallback completed_callback;
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
+
+    std::move(wait_for_generate).Run();
+
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("Hmm, I want a different thing")),
+        std::nullopt));
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            CreateToolUseEvent("mock_tool", "tool_id_2")),
+        std::nullopt));
+
+    // When the tool is being executed, we can verify the UI state
+    EXPECT_CALL(*mock_tool, UseTool)
+        .InSequence(tool_call_seq)
+        .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+          EXPECT_TRUE(DoesElementExist("assistant-task"));
+          EXPECT_FALSE(DoesElementExist("tool-event-thinking", false));
+
+          std::move(callback).Run(
+              CreateContentBlocksForText("2nd tool result"));
+
+          // Now we should be thinking
+          EXPECT_TRUE(DoesElementExist("tool-event-thinking"));
+        }));
+
+    // Complete successful response
+    std::move(completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+
+  // Handle the second tool execution response with pausing and verify UI label.
+  {
+    EngineConsumer::GenerationDataCallback data_callback;
+    EngineConsumer::GenerationCompletedCallback completed_callback;
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
+
+    std::move(wait_for_generate).Run();
+
+    // Shouldn't call the tool again because we are pausing.
+    EXPECT_CALL(*mock_tool, UseTool).InSequence(tool_call_seq).Times(0);
+
+    // Pause the task
+    EXPECT_TRUE(ClickElement("pause-task-button"));
+
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("Hmm, I want a different thing")),
+        std::nullopt));
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            CreateToolUseEvent("mock_tool", "tool_id_3")),
+        std::nullopt));
+    // Complete successful response
+    std::move(completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+
+  // The task should have a "paused" label
+  EXPECT_TRUE(DoesElementExist("assistant-task-paused-label"));
+
+  // When we submit a new message, the task is no longer active. It should still
+  // exist but should not have its "paused" label.
+  {
+    EngineConsumer::GenerationDataCallback data_callback;
+    EngineConsumer::GenerationCompletedCallback completed_callback;
+    auto wait_for_generate = SetupMockGenerateAssistantResponse(
+        &data_callback, &completed_callback, &tool_call_seq);
+    conversation_handler_->SubmitHumanConversationEntry(
+        "Actually do something different", std::nullopt);
+
+    EXPECT_TRUE(base::test::RunUntil([this]() {
+      return GetConversationState()->tool_use_task_state ==
+             mojom::TaskState::kNone;
+    }));
+
+    std::move(wait_for_generate).Run();
+    // Simple response
+    data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("ok")),
+        std::nullopt));
+    // Complete first message response
+    std::move(completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+
+  EXPECT_TRUE(DoesElementExist("assistant-task"));
+  EXPECT_FALSE(DoesElementExist("assistant-task-paused-label", false));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
