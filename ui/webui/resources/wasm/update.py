@@ -48,7 +48,7 @@ def restore_files(backed_up_files):
             f.write(content)
 
 
-def cleanup_files(patterns):
+def clean_up_files(patterns):
     for pattern in patterns:
         for path in Path().glob(pattern):
             print(f'Removing: {path}')
@@ -89,7 +89,7 @@ def main():
             toml.dump(CONFIG_TOML, f)
 
     restore_files(backed_up_files)
-    cleanup_files(CLEANUP_PATTERNS)
+    clean_up_files(CLEANUP_PATTERNS)
 
 
 if __name__ == '__main__':
