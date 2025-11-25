@@ -1,4 +1,4 @@
-use std::{collections::HashMap, marker::PhantomData};
+use std::marker::PhantomData;
 
 use crate::flatbuffers::containers;
 use containers::flat_serialize::{FlatBuilder, FlatMapBuilderOutput, FlatSerialize};
@@ -71,12 +71,12 @@ where
     V: Follow<'a>,
     Keys: SortedIndex<I>,
 {
-    type Item = (usize, <V as Follow<'a>>::Inner);
+    type Item = <V as Follow<'a>>::Inner;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.index < self.keys.len() && self.keys.get(self.index) == self.key {
             self.index += 1;
-            Some((self.index - 1, self.values.get(self.index - 1)))
+            Some(self.values.get(self.index - 1))
         } else {
             None
         }
@@ -85,17 +85,19 @@ where
 
 #[derive(Default)]
 pub(crate) struct FlatMultiMapBuilder<I, V> {
-    map: HashMap<I, Vec<V>>,
+    entries: Vec<(I, V)>,
 }
 
 impl<I: Ord + std::hash::Hash, V> FlatMultiMapBuilder<I, V> {
-    pub fn from_filter_map(map: HashMap<I, Vec<V>>) -> Self {
-        Self { map }
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            entries: Vec::with_capacity(capacity),
+        }
     }
 
     #[allow(dead_code)] // Unused code is allowed during cosmetic filter migration
     pub fn insert(&mut self, key: I, value: V) {
-        self.map.entry(key).or_default().push(value);
+        self.entries.push((key, value));
     }
 
     pub fn finish<'a, B: FlatBuilder<'a>>(
@@ -106,17 +108,14 @@ impl<I: Ord + std::hash::Hash, V> FlatMultiMapBuilder<I, V> {
         I: FlatSerialize<'a, B>,
         V: FlatSerialize<'a, B>,
     {
-        let mut entries: Vec<_> = value.map.into_iter().collect();
-        entries.sort_unstable_by(|(a, _), (b, _)| a.cmp(b));
+        let mut entries = value.entries;
+        entries.sort_by(|(a, _), (b, _)| a.cmp(b));
         let mut indexes = Vec::with_capacity(entries.len());
         let mut values = Vec::with_capacity(entries.len());
 
-        for (key, mv) in entries.into_iter() {
-            let index = FlatSerialize::serialize(key, builder);
-            for value in mv.into_iter() {
-                indexes.push(index.clone());
-                values.push(FlatSerialize::serialize(value, builder));
-            }
+        for (key, value) in entries {
+            indexes.push(FlatSerialize::serialize(key, builder));
+            values.push(FlatSerialize::serialize(value, builder));
         }
 
         let indexes_vec = builder.raw_builder().create_vector(&indexes);

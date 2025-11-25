@@ -139,6 +139,11 @@ impl Engine {
         self.blocker.check(request, &self.resources)
     }
 
+    #[cfg(test)]
+    pub(crate) fn check_network_request_exceptions(&self, request: &Request) -> bool {
+        self.blocker.check_exceptions(request)
+    }
+
     pub fn check_network_request_subset(
         &self,
         request: &Request,
@@ -264,6 +269,11 @@ impl Engine {
 
     pub fn set_regex_discard_policy(&mut self, new_discard_policy: RegexManagerDiscardPolicy) {
         self.blocker.set_regex_discard_policy(new_discard_policy);
+    }
+
+    #[cfg(test)]
+    pub fn borrow_regex_manager(&self) -> crate::blocker::RegexManagerRef<'_> {
+        self.blocker.borrow_regex_manager()
     }
 
     #[cfg(feature = "debug-info")]

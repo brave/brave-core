@@ -74,12 +74,15 @@ impl<'a> FlatNetworkFilter<'a> {
     #[inline(always)]
     pub fn new(
         filter: &'a fb::NetworkFilter<'a>,
-        index: usize,
         filter_data_context: &'a FilterDataContext,
     ) -> Self {
+        // Use the flatbuffer relative location as key, it's unique for
+        // each filter regardless of the filter list it belongs to.
+        let key = filter._tab.loc() as u64;
+
         Self {
+            key,
             fb_filter: filter,
-            key: index as u64,
             mask: NetworkFilterMask::from_bits_retain(filter.mask()),
             filter_data_context,
         }
@@ -167,10 +170,5 @@ impl NetworkMatchable for FlatNetworkFilter<'_> {
             request,
             regex_manager,
         )
-    }
-
-    #[cfg(test)]
-    fn matches_test(&self, request: &Request) -> bool {
-        self.matches(request, &mut RegexManager::default())
     }
 }

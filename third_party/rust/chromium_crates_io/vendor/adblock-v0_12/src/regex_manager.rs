@@ -15,7 +15,7 @@ use std::time::Duration;
 
 #[cfg(test)]
 #[cfg(not(target_arch = "wasm32"))]
-use mock_instant::global::Instant;
+use mock_instant::thread_local::Instant;
 #[cfg(not(test))]
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;

@@ -285,9 +285,19 @@ impl FilterSet {
         self,
     ) -> Result<(Vec<crate::content_blocking::CbRule>, Vec<String>), ()> {
         use crate::content_blocking;
+        use crate::filters::network::NetworkFilterMaskHelper;
+        use std::collections::HashSet;
 
         if !self.debug {
             return Err(());
+        }
+
+        // Store bad filter id to skip them later.
+        let mut bad_filter_ids = HashSet::new();
+        for filter in self.network_filters.iter() {
+            if filter.is_badfilter() {
+                bad_filter_ids.insert(filter.get_id_without_badfilter());
+            }
         }
 
         let mut ignore_previous_rules = vec![];
@@ -296,6 +306,10 @@ impl FilterSet {
         let mut filters_used = vec![];
 
         self.network_filters.into_iter().for_each(|filter| {
+            // Don't process bad filter rules or matching bad filter rules.
+            if bad_filter_ids.contains(&filter.get_id()) || filter.is_badfilter() {
+                return;
+            }
             let original_rule = *filter
                 .raw_line
                 .clone()

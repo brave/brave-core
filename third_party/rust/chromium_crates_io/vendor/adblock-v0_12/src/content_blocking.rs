@@ -316,9 +316,10 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
             if v.mask.contains(NetworkFilterMask::GENERIC_HIDE) {
                 return Err(CbRuleCreationFailure::NetworkGenerichideUnsupported);
             }
-            if v.mask.contains(NetworkFilterMask::BAD_FILTER) {
-                return Err(CbRuleCreationFailure::NetworkBadFilterUnsupported);
-            }
+            debug_assert!(
+                !v.mask.contains(NetworkFilterMask::BAD_FILTER),
+                "BAD_FILTER should be filtered out"
+            );
             if v.is_csp() {
                 return Err(CbRuleCreationFailure::NetworkCspUnsupported);
             }

@@ -262,7 +262,7 @@ impl CosmeticFilterCache {
         for hash in hashes.iter() {
             // Handle top-level hide selectors
             if let Some(hide_iterator) = hostname_hide_view.get(**hash) {
-                for (_, hide_selector) in hide_iterator {
+                for hide_selector in hide_iterator {
                     if !exceptions.contains(hide_selector) {
                         specific_hide_selectors.insert(hide_selector.to_owned());
                     }
@@ -271,7 +271,7 @@ impl CosmeticFilterCache {
 
             // Handle top-level inject scripts with encoded permissions
             if let Some(script_iterator) = hostname_inject_script_view.get(**hash) {
-                for (_, encoded_script) in script_iterator {
+                for encoded_script in script_iterator {
                     let (permission, script) = decode_script_with_permission(encoded_script);
                     script_injections
                         .entry(script)

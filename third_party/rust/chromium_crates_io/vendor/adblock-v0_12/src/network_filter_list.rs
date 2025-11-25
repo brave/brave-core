@@ -1,6 +1,6 @@
 //! Holds the implementation of [NetworkFilterList] and related functionality.
 
-use std::{collections::HashMap, collections::HashSet, fmt};
+use std::{collections::HashSet, fmt};
 
 use flatbuffers::ForwardsUOffset;
 
@@ -8,13 +8,13 @@ use crate::filters::fb_network::FlatNetworkFilter;
 use crate::filters::filter_data_context::FilterDataContext;
 use crate::filters::flatbuffer_generated::fb;
 use crate::filters::network::{
-    FilterTokens, NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper, NetworkMatchable,
+    NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper, NetworkMatchable,
 };
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapView;
 use crate::flatbuffers::unsafe_tools::fb_vector_to_slice;
 use crate::regex_manager::RegexManager;
 use crate::request::Request;
-use crate::utils::{fast_hash, to_short_hash, ShortHash};
+use crate::utils::{to_short_hash, ShortHash};
 
 /// Holds relevant information from a single matchin gnetwork filter rule as a result of querying a
 /// [NetworkFilterList] for a given request.
@@ -90,9 +90,8 @@ impl NetworkFilterList<'_> {
 
         for token in request.get_tokens_for_match() {
             if let Some(iter) = filter_map.get(to_short_hash(*token)) {
-                for (index, fb_filter) in iter {
-                    let filter =
-                        FlatNetworkFilter::new(&fb_filter, index, self.filter_data_context);
+                for fb_filter in iter {
+                    let filter = FlatNetworkFilter::new(&fb_filter, self.filter_data_context);
 
                     // if matched, also needs to be tagged with an active tag (or not tagged at all)
                     if filter.matches(request, regex_manager)
@@ -133,9 +132,8 @@ impl NetworkFilterList<'_> {
 
         for token in request.get_tokens_for_match() {
             if let Some(iter) = filter_map.get(to_short_hash(*token)) {
-                for (index, fb_filter) in iter {
-                    let filter =
-                        FlatNetworkFilter::new(&fb_filter, index, self.filter_data_context);
+                for fb_filter in iter {
+                    let filter = FlatNetworkFilter::new(&fb_filter, self.filter_data_context);
 
                     // if matched, also needs to be tagged with an active tag (or not tagged at all)
                     if filter.matches(request, regex_manager)
@@ -152,28 +150,4 @@ impl NetworkFilterList<'_> {
         }
         filters
     }
-}
-
-pub(crate) fn token_histogram<T>(
-    filter_tokens: &[(T, FilterTokens)],
-) -> (u32, HashMap<ShortHash, u32>) {
-    let mut tokens_histogram: HashMap<ShortHash, u32> = HashMap::new();
-    let mut number_of_tokens = 0;
-    for (_, tokens) in filter_tokens.iter() {
-        match tokens {
-            FilterTokens::Other(tokens) | FilterTokens::OptDomains(tokens) => {
-                for t in tokens {
-                    *tokens_histogram.entry(to_short_hash(*t)).or_insert(0) += 1;
-                    number_of_tokens += 1;
-                }
-            }
-            FilterTokens::Empty => {}
-        }
-    }
-
-    for bad_token in ["http", "https", "www", "com"].iter() {
-        tokens_histogram.insert(to_short_hash(fast_hash(bad_token)), number_of_tokens);
-    }
-
-    (number_of_tokens, tokens_histogram)
 }
