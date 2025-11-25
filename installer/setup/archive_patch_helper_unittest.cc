@@ -21,6 +21,7 @@ namespace {
 class ArchivePatchHelperTest : public testing::Test {
  protected:
   static void SetUpTestCase() {
+    // This requires chrome::RegisterPathProvider() to have been called.
     ASSERT_TRUE(base::PathService::Get(chrome::DIR_TEST_DATA, &data_dir_));
     data_dir_ = data_dir_.AppendASCII("installer");
     ASSERT_TRUE(base::PathExists(data_dir_));
