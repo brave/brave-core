@@ -21,7 +21,7 @@
   <message name="IDS_GLIC_PROMO_BODY" desc="Text for a promo pointing to the Gemini icon in Brave.">
     Chat with voice or text to get answers, key takeaways, and more as you browse
   </message>
-  <if expr="is_win or is_linux">
+  <if expr="is_win or is_linux or is_chromeos">
     <message name="IDS_GLIC_STATUS_ICON_MENU_CUSTOMIZE_KEYBOARD_SHORTCUT" desc="Menu text for the Gemini icon on the system try to open Brave settings and change the keyboard shortcut for opening Gemini in Brave.">
       Customize keyboard shortcut
     </message>
@@ -31,12 +31,12 @@
       Customize Keyboard Shortcut...
     </message>
   </if>
-  <if expr="is_win or is_linux">
+  <if expr="is_win or is_linux or is_chromeos">
     <message name="IDS_GLIC_STATUS_ICON_MENU_EXIT" desc="This is the menu item for exiting Brave.">
       Exit
     </message>
   </if>
-  <if expr="is_win or is_linux">
+  <if expr="is_win or is_linux or is_chromeos">
     <message name="IDS_GLIC_STATUS_ICON_MENU_SETTINGS" desc="This is the menu item for opening the Gemini status icon settings.">
       Settings
     </message>
@@ -218,7 +218,7 @@
     You can easily ask Gemini questions about your current tab as you browse
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1" desc="First point in 'things to consider' column of the 'tab access' expando">
-    When you choose to share the current tab with Gemini, the tab’s full content and URL are sent to Brave.
+    When you choose to share the current tab with Gemini, the tab’s full content, media and URL are sent to Brave.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1_LEARN_MORE_LABEL" desc="Label for the 'Learn more' link in the 'things to consider' section.">
     Learn more
@@ -277,6 +277,9 @@
   </message>
 
   <!-- Glic Window -->
+  <message name="IDS_GLIC_INACTIVE_VIEW_CARD_TEXT" desc="Text displayed on the card when the Gemini conversation is in Floaty and the side panel is blurred.">
+    Your Gemini conversation is in another window. Click anywhere on this side panel to move it here.
+  </message>
   <message name="IDS_GLIC_WINDOW_TITLE" desc="Accessible title for the Gemini Window." is_accessibility_with_no_ui="true">
     Gemini
   </message>

@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <if expr="not is_android">
+  <if expr="not is_android and not is_ios">
     <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Text requesting permission for a site to access the user's physical location">
       <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your computer's location
     </message>
   </if>
-  <if expr="is_android">
+  <if expr="is_android or is_ios">
     <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Mobile: Text requesting permission for a site to access the user's physical location">
       <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your device's location
     </message>
@@ -101,7 +101,7 @@
     <message name="IDS_WINDOW_MANAGEMENT_INFOBAR_TEXT" desc="Text requesting permission for a site that wants to manage windows.">
       <ph name="URL">$1<ex>google.com</ex></ph> wants to manage windows on all your displays
     </message>
-</if>
+  </if>
   <if expr="is_android or is_chromeos or is_win">
     <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's protected media identifier.">
       Know your unique device identifier
@@ -591,4 +591,15 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   <message name="IDS_PERMISSION_PROMPT_SURVEY_CUSTOM_INVITATION" desc="The invitation shown to a user, which allows the user to accept taking a survey.">
       A website just asked for access to your <ph name="request_type">$1<ex>camera</ex></ph>. Help us improve how websites ask for access by taking this 1-minute survey.
   </message>
+  <if expr="is_android">
+   <message name="IDS_NOTIFICATION_TITLE_MESSAGE_UI" desc="Title text representing a request for showing notifications from a website. Displayed on a dialog on Android.">
+      Get notifications?
+   </message>
+    <message name="IDS_NOTIFICATION_DESCRIPTION_MESSAGE_UI" desc="Description text representing a request for showing notifications from a website. Displayed on a dialog on Android.">
+      From <ph name="site">$1<ex>mail.google.com</ex></ph>
+    </message>
+   <message name="IDS_NOTIFICATION_CTA_MESSAGE_UI" desc="Label used on a button that allows the user to open a new UI surface where they can manage their permissions including the currently requested notifications permission from a website. Displayed on a dialog on Android.">
+      Manage
+   </message>
+  </if>
 </grit-part>

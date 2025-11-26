@@ -704,9 +704,6 @@ Brave is unable to recover your settings.
         <message name="IDS_UNINSTALL_DELETE_PROFILE" desc="Text to show user to ask whether to delete all the profile data also during uninstallation.">
           Also delete your browsing data?
         </message>
-        <message name="IDS_UNINSTALL_SET_DEFAULT_BROWSER" desc="Text to ask whether to set another browser as default when Brave is uninstalled.">
-          Change default browser to:
-        </message>
         <message name="IDS_UNINSTALL_BUTTON_TEXT" desc="Label for uninstall button on Uninstall confirmation dialog.">
           Uninstall
         </message>
@@ -1060,7 +1057,9 @@ Brave is unable to recover your settings.
       <message name="IDS_SESSION_RESTORE_LINK" desc="Text for the link in the session restore infobar to open the Settings page.">
          Settings.
       </message>
-
+      <message name="IDS_SESSION_RESTORE_LINK_ARIA_LABEL" desc="Accessibility text for the link in the session restore infobar to open the Settings page.">
+        Settings, opens in new tab.
+      </message>
       <!-- Enterprise sign-in dialog -->
       <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
         Your organization requires you to sign into Brave
@@ -1155,10 +1154,10 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- Realbox Strings -->
-      <message name="IDS_IPH_REALBOX_CONTEXTUAL_ENTRYPOINT" desc="The description of the IPH shown for the realbox contextual entrypoint." translateable="false">
+      <message name="IDS_IPH_REALBOX_CONTEXTUAL_ENTRYPOINT" desc="The description of the IPH shown for the realbox contextual entrypoint.">
         Deepen your search by adding multiple tabs, files, and tools
       </message>
-      <message name="IDS_IPH_REALBOX_CONTEXTUAL_ENTRYPOINT_SCREENREADER" desc="The screenreader text of the IPH shown for the realbox contextual entrypoint." translateable="false">
+      <message name="IDS_IPH_REALBOX_CONTEXTUAL_ENTRYPOINT_SCREENREADER" desc="The screenreader text of the IPH shown for the realbox contextual entrypoint.">
         Deepen your search by adding multiple tabs, files, and tools using the "Add a tab and more" button.
       </message>
 
@@ -1222,7 +1221,7 @@ Brave is unable to recover your settings.
           To stay safer online with your parent’s choices, sign in to Brave
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER" desc="This string is the body text of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This body text string comes after the 'Welcome back, USER_NAME' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this anytime in settings.
+          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. To change this, go to “Your account in Brave”.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER_SCREENREADER" desc="This string is the accessibility text of a reminder message, which is intended to help users understand that they have been signed in to Brave.">
           While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can change your Brave services settings.
@@ -1237,10 +1236,14 @@ Brave is unable to recover your settings.
           Your passwords and other Brave data that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; we want to set expectations by clarifying that the data will be removed from the device. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved and will be deleted if they sign out. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
-          Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out now, this data will be deleted.
+          {count, plural,
+              =1 {Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out now, this data (1 item) will be deleted.}
+              other {Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out now, this data ({count} items) will be deleted.}}
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_UNSYNCED_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user tries to sign out immediately after having saved saved some data (like a password or payment method) to Brave and Brave hasn't had time to save that data to the user's Brave sync chain yet. This subtitle is after the 'Some data isn't saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string asks the user to wait a few minutes before trying to sign out again.">
-          Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, this data will be deleted.
+          {count, plural,
+              =1 {Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, this data (1 item) will be deleted.}
+              other {Some of your Brave data hasn't been saved in your Brave sync chain yet. Try waiting a few minutes before signing out. If you sign out now, this data ({count} items) will be deleted.}}
         </message>
         <message name="IDS_CLOSE_WARNING_FOR_CLEAR_COOKIES_ON_EXIT_TEXT" desc="Body of a notice displayed when closing the last Brave window, to inform the user about a change in the way the 'Clear cookie on exit' setting works.">
           You’ll be signed out of most sites when you close all Brave windows, except your Brave sync chain if you’re signed in to Brave. To let sites remember you, <ph name="SETTINGS_LINK">$1<ex>go to settings</ex></ph>.
@@ -1653,6 +1656,9 @@ Brave is unable to recover your settings.
       <message name="IDS_DESKTOP_MEDIA_PICKER_PERMISSION_RESTART_TEXT_MAC" desc="Supplementary text about the need to restart Brave, displayed below the message about enabling screen-recording permissions on Mac when those permissions are missing.">
         You'll then need to restart Brave.
       </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_SYSTEM_AUDIO_PERMISSION_TEXT_MAC" desc="Instructive text for how to enable system audio capture on Mac.">
+        To share system audio, open System Settings and allow 'System Audio Recording Only' for Brave. You'll then need to restart Brave.
+      </message>
 
       <!-- Runtime permission strings -->
       <if expr="is_android">
@@ -1930,6 +1936,9 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_IMAGE_ENTRYPOINT_LABEL_ALT3" desc="Label for the Lens overlay command, through which the image will be searched using the Image Search service.">
           Search this image with Image Search
         </message>
+        <message name="IDS_LENS_OVERLAY_TAB_ENTRYPOINT_LABEL" desc="Label for the Lens overlay command, through which the current tab will be searched using the Image Search service.">
+          Search this tab with Image Search
+        </message>
         <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT1" desc="Label for the Lens overlay command, through which the user can ask questions about the video.">
           Ask about this video
         </message>
@@ -1976,8 +1985,14 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_LEARN_MORE_LINK" desc="Text link that is shown to users to learn more about privacy in relation to Google Lens.">
           Learn more
         </message>
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_LEARN_MORE_ABOUT_GOOGLE_LENS_LINK" desc="Accessibility label for text link that is shown to users to learn more about privacy in relation to Google Lens.">
+          Learn more about searching with Image Search in Brave
+        </message>
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_TITLE" desc="The title of the lens permission search bubble dialog, introducing Lens as a way to search what's on their screen.">
           Search anything on this page
+        </message>
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_TAB_TO_CONTINUE" desc="Instructs the user to press Tab to begin using the feature.">
+          Tab to continue
         </message>
 
         <!-- Title Case Dependent -->
@@ -2015,12 +2030,12 @@ Brave is unable to recover your settings.
 
         <if expr="use_titlecase">
           <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="In Title Case: The text label of the omnibox context menu option to show the 'AI Mode' shortcut button">
-            Always Show Brave AI Mode Shortcut
+            Always Show AI Mode Shortcuts
           </message>
         </if>
         <if expr="not use_titlecase">
         <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="The text label of the omnibox context menu option to show the 'AI Mode' shortcut button">
-          Always show Brave AI Mode shortcut
+          Always show AI Mode shortcuts
         </message>
         </if>
       </if>

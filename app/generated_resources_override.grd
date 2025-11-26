@@ -614,6 +614,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -1040,8 +1041,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_chromeos and not is_android">
         </if>
 
-      <if expr="is_win">
-        </if>
       <if expr="is_chromeos">
         </if>
 
@@ -1239,9 +1238,6 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
     <if expr="not is_android">
-      </if>
-
-    <if expr="not is_android">
       <if expr="not is_chromeos">
         </if>
       <if expr="is_chromeos">
@@ -1297,7 +1293,6 @@ are declared in tools/grit/grit_args.gni.
     </message>
     <if expr="not is_android">
       </if>
-
     <if expr="use_titlecase">
     </if>
     <if expr="not use_titlecase">

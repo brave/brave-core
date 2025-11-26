@@ -242,6 +242,9 @@
       <message name="IDS_TAB_SELECTION_EDITOR_TOOLBAR_SELECT_ITEMS" desc="Label shown on Tab Selection Editor Toolbar asking user to select tabs and tab groups denoted as items from the list.">
         Select items
       </message>
+      <message name="IDS_TAB_SELECTION_EDITOR_TOOLBAR_ADD_TABS" desc="Label shown on Tab Selection Editor Toolbar asking user to add tabs as context for the BraveItemPickerActivity.">
+        Add tabs
+      </message>
       <message name="IDS_ACCESSIBILITY_TAB_SELECTION_EDITOR_BACK_BUTTON" desc="Accessibility string for the back button in the Tab Selection Editor Toolbar. Tap this button to exit out of the multi-select mode">
         Hide multi-select mode
       </message>
@@ -381,6 +384,9 @@
       <message name="IDS_TAB_SELECTION_EDITOR_ADD_BOOKMARKS_FOLDER_NAME" desc="File name for a new folder containing all selected bookmarks to add from the Tab Selection Editor menu, followed by a timestamp">
         New Folder - <ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
+      <message name="IDS_DONE_BUTTON_TEXT" desc="Text for the Done button used to confirm selections in the Tab Editor/Item Picker. [CHAR_LIMIT=12]">
+        Done
+      </message>
 
       <!-- Tab Grid Dialog strings -->
       <message name="IDS_REMOVE_TAB_FROM_GROUP" desc="Content description for an action which removes a tab from its group.">
@@ -447,6 +453,9 @@
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_GRID_DIALOG" desc="Accessibility string for Tab Grid Dialog view. This string is announced when the dialog with tab group is expanded and shown to screen.">
         Tab group expanded
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_TITLE_FIELD" desc="The accessibility text to read when the tab group title field is focused.">
+        Tab group title <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>
       </message>
 
       <!-- GTS Tab Group Suggestions strings -->
@@ -1075,11 +1084,15 @@
           =1 {Move tab to new window}
           other {Move tab to another window}}
       </message>
-      <message name="IDS_MOVE_TAB_LEFT" desc="Menu item for moving a tab to the left in the tab strip order.">
-        Move tab left
+      <message name="IDS_MOVE_TABS_LEFT" desc="Menu item for moving tab(s) to the left in the tab strip order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab left}
+          other {Move tabs left}}
       </message>
-      <message name="IDS_MOVE_TAB_RIGHT" desc="Menu item for moving a tab to the right in the tab strip order.">
-        Move tab right
+      <message name="IDS_MOVE_TABS_RIGHT" desc="Menu item for moving tab(s) to the right in the tab strip order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab right}
+          other {Move tabs right}}
       </message>
       <message name="IDS_MOVE_TAB_GROUP_LEFT" desc="Menu item for moving a tab group to the left in the tab strip order.">
         Move tab group left
@@ -1122,6 +1135,9 @@
         {TAB_COUNT, plural,
             =1 {Unmute site}
             other {Unmute sites}}
+      </message>
+      <message name="IDS_DUPLICATE_TAB_MENU_ITEM" desc="Content description for an action which duplicates a selection of tabs.">
+        Duplicate
       </message>
 
       <!-- Tab Group List Bottom Sheet -->

@@ -55,7 +55,7 @@
     Remove this info from Brave autofill?
   </message>
   <message name="IDS_AUTOFILL_REMOVE_ACCOUNT_NAME_AND_EMAIL_PROFILE_SUGGESTION_CONFIRMATION_BODY" desc="Title in a dialog to confirm that the user wants to delete their account name and email address from Autofill." formatter_data="android_java">
-    You can edit your name <ph name="BEGIN_LINK">&lt;link&gt;</ph>in your Brave sync chain <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>.
+    You can edit your name in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph> <ph name="ACCOUNT">$1<ex>example@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_REMOVE_SUGGESTION_BUTTON" desc="Text in a remove button for Autofill suggestion." formatter_data="android_java">
     Remove
@@ -521,6 +521,12 @@
     <message name="IDS_AUTOFILL_ADDRESS_SHEET_ALL_ADDRESSES_LINK" desc="The text of the link in the address sheet that opens the address management section.">
       Manage addresses
     </message>
+    <message name="IDS_AUTOFILL_ONE_TIME_PASSWORD_VOICE_OVER_A11Y_LABEL" desc="Voice over label for the one time password field.">
+      Verification Code: <ph name="OTP">$1<ex>123456</ex></ph>
+    </message>
+    <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILLED_ONE_TIME_PASSWORD" desc="Accessibility announcement for when a one time password is autofilled.">
+      Autofilled code
+    </message>
   </if>
 
   <!-- Explicit save/update address prompt strings -->
@@ -767,8 +773,20 @@
     <message name="IDS_AUTOFILL_IDENTITY_DOCS_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their list of saved identity documents. Sentence-Cased." formatter_data="android_java">
       Identity docs
     </message>
+    <message name="IDS_AUTOFILL_IDENTITY_DOCS_OPT_IN_TOGGLE_LABEL" desc="Label for a toggle allowing users to opt into Enhanced Autofill for identity docs. Sentence-Cased." formatter_data="android_java">
+      Save and fill identity docs
+    </message>
+    <message name="IDS_AUTOFILL_IDENTITY_DOCS_OPT_IN_TOGGLE_SUB_LABEL" desc="Sub-label for a toggle allowing users to opt into Enhanced Autofill for identity docs. Sentence-Cased." formatter_data="android_java">
+      Includes information such as passports and driver's licenses
+    </message>
     <message name="IDS_AUTOFILL_TRAVEL_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their list of saved travel info. Sentence-Cased." formatter_data="android_java">
       Travel
+    </message>
+    <message name="IDS_AUTOFILL_TRAVEL_OPT_IN_TOGGLE_LABEL" desc="Label for a toggle allowing users to opt into Enhanced Autofill for travel-related data types. Sentence-Cased." formatter_data="android_java">
+      Save and fill travel info
+    </message>
+    <message name="IDS_AUTOFILL_TRAVEL_OPT_IN_TOGGLE_SUB_LABEL" desc="Sub-label for a toggle allowing users to opt into Enhanced Autofill for travel-related data types. Sentence-Cased." formatter_data="android_java">
+      Includes information such as flight bookings and vehicle info
     </message>
   </if>
 
@@ -815,13 +833,22 @@
   </message>
 
   <!-- Titles -->
-  <message name="IDS_AUTOFILL_AI_VEHICLES_TITLE" desc="The title of a chip referring to vehicles(IDS_AUTOFILL_AI_VEHICLE_ENTITY_NAME) on Your saved info settings page.">
+  <message name="IDS_AUTOFILL_AI_DRIVERS_LICENSES_TITLE" desc="The title of a chip referring to drivers licenses (IDS_AUTOFILL_AI_DRIVERS_LICENSE_ENTITY_NAME) on Your saved info settings page.">
+    Driver's licenses
+  </message>
+   <message name="IDS_AUTOFILL_AI_NATIONAL_IDS_TITLE" desc="The title of a chip referring to national ids (IDS_AUTOFILL_AI_NATIONAL_ID_CARD_ENTITY_NAME) on Your saved info settings page.">
+    Identity cards
+  </message>
+  <message name="IDS_AUTOFILL_AI_PASSPORTS_TITLE" desc="The title of a chip referring to passports (IDS_AUTOFILL_AI_PASSPORT_ENTITY_NAME) on Your saved info settings page.">
+    Passports
+  </message>
+  <message name="IDS_AUTOFILL_AI_VEHICLES_TITLE" desc="The title of a chip referring to vehicles (IDS_AUTOFILL_AI_VEHICLE_ENTITY_NAME) on Your saved info settings page.">
     Vehicles
   </message>
-    <message name="IDS_AUTOFILL_AI_TRAVEL_INFO_TITLE" desc="The title of a chip referring to travel info(IDS_AUTOFILL_AI_KNOWN_TRAVELER_NUMBER_ENTITY_NAME and IDS_AUTOFILL_AI_REDRESS_NUMBER_ENTITY_NAME) on Your saved info settings page.">
+    <message name="IDS_AUTOFILL_AI_TRAVEL_INFO_TITLE" desc="The title of a chip referring to travel info (IDS_AUTOFILL_AI_KNOWN_TRAVELER_NUMBER_ENTITY_NAME and IDS_AUTOFILL_AI_REDRESS_NUMBER_ENTITY_NAME) on Your saved info settings page.">
     Travel info
   </message>
-  <message name="IDS_AUTOFILL_AI_FLIGHT_RESERVATIONS_TITLE" desc="The title of a chip referring to flights(IDS_AUTOFILL_AI_FLIGHT_RESERVATION_ENTITY_NAME) on Your saved info settings page.">
+  <message name="IDS_AUTOFILL_AI_FLIGHT_RESERVATIONS_TITLE" desc="The title of a chip referring to flights (IDS_AUTOFILL_AI_FLIGHT_RESERVATION_ENTITY_NAME) on Your saved info settings page.">
     Flight reservations
   </message>
 

@@ -107,8 +107,14 @@ Brave understands forms better and can autofill them faster for you. This settin
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Brave is the default browser">
       Brave is your default browser
     </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT_THANK_YOU" desc="The text displayed when Brave is the default browser">
+      Thanks for choosing Brave as your default browser!
+    </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT" desc="Default browser checkbox label">
       Make Brave the default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_USER_VALUE" desc="The text displayed when Brave is not the default browser. This string describes the effect (user benefit) of setting a browser as the default.">
+      You can use Brave anytime you click links in messages, documents, and other apps
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_AND_PIN" desc="The text of the button to make Brave the default browser and pin it to the taskbar.">
       Make Brave the default browser and pin to the taskbar
@@ -348,6 +354,11 @@ Brave understands forms better and can autofill them faster for you. This settin
   <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
     Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you’ll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
+<if expr="not is_chromeos">
+  <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_WALLET_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
+    Use your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>own passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to encrypt all the Brave data in your Brave sync chain. Addresses and any data saved in Brave Wallet won’t be encrypted by your passphrase. Browsing history from Brave won’t sync.
+  </message>
+</if>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ACCOUNT_DATA_ENCRYPTION" desc="Informs user how to change their encryption setting.">
     If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
