@@ -73,4 +73,12 @@ std::vector<OAIMessage> BuildOAIRewriteSuggestionMessages(
   return messages;
 }
 
+OAIMessage BuildOAISeedMessage(const std::string& text) {
+  OAIMessage message;
+  message.role = "assistant";
+  message.content.emplace_back(ExtendedContentBlockType::kText,
+                               TextContent{text});
+  return message;
+}
+
 }  // namespace ai_chat

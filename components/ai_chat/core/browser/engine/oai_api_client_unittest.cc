@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
+#include <functional>
 #include <list>
 #include <optional>
 #include <string>
@@ -18,15 +19,18 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
+#include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -35,6 +39,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
@@ -50,6 +55,9 @@ using api_request_helper::MockAPIRequestHelper;
 namespace ai_chat {
 
 namespace {
+
+constexpr char kTestContent[] = "test content";
+
 // A helper method which parses a string_view and returns the JSON or a
 // base::Value object if the JSON is invalid.
 base::Value ParseOrStringValue(const std::string& json) {
@@ -60,6 +68,14 @@ base::Value ParseOrStringValue(const std::string& json) {
   }
   return std::move(maybe_json.value());
 }
+
+struct ContentBlockSerializationTestParam {
+  std::string name;
+  base::RepeatingCallback<ExtendedContentBlock()> content_factory;
+  std::string expected_type;
+  int expected_text_message_id;  // -1 for literal text
+  std::string tone_or_text;      // Tone for ChangeTone, literal text otherwise
+};
 
 class MockCallbacks {
  public:
@@ -299,6 +315,94 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
   run_loop.Run();
 }
 
+TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
+  // Tests general multiple messages with multiple blocks serialization.
+  // Each block type's serialization should be tested in
+  // ContentBlockSerializationTest below.
+  std::vector<OAIMessage> messages;
+
+  // First message: user with multiple block types
+  OAIMessage user_msg1;
+  user_msg1.role = "user";
+  user_msg1.content.emplace_back(ExtendedContentBlockType::kText,
+                                 TextContent{"Here's an image:"});
+  ImageContent img;
+  img.image_url.url = "data:image/png;base64,xyz";
+  img.image_url.detail = std::optional<std::string>("low");
+  user_msg1.content.emplace_back(ExtendedContentBlockType::kImage,
+                                 std::move(img));
+  user_msg1.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
+                                 TextContent{"Page excerpt content"});
+  messages.push_back(std::move(user_msg1));
+
+  // Second message: assistant response
+  OAIMessage assistant_msg;
+  assistant_msg.role = "assistant";
+  assistant_msg.content.emplace_back(ExtendedContentBlockType::kText,
+                                     TextContent{"I see the image"});
+  messages.push_back(std::move(assistant_msg));
+
+  // Third message: user follow-up
+  OAIMessage user_msg2;
+  user_msg2.role = "user";
+  user_msg2.content.emplace_back(ExtendedContentBlockType::kText,
+                                 TextContent{"Can you improve this?"});
+  messages.push_back(std::move(user_msg2));
+
+  auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
+
+  // Verify 3 messages
+  ASSERT_EQ(serialized.size(), 3u);
+
+  // Verify first message (user with multiple blocks)
+  const base::Value::Dict* msg0 = serialized[0].GetIfDict();
+  ASSERT_TRUE(msg0);
+  EXPECT_EQ(*msg0->FindString("role"), "user");
+  const base::Value::List* content0 = msg0->FindList("content");
+  ASSERT_TRUE(content0);
+  ASSERT_EQ(content0->size(), 3u);
+
+  // First block: text
+  const base::Value::Dict* block0 = (*content0)[0].GetIfDict();
+  EXPECT_EQ(*block0->FindString("type"), "text");
+  EXPECT_EQ(*block0->FindString("text"), "Here's an image:");
+
+  // Second block: image
+  const base::Value::Dict* block1 = (*content0)[1].GetIfDict();
+  EXPECT_EQ(*block1->FindString("type"), "image_url");
+  const base::Value::Dict* image_url = block1->FindDict("image_url");
+  ASSERT_TRUE(image_url);
+  EXPECT_EQ(*image_url->FindString("url"), "data:image/png;base64,xyz");
+  EXPECT_EQ(*image_url->FindString("detail"), "low");
+
+  // Third block: page excerpt
+  const base::Value::Dict* block2 = (*content0)[2].GetIfDict();
+  EXPECT_EQ(*block2->FindString("type"), "text");
+  EXPECT_EQ(*block2->FindString("text"),
+            l10n_util::GetStringFUTF8(
+                IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+                base::UTF8ToUTF16(std::string("Page excerpt content"))));
+
+  // Verify second message (assistant)
+  const base::Value::Dict* msg1 = serialized[1].GetIfDict();
+  ASSERT_TRUE(msg1);
+  EXPECT_EQ(*msg1->FindString("role"), "assistant");
+  const base::Value::List* content1 = msg1->FindList("content");
+  ASSERT_TRUE(content1);
+  ASSERT_EQ(content1->size(), 1u);
+  EXPECT_EQ(*(*content1)[0].GetDict().FindString("text"), "I see the image");
+
+  // Verify third message (user)
+  const base::Value::Dict* msg2 = serialized[2].GetIfDict();
+  ASSERT_TRUE(msg2);
+  EXPECT_EQ(*msg2->FindString("role"), "user");
+  const base::Value::List* content2 = msg2->FindList("content");
+  ASSERT_TRUE(content2);
+  ASSERT_EQ(content2->size(), 1u);
+  EXPECT_EQ(*(*content2)[0].GetDict().FindString("text"),
+            "Can you improve this?");
+}
+
 class OAIAPIInvalidResponseTest
     : public OAIAPIUnitTest,
       public ::testing::WithParamInterface<std::string> {};
@@ -360,6 +464,118 @@ TEST_P(OAIAPIInvalidResponseTest,
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
   testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
 }
+
+// Tests to cover serialization of all content block types.
+class ContentBlockSerializationTest
+    : public OAIAPIUnitTest,
+      public testing::WithParamInterface<ContentBlockSerializationTestParam> {};
+
+TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
+  ContentBlockSerializationTestParam params = GetParam();
+
+  // Compute expected text at runtime
+  std::string expected_text;
+  if (params.expected_text_message_id == -1) {
+    expected_text = params.tone_or_text;  // Literal text
+  } else if (!params.tone_or_text.empty()) {
+    expected_text =
+        l10n_util::GetStringFUTF8(params.expected_text_message_id,
+                                  base::UTF8ToUTF16(params.tone_or_text));
+  } else {
+    expected_text = l10n_util::GetStringUTF8(params.expected_text_message_id);
+  }
+
+  std::vector<OAIMessage> messages;
+  OAIMessage message;
+  message.role = "user";
+  message.content.emplace_back(params.content_factory.Run());
+  messages.push_back(std::move(message));
+
+  auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
+
+  ASSERT_EQ(serialized.size(), 1u);
+  const base::Value::Dict* message_dict = serialized[0].GetIfDict();
+  ASSERT_TRUE(message_dict);
+  EXPECT_EQ(*message_dict->FindString("role"), "user");
+
+  const base::Value::List* content = message_dict->FindList("content");
+  ASSERT_TRUE(content);
+  ASSERT_EQ(content->size(), 1u);
+
+  const base::Value::Dict* block = (*content)[0].GetIfDict();
+  ASSERT_TRUE(block);
+  EXPECT_EQ(*block->FindString("type"), params.expected_type);
+
+  if (params.expected_type == "image_url") {
+    const base::Value::Dict* image_url = block->FindDict("image_url");
+    ASSERT_TRUE(image_url);
+    EXPECT_TRUE(image_url->FindString("url"));
+  } else {
+    EXPECT_EQ(*block->FindString("text"), expected_text);
+  }
+}
+
+// Adding any new types into ExtendedContentBlock enum should update this test.
+INSTANTIATE_TEST_SUITE_P(
+    AllContentBlockTypes,
+    ContentBlockSerializationTest,
+    testing::Values(
+        ContentBlockSerializationTestParam{
+            "Text", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kText,
+                                          TextContent{kTestContent});
+            }),
+            "text", -1, kTestContent},
+        ContentBlockSerializationTestParam{
+            "Image", base::BindRepeating([]() {
+              ImageContent img;
+              img.image_url.url = "data:image/png;base64,abc123";
+              img.image_url.detail = std::optional<std::string>("high");
+              return ExtendedContentBlock(ExtendedContentBlockType::kImage,
+                                          std::move(img));
+            }),
+            "image_url", -1, ""},
+        ContentBlockSerializationTestParam{
+            "PageExcerpt", base::BindRepeating([]() {
+              return ExtendedContentBlock(
+                  ExtendedContentBlockType::kPageExcerpt,
+                  TextContent{kTestContent});
+            }),
+            "text", IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+            kTestContent},
+        ContentBlockSerializationTestParam{
+            "ChangeTone", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kChangeTone,
+                                          ChangeToneContent{"casual"});
+            }),
+            "text", IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "casual"},
+        ContentBlockSerializationTestParam{
+            "Paraphrase", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kParaphrase,
+                                          TextContent{""});
+            }),
+            "text", IDS_AI_CHAT_QUESTION_PARAPHRASE, ""},
+        ContentBlockSerializationTestParam{
+            "Improve", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kImprove,
+                                          TextContent{""});
+            }),
+            "text", IDS_AI_CHAT_QUESTION_IMPROVE, ""},
+        ContentBlockSerializationTestParam{
+            "Shorten", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kShorten,
+                                          TextContent{""});
+            }),
+            "text", IDS_AI_CHAT_QUESTION_SHORTEN, ""},
+        ContentBlockSerializationTestParam{
+            "Expand", base::BindRepeating([]() {
+              return ExtendedContentBlock(ExtendedContentBlockType::kExpand,
+                                          TextContent{""});
+            }),
+            "text", IDS_AI_CHAT_QUESTION_EXPAND, ""}),
+    [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
+      return info.param.name;
+    });
 
 // A set of invalid responses that should not trigger any callbacks
 INSTANTIATE_TEST_SUITE_P(
