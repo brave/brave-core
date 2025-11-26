@@ -14,7 +14,7 @@ import { style } from './stats_widget.style'
 
 const adsBlockedFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,
-  useGrouping: true
+  useGrouping: true,
 })
 
 export function StatsWidget() {
@@ -25,7 +25,14 @@ export function StatsWidget() {
   function renderUnits(parts: Intl.NumberFormatPart[]) {
     return parts.map(({ type, value }) => {
       if (type === 'unit') {
-        return <span key='unit' className='units'>{value}</span>
+        return (
+          <span
+            key='unit'
+            className='units'
+          >
+            {value}
+          </span>
+        )
       }
       return value
     })
@@ -42,9 +49,7 @@ export function StatsWidget() {
           <Icon name='eye-off' /> {getString(S.NEW_TAB_HIDE_STATS_WIDGET_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
-      <div className='title'>
-        {getString(S.NEW_TAB_STATS_TITLE)}
-      </div>
+      <div className='title'>{getString(S.NEW_TAB_STATS_TITLE)}</div>
       <div className='data'>
         <div>
           <div className='ads-blocked'>
@@ -61,8 +66,8 @@ export function StatsWidget() {
           </div>
           <div className='time-saved'>
             <div className='value'>
-              {stats &&
-                renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
+              {stats
+                && renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
             </div>
             {getString(S.NEW_TAB_STATS_TIME_SAVED_TEXT)}
           </div>
@@ -79,14 +84,14 @@ function getTimeSaved(adsBlocked: number) {
 function formatTimeInterval(
   value: number,
   unit: 'day' | 'hour' | 'minute' | 'second',
-  maximumFractionDigits: number = 0
+  maximumFractionDigits: number = 0,
 ) {
   return new Intl.NumberFormat(undefined, {
     style: 'unit',
     unit,
     unitDisplay: 'long',
     maximumFractionDigits,
-    roundingMode: 'ceil'
+    roundingMode: 'ceil',
   }).formatToParts(value)
 }
 
@@ -114,14 +119,14 @@ function formatTimeSaved(ms: number) {
 function formatMemoryValue(
   value: number,
   unit: 'kilobyte' | 'megabyte' | 'gigabyte',
-  maximumFractionDigits: number = 0
+  maximumFractionDigits: number = 0,
 ) {
   return new Intl.NumberFormat(undefined, {
     style: 'unit',
     unit,
     unitDisplay: 'short',
     maximumFractionDigits,
-    roundingMode: 'ceil'
+    roundingMode: 'ceil',
   }).formatToParts(value)
 }
 

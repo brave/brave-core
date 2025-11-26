@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ConnectionState, Region} from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
+import {
+  ConnectionState,
+  Region,
+} from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 
 export { ConnectionState, Region }
 
@@ -23,7 +26,7 @@ export function defaultVpnState(): VpnState {
     showVpnWidget: false,
     vpnPurchased: false,
     vpnConnectionState: ConnectionState.DISCONNECTED,
-    vpnConnectionRegion: null
+    vpnConnectionRegion: null,
   }
 }
 
@@ -41,6 +44,6 @@ export function defaultVpnActions(): VpnActions {
     startVpnTrial() {},
     restoreVpnPurchase() {},
     toggleVpnConnection() {},
-    openVpnPanel() {}
+    openVpnPanel() {},
   }
 }

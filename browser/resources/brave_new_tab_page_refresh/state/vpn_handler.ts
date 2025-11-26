@@ -8,11 +8,14 @@ import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mo
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { VpnState, VpnActions, defaultVpnActions, ConnectionState } from './vpn_state'
+import {
+  VpnState,
+  VpnActions,
+  defaultVpnActions,
+  ConnectionState,
+} from './vpn_state'
 
-export function createVpnHandler(
-  store: Store<VpnState>
-): VpnActions {
+export function createVpnHandler(store: Store<VpnState>): VpnActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
     store.update({ initialized: true })
     return defaultVpnActions()
@@ -33,22 +36,19 @@ export function createVpnHandler(
     if (!vpnPurchased) {
       store.update({
         vpnConnectionState: ConnectionState.DISCONNECTED,
-        vpnConnectionRegion: null
+        vpnConnectionRegion: null,
       })
       return
     }
 
-    const [
-      { state: connectionState },
-      { currentRegion }
-    ] = await Promise.all([
+    const [{ state: connectionState }, { currentRegion }] = await Promise.all([
       vpnService.getConnectionState(),
-      vpnService.getSelectedRegion()
+      vpnService.getSelectedRegion(),
     ])
 
     store.update({
       vpnConnectionState: connectionState,
-      vpnConnectionRegion: currentRegion ?? null
+      vpnConnectionRegion: currentRegion ?? null,
     })
   }
 
@@ -59,22 +59,19 @@ export function createVpnHandler(
 
   async function loadData() {
     await newTabProxy.handler.reloadVPNPurchasedState()
-    await Promise.all([
-      updatePrefs(),
-      updateConnectionInfo()
-    ])
+    await Promise.all([updatePrefs(), updateConnectionInfo()])
     store.update({ initialized: true })
   }
 
   newTabProxy.addListeners({
-    onVPNStateUpdated: debounce(updatePrefs, 10)
+    onVPNStateUpdated: debounce(updatePrefs, 10),
   })
 
   const vpnServiceObserver = new mojom.ServiceObserverReceiver({
     onConnectionStateChanged: updateConnectionInfo,
     onSelectedRegionChanged: updateConnectionInfo,
     onPurchasedStateChanged: updateConnectionInfo,
-    onSmartProxyRoutingStateChanged: (enabled: boolean) => {}
+    onSmartProxyRoutingStateChanged: (enabled: boolean) => {},
   })
 
   vpnService.addObserver(vpnServiceObserver.$.bindNewPipeAndPassRemote())
@@ -82,7 +79,6 @@ export function createVpnHandler(
   loadData()
 
   return {
-
     setShowVpnWidget(showVpnWidget) {
       handler.setShowVPNWidget(showVpnWidget)
     },
@@ -119,6 +115,6 @@ export function createVpnHandler(
     openVpnPanel() {
       handler.reportVPNWidgetUsage()
       handler.openVPNPanel()
-    }
+    },
   }
 }

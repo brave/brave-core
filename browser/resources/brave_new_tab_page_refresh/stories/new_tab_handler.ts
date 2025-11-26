@@ -8,26 +8,24 @@ import { Store } from '../lib/store'
 import {
   NewTabState,
   NewTabActions,
-  defaultNewTabActions } from '../state/new_tab_state'
+  defaultNewTabActions,
+} from '../state/new_tab_state'
 
-export function createNewTabHandler(
-  store: Store<NewTabState>
-): NewTabActions {
+export function createNewTabHandler(store: Store<NewTabState>): NewTabActions {
   store.update({
     initialized: true,
     showClock: true,
     showShieldsStats: true,
     shieldsStats: {
       adsBlocked: 3245,
-      bandwidthSavedBytes: 1024 * 1024
+      bandwidthSavedBytes: 1024 * 1024,
     },
     showTalkWidget: true,
     talkFeatureEnabled: true,
-    newsFeatureEnabled: false
+    newsFeatureEnabled: false,
   })
 
   return {
-
     ...defaultNewTabActions(),
 
     setClockFormat(format) {
@@ -44,6 +42,6 @@ export function createNewTabHandler(
 
     setShowTalkWidget(showTalkWidget) {
       store.update({ showTalkWidget })
-    }
+    },
   }
 }

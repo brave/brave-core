@@ -18,11 +18,7 @@ interface Props {
 export function Link(props: Props) {
   const sanitizedURL = sanitizeExternalURL(props.url)
   if (!sanitizedURL) {
-    return (
-      <span className={props.className}>
-        {props.children}
-      </span>
-    )
+    return <span className={props.className}>{props.children}</span>
   }
   return (
     <a

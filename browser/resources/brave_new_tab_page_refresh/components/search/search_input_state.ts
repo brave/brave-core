@@ -8,12 +8,14 @@ import * as React from 'react'
 import {
   SearchEngineInfo,
   AutocompleteMatch,
-  ClickEvent } from '../../state/search_state'
+  ClickEvent,
+} from '../../state/search_state'
 
 import {
   useSearchState,
   useSearchActions,
-  useSearchMatches } from '../../context/search_context'
+  useSearchMatches,
+} from '../../context/search_context'
 
 import { ResultOption } from './search_results'
 import { urlFromInput } from '../../lib/url_input'
@@ -27,14 +29,17 @@ export function useSearchInputState(inputKey: string) {
   const defaultSearchEngine = useSearchState((s) => s.defaultSearchEngine)
   const lastUsedSearchEngine = useSearchState((s) => s.lastUsedSearchEngine)
   const searchMatches = useSearchMatches(inputKey)
-  const searchSuggestionsEnabled =
-      useSearchState((s) => s.searchSuggestionsEnabled)
+  const searchSuggestionsEnabled = useSearchState(
+    (s) => s.searchSuggestionsEnabled,
+  )
 
   const [query, setQuery] = React.useState('')
-  const [selectedResultOption, setSelectedResultOption] =
-      React.useState<number | null>(null)
-  const [currentEngine, setCurrentEngine] =
-      React.useState(lastUsedSearchEngine || defaultSearchEngine)
+  const [selectedResultOption, setSelectedResultOption] = React.useState<
+    number | null
+  >(null)
+  const [currentEngine, setCurrentEngine] = React.useState(
+    lastUsedSearchEngine || defaultSearchEngine,
+  )
 
   // If the enabled search engine list changes, and the current engine is no
   // longer in the list, then choose the default search engine. If the default
@@ -42,8 +47,10 @@ export function useSearchInputState(inputKey: string) {
   // list of enabled engines.
   React.useEffect(() => {
     if (!enabledSearchEngines.has(currentEngine)) {
-      if (enabledSearchEngines.size === 0 ||
-          enabledSearchEngines.has(defaultSearchEngine)) {
+      if (
+        enabledSearchEngines.size === 0
+        || enabledSearchEngines.has(defaultSearchEngine)
+      ) {
         setCurrentEngine(defaultSearchEngine)
       } else {
         const [firstEngine] = enabledSearchEngines.values()
@@ -55,8 +62,9 @@ export function useSearchInputState(inputKey: string) {
   // Build the list of result options. The result options can contain a direct
   // URL (if the user has typed a URL) or a list of autocomplete options.
   const resultOptions = React.useMemo(
-      () => getResultOptions(query, searchMatches ?? []),
-      [query, searchMatches])
+    () => getResultOptions(query, searchMatches ?? []),
+    [query, searchMatches],
+  )
 
   // When the result option list changes, select the first available option that
   // is allowed to be the default match.
@@ -92,8 +100,7 @@ export function useSearchInputState(inputKey: string) {
     }
   }, [query, currentEngine, searchSuggestionsEnabled])
 
-  const searchEngine =
-    searchEngines.find(({ host }) => host === currentEngine)
+  const searchEngine = searchEngines.find(({ host }) => host === currentEngine)
 
   const searchEngineOptions = searchEngines.filter((engine) => {
     if (enabledSearchEngines.size === 0) {
@@ -181,7 +188,7 @@ export function useSearchInputState(inputKey: string) {
     openResultOption,
     searchEngine,
     searchEngineOptions,
-    selectSearchEngine
+    selectSearchEngine,
   }
 }
 

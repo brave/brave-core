@@ -13,9 +13,5 @@ export function NewsProvider(props: { children: React.ReactNode }) {
   if (!newsFeatureEnabled) {
     return <>{props.children}</>
   }
-  return (
-    <BraveNewsContextProvider>
-      {props.children}
-    </BraveNewsContextProvider>
-  )
+  return <BraveNewsContextProvider>{props.children}</BraveNewsContextProvider>
 }

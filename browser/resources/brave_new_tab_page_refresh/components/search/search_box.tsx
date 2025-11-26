@@ -52,7 +52,10 @@ export function SearchBox(props: Props) {
   }
 
   return (
-    <div className={classNames({ expanded })} data-css-scope={style.scope}>
+    <div
+      className={classNames({ expanded })}
+      data-css-scope={style.scope}
+    >
       <Popover
         isOpen={expanded}
         className='search-container'
@@ -92,7 +95,10 @@ export function SearchBox(props: Props) {
             }}
             onCustomizeClick={props.showSearchSettings}
           />
-          <button className='search-button' onClick={inputState.openSearch}>
+          <button
+            className='search-button'
+            onClick={inputState.openSearch}
+          >
             <Icon name='search' />
           </button>
         </div>

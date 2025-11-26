@@ -14,7 +14,12 @@ export function WidgetMenu(props: React.PropsWithChildren) {
   return (
     <div data-css-scope={style.scope}>
       <ButtonMenu placement='bottom-end'>
-        <Button fab kind='plain-faint' size='small' slot='anchor-content'>
+        <Button
+          fab
+          kind='plain-faint'
+          size='small'
+          slot='anchor-content'
+        >
           <Icon name='more-vertical' />
         </Button>
         {props.children}

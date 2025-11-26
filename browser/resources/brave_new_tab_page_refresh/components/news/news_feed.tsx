@@ -26,17 +26,20 @@ export function NewsFeed() {
     return null
   }
 
-  return <>
-    {
-      braveNews.isShowOnNTPPrefEnabled &&
+  return (
+    <>
+      {braveNews.isShowOnNTPPrefEnabled && (
         <div data-css-scope={style.scope}>
-          {braveNews.isOptInPrefEnabled
-            ? shouldRenderNews && <NewsPage />
-            : <OptIn />}
+          {braveNews.isOptInPrefEnabled ? (
+            shouldRenderNews && <NewsPage />
+          ) : (
+            <OptIn />
+          )}
         </div>
-    }
-    {braveNews.customizePage && <CustomizeModal />}
-  </>
+      )}
+      {braveNews.customizePage && <CustomizeModal />}
+    </>
+  )
 }
 
 export default NewsFeed

@@ -19,10 +19,12 @@ export function Clock() {
       hour: 'numeric',
       minute: 'numeric',
       hourCycle:
-        clockFormat === ClockFormat.k12 ? 'h12' :
-        // For 24-hour mode, use h23, which starts at 0:00 instead of 24:00.
-        clockFormat === ClockFormat.k24 ? 'h23' :
-        undefined
+        clockFormat === ClockFormat.k12
+          ? 'h12'
+          : // For 24-hour mode, use h23, which starts at 0:00 instead of 24:00.
+            clockFormat === ClockFormat.k24
+            ? 'h23'
+            : undefined,
     })
 
     function update() {

@@ -33,8 +33,12 @@ export function Modal(props: Props) {
     }
     let rect = dialogRef.current.getBoundingClientRect()
     let { clientX, clientY } = event
-    if (clientX < rect.left || clientY < rect.top ||
-        clientX > rect.right || clientY > rect.bottom) {
+    if (
+      clientX < rect.left
+      || clientY < rect.top
+      || clientX > rect.right
+      || clientY > rect.bottom
+    ) {
       props.onClose()
     }
   }
@@ -47,17 +51,17 @@ export function Modal(props: Props) {
       data-css-scope={style.scope}
     >
       {props.children}
-      {
-        props.showClose &&
-          <Button
-            kind='plain-faint'
-            size='medium' fab
-            className='close'
-            onClick={props.onClose}
-          >
-            <Icon name='close' />
-          </Button>
-      }
+      {props.showClose && (
+        <Button
+          kind='plain-faint'
+          size='medium'
+          fab
+          className='close'
+          onClick={props.onClose}
+        >
+          <Icon name='close' />
+        </Button>
+      )}
     </dialog>
   )
 }

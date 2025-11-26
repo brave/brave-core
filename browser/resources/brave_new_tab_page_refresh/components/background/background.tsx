@@ -8,12 +8,16 @@ import * as React from 'react'
 import { SponsoredImageBackground } from '../../state/background_state'
 import { loadImage } from '../../lib/image_loader'
 import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
-import { useSafeAreaReporter, useRichMediaMessageHandler } from './rich_media_capability_provider'
+import {
+  useSafeAreaReporter,
+  useRichMediaMessageHandler,
+} from './rich_media_capability_provider'
 
 import {
   useBackgroundState,
   useCurrentBackground,
-  useBackgroundActions } from '../../context/background_context'
+  useBackgroundActions,
+} from '../../context/background_context'
 
 import { style } from './background.style'
 
@@ -45,11 +49,7 @@ export function Background() {
     }
   }
 
-  return (
-    <div data-css-scope={style.scope}>
-      {renderBackground()}
-    </div>
-  )
+  return <div data-css-scope={style.scope}>{renderBackground()}</div>
 }
 
 function ColorBackground(props: { colorValue: string }) {
@@ -96,16 +96,17 @@ function ImageBackground(props: ImageBackgroundProps) {
   return <div className={classNames.join(' ')} />
 }
 
-function SponsoredRichMediaBackground(
-  props: { background: SponsoredImageBackground }
-) {
-  const sponsoredRichMediaBaseUrl =
-    useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
+function SponsoredRichMediaBackground(props: {
+  background: SponsoredImageBackground
+}) {
+  const sponsoredRichMediaBaseUrl = useBackgroundState(
+    (s) => s.sponsoredRichMediaBaseUrl,
+  )
 
   const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
 
   const messageHandler = useRichMediaMessageHandler(frameHandle, {
-    destinationUrl: props.background.logo?.destinationUrl
+    destinationUrl: props.background.logo?.destinationUrl,
   })
 
   useSafeAreaReporter(frameHandle)

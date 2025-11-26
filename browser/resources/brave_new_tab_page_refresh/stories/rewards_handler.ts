@@ -8,10 +8,11 @@ import { Store } from '../lib/store'
 import {
   RewardsState,
   RewardsActions,
-  defaultRewardsActions } from '../state/rewards_state'
+  defaultRewardsActions,
+} from '../state/rewards_state'
 
 export function createRewardsHandler(
-  store: Store<RewardsState>
+  store: Store<RewardsState>,
 ): RewardsActions {
   store.update({
     initialized: true,
@@ -24,21 +25,23 @@ export function createRewardsHandler(
       provider: 'gemini',
       authenticated: true,
       name: 'Joe',
-      url: 'https://brave.com'
+      url: 'https://brave.com',
     },
     minEarningsPreviousMonth: 0,
     payoutStatus: {},
     tosUpdateRequired: false,
-    rewardsAdsViewed: 1
+    rewardsAdsViewed: 1,
   })
 
-  setTimeout(() => { store.update({ rewardsBalance:  1.204 }) }, 2000)
+  setTimeout(() => {
+    store.update({ rewardsBalance: 1.204 })
+  }, 2000)
 
   return {
     ...defaultRewardsActions(),
 
     setShowRewardsWidget(showRewardsWidget) {
       store.update({ showRewardsWidget })
-    }
+    },
   }
 }

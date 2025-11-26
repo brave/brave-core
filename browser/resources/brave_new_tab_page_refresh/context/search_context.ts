@@ -7,8 +7,10 @@ import { defaultSearchState } from '../state/search_state'
 import { createSearchHandler } from '../state/search_handler'
 import { createStateProvider } from '../lib/state_provider'
 
-export const SearchProvider =
-  createStateProvider(defaultSearchState(), createSearchHandler)
+export const SearchProvider = createStateProvider(
+  defaultSearchState(),
+  createSearchHandler,
+)
 
 export const useSearchState = SearchProvider.useState
 export const useSearchActions = SearchProvider.useActions

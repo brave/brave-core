@@ -29,40 +29,39 @@ export function SearchPanel() {
         <Toggle
           size='small'
           checked={showSearchBox}
-          onChange={({ checked }) => { actions.setShowSearchBox(checked) }}
+          onChange={({ checked }) => {
+            actions.setShowSearchBox(checked)
+          }}
         />
       </div>
-      {
-        showSearchBox &&
-          <div className='search-engines'>
-            <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>
-            <div className='search-engine-list'>
-              {
-                searchEngines.map((engine) => (
-                  <Checkbox
-                    key={engine.host}
-                    checked={enabledSearchEngines.has(engine.host)}
-                    onChange={({ checked }) => {
-                      actions.setSearchEngineEnabled(engine.host, checked)
-                    }}
-                  >
-                    <span className='engine-name'>{engine.name}</span>
-                    <EngineIcon engine={engine} />
-                  </Checkbox>
-                ))
-              }
-            </div>
-            <div>
-              <Link
-                className='customize-link'
-                url='chrome://settings/searchEngines'
+      {showSearchBox && (
+        <div className='search-engines'>
+          <h4>{getString(S.NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL)}</h4>
+          <div className='search-engine-list'>
+            {searchEngines.map((engine) => (
+              <Checkbox
+                key={engine.host}
+                checked={enabledSearchEngines.has(engine.host)}
+                onChange={({ checked }) => {
+                  actions.setSearchEngineEnabled(engine.host, checked)
+                }}
               >
-                {getString(S.NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK)}
-                <Icon name='launch' />
-              </Link>
-            </div>
+                <span className='engine-name'>{engine.name}</span>
+                <EngineIcon engine={engine} />
+              </Checkbox>
+            ))}
           </div>
-      }
+          <div>
+            <Link
+              className='customize-link'
+              url='chrome://settings/searchEngines'
+            >
+              {getString(S.NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK)}
+              <Icon name='launch' />
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

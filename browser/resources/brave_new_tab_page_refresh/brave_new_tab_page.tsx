@@ -27,9 +27,7 @@ function AppProvider(props: { children: React.ReactNode }) {
           <TopSitesProvider name='topSites'>
             <VpnProvider name='vpn'>
               <RewardsProvider name='rewards'>
-                <NewsProvider>
-                  {props.children}
-                </NewsProvider>
+                <NewsProvider>{props.children}</NewsProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
@@ -42,5 +40,5 @@ function AppProvider(props: { children: React.ReactNode }) {
 createRoot(document.getElementById('root')!).render(
   <AppProvider>
     <App />
-  </AppProvider>
+  </AppProvider>,
 )

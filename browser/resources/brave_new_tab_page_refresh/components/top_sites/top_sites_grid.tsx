@@ -8,7 +8,10 @@ import Icon from '@brave/leo/react/icon'
 import NavDots from '@brave/leo/react/navdots'
 
 import { TopSite } from '../../state/top_sites_state'
-import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
+import {
+  useTopSitesState,
+  useTopSitesActions,
+} from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
 import { usePersistedJSON } from '$web-common/usePersistedState'
 import { TopSitesTile } from './top_site_tile'
@@ -24,7 +27,8 @@ import {
   nonGridWidth,
   maxTileColumnCount,
   minTileColumnCount,
-  maxTileRowCount } from './top_sites.style'
+  maxTileRowCount,
+} from './top_sites.style'
 
 interface Props {
   expanded: boolean
@@ -38,16 +42,21 @@ export function TopSitesGrid(props: Props) {
   const actions = useTopSitesActions()
   const topSites = useTopSitesState((s) => s.topSites)
   const columnsPerPage = useColumnsPerPage(
-    props.expanded ? maxTileColumnCount : collapsedTileColumnCount)
+    props.expanded ? maxTileColumnCount : collapsedTileColumnCount,
+  )
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
-  const [scrollPage, setScrollPage] =
-    usePersistedJSON('ntp-top-sites-page', (data) => Number(data) || 0)
+  const [scrollPage, setScrollPage] = usePersistedJSON(
+    'ntp-top-sites-page',
+    (data) => Number(data) || 0,
+  )
 
-  const [dragHandler] = React.useState(() => createTileDragHandler({
-    tileSelector: 'a',
-    autoScroll: 'horizontal'
-  }))
+  const [dragHandler] = React.useState(() =>
+    createTileDragHandler({
+      tileSelector: 'a',
+      autoScroll: 'horizontal',
+    }),
+  )
 
   const pageWidth = columnsPerPage * tileWidth
   const tileCount = topSites.length + (props.canAddSite ? 1 : 0)
@@ -56,7 +65,7 @@ export function TopSitesGrid(props: Props) {
     return splitIntoPages(topSites, {
       columnsPerPage,
       rowsPerPage: props.expanded ? maxTileRowCount : collapsedTileRowCount,
-      canAddSite: props.canAddSite
+      canAddSite: props.canAddSite,
     })
   }, [topSites, tileCount, columnsPerPage, props.canAddSite, props.expanded])
 
@@ -82,7 +91,7 @@ export function TopSitesGrid(props: Props) {
         if (site && to >= 0) {
           actions.setTopSitePosition(site.url, to)
         }
-      }
+      },
     })
   }, [scrollPage, topSites])
 
@@ -106,7 +115,7 @@ export function TopSitesGrid(props: Props) {
     }
     scrollRef.current?.scrollTo({
       left: page * pageWidth,
-      behavior: scrollBehavior ?? 'smooth'
+      behavior: scrollBehavior ?? 'smooth',
     })
   }
 
@@ -123,15 +132,21 @@ export function TopSitesGrid(props: Props) {
         className='top-site-tiles-mask'
         onScroll={onScroll}
         style={inlineCSSVars({
-          '--self-columns-per-page': Math.min(columnsPerPage, tileCount)
+          '--self-columns-per-page': Math.min(columnsPerPage, tileCount),
         })}
       >
         {pages.map((page, i) => (
-          <div key={i} className='top-site-tiles'>
+          <div
+            key={i}
+            className='top-site-tiles'
+          >
             {page.map((row, i) => (
-              <div key={i} className='top-site-row'>
-                {row.map((tile, i) => (
-                  tile === 'add-button' ?
+              <div
+                key={i}
+                className='top-site-row'
+              >
+                {row.map((tile, i) =>
+                  tile === 'add-button' ? (
                     <button
                       key={i}
                       className='top-site-tile'
@@ -144,29 +159,29 @@ export function TopSitesGrid(props: Props) {
                         {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
                       </span>
                     </button>
-                  :
+                  ) : (
                     <TopSitesTile
                       key={i}
                       topSite={tile}
                       canDrag={props.canReorderSites}
                       onContextMenu={contextMenuHandler(tile)}
                     />
-                ))}
+                  ),
+                )}
               </div>
             ))}
           </div>
         ))}
       </div>
-      {
-        pages.length > 1 &&
-          <div className='page-nav'>
-            <NavDots
-              dotCount={pages.length}
-              activeDot={scrollPage}
-              onChange={(event) => scrollToPage(event.activeDot)}
-            />
-          </div>
-      }
+      {pages.length > 1 && (
+        <div className='page-nav'>
+          <NavDots
+            dotCount={pages.length}
+            activeDot={scrollPage}
+            onChange={(event) => scrollToPage(event.activeDot)}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -188,7 +203,7 @@ function useColumnsPerPage(maxColumns: number) {
 // based upon the current body width, minus non-grid width.
 function getColumnsPerPage(maxColumns: number) {
   const available =
-    document.body.clientWidth - nonGridWidth - (horizontalContentPadding * 2)
+    document.body.clientWidth - nonGridWidth - horizontalContentPadding * 2
   let columns = Math.floor(available / tileWidth)
   columns = Math.min(maxColumns, columns)
   columns = Math.max(minTileColumnCount, columns)

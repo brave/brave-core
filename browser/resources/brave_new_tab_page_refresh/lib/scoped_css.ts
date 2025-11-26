@@ -41,12 +41,12 @@ class ScopedCSSAttribute {
             ${String.raw(callsite, ...values)}
           }
         `)
-      }
+      },
     }
   }
 }
 
-let nextScopeID = 0x5c09ed;
+let nextScopeID = 0x5c09ed
 
 // A template tag that adds scoped CSS to the document. The provided CSS text
 // is wrapped with a "@scope" at-rule and only applies to elements with a
@@ -64,5 +64,5 @@ export const scoped = {
       }
     `)
     return attr
-  }
+  },
 }

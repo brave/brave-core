@@ -9,7 +9,7 @@ import { Store, createStore } from './store'
 
 export function createStateProvider<State, Actions>(
   initialState: State,
-  createHandler: (store: Store<State>) => Actions
+  createHandler: (store: Store<State>) => Actions,
 ) {
   interface ContextValue {
     store: Store<State>
@@ -35,7 +35,9 @@ export function createStateProvider<State, Actions>(
     const [value, setValue] = React.useState(() => map(store.getState()))
     React.useEffect(() => {
       setValue(map(store.getState()))
-      return store.addListener((state) => { setValue(map(state)) })
+      return store.addListener((state) => {
+        setValue(map(state))
+      })
     }, [store])
     return value
   }

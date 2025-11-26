@@ -26,8 +26,9 @@ export function App() {
   const searchLayoutReady = useSearchLayoutReady()
   const widgetLayoutReady = useWidgetLayoutReady()
 
-  const [settingsView, setSettingsView] =
-    React.useState<SettingsView | null>(null)
+  const [settingsView, setSettingsView] = React.useState<SettingsView | null>(
+    null,
+  )
 
   const threeColumnWidth = useMediaQuery(threeColumnQuery)
 
@@ -62,12 +63,12 @@ export function App() {
           <TopSites />
         </div>
         <div className='searchbox-container'>
-          {
-            searchLayoutReady &&
-              <SearchBox showSearchSettings={() => setSettingsView('search')} />
-          }
+          {searchLayoutReady && (
+            <SearchBox showSearchSettings={() => setSettingsView('search')} />
+          )}
         </div>
-        <div className='
+        <div
+          className='
           spacer
           sponsored-background-safe-area
           allow-background-pointer-events'
@@ -78,19 +79,31 @@ export function App() {
           <BackgroundCaption />
         </div>
         <div className='widget-container'>
-          {
-            widgetLayoutReady && <>
-              {
-                threeColumnWidth ?
-                  <>
-                    <WidgetStack name='left' tabs={['stats']} />
-                    <WidgetStack name='center' tabs={['news']} />
-                  </> :
-                  <WidgetStack name='left' tabs={['stats', 'news']} />
-              }
-              <WidgetStack name='right' tabs={['vpn', 'rewards', 'talk']} />
+          {widgetLayoutReady && (
+            <>
+              {threeColumnWidth ? (
+                <>
+                  <WidgetStack
+                    name='left'
+                    tabs={['stats']}
+                  />
+                  <WidgetStack
+                    name='center'
+                    tabs={['news']}
+                  />
+                </>
+              ) : (
+                <WidgetStack
+                  name='left'
+                  tabs={['stats', 'news']}
+                />
+              )}
+              <WidgetStack
+                name='right'
+                tabs={['vpn', 'rewards', 'talk']}
+              />
             </>
-          }
+          )}
         </div>
       </main>
       <div className='news-container'>

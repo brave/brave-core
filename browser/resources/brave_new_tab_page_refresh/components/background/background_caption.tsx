@@ -9,8 +9,14 @@ import Icon from '@brave/leo/react/icon'
 import { formatString } from '$web-common/formatString'
 import { Link } from '../common/link'
 import { getString } from '../../lib/strings'
-import { BraveBackground, SponsoredImageBackground } from '../../state/background_state'
-import { useCurrentBackground, useBackgroundActions } from '../../context/background_context'
+import {
+  BraveBackground,
+  SponsoredImageBackground,
+} from '../../state/background_state'
+import {
+  useCurrentBackground,
+  useBackgroundActions,
+} from '../../context/background_context'
 
 import { style } from './background_caption.style'
 
@@ -28,11 +34,7 @@ export function BackgroundCaption() {
     }
   }
 
-  return (
-    <div data-css-scope={style.scope}>
-      {renderCaption()}
-    </div>
-  )
+  return <div data-css-scope={style.scope}>{renderCaption()}</div>
 }
 
 interface BraveBackgroundCreditsProps {
@@ -45,7 +47,10 @@ function BraveBackgroundCredits(props: BraveBackgroundCreditsProps) {
     return null
   }
   return (
-    <Link className='photo-credits' url={link}>
+    <Link
+      className='photo-credits'
+      url={link}
+    >
       {formatString(getString(S.NEW_TAB_PHOTO_CREDITS_TEXT), [author])}
     </Link>
   )
@@ -68,7 +73,10 @@ function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
       onClick={() => actions.notifySponsoredImageLogoClicked()}
     >
       <Icon name='launch' />
-      <img src={logo.imageUrl} alt={logo.alt} />
+      <img
+        src={logo.imageUrl}
+        alt={logo.alt}
+      />
     </Link>
   )
 }

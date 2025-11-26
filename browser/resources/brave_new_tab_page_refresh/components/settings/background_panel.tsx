@@ -8,7 +8,10 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useBackgroundState, useBackgroundActions } from '../../context/background_context'
+import {
+  useBackgroundState,
+  useBackgroundActions,
+} from '../../context/background_context'
 import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
@@ -21,7 +24,8 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   gradientPreviewBackground,
-  solidPreviewBackground } from '../../state/background_state'
+  solidPreviewBackground,
+} from '../../state/background_state'
 
 import { style } from './background_panel.style'
 
@@ -29,10 +33,12 @@ export function BackgroundPanel() {
   const actions = useBackgroundActions()
 
   const backgroundsEnabled = useBackgroundState((s) => s.backgroundsEnabled)
-  const backgroundsCustomizable =
-    useBackgroundState((s) => s.backgroundsCustomizable)
-  const sponsoredImagesEnabled =
-    useBackgroundState((s) => s.sponsoredImagesEnabled)
+  const backgroundsCustomizable = useBackgroundState(
+    (s) => s.backgroundsCustomizable,
+  )
+  const sponsoredImagesEnabled = useBackgroundState(
+    (s) => s.sponsoredImagesEnabled,
+  )
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
@@ -87,24 +93,27 @@ export function BackgroundPanel() {
   }
 
   function renderTypePreview(type: SelectedBackgroundType) {
-    if (type === SelectedBackgroundType.kCustom &&
-        customBackgrounds.length === 0) {
+    if (
+      type === SelectedBackgroundType.kCustom
+      && customBackgrounds.length === 0
+    ) {
       return renderUploadPreview()
     }
     return (
       <div
         className='preview'
         style={inlineCSSVars({
-          '--preview-background':
-            backgroundCSSValue(type, getTypePreviewValue(type))
+          '--preview-background': backgroundCSSValue(
+            type,
+            getTypePreviewValue(type),
+          ),
         })}
       >
-        {
-          type === selectedBackground.type &&
-            <span className='selected-marker'>
-              <Icon name='check-normal' />
-            </span>
-        }
+        {type === selectedBackground.type && (
+          <span className='selected-marker'>
+            <Icon name='check-normal' />
+          </span>
+        )}
       </div>
     )
   }
@@ -148,39 +157,43 @@ export function BackgroundPanel() {
         <Toggle
           size='small'
           checked={backgroundsEnabled}
-          onChange={({ checked }) => { actions.setBackgroundsEnabled(checked) }}
+          onChange={({ checked }) => {
+            actions.setBackgroundsEnabled(checked)
+          }}
         />
       </div>
-      {
-        backgroundsEnabled && rewardsFeatureEnabled &&
-          <div className='control-row'>
-            <label>
-              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
-              <div className='subtext'>
-                {
-                  !rewardsEnabled && formatString(
-                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
-                    {
-                      $1: (content) => (
-                        <Link url={settingsURL} openInNewTab>
-                          {content}
-                        </Link>
-                      )
-                    })
-                }
-              </div>
-            </label>
-            <Toggle
-              size='small'
-              checked={sponsoredImagesEnabled}
-              onChange={({ checked }) => {
-                actions.setSponsoredImagesEnabled(checked)
-              }}
-            />
-          </div>
-      }
-      {
-        backgroundsEnabled && backgroundsCustomizable && <>
+      {backgroundsEnabled && rewardsFeatureEnabled && (
+        <div className='control-row'>
+          <label>
+            {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
+            <div className='subtext'>
+              {!rewardsEnabled
+                && formatString(
+                  getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
+                  {
+                    $1: (content) => (
+                      <Link
+                        url={settingsURL}
+                        openInNewTab
+                      >
+                        {content}
+                      </Link>
+                    ),
+                  },
+                )}
+            </div>
+          </label>
+          <Toggle
+            size='small'
+            checked={sponsoredImagesEnabled}
+            onChange={({ checked }) => {
+              actions.setSponsoredImagesEnabled(checked)
+            }}
+          />
+        </div>
+      )}
+      {backgroundsEnabled && backgroundsCustomizable && (
+        <>
           <div className='background-options'>
             <div className='background-option'>
               <button onClick={onCustomPreviewClick}>
@@ -214,7 +227,7 @@ export function BackgroundPanel() {
             </div>
           </div>
         </>
-      }
+      )}
     </div>
   )
 }

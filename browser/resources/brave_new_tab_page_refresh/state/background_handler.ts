@@ -8,7 +8,11 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { BackgroundState, BackgroundActions, BraveBackground } from './background_state'
+import {
+  BackgroundState,
+  BackgroundActions,
+  BraveBackground,
+} from './background_state'
 
 // A pre-loaded background image resource that can be used if a new profile
 // opens the NTP before the NTPBackgroundImagesService has finished loading
@@ -16,25 +20,27 @@ import { BackgroundState, BackgroundActions, BraveBackground } from './backgroun
 const defaultBraveBackground: BraveBackground = {
   imageUrl: 'dylan-malval_sea-min.webp',
   author: 'Dylan Malval',
-  link: 'https://www.instagram.com/vass_captures/'
+  link: 'https://www.instagram.com/vass_captures/',
 }
 
 export function createBackgroundHandler(
-  store: Store<BackgroundState>
+  store: Store<BackgroundState>,
 ): BackgroundActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   const sponsoredRichMediaAdEventHandler =
-      SponsoredRichMediaAdEventHandler.getRemote()
+    SponsoredRichMediaAdEventHandler.getRemote()
 
   store.update({
     braveBackgrounds: [defaultBraveBackground],
     backgroundRandomValue: Math.random(),
     backgroundRotateIndex: nextRotateIndex(),
-    backgroundsCustomizable:
-        loadTimeData.getBoolean('customBackgroundFeatureEnabled'),
-    sponsoredRichMediaBaseUrl:
-        loadTimeData.getString('sponsoredRichMediaBaseUrl')
+    backgroundsCustomizable: loadTimeData.getBoolean(
+      'customBackgroundFeatureEnabled',
+    ),
+    sponsoredRichMediaBaseUrl: loadTimeData.getString(
+      'sponsoredRichMediaBaseUrl',
+    ),
   })
 
   async function updateBackgroundsEnabled() {
@@ -50,8 +56,9 @@ export function createBackgroundHandler(
   async function updateBraveBackgrounds() {
     const { backgrounds } = await handler.getBraveBackgrounds()
     store.update({
-      braveBackgrounds:
-        backgrounds.length ? backgrounds : [defaultBraveBackground]
+      braveBackgrounds: backgrounds.length
+        ? backgrounds
+        : [defaultBraveBackground],
     })
   }
 
@@ -74,11 +81,8 @@ export function createBackgroundHandler(
 
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
-      await Promise.all([
-        updateCustomBackgrounds(),
-        updateSelectedBackground(),
-      ])
-    }, 10)
+      await Promise.all([updateCustomBackgrounds(), updateSelectedBackground()])
+    }, 10),
   })
 
   async function loadData() {
@@ -88,7 +92,7 @@ export function createBackgroundHandler(
       updateBraveBackgrounds(),
       updateCustomBackgrounds(),
       updateSelectedBackground(),
-      updateSponsoredImageBackground()
+      updateSponsoredImageBackground(),
     ])
 
     store.update({ initialized: true })
@@ -97,7 +101,6 @@ export function createBackgroundHandler(
   loadData()
 
   return {
-
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
       handler.setBackgroundsEnabled(enabled)
@@ -137,7 +140,8 @@ export function createBackgroundHandler(
           sponsoredImageBackground.wallpaperId,
           sponsoredImageBackground.creativeInstanceId,
           sponsoredImageBackground.logo.destinationUrl,
-          sponsoredImageBackground.metricType);
+          sponsoredImageBackground.metricType,
+        )
       }
     },
 
@@ -150,14 +154,15 @@ export function createBackgroundHandler(
         sponsoredImageBackground.wallpaperId,
         sponsoredImageBackground.creativeInstanceId,
         sponsoredImageBackground.metricType,
-        type);
-    }
+        type,
+      )
+    },
   }
 }
 
 function nextRotateIndex() {
   const rotateIndexKey = 'ntp-background-index'
   const index = parseInt(localStorage.getItem(rotateIndexKey) ?? '0') || 0
-  localStorage.setItem(rotateIndexKey, String((index + 1) % (2 ** 32)))
+  localStorage.setItem(rotateIndexKey, String((index + 1) % 2 ** 32))
   return index
 }

@@ -41,12 +41,13 @@ export function TopSitesTile(props: Props) {
         event.dataTransfer.setData('text/uri-list', url)
       }}
     >
-      <span className='top-site-icon' onContextMenu={onContextMenu}>
+      <span
+        className='top-site-icon'
+        onContextMenu={onContextMenu}
+      >
         <img src={favicon || faviconURL(url)} />
       </span>
-      <span className='top-site-title'>
-        {title}
-      </span>
+      <span className='top-site-title'>{title}</span>
     </a>
   )
 }

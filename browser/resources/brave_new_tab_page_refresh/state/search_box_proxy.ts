@@ -13,8 +13,10 @@ export class SearchBoxProxy {
   callbackRouter: mojom.PageCallbackRouter
   handler: mojom.PageHandlerRemote
 
-  constructor(callbackRouter: mojom.PageCallbackRouter,
-              handler: mojom.PageHandlerRemote) {
+  constructor(
+    callbackRouter: mojom.PageCallbackRouter,
+    handler: mojom.PageHandlerRemote,
+  ) {
     this.callbackRouter = callbackRouter
     this.handler = handler
   }

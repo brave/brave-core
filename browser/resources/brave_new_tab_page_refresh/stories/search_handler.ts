@@ -4,7 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Store } from '../lib/store'
-import { SearchState, SearchActions, defaultSearchActions } from '../state/search_state'
+import {
+  SearchState,
+  SearchActions,
+  defaultSearchActions,
+} from '../state/search_state'
 
 export function createSearchHandler(store: Store<SearchState>): SearchActions {
   store.update({
@@ -18,28 +22,27 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
 
     searchSuggestionsPromptDismissed: false,
 
-    searchEngines: [{
-      prepopulateId: BigInt(0),
-      name: 'Brave',
-      keyword: '',
-      host: 'search.brave.com',
-      faviconUrl: ''
-    }, {
-      prepopulateId: BigInt(1),
-      name: 'Google',
-      keyword: '',
-      host: 'google.com',
-      faviconUrl: ''
-    }],
+    searchEngines: [
+      {
+        prepopulateId: BigInt(0),
+        name: 'Brave',
+        keyword: '',
+        host: 'search.brave.com',
+        faviconUrl: '',
+      },
+      {
+        prepopulateId: BigInt(1),
+        name: 'Google',
+        keyword: '',
+        host: 'google.com',
+        faviconUrl: '',
+      },
+    ],
 
-    enabledSearchEngines: new Set([
-      'search.brave.com',
-      'google.com'
-    ])
+    enabledSearchEngines: new Set(['search.brave.com', 'google.com']),
   })
 
   return {
-
     ...defaultSearchActions(),
 
     setShowSearchBox(showSearchBox) {
@@ -75,42 +78,44 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
       if (key !== activeSearchInputKey) {
         store.update({
           activeSearchInputKey: key,
-          searchMatches: []
+          searchMatches: [],
         })
       }
     },
 
     queryAutocomplete(query, engine) {
       store.update({
-        searchMatches: [{
-          allowedToBeDefaultMatch: false,
-          contents: 'contents 1',
-          description: 'description 1',
-          iconUrl: { url: '' },
-          imageUrl: '',
-          destinationUrl: { url: '' }
-        },
-        {
-          allowedToBeDefaultMatch: true,
-          contents: 'contents 2',
-          description: 'Ask Leo',
-          iconUrl: { url: '' },
-          imageUrl: '',
-          destinationUrl: { url: '' }
-        },
-        {
-          allowedToBeDefaultMatch: true,
-          contents: query,
-          description: engine,
-          iconUrl: { url: '' },
-          imageUrl: '',
-          destinationUrl: { url: '' }
-        }]
+        searchMatches: [
+          {
+            allowedToBeDefaultMatch: false,
+            contents: 'contents 1',
+            description: 'description 1',
+            iconUrl: { url: '' },
+            imageUrl: '',
+            destinationUrl: { url: '' },
+          },
+          {
+            allowedToBeDefaultMatch: true,
+            contents: 'contents 2',
+            description: 'Ask Leo',
+            iconUrl: { url: '' },
+            imageUrl: '',
+            destinationUrl: { url: '' },
+          },
+          {
+            allowedToBeDefaultMatch: true,
+            contents: query,
+            description: engine,
+            iconUrl: { url: '' },
+            imageUrl: '',
+            destinationUrl: { url: '' },
+          },
+        ],
       })
     },
 
     stopAutocomplete() {
       store.update({ searchMatches: [] })
-    }
+    },
   }
 }

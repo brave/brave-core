@@ -8,7 +8,10 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
-import { useRewardsState, useRewardsActions } from '../../context/rewards_context'
+import {
+  useRewardsState,
+  useRewardsActions,
+} from '../../context/rewards_context'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
 
 import { style } from './widgets_panel.style'
@@ -38,45 +41,42 @@ export function WidgetsPanel() {
           }}
         />
       </div>
-      {
-        vpnFeatureEnabled &&
-          <div className='control-row'>
-            <label>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</label>
-            <Toggle
-              size='small'
-              checked={showVpnWidget}
-              onChange={({ checked }) => {
-                vpnActions.setShowVpnWidget(checked)
-              }}
-            />
-          </div>
-      }
-      {
-        rewardsFeatureEnabled &&
-          <div className='control-row'>
-            <label>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</label>
-            <Toggle
-              size='small'
-              checked={showRewardsWidget}
-              onChange={({ checked }) => {
-                rewardsActions.setShowRewardsWidget(checked)
-              }}
-            />
-          </div>
-      }
-      {
-        talkFeatureEnabled &&
-          <div className='control-row'>
-            <label>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</label>
-            <Toggle
-              size='small'
-              checked={showTalkWidget}
-              onChange={({ checked }) => {
-                newTabActions.setShowTalkWidget(checked)
-              }}
-            />
-          </div>
-      }
+      {vpnFeatureEnabled && (
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_SHOW_VPN_WIDGET_LABEL)}</label>
+          <Toggle
+            size='small'
+            checked={showVpnWidget}
+            onChange={({ checked }) => {
+              vpnActions.setShowVpnWidget(checked)
+            }}
+          />
+        </div>
+      )}
+      {rewardsFeatureEnabled && (
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_SHOW_REWARDS_WIDGET_LABEL)}</label>
+          <Toggle
+            size='small'
+            checked={showRewardsWidget}
+            onChange={({ checked }) => {
+              rewardsActions.setShowRewardsWidget(checked)
+            }}
+          />
+        </div>
+      )}
+      {talkFeatureEnabled && (
+        <div className='control-row'>
+          <label>{getString(S.NEW_TAB_SHOW_TALK_WIDGET_LABEL)}</label>
+          <Toggle
+            size='small'
+            checked={showTalkWidget}
+            onChange={({ checked }) => {
+              newTabActions.setShowTalkWidget(checked)
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

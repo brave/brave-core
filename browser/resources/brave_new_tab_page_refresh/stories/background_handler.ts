@@ -9,7 +9,8 @@ import {
   BackgroundState,
   BackgroundActions,
   NewTabPageAdMetricType,
-  SelectedBackgroundType } from '../state/background_state'
+  SelectedBackgroundType,
+} from '../state/background_state'
 
 import { StorybookArgs } from './storybook_args'
 
@@ -20,7 +21,7 @@ function delay(ms: number) {
 }
 
 const sampleBackground =
-    'https://brave.com/static-assets/images/coding-background-texture.jpg'
+  'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
 const sponsoredBackgrounds = {
   image: {
@@ -32,9 +33,9 @@ const sponsoredBackgrounds = {
     logo: {
       alt: 'Be Brave!',
       destinationUrl: 'https://brave.com',
-      imageUrl: sampleBackground
+      imageUrl: sampleBackground,
     },
-    metricType: NewTabPageAdMetricType.kConfirmation
+    metricType: NewTabPageAdMetricType.kConfirmation,
   },
 
   richMedia: {
@@ -46,17 +47,17 @@ const sponsoredBackgrounds = {
     logo: {
       alt: 'Be Brave!',
       destinationUrl: 'https://brave.com',
-      imageUrl: ''
+      imageUrl: '',
     },
-    metricType: NewTabPageAdMetricType.kConfirmation
+    metricType: NewTabPageAdMetricType.kConfirmation,
   },
 
-  none: null
+  none: null,
 }
 
 export function createBackgroundHandler(
   store: Store<BackgroundState>,
-  args: StorybookArgs
+  args: StorybookArgs,
 ): BackgroundActions {
   store.update({
     initialized: true,
@@ -64,22 +65,23 @@ export function createBackgroundHandler(
       {
         author: 'John Doe',
         imageUrl: sampleBackground,
-        link: 'https://brave.com'
-      }
+        link: 'https://brave.com',
+      },
     ],
     backgroundRandomValue: Math.random(),
     sponsoredImageBackground:
-      args.sponsoredBackgroundType === 'rich' ? sponsoredBackgrounds.richMedia :
-      args.sponsoredBackgroundType === 'image' ? sponsoredBackgrounds.image :
-      sponsoredBackgrounds.none
+      args.sponsoredBackgroundType === 'rich'
+        ? sponsoredBackgrounds.richMedia
+        : args.sponsoredBackgroundType === 'image'
+          ? sponsoredBackgrounds.image
+          : sponsoredBackgrounds.none,
   })
 
   store.update({
-    sponsoredRichMediaBaseUrl: location.origin
+    sponsoredRichMediaBaseUrl: location.origin,
   })
 
   return {
-
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
     },
@@ -91,7 +93,7 @@ export function createBackgroundHandler(
     selectBackground(type, value) {
       store.update({
         selectedBackground: { type, value },
-        backgroundRandomValue: Math.random()
+        backgroundRandomValue: Math.random(),
       })
     },
 
@@ -101,8 +103,8 @@ export function createBackgroundHandler(
           customBackgrounds: [...state.customBackgrounds, sampleBackground],
           selectedBackground: {
             type: SelectedBackgroundType.kCustom,
-            value: sampleBackground
-          }
+            value: sampleBackground,
+          },
         }))
       })
 
@@ -111,8 +113,9 @@ export function createBackgroundHandler(
 
     async removeCustomBackground(background) {
       store.update((state) => ({
-        customBackgrounds:
-          state.customBackgrounds.filter((elem) => elem !== background)
+        customBackgrounds: state.customBackgrounds.filter(
+          (elem) => elem !== background,
+        ),
       }))
     },
 
@@ -122,6 +125,6 @@ export function createBackgroundHandler(
 
     notifySponsoredRichMediaEvent(type) {
       console.log('richMediaEvent', type)
-    }
+    },
   }
 }
