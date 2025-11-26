@@ -73,6 +73,7 @@ brave_browser_net_deps = [
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_shields/core/browser",
   "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/constants",
   "//brave/components/constants:brave_service_key_helper",
   "//brave/components/geolocation",
