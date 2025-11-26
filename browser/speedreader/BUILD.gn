@@ -51,6 +51,7 @@ if (!is_android) {
       "//brave/browser/ui/views/frame/split_view",
       "//brave/components/ai_chat/core/common",
       "//brave/components/brave_wallet/browser:utils",
+      "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",
