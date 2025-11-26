@@ -22,7 +22,7 @@
 
 namespace {
 
-const webui::ResourcePath kEmailAliasesPanelResources[] = {
+constexpr webui::ResourcePath kEmailAliasesPanelResources[] = {
     {"email_aliases_panel.bundle.js",
      IDR_EMAIL_ALIASES_EMAIL_ALIASES_PANEL_BUNDLE_JS},
 };
