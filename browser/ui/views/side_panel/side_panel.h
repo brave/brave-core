@@ -37,7 +37,7 @@ class SidebarBrowserTest;
 class SidePanel : public views::View,
                   public views::ViewObserver,
                   public views::ResizeAreaDelegate,
-                  public SidePanelAnimationCoordinator::Observer {
+                  public SidePanelAnimationCoordinator::AnimationIdObserver {
   METADATA_HEADER(SidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
@@ -124,7 +124,7 @@ class SidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  // SidePanelAnimationCoordinator::AnimationObserver
+  // SidePanelAnimationCoordinator::AnimationIdObserver
   void OnAnimationSequenceProgressed(
       const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
       double animation_value) override;
