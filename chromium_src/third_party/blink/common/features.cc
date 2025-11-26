@@ -81,7 +81,6 @@ BASE_FEATURE(kMiddleButtonClickAutoscroll,
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 BASE_FEATURE(kForceContextMenuOnShiftRightClick,
-             "ForceContextMenuOnShiftRightClick",
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 
