@@ -39,6 +39,7 @@ mod ffi {
             storage: &BraveCoreResourceStorage,
             additional_resources_json: &str,
         ) -> Box<BraveCoreResourceStorage>;
+        fn has_resource_for_testing(storage: &BraveCoreResourceStorage, name: &CxxString) -> bool;
     }
     extern "Rust" {
         type Engine;

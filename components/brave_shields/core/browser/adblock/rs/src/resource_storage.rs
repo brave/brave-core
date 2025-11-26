@@ -61,3 +61,7 @@ pub fn extend_resource_storage(
     }
     clone_resource_storage(storage)
 }
+
+pub fn has_resource_for_testing(storage: &BraveCoreResourceStorage, name: &CxxString) -> bool {
+    storage.get_resource(name.to_str().unwrap_or("")).is_some()
+}
