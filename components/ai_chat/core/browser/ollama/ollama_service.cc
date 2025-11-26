@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_model_fetcher.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -21,16 +22,6 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
-
-// OllamaService::ModelDetails implementation
-OllamaService::ModelDetails::ModelDetails() = default;
-OllamaService::ModelDetails::ModelDetails(const ModelDetails&) = default;
-OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
-    const ModelDetails&) = default;
-OllamaService::ModelDetails::ModelDetails(ModelDetails&&) = default;
-OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
-    ModelDetails&&) = default;
-OllamaService::ModelDetails::~ModelDetails() = default;
 
 namespace {
 
@@ -96,10 +87,20 @@ constexpr size_t kModelDetailsMaxSize = 1024 * 1024;  // 1MB for model details
 }  // namespace
 
 OllamaService::OllamaService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(std::move(url_loader_factory)) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::unique_ptr<OllamaModelFetcher> model_fetcher)
+    : url_loader_factory_(std::move(url_loader_factory)),
+      model_fetcher_(std::move(model_fetcher)) {
+  if (model_fetcher_) {
+    model_fetcher_->SetDelegate(this);
+  }
+}
 
 OllamaService::~OllamaService() = default;
+
+void OllamaService::Shutdown() {
+  model_fetcher_.reset();
+}
 
 void OllamaService::BindReceiver(
     mojo::PendingReceiver<mojom::OllamaService> receiver) {

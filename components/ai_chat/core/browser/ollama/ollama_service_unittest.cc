@@ -50,8 +50,8 @@ class OllamaServiceTest : public testing::Test {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
-    ollama_client_ =
-        std::make_unique<OllamaService>(shared_url_loader_factory_);
+    ollama_client_ = std::make_unique<OllamaService>(shared_url_loader_factory_,
+                                                     /*model_fetcher=*/nullptr);
   }
 
   OllamaService* ollama_client() { return ollama_client_.get(); }

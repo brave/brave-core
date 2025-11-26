@@ -342,6 +342,14 @@ void ConversationHandler::InitEngine() {
 
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
+  if (!model) {
+    // Model no longer exists (e.g., custom model was deleted)
+    // Fall back to the automatic model
+    DVLOG(1) << "Model " << model_key_
+             << " no longer exists, falling back to automatic model";
+    model_key_ = features::kAIModelsDefaultKey.Get();
+    model = model_service_->GetModel(model_key_);
+  }
   CHECK(model);
   return *model;
 }

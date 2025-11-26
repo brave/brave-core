@@ -15,13 +15,10 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
-#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -31,12 +28,11 @@ namespace {
 
 using ::testing::_;
 
-// Mock OllamaService for testing OllamaModelFetcher
-class MockOllamaService : public OllamaService {
+// Mock Delegate for testing OllamaModelFetcher
+class MockDelegate : public OllamaModelFetcher::Delegate {
  public:
-  explicit MockOllamaService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-      : OllamaService(url_loader_factory) {}
+  MockDelegate() = default;
+  ~MockDelegate() override = default;
 
   MOCK_METHOD(void, FetchModels, (ModelsCallback), (override));
   MOCK_METHOD(void,
@@ -59,17 +55,12 @@ class OllamaModelFetcherTest : public testing::Test {
 
     model_service_ = std::make_unique<ModelService>(&pref_service_);
 
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &test_url_loader_factory_);
+    // Create mock delegate
+    mock_delegate_ = std::make_unique<MockDelegate>();
 
+    // Pass mock delegate to OllamaModelFetcher
     ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
-        *model_service_, &pref_service_, shared_url_loader_factory_);
-
-    // Inject mock OllamaService for testing
-    auto mock = std::make_unique<MockOllamaService>(shared_url_loader_factory_);
-    mock_ollama_service_ = mock.get();
-    ollama_model_fetcher_->ollama_service_ = std::move(mock);
+        *model_service_, &pref_service_, mock_delegate_.get());
   }
 
   void TearDown() override { OSCryptMocker::TearDown(); }
@@ -78,22 +69,17 @@ class OllamaModelFetcherTest : public testing::Test {
   OllamaModelFetcher* ollama_model_fetcher() {
     return ollama_model_fetcher_.get();
   }
-  network::TestURLLoaderFactory* test_url_loader_factory() {
-    return &test_url_loader_factory_;
-  }
   sync_preferences::TestingPrefServiceSyncable* pref_service() {
     return &pref_service_;
   }
-  MockOllamaService* mock_ollama_service() { return mock_ollama_service_; }
+  MockDelegate* mock_delegate() { return mock_delegate_.get(); }
 
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
   std::unique_ptr<ModelService> model_service_;
-  network::TestURLLoaderFactory test_url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<MockDelegate> mock_delegate_;
   std::unique_ptr<OllamaModelFetcher> ollama_model_fetcher_;
-  raw_ptr<MockOllamaService> mock_ollama_service_;
 };
 
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
@@ -101,16 +87,16 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
 
   // Setup mock expectations
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
       .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  OllamaService::ModelDetails details;
+  OllamaModelFetcher::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("llama2:7b", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("mistral:latest", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
 
   // Trigger FetchModels
@@ -136,16 +122,16 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
 TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
       .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  OllamaService::ModelDetails details;
+  OllamaModelFetcher::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("llama2:7b", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("mistral:latest", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
 
   ollama_model_fetcher()->FetchModels();
@@ -166,7 +152,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // Second fetch - only 1 model remains (llama2 is not new, so no detail fetch
   // needed)
   std::vector<std::string> updated_models = {"llama2:7b"};
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
       .WillOnce(base::test::RunOnceCallback<0>(std::move(updated_models)));
 
   ollama_model_fetcher()->FetchModels();
@@ -189,8 +175,9 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
   size_t initial_count = model_service()->GetModels().size();
 
   bool callback_called = false;
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
-      .WillOnce([&callback_called](OllamaService::ModelsCallback callback) {
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
+      .WillOnce([&callback_called](
+                    OllamaModelFetcher::Delegate::ModelsCallback callback) {
         std::move(callback).Run(std::nullopt);
         callback_called = true;
       });
@@ -207,8 +194,9 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
   size_t initial_count = model_service()->GetModels().size();
 
   bool callback_called = false;
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
-      .WillOnce([&callback_called](OllamaService::ModelsCallback callback) {
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
+      .WillOnce([&callback_called](
+                    OllamaModelFetcher::Delegate::ModelsCallback callback) {
         std::move(callback).Run(std::nullopt);
         callback_called = true;
       });
@@ -225,16 +213,16 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
   size_t initial_count = model_service()->GetModels().size();
 
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
       .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  OllamaService::ModelDetails details;
+  OllamaModelFetcher::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("llama2:7b", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("mistral:latest", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
 
   // Enable Ollama fetching - this will trigger FetchModels
@@ -248,16 +236,16 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
 TEST_F(OllamaModelFetcherTest, PrefChangeDoesntTriggersRemove) {
   // First add some models
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+  EXPECT_CALL(*mock_delegate(), FetchModels(_))
       .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  OllamaService::ModelDetails details;
+  OllamaModelFetcher::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("llama2:7b", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
-  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+  EXPECT_CALL(*mock_delegate(), ShowModel("mistral:latest", _))
       .WillOnce(base::test::RunOnceCallback<1>(details));
 
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
