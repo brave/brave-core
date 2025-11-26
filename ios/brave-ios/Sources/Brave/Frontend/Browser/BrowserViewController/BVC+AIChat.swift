@@ -5,10 +5,12 @@
 
 import AIChat
 import BraveCore
+import BraveStore
 import BraveUI
 import Foundation
 import PhotosUI
 import SpeechRecognition
+import SwiftUI
 import UIKit
 import Web
 
@@ -25,15 +27,33 @@ extension BrowserViewController {
         self.presentPhotoPicker(completion)
       }
     case .presentSettings:
-      break
+      presentAIChatSettings()
     case .presentPremiumPaywall:
-      break
+      presentAIChatPremiumPaywall()
     case .presentManagePremium:
-      break
+      Task {
+        let store = BraveStoreSDK(skusService: nil)
+        let leoMonthly = await store.currentTransaction(for: BraveStoreProduct.leoMonthly)
+        let leoYearly = await store.currentTransaction(for: BraveStoreProduct.leoYearly)
+        let isSubbedViaAppStore = leoMonthly != nil || leoYearly != nil
+        if isSubbedViaAppStore, let url = URL.apple.manageSubscriptions,
+          UIApplication.shared.canOpenURL(url)
+        {
+          await UIApplication.shared.open(url, options: [:])
+        } else {
+          tabManager.addTabAndSelect(
+            URLRequest(url: .brave.account),
+            isPrivate: privateBrowsingManager.isPrivateBrowsing
+          )
+        }
+      }
     case .closeTab:
-      break
-    case .openURL:
-      break
+      tabManager.removeTab(tab)
+    case .openURL(let url):
+      tabManager.addTabAndSelect(
+        URLRequest(url: url),
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
     }
   }
 
@@ -213,6 +233,80 @@ extension BrowserViewController {
 
       completion(uploadedFiles.isEmpty ? nil : uploadedFiles)
     }
+  }
+
+  private func presentAIChatSettings() {
+    struct StandaloneAIChatSettingsView: View {
+      @Environment(\.dismiss) private var dismiss
+      var model: AIChatSettingsViewModel
+      var openURL: (URL) -> Void
+      var body: some View {
+        NavigationStack {
+          AIChatSettingsView(viewModel: model)
+            .toolbar {
+              ToolbarItemGroup(placement: .confirmationAction) {
+                Button {
+                  dismiss()
+                } label: {
+                  Text(Strings.done)
+                }
+              }
+            }
+        }
+        .environment(
+          \.openURL,
+          OpenURLAction { url in
+            openURL(url)
+            dismiss()
+            return .handled
+          }
+        )
+      }
+    }
+    let model = AIChatSettingsViewModel(
+      helper: AIChatSettingsHelperImpl(profile: profileController.profile),
+      skusService: Skus.SkusServiceFactory.get(profile: profileController.profile)
+    )
+    let controller = UIHostingController(
+      rootView: StandaloneAIChatSettingsView(model: model) { [weak self] url in
+        guard let self else { return }
+        tabManager.addTabAndSelect(
+          URLRequest(url: url),
+          isPrivate: privateBrowsingManager.isPrivateBrowsing
+        )
+      }
+    )
+    present(controller, animated: true)
+  }
+
+  private func presentAIChatPremiumPaywall() {
+    struct StandaloneAIChatPaywallView: View {
+      @Environment(\.dismiss) private var dismiss
+      var openURL: (URL) -> Void
+
+      var body: some View {
+        AIChatPaywallView(
+          refreshCredentials: {
+            openURL(.brave.braveLeoRefreshCredentials)
+            dismiss()
+          },
+          openDirectCheckout: {
+            openURL(.brave.braveLeoCheckoutURL)
+            dismiss()
+          }
+        )
+      }
+    }
+    let controller = UIHostingController(
+      rootView: StandaloneAIChatPaywallView(openURL: { [weak self] url in
+        guard let self else { return }
+        tabManager.addTabAndSelect(
+          URLRequest(url: url),
+          isPrivate: privateBrowsingManager.isPrivateBrowsing
+        )
+      })
+    )
+    present(controller, animated: true)
   }
 }
 

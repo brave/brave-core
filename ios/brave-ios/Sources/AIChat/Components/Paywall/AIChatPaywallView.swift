@@ -19,12 +19,12 @@ enum AIChatPaymentStatus {
   case failure
 }
 
-enum AIChatSubscriptionTier {
+public enum AIChatSubscriptionTier {
   case monthly
   case yearly
 }
 
-struct AIChatPaywallView: View {
+public struct AIChatPaywallView: View {
   @Environment(\.dismiss)
   private var dismiss
 
@@ -64,7 +64,17 @@ struct AIChatPaywallView: View {
   var refreshCredentials: (() -> Void)?
   var openDirectCheckout: (() -> Void)?
 
-  var body: some View {
+  public init(
+    premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)? = nil,
+    refreshCredentials: (() -> Void)? = nil,
+    openDirectCheckout: (() -> Void)? = nil
+  ) {
+    self.premiumUpgrageSuccessful = premiumUpgrageSuccessful
+    self.refreshCredentials = refreshCredentials
+    self.openDirectCheckout = openDirectCheckout
+  }
+
+  public var body: some View {
     NavigationView {
       VStack(spacing: 0) {
         ScrollView {
