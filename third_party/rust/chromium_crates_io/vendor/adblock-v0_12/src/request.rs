@@ -239,11 +239,11 @@ impl Request {
 }
 
 fn calculate_tokens(url_lower_cased: &str) -> Vec<utils::Hash> {
-    let mut tokens = vec![];
+    let mut tokens = utils::TokensBuffer::default();
     utils::tokenize_pooled(url_lower_cased, &mut tokens);
     // Add zero token as a fallback to wildcard rule bucket
     tokens.push(0);
-    tokens
+    tokens.into_iter().collect()
 }
 
 #[cfg(test)]

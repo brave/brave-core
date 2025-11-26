@@ -9,6 +9,7 @@ pub(crate) mod fb_network;
 pub(crate) mod fb_network_builder;
 pub(crate) mod filter_data_context;
 pub mod network;
+pub(crate) mod token_selector;
 
 #[allow(unknown_lints)]
 #[allow(

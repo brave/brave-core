@@ -94,7 +94,7 @@ pub trait ResourceStorageBackend {
 }
 
 /// Default implementation of [ResourceStorageBackend] that stores all resources in memory.
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct InMemoryResourceStorage {
     /// Stores each resource by its canonical name
     resources: HashMap<String, ResourceImpl>,

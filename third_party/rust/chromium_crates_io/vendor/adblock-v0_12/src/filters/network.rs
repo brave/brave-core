@@ -15,9 +15,7 @@ use crate::filters::abstract_network::{
 use crate::lists::ParseOptions;
 use crate::regex_manager::RegexManager;
 use crate::request;
-use crate::utils::{self, Hash};
-
-pub(crate) const TOKENS_BUFFER_SIZE: usize = 200;
+use crate::utils::{self, Hash, TokensBuffer};
 
 /// For now, only support `$removeparam` with simple alphanumeric/dash/underscore patterns.
 static VALID_PARAM: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[a-zA-Z0-9_\-]+$").unwrap());
@@ -311,10 +309,11 @@ pub enum FilterPart {
     AnyOf(Vec<String>),
 }
 
-pub enum FilterTokens {
+#[derive(Debug, PartialEq)]
+pub(crate) enum FilterTokens<'a> {
     Empty,
-    OptDomains(Vec<Hash>),
-    Other(Vec<Hash>),
+    OptDomains(&'a [Hash]),
+    Other(&'a [Hash]),
 }
 
 pub struct FilterPartIterator<'a> {
@@ -882,19 +881,11 @@ impl NetworkFilter {
         )
     }
 
-    #[deprecated(since = "0.11.1", note = "use get_tokens_optimized instead")]
-    pub fn get_tokens(&self) -> Vec<Vec<Hash>> {
-        match self.get_tokens_optimized() {
-            FilterTokens::OptDomains(domains) => {
-                domains.into_iter().map(|domain| vec![domain]).collect()
-            }
-            FilterTokens::Other(tokens) => vec![tokens],
-            FilterTokens::Empty => vec![],
-        }
-    }
-
-    pub fn get_tokens_optimized(&self) -> FilterTokens {
-        let mut tokens: Vec<Hash> = Vec::with_capacity(TOKENS_BUFFER_SIZE);
+    pub(crate) fn get_tokens<'a>(
+        &'a self,
+        tokens_buffer: &'a mut TokensBuffer,
+    ) -> FilterTokens<'a> {
+        tokens_buffer.clear();
 
         // If there is only one domain and no domain negation, we also use this
         // domain as a token.
@@ -904,7 +895,7 @@ impl NetworkFilter {
         {
             if let Some(domains) = self.opt_domains.as_ref() {
                 if let Some(domain) = domains.first() {
-                    tokens.push(*domain)
+                    tokens_buffer.push(*domain);
                 }
             }
         }
@@ -917,7 +908,7 @@ impl NetworkFilter {
                         (self.is_plain() || self.is_regex()) && !self.is_right_anchor();
                     let skip_first_token = self.is_right_anchor();
 
-                    utils::tokenize_filter_to(f, skip_first_token, skip_last_token, &mut tokens);
+                    utils::tokenize_filter_to(f, skip_first_token, skip_last_token, tokens_buffer);
                 }
             }
             FilterPart::AnyOf(_) => (), // across AnyOf set of filters no single token is guaranteed to match to a request
@@ -927,39 +918,55 @@ impl NetworkFilter {
         // Append tokens from hostname, if any
         if !self.mask.contains(NetworkFilterMask::IS_HOSTNAME_REGEX) {
             if let Some(hostname) = self.hostname.as_ref() {
-                utils::tokenize_to(hostname, &mut tokens);
+                utils::tokenize_to(hostname, tokens_buffer);
+            }
+        } else if let Some(hostname) = self.hostname.as_ref() {
+            // Find last dot to tokenize the prefix
+            let last_dot_pos = hostname.rfind('.');
+            if let Some(last_dot_pos) = last_dot_pos {
+                utils::tokenize_to(&hostname[..last_dot_pos], tokens_buffer);
             }
         }
 
-        if tokens.is_empty() && self.mask.contains(NetworkFilterMask::IS_REMOVEPARAM) {
+        if tokens_buffer.is_empty() && self.mask.contains(NetworkFilterMask::IS_REMOVEPARAM) {
             if let Some(removeparam) = &self.modifier_option {
                 if VALID_PARAM.is_match(removeparam) {
-                    utils::tokenize_to(&removeparam.to_ascii_lowercase(), &mut tokens);
+                    utils::tokenize_to(&removeparam.to_ascii_lowercase(), tokens_buffer);
                 }
             }
         }
 
         // If we got no tokens for the filter/hostname part, then we will dispatch
         // this filter in multiple buckets based on the domains option.
-        if tokens.is_empty() && self.opt_domains.is_some() && self.opt_not_domains.is_none() {
+        if tokens_buffer.is_empty() && self.opt_domains.is_some() && self.opt_not_domains.is_none()
+        {
             if let Some(opt_domains) = self.opt_domains.as_ref() {
                 if !opt_domains.is_empty() {
-                    return FilterTokens::OptDomains(opt_domains.clone());
+                    return FilterTokens::OptDomains(opt_domains);
                 }
             }
             FilterTokens::Empty
         } else {
             // Add optional token for protocol
             if self.for_http() && !self.for_https() {
-                tokens.push(utils::fast_hash("http"));
+                tokens_buffer.push(utils::fast_hash("http"));
             } else if self.for_https() && !self.for_http() {
-                tokens.push(utils::fast_hash("https"));
+                tokens_buffer.push(utils::fast_hash("https"));
             }
 
-            // Remake a vector to drop extra capacity.
-            let mut t = Vec::with_capacity(tokens.len());
-            t.extend(tokens);
-            FilterTokens::Other(t)
+            FilterTokens::Other(tokens_buffer.as_slice())
+        }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn matches_test(&self, request: &request::Request) -> bool {
+        let filter_set = crate::FilterSet::new_with_rules(vec![self.clone()], vec![], true);
+        let engine = crate::Engine::from_filter_set(filter_set, true);
+
+        if self.is_exception() {
+            engine.check_network_request_exceptions(request)
+        } else {
+            engine.check_network_request(request).matched
         }
     }
 }
@@ -979,35 +986,8 @@ impl fmt::Display for NetworkFilter {
     }
 }
 
-pub trait NetworkMatchable {
+pub(crate) trait NetworkMatchable {
     fn matches(&self, request: &request::Request, regex_manager: &mut RegexManager) -> bool;
-
-    #[cfg(test)]
-    fn matches_test(&self, request: &request::Request) -> bool;
-}
-
-impl NetworkMatchable for NetworkFilter {
-    fn matches(&self, request: &request::Request, regex_manager: &mut RegexManager) -> bool {
-        use crate::filters::network_matchers::{
-            check_excluded_domains, check_included_domains, check_options, check_pattern,
-        };
-        check_options(self.mask, request)
-            && check_included_domains(self.opt_domains.as_deref(), request)
-            && check_excluded_domains(self.opt_not_domains.as_deref(), request)
-            && check_pattern(
-                self.mask,
-                self.filter.iter(),
-                self.hostname.as_deref(),
-                (self as *const NetworkFilter) as u64,
-                request,
-                regex_manager,
-            )
-    }
-
-    #[cfg(test)]
-    fn matches_test(&self, request: &request::Request) -> bool {
-        self.matches(request, &mut RegexManager::default())
-    }
 }
 
 // ---------------------------------------------------------------------------

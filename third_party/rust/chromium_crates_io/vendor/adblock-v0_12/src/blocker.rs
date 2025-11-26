@@ -79,6 +79,11 @@ pub struct Blocker {
     pub(crate) filter_data_context: FilterDataContextRef,
 }
 
+#[cfg(feature = "single-thread")]
+pub(crate) type RegexManagerRef<'a> = std::cell::RefMut<'a, RegexManager>;
+#[cfg(not(feature = "single-thread"))]
+pub(crate) type RegexManagerRef<'a> = std::sync::MutexGuard<'a, RegexManager>;
+
 impl Blocker {
     /// Decide if a network request (usually from WebRequest API) should be
     /// blocked, redirected or allowed.
@@ -130,10 +135,14 @@ impl Blocker {
         self.get_list(NetworkFilterListId::TaggedFiltersAll)
     }
 
-    #[cfg(feature = "single-thread")]
-    fn borrow_regex_manager(&self) -> std::cell::RefMut<'_, RegexManager> {
+    /// Borrow mutable reference to the regex manager for the ['Blocker`].
+    /// Only one caller can borrow the regex manager at a time.
+    pub(crate) fn borrow_regex_manager(&self) -> RegexManagerRef<'_> {
+        #[cfg(feature = "single-thread")]
         #[allow(unused_mut)]
         let mut manager = self.regex_manager.borrow_mut();
+        #[cfg(not(feature = "single-thread"))]
+        let mut manager = self.regex_manager.lock().unwrap();
 
         #[cfg(not(target_arch = "wasm32"))]
         manager.update_time();
@@ -141,17 +150,18 @@ impl Blocker {
         manager
     }
 
-    #[cfg(not(feature = "single-thread"))]
-    fn borrow_regex_manager(&self) -> std::sync::MutexGuard<'_, RegexManager> {
-        let mut manager = self.regex_manager.lock().unwrap();
-        manager.update_time();
-        manager
-    }
-
     pub fn check_generic_hide(&self, hostname_request: &Request) -> bool {
         let mut regex_manager = self.borrow_regex_manager();
         self.generic_hide()
             .check(hostname_request, &HashSet::new(), &mut regex_manager)
+            .is_some()
+    }
+
+    #[cfg(test)]
+    pub(crate) fn check_exceptions(&self, request: &Request) -> bool {
+        let mut regex_manager = self.borrow_regex_manager();
+        self.exceptions()
+            .check(request, &HashSet::new(), &mut regex_manager)
             .is_some()
     }
 

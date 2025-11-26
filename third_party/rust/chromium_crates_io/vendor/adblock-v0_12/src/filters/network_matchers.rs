@@ -415,22 +415,6 @@ pub fn check_options(mask: NetworkFilterMask, request: &request::Request) -> boo
 }
 
 #[inline]
-pub fn check_included_domains(opt_domains: Option<&[Hash]>, request: &request::Request) -> bool {
-    // Source URL must be among these domains to match
-    if let Some(included_domains) = opt_domains.as_ref() {
-        if let Some(source_hashes) = request.source_hostname_hashes.as_ref() {
-            if source_hashes
-                .iter()
-                .all(|h| !utils::bin_lookup(included_domains, *h))
-            {
-                return false;
-            }
-        }
-    }
-    true
-}
-
-#[inline]
 pub fn check_included_domains_mapped(
     opt_domains: Option<&[u32]>,
     request: &request::Request,
@@ -446,27 +430,11 @@ pub fn check_included_domains_mapped(
             }) {
                 return false;
             }
+        } else {
+            // If there are domain restrictions but no source hostname, we can't apply the rule
+            return false;
         }
     }
-    true
-}
-
-#[inline]
-pub fn check_excluded_domains(
-    opt_not_domains: Option<&[Hash]>,
-    request: &request::Request,
-) -> bool {
-    if let Some(excluded_domains) = opt_not_domains.as_ref() {
-        if let Some(source_hashes) = request.source_hostname_hashes.as_ref() {
-            if source_hashes
-                .iter()
-                .any(|h| utils::bin_lookup(excluded_domains, *h))
-            {
-                return false;
-            }
-        }
-    }
-
     true
 }
 
@@ -485,6 +453,10 @@ pub fn check_excluded_domains_mapped(
             }) {
                 return false;
             }
+        } else {
+            // If there are domain restrictions but no source hostname
+            // (i.e. about:blank), apply the rule anyway.
+            return true;
         }
     }
 

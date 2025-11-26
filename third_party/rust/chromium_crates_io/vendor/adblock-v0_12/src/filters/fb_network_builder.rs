@@ -6,11 +6,12 @@ use flatbuffers::WIPOffset;
 
 use crate::filters::fb_builder::EngineFlatBuilder;
 use crate::filters::network::{FilterTokens, NetworkFilter};
+use crate::filters::token_selector::TokenSelector;
+use crate::utils::TokensBuffer;
 
 use crate::filters::network::NetworkFilterMaskHelper;
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapBuilder;
 use crate::flatbuffers::containers::flat_serialize::{FlatBuilder, FlatSerialize, WIPFlatVec};
-use crate::network_filter_list::token_histogram;
 use crate::optimizer;
 use crate::utils::{to_short_hash, Hash, ShortHash};
 
@@ -129,25 +130,15 @@ impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkFilterListBuilder {
         rule_list: Self,
         builder: &mut EngineFlatBuilder<'a>,
     ) -> WIPOffset<fb::NetworkFilterList<'a>> {
-        let mut filter_map = HashMap::<ShortHash, Vec<WIPOffset<fb::NetworkFilter<'a>>>>::new();
+        let mut filter_map_builder = FlatMultiMapBuilder::with_capacity(rule_list.filters.len());
 
         let mut optimizable = HashMap::<ShortHash, Vec<NetworkFilter>>::new();
 
-        // Compute tokens for all filters
-        let filter_tokens: Vec<_> = rule_list
-            .filters
-            .into_iter()
-            .map(|filter| {
-                let tokens = filter.get_tokens_optimized();
-                (filter, tokens)
-            })
-            .collect();
-
-        // compute the tokens' frequency histogram
-        let (total_number_of_tokens, tokens_histogram) = token_histogram(&filter_tokens);
+        let mut token_frequencies = TokenSelector::new(rule_list.filters.len());
+        let mut tokens_buffer = TokensBuffer::default();
 
         {
-            for (network_filter, multi_tokens) in filter_tokens.into_iter() {
+            for network_filter in rule_list.filters {
                 let flat_filter = if !rule_list.optimize
                     || !optimizer::is_filter_optimizable_by_patterns(&network_filter)
                 {
@@ -156,46 +147,34 @@ impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkFilterListBuilder {
                     None
                 };
 
-                let mut store_filter = |token: ShortHash| {
+                let mut store_filter = |token: Hash| {
+                    let short_token = to_short_hash(token);
                     if let Some(flat_filter) = flat_filter {
-                        filter_map.entry(token).or_default().push(flat_filter);
+                        filter_map_builder.insert(short_token, flat_filter);
                     } else {
                         optimizable
-                            .entry(token)
+                            .entry(short_token)
                             .or_default()
                             .push(network_filter.clone());
                     }
                 };
 
+                let multi_tokens = network_filter.get_tokens(&mut tokens_buffer);
                 match multi_tokens {
                     FilterTokens::Empty => {
-                        // No tokens, skip this filter
+                        // No tokens, add to fallback bucket (token 0)
+                        store_filter(0);
                     }
                     FilterTokens::OptDomains(opt_domains) => {
                         // For OptDomains, each domain is treated as a separate token group
                         for &token in opt_domains.iter() {
-                            store_filter(to_short_hash(token));
+                            store_filter(token);
+                            token_frequencies.record_usage(token);
                         }
                     }
                     FilterTokens::Other(tokens) => {
-                        // For Other tokens, find the best token from the group
-                        let mut best_token: ShortHash = 0;
-                        let mut min_count = total_number_of_tokens + 1;
-                        for &token in tokens.iter() {
-                            let token = to_short_hash(token);
-                            match tokens_histogram.get(&token) {
-                                None => {
-                                    min_count = 0;
-                                    best_token = token
-                                }
-                                Some(&count) if count < min_count => {
-                                    min_count = count;
-                                    best_token = token
-                                }
-                                _ => {}
-                            }
-                        }
-
+                        let best_token = token_frequencies.select_least_used_token(tokens);
+                        token_frequencies.record_usage(best_token);
                         store_filter(best_token);
                     }
                 }
@@ -212,7 +191,7 @@ impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkFilterListBuilder {
 
                 for filter in optimized {
                     let flat_filter = FlatSerialize::serialize(&filter, builder);
-                    filter_map.entry(token).or_default().push(flat_filter);
+                    filter_map_builder.insert(token, flat_filter);
                 }
             }
         } else {
@@ -222,8 +201,7 @@ impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for NetworkFilterListBuilder {
             );
         }
 
-        let flat_filter_map_builder = FlatMultiMapBuilder::from_filter_map(filter_map);
-        let flat_filter_map = FlatMultiMapBuilder::finish(flat_filter_map_builder, builder);
+        let flat_filter_map = FlatMultiMapBuilder::finish(filter_map_builder, builder);
 
         fb::NetworkFilterList::create(
             builder.raw_builder(),
