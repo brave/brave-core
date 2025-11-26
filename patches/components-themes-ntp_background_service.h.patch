@@ -1,5 +1,5 @@
 diff --git a/components/themes/ntp_background_service.h b/components/themes/ntp_background_service.h
-index 6e9314532e83e67b10165137fc4737b8dd707b7b..172041b3e6cdf87ad2c5653b2376d8f5822f14b5 100644
+index 422a2845ff7da820ef902166f3d7fa2c2f933024..a53e1879b16e6b24643f46812fbe4692b6fbeff8 100644
 --- a/components/themes/ntp_background_service.h
 +++ b/components/themes/ntp_background_service.h
 @@ -175,7 +175,7 @@ class NtpBackgroundService : public KeyedService {

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index eb6f8d038baa648f968c4e10d4607cd6f0409b80..6427f399bf8c29bcec4689f2149d4bfbfdb5853a 100644
+index dc68f422ce8af76e4304167385989bb01f7cb2f5..36306322616fa1eef269341e17d7e82177c3ce00 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -114,6 +114,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
+@@ -115,6 +115,7 @@ void RealtimeAnalyser::GetFloatFrequencyData(DOMFloat32Array* destination_array,
      const float* source = magnitude_buffer_.Data();
      float* destination = destination_array->Data();
  
@@ -10,7 +10,7 @@ index eb6f8d038baa648f968c4e10d4607cd6f0409b80..6427f399bf8c29bcec4689f2149d4bfb
      for (unsigned i = 0; i < len; ++i) {
        const float linear_value = UNSAFE_TODO(source[i]);
        const double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -149,6 +150,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
+@@ -150,6 +151,7 @@ void RealtimeAnalyser::GetByteFrequencyData(DOMUint8Array* destination_array,
      const float* source = magnitude_buffer_.Data();
      unsigned char* destination = destination_array->Data();
  
@@ -18,7 +18,7 @@ index eb6f8d038baa648f968c4e10d4607cd6f0409b80..6427f399bf8c29bcec4689f2149d4bfb
      for (unsigned i = 0; i < len; ++i) {
        const float linear_value = UNSAFE_TODO(source[i]);
        const double db_mag = audio_utilities::LinearToDecibels(linear_value);
-@@ -182,6 +184,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -183,6 +185,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
  
      const unsigned write_index = GetWriteIndex();
  
@@ -26,7 +26,7 @@ index eb6f8d038baa648f968c4e10d4607cd6f0409b80..6427f399bf8c29bcec4689f2149d4bfb
      for (unsigned i = 0; i < len; ++i) {
        // Buffer access is protected due to modulo operation.
        float value = UNSAFE_TODO(
-@@ -209,6 +212,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+@@ -210,6 +213,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
  
      const unsigned write_index = GetWriteIndex();
  

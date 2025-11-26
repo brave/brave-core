@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc b/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
-index 9b081d7aa87d1c092b0a29039bdeb0023517333b..be48b82fec56ff0701134c8c9010440876d7b140 100644
+index cf981e70ee4c43fd4f9a195c7839c9e3cb7fc956..22dca5f17f8b18a49dbc8e577898280ad0d0788b 100644
 --- a/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
 +++ b/chrome/browser/spellchecker/spellcheck_hunspell_dictionary.cc
-@@ -277,7 +277,7 @@ GURL SpellcheckHunspellDictionary::GetDictionaryURL() {
+@@ -278,7 +278,7 @@ GURL SpellcheckHunspellDictionary::GetDictionaryURL() {
    DCHECK(!bdict_file.empty());
  
    static const char kDownloadServerUrl[] =

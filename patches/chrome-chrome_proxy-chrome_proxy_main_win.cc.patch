@@ -1,8 +1,8 @@
 diff --git a/chrome/chrome_proxy/chrome_proxy_main_win.cc b/chrome/chrome_proxy/chrome_proxy_main_win.cc
-index 96b9fa00f3f053348cdef2f5c87ba959d1053768..cd38a21c5a8ac18248a8e2ca95221aab703cdbd8 100644
+index 4fcbf2229155734a3cdceabe76184f69266678de..b48350a29f2728e8de579e97a404617b69015f95 100644
 --- a/chrome/chrome_proxy/chrome_proxy_main_win.cc
 +++ b/chrome/chrome_proxy/chrome_proxy_main_win.cc
-@@ -14,7 +14,10 @@
+@@ -15,7 +15,10 @@
  namespace {
  
  constexpr base::FilePath::CharType kChromeExecutable[] =

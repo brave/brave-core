@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
-index 2ad42072cf150ad9e9fd52128fe7b5791a0f4bb8..4db2f0dd93e327550ef438717e9305088d94d1b4 100644
+index 534277a85ae07f59ea9fabdd98b7ad411d18e5d0..a84d9304fafa68e0a68315e9a66d6a154ab2358d 100644
 --- a/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 +++ b/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
 @@ -63,6 +63,7 @@ DOMPluginArray::DOMPluginArray(LocalDOMWindow* window) : window_(window) {

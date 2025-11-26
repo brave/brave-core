@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index c6203c87b6ed3e6b8e702f8e8269a9c9c7f51e76..0d9143605285db25a0d5817397826cb83aee542c 100644
+index 353f0f10e4d61277fc7f1938c096355ff867f20c..476093d831b0362837b2e8377ab6b7ac1a45878a 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
 @@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {
@@ -10,7 +10,7 @@ index c6203c87b6ed3e6b8e702f8e8269a9c9c7f51e76..0d9143605285db25a0d5817397826cb8
          {prefs::kManagedAutomaticFullscreenAllowedForUrls,
           ContentSettingsType::AUTOMATIC_FULLSCREEN, CONTENT_SETTING_ALLOW},
          {prefs::kManagedAutomaticFullscreenBlockedForUrls,
-@@ -172,6 +173,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+@@ -180,6 +181,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {
@@ -18,7 +18,7 @@ index c6203c87b6ed3e6b8e702f8e8269a9c9c7f51e76..0d9143605285db25a0d5817397826cb8
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
      prefs::kManagedAutomaticFullscreenBlockedForUrls,
      prefs::kManagedAutoSelectCertificateForUrls,
-@@ -240,6 +242,7 @@ constexpr const char* kManagedPrefs[] = {
+@@ -252,6 +254,7 @@ constexpr const char* kManagedPrefs[] = {
  // the preference default content settings. If a default content settings type
  // is managed any user defined exceptions (patterns) for this type are ignored.
  constexpr const char* kManagedDefaultPrefs[] = {
@@ -26,7 +26,7 @@ index c6203c87b6ed3e6b8e702f8e8269a9c9c7f51e76..0d9143605285db25a0d5817397826cb8
      prefs::kManagedDefaultAdsSetting,
      prefs::kManagedDefaultClipboardSetting,
      prefs::kManagedDefaultCookiesSetting,
-@@ -335,6 +338,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+@@ -348,6 +351,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
  // static
  const PolicyProvider::PrefsForManagedDefaultMapEntry
      PolicyProvider::kPrefsForManagedDefault[] = {

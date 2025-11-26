@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 424c516ea1fbdb014e6588cd732037ca32409e47..b0c20fef822e8305dd804a1f94965265e0999cb6 100644
+index 661a6389686a4edfbaa06c9b4b940a6c4606475c..32554ef95f549693e11e1302d62e4b070102d4f5 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -697,6 +697,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -698,6 +698,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,7 +10,7 @@ index 424c516ea1fbdb014e6588cd732037ca32409e47..b0c20fef822e8305dd804a1f94965265
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1172,6 +1173,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1174,6 +1175,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 11/2025.
    registry->RegisterListPref(kReaderModeRecentlyUsedTimestampsPref);

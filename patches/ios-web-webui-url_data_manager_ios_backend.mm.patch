@@ -1,8 +1,8 @@
 diff --git a/ios/web/webui/url_data_manager_ios_backend.mm b/ios/web/webui/url_data_manager_ios_backend.mm
-index 4049fe0ca502f3a39a9d1c97bb7e278f58efe089..c46e52c8df6d50b3e4fe130a7e395e19bb356ea0 100644
+index d43953638571f34eead0b1ae102013383d381642..23053a082cf1efafc0b5df9cb2cbc98609be43b8 100644
 --- a/ios/web/webui/url_data_manager_ios_backend.mm
 +++ b/ios/web/webui/url_data_manager_ios_backend.mm
-@@ -294,7 +294,7 @@ void URLRequestChromeJob::GetResponseInfo(net::HttpResponseInfo* info) {
+@@ -346,7 +346,7 @@ void URLRequestChromeJob::GetResponseInfo(net::HttpResponseInfo* info) {
    // that is compatible with a given WebUI URL, and append it to the existing
    // response headers.
    if (add_content_security_policy_) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
-index 1ca569f4c6e201abf074d578cb3e286fab58d150..bfc64653187d1bff78acf7d59025158c56fed83e 100644
+index 080ee35ddc216002cb766373095eb2c85a639158..18f9b41a5d251397539e277a0a97e260811ac93a 100644
 --- a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
 +++ b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
-@@ -582,6 +582,7 @@ void PopulateChromeWebUIFrameInterfaceBrokersTrustedPartsDesktop(
+@@ -604,6 +604,7 @@ void PopulateChromeWebUIFrameInterfaceBrokersTrustedPartsDesktop(
  
    registry
        .ForWebUI<settings::SettingsUI>()

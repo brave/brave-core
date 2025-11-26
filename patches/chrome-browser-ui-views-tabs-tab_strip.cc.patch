@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 09b3d2ecfff2115c1472b2189a1484af9d713f04..2d48f948d6a84e441572d483e002e7929d31763a 100644
+index e517c65d9fb3bdf031e5eb9ba8f6838c98be4b4d..2d386d5adf574e3a423e00ddce63d6df869bbf99 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -548,6 +548,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -544,6 +544,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
@@ -10,7 +10,7 @@ index 09b3d2ecfff2115c1472b2189a1484af9d713f04..2d48f948d6a84e441572d483e002e792
      CHECK(!views.empty()) << "The views vector must not be empty.";
  
      std::vector<gfx::Rect> bounds;
-@@ -896,6 +897,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -892,6 +893,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
@@ -18,7 +18,7 @@ index 09b3d2ecfff2115c1472b2189a1484af9d713f04..2d48f948d6a84e441572d483e002e792
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
-@@ -1464,7 +1466,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1460,7 +1462,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.
