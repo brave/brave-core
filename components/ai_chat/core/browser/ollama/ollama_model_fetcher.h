@@ -92,7 +92,7 @@ class OllamaModelFetcher {
   // (https://github.com/brave/brave-core/commit/dadaf97432efd7d64289bd92b7d31cc6e16722f0)
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
-  raw_ptr<Delegate> delegate_;
+  raw_ptr<Delegate> delegate_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   std::map<std::string, PendingModelInfo> pending_models_;
   base::WeakPtrFactory<OllamaModelFetcher> weak_ptr_factory_{this};
