@@ -13,6 +13,11 @@ TESTING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
 def main() -> int:
   python3_dir_path = os.path.dirname(sys.executable)
   os.environ["PATH"] = python3_dir_path + os.pathsep + os.environ["PATH"]
+  os.environ['PYTHONPATH'] = ''
+
+  # set PYTHONPATH explicitly to avoid issues with src/third_party/depot_tools
+  brave_dir = os.path.join(TESTING_DIR, os.pardir, os.pardir, os.pardir)
+  os.environ['PYTHONPATH'] = os.path.join(brave_dir, 'script')
 
   args = [sys.executable, '-m', 'pytype', '.', '--keep-going', '--jobs=auto']
   try:
