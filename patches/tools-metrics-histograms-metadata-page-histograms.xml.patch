@@ -1,5 +1,5 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..ba4ead8730e39661cae9dabd71108872cf71d723 100644
+index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..9537ec4cb3338a379f80a07d939d9d0511e0f1ff 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
 @@ -507,6 +507,18 @@ chromium-metrics-reviews@google.com.
@@ -11,13 +11,13 @@ index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..ba4ead8730e39661cae9dabd71108872
 +-->
 +  <variant name=".AIChatPanel"/>
 +  <variant name=".CookieListOptInBubblePanel"/>
++  <variant name=".EmailAliasesPanel"/>
 +  <variant name=".PlaylistPanel"/>
 +  <variant name=".RewardsPanel"/>
 +  <variant name=".ShieldsPanel"/>
 +  <variant name=".TipPanel"/>
 +  <variant name=".VPNPanel"/>
 +  <variant name=".WalletPanel"/>
-+  <variant name=".EmailAliasesPanel"/>
  </variants>
  
  <!-- LINT.ThenChange(//tools/metrics/histograms/metadata/ui/histograms.xml:TopChromeWebUIName) -->
