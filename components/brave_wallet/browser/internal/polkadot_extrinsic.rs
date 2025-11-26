@@ -183,6 +183,15 @@ fn encode_unsigned_transfer_allow_death(
     buf
 }
 
+fn next_n<'a>(input: &mut &'a [u8], n: usize) -> Result<&'a [u8], Error> {
+    let Some((first, last)) = input.split_at_checked(n) else {
+        return Err(Error::InvalidLength);
+    };
+
+    *input = last;
+    Ok(first)
+}
+
 fn decode_unsigned_transfer_allow_death_impl(
     chain_metadata: &CxxPolkadotChainMetadata,
     mut input: &[u8],
@@ -195,46 +204,28 @@ fn decode_unsigned_transfer_allow_death_impl(
         return Err(Error::InvalidLength);
     };
 
-    if input.len() != len {
+    if input.len() != len || len < UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN {
         return Err(Error::InvalidLength);
     }
-
-    if len < UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN {
-        return Err(Error::InvalidLength);
-    }
-
-    if input[0] != EXTRINSIC_VERSION {
-        return Err(Error::InvalidMetadata);
-    }
-    input = &input[1..];
 
     let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
         chain_metadata;
 
-    if input[0] != *balances_pallet_index {
+    if next_n(&mut input, 4)?
+        != &[
+            EXTRINSIC_VERSION,
+            *balances_pallet_index,
+            *transfer_allow_death_call_index,
+            MULTIADDRESS_TYPE,
+        ]
+    {
         return Err(Error::InvalidMetadata);
-    }
-    input = &input[1..];
-
-    if input[0] != *transfer_allow_death_call_index {
-        return Err(Error::InvalidMetadata);
-    }
-    input = &input[1..];
-
-    if input[0] != MULTIADDRESS_TYPE {
-        return Err(Error::InvalidMetadata);
-    }
-    input = &input[1..];
-
-    // The above length check should've caught this, but we want to be explicit
-    // (pubkey length + 1 minimum byte required for send amount).
-    if input.len() < (32 + 1) {
-        return Err(Error::InvalidLength);
     }
 
     let mut recipient = [0_u8; 32];
-    recipient.copy_from_slice(&input[0..32]);
-    input = &input[32..];
+    recipient.copy_from_slice(next_n(&mut input, 32)?);
+
+    debug_assert!(!input.is_empty());
 
     let Ok(send_amount) = Compact::<u128>::decode(&mut input) else {
         return Err(Error::InvalidScale);
