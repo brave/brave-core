@@ -18,6 +18,7 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -57,7 +58,18 @@ class OAIAPIClient {
                               const std::optional<std::vector<std::string>>&
                                   stop_sequences = std::nullopt);
 
+  virtual void PerformRequestWithOAIMessages(
+      const mojom::CustomModelOptions& model_options,
+      std::vector<OAIMessage> messages,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback,
+      const std::optional<std::vector<std::string>>& stop_sequences =
+          std::nullopt);
+
   void ClearAllQueries();
+
+  static base::Value::List SerializeOAIMessages(
+      std::vector<OAIMessage> messages);
 
  protected:
   void SetAPIRequestHelperForTesting(
