@@ -274,6 +274,12 @@ TEST(BraveWalletUtilsTest, IsEndpointUsingBraveWalletProxy) {
   EXPECT_FALSE(
       IsEndpointUsingBraveWalletProxy(GURL("https://wallet.brave.io")));
   EXPECT_FALSE(IsEndpointUsingBraveWalletProxy(GURL("https://brave.com")));
+  EXPECT_TRUE(IsEndpointUsingBraveWalletProxy(
+      GURL("https://zcash.wallet.brave.software")));
+  EXPECT_FALSE(
+      IsEndpointUsingBraveWalletProxy(GURL("https://zcash.brave.software")));
+  EXPECT_FALSE(
+      IsEndpointUsingBraveWalletProxy(GURL("https://zcash.wallet.brave.soft")));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {

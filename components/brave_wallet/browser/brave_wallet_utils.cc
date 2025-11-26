@@ -193,7 +193,8 @@ bool EncodeStringArrayInternal(base::span<const StringType> input,
 bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
   return url.DomainIs("wallet.brave.com") ||
          url.DomainIs("wallet.bravesoftware.com") ||
-         url.DomainIs("wallet.s.brave.io");
+         url.DomainIs("wallet.s.brave.io") ||
+         url.DomainIs("wallet.brave.software");
 }
 
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
