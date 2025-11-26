@@ -1643,19 +1643,24 @@ void ConversationHandler::OnTitleGenerated(
 
 void ConversationHandler::CompleteGeneration(bool success) {
   is_request_in_progress_ = false;
+  OnAPIRequestInProgressChanged();
   if (success) {
     MaybePopPendingRequests();
-  }
-  if (!MaybeRespondToNextToolUseRequest()) {
-    // Inform tool providers that there are no more tool use requests to handle,
-    // that the loop is complete until a new message is submitted.
-    for (auto& tool_provider : tool_providers_) {
-      tool_provider->OnGenerationCompleteWithNoToolsToHandle();
+    if (!MaybeRespondToNextToolUseRequest()) {
+      // Inform tool providers that there are no more tool use requests to
+      // handle, that the loop is complete until a new message is submitted.
+      for (auto& tool_provider : tool_providers_) {
+        tool_provider->OnGenerationCompleteWithNoToolsToHandle();
+      }
+      // Remove internal task state now that it is complete. This marks the end
+      // of the tool use task loop.
+      tool_use_task_state_ = mojom::TaskState::kNone;
+      OnToolUseTaskStateChanged();
     }
-    // Remove internal task state now that it is complete. This marks the end
-    // of the tool use task loop.
-    tool_use_task_state_ = mojom::TaskState::kNone;
-    OnToolUseTaskStateChanged();
+  } else {
+    // Failure should stop any tool handling, and relay to ToolProviders because
+    // we can't resume. User will have to resubmit.
+    StopTask();
   }
 }
 
