@@ -28,4 +28,9 @@ brave_browser_ephemeral_storage_deps = [
 if (is_android) {
   brave_browser_ephemeral_storage_sources +=
       [ "//brave/browser/ephemeral_storage/android/ephemeral_storage_utils.cc" ]
+} else {
+  brave_browser_ephemeral_storage_sources += [
+    "//brave/browser/ephemeral_storage/ignore_onbeforeunload_web_contents_delegate.cc",
+    "//brave/browser/ephemeral_storage/ignore_onbeforeunload_web_contents_delegate.h",
+  ]
 }

@@ -6,14 +6,19 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "content/public/browser/web_contents_delegate.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
+
+class IgnoreOnBeforeUnloadWebContentsDelegate;
 #endif
 
 namespace content {
@@ -57,6 +62,8 @@ class BraveEphemeralStorageServiceDelegate :
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 #if !BUILDFLAG(IS_ANDROID)
   base::OnceClosure first_window_opened_callback_;
+  std::vector<std::unique_ptr<IgnoreOnBeforeUnloadWebContentsDelegate>>
+      web_contents_delegates_;
 #endif  // !BUILDFLAG(IS_ANDROID)
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;

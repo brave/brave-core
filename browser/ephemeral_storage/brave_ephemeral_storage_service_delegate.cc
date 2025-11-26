@@ -5,11 +5,13 @@
 
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -18,14 +20,13 @@
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
-#include "content/public/browser/dom_storage_context.h"
 #include "content/public/browser/render_process_host.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
@@ -33,9 +34,10 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ephemeral_storage/ignore_onbeforeunload_web_contents_delegate.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #else
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
@@ -45,31 +47,37 @@
 
 namespace {
 
-void CollectTabsToClose(
-    tabs::TabInterface* tab,
-    const std::string& etldplusone,
-    const int current_tab_index,
-    std::vector<std::pair<int, tabs::TabInterface*>>& tabs_to_close) {
+bool PrepareTabToClose(tabs::TabInterface* tab,
+                       const std::string& etldplusone
+#if !BUILDFLAG(IS_ANDROID)
+                       ,
+                       IgnoreOnBeforeUnloadWebContentsDelegate* delegate
+#endif  // !BUILDFLAG(IS_ANDROID)
+) {
   if (!tab) {
-    return;
+    return false;
   }
   content::WebContents* contents = tab->GetContents();
   if (!contents) {
-    return;
+    return false;
   }
 
   const auto tab_tld =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
   if (tab_tld.empty() || tab_tld != etldplusone) {
-    return;
+    return false;
   }
-
   if (auto* ephemeral_storage_tab_helper =
           ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
               contents)) {
-    tabs_to_close.emplace_back(current_tab_index, tab);
+#if !BUILDFLAG(IS_ANDROID)
+    contents->SetDelegate(delegate);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
     ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
+    return true;
   }
+  return false;
 }
 
 }  // namespace
@@ -167,6 +175,9 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
+#if !BUILDFLAG(IS_ANDROID)
+  web_contents_delegates_.clear();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
@@ -201,35 +212,37 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
   CHECK(profile);
 
 #if !BUILDFLAG(IS_ANDROID)
-
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    if (profile != browser->profile()) {
+  web_contents_delegates_.clear();
+  for (auto* browser : GetAllBrowserWindowInterfaces()) {
+    if (profile != browser->GetProfile()) {
       continue;
     }
-    BraveTabStripModel* tab_strip =
-        static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+    auto* tab_strip = browser->GetTabStripModel();
     if (!tab_strip) {
       continue;
     }
 
-    std::vector<std::pair<int, tabs::TabInterface*>> tabs_to_close;
+    std::vector<tabs::TabInterface*> tabs_to_close;
     for (auto tab_itr = tab_strip->begin(); tab_itr != tab_strip->end();
          ++tab_itr) {
-      tabs::TabInterface* tab = *tab_itr;
-      CollectTabsToClose(tab, ephemeral_domain,
-                         tab_strip->GetIndexOfWebContents(tab->GetContents()),
-                         tabs_to_close);
+      auto current_web_contents_delegate =
+          std::make_unique<IgnoreOnBeforeUnloadWebContentsDelegate>(tab_strip);
+      if (!PrepareTabToClose(*tab_itr, ephemeral_domain,
+                             current_web_contents_delegate.get())) {
+        continue;
+      }
+      web_contents_delegates_.emplace_back(
+          std::move(current_web_contents_delegate));
+      tabs_to_close.emplace_back(*tab_itr);
     }
-
-    for (auto& [index, tab] : tabs_to_close) {
-      tab->GetContents()->GetPrimaryMainFrame()->GetProcess()->Shutdown(0);
-      tab_strip->CloseWebContentsAt(index, 0);
+    for (auto* tab : tabs_to_close) {
+      tab->GetContents()->Close();
     }
   }
 #else
-  std::vector<std::pair<int, tabs::TabInterface*>> tabs_to_close;
   for (TabModel* model : TabModelList::models()) {
     const size_t tab_count = model->GetTabCount();
+    std::vector<tabs::TabInterface*> tabs_to_close;
     for (size_t index = 0; index < tab_count; index++) {
       auto* tab = model->GetTabAt(index);
       // Do not process tabs from other profiles.
@@ -237,15 +250,14 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
         continue;
       }
 
-      CollectTabsToClose(tab, ephemeral_domain, index, tabs_to_close);
+      if (!PrepareTabToClose(tab, ephemeral_domain)) {
+        continue;
+      }
+      tabs_to_close.emplace_back(tab);
     }
-  }
-  // Close all collected tabs
-  for (auto& [index, tab] : tabs_to_close) {
-    if (!tab) {
-      continue;
+    for (auto* tab : tabs_to_close) {
+      tab->GetContents()->Close();
     }
-    tab->Close();
   }
 #endif
 }
