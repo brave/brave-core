@@ -10,7 +10,12 @@ function normalizeText(text: string) {
 }
 
 export function matches(query: string, text: string) {
-  return normalizeText(text).includes(normalizeText(query))
+  // Note: Empty string should match anything.
+  if (query === '') {
+    return 0
+  }
+
+  return normalizeText(text).indexOf(normalizeText(query))
 }
 
 export function extractQuery(

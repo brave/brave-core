@@ -19,11 +19,8 @@ export interface Props<T> {
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
 
-  matchesQuery: (
-    query: string,
-    entry: T,
-    category?: string,
-  ) => boolean | undefined
+  // Note: -1 means no match.
+  matchesQuery: (query: string, entry: T, category?: string) => number
 
   children: (entry: T, category?: string) => React.ReactNode
 }
@@ -36,9 +33,18 @@ export default function FilterMenu<T>(props: Props<T>) {
         : props.categories
             .map((g) => ({
               ...g,
-              entries: g.entries.filter((entry) =>
-                props.matchesQuery(props.query!, entry, g.category),
-              ),
+              entries: g.entries
+                .map(
+                  (entry) =>
+                    [
+                      props.matchesQuery(props.query!, entry, g.category),
+                      entry,
+                    ] as const,
+                )
+                // Note: -1 means no match.
+                .filter(([rank]) => rank !== -1)
+                .sort((a, b) => a[0] - b[0])
+                .map(([_, entry]) => entry),
             }))
             .filter((g) => g.entries.length > 0),
     [props.query, props.categories],
