@@ -124,7 +124,7 @@ extension AdblockService {
   /// Get a stream of resource component updates
   @MainActor fileprivate func resourcesComponentStream() -> AsyncStream<URL> {
     return AsyncStream { continuation in
-      registerResourcesChanges { [weak self] _ in
+      registerResourcesChanges { [weak self] in
         guard let resourcesPath = self?.resourcesPath else {
           return
         }
