@@ -3,18 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.tabmodel;
-import org.chromium.chrome.browser.profiles.Profile;
+
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 
 /** Brave's super class for {@link TabCollectionTabModelImpl} */
+@NullMarked
 public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBridge {
     public BraveTabCollectionTabModelImplBase(Profile profile) {
-            super(profile);
+        super(profile);
     }
 
     /** Call from {@link TabCollectionTabModelImpl} will be redirected here via bytecode. */
@@ -32,16 +35,21 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
                 && isTabModelRestored()) {
             return true;
         }
+        if (parentTab == null) {
+            return false;
+        }
         // Otherwise just call parent.
-        return (boolean)
-                BraveReflectionUtil.invokeMethod(
-                        TabCollectionTabModelImpl.class,
-                        this,
-                        "shouldGroupWithParent",
-                        Tab.class,
-                        tab,
-                        Tab.class,
-                        parentTab);
+        @Nullable Boolean shouldGroupWithParent =
+                (Boolean)
+                        BraveReflectionUtil.invokeMethod(
+                                TabCollectionTabModelImpl.class,
+                                this,
+                                "shouldGroupWithParent",
+                                Tab.class,
+                                tab,
+                                Tab.class,
+                                parentTab);
+        return shouldGroupWithParent != null && shouldGroupWithParent;
     }
 
     /** Determine if a launch type is the result of linked being clicked. */
@@ -50,8 +58,10 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
     }
 
     private boolean isTabModelRestored() {
-        return (boolean)
-                BraveReflectionUtil.invokeMethod(
-                        TabCollectionTabModelImpl.class, this, "isTabModelRestored");
+        @Nullable Boolean isRestored =
+                (Boolean)
+                        BraveReflectionUtil.invokeMethod(
+                                TabCollectionTabModelImpl.class, this, "isTabModelRestored");
+        return isRestored != null && isRestored;
     }
 }

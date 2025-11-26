@@ -16,7 +16,8 @@ public class BraveTabCollectionTabModelImplClassAdapter extends BraveClassVisito
     public BraveTabCollectionTabModelImplClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeSuperName(sTabCollectionTabModelImplClassName, sBraveTabCollectionTabModelImplBaseClassName);
+        changeSuperName(
+                sTabCollectionTabModelImplClassName, sBraveTabCollectionTabModelImplBaseClassName);
 
         changeMethodOwner(
                 sTabCollectionTabModelImplClassName,
