@@ -655,6 +655,9 @@
 # because it depends on PageEmbeddingsService being created and that service
 # is not created because we disable kHistoryEmbeddings.
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+# This test fails because we disable Actor Safety Lists component.
+-ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
