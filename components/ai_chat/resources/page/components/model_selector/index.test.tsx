@@ -95,6 +95,9 @@ describe('ModelSelector', () => {
       options: {
         customModelOptions: {
           modelRequestName: 'Custom Model Request',
+          endpoint: {
+            url: 'http://localhost:8080',
+          },
         },
       },
     },
