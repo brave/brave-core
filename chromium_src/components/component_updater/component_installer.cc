@@ -49,6 +49,7 @@ void ComponentInstaller::Register(
           "hajigopbbjhghbfimgkfmpenfkclmohk",  // Amount Extraction Heuristic
                                                // Regexes
           "bjbcblmdcnggnibecjikpoljcgkbgphl",  // WASM TTS Engine
+          "ninodabcejpeglfjbkhdplaoglpcbffj",  // Actor Safety Lists
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
