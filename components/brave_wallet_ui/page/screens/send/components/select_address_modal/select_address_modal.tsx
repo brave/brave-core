@@ -620,8 +620,9 @@ export const AccountGroupItem = (props: AccountsListProps) => {
         account={account}
         onClick={() => onSelectAccount(account)}
         isDisabled={
-          !!selectedAsset?.isShielded
-          || account.accountId.uniqueKey === fromAccountId?.uniqueKey
+          // Show transparent address of the selected account if shielded asset choosed.
+          !selectedAsset?.isShielded
+          && account.accountId.uniqueKey === fromAccountId?.uniqueKey
         }
         isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
         addressOverride={
