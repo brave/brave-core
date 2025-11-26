@@ -37,6 +37,18 @@ extension BrowserViewController: TabManagerDelegate {
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }
+    tab.walletWebUIHelper = .init(
+      tab: tab,
+      showWalletBackUpHandler: { [weak self] in
+        self?.showWalletBackupUI()
+      },
+      unlockWalletHandler: { [weak self] in
+        self?.unlockWalletUI()
+      },
+      showOnboardingHandler: { [weak self] isNewWallet in
+        self?.showOnboarding(isNewWallet)
+      }
+    )
     let profile =
       tab.isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile
     let braveShieldsHelper: BraveShieldsTabHelper = .init(

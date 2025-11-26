@@ -36,7 +36,8 @@ void WalletPageHandler::UnlockWalletUI() {
 }
 
 void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
-  // TODO(https://github.com/brave/brave-browser/issues/50283):
-  // Create wallet handler bridge
-  NOTIMPLEMENTED();
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(web_state_)
+          ->bridge();
+  [bridge showOnboarding:is_new_wallet];
 }
