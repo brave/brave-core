@@ -2421,14 +2421,6 @@ public class BytecodeTest {
                 fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
-                        "mContainerView"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager",
-                        "mView"));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
                         "mStopShowingSpinner"));
         Assert.assertTrue(
