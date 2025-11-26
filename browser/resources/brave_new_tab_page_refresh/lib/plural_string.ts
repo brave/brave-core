@@ -9,8 +9,7 @@ import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy
 export function usePluralString(key: string, count: number) {
   const [pluralString, setPluralString] = React.useState('')
   React.useEffect(() => {
-    PluralStringProxyImpl
-      .getInstance()
+    PluralStringProxyImpl.getInstance()
       .getPluralString(key, count)
       .then(setPluralString)
   }, [key, count])

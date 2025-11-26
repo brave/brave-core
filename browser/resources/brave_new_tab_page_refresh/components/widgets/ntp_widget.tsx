@@ -13,7 +13,11 @@ interface Props {
 
 export function NtpWidget(props: Props) {
   return (
-    <div data-css-scope={style.scope} className='ntp-widget' data-theme='dark'>
+    <div
+      data-css-scope={style.scope}
+      className='ntp-widget'
+      data-theme='dark'
+    >
       {props.children}
     </div>
   )

@@ -13,12 +13,12 @@ type Router<T> = {
 
 export function addCallbackListeners<T>(
   router: Router<T>,
-  listeners: Partial<T>
+  listeners: Partial<T>,
 ) {
   const callbackIds = Object.entries(listeners).map(([key, value]) => {
     return router[key as keyof T].addListener(value)
   })
   return () => {
-    callbackIds.forEach(id => router.removeListener(id))
+    callbackIds.forEach((id) => router.removeListener(id))
   }
 }

@@ -8,7 +8,7 @@ const autoScrollTimeout = 700
 type ScrollDirection = 'forward' | 'back'
 
 interface DragHandlerCallbacks {
-  onScroll?: (direction: ScrollDirection ) => void
+  onScroll?: (direction: ScrollDirection) => void
   onDrop?: (dragFrom: number, dragTo: number) => void
 }
 
@@ -60,8 +60,9 @@ export function createTileDragHandler(options: DragHandlerOptions) {
 
     const container = event.currentTarget as HTMLElement
     const rect = container.getBoundingClientRect()
-    const tileElements =
-      [...container.querySelectorAll<HTMLElement>(options.tileSelector)]
+    const tileElements = [
+      ...container.querySelectorAll<HTMLElement>(options.tileSelector),
+    ]
 
     dragInfo = {
       container,
@@ -72,14 +73,14 @@ export function createTileDragHandler(options: DragHandlerOptions) {
           x: element.offsetLeft,
           y: element.offsetTop,
           width: element.offsetWidth,
-          height: element.offsetHeight
-        }
+          height: element.offsetHeight,
+        },
       })),
       dragFrom: -1,
       dragTo: -1,
       rect,
       scrollTimeout: 0,
-      rtl: container.matches(':dir(rtl)')
+      rtl: container.matches(':dir(rtl)'),
     }
 
     dragInfo.dragFrom = getTileIndex(event.clientX, event.clientY)
@@ -219,7 +220,7 @@ export function createTileDragHandler(options: DragHandlerOptions) {
     }
     return {
       x: clientX - dragInfo.rect.x + dragInfo.container.scrollLeft,
-      y: clientY - dragInfo.rect.y
+      y: clientY - dragInfo.rect.y,
     }
   }
 
@@ -245,9 +246,11 @@ export function createTileDragHandler(options: DragHandlerOptions) {
   return { observe, setCallbacks }
 }
 
-function inRect(point: { x: number, y: number }, rect: Rect) {
+function inRect(point: { x: number; y: number }, rect: Rect) {
   return (
-    point.x >= rect.x && point.x < rect.x + rect.width &&
-    point.y >= rect.y && point.y < rect.y + rect.height
+    point.x >= rect.x
+    && point.x < rect.x + rect.width
+    && point.y >= rect.y
+    && point.y < rect.y + rect.height
   )
 }

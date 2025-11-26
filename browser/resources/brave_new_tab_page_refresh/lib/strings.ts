@@ -22,7 +22,7 @@ declare global {
 }
 
 export type StringKey =
-  BraveNewTabPageStrings
+  | BraveNewTabPageStrings
   | BraveNewsStrings
   | BraveRewardsStrings
   | BraveOmniboxStrings

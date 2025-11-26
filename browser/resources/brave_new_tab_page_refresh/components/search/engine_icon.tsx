@@ -17,9 +17,19 @@ export function EngineIcon(props: Props) {
   const { engine } = props
   const iconName = getNamedIcon(engine.host)
   if (iconName) {
-    return <Icon name={iconName} className='engine-icon' />
+    return (
+      <Icon
+        name={iconName}
+        className='engine-icon'
+      />
+    )
   }
-  return <SafeImage src={engine.faviconUrl} className='engine-icon' />
+  return (
+    <SafeImage
+      src={engine.faviconUrl}
+      className='engine-icon'
+    />
+  )
 }
 
 function getNamedIcon(engineHost: string) {

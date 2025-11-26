@@ -5,12 +5,17 @@
 
 import * as React from 'react'
 
-import { defaultBackgroundState, getCurrentBackground } from '../state/background_state'
+import {
+  defaultBackgroundState,
+  getCurrentBackground,
+} from '../state/background_state'
 import { createBackgroundHandler } from '../state/background_handler'
 import { createStateProvider } from '../lib/state_provider'
 
-export const BackgroundProvider =
-  createStateProvider(defaultBackgroundState(), createBackgroundHandler)
+export const BackgroundProvider = createStateProvider(
+  defaultBackgroundState(),
+  createBackgroundHandler,
+)
 
 export const useBackgroundState = BackgroundProvider.useState
 export const useBackgroundActions = BackgroundProvider.useActions

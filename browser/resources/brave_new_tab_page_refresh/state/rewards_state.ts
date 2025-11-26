@@ -32,7 +32,7 @@ export function defaultRewardsState(): RewardsState {
     rewardsAdsViewed: null,
     minEarningsPreviousMonth: 0,
     payoutStatus: {},
-    tosUpdateRequired: false
+    tosUpdateRequired: false,
   }
 }
 
@@ -42,6 +42,6 @@ export interface RewardsActions {
 
 export function defaultRewardsActions(): RewardsActions {
   return {
-    setShowRewardsWidget(showRewardsWidget) {}
+    setShowRewardsWidget(showRewardsWidget) {},
   }
 }

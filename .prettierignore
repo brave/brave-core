@@ -43,7 +43,6 @@ snapcraft.yaml
 components/brave_wallet/resources/solana_web3_script.js
 
 # Ignore browser/resources sub folders that still need to be formatted
-/browser/resources/brave_new_tab_page_refresh/
 /browser/resources/settings/
 
 # Ignore components folders with a lot of formatting issues

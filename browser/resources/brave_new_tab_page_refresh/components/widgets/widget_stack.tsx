@@ -42,11 +42,16 @@ export function WidgetStack(props: Props) {
   const visibleTabs = React.useMemo(() => {
     return props.tabs.filter((tab) => {
       switch (tab) {
-        case 'rewards': return rewardsFeatureEnabled && showRewardsWidget
-        case 'talk': return talkFeatureEnabled && showTalkWidget
-        case 'vpn': return vpnFeatureEnabled && showVpnWidget
-        case 'stats': return showShieldsStats
-        case 'news': return newsFeatureEnabled && showNews
+        case 'rewards':
+          return rewardsFeatureEnabled && showRewardsWidget
+        case 'talk':
+          return talkFeatureEnabled && showTalkWidget
+        case 'vpn':
+          return vpnFeatureEnabled && showVpnWidget
+        case 'stats':
+          return showShieldsStats
+        case 'news':
+          return newsFeatureEnabled && showNews
       }
     })
   }, [
@@ -57,7 +62,7 @@ export function WidgetStack(props: Props) {
     vpnFeatureEnabled,
     showVpnWidget,
     showShieldsStats,
-    showNews
+    showNews,
   ])
 
   function renderTabButton(tab: TabName) {
@@ -77,21 +82,31 @@ export function WidgetStack(props: Props) {
 
   function renderProductIcon(tab: TabName) {
     switch (tab) {
-      case 'rewards': return <Icon name='product-bat-outline' />
-      case 'talk': return <Icon name='product-brave-talk' />
-      case 'vpn': return <Icon name='product-vpn' />
-      case 'stats': return <Icon name='bar-chart' />
-      case 'news': return <Icon name='product-brave-news' />
+      case 'rewards':
+        return <Icon name='product-bat-outline' />
+      case 'talk':
+        return <Icon name='product-brave-talk' />
+      case 'vpn':
+        return <Icon name='product-vpn' />
+      case 'stats':
+        return <Icon name='bar-chart' />
+      case 'news':
+        return <Icon name='product-brave-news' />
     }
   }
 
   function renderWidget() {
     switch (activeTab) {
-      case 'rewards': return <RewardsWidget />
-      case 'talk': return <TalkWidget />
-      case 'vpn': return <VpnWidget />
-      case 'stats': return <StatsWidget />
-      case 'news': return <NewsWidget />
+      case 'rewards':
+        return <RewardsWidget />
+      case 'talk':
+        return <TalkWidget />
+      case 'vpn':
+        return <VpnWidget />
+      case 'stats':
+        return <StatsWidget />
+      case 'news':
+        return <NewsWidget />
     }
   }
 
@@ -105,15 +120,10 @@ export function WidgetStack(props: Props) {
   return (
     <NtpWidget>
       <div data-css-scope={style.scope}>
-        {
-          visibleTabs.length > 1 &&
-            <div className='stack-tabs'>
-              {visibleTabs.map(renderTabButton)}
-            </div>
-        }
-        <div className='widget'>
-          {renderWidget()}
-        </div>
+        {visibleTabs.length > 1 && (
+          <div className='stack-tabs'>{visibleTabs.map(renderTabButton)}</div>
+        )}
+        <div className='widget'>{renderWidget()}</div>
       </div>
     </NtpWidget>
   )

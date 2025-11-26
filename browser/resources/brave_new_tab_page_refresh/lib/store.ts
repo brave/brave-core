@@ -9,7 +9,6 @@ type UpdateFunction<State> = (state: State) => Partial<State>
 
 // A simple object-state store.
 export interface Store<State> {
-
   // Returns the current state of the store.
   getState: () => State
 
@@ -21,8 +20,7 @@ export interface Store<State> {
   // Adds a listener that will be notified when the state store changes. The
   // listener will not be notified immediately. Returns a function that will
   // remove the listener from store.
-  addListener: (listener: Listener<State>) => (() => void)
-
+  addListener: (listener: Listener<State>) => () => void
 }
 
 export function createStore<State>(initialState: State): Store<State> {
@@ -52,14 +50,15 @@ export function createStore<State>(initialState: State): Store<State> {
         } catch (e) {
           // Rethrow error in a future turn to prevent listeners from
           // interfering with each other.
-          queueMicrotask(() => { throw e })
+          queueMicrotask(() => {
+            throw e
+          })
         }
       }
     })
   }
 
   return {
-
     getState() {
       return state
     },
@@ -71,7 +70,7 @@ export function createStore<State>(initialState: State): Store<State> {
       let didAssign = false
       for (const [key, value] of Object.entries(source)) {
         if (value !== undefined && (state as any)[key] !== value) {
-          (state as any)[key] = value
+          ;(state as any)[key] = value
           didAssign = true
         }
       }
@@ -87,7 +86,6 @@ export function createStore<State>(initialState: State): Store<State> {
       return () => {
         listeners.delete(listener)
       }
-    }
-
+    },
   }
 }

@@ -23,18 +23,14 @@ export function TalkWidget() {
           <Icon name='eye-off' /> {getString(S.NEW_TAB_HIDE_TALK_WIDGET_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
-      <div className='title'>
-        {getString(S.NEW_TAB_TALK_WIDGET_TITLE)}
-      </div>
+      <div className='title'>{getString(S.NEW_TAB_TALK_WIDGET_TITLE)}</div>
       <div className='content'>
         <div className='graphic' />
         <div className='text'>
           <div className='header'>
             {getString(S.NEW_TAB_TALK_DESCRIPTION_TITLE)}
           </div>
-          <div>
-            {getString(S.NEW_TAB_TALK_DESCRIPTION_TEXT)}
-          </div>
+          <div>{getString(S.NEW_TAB_TALK_DESCRIPTION_TEXT)}</div>
         </div>
         <div className='actions'>
           <Button

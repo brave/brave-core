@@ -15,12 +15,14 @@ import {
   SelectedBackgroundType,
   backgroundCSSValue,
   solidBackgrounds,
-  gradientBackgrounds } from '../../state/background_state'
+  gradientBackgrounds,
+} from '../../state/background_state'
 
 import {
   useBackgroundState,
   useCurrentBackground,
-  useBackgroundActions } from '../../context/background_context'
+  useBackgroundActions,
+} from '../../context/background_context'
 
 interface Props {
   backgroundType: SelectedBackgroundType
@@ -52,10 +54,14 @@ export function BackgroundTypePanel(props: Props) {
 
   function panelValues() {
     switch (type) {
-      case SelectedBackgroundType.kCustom: return customBackgrounds
-      case SelectedBackgroundType.kGradient: return gradientBackgrounds
-      case SelectedBackgroundType.kSolid: return solidBackgrounds
-      default: return []
+      case SelectedBackgroundType.kCustom:
+        return customBackgrounds
+      case SelectedBackgroundType.kGradient:
+        return gradientBackgrounds
+      case SelectedBackgroundType.kSolid:
+        return solidBackgrounds
+      default:
+        return []
     }
   }
 
@@ -78,64 +84,72 @@ export function BackgroundTypePanel(props: Props) {
 
   const values = panelValues()
 
-  return <>
-    <h4>
-      <button onClick={props.onClose}>
-        <Icon name='arrow-left' />
-        {panelTitle()}
-      </button>
-    </h4>
-    <div className='control-row'>
-      <label>{getString(S.NEW_TAB_RANDOMIZE_BACKGROUND_LABEL)}</label>
-      <Toggle
-        size='small'
-        checked={selectedBackground.type === type && !selectedBackground.value}
-        disabled={values.length === 0}
-        onChange={onRandomizeToggle}
-      />
-    </div>
-    <div className='background-options'>
-      {values.map((value) => {
-        const isSelected =
-          selectedBackground.type === type &&
-          selectedBackground.value === value
+  return (
+    <>
+      <h4>
+        <button onClick={props.onClose}>
+          <Icon name='arrow-left' />
+          {panelTitle()}
+        </button>
+      </h4>
+      <div className='control-row'>
+        <label>{getString(S.NEW_TAB_RANDOMIZE_BACKGROUND_LABEL)}</label>
+        <Toggle
+          size='small'
+          checked={
+            selectedBackground.type === type && !selectedBackground.value
+          }
+          disabled={values.length === 0}
+          onChange={onRandomizeToggle}
+        />
+      </div>
+      <div className='background-options'>
+        {values.map((value) => {
+          const isSelected =
+            selectedBackground.type === type
+            && selectedBackground.value === value
 
-        return (
-          <div
-            key={value}
-            className={classNames({
-              'background-option': true,
-              'can-remove': type === SelectedBackgroundType.kCustom
-            })}
-          >
-            <button onClick={() => { actions.selectBackground(type, value) }}>
-              <div
-                className='preview'
-                style={inlineCSSVars({
-                  '--preview-background': backgroundCSSValue(type, value)
-                })}
+          return (
+            <div
+              key={value}
+              className={classNames({
+                'background-option': true,
+                'can-remove': type === SelectedBackgroundType.kCustom,
+              })}
+            >
+              <button
+                onClick={() => {
+                  actions.selectBackground(type, value)
+                }}
               >
-                {
-                  isSelected &&
+                <div
+                  className='preview'
+                  style={inlineCSSVars({
+                    '--preview-background': backgroundCSSValue(type, value),
+                  })}
+                >
+                  {isSelected && (
                     <span className='selected-marker'>
                       <Icon name='check-normal' />
                     </span>
-                }
-              </div>
-            </button>
-            {
-              type === SelectedBackgroundType.kCustom &&
+                  )}
+                </div>
+              </button>
+              {type === SelectedBackgroundType.kCustom && (
                 <button
                   className='remove-image'
-                  onClick={() => { actions.removeCustomBackground(value) }}
+                  onClick={() => {
+                    actions.removeCustomBackground(value)
+                  }}
                 >
                   <Icon name='close' />
                 </button>
-            }
-          </div>
-        )
-      })}
-      {type === SelectedBackgroundType.kCustom && props.renderUploadOption()}
-    </div>
-  </>
+              )}
+            </div>
+          )
+        })}
+        {type === SelectedBackgroundType.kCustom && props.renderUploadOption()}
+      </div>
+    </>
+  )
 }

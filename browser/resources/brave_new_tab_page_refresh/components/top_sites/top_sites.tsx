@@ -7,7 +7,10 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { TopSite, TopSitesListKind } from '../../state/top_sites_state'
-import { useTopSitesState, useTopSitesActions } from '../../context/top_sites_context'
+import {
+  useTopSitesState,
+  useTopSitesActions,
+} from '../../context/top_sites_context'
 import { usePersistedJSON } from '$web-common/usePersistedState'
 import { getString } from '../../lib/strings'
 import { RemoveToast } from './remove_toast'
@@ -27,14 +30,17 @@ export function TopSites() {
 
   // TODO(https://github.com/brave/brave-browser/issues/45697): Use a pref to
   // persist the expanded state.
-  const [expanded, setExpanded] =
-    usePersistedJSON('ntp-top-sites-expanded', Boolean)
+  const [expanded, setExpanded] = usePersistedJSON(
+    'ntp-top-sites-expanded',
+    Boolean,
+  )
 
   const [showEditSite, setShowEditSite] = React.useState(false)
   const [editSite, setEditSite] = React.useState<TopSite | null>(null)
   const [showTopSitesMenu, setShowTopSitesMenu] = React.useState(false)
-  const [contextMenuSite, setContextMenuSite] =
-      React.useState<TopSite | null>(null)
+  const [contextMenuSite, setContextMenuSite] = React.useState<TopSite | null>(
+    null,
+  )
   const [showRemoveToast, setShowRemoveToast] = React.useState(false)
 
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -76,7 +82,10 @@ export function TopSites() {
   }
 
   return (
-    <div ref={rootRef} data-css-scope={style.scope}>
+    <div
+      ref={rootRef}
+      data-css-scope={style.scope}
+    >
       <div className='top-site-context-menu-anchor' />
       <div className='top-sites'>
         <div className='left-spacer' />
@@ -99,46 +108,48 @@ export function TopSites() {
           onClose={() => setShowTopSitesMenu(false)}
         >
           <div className='popover-menu'>
-            {
-              listKind === TopSitesListKind.kCustom &&
-                <button onClick={topSitesMenuAction(onAddTopSite)}>
-                  <Icon name='browser-add' />
-                  {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
-                </button>
-            }
-            {
-              tileCount > collapsedTileColumnCount &&
-                <button onClick={topSitesMenuAction(() => {
+            {listKind === TopSitesListKind.kCustom && (
+              <button onClick={topSitesMenuAction(onAddTopSite)}>
+                <Icon name='browser-add' />
+                {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
+              </button>
+            )}
+            {tileCount > collapsedTileColumnCount && (
+              <button
+                onClick={topSitesMenuAction(() => {
                   setExpanded(!expanded)
-                })}>
-                  <Icon name={expanded ? 'contract' : 'expand' } />
-                  {
-                    expanded
-                      ? getString(S.NEW_TAB_TOP_SITES_SHOW_LESS_LABEL)
-                      : getString(S.NEW_TAB_TOP_SITES_SHOW_MORE_LABEL)
-                  }
-                </button>
-            }
+                })}
+              >
+                <Icon name={expanded ? 'contract' : 'expand'} />
+                {expanded
+                  ? getString(S.NEW_TAB_TOP_SITES_SHOW_LESS_LABEL)
+                  : getString(S.NEW_TAB_TOP_SITES_SHOW_MORE_LABEL)}
+              </button>
+            )}
             <div className='menu-divider' />
-            {
-              listKind === TopSitesListKind.kCustom ?
-                <button onClick={topSitesMenuAction(() =>
-                  actions.setTopSitesListKind(TopSitesListKind.kMostVisited))
-                }>
-                  <Icon name='history' />
-                  {getString(S.NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL)}
-                </button> :
-                <button onClick={topSitesMenuAction(() =>
-                  actions.setTopSitesListKind(TopSitesListKind.kCustom))
-                }>
-                  <Icon name='star-outline' />
-                  {getString(S.NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL)}
-                </button>
-            }
+            {listKind === TopSitesListKind.kCustom ? (
+              <button
+                onClick={topSitesMenuAction(() =>
+                  actions.setTopSitesListKind(TopSitesListKind.kMostVisited),
+                )}
+              >
+                <Icon name='history' />
+                {getString(S.NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL)}
+              </button>
+            ) : (
+              <button
+                onClick={topSitesMenuAction(() =>
+                  actions.setTopSitesListKind(TopSitesListKind.kCustom),
+                )}
+              >
+                <Icon name='star-outline' />
+                {getString(S.NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL)}
+              </button>
+            )}
             <div className='menu-divider' />
-            <button onClick={topSitesMenuAction(() =>
-              actions.setShowTopSites(false))
-            }>
+            <button
+              onClick={topSitesMenuAction(() => actions.setShowTopSites(false))}
+            >
               <Icon name='eye-off' />
               {getString(S.NEW_TAB_HIDE_TOP_SITES_LABEL)}
             </button>
@@ -150,24 +161,27 @@ export function TopSites() {
           onClose={() => setContextMenuSite(null)}
         >
           <div className='popover-menu'>
-            {
-              listKind === TopSitesListKind.kCustom &&
-                <button onClick={() => {
+            {listKind === TopSitesListKind.kCustom && (
+              <button
+                onClick={() => {
                   setEditSite(contextMenuSite)
                   setShowEditSite(true)
                   setContextMenuSite(null)
-                }}>
-                  <Icon name='edit-pencil' />
-                  {getString(S.NEW_TAB_EDIT_TOP_SITE_LABEL)}
-                </button>
-            }
-            <button onClick={() => {
-              if (contextMenuSite) {
-                actions.removeTopSite(contextMenuSite.url)
-                setContextMenuSite(null)
-                setShowRemoveToast(true)
-              }
-            }}>
+                }}
+              >
+                <Icon name='edit-pencil' />
+                {getString(S.NEW_TAB_EDIT_TOP_SITE_LABEL)}
+              </button>
+            )}
+            <button
+              onClick={() => {
+                if (contextMenuSite) {
+                  actions.removeTopSite(contextMenuSite.url)
+                  setContextMenuSite(null)
+                  setShowRemoveToast(true)
+                }
+              }}
+            >
               <Icon name='trash' />
               {getString(S.NEW_TAB_REMOVE_TOP_SITE_LABEL)}
             </button>
@@ -184,7 +198,9 @@ export function TopSites() {
             }
             setShowEditSite(false)
           }}
-          onClose={() => { setShowEditSite(false)}}
+          onClose={() => {
+            setShowEditSite(false)
+          }}
         />
         <RemoveToast
           isOpen={showRemoveToast}

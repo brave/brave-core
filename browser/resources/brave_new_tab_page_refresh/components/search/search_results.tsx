@@ -19,13 +19,28 @@ function MatchImage(props: { match: AutocompleteMatch }) {
   const { imageUrl, iconUrl } = props.match
 
   if (props.match.description === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)) {
-    return <Icon name='product-brave-leo' className='brave-leo-icon' />
+    return (
+      <Icon
+        name='product-brave-leo'
+        className='brave-leo-icon'
+      />
+    )
   }
   if (!imageUrl) {
     if (!iconUrl.url) {
-      return <Icon name='search' className='search-icon' />
+      return (
+        <Icon
+          name='search'
+          className='search-icon'
+        />
+      )
     }
-    return <img className='icon' src={iconUrl.url} />
+    return (
+      <img
+        className='icon'
+        src={iconUrl.url}
+      />
+    )
   }
   if (imageUrl.startsWith('chrome:')) {
     return <img src={imageUrl} />
@@ -34,12 +49,12 @@ function MatchImage(props: { match: AutocompleteMatch }) {
 }
 
 function MatchText(props: { match: AutocompleteMatch }) {
-  return <>
-    {props.match.contents}
-    <span className='description'>
-      {props.match.description}
-    </span>
-  </>
+  return (
+    <>
+      {props.match.contents}
+      <span className='description'>{props.match.description}</span>
+    </>
+  )
 }
 
 interface URLResultOption {
@@ -67,10 +82,12 @@ export function SearchResults(props: Props) {
 
   const actions = useSearchActions()
 
-  const searchSuggestionsEnabled =
-    useSearchState((s) => s.searchSuggestionsEnabled)
-  const searchSuggestionsPromptDismissed =
-    useSearchState((s) => s.searchSuggestionsPromptDismissed)
+  const searchSuggestionsEnabled = useSearchState(
+    (s) => s.searchSuggestionsEnabled,
+  )
+  const searchSuggestionsPromptDismissed = useSearchState(
+    (s) => s.searchSuggestionsPromptDismissed,
+  )
 
   if (options.length === 0) {
     return null
@@ -83,9 +100,7 @@ export function SearchResults(props: Props) {
     return (
       <div className='suggestions-prompt'>
         <h4>{getString(S.NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE)}</h4>
-        <p>
-          {getString(S.NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT)}
-        </p>
+        <p>{getString(S.NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT)}</p>
         <div className='actions'>
           <Button
             onClick={() => {
@@ -121,13 +136,18 @@ export function SearchResults(props: Props) {
 
           if (option.kind === 'url') {
             return (
-              <button key={option.url} className={className} onClick={onClick}>
+              <button
+                key={option.url}
+                className={className}
+                onClick={onClick}
+              >
                 <span className='result-image'>
-                  <img className='favicon' src={faviconURL(option.url)} />
+                  <img
+                    className='favicon'
+                    src={faviconURL(option.url)}
+                  />
                 </span>
-                <span className='content'>
-                  {option.url}
-                </span>
+                <span className='content'>{option.url}</span>
               </button>
             )
           }

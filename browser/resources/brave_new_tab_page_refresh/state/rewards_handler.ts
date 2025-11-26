@@ -9,10 +9,14 @@ import { externalWalletFromExtensionData } from '../../../../components/brave_re
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { RewardsState, RewardsActions, defaultRewardsActions } from './rewards_state'
+import {
+  RewardsState,
+  RewardsActions,
+  defaultRewardsActions,
+} from './rewards_state'
 
 export function createRewardsHandler(
-  store: Store<RewardsState>
+  store: Store<RewardsState>,
 ): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
     store.update({ initialized: true })
@@ -36,7 +40,7 @@ export function createRewardsHandler(
     if (rewardsParameters) {
       store.update({
         rewardsExchangeRate: rewardsParameters.rate,
-        payoutStatus: rewardsParameters.payoutStatus
+        payoutStatus: rewardsParameters.payoutStatus,
       })
     }
   }
@@ -49,7 +53,7 @@ export function createRewardsHandler(
   async function updateExternalWallet() {
     const { externalWallet } = await rewardsHandler.getExternalWallet()
     store.update({
-      rewardsExternalWallet: externalWalletFromExtensionData(externalWallet)
+      rewardsExternalWallet: externalWalletFromExtensionData(externalWallet),
     })
   }
 
@@ -69,12 +73,12 @@ export function createRewardsHandler(
       })
       store.update({
         rewardsAdsViewed,
-        minEarningsPreviousMonth: statement.minEarningsPreviousMonth
+        minEarningsPreviousMonth: statement.minEarningsPreviousMonth,
       })
     } else {
       store.update({
         rewardsAdsViewed: null,
-        minEarningsPreviousMonth: 0
+        minEarningsPreviousMonth: 0,
       })
     }
   }
@@ -91,7 +95,7 @@ export function createRewardsHandler(
       updateRewardsEnabled(),
       updateExternalWallet(),
       updateParameters(),
-      updateTosUpdateRequired()
+      updateTosUpdateRequired(),
     ])
 
     store.update({ initialized: true })
@@ -101,7 +105,7 @@ export function createRewardsHandler(
   }
 
   newTabProxy.addListeners({
-    onRewardsStateUpdated: debounce(loadData, 10)
+    onRewardsStateUpdated: debounce(loadData, 10),
   })
 
   rewardsProxy.callbackRouter.onRewardsStateUpdated.addListener(loadData)
@@ -111,6 +115,6 @@ export function createRewardsHandler(
   return {
     setShowRewardsWidget(showRewardsWidget) {
       newTabHandler.setShowRewardsWidget(showRewardsWidget)
-    }
+    },
   }
 }

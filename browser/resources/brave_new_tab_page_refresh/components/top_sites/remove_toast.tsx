@@ -38,7 +38,11 @@ export function RemoveToast(props: Props) {
 
   return (
     <div data-css-scope={style.scope}>
-      <Popover className='toast' isOpen={props.isOpen} onClose={props.onClose}>
+      <Popover
+        className='toast'
+        isOpen={props.isOpen}
+        onClose={props.onClose}
+      >
         <div
           className='content'
           onFocus={cancelTimer}
@@ -51,7 +55,10 @@ export function RemoveToast(props: Props) {
           <Button onClick={props.onUndo}>
             {getString(S.NEW_TAB_UNDO_BUTTON_LABEL)}
           </Button>
-          <button className='close' onClick={props.onClose}>
+          <button
+            className='close'
+            onClick={props.onClose}
+          >
             <Icon name='close' />
           </button>
         </div>

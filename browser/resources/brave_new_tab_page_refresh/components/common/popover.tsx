@@ -39,7 +39,10 @@ export function Popover(props: Props) {
   }, [props.onClose])
 
   return (
-    <div ref={elementRef} className={props.className}>
+    <div
+      ref={elementRef}
+      className={props.className}
+    >
       {props.children}
     </div>
   )

@@ -7,8 +7,10 @@ import { defaultRewardsState } from '../state/rewards_state'
 import { createRewardsHandler } from '../state/rewards_handler'
 import { createStateProvider } from '../lib/state_provider'
 
-export const RewardsProvider =
-  createStateProvider(defaultRewardsState(), createRewardsHandler)
+export const RewardsProvider = createStateProvider(
+  defaultRewardsState(),
+  createRewardsHandler,
+)
 
 export const useRewardsState = RewardsProvider.useState
 export const useRewardsActions = RewardsProvider.useActions

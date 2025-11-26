@@ -9,15 +9,15 @@ import {
   TopSitesState,
   TopSitesActions,
   TopSite,
-  TopSitesListKind } from '../state/top_sites_state'
+  TopSitesListKind,
+} from '../state/top_sites_state'
 
 export function createTopSitesHandler(
-  store: Store<TopSitesState>
+  store: Store<TopSitesState>,
 ): TopSitesActions {
   let lastRemovedSite: TopSite | null = null
 
   store.update({
-
     initialized: true,
 
     showTopSites: true,
@@ -29,19 +29,18 @@ export function createTopSitesHandler(
         {
           title: 'Brave',
           favicon: 'https://brave.com/favicon.ico',
-          url: `https://brave.com/#${i}`
+          url: `https://brave.com/#${i}`,
         },
         {
           title: 'Wikipedia',
           favicon: 'https://en.wikipedia.org/favicon.ico',
-          url: `https://en.wikipedia.org/#${i}`
-        }
+          url: `https://en.wikipedia.org/#${i}`,
+        },
       ]
-    })
+    }),
   })
 
   return {
-
     setShowTopSites(showTopSites) {
       store.update({ showTopSites })
     },
@@ -55,8 +54,8 @@ export function createTopSitesHandler(
         return {
           topSites: [
             ...topSites,
-            { url, title, favicon: 'https://brave.com/favicon.ico'}
-          ]
+            { url, title, favicon: 'https://brave.com/favicon.ico' },
+          ],
         }
       })
     },
@@ -70,7 +69,7 @@ export function createTopSitesHandler(
               item.title = title
             }
             return item
-          })
+          }),
         }
       })
     },
@@ -84,7 +83,7 @@ export function createTopSitesHandler(
             }
             lastRemovedSite = topSite
             return false
-          })
+          }),
         }
       })
     },
@@ -107,6 +106,6 @@ export function createTopSitesHandler(
         }
         return { topSites: [...topSites] }
       })
-    }
+    },
   }
 }

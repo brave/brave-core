@@ -18,13 +18,15 @@ export interface SearchEngineInfo {
 // In order to isolate ourselves from the large number of properties in the
 // mojo type for testing/mocking purposes, we pick out only the fields that we
 // require.
-export type AutocompleteMatch = Pick<mojom.AutocompleteMatch,
-  'allowedToBeDefaultMatch' |
-  'contents' |
-  'description' |
-  'iconUrl' |
-  'imageUrl' |
-  'destinationUrl'>
+export type AutocompleteMatch = Pick<
+  mojom.AutocompleteMatch,
+  | 'allowedToBeDefaultMatch'
+  | 'contents'
+  | 'description'
+  | 'iconUrl'
+  | 'imageUrl'
+  | 'destinationUrl'
+>
 
 export interface SearchState {
   initialized: boolean
@@ -52,7 +54,7 @@ export function defaultSearchState(): SearchState {
     searchSuggestionsEnabled: true,
     searchSuggestionsPromptDismissed: false,
     activeSearchInputKey: '',
-    searchMatches: []
+    searchMatches: [],
   }
 }
 
@@ -96,6 +98,6 @@ export function defaultSearchActions(): SearchActions {
     openUrlFromSearch(url, event) {},
     reportSearchBoxHidden() {},
     reportSearchEngineUsage(engine) {},
-    reportSearchResultUsage(engine) {}
+    reportSearchResultUsage(engine) {},
   }
 }

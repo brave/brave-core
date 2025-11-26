@@ -75,9 +75,10 @@ export function VpnWidget() {
   }
 
   function renderConnectionGraphic() {
-    const image = connectionState === ConnectionState.CONNECTED
-      ? vpnShieldConnectedURL
-      : vpnShieldDisconnectedURL
+    const image =
+      connectionState === ConnectionState.CONNECTED
+        ? vpnShieldConnectedURL
+        : vpnShieldDisconnectedURL
 
     return <img src={image} />
   }
@@ -112,11 +113,9 @@ export function VpnWidget() {
           </button>
         </div>
         <div>
-          {
-            region.namePretty === region.country
-              ? getString(S.NEW_TAB_VPN_OPTIMAL_TEXT)
-              : region.namePretty
-          }
+          {region.namePretty === region.country
+            ? getString(S.NEW_TAB_VPN_OPTIMAL_TEXT)
+            : region.namePretty}
         </div>
       </div>
     )
@@ -132,11 +131,10 @@ export function VpnWidget() {
       <div
         className={classNames({
           'content': true,
-          'connected': connectionState === ConnectionState.CONNECTED
-        })}>
-        <div className='connection-graphic'>
-          {renderConnectionGraphic()}
-        </div>
+          'connected': connectionState === ConnectionState.CONNECTED,
+        })}
+      >
+        <div className='connection-graphic'>{renderConnectionGraphic()}</div>
         <div className='connection-info'>
           <div className='status'>{connectionStateText()}</div>
           {renderRegionInfo()}
@@ -144,8 +142,8 @@ export function VpnWidget() {
         <div className='connection-toggle'>
           <Toggle
             checked={
-              connectionState === ConnectionState.CONNECTED ||
-              connectionState === ConnectionState.CONNECTING
+              connectionState === ConnectionState.CONNECTED
+              || connectionState === ConnectionState.CONNECTING
             }
             onChange={() => actions.toggleVpnConnection()}
           />

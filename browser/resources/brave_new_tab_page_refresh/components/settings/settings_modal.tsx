@@ -23,12 +23,12 @@ import { getString } from '../../lib/strings'
 import { style } from './settings_modal.style'
 
 export type SettingsView =
-  'background' |
-  'search' |
-  'top-sites' |
-  'news' |
-  'clock' |
-  'widgets'
+  | 'background'
+  | 'search'
+  | 'top-sites'
+  | 'news'
+  | 'clock'
+  | 'widgets'
 
 interface Props {
   initialView: SettingsView | null
@@ -41,8 +41,9 @@ export function SettingsModal(props: Props) {
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
   const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
 
-  const [currentView, setCurrentView] =
-      React.useState<SettingsView>(props.initialView || 'background')
+  const [currentView, setCurrentView] = React.useState<SettingsView>(
+    props.initialView || 'background',
+  )
 
   React.useEffect(() => {
     if (props.isOpen) {
@@ -57,9 +58,12 @@ export function SettingsModal(props: Props) {
 
   function shouldShowView(view: SettingsView) {
     switch (view) {
-      case 'search': return searchFeatureEnabled
-      case 'news': return newsFeatureEnabled
-      default: return true
+      case 'search':
+        return searchFeatureEnabled
+      case 'news':
+        return newsFeatureEnabled
+      default:
+        return true
     }
   }
 
@@ -68,34 +72,52 @@ export function SettingsModal(props: Props) {
       return null
     }
     switch (currentView) {
-      case 'background': return <BackgroundPanel />
-      case 'search': return <SearchPanel />
-      case 'top-sites': return <TopSitesPanel />
-      case 'news': return null
-      case 'clock': return <ClockPanel />
-      case 'widgets': return <WidgetsPanel />
+      case 'background':
+        return <BackgroundPanel />
+      case 'search':
+        return <SearchPanel />
+      case 'top-sites':
+        return <TopSitesPanel />
+      case 'news':
+        return null
+      case 'clock':
+        return <ClockPanel />
+      case 'widgets':
+        return <WidgetsPanel />
     }
   }
 
   function getNavItemText(view: SettingsView) {
     switch (view) {
-      case 'background': return getString(S.NEW_TAB_BACKGROUND_SETTINGS_TITLE)
-      case 'search': return getString(S.NEW_TAB_SEARCH_SETTINGS_TITLE)
-      case 'top-sites': return getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)
-      case 'news': return getString(S.BRAVE_NEWS_SETTINGS_TITLE)
-      case 'clock': return getString(S.NEW_TAB_CLOCK_SETTINGS_TITLE)
-      case 'widgets': return getString(S.NEW_TAB_WIDGET_SETTINGS_TITLE)
+      case 'background':
+        return getString(S.NEW_TAB_BACKGROUND_SETTINGS_TITLE)
+      case 'search':
+        return getString(S.NEW_TAB_SEARCH_SETTINGS_TITLE)
+      case 'top-sites':
+        return getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)
+      case 'news':
+        return getString(S.BRAVE_NEWS_SETTINGS_TITLE)
+      case 'clock':
+        return getString(S.NEW_TAB_CLOCK_SETTINGS_TITLE)
+      case 'widgets':
+        return getString(S.NEW_TAB_WIDGET_SETTINGS_TITLE)
     }
   }
 
   function getNavItemIcon(view: SettingsView) {
     switch (view) {
-      case 'background': return <Icon name='image' />
-      case 'search': return <Icon name='search' />
-      case 'top-sites': return <Icon name='window-content' />
-      case 'news': return <Icon name='product-brave-news' />
-      case 'clock': return <Icon name='clock' />
-      case 'widgets': return <Icon name='browser-ntp-widget' />
+      case 'background':
+        return <Icon name='image' />
+      case 'search':
+        return <Icon name='search' />
+      case 'top-sites':
+        return <Icon name='window-content' />
+      case 'news':
+        return <Icon name='product-brave-news' />
+      case 'clock':
+        return <Icon name='clock' />
+      case 'widgets':
+        return <Icon name='browser-ntp-widget' />
     }
   }
 
@@ -128,9 +150,7 @@ export function SettingsModal(props: Props) {
         onClose={() => props.onClose()}
         backdropClickCloses={!braveNews.customizePage}
       >
-        <h3>
-          {getString(S.NEW_TAB_SETTINGS_TITLE)}
-        </h3>
+        <h3>{getString(S.NEW_TAB_SETTINGS_TITLE)}</h3>
         <div className='panel-body'>
           <nav>
             <Navigation>

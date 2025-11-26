@@ -9,11 +9,10 @@ import {
   VpnState,
   VpnActions,
   defaultVpnActions,
-  ConnectionState } from '../state/vpn_state'
+  ConnectionState,
+} from '../state/vpn_state'
 
-export function createVpnHandler(
-  store: Store<VpnState>
-): VpnActions {
+export function createVpnHandler(store: Store<VpnState>): VpnActions {
   store.update({
     initialized: true,
     vpnFeatureEnabled: true,
@@ -32,12 +31,11 @@ export function createVpnHandler(
       isAutomatic: false,
       smartRoutingProxyState: 'none',
       country: 'Brazil',
-      namePretty: 'Rio de Janeiro'
-    }
+      namePretty: 'Rio de Janeiro',
+    },
   })
 
   return {
-
     ...defaultVpnActions(),
 
     setShowVpnWidget(showVpnWidget) {
@@ -48,12 +46,12 @@ export function createVpnHandler(
       store.update((state) => {
         return {
           vpnConnectionState:
-            state.vpnConnectionState === ConnectionState.CONNECTED ||
-            state.vpnConnectionState === ConnectionState.CONNECTING
-                ? ConnectionState.DISCONNECTED
-                : ConnectionState.CONNECTED
+            state.vpnConnectionState === ConnectionState.CONNECTED
+            || state.vpnConnectionState === ConnectionState.CONNECTING
+              ? ConnectionState.DISCONNECTED
+              : ConnectionState.CONNECTED,
         }
       })
-    }
+    },
   }
 }

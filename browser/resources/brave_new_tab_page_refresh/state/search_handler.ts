@@ -13,7 +13,8 @@ import {
   SearchState,
   SearchActions,
   SearchEngineInfo,
-  defaultSearchActions } from './search_state'
+  defaultSearchActions,
+} from './search_state'
 
 const enabledSearchEnginesStorageKey = 'search-engines'
 
@@ -25,7 +26,7 @@ const googleSearchHost = 'www.google.com'
 
 function loadEnabledSearchEngines(
   availableEngines: SearchEngineInfo[],
-  defaultSearchEngine: string
+  defaultSearchEngine: string,
 ) {
   const set = new Set([defaultSearchEngine])
   const data = localStorage.getItem(enabledSearchEnginesStorageKey)
@@ -62,9 +63,7 @@ function storeEnabledSearchEngines(engines: Set<string>) {
   localStorage.setItem(enabledSearchEnginesStorageKey, JSON.stringify(record))
 }
 
-export function createSearchHandler(
-  store: Store<SearchState>
-): SearchActions {
+export function createSearchHandler(store: Store<SearchState>): SearchActions {
   if (!loadTimeData.getBoolean('ntpSearchFeatureEnabled')) {
     return defaultSearchActions()
   }
@@ -75,17 +74,19 @@ export function createSearchHandler(
 
   store.update({
     searchFeatureEnabled: true,
-    defaultSearchEngine
+    defaultSearchEngine,
   })
 
   async function updateSearchEngines() {
     const { searchEngines } =
-        await newTabProxy.handler.getAvailableSearchEngines()
+      await newTabProxy.handler.getAvailableSearchEngines()
 
     store.update({
       searchEngines,
-      enabledSearchEngines:
-        loadEnabledSearchEngines(searchEngines, defaultSearchEngine)
+      enabledSearchEngines: loadEnabledSearchEngines(
+        searchEngines,
+        defaultSearchEngine,
+      ),
     })
   }
 
@@ -94,12 +95,12 @@ export function createSearchHandler(
       { showSearchBox },
       { enabled: searchSuggestionsEnabled },
       { dismissed: searchSuggestionsPromptDismissed },
-      { engine: lastUsedSearchEngine }
+      { engine: lastUsedSearchEngine },
     ] = await Promise.all([
       newTabProxy.handler.getShowSearchBox(),
       newTabProxy.handler.getSearchSuggestionsEnabled(),
       newTabProxy.handler.getSearchSuggestionsPromptDismissed(),
-      newTabProxy.handler.getLastUsedSearchEngine()
+      newTabProxy.handler.getLastUsedSearchEngine(),
     ])
     if (deprecatedGoogleSearchHosts.includes(lastUsedSearchEngine)) {
       lastUsedSearchEngine = googleSearchHost
@@ -108,7 +109,7 @@ export function createSearchHandler(
       showSearchBox,
       searchSuggestionsEnabled,
       searchSuggestionsPromptDismissed,
-      lastUsedSearchEngine
+      lastUsedSearchEngine,
     })
   }
 
@@ -127,18 +128,15 @@ export function createSearchHandler(
         return match
       })
       store.update({ searchMatches })
-    }
+    },
   })
 
   newTabProxy.addListeners({
-    onSearchStateUpdated: debounce(updatePrefs, 10)
+    onSearchStateUpdated: debounce(updatePrefs, 10),
   })
 
   async function loadData() {
-    await Promise.all([
-      updateSearchEngines(),
-      updatePrefs()
-    ])
+    await Promise.all([updateSearchEngines(), updatePrefs()])
 
     store.update({ initialized: true })
   }
@@ -146,7 +144,6 @@ export function createSearchHandler(
   loadData()
 
   return {
-
     setShowSearchBox(showSearchBox) {
       store.update({ showSearchBox })
       newTabProxy.handler.setShowSearchBox(showSearchBox)
@@ -187,7 +184,7 @@ export function createSearchHandler(
         searchProxy.handler.stopAutocomplete(true)
         store.update({
           activeSearchInputKey: key,
-          searchMatches: []
+          searchMatches: [],
         })
       }
     },
@@ -209,14 +206,15 @@ export function createSearchHandler(
         return
       }
       searchProxy.handler.openAutocompleteMatch(
-          index,
-          match.destinationUrl,
-          true,
-          event.button,
-          event.altKey,
-          event.ctrlKey,
-          event.metaKey,
-          event.shiftKey)
+        index,
+        match.destinationUrl,
+        true,
+        event.button,
+        event.altKey,
+        event.ctrlKey,
+        event.metaKey,
+        event.shiftKey,
+      )
     },
 
     stopAutocomplete() {
@@ -232,7 +230,7 @@ export function createSearchHandler(
     },
 
     reportSearchBoxHidden() {
-      newTabProxy.handler.reportSearchBoxHidden();
+      newTabProxy.handler.reportSearchBoxHidden()
     },
 
     reportSearchEngineUsage(engine) {
@@ -247,6 +245,6 @@ export function createSearchHandler(
       if (searchEngine) {
         newTabProxy.handler.reportSearchResultUsage(searchEngine.prepopulateId)
       }
-    }
+    },
   }
 }

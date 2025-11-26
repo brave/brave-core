@@ -13,8 +13,10 @@ export class NewTabPageProxy {
   callbackRouter: mojom.NewTabPageCallbackRouter
   handler: mojom.NewTabPageHandlerRemote
 
-  constructor(callbackRouter: mojom.NewTabPageCallbackRouter,
-              handler: mojom.NewTabPageHandlerRemote) {
+  constructor(
+    callbackRouter: mojom.NewTabPageCallbackRouter,
+    handler: mojom.NewTabPageHandlerRemote,
+  ) {
     this.callbackRouter = callbackRouter
     this.handler = handler
   }

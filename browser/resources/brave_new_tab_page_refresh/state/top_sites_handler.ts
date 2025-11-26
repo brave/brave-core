@@ -5,33 +5,34 @@
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { TopSitesState, TopSitesActions, TopSitesListKind } from './top_sites_state'
+import {
+  TopSitesState,
+  TopSitesActions,
+  TopSitesListKind,
+} from './top_sites_state'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
 
 export function createTopSitesHandler(
-  store: Store<TopSitesState>
+  store: Store<TopSitesState>,
 ): TopSitesActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   let lastExcludedMostVisitedSite = ''
 
   store.update({
-    maxCustomTopSites: loadTimeData.getInteger('maxCustomTopSites')
+    maxCustomTopSites: loadTimeData.getInteger('maxCustomTopSites'),
   })
 
   async function updatePrefs() {
-    const [
-      { showTopSites },
-      { listKind }
-    ] = await Promise.all([
+    const [{ showTopSites }, { listKind }] = await Promise.all([
       handler.getShowTopSites(),
-      handler.getTopSitesListKind()
+      handler.getTopSitesListKind(),
     ])
 
     store.update({
       showTopSites,
-      topSitesListKind: listKind
+      topSitesListKind: listKind,
     })
   }
 
@@ -41,10 +42,7 @@ export function createTopSitesHandler(
   }
 
   async function loadData() {
-    await Promise.all([
-      updateTopSites(),
-      updatePrefs()
-    ])
+    await Promise.all([updateTopSites(), updatePrefs()])
 
     store.update({ initialized: true })
   }
@@ -54,7 +52,7 @@ export function createTopSitesHandler(
   }
 
   newTabProxy.addListeners({
-    onTopSitesUpdated: debounce(loadData, 10)
+    onTopSitesUpdated: debounce(loadData, 10),
   })
 
   document.addEventListener('visibilitychange', () => {
@@ -66,7 +64,6 @@ export function createTopSitesHandler(
   loadData()
 
   return {
-
     setShowTopSites(showTopSites) {
       handler.setShowTopSites(showTopSites)
     },
@@ -118,6 +115,6 @@ export function createTopSitesHandler(
         }
         return { topSites: [...topSites] }
       })
-    }
+    },
   }
 }

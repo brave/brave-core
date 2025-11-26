@@ -10,7 +10,6 @@ import { useTopSitesState } from '../context/top_sites_context'
 import { useRewardsState } from '../context/rewards_context'
 import { useVpnState } from '../context/vpn_context'
 
-
 // Returns a value indicating whether the search component is ready for layout
 // based on application state initialization status.
 export function useSearchLayoutReady() {

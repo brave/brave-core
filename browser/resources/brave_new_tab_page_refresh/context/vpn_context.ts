@@ -7,8 +7,10 @@ import { defaultVpnState } from '../state/vpn_state'
 import { createVpnHandler } from '../state/vpn_handler'
 import { createStateProvider } from '../lib/state_provider'
 
-export const VpnProvider =
-  createStateProvider(defaultVpnState(), createVpnHandler)
+export const VpnProvider = createStateProvider(
+  defaultVpnState(),
+  createVpnHandler,
+)
 
 export const useVpnState = VpnProvider.useState
 export const useVpnActions = VpnProvider.useActions

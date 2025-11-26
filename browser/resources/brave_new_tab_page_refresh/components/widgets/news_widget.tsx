@@ -24,21 +24,18 @@ export function NewsWidget() {
   return (
     <div data-css-scope={style.scope}>
       <WidgetMenu>
-        {
-          braveNews.isOptInPrefEnabled &&
-            <leo-menu-item onClick={() => braveNews.setCustomizePage('news')}>
-              <Icon name='tune' />
-              {getString(S.NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL)}
-            </leo-menu-item>
-        }
+        {braveNews.isOptInPrefEnabled && (
+          <leo-menu-item onClick={() => braveNews.setCustomizePage('news')}>
+            <Icon name='tune' />
+            {getString(S.NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL)}
+          </leo-menu-item>
+        )}
         <leo-menu-item onClick={() => braveNews.toggleBraveNewsOnNTP(false)}>
           <Icon name='disable-outline' />
           {getString(S.NEW_TAB_NEWS_DISABLE_BUTTON_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
-      <div className='title'>
-        {getString(S.NEW_TAB_NEWS_WIDGET_TITLE)}
-      </div>
+      <div className='title'>{getString(S.NEW_TAB_NEWS_WIDGET_TITLE)}</div>
       {braveNews.isOptInPrefEnabled ? <PeekItem /> : <OptIn />}
     </div>
   )
@@ -65,7 +62,10 @@ function PeekItem() {
   }
 
   return (
-    <Link url={peekItem.url.url} className='peek'>
+    <Link
+      url={peekItem.url.url}
+      className='peek'
+    >
       <SafeImage
         src={getNewsItemImage(peekItem)}
         targetSize={{ width: 71, height: 48 }}
@@ -75,13 +75,9 @@ function PeekItem() {
           <span>{getNewsPublisherName(peekItem)}</span>
           <span>•</span>
           {channelIcons[peekItem.categoryName] ?? channelIcons.default}
-          <span>
-            {getTranslatedChannelName(peekItem.categoryName)}
-          </span>
+          <span>{getTranslatedChannelName(peekItem.categoryName)}</span>
         </div>
-        <div className='item-title'>
-          {peekItem.title}
-        </div>
+        <div className='item-title'>{peekItem.title}</div>
       </div>
     </Link>
   )
@@ -92,13 +88,13 @@ function OptIn() {
   return (
     <div className='opt-in'>
       <div className='graphic' />
-      <div className='text'>
-        {getString(S.BRAVE_NEWS_INTRO_TITLE)}
-      </div>
+      <div className='text'>{getString(S.BRAVE_NEWS_INTRO_TITLE)}</div>
       <div className='actions'>
         <Button
           size='small'
-          onClick={() => { braveNews.toggleBraveNewsOnNTP(true) }}
+          onClick={() => {
+            braveNews.toggleBraveNewsOnNTP(true)
+          }}
         >
           {getString(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
         </Button>
@@ -108,7 +104,7 @@ function OptIn() {
 }
 
 function getPeekItem(
-  feedItems: mojom.FeedItemV2[]
+  feedItems: mojom.FeedItemV2[],
 ): mojom.FeedItemMetadata | null {
   if (!feedItems) {
     return null

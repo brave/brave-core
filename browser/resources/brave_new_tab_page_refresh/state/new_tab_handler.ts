@@ -9,36 +9,28 @@ import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
 import { NewTabState, NewTabActions } from './new_tab_state'
 
-export function createNewTabHandler(
-  store: Store<NewTabState>
-): NewTabActions {
+export function createNewTabHandler(store: Store<NewTabState>): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
 
   store.update({
     newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
-    talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled')
+    talkFeatureEnabled: loadTimeData.getBoolean('talkFeatureEnabled'),
   })
 
   async function updateClockPrefs() {
-    const [
-      { showClock },
-      { clockFormat }
-    ] = await Promise.all([
+    const [{ showClock }, { clockFormat }] = await Promise.all([
       handler.getShowClock(),
-      handler.getClockFormat()
+      handler.getClockFormat(),
     ])
 
     store.update({ showClock, clockFormat })
   }
 
   async function updateShieldsStats() {
-    const [
-      { showShieldsStats },
-      { shieldsStats }
-    ] = await Promise.all([
+    const [{ showShieldsStats }, { shieldsStats }] = await Promise.all([
       handler.getShowShieldsStats(),
-      handler.getShieldsStats()
+      handler.getShieldsStats(),
     ])
 
     store.update({ showShieldsStats, shieldsStats })
@@ -52,14 +44,14 @@ export function createNewTabHandler(
   newTabProxy.addListeners({
     onClockStateUpdated: debounce(updateClockPrefs, 10),
     onShieldsStatsUpdated: debounce(updateShieldsStats, 10),
-    onTalkStateUpdated: debounce(updateTalkPrefs, 10)
+    onTalkStateUpdated: debounce(updateTalkPrefs, 10),
   })
 
   async function loadData() {
     await Promise.all([
       updateClockPrefs(),
       updateShieldsStats(),
-      updateTalkPrefs()
+      updateTalkPrefs(),
     ])
 
     store.update({ initialized: true })
@@ -68,7 +60,6 @@ export function createNewTabHandler(
   loadData()
 
   return {
-
     setShowClock(showClock) {
       handler.setShowClock(showClock)
     },
@@ -83,6 +74,6 @@ export function createNewTabHandler(
 
     setShowTalkWidget(showTalkWidget) {
       handler.setShowTalkWidget(showTalkWidget)
-    }
+    },
   }
 }
