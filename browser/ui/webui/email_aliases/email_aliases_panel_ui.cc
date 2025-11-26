@@ -9,7 +9,7 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
@@ -65,13 +65,6 @@ void EmailAliasesPanelUI ::BindInterface(
         receiver) {
   panel_handler_.reset();
   panel_handler_.Bind(std::move(receiver));
-}
-
-void EmailAliasesPanelUI::BindInterface(
-    mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
-        pending_receiver) {
-  ui::BraveColorChangeHandler::BindInterface(web_ui()->GetWebContents(),
-                                             std::move(pending_receiver));
 }
 
 void EmailAliasesPanelUI::OnAliasCreated(const std::string& email) {

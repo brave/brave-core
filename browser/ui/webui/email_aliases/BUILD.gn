@@ -15,7 +15,6 @@ source_set("email_aliases") {
     "//brave/browser/resources/settings:resources",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
-    "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui",
     "//ui/webui",
