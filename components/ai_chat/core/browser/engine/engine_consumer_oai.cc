@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -117,33 +118,18 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::string truncated_text = text.substr(0, max_associated_content_length_);
-  std::string rewrite_prompt = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(
-          IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
-      {std::move(truncated_text), GetActionTypeQuestion(action_type)}, nullptr);
-
-  base::Value::List messages;
-
-  {
-    base::Value::Dict message;
-    message.Set("role", "user");
-    message.Set("content", std::move(rewrite_prompt));
-    messages.Append(std::move(message));
+  auto messages = BuildOAIRewriteSuggestionMessages(text, action_type);
+  if (!messages) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
   }
 
-  // Add a message as seed.
-  {
-    base::Value::Dict message;
-    message.Set("role", "assistant");
-    message.Set("content",
-                "Here is the requested rewritten version of the excerpt "
-                "in <response> tags:\n<response>");
-    messages.Append(std::move(message));
-  }
-
-  api_->PerformRequest(
-      model_options_, std::move(messages), std::move(received_callback),
+  messages->push_back(BuildOAISeedMessage(
+      "Here is the requested rewritten version of the excerpt "
+      "in <response> tags:\n<response>"));
+  api_->PerformRequestWithOAIMessages(
+      model_options_, std::move(*messages), std::move(received_callback),
       std::move(completed_callback), std::vector<std::string>{"</response>"});
 }
 
