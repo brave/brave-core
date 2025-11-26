@@ -34,10 +34,11 @@ class SidebarBrowserTest;
 // Replacement for chromium's SidePanel which defines a
 // unique inset and border style compared to Brave.
 // SidebarContainerView controls this panel's visibility.
-class BraveSidePanel : public views::View,
-                       public views::ViewObserver,
-                       public views::ResizeAreaDelegate,
-                       public SidePanelAnimationCoordinator::Observer {
+class BraveSidePanel
+    : public views::View,
+      public views::ViewObserver,
+      public views::ResizeAreaDelegate,
+      public SidePanelAnimationCoordinator::AnimationIdObserver {
   METADATA_HEADER(BraveSidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
@@ -124,7 +125,7 @@ class BraveSidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  // SidePanelAnimationCoordinator::AnimationObserver
+  // SidePanelAnimationCoordinator::AnimationIdObserver
   void OnAnimationSequenceProgressed(
       const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
       double animation_value) override;
