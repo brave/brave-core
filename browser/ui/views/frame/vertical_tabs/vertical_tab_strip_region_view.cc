@@ -23,7 +23,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -1013,10 +1012,8 @@ void BraveVerticalTabStripRegionView::OnBoundsChanged(
   // Checks if the width is in valid range when it's visible.
   if (auto width = GetContentsBounds().width();
       width && !is_hot_corner && GetWidget()->IsVisible()) {
-    CHECK_GE(
-        width,
-        tabs::kVerticalTabMinWidth + tabs::kMarginForVerticalTabContainers * 2 -
-            BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
+    CHECK_GE(width, tabs::kVerticalTabMinWidth +
+                        tabs::kMarginForVerticalTabContainers * 2);
   }
 #endif
 }
