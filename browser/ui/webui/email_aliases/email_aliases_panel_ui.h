@@ -11,7 +11,6 @@
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 class EmailAliasesPanelUI
     : public ConstrainedWebDialogUI,
@@ -34,10 +33,6 @@ class EmailAliasesPanelUI
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesPanelHandler>
           receiver);
-
-  void BindInterface(
-      mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
-          pending_receiver);
 
  private:
   void OnAliasCreated(const std::string& email) override;
