@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index d5567456eded757b795cb07e2648a1e825a8d142..b0a7ccfee0ad2e0094721d3c12d1d9f002b49ea4 100644
+index c47a92f797228e75de69810c21ee8d87b06a82e4..475d828331a596467a7d59240cdb6007129c6dab 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -693,6 +693,7 @@ static_library("test_support") {
+@@ -692,6 +692,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
  
@@ -10,7 +10,7 @@ index d5567456eded757b795cb07e2648a1e825a8d142..b0a7ccfee0ad2e0094721d3c12d1d9f0
    data = []
    data_deps = []
  
-@@ -8376,7 +8377,6 @@ test("unit_tests") {
+@@ -8365,7 +8366,6 @@ test("unit_tests") {
        "//chrome/browser/actor:unit_tests",
        "//chrome/browser/actor/ui:unit_tests",
        "//chrome/browser/actor/ui/task_list_bubble:unit_tests",
@@ -18,7 +18,7 @@ index d5567456eded757b795cb07e2648a1e825a8d142..b0a7ccfee0ad2e0094721d3c12d1d9f0
        "//chrome/browser/bluetooth",
        "//chrome/browser/contextual_cueing:unit_tests",
        "//chrome/browser/contextual_search",
-@@ -8485,6 +8485,10 @@ test("unit_tests") {
+@@ -8475,6 +8475,10 @@ test("unit_tests") {
        deps += [ "//chrome/browser/profiles/batch_upload:test_support" ]
      }
  

@@ -9,7 +9,7 @@ index 552b79ad2e952b0fb5bce75cdeb857aa0368da7f..c3f2256e700bedcbe5e7fd2181f2751b
 +      if (defined(invoker.exclude_ts_preprocess_files)) { in_files -= invoker.exclude_ts_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
      }
    }
-
+ 
 @@ -271,6 +272,7 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
@@ -29,7 +29,7 @@ index 552b79ad2e952b0fb5bce75cdeb857aa0368da7f..c3f2256e700bedcbe5e7fd2181f2751b
        }
 @@ -709,7 +711,7 @@ template("build_webui") {
    }
-
+ 
    if (!generate_grdp) {
 -    grit("resources") {
 +    import("//brave/resources/brave_grit.gni") forward_variables_from(invoker, [ "use_brave_grit" ]) brave_or_default_grit("resources") {

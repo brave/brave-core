@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-index 4811934dcb1940e85781742ad7a79a81f174ee52..e6da350a8e66443d5eaf017f376a721e3585a304 100644
+index 631d55dd1796382c5f1d58a44faa4edf7b3c7a40..6212e55689a254f5f0cb45badf94d42f67e848ca 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-@@ -211,6 +211,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
+@@ -210,6 +210,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
      extensions::ExtensionId extension_id,
      ExtensionsMenuViewModel::MenuItemInfo menu_item,
      int index) {
