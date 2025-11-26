@@ -72,7 +72,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
 
   public isModified_: boolean
 
-  private counters: {[k: string]: string} = {}
+  private counters: { [k: string]: string } = {}
   private isChildAccount_: boolean
 // <if expr="enable_ai_chat">
   private isAIChatAndHistoryAllowed_: boolean
@@ -89,7 +89,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
   }
 
   public getChangedSettings() {
-    let changed: Array<{key: string, value: boolean}> = []
+    let changed: Array<{ key: string, value: boolean }> = []
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox')
     boxes.forEach((checkbox) => {
       if (checkbox.checked !== this.get(checkbox.pref!.key, this.prefs).value) {

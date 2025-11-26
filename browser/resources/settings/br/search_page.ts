@@ -15,7 +15,7 @@ import {
 
 import {SettingsSearchPageElement} from '../search_page/search_page.js'
 import {routes} from '../route.js'
-import {type Route, RouteObserverMixin, Router} from '../router.js'
+import {RouteObserverMixin, Router} from '../router.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
@@ -34,6 +34,7 @@ RegisterPolymerTemplateModifications({
         console.error(
             `[Settings] Couldn't find search engine list dialog`)
       } else {
+        // eslint-disable-next-line no-unsanitized/method
         searchEngineListDialog.insertAdjacentHTML(
           'beforebegin',
           getTrustedHTML`
@@ -51,6 +52,7 @@ RegisterPolymerTemplateModifications({
     if (!enginesSubpageTrigger) {
       console.error(`[Settings] Couldn't find enginesSubpageTrigger`)
     } else {
+      // eslint-disable-next-line no-unsanitized/method
       enginesSubpageTrigger.insertAdjacentHTML(
         'beforebegin',
         getTrustedHTML`

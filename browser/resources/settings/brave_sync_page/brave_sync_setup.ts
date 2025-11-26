@@ -18,9 +18,8 @@ import {getTemplate} from './brave_sync_setup.html.js'
  */
 
 const SettingsBraveSyncSetupElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & I18nMixinInterface
 
 export class SettingsBraveSyncSetupElement extends SettingsBraveSyncSetupElementBase {
   static get is() {

@@ -15,9 +15,9 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './tabs.html.js'
 
-const SettingsBraveAppearanceTabsElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
-}
+const SettingsBraveAppearanceTabsElementBase =
+  PrefsMixin(I18nMixin(PolymerElement)) as new () =>
+    PolymerElement & I18nMixinInterface & PrefsMixinInterface
 
 export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceTabsElementBase {
   static get is() {
@@ -55,7 +55,7 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   }
 
   declare private tabTooltipModes_:
-      Array<{value: number, name: string}>
+      Array<{ value: number, name: string }>
 
   private isSharedPinnedTabsEnabled_() {
     return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')

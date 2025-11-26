@@ -16,7 +16,8 @@ import './brave_sync_setup.js'
 
 import {
   StatusAction,
-  SyncBrowserProxyImpl
+  SyncBrowserProxyImpl,
+  SyncPrefs
 } from '/shared/settings/people_page/sync_browser_proxy.js'
 
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -29,7 +30,6 @@ import {
   BraveSyncBrowserProxy,
   BraveSyncStatus
 } from './brave_sync_browser_proxy.js'
-import {SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
 
 import {getTemplate} from './brave_sync_subpage.html.js'
 

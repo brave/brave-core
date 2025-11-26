@@ -65,15 +65,15 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     ]
   }
 
-  private declare filterList_: FilterList[]
-  private declare subscriptionList_: SubscriptionInfo[]
-  private declare customFilters_: string
-  private declare subscribeUrl_: string
-  private declare listsUpdatingState_: string
-  private declare hasListExpanded_: boolean
-  private declare shouldShowCustomFilters_: boolean
-  private declare shouldShowCustomScriptlets_: boolean
-  private declare customScriptlets_: Scriptlet[]
+  declare private filterList_: FilterList[]
+  declare private subscriptionList_: SubscriptionInfo[]
+  declare private customFilters_: string
+  declare private subscribeUrl_: string
+  declare private listsUpdatingState_: string
+  declare private hasListExpanded_: boolean
+  declare private shouldShowCustomFilters_: boolean
+  declare private shouldShowCustomScriptlets_: boolean
+  declare private customScriptlets_: Scriptlet[]
 
   private browserProxy_: BraveAdblockBrowserProxy =
     BraveAdblockBrowserProxyImpl.getInstance()
@@ -205,19 +205,19 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   }
 
   private handleUpdateSubscription_(
-    e: Event&{model: {item: SubscriptionInfo}})
+    e: Event&{ model: { item: SubscriptionInfo } })
   {
     this.browserProxy_.updateSubscription(e.model.item.subscription_url)
   }
 
   private handleDeleteSubscription_(
-    e: Event&{model: {item: SubscriptionInfo}})
+    e: Event&{ model: { item: SubscriptionInfo } })
   {
     this.browserProxy_.deleteSubscription(e.model.item.subscription_url)
   }
 
   private handleViewSubscription_(
-    e: Event&{model: {item: SubscriptionInfo}})
+    e: Event&{ model: { item: SubscriptionInfo } })
   {
     this.browserProxy_.viewSubscription(e.model.item.subscription_url)
   }

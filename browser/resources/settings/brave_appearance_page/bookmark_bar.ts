@@ -14,9 +14,8 @@ import {loadTimeData} from '../i18n_setup.js';
 import {getTemplate} from './bookmark_bar.html.js'
 
 const SettingsBraveAppearanceBookmarkBarElementBase =
-  PrefsMixin(I18nMixin(PolymerElement)) as {
-    new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
-  }
+  PrefsMixin(I18nMixin(PolymerElement)) as new () =>
+    PolymerElement & I18nMixinInterface & PrefsMixinInterface
 
 enum BookmarkBarState {
   ALWAYS = 0,
@@ -82,7 +81,8 @@ export class SettingsBraveAppearanceBookmarkBarElement
   declare bookmarkBarStatePref_: chrome.settingsPrivate.PrefObject
 
   declare private bookmarkBarShowOptions_ :
-      Array<{value: BookmarkBarState, name: string}>
+      Array<{ value: BookmarkBarState, name: string }>
+
   private bookmarkBarShowEnabledLabel_: string
 
   static get observers() {
@@ -121,6 +121,7 @@ export class SettingsBraveAppearanceBookmarkBarElement
       this.setPrefValue(kAlwaysShowBookmarBarPrefName, false)
     }
   }
+
   private setControlValueFromPrefs() {
     const state = this.getBookmarkBarStateFromPrefs()
     if (this.bookmarkBarStatePref_.value === state)
@@ -131,9 +132,11 @@ export class SettingsBraveAppearanceBookmarkBarElement
       value: state
     };
   }
+
   private onPrefsChanged_() {
     this.setControlValueFromPrefs()
   }
+
   private onShowOptionChanged_() {
     const state = this.bookmarkBarStatePref_.value
     if (state === BookmarkBarState.ALWAYS) {

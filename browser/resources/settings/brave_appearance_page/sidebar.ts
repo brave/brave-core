@@ -13,9 +13,9 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import {getTemplate} from './sidebar.html.js'
 
-const SettingsBraveAppearanceSidebarElementBase = PrefsMixin(I18nMixin(PolymerElement)) as {
-  new (): PolymerElement & I18nMixinInterface & PrefsMixinInterface
-}
+const SettingsBraveAppearanceSidebarElementBase =
+  PrefsMixin(I18nMixin(PolymerElement)) as new () =>
+    PolymerElement & I18nMixinInterface & PrefsMixinInterface
 
 /**
  * 'settings-brave-appearance-sidebar' is the settings page area containing
@@ -72,7 +72,8 @@ export class SettingsBraveAppearanceSidebarElement extends SettingsBraveAppearan
   }
 
   private declare sidebarShowOptions_:
-    Array<{value: number, name: string}>
+    Array<{ value: number, name: string }>
+
   private declare sidebarShowEnabledLabel_: string
 
   private onShowOptionChanged_() {

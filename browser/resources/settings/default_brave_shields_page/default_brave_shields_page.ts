@@ -178,22 +178,37 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   private declare adControlTypes_: ControlType[]
+
   private declare adControlType_: 'allow' | 'block' | 'block_third_party'
+
   private declare isAdBlockRoute_: boolean
+
   private declare cookieControlTypes_: ControlType[]
+
   private declare cookieControlType_: string
+
   private declare httpsUpgradeControlType_: string
+
   private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
+
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
+
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+
   private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
+
   private declare fingerprintingControlTypes_: ControlType[]
+
   private declare fingerprintingControlType_: string
+
   private declare httpsUpgradeControlTypes_: ControlType[]
+
   private declare isHttpsByDefaultEnabled_: boolean
+
   private declare showStrictFingerprintingMode_: boolean
+
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =

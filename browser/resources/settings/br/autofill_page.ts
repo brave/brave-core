@@ -103,7 +103,7 @@ if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
       // Email Aliases route when the button is pressed.
       prototype.onEmailAliasesClick = function () {
         Router.getInstance().navigateTo(routes.EMAIL_ALIASES,
-          /* dynamicParams =*/ undefined, /* removeSearch =*/ true)
+          /* dynamicParams */ undefined, /* removeSearch */ true)
       }
       // Add the associated control for the Email Aliases route to the Autofill
       // page prototype.

@@ -69,6 +69,7 @@ export class BraveSyncBrowserProxy {
   getWordsCount(syncCode: string): Promise<number> {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }
+
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }

@@ -10,9 +10,6 @@ import {
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import { loadTimeData } from '../i18n_setup.js'
-
-
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
     // Remove home button toggle & options template as it's moved into

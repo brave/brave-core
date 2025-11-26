@@ -6,7 +6,7 @@
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
-import {ChooserType, ContentSettingsTypes} from '../site_settings/constants.js';
+import {ContentSettingsTypes} from '../site_settings/constants.js';
 
 import {getTemplate} from './site_settings_brave_ai.html.js';
 

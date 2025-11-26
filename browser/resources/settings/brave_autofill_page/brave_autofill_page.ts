@@ -20,6 +20,6 @@ export class BraveSettingsAutofillPageElement extends RouteObserverMixin(BaseEle
   declare isAutofillPage_: boolean
 
   override currentRouteChanged(newRoute: Route) {
-    this.isAutofillPage_ = newRoute == Router.getInstance().getRoutes().AUTOFILL
+    this.isAutofillPage_ = newRoute === Router.getInstance().getRoutes().AUTOFILL
   }
 }

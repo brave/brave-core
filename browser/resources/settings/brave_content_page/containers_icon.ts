@@ -57,6 +57,7 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
     }
     return icon
   }
+
   accessor backgroundColor: string = 'magenta' // Debug color that should never be visible
   accessor selected: boolean = false
 

@@ -34,6 +34,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
+
   protected accessor state: AccountState | undefined = undefined
 
   override connectedCallback() {

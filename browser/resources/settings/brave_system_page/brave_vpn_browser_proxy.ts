@@ -6,9 +6,9 @@
 import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export interface BraveVPNBrowserProxy {
-  isWireguardServiceInstalled(): Promise<boolean>;
-  isBraveVpnConnected(): Promise<boolean>;
-  showInSystemTray(): Promise<boolean>;
+  isWireguardServiceInstalled: () => Promise<boolean>
+  isBraveVpnConnected: () => Promise<boolean>
+  showInSystemTray: () => Promise<boolean>
   setShowInSystemTray: (value: boolean) => void
 }
 

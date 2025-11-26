@@ -100,19 +100,19 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
-  private declare addNewAllowed: boolean
-  private declare coin: number
-  private declare listTitle: string
-  private declare networks: NetworkInfo[]
-  private declare knownNetworks: string[]
-  private declare customNetworks: string[]
-  private declare hiddenNetworks: string[]
-  private declare showAddWalletNetworkDialog_: boolean
-  private declare selectedNetwork: NetworkInfo | Record<string, never>
-  private declare defaultNetwork: string
-  private declare isDefaultNetwork: boolean
-  private declare canRemoveNetwork: boolean
-  private declare canResetNetwork: boolean
+  declare private addNewAllowed: boolean
+  declare private coin: number
+  declare private listTitle: string
+  declare private networks: NetworkInfo[]
+  declare private knownNetworks: string[]
+  declare private customNetworks: string[]
+  declare private hiddenNetworks: string[]
+  declare private showAddWalletNetworkDialog_: boolean
+  declare private selectedNetwork: NetworkInfo | Record<string, never>
+  declare private defaultNetwork: string
+  declare private isDefaultNetwork: boolean
+  declare private canRemoveNetwork: boolean
+  declare private canResetNetwork: boolean
 
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
 
@@ -266,7 +266,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     this.showAddWalletNetworkDialog_ = true
   }
 
-  private onItemDoubleClick(event: Event&{model: {item: NetworkInfo}}) {
+  private onItemDoubleClick(event: Event&{ model: { item: NetworkInfo } }) {
     this.selectedNetwork = event.model.item
     this.showAddWalletNetworkDialog_ = true
   }
@@ -295,7 +295,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     this.updateNetworks()
   }
 
-  private onHideButtonClicked_(event: Event&{model: {item: NetworkInfo}}) {
+  private onHideButtonClicked_(event: Event&{ model: { item: NetworkInfo } }) {
     const chainId = event.model.item.chainId
     if (this.hiddenNetworks.includes(event.model.item.chainId)) {
       this.browserProxy_.
@@ -310,7 +310,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
-  private onNetworkMenuTapped_(event: Event&{model: {item: NetworkInfo}}) {
+  private onNetworkMenuTapped_(event: Event&{ model: { item: NetworkInfo } }) {
     this.selectedNetwork = event.model.item
     this.isDefaultNetwork =
       this.checkIsDefaultNetwork(this.selectedNetwork.chainId)

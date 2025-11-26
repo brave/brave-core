@@ -18,8 +18,7 @@ import { loadTimeData } from '../../i18n_setup.js'
 
 import {
   Scriptlet,
-  BraveAdblockBrowserProxyImpl,
-  ErrorCode
+  BraveAdblockBrowserProxyImpl
 } from '../brave_adblock_browser_proxy.js'
 
 import './brave_adblock_scriptlet_editor.js'
@@ -58,7 +57,7 @@ class AdblockScriptletList extends AdblockScriptletListBase {
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing[`adblockScriptletList`] = this.shadowRoot
+      window.testing.adblockScriptletList = this.shadowRoot
     }
 
     this.isEditing_ = false

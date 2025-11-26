@@ -21,7 +21,6 @@ import {getTemplate} from './brave_leo_assistant_page_index.html.js';
 // Subpages
 import './brave_leo_assistant_page.js';
 
-
 export interface BraveLeoAssistantPageIndexElement {
   $: {
     viewManager: CrViewManagerElement,
@@ -47,11 +46,12 @@ export class BraveLeoAssistantPageIndexElement extends
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: { [key: string]: any };
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(
-        ['assistant', 'personalization', 'model-list'], 'no-animation', 'no-animation');
+      ['assistant', 'personalization', 'model-list'],
+      'no-animation', 'no-animation');
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {

@@ -15,9 +15,8 @@ import {getTemplate} from './brave_new_tab_page.html.js'
  */
 
 const SettingsBraveNewTabPageElementBase =
-  WebUiListenerMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & WebUiListenerMixinInterface
-  }
+  WebUiListenerMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & WebUiListenerMixinInterface
 
 export class SettingsBraveNewTabPageElement extends SettingsBraveNewTabPageElementBase {
   static get is() {

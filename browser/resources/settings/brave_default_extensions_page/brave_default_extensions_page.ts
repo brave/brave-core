@@ -21,9 +21,10 @@ import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions
 import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))) as {
-  new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
-}
+  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(
+    PrefsMixin(PolymerElement)))) as new () =>
+      PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface &
+        SearchableViewContainerMixinInterface & SettingsViewMixinInterface
 
 export interface SettingBraveDefaultExtensionsPageElement {
   $: {
@@ -130,11 +131,11 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   }
 
   shouldShowRestartForGoogleLogin_(value: boolean) {
-    return this.browserProxy_.wasSignInEnabledAtStartup() != value
+    return this.browserProxy_.wasSignInEnabledAtStartup() !== value
   }
 
   shouldShowRestartForMediaRouter_(value: boolean) {
-    return this.browserProxy_.isMediaRouterEnabled() != value
+    return this.browserProxy_.isMediaRouterEnabled() !== value
   }
 }
 

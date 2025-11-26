@@ -10,9 +10,8 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 import {BraveWeb3DomainsBrowserProxyImpl} from './brave_web3_domains_browser_proxy.js'
 import {getTemplate} from './brave_web3_domains_page.html.js'
 
-const SettingBraveWeb3DomainsPageElementBase = PrefsMixin(PolymerElement) as {
-  new (): PolymerElement & PrefsMixinInterface
-}
+const SettingBraveWeb3DomainsPageElementBase =
+  PrefsMixin(PolymerElement) as new () => PolymerElement & PrefsMixinInterface
 
 export class SettingBraveWeb3DomainsPageElement
   extends SettingBraveWeb3DomainsPageElementBase {

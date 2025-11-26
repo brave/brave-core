@@ -26,12 +26,10 @@ export interface SettingsBraveVpnPageElement {
 
 const SettingsBraveVpnPageElementBase =
   PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(
-    PolymerElement)))) as {
-    new(): PolymerElement &
+    PolymerElement)))) as new() => PolymerElement &
            PrefsMixinInterface &
            WebUiListenerMixinInterface &
            I18nMixinInterface
-  }
 
 /**
  * 'settings-brave-vpn-page' is the settings page containing

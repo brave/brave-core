@@ -7,8 +7,8 @@ import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 export interface BravePrivacyBrowserProxy {
-  wasPushMessagingEnabledAtStartup(): boolean
-  wasWindowsRecallDisabledAtStartup(): boolean
+  wasPushMessagingEnabledAtStartup: () => boolean
+  wasWindowsRecallDisabledAtStartup: () => boolean
 
   isWindowsRecallDisabled: () => Promise<boolean>
   setWindowsRecallDisabled: (disabled: boolean) => void

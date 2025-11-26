@@ -27,10 +27,8 @@ import { getTemplate } from './customization_subpage.html.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =
-    SettingsViewMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as {
-      new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
-        RouteObserverMixinInterface
-    }
+  SettingsViewMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as new () =>
+    PolymerElement & PrefsMixinInterface & I18nMixinInterface & RouteObserverMixinInterface
 
 class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
   static get is() {
@@ -176,10 +174,12 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
     this.nameInput_ = event.value
     this.handleSaveButtonState_()
   }
+
   private onJobInputChanged_(event: { value: string }) {
     this.jobInput_ = event.value
     this.handleSaveButtonState_()
   }
+
   private onToneInputChanged_(event: { value: string }) {
     this.toneInput_ = event.value
     this.handleSaveButtonState_()

@@ -13,8 +13,12 @@ import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
-import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
-  from './brave_leo_assistant_browser_proxy.js'
+import {
+  BraveLeoAssistantBrowserProxy,
+  BraveLeoAssistantBrowserProxyImpl,
+  PremiumInfo,
+  PremiumStatus
+} from './brave_leo_assistant_browser_proxy.js'
 
 const BraveLeoAssistantPageBase =
   WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
@@ -58,6 +62,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
+
     manageUrl_: string | undefined = undefined
 
     onResetAssistantData_() {
@@ -80,7 +85,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       })
 
       this.browserProxy_.getSettingsHelper().getManageUrl()
-        .then((value: { url: string}) => {
+        .then((value: { url: string }) => {
           this.manageUrl_ = value.url
         })
 
@@ -108,8 +113,9 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     private updateCurrentPremiumStatus() {
-      this.browserProxy_.getSettingsHelper().getPremiumStatus().then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
-        this.premiumStatus_ = value.status
+      this.browserProxy_.getSettingsHelper().getPremiumStatus().
+        then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
+          this.premiumStatus_ = value.status
       })
     }
 
@@ -119,11 +125,13 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     openAutocompleteSetting_() {
-      Router.getInstance().navigateTo(routes.APPEARANCE, new URLSearchParams("highlight=#autocomplete-suggestion-sources"))
+      Router.getInstance().navigateTo(routes.APPEARANCE,
+        new URLSearchParams("highlight=#autocomplete-suggestion-sources"))
     }
 
     computeIsPremiumUser_() {
-      if (this.premiumStatus_ === PremiumStatus.Active || this.premiumStatus_ === PremiumStatus.ActiveDisconnected) {
+      if (this.premiumStatus_ === PremiumStatus.Active ||
+          this.premiumStatus_ === PremiumStatus.ActiveDisconnected) {
         return true
       }
 

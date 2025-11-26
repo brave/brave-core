@@ -17,11 +17,8 @@ import { SettingsViewMixin, SettingsViewMixinInterface } from '../settings_page/
 import { getTemplate } from './brave_sync_manage_devices_page.html.js'
 
 const SettingsBraveSyncManageDevicesPageElementBase =
-  SettingsViewMixin(I18nMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement
-      & I18nMixinInterface
-      & SettingsViewMixinInterface
-  }
+  SettingsViewMixin(I18nMixin(BaseMixin(PolymerElement))) as new() =>
+    PolymerElement & I18nMixinInterface & SettingsViewMixinInterface
 
 export class SettingsBraveSyncManageDevicesPageElement extends SettingsBraveSyncManageDevicesPageElementBase {
   static get is() {

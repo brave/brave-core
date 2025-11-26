@@ -21,7 +21,6 @@ import {getTemplate} from './wallet_page_index.html.js';
 // Subpages
 import './brave_wallet_page.js';
 
-
 export interface SettingsWalletPageIndexElement {
   $: {
     viewManager: CrViewManagerElement,
@@ -29,7 +28,7 @@ export interface SettingsWalletPageIndexElement {
 }
 
 const SettingsWalletPageIndexElementBase =
-    SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
+  SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
 
 export class SettingsWalletPageIndexElement extends
     SettingsWalletPageIndexElementBase implements SettingsPlugin {
@@ -47,7 +46,7 @@ export class SettingsWalletPageIndexElement extends
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: { [key: string]: any };
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(

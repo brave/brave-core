@@ -11,8 +11,8 @@ export type NewTabOption = {
 }
 
 export interface BraveNewTabBrowserProxy {
-  getNewTabShowsOptionsList(): Promise<NewTabOption[]>
-  shouldShowNewTabDashboardSettings(): Promise<boolean>
+  getNewTabShowsOptionsList: () => Promise<NewTabOption[]>
+  shouldShowNewTabDashboardSettings: () => Promise<boolean>
 }
 
 export class BraveNewTabBrowserProxyImpl implements BraveNewTabBrowserProxy {

@@ -6,17 +6,19 @@
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
 export interface BraveSearchEnginesPageBrowserProxy {
-  getPrivateSearchEnginesList(): Promise<any[]> // TODO(petemill): Define the expected type
-  setDefaultPrivateSearchEngine(modelIndex: number): void
+  getPrivateSearchEnginesList: () => Promise<any[]> // TODO(petemill): Define the expected type
+  setDefaultPrivateSearchEngine: (modelIndex: number) => void
 }
 
 export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList() {
     return sendWithPromise('getPrivateSearchEnginesList')
   }
+
   setDefaultPrivateSearchEngine(modelIndex: number) {
     chrome.send('setDefaultPrivateSearchEngine', [modelIndex])
   }
+
   static getInstance() {
     return instance || (instance = new BraveSearchEnginesPageBrowserProxyImpl())
   }

@@ -24,9 +24,8 @@ import {getTemplate} from './brave_sync_code_dialog.html.js'
  */
 
 const SettingsBraveSyncCodeDialogElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & I18nMixinInterface
 
 export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDialogElementBase {
   static get is() {

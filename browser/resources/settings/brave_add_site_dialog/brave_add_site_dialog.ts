@@ -18,12 +18,15 @@ export class BraveAddSiteDialogElement extends BaseElement {
     })
     return extended
   }
+
   sitePlaceholder: string
+
   override ready() {
     super.ready()
-    const is_brave_shields = this.category === 'braveShields'
-    const resource_id = is_brave_shields ? 'braveShieldsExampleTemplate'
-                                         : 'addSiteExceptionPlaceholder'
-    this.sitePlaceholder = loadTimeData.getString(resource_id)
+    const isBraveShields = this.category === 'braveShields'
+    const resourceId =
+      isBraveShields ? 'braveShieldsExampleTemplate'
+      : 'addSiteExceptionPlaceholder'
+    this.sitePlaceholder = loadTimeData.getString(resourceId)
   }
 }

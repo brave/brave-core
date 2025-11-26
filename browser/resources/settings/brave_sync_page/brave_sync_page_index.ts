@@ -18,12 +18,10 @@ import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resource
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 import {BaseMixin} from '../base_mixin.js'
-import {Route, Router} from '../router.js';
+import {Route, RouteObserverMixin, RouteObserverMixinInterface} from '../router.js';
 import {routes} from '../route.js';
-import {RouteObserverMixin, RouteObserverMixinInterface} from '../router.js';
 import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
 import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
-
 
 import {BraveSyncBrowserProxy, BraveSyncStatus} from './brave_sync_browser_proxy.js';
 import {getTemplate} from './brave_sync_page_index.html.js'
@@ -35,13 +33,13 @@ import {getTemplate} from './brave_sync_page_index.html.js'
  */
 
 const SettingsBraveSyncPageElementBase =
-SearchableViewContainerMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))))) as {
-    new(): PolymerElement
+  SearchableViewContainerMixin(SearchableViewContainerMixin(RouteObserverMixin(
+    I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement)))))) as new() =>
+      PolymerElement
       & WebUiListenerMixinInterface
       & I18nMixinInterface
       & RouteObserverMixinInterface
       & SearchableViewContainerMixinInterface
-  }
 
 export interface SettingsBraveSyncPageElement {
   $: {
@@ -77,7 +75,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: { [key: string]: any }
 
   private declare syncStatus_: BraveSyncStatus;
   private declare isEncryptionSet_: boolean;

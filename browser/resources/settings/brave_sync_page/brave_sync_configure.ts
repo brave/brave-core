@@ -24,9 +24,8 @@ import {getTemplate} from './brave_sync_configure.html.js'
  */
 
 const SettingsBraveSyncConfigureElementBase =
-  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
-  }
+  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as new () =>
+    PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
 
 export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigureElementBase {
   static get is() {
@@ -103,8 +102,9 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
    * when sync chain reset
    */
   async ensureSetSyncCode_() {
-    if (!!this.syncCode)
+    if (this.syncCode !== undefined) {
       return
+    }
     const syncCode = await this.browserProxy_.getSyncCode()
     this.syncCode = syncCode
   }
@@ -134,7 +134,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     // chain without reload
     this.syncCode = undefined
     const router = Router.getInstance();
-    router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
+    router.navigateTo((router.getRoutes() as { BRAVE_SYNC: Route }).BRAVE_SYNC);
   }
 
   onPermanentlyDeleteSyncAccount_() {

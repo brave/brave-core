@@ -59,7 +59,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     super.ready()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing[`adblockScriptletEditor`] = this.shadowRoot
+      window.testing.adblockScriptletEditor = this.shadowRoot
     }
 
     this.oldScriptletName_ = this.scriptlet.name
@@ -73,9 +73,9 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     this.updateError(ErrorCode.kOK)
   }
 
-  updateError(error_code: ErrorCode) {
-    this.isScriptletValid_ = error_code === ErrorCode.kOK
-    switch (error_code) {
+  updateError(errorCode: ErrorCode) {
+    this.isScriptletValid_ = errorCode === ErrorCode.kOK
+    switch (errorCode) {
       case ErrorCode.kOK:
         this.scriptletErrorMessage_ = ''
         break
@@ -135,7 +135,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   startsWithCaseInsensitive(str: string, prefix: string): boolean {
-    return str.slice(0, prefix.length).toLowerCase() == prefix.toLowerCase()
+    return str.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase()
   }
 
   updateScriptletBeforeSave_() {

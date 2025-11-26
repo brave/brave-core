@@ -14,6 +14,7 @@ const BraveResetProfileDialogBehaviorImpl = {
    * @private
    */
   fixSendSettingsCheckbox: function() {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const sendSettings = (this as any).shadowRoot!.getElementById('sendSettings')
     sendSettings.checked = false
     sendSettings.hidden = true

@@ -23,9 +23,8 @@ import {getTemplate} from './brave_sync_delete_account_dialog.html.js'
  */
 
 const SettingsBraveSyncDeleteAccountDialogElementBase =
-  I18nMixin(BaseMixin(PolymerElement)) as {
-    new(): PolymerElement & I18nMixinInterface
-  }
+  I18nMixin(BaseMixin(PolymerElement)) as new() =>
+    PolymerElement & I18nMixinInterface
 
 export class SettingsBraveSyncCodeDialogElement
              extends SettingsBraveSyncDeleteAccountDialogElementBase {
@@ -73,7 +72,7 @@ export class SettingsBraveSyncCodeDialogElement
   private declare doingDeleteAccount: boolean;
 
   syncBrowserProxy_: BraveSyncBrowserProxy =
-                                            BraveSyncBrowserProxy.getInstance();
+    BraveSyncBrowserProxy.getInstance()
 
   async handleDeleteAccount_() {
     let errorText = ''

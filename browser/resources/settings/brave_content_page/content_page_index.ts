@@ -19,7 +19,6 @@ import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
 
 import { getTemplate } from './content_page_index.html.js';
-import {loadTimeData} from '../i18n_setup.js'
 
 import {pageVisibility} from '../page_visibility.js';
 import type {PageVisibility} from '../page_visibility.js';

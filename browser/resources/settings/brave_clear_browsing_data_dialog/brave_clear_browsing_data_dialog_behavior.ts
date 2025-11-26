@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+/* eslint-disable import/no-duplicates */
+
 import './brave_clear_browsing_data_on_exit_page.js'
 
 import {CrButtonElement} from 'chrome://resources/cr_elements/cr_button/cr_button.js'
+
 import {
   SettingsBraveClearBrowsingDataOnExitPageElement
 } from './brave_clear_browsing_data_on_exit_page.js'

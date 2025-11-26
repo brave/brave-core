@@ -23,7 +23,7 @@ RegisterStyleOverride(
 )
 
 const extractVersions = (versionElement: Element) => {
-  const [ _, braveVersion, chromiumVersion, build ] = versionElement
+  const [ , braveVersion, chromiumVersion, build ] = versionElement
     .textContent?.match(/(\d+\.\d+(?:\.\d+)*)\D+(\d+\.\d+(?:\.\d+)*)(.*)/) ?? []
 
   return { braveVersion, build, chromiumVersion }

@@ -46,6 +46,7 @@ RegisterPolymerTemplateModifications({
       console.error('[Settings] missing #pages in clear-browsing-data-dialog')
       return
     }
+    // eslint-disable-next-line no-unsanitized/method
     pagesElement.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
@@ -62,6 +63,7 @@ RegisterPolymerTemplateModifications({
         '[Settings] missing #clearButton in clear-browsing-data-dialog')
       return
     }
+    // eslint-disable-next-line no-unsanitized/method
     confirmButtonElement.insertAdjacentHTML(
       'afterend',
       getTrustedHTML`
@@ -86,6 +88,7 @@ RegisterPolymerTemplateModifications({
         '[Settings] missing \'slot="body"\' in clear-browsing-data-dialog')
       return
     }
+    // eslint-disable-next-line no-unsanitized/method
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
@@ -105,6 +108,7 @@ RegisterPolymerTemplateModifications({
     }
 
     // Append reset Brave Rewards data link
+    // eslint-disable-next-line no-unsanitized/method
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
@@ -134,6 +138,7 @@ RegisterPolymerTemplateModifications({
           '[Settings] missing cacheCheckbox in clear-browsing-data-dialog')
         return
       }
+      // eslint-disable-next-line no-unsanitized/method
       cacheCheckbox.insertAdjacentHTML(
         'beforebegin',
         getTrustedHTML`

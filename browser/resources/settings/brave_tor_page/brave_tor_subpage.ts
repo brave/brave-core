@@ -169,24 +169,24 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     ]
   }
 
-  private declare loadedConfig_: any
-  private declare useBridges_: number
-  private declare useBridgesValue_: string
-  private declare builtInBridgesTypes_: { name: string, value: number }[]
-  private declare builtinBridges_: number
-  private declare requestedBridges_: string
-  private declare providedBridges_: string
-  private declare isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
-  private declare shouldShowBridgesGroup_: boolean
-  private declare requestedBridgesPlaceholder_: string
-  private declare providedBridgesPlaceholder_: string
-  private declare disableTorOption_: boolean
-  private declare torEnabledPref_: chrome.settingsPrivate.PrefObject
-  private declare torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
-  private declare torSnowflakeExtensionAllowed_: boolean
-  private declare showRequestBridgesDialog_: boolean
-  private declare isConfigChanged_: boolean
-  private declare showTorSnowflakeInstallFailed_: boolean
+  declare private loadedConfig_: any
+  declare private useBridges_: number
+  declare private useBridgesValue_: string
+  declare private builtInBridgesTypes_: { name: string, value: number }[]
+  declare private builtinBridges_: number
+  declare private requestedBridges_: string
+  declare private providedBridges_: string
+  declare private isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
+  declare private shouldShowBridgesGroup_: boolean
+  declare private requestedBridgesPlaceholder_: string
+  declare private providedBridgesPlaceholder_: string
+  declare private disableTorOption_: boolean
+  declare private torEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare private torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject
+  declare private torSnowflakeExtensionAllowed_: boolean
+  declare private showRequestBridgesDialog_: boolean
+  declare private isConfigChanged_: boolean
+  declare private showTorSnowflakeInstallFailed_: boolean
 
   private browserProxy_: BraveTorBrowserProxy =
     BraveTorBrowserProxyImpl.getInstance()
@@ -262,15 +262,15 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private computeUseBridgesValue_() {
     switch (this.useBridges_) {
-      case Usage.NOT_USED:
-      default:
-        return ''
       case Usage.USE_BUILT_IN:
         return 'useBuiltIn'
       case Usage.USE_REQUESTED:
         return 'useRequested'
       case Usage.USE_PROVIDED:
         return 'useProvided'
+      case Usage.NOT_USED:
+      default:
+        return ''
     }
   }
 

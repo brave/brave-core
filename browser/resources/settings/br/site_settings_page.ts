@@ -35,6 +35,7 @@ RegisterPolymerTemplateModifications({
       console.error('[Settings] Could not find all sites list')
       return
     }
+    // eslint-disable-next-line no-unsanitized/method
     allSites.insertAdjacentHTML(
       'afterend',
       getTrustedHTML`

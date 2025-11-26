@@ -6,11 +6,9 @@
 import {DropdownMenuOptionList} from '../controls/settings_dropdown_menu.js';
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
-import {loadTimeData} from '../i18n_setup.js';
-
 export interface BraveWeb3DomainsBrowserProxy {
-  getDecentralizedDnsResolveMethodList(): Promise<DropdownMenuOptionList>
-  getEnsOffchainResolveMethodList(): Promise<DropdownMenuOptionList>
+  getDecentralizedDnsResolveMethodList: () => Promise<DropdownMenuOptionList>
+  getEnsOffchainResolveMethodList: () => Promise<DropdownMenuOptionList>
 }
 
 export class BraveWeb3DomainsBrowserProxyImpl

@@ -31,7 +31,6 @@ RegisterPolymerTemplateModifications({
         'template[is="dom-if"][if="[[shouldShowResetButton_(model, readOnlyList)]]"]')
     if (!resetSiteTemplate) {
       console.error('[Settings] Could not find resetSite template')
-      return
     } else {
       const resetSite = resetSiteTemplate.content.querySelector('#resetSite')
       if (!resetSite) {

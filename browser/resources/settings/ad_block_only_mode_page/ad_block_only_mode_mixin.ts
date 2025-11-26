@@ -12,7 +12,7 @@ const AD_BLOCK_ONLY_MODE_ENABLED_PREF = 'brave.shields.adblock_only_mode_enabled
 type Constructor<T> = new (...args: any[]) => T;
 
 export interface AdBlockOnlyModeMixinInterface {
-  setAdBlockOnlyModeEnabled(enabled: boolean): void;
+  setAdBlockOnlyModeEnabled: (enabled: boolean) => void;
   isAdBlockOnlyModeEnabled_: boolean;
 }
 

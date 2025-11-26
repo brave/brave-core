@@ -51,6 +51,7 @@ class ModelListSection extends ModelListSectionBase {
 
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
+
   declare customModelsList_: Model[]
   declare isEditingModelIndex_: number | null
   declare showModelConfig_: boolean
@@ -90,7 +91,7 @@ class ModelListSection extends ModelListSectionBase {
         .getSettingsHelper()
         .saveCustomModel(
           this
-            .isEditingModelIndex_ as number /* We can be confident that this is a number because of the null check */,
+            .isEditingModelIndex_! /* We can be confident that this is a number because of the null check */,
           e.detail.modelConfig
         )
     } else {

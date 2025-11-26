@@ -22,11 +22,9 @@ import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.
 
 import '../privacy_page/do_not_track_toggle.js'
 
-const SettingsBravePersonalizationOptionsBase = WebUiListenerMixin(
-  PolymerElement,
-) as {
-  new (): PolymerElement & WebUiListenerMixinInterface
-}
+const SettingsBravePersonalizationOptionsBase =
+  WebUiListenerMixin(PolymerElement) as new () =>
+    PolymerElement & WebUiListenerMixinInterface
 
 export class SettingsBravePersonalizationOptions extends SettingsBravePersonalizationOptionsBase {
   static get is() {
@@ -116,11 +114,11 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     BravePrivacyBrowserProxyImpl.getInstance()
 
   shouldShowRestart_(enabled: boolean) {
-    return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup()
+    return enabled !== this.browserProxy_.wasPushMessagingEnabledAtStartup()
   }
 
   shouldShowRestartWindowsRecall_(disabled: boolean) {
-    return disabled != this.browserProxy_.wasWindowsRecallDisabledAtStartup()
+    return disabled !== this.browserProxy_.wasWindowsRecallDisabledAtStartup()
   }
 
   windowsRecallDisabledChange_(event: Event) {
