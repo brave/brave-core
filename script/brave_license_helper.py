@@ -177,6 +177,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'libdmg-hfsplus'),
         os.path.join('brave', 'tools', 'crates', 'vendor'),
 
+        # plaster .toml file location should be skpped.
+        os.path.join('brave', 'rewrite', 'third_party'),
+
         # Transitive deps in brave/ui/webui/resources/wasm.
         *GetRustWorkspaceTransitiveDeps(Path('brave/ui/webui/resources/wasm')),
     ])
