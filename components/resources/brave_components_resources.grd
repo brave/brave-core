@@ -84,9 +84,7 @@
       </if>
 
       <!-- Email Aliases -->
-      <if expr="not is_android and not is_ios">
-        <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
-      </if>
+      <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
 
       <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
