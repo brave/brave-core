@@ -168,7 +168,12 @@ extension BrowserViewController: TabDelegate {
         actions.append(linkPreviewAction)
       }
 
-      return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
+      let formattedURL = URLFormatter.formatURL(
+        url.absoluteString,
+        formatTypes: [.omitDefaults, .omitTrivialSubdomains],
+        unescapeOptions: .normal
+      )
+      return UIMenu(title: formattedURL, children: actions)
     }
 
     let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self, weak tab] in
