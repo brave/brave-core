@@ -127,7 +127,7 @@ public class BraveClassAdapter {
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabbedNavigationBarColorControllerBaseClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);
-        chain = new BraveTabGroupModelFilterClassAdapter(chain);
+        chain = new BraveTabCollectionTabModelImplClassAdapter(chain);
         chain = new BraveThemeUtilsClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);

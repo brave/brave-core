@@ -32,7 +32,6 @@ brave_chrome_java_deps = [
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/browser/skus/android:java",
   "//brave/browser/tab_group_sync:java",
-  "//brave/browser/tabmodel/android:java",
   "//brave/browser/ui/android/logo:java",
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
