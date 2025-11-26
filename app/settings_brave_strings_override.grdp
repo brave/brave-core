@@ -33,6 +33,8 @@
   <message name="IDS_SETTINGS_SUGGEST_PREF_DESC" desc="The description of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
     When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.
   </message>
+  <if expr="not is_chromeos">
+  </if>
   <if expr="is_win">
     </if>
 

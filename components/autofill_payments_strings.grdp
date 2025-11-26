@@ -684,6 +684,9 @@
   <message name="IDS_AUTOFILL_SAVE_IBAN_LABEL" desc="Text to show for the Autofill prompt IBAN (International Bank Account Number) label where user can see the IBAN to be saved.">
     IBAN
   </message>
+  <message name="IDS_AUTOFILL_IBANS_TITLE" desc="Title of a chip referring to IBANs (IDS_AUTOFILL_SAVE_IBAN_LABEL) on Your saved info settings page.">
+    IBANs
+  </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_BUBBLE_SAVE_ACCEPT" desc="The text label for `Save` button used in autofill prompt IBAN (International Bank Account Number) save bubble on desktop.">
     Save
   </message>
@@ -954,7 +957,7 @@
       Buy now, pay later is available with Google Pay
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_AFFIRM_AND_AFTERPAY" desc="Text for the payment option button in the BNPL select provider screen, explaining that users can pay monthly or in installments. It is specifically for Affirm and Afterpay options.">
-      Pay in 4 interest-free or monthly installments (subject to eligibility)
+      No fees, as low as 0% APR (subject to eligibility)
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_ZIP" desc="Text for the payment option button in the BNPL select provider screen, explaining that users can pay monthly or in installments. It is specifically for Zip options.">
       Pay in easy installments (subject to eligibility, fees apply)
@@ -970,6 +973,12 @@
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_HIGH" desc="Text for the payment option button in the BNPL select provider screen, explaining that the checkout amount is too high for the BNPL issuer to support.">
       Purchase must be under <ph name="CHECKOUT_AMOUNT_MAXIMUM">$1<ex>$10,000.00</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_AI_FOOTNOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount.">
+      Brave uses information from the checkout page and other relevant data to offer these options. To hide pay later options, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_FOR_AI_AMOUNT_EXTRACTION_NOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount.">
+      Brave uses information from the checkout page and other relevant data to offer these options.
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION" desc="Text shown in the footnote of the BNPL select provider screen, instructing users how to hide the pay later options.">
   To hide pay later options, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>
@@ -1121,35 +1130,57 @@
   <message name="IDS_AUTOFILL_BNPL_FILLED_CARD_INFORMATION_BUBBLE_EDUCATIONAL_BODY_LABEL" desc="The description label shown in body of the Autofill filled card information bubble for the Buy Now Pay Later flow.">
     When you pay over time, a one-time virtual card number is filled. You can click to copy and paste card details for this purchase.
   </message>
+  <message name="IDS_AUTOFILL_BNPL_FILLED_CARD_SNACKBAR_MESSAGE_TEXT" desc="Text to be displayed in the snackbar shown after a Buy Now Pay Later virtual card number autofilled.">
+    <ph name="BNPL_ISSUER_NAME">$1<ex>PayLater</ex></ph> one-time virtual card number filled.
+  </message>
   <message name="IDS_AUTOFILL_BNPL_TOS_OK_BUTTON_LABEL" desc="The OK button label of the Buy-Now-Pay-Later Terms of Service dialog. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website." formatter_data="android_java">
     Continue
   </message>
-  <if expr="is_android">
-    <message name="IDS_AUTOFILL_BNPL_TOS_BOTTOM_SHEET_CANCEL_BUTTON_LABEL" desc="The cancel button label of the Buy-Now-Pay-Later Terms of Service bottom sheet. If the user cancels, the flow will end and the bottom sheet will close." formatter_data="android_java">
-      No thanks
-    </message>
-  </if>
   <message name="IDS_AUTOFILL_BNPL_TOS_CANCEL_BUTTON_LABEL" desc="The cancel button label of the Buy-Now-Pay-Later Terms of Service dialog. If the user cancels this dialog, the flow will end and the dialog will close.">
     Cancel
-  </message>
-  <message name="IDS_AUTOFILL_BNPL_TOS_UNLINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new unlinked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog.">
-    Link account and pay with <ph name="BNPL_ISSUER_NAME">$1</ph>?
-  </message>
-  <message name="IDS_AUTOFILL_BNPL_TOS_LINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new linked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog.">
-    Continue to pay with <ph name="BNPL_ISSUER_NAME">$1</ph>?
   </message>
   <message name="IDS_AUTOFILL_BNPL_TOS_TITLE_DESCRIPTION" desc="Accessibility description for the title of the Buy-Now-Pay-Later Terms of Service dialog containing the combined GPay and BNPL Issuer logo image.">
     <ph name="TOS_TITLE">$1<ex>Link account and pay with Affirm?</ex></ph> <ph name="LOGO_DESCRIPTION">$2<ex>Google Pay, Affirm logo</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog.">
-    After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked to your Brave account.
-  </message>
-  <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog.">
-    <ph name="BNPL_ISSUER_NAME">$1</ph> will check your eligibility (this won't affect your credit score). If you meet the eligibility criteria, <ph name="BNPL_ISSUER_NAME">$1</ph> will provide potential payment plan(s) to complete your purchase.
-  </message>
-  <message name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT" desc="The text informing the user the benefits of linking their BNPL account in the Buy-Now-Pay-Later Terms of Service dialog.">
-    Keeping your account linked helps you pay faster with <ph name="BNPL_ISSUER_NAME">$1</ph>, but you can unlink it by going to <ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT">$2<ex>wallet.google.com</ex></ph>
-  </message>
+  <if expr="is_android">
+    <then>
+      <message name="IDS_AUTOFILL_BNPL_TOS_BOTTOM_SHEET_CANCEL_BUTTON_LABEL" desc="The cancel button label of the Buy-Now-Pay-Later Terms of Service bottom sheet. If the user cancels, the flow will end and the bottom sheet will close." formatter_data="android_java">
+        No thanks
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_UNLINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new unlinked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog." formatter_data="android_java">
+        Link account and pay with <ph name="BNPL_ISSUER_NAME">%1$s</ph>?
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_LINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new linked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog." formatter_data="android_java">
+        Continue to pay with <ph name="BNPL_ISSUER_NAME">%1$s</ph>?
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog." formatter_data="android_java">
+        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">%1$s</ph>. This account will be automatically linked to Google Pay.
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog." formatter_data="android_java">
+        <ph name="BNPL_ISSUER_NAME">%1$s</ph> will check your eligibility (this won't affect your credit score). If approved, <ph name="BNPL_ISSUER_NAME">%1$s</ph> will provide payment plans for you to choose from and complete your purchase.
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT" desc="The text informing the user the benefits of linking their BNPL account in the Buy-Now-Pay-Later Terms of Service dialog." formatter_data="android_java">
+        Keeping your account linked helps you pay faster with <ph name="BNPL_ISSUER_NAME">%1$s</ph>, but you can unlink it by going to <ph name="BEGIN_LINK">&lt;link&gt;</ph><ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT">%2$s<ex>wallet.google.com</ex></ph><ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+    </then>
+    <else>
+      <message name="IDS_AUTOFILL_BNPL_TOS_UNLINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new unlinked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog.">
+        Link account and pay with <ph name="BNPL_ISSUER_NAME">$1</ph>?
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_LINKED_TITLE" desc="The title of the Buy-Now-Pay-Later Terms of Service dialog. This dialog is shown to users after they have selected a new linked BNPL issuer to use. If the user accepts this dialog, a new window will be shown to the user to complete the transaction on the BNPL issuer's website. If the user cancels this dialog, they will return back to the BNPL issuer selection dialog.">
+        Continue to pay with <ph name="BNPL_ISSUER_NAME">$1</ph>?
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog.">
+        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked to Google Pay.
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog.">
+        <ph name="BNPL_ISSUER_NAME">$1</ph> will check your eligibility (this won't affect your credit score). If approved, <ph name="BNPL_ISSUER_NAME">$1</ph> will provide payment plans for you to choose from and complete your purchase.
+      </message>
+      <message name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT" desc="The text informing the user the benefits of linking their BNPL account in the Buy-Now-Pay-Later Terms of Service bottom sheet.">
+        Keeping your account linked helps you pay faster with <ph name="BNPL_ISSUER_NAME">$1</ph>, but you can unlink it by going to <ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT">$2<ex>wallet.google.com</ex></ph>
+      </message>
+    </else>
+  </if>
   <message name="IDS_AUTOFILL_BNPL_FETCH_VCN_PROGRESS_DIALOG_TITLE" desc="The title of the progress dialog to be displayed after the user reviewed their payment plan for the Buy-Now-Pay-Later transaction, and Brave is attempting to retrieve the virtual card from the Payments server. If the retrieval was successful, a confirmation message will display in the progress dialog and then the virtual card will be filled.">
     Getting ready for checkout
   </message>
@@ -1159,10 +1190,10 @@
   <message name="IDS_AUTOFILL_BNPL_FETCH_VCN_PROGRESS_DIALOG_CONFIRMATION_MESSAGE" desc="The description text of the progress dialog to be displayed after Brave successfully retrieved the virtual card from the Payments server, and Brave is going to fill the virtual card.">
     Done!
   </message>
-  <message name="IDS_AUTOFILL_BNPL_ERROR_DIALOG_TITLE" desc="The title text of an error dialog informing the user that something went wrong in the Buy Now Pay Later flow.">
+  <message name="IDS_AUTOFILL_BNPL_ERROR_DIALOG_TITLE" desc="The title text of an error dialog informing the user that something went wrong in the Buy Now Pay Later flow." formatter_data="android_java">
     Something went wrong
   </message>
-  <message name="IDS_AUTOFILL_BNPL_TEMPORARY_ERROR_DESCRIPTION" desc="The description text of an error dialog informing the user that a temporary error occurred in the Buy Now Pay Later flow.">
+  <message name="IDS_AUTOFILL_BNPL_TEMPORARY_ERROR_DESCRIPTION" desc="The description text of an error dialog informing the user that a temporary error occurred in the Buy Now Pay Later flow." formatter_data="android_java">
     Pay later is unavailable at this time. Try again or choose another payment method.
   </message>
   <message name="IDS_AUTOFILL_BNPL_PERMANENT_ERROR_DESCRIPTION" desc="The description text of an error dialog informing the user that a permanent error occurred in the Buy Now Pay Later flow.">

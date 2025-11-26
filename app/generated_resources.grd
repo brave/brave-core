@@ -1287,9 +1287,15 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
+        <message name="IDS_PROFILE_ROW_VERIFY_MESSAGE" desc="A label to indicate that the profile needs credential verification (reauthentication). This is a shorter version of 'Verify it's you' that is used in other places.">
+          Verify
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_ADDRESSES_AND_MORE_SUBMENU_OPTION" desc="The text label of the addresses and more item for the passwords and autofill submenu">
             &amp;Addresses and more
+          </message>
+          <message name="IDS_YOUR_SAVED_INFO_CONTACT_INFO_SUBMENU_OPTION" desc="The text label of the contact info option for the Your saved info submenu that allows user to manage their list of saved addresses and Autofill preferences for addresses.">
+            &amp;Contact info
           </message>
           <message name="IDS_PASSWORDS_AND_AUTOFILL_MENU" desc="The text label of the passwords and autofill menu item">
             Passwords and &amp;autofill
@@ -1355,6 +1361,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_PAYMENT_METHOD_SUBMENU_OPTION" desc="The text label of the payment method for the passwords and autofill submenu">
             &amp;Payment methods
+          </message>
+          <message name="IDS_YOUR_SAVED_INFO_PAYMENTS_SUBMENU_OPTION" desc="The text label of the payments option for the Your saved info submenu that allows user to manage their list of saved payment methods and Autofill preferences for payment methods.">
+            &amp;Payments
           </message>
           <message name="IDS_SAVE_AND_SHARE_MENU" desc="The text label of the Save and share sub menu item">
             &amp;Save and share
@@ -1427,6 +1436,9 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_ADDRESSES_AND_MORE_SUBMENU_OPTION" desc="In Title Case: The text label of the addresses and more item for the passwords and autofill submenu">
             &amp;Addresses and More
           </message>
+          <message name="IDS_YOUR_SAVED_INFO_CONTACT_INFO_SUBMENU_OPTION" desc="In Title Case: The text label of the contact info option for the Your saved info submenu that allows user to manage their list of saved addresses and Autofill preferences for addresses.">
+            &amp;Contact Info
+          </message>
           <message name="IDS_PASSWORDS_AND_AUTOFILL_MENU" desc="In Title Case: The text label of the passwords and autofill menu item">
             Passwords and &amp;Autofill
           </message>
@@ -1494,6 +1506,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_PAYMENT_METHOD_SUBMENU_OPTION" desc="In Title Case: The text label of the payment method for the passwords and autofill submenu">
             &amp;Payment Methods
+          </message>
+          <message name="IDS_YOUR_SAVED_INFO_PAYMENTS_SUBMENU_OPTION" desc="In Title Case: The text label of the payments option for the Your saved info submenu that allows user to manage their list of saved payment methods and Autofill preferences for payment methods.">
+            &amp;Payments
           </message>
           <message name="IDS_SAVE_AND_SHARE_MENU" desc="In Title Case: The text label of the Save and share sub menu item">
             &amp;Save and Share
@@ -2159,6 +2174,9 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_PROMPT_DOWNLOAD_SENSITIVE_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
         Your organization's policies aren't met
       </message>
+      <message name="IDS_PROMPT_DOWNLOAD_FORCED_SAVE_TO_GDRIVE" desc="Message shown in the download shelf when a download contains sensitive content, and the admin has chosen to block the file">
+        Failed - Local download blocked
+      </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_SCAN_FAILED" desc="Message shown in the download shelf when the deep scan of the file fails and the admin has chosen to block the file">
         Scan failed. This file is blocked by your administrator
       </message>
@@ -2200,6 +2218,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_SENSITIVE_CONTENT_BLOCKED_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it contains sensitive content">
         Your organization's policies aren't met
+      </message>
+      <message name="IDS_FORCED_SAVE_TO_GDRIVE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this local download is blocked because it contains sensitive content and download will proceed to GDrive">
+        Failed - Local download blocked
       </message>
       <message name="IDS_BLOCKED_TOO_LARGE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this download is blocked because it is too large for deep scanning">
         This file is too big for a security check. You can open files up to 50 MB.
@@ -3785,6 +3806,11 @@ are declared in tools/grit/grit_args.gni.
         See how
       </message>
 
+      <!-- JS optimizations bubble -->
+      <message name="IDS_JS_OPTIMIZATIONS_DISABLED_ICON_TOOLTIP" desc="Tooltip for the JS Optimizations chip in the toolbar when it's disabled.">
+        JavaScript optimizations are disabled.
+      </message>
+
       <!-- Win certificate selector dialog strings.  -->
       <if expr="toolkit_views">
         <message name="IDS_CERT_SELECTOR_SUBJECT_COLUMN" desc="The text of the header for the certificate subject column in the certificate selector dialog.">
@@ -4407,6 +4433,22 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_DEV_TOOLS_EDIT_DIRECTORY_PERMISSION_TITLE" desc="Title of dialog asking user to confirm giving read and write access to (files in) a directory using DevTools">
         Let DevTools edit files?
+      </message>
+
+      <!-- DevTools connection dialog -->
+      <message name="IDS_DEV_TOOLS_CONNECTION_DIALOG_TITLE" desc="Title of dialog asking user to confirm allowing a debugging connection to this browser instance.">
+        Allow remote debugging?
+      </message>
+      <message name="IDS_DEV_TOOLS_CONNECTION_DIALOG_MESSAGE" desc="Message displayed in the dialog asking user to confirm allowing a debugging connection to this browser instance.">
+        An external app wants full control over this Brave session to debug it. This includes access to your saved data, cookies and site data, and the ability to navigate to any URL.
+
+Only web developers should turn on this feature, and only use it with trusted apps.
+      </message>
+      <message name="IDS_DEV_TOOLS_CONNECTION_DIALOG_ALLOW_TEXT" desc="Text for the button to allow a debugging connection to this browser instance.">
+        Allow
+      </message>
+      <message name="IDS_DEV_TOOLS_CONNECTION_DIALOG_DISABLE_TEXT" desc="Text for the button to disable the debugging connection feature.">
+        Turn off in settings
       </message>
 
       <!-- DevTools confirm infobar button labels -->
@@ -5505,7 +5547,10 @@ are declared in tools/grit/grit_args.gni.
             Manage your extensions by clicking Extensions in the Window menu.
           </message>
         </if>
-        <message name="IDS_EXTENSION_INSTALLED_MANAGE_SHORTCUTS" desc="Text for the link in the InfoBubble that opens the chrome://extensions page with the Configure Commands UI visible.">
+        <message name="IDS_EXTENSION_INSTALLED_MANAGE_SHORTCUTS" desc="Text for a link in the extension installed dialog that opens the page for managing extension shortcuts (chrome://extensions/configureCommands).">
+          <ph name="MANAGE_SHORTCUTS_LINK">$1<ex>Manage shortcuts</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_INSTALLED_MANAGE_SHORTCUTS_LINK_TEXT" desc="The literal text for the 'Manage shortcuts' link.">
           Manage shortcuts
         </message>
         <message name="IDS_EXTENSION_LAUNCH_WEB_AUTH_FLOW_TAB_INFO_BAR_TEXT" desc="Text displayed in an info bar of an auth page generated by chrome.identity.launchWebAuthFlow() API. The extension asks the user to approve an auth request and give the extension permission to access the user account. The goal of this text is to make that the user is aware that the page was opened by an extension and an auth token will be shared with the extension after approving.">
@@ -5517,6 +5562,10 @@ are declared in tools/grit/grit_args.gni.
           To get your extensions on all your computers, turn on sync
         </message>
         <!-- End of Sync Promo strings for Desktop Identity Consistency. -->
+
+        <message name="IDS_EXTENSION_VERIFY_PROMO_SUBTITLE" desc="This is the body text of a confirmation message and means that the extension is in an account-pending storage. In other words, it's waiting to be uploaded to the user's Brave sync chain. It appears when the user was signed in to Brave with account storage for extensions enabled but their sign-in credentials have expired; now, they need to sign back in to Brave. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
+          To get this extension on all your computers, verify it’s you
+        </message>
       </if>
 
       <!-- Directory access confirmation dialog -->
@@ -5545,6 +5594,13 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Extensions strings, which are not used by chrome://extensions. -->
       <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
+          Wants access to this site
+        </message>
+        <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
+          Has access to this site
+        </message>
+
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_SITE_PERMISSIONS" desc="The label in an extension's context menu for the submenu specifying the extension site permissions (sentence case).">
             Site permissions
@@ -5695,12 +5751,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
       </if>
       <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
-          Wants access to this site
-        </message>
-        <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
-          Has access to this site
-        </message>
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
           Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
         </message>
@@ -6476,10 +6526,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEB_APP_MENU_BUTTON_UPDATE" desc="Short label next to three-dot menu in a web app window when an update for the web app is available">
         App update available
       </message>
-      <message name="IDS_WEB_APP_ENABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP">
+      <message name="IDS_WEB_APP_ENABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP" formatter_data="android_java">
         Hide title bar
       </message>
-      <message name="IDS_WEB_APP_DISABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP">
+      <message name="IDS_WEB_APP_DISABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP" formatter_data="android_java">
         Show title bar
       </message>
       <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_ENABLED_ALERT" desc="Status change notification that the title bar is hidden after window controls overlay is enabled">
@@ -7222,6 +7272,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBUI_OMNIBOX_PLACEHOLDER_TEXT" desc="The text displayed in the WebUI Omnibox when it is empty and unfocused.">
         Ask <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph> or type a URL
       </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_TAB" desc="Label for a button that allows the user to ask a question about the content of their current tab.">
+        Ask Brave about this tab
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their current tab. The $1 is a placeholder for the tab title.">
+        Ask Brave about this tab: <ph name="TAB_TITLE">$1</ph>
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_PAGE" desc="Label for a button that allows the user to ask a question about the content of their current page.">
+        Ask Brave about this page
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their current page. The $1 is a placeholder for the page title.">
+        Ask Brave about this page: <ph name="PAGE_TITLE">$1</ph>
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_TAB" desc="Label for a button that allows the user to search the content of their current tab with Google Lens">
+        Search this tab with Google Lens
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that allows the user to search the content of their current tab with Google Lens. The $1 is a placeholder for the page title.">
+        Search this tab with Google Lens: <ph name="PAGE_TITLE">$1</ph>
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_PAGE" desc="Label for a button that allows the user to search the content of their current page with Google Lens">
+        Search this page with Google Lens
+      </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to search the content of their current page with Google Lens. The $1 is a placeholder for the page title.">
+        Search this page with Google Lens: <ph name="PAGE_TITLE">$1</ph>
+      </message>
 
       <!-- NTP -->
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
@@ -7263,6 +7337,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_GOOGLE_LENS_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the lens searchboxes when they are empty.">
         Search
       </message>
+      <message name="IDS_NTP_SEARCH_BOX_PLACEHOLDER_ASK_OR_TYPE" desc="A steady state placeholder text for the NTP searchbox">
+        Ask Brave or type a URL
+      </message>
       <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_ASK_GOOGLE" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
         Ask Brave
       </message>
@@ -7270,7 +7347,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Make a plan
       </message>
       <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_COMPARE" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
-        Make a comparison
+        Compare options
       </message>
       <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_RESEARCH" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
         Research a topic
@@ -7280,6 +7357,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_WRITE" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
         Write something new
+      </message>
+      <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_TAB" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
+        Ask about a tab
+      </message>
+      <message name="IDS_NTP_SEARCH_BOX_DYNAMIC_PLACEHOLDER_IMAGE" desc="One of the dynamically changing placeholder texts for the NTP searchbox">
+        Add an image and reimagine it
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_ADD_SHORTCUT_TOOLTIP" desc="The tooltip for adding a custom link shortcut. (On the New Tab Page)">
         Add shortcut
@@ -8191,11 +8274,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Reset to default
         </message>
       </if>
+
+      <!-- Composebox -->
       <message name="IDS_NTP_COMPOSE_ENTRYPOINT" desc="The text for the compose entrypoint in the searchbox on the New Tab Page.">
         AI Mode
       </message>
       <message name="IDS_NTP_COMPOSE_ENTRYPOINT_A11Y_LABEL" desc="The accessibility label for the compose entrypoint in the searchbox on the New Tab Page.">
-        Ask Brave AI Mode
+        Ask AI Mode in Brave Search
       </message>
       <message name="IDS_NTP_COMPOSE_PLACEHOLDER_TEXT" desc="The placeholder for the input in the compose box.">
         Ask AI Mode
@@ -8265,6 +8350,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT" desc="The text to display to ask user to add context to their search e.g. pdf or image.">
         Add a tab and more
       </message>
+      <message name="IDS_NTP_COMPOSE_ADD_CONTEXTS" desc="The text to display to ask user to add context to their search.">
+        Add tabs and more
+      </message>
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT_TITLE" desc="The a11y title for a button that allows users to add context to their search e.g. pdf or image.">
         Add a tab or file to your search, and also use a tool
       </message>
@@ -8279,12 +8367,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_COMPOSE_DEEP_SEARCH" desc="The label for the deep search button in the context menu in the composebox as well as the chip that indicates that the user is in deep search mode.">
         Deep Search
-      </message>
-      <message name="IDS_NTP_COMPOSE_ASK_ABOUT_THIS_TAB" desc="The text on a button that suggests the user can ask a question about the content of their most recent tab." translateable="false">
-        Ask Brave about previous tab
-      </message>
-      <message name="IDS_NTP_COMPOSE_ASK_ABOUT_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that suggests the user can ask a question about the content of their most recent tab. The $1 is a placeholder for the tab title." translateable="false">
-        Ask Brave about previous tab: <ph name="TAB_TITLE">$1</ph>
       </message>
       <message name="IDS_NTP_COMPOSE_CREATE_IMAGES" desc="The label for the create images button in the context menu in the composebox as well as the chip that indicates that the user is in create images mode.">
         Create images
@@ -8325,6 +8407,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPOSE_REMOVE_TOOL_CHIP_A11Y_LABEL" desc="A11y text for removing a tool in the composebox.">
         Remove <ph name="TOOL_NAME">$1<ex>Deep Search</ex></ph>
       </message>
+      <message name="IDS_COMPOSE_ASK_ABOUT_THIS_TAB" desc="Label for a button in the composebox that allows the user to ask a question about the content of their most recent tab.">
+        Ask Brave about previous tab
+      </message>
+      <message name="IDS_COMPOSE_ASK_ABOUT_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their most recent tab. The $1 is a placeholder for the tab title.">
+        Ask Brave about previous tab: <ph name="TAB_TITLE">$1</ph>
+      </message>
+      <message name="IDS_COMPOSE_ASK_ABOUT_THIS_PAGE" desc="Label for a button in the composebox that allows the user to ask a question about the content of their most recent page.">
+        Ask Brave about previous page
+      </message>
+      <message name="IDS_COMPOSE_ASK_ABOUT_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their most recent tab. The $1 is a placeholder for the page title.">
+        Ask Brave about previous page: <ph name="PAGE_TITLE">$1</ph>
+      </message>
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_SETUP_LIST_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
@@ -8347,6 +8441,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
         You won't see <ph name="MODULE_NAME">$1<ex>shopping suggestions</ex></ph> on this page again
+      </message>
+      <message name="IDS_NTP_MODULES_INACTIVITY_REMOVAL" desc="Text shown in a toast informing not recently used cards have been removed.">
+        Cards removed because you haven't used them recently
       </message>
       <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming the NTP History Clusters module has been disabled.">
         You won't see <ph name="MODULE_NAME">$1<ex>this type of card</ex></ph> again
@@ -8687,6 +8784,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MOBILE_PROMO_QR_CODE_LABEL" desc="Accessibility label for a QR code that shows on the Desktop NTP that prompts the user to scan it.">
         Scan QR Code
+      </message>
+
+      <!-- NTP Shortcuts -->
+      <message name="IDS_NTP_MOST_VISITED_SHORTCUTS_INACTIVITY_REMOVAL" desc="Text shown in a toast informing not recently used most visited shortcuts have been removed.">
+        Shortcuts for your most visited sites were removed because you haven't used them recently
       </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
@@ -9363,12 +9465,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_VOICE_MENU_DOWNLOADING" desc="Label for status text when a voice is downloading from the Read Aloud voice menu.">
         Downloading <ph name="LANGUAGE">$1<ex>English</ex></ph> voices...
       </message>
-      <message name="IDS_READING_MODE_LANGUAGE_DOWNLOAD_UNAVAILALBLE" desc="Label for status text when a downloads are unsupported on the Read Aloud language menu.">
-       There are no <ph name="LANGUAGE">$1<ex>English</ex></ph> voices on your device. You can install voices in settings.
-      </message>
-      <message name="IDS_READING_MODE_LANGUAGE_DOWNLOAD_UNAVAILALBLE_LEARN_MORE_LINK" desc="Label for a link to a help page added to status text when downloads are unsupported on the Read Aloud language menu.">
-       Learn more.
-      </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_VOICES_UNAVAILABLE" desc="Label for status text when a voice attempted to be downloaded from the Read Aloud language menu is unavailable.">
         Some Brave voices may not be available right now
       </message>
@@ -9413,6 +9509,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_SIDE_PANEL_PROMO_PINNING" desc="Text for the in-product-help bubble shown for the reading mode bubble when Side Panel Pinning is enabled.">
         To see a simplified view of this page, go to More Tools &gt; Reading Mode
+      </message>
+      <message name="IDS_READING_MODE_OMNIBOX_ENTRY_POINT_PROMO" desc="Text for the in-product-help bubble shown for the reading mode omnibox entry point.">
+        Read comfortably with minimal distractions
+      </message>
+      <message name="IDS_READING_MODE_OMNIBOX_ENTRY_POINT_PROMO_SCREEN_READER" desc="Text for the in-product-help bubble shown for the reading mode omnibox entry point for use when surfacing the bubble to a screen reader">
+        Read comfortably with minimal distractions using the Reading mode button on the toolbar
       </message>
      <message name="IDS_READING_MODE_VOICE_PREVIEW_STRING" desc="Message to be played when a user previews a voice for Read Aloud.">
         Hi. This is a preview
@@ -9814,6 +9916,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SWITCH_TO_HORIZONTAL_TAB" desc="The button in context menu that switches to horizontal tab view.">
           Show tabs at the top
+      </message>
+      <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="The tooltip for the button in the top container that collapses the vertical tab strip.">
+          Collapse vertical tabs
       </message>
       <!-- /Vertical Tab Strings -->
 
@@ -14339,16 +14444,8 @@ This can include information about installed software, files, your browser, the 
       <message name="IDS_PLUGIN_CRASHED_PROMPT" desc="Infobar message to notify about a crashed plugin">
        <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> has crashed
       </message>
-      <if expr="is_win">
-        <message name="IDS_PLUGIN_DISCONNECTED_PROMPT" desc="Infobar message to notify that the channel connecting to a plugin has encountered an error.">
-          <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> has encountered an error
-        </message>
-      </if>
       <message name="IDS_RELOAD_PAGE_WITH_PLUGIN" desc="Infobar button to reload the page where a plugin crashed or disconnected.">
         Reload
-      </message>
-      <message name="IDS_PLUGIN_INITIALIZATION_ERROR_PROMPT" desc="Infobar message to notify that we couldn't load a plugin">
-        Could not load <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph>
       </message>
 
       <!-- External Protocol Dialog -->
@@ -16880,14 +16977,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- Download open confirmation dialog -->
-    <if expr="not is_android">
-      <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_TITLE" desc="Title of the dialog prompt shown to users when an extension is trying to open a downloaded file.">
-        Open download
-      </message>
-      <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_MESSAGE" desc="Text of the message of the download open confirmation dialog.">
-        Allow <ph name="EXTENSION_NAME">$1<ex>Download Viewer</ex></ph> to open <ph name="FILE_NAME">$2<ex>abc.jpg</ex></ph>?
-      </message>
-    </if>
+    <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_TITLE" desc="Title of the dialog prompt shown to users when an extension is trying to open a downloaded file.">
+      Open download
+    </message>
+    <message name="IDS_DOWNLOAD_OPEN_CONFIRMATION_DIALOG_MESSAGE" desc="Text of the message of the download open confirmation dialog.">
+      Allow <ph name="EXTENSION_NAME">$1<ex>Download Viewer</ex></ph> to open <ph name="FILE_NAME">$2<ex>abc.jpg</ex></ph>?
+    </message>
 
     <message name="IDS_CONFIRM_FILE_UPLOAD_TITLE" desc="Title of dialog for confirming that many files are about to be uploaded / given to the site. [ICU Syntax]">
       {0, plural,
@@ -17105,7 +17200,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
       <message name="IDS_RELAUNCH_REQUIRED_CANCEL_BUTTON" desc="The text in the cancel button that dismisses a dialog telling users the browser must be relaunched.">
-        Got it
+        Dismiss
       </message>
     </if>
 
@@ -17715,7 +17810,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_ISSUANCE_QR_BODY">
-        <ph name="WEBSITE_ORIGIN">$1<ex>www.cheapalcohol.com</ex></ph> wants to save info on your mobile device
+        <ph name="WEBSITE_ORIGIN">$1<ex>www.cheapalcohol.com</ex></ph> wants to save info on your Android device
       </message>
 
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_CODE_ALT_TEXT">
@@ -17890,6 +17985,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_BYPASS_JUSTIFICATION_TEXT_LIMIT_LABEL" desc="A label that contains the current amount of characters in the bypass justification text box, as well as the maximum limit of characters. This is displayed to the user so they know when the limit is exceeded.">
       <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph>
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_LABEL" desc="Button text to allow the user to save a file to cloud storage">
+      Save to cloud storage
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
+      This file has sensitive or dangerous data. Your organization will let you save it to cloud storage or discard it
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18068,16 +18169,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
           =1 {Click to view the extension}
           other {Click to view these extensions}}
       </message>
-      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION" desc="Text describing the extension request justificaion textfield.">
-        Justification for requesting this extension:
-      </message>
-      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_PLACEHOLDER" desc="Placeholder text which appears inside the extension request justification textfield.">
-        Enter justification...
-      </message>
-      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_LENGTH_LIMIT" desc="Text displaying the current number of characters in the extension request justification text box, as well as the maximum character limit. This is used to inform the user when the limit is exceeded.">
-        <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>300</ex></ph>
-      </message>
     </if>
+    <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION" desc="Text describing the extension request justificaion textfield.">
+      Justification for requesting this extension:
+    </message>
+    <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_PLACEHOLDER" desc="Placeholder text which appears inside the extension request justification textfield.">
+      Enter justification...
+    </message>
+    <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_LENGTH_LIMIT" desc="Text displaying the current number of characters in the extension request justification text box, as well as the maximum character limit. This is used to inform the user when the limit is exceeded.">
+      <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>300</ex></ph>
+    </message>
 
     <message name="IDS_NAME_WINDOW_PROMPT_TITLE" desc="Title of the prompt to choose a new name for a window.">
       Name this window
@@ -18678,11 +18779,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Protected Audiences Debugging is enabled.
     </message>
 
-    <!-- Infobar shown when test-third-party-cookies switch is enabled -->
-    <message name="IDS_TEST_THIRD_PARTY_COOKIE_BLOCKING_PHASEOUT_INFO" desc="Text of infobar that shows up when the user starts Brave with the --test-third-party-cookie-phaseout command line flag">
-      You have enabled testing third-party cookie phaseout. This cannot be overridden by the settings page. If you want to re-enable third-party cookies, relaunch Brave with this feature disabled.
-    </message>
-
     <!-- Responsive Toolbar -->
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_PROFILE" desc="Overflow menu item text of profile button">
       Profile
@@ -18858,7 +18954,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
 
         <message name="IDS_PROTOCOL_HANDLER_PICKER_PARAGRAPH_WITH_ORIGIN" desc="Paragraph in the protocol handler picker dialog explaining that a specific website (the placeholder) initiated the request to open a link in an app.">
-          The site <ph name="ORIGIN">$1</ph> wants to open this link in an app.
+          <ph name="ORIGIN">$1</ph> wants to open this link in an app.
         </message>
 
         <message name="IDS_PROTOCOL_HANDLER_PICKER_PARAGRAPH_GENERIC" desc="Paragraph in the protocol handler picker dialog explaining that a website initiated the request to open a link in an app. Used when the specific website is not known.">
@@ -18910,6 +19006,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
         You just deleted data in Brave. We’d love to hear about your experience to improve Brave.
       </message>
     </if>
+
+    <!-- PDF Ink Signatures elements. -->
+    <message name="IDS_PDF_INK_SIGNATURES_IPH_BODY" desc="Content of in-product help to introduce the PDF Ink Signatures feature.">
+    Add freehand drawings, signatures, and highlights with the new Draw tool
+    </message>
 
     <!-- PDF Searchify elements. -->
     <message name="IDS_PDF_SEARCHIFY_IPH_TITLE" desc="Title of in product help to introduce PDF Searchify feature.">
