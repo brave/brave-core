@@ -41,6 +41,7 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
+  DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
 }
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;

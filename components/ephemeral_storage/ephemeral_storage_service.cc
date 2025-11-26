@@ -243,7 +243,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
     cleanup_timer->Start(
         FROM_HERE,
         first_party_storage_cleanup_enforced ? base::Milliseconds(500)
-                                         : tld_ephemeral_area_keep_alive_,
+                                             : tld_ephemeral_area_keep_alive_,
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,

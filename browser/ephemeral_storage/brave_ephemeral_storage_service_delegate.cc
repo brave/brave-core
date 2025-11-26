@@ -6,6 +6,7 @@
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/logging.h"
@@ -18,10 +19,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/dom_storage_context.h"
+#include "content/public/browser/render_process_host.h"
+#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
@@ -33,8 +37,42 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #else
-#include "brave/browser/ephemeral_storage/android/ephemeral_storage_utils.h"
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #endif
+
+namespace {
+
+void CollectTabsToClose(
+    tabs::TabInterface* tab,
+    const std::string& etldplusone,
+    const int current_tab_index,
+    std::vector<std::pair<int, tabs::TabInterface*>>& tabs_to_close) {
+  if (!tab) {
+    return;
+  }
+  content::WebContents* contents = tab->GetContents();
+  if (!contents) {
+    return;
+  }
+
+  const auto tab_tld =
+      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+  if (tab_tld.empty() || tab_tld != etldplusone) {
+    return;
+  }
+
+  if (auto* ephemeral_storage_tab_helper =
+          ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+              contents)) {
+    tabs_to_close.emplace_back(current_tab_index, tab);
+    ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
+  }
+}
+
+}  // namespace
 
 namespace ephemeral_storage {
 
@@ -159,9 +197,11 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 
 void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
     const std::string& ephemeral_domain) {
-#if !BUILDFLAG(IS_ANDROID)
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
+
+#if !BUILDFLAG(IS_ANDROID)
+
   for (Browser* browser : *BrowserList::GetInstance()) {
     if (profile != browser->profile()) {
       continue;
@@ -172,31 +212,41 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
       continue;
     }
 
-    std::vector<int> closing_tab_indices;
+    std::vector<std::pair<int, tabs::TabInterface*>> tabs_to_close;
     for (auto tab_itr = tab_strip->begin(); tab_itr != tab_strip->end();
          ++tab_itr) {
-      content::WebContents* contents = tab_itr->GetContents();
-      if (!contents) {
-        continue;
-      }
-      const auto tab_tld =
-          net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-      if (tab_tld.empty() || tab_tld != ephemeral_domain) {
+      tabs::TabInterface* tab = *tab_itr;
+      CollectTabsToClose(tab, ephemeral_domain,
+                         tab_strip->GetIndexOfWebContents(tab->GetContents()),
+                         tabs_to_close);
+    }
+
+    for (auto& [index, tab] : tabs_to_close) {
+      tab->GetContents()->GetPrimaryMainFrame()->GetProcess()->Shutdown(0);
+      tab_strip->CloseWebContentsAt(index, 0);
+    }
+  }
+#else
+  std::vector<std::pair<int, tabs::TabInterface*>> tabs_to_close;
+  for (TabModel* model : TabModelList::models()) {
+    const size_t tab_count = model->GetTabCount();
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = model->GetTabAt(index);
+      // Do not process tabs from other profiles.
+      if (!tab || profile != tab->profile()) {
         continue;
       }
 
-      if (auto* ephemeral_storage_tab_helper =
-              ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-                  contents)) {
-        closing_tab_indices.push_back(
-            tab_strip->GetIndexOfWebContents(tab_itr->GetContents()));
-        ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
-      }
+      CollectTabsToClose(tab, ephemeral_domain, index, tabs_to_close);
     }
-    tab_strip->CloseTabs(base::span<int>(closing_tab_indices));
   }
-#else
-  CloseTabsWithTLD(Profile::FromBrowserContext(context_), ephemeral_domain);
+  // Close all collected tabs
+  for (auto& [index, tab] : tabs_to_close) {
+    if (!tab) {
+      continue;
+    }
+    tab->Close();
+  }
 #endif
 }
 
