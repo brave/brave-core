@@ -28,7 +28,7 @@ void AdBlockResourceProvider::RemoveObserver(
 }
 
 void AdBlockResourceProvider::NotifyResourcesLoaded(
-    BraveResourceStorageBox storage) {
+    AdblockResourceStorageBox storage) {
   for (auto& observer : observers_) {
     observer.OnResourcesLoaded(adblock::clone_resource_storage(*storage));
   }

@@ -79,7 +79,7 @@ class AdBlockService {
     void OnChanged(bool is_default_engine) override;
 
     // AdBlockResourceProvider::Observer
-    void OnResourcesLoaded(BraveResourceStorageBox) override;
+    void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
     raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned

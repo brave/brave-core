@@ -97,11 +97,11 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 }
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
-    BraveResourceStorageBox storage) {
+    AdblockResourceStorageBox storage) {
   if (!filter_set_) {
     base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
-           BraveResourceStorageBox storage) {
+           AdblockResourceStorageBox storage) {
           if (engine) {
             engine->UseResources(*storage);
           }
@@ -111,7 +111,7 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-           BraveResourceStorageBox storage) {
+           AdblockResourceStorageBox storage) {
           if (engine) {
             engine->Load(std::move(*filter_set.get()), *storage);
           }

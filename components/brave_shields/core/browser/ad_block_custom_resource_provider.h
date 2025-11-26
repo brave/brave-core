@@ -64,11 +64,11 @@ class AdBlockCustomResourceProvider
 
   // AdBlockResourceProvider:
   void LoadResources(
-      base::OnceCallback<void(BraveResourceStorageBox)>) override;
+      base::OnceCallback<void(AdblockResourceStorageBox)>) override;
 
  private:
   // AdBlockResourceProvider::Observer:
-  void OnResourcesLoaded(BraveResourceStorageBox) override;
+  void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
   void AddResourceInternal(base::Value resource,
                            StatusCallback on_complete,
@@ -84,11 +84,11 @@ class AdBlockCustomResourceProvider
   void SaveResources(base::Value resources);
 
   void OnDefaultResourcesLoaded(
-      base::OnceCallback<void(BraveResourceStorageBox)> on_load,
-      BraveResourceStorageBox storage);
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+      AdblockResourceStorageBox storage);
   void OnCustomResourcesLoaded(
-      base::OnceCallback<void(BraveResourceStorageBox)> on_load,
-      BraveResourceStorageBox default_storage,
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+      AdblockResourceStorageBox default_storage,
       base::Value custom_resources);
 
   void ReloadResourcesAndNotify();

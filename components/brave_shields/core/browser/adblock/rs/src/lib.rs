@@ -35,7 +35,7 @@ mod ffi {
         fn clone_resource_storage(
             storage: &BraveCoreResourceStorage,
         ) -> Box<BraveCoreResourceStorage>;
-        fn merge_resource_storage(
+        fn extend_resource_storage(
             storage: &BraveCoreResourceStorage,
             additional_resources_json: &str,
         ) -> Box<BraveCoreResourceStorage>;
@@ -89,9 +89,6 @@ mod ffi {
         pub fn serialize(&self) -> Vec<u8>;
         /// Deserializes and loads a binary-serialized Engine.
         fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool;
-        /// Loads JSON-serialized resources into the engine resource set.
-        /// Deprecated: Use use_resource_storage instead for shared storage.
-        fn use_resources_deprecated(&mut self, resources_json: &CxxString) -> bool;
         /// Loads resources from a ResourceStorage instance into the engine.
         fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage);
         /// Returns JSON-serialized cosmetic filter resources for a given url.

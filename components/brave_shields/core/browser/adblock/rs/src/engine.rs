@@ -5,11 +5,9 @@
 
 use std::collections::HashSet;
 use std::str::Utf8Error;
-use std::sync::Arc;
 
 use crate::resource_storage::BraveCoreResourceStorage;
 use adblock::lists::FilterSet as InnerFilterSet;
-use adblock::resources::{InMemoryResourceStorage, Resource};
 use adblock::url_parser::ResolvesDomain;
 use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
@@ -193,23 +191,6 @@ impl Engine {
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
         self.engine.deserialize(serialized.as_slice()).is_ok()
-    }
-
-    // TODO(https://github.com/brave/brave-browser/issues/50368): remove this method, expose storage API.
-    pub fn use_resources_deprecated(&mut self, resources_json: &CxxString) -> bool {
-        resources_json
-            .to_str()
-            .ok()
-            .and_then(|resources_json| serde_json::from_str::<Vec<Resource>>(resources_json).ok())
-            .and_then(|resources| {
-                let in_memory_storage = InMemoryResourceStorage::from_resources(resources);
-                let shared_storage = Arc::new(in_memory_storage);
-                let bc_storage = BraveCoreResourceStorage { shared_storage };
-
-                self.engine.use_resource_storage(bc_storage);
-                Some(())
-            })
-            .is_some()
     }
 
     pub fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage) {

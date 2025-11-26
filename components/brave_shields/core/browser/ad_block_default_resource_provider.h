@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 
-#include <string>
-
 #include "base/functional/callback.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
@@ -36,23 +34,15 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   /// Returns the path to the resources file.
   base::FilePath GetResourcesPath();
 
-  /// Returns the cached resources JSON if available.
-  const std::string& GetResourcesJson() const { return resources_json_; }
-
   void LoadResources(
-      base::OnceCallback<void(BraveResourceStorageBox)>) override;
+      base::OnceCallback<void(AdblockResourceStorageBox)>) override;
 
  private:
   friend class ::AdBlockServiceTest;
 
   void OnComponentReady(const base::FilePath&);
-  void OnResourcesLoaded(const std::string& resources_json);
-  void OnLoadResourcesLoaded(
-      base::OnceCallback<void(BraveResourceStorageBox)> cb,
-      const std::string& resources_json);
 
   base::FilePath component_path_;
-  std::string resources_json_;  // Cached resources JSON
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };

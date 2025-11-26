@@ -24,7 +24,6 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace brave_shields {
@@ -79,7 +78,7 @@ class AdBlockResourceObserver : public AdBlockResourceProvider::Observer {
   explicit AdBlockResourceObserver(OnResourceUpdatedCallback callback);
 
   // AdBlockFilterListCatalogProvider::Observer
-  void OnResourcesLoaded(BraveResourceStorageBox) override;
+  void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
  private:
   OnResourceUpdatedCallback callback_;
@@ -90,7 +89,7 @@ AdBlockResourceObserver::AdBlockResourceObserver(
     : callback_(callback) {}
 
 void AdBlockResourceObserver::OnResourcesLoaded(
-    BraveResourceStorageBox /*storage*/) {
+    AdblockResourceStorageBox /*storage*/) {
   callback_.Run();
 }
 

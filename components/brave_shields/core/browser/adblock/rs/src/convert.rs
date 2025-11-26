@@ -6,12 +6,12 @@
 use std::time::Duration;
 
 use crate::ffi::{
-    BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16, RegexDebugEntry,
-    RegexManagerDiscardPolicy,
+    BlockerResult, FilterListMetadata, OptionalString, OptionalU16, RegexDebugEntry,
+    DebugInfo, RegexManagerDiscardPolicy,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
-use adblock::engine::EngineDebugInfo as InnerEngineDebugInfo;
 use adblock::lists::{ExpiresInterval, FilterListMetadata as InnerFilterListMetadata};
+use adblock::engine::EngineDebugInfo as InnerEngineDebugInfo;
 
 use adblock::regex_manager::{
     RegexDebugEntry as InnerRegexDebugEntry,

@@ -180,16 +180,14 @@ void AdBlockCustomResourceProvider::RemoveObserver(
 }
 
 void AdBlockCustomResourceProvider::LoadResources(
-    base::OnceCallback<void(BraveResourceStorageBox)> on_load) {
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load) {
   default_resource_provider_->LoadResources(
       base::BindOnce(&AdBlockCustomResourceProvider::OnDefaultResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(on_load)));
 }
 
 void AdBlockCustomResourceProvider::OnResourcesLoaded(
-    BraveResourceStorageBox storage) {
-  // For compatibility, we need to convert back to string for now
-  // TODO: Update the internal logic to work with ResourceStorage directly
+    AdblockResourceStorageBox storage) {
   OnDefaultResourcesLoaded(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()),
@@ -265,30 +263,27 @@ void AdBlockCustomResourceProvider::SaveResources(base::Value resources) {
 }
 
 void AdBlockCustomResourceProvider::OnDefaultResourcesLoaded(
-    base::OnceCallback<void(BraveResourceStorageBox)> on_load,
-    BraveResourceStorageBox storage) {
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+    AdblockResourceStorageBox storage) {
   GetCustomResources(base::BindOnce(
       &AdBlockCustomResourceProvider::OnCustomResourcesLoaded,
       weak_ptr_factory_.GetWeakPtr(), std::move(on_load), std::move(storage)));
 }
 
 void AdBlockCustomResourceProvider::OnCustomResourcesLoaded(
-    base::OnceCallback<void(BraveResourceStorageBox)> on_load,
-    BraveResourceStorageBox default_storage,
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+    AdblockResourceStorageBox default_storage,
     base::Value custom_resources) {
-  LOG(ERROR) << "OnCustomResourcesLoaded " << custom_resources.DebugString();
   CHECK(custom_resources.is_list());
 
   if (custom_resources.GetList().empty()) {
     std::move(on_load).Run(std::move(default_storage));
   } else {
-    // Merge custom scriptlets into the default storage
     auto custom_resources_json = base::WriteJson(custom_resources);
     if (!custom_resources_json) {
       std::move(on_load).Run(std::move(default_storage));
     } else {
-      // Use the merge function to add scriptlets to the main storage
-      auto merged_storage = adblock::merge_resource_storage(
+      auto merged_storage = adblock::extend_resource_storage(
           *default_storage, *custom_resources_json);
       std::move(on_load).Run(std::move(merged_storage));
     }
