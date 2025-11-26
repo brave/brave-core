@@ -17,8 +17,6 @@ BASE_DECLARE_FEATURE(kBraveFilledBookmarkFolderIcon);
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)
 
-// A feature flag to force all popup windows to be opened as tabs.
-// https://github.com/brave/brave-browser/issues/40959
 BASE_DECLARE_FEATURE(kForcePopupToBeOpenedAsTab);
 
 }  // namespace features

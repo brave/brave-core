@@ -1428,7 +1428,6 @@ source_set("browser_tests") {
 
     sources = [
       "brave_browser_browsertest.cc",
-      "browser_navigator_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
     ]

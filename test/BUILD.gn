@@ -1178,6 +1178,7 @@ test("brave_browser_tests") {
       "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
       "//brave/browser/brave_shields/ad_block_only_mode_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
+      "//brave/browser/ui/browser_navigator_browsertest.cc",
       "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     ]
@@ -1206,6 +1207,7 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",
+      "//components/blocked_content",
     ]
   }
 

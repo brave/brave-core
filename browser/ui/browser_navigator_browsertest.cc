@@ -19,10 +19,14 @@ class BrowserNavigatorPopupAsTabBrowserTest
       public ::testing::WithParamInterface<bool> {
  public:
   BrowserNavigatorPopupAsTabBrowserTest() {
-    GetParam() ? feature_list_.InitAndEnableFeature(
-                     features::kForcePopupToBeOpenedAsTab)
-               : feature_list_.InitAndDisableFeature(
-                     features::kForcePopupToBeOpenedAsTab);
+    EXPECT_FALSE(
+        base::FeatureList::IsEnabled(features::kForcePopupToBeOpenedAsTab))
+        << "Feature should be disabled by default";
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(features::kForcePopupToBeOpenedAsTab);
+    } else {
+      feature_list_.InitAndDisableFeature(features::kForcePopupToBeOpenedAsTab);
+    }
   }
   ~BrowserNavigatorPopupAsTabBrowserTest() override = default;
 
