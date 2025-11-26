@@ -157,4 +157,10 @@ const base::FeatureParam<std::string> kRichSearchWidgetsOrigin{
     &kRichSearchWidgets, "rich_search_widgets_origin",
     "https://prod.browser-ai-includes.s.brave.app"};
 
+BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsShowAIChatInputOnNewTabPageEnabled() {
+  return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);
+}
+
 }  // namespace ai_chat::features

@@ -126,7 +126,6 @@ export default function FilterMenu<T>(props: Props<T>) {
         setTimeout(() => props.setIsOpen(false))
         return false
       }}
-      placement='top-start'
     >
       {props.header}
       {filtered.map((category) => {

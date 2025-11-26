@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
@@ -15,6 +17,7 @@
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
@@ -22,9 +25,15 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
+#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -131,5 +140,48 @@ void BraveNewTabPageUI::BindInterface(
   }
 }
 #endif
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
+  ai_chat_page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
+      web_ui()->GetWebContents(), nullptr, Profile::FromWebUI(web_ui()),
+      std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
+  CHECK(service);
+  service->Bind(std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
+  CHECK(service);
+  service->Bind(std::move(pending_receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
+        pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
+      BookmarkModelFactory::GetForBrowserContext(profile),
+      std::move(pending_receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
+      std::move(pending_receiver),
+      HistoryServiceFactory::GetForProfile(profile,
+                                           ServiceAccessType::EXPLICIT_ACCESS));
+  CHECK(history_ui_handler_);
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)
