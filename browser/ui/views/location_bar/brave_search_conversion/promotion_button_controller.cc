@@ -133,6 +133,12 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
     return false;
   }
 
+  // In browser test, this happens on x64 macOS release build.
+  // https://github.com/brave/brave-browser/issues/51026
+  if (!browser_->window()) {
+    return false;
+  }
+
   // No popup means no suggestions for current input.
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
