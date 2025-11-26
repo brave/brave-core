@@ -16,8 +16,8 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
@@ -32,10 +32,8 @@ constexpr uint32_t kDefaultContextSize = 8192;
 
 OllamaModelFetcher::OllamaModelFetcher(ModelService& model_service,
                                        PrefService* prefs,
-                                       OllamaService* ollama_service)
-    : model_service_(model_service),
-      prefs_(prefs),
-      ollama_service_(ollama_service) {
+                                       Delegate* delegate)
+    : model_service_(model_service), prefs_(prefs), delegate_(delegate) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveAIChatOllamaFetchEnabled,
@@ -53,6 +51,10 @@ OllamaModelFetcher::OllamaModelFetcher(ModelService& model_service,
 
 OllamaModelFetcher::~OllamaModelFetcher() = default;
 
+void OllamaModelFetcher::SetDelegate(Delegate* delegate) {
+  delegate_ = delegate;
+}
+
 void OllamaModelFetcher::OnOllamaFetchEnabledChanged() {
   bool ollama_fetch_enabled =
       prefs_->GetBoolean(prefs::kBraveAIChatOllamaFetchEnabled);
@@ -63,8 +65,11 @@ void OllamaModelFetcher::OnOllamaFetchEnabledChanged() {
 }
 
 void OllamaModelFetcher::FetchModels() {
-  ollama_service_->FetchModels(base::BindOnce(
-      &OllamaModelFetcher::OnModelsFetched, weak_ptr_factory_.GetWeakPtr()));
+  if (!delegate_) {
+    return;
+  }
+  delegate_->FetchModels(base::BindOnce(&OllamaModelFetcher::OnModelsFetched,
+                                        weak_ptr_factory_.GetWeakPtr()));
 }
 
 void OllamaModelFetcher::OnModelsFetched(
@@ -134,14 +139,17 @@ void OllamaModelFetcher::OnModelsFetched(
 }
 
 void OllamaModelFetcher::FetchModelDetails(const std::string& model_name) {
-  ollama_service_->ShowModel(
+  if (!delegate_) {
+    return;
+  }
+  delegate_->ShowModel(
       model_name, base::BindOnce(&OllamaModelFetcher::OnModelDetailsFetched,
                                  weak_ptr_factory_.GetWeakPtr(), model_name));
 }
 
 void OllamaModelFetcher::OnModelDetailsFetched(
     const std::string& model_name,
-    std::optional<OllamaService::ModelDetails> details) {
+    std::optional<ModelDetails> details) {
   auto it = pending_models_.find(model_name);
   if (it == pending_models_.end()) {
     return;

@@ -23,16 +23,6 @@
 
 namespace ai_chat {
 
-// OllamaService::ModelDetails implementation
-OllamaService::ModelDetails::ModelDetails() = default;
-OllamaService::ModelDetails::ModelDetails(const ModelDetails&) = default;
-OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
-    const ModelDetails&) = default;
-OllamaService::ModelDetails::ModelDetails(ModelDetails&&) = default;
-OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
-    ModelDetails&&) = default;
-OllamaService::ModelDetails::~ModelDetails() = default;
-
 namespace {
 
 constexpr net::NetworkTrafficAnnotationTag kOllamaConnectionAnnotation =
@@ -97,14 +87,19 @@ constexpr size_t kModelDetailsMaxSize = 1024 * 1024;  // 1MB for model details
 }  // namespace
 
 OllamaService::OllamaService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(std::move(url_loader_factory)) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::unique_ptr<OllamaModelFetcher> model_fetcher)
+    : url_loader_factory_(std::move(url_loader_factory)),
+      model_fetcher_(std::move(model_fetcher)) {
+  if (model_fetcher_) {
+    model_fetcher_->SetDelegate(this);
+  }
+}
 
 OllamaService::~OllamaService() = default;
 
-void OllamaService::SetModelFetcher(
-    std::unique_ptr<OllamaModelFetcher> model_fetcher) {
-  model_fetcher_ = std::move(model_fetcher);
+void OllamaService::Shutdown() {
+  model_fetcher_.reset();
 }
 
 void OllamaService::BindReceiver(

@@ -53,16 +53,22 @@ OllamaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  auto ollama_service = std::make_unique<OllamaService>(url_loader_factory);
 
-  // Create OllamaModelFetcher and wire it to the OllamaService
+  // Create OllamaModelFetcher first (without delegate), then OllamaService
+  // which takes ownership and provides the delegate interface.
   auto* model_service = ModelServiceFactory::GetForBrowserContext(context);
   auto* prefs = user_prefs::UserPrefs::Get(context);
+
+  std::unique_ptr<OllamaModelFetcher> model_fetcher;
   if (model_service && prefs) {
-    auto model_fetcher = std::make_unique<OllamaModelFetcher>(
-        *model_service, prefs, ollama_service.get());
-    ollama_service->SetModelFetcher(std::move(model_fetcher));
+    // Pass nullptr as delegate initially; OllamaService will set itself
+    // as the delegate when it takes ownership.
+    model_fetcher = std::make_unique<OllamaModelFetcher>(*model_service, prefs,
+                                                         /*delegate=*/nullptr);
   }
+
+  auto ollama_service = std::make_unique<OllamaService>(
+      url_loader_factory, std::move(model_fetcher));
 
   return ollama_service;
 }
