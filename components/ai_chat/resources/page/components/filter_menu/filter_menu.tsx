@@ -64,12 +64,17 @@ export default function FilterMenu<T>(props: Props<T>) {
       }
 
       const focused = ref.current?.querySelector<HTMLElement>(':focus')
-      if (e.key === 'Enter') {
+      // If there isn't a focused element, click the first menu item, if any.
+      const menuItem =
+        focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
+
+      const accepts =
+        e.key === 'Enter'
+        || e.key === 'Tab'
+        || (e.key === ' ' && !menuItem?.textContent?.includes(' '))
+      if (accepts) {
         setHandled()
 
-        // If there isn't a focused element, click the first menu item, if any.
-        const menuItem =
-          focused ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
         if (!menuItem) return
 
         menuItem.click()
