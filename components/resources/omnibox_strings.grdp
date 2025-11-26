@@ -11,7 +11,7 @@
     Open here button, press Enter to open this url in the current tab, instead of switching to the
     existing tab
   </message>
-  <message name="IDS_OMNIBOX_ASK_LEO_DESCRIPTION" desc="The label in the omnibox explaning that the match item will open Leo">
+  <message name="IDS_OMNIBOX_ASK_LEO_DESCRIPTION" desc="The label in the omnibox explaning that the match item will open Leo" formatter_data="webui=BraveOmnibox">
     Ask Leo
   </message>
   <message name="IDS_OMNIBOX_SELECT_ASK_LEO_HINT" desc="The hint displayed in the omnibox for selecting the Ask Leo match">

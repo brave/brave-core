@@ -53,7 +53,7 @@ export function RewardsWidget() {
   const tosUpdateRequired = useRewardsState((s) => s.tosUpdateRequired)
   const adsViewed = useRewardsState((s) => s.rewardsAdsViewed)
   const adsViewedString =
-    usePluralString('rewardsConnectedAdsViewedText', adsViewed ?? 0)
+    usePluralString(S.REWARDS_CONNECTED_ADS_VIEWED_TEXT, adsViewed ?? 0)
   const [cachedBalance, setCachedBalance] = usePersistedJSON<number | null>(
     'ntp-rewards-balance',
     (data) => typeof data === 'number' ? data : null)
@@ -75,11 +75,11 @@ export function RewardsWidget() {
           <div className='text'>
             <div>
               <Icon name='check-normal' />
-              <div>{getString('rewardsFeatureText1')}</div>
+              <div>{getString(S.REWARDS_ONBOARDING_TEXT_ITEM_1)}</div>
             </div>
             <div>
               <Icon name='check-normal' />
-              <div>{getString('rewardsFeatureText2')}</div>
+              <div>{getString(S.REWARDS_ONBOARDING_TEXT_ITEM_2)}</div>
             </div>
           </div>
           <div className='actions'>
@@ -175,10 +175,10 @@ export function RewardsWidget() {
         <div className='content'>
           <div className='text'>
             <div className='header'>
-              {getString('rewardsTosUpdateTitle')}
+              {getString(S.REWARDS_TOS_UPDATE_HEADING)}
             </div>
             <div>
-              {getString('rewardsTosUpdateText')}
+              {getString(S.REWARDS_TOS_UPDATE_NTP_TEXT)}
             </div>
           </div>
           <div className='actions'>
@@ -186,7 +186,7 @@ export function RewardsWidget() {
               size='small'
               onClick={() => openLink(urls.settingsURL)}
             >
-              {getString('rewardsTosUpdateButtonLabel')}
+              {getString(S.REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL)}
             </Button>
           </div>
         </div>
@@ -204,7 +204,7 @@ export function RewardsWidget() {
       return (
         <div className='payout-status'>
           {
-            formatString(getString('rewardsPayoutCompletedText'), [
+            formatString(getString(S.REWARDS_PAYMENT_COMPLETED), [
               getPayoutMonth()
             ])
           }
@@ -215,7 +215,7 @@ export function RewardsWidget() {
       return (
         <div className='payout-status'>
           {
-            formatString(getString('rewardsPayoutProcessingText'), [
+            formatString(getString(S.REWARDS_PAYMENT_PROCESSING), [
               getPayoutMonth()
             ])
           }
@@ -246,7 +246,7 @@ export function RewardsWidget() {
         <Tooltip mode='default'>
           <Icon name='info-outline' />
           <div slot='content'>
-            {getString('rewardsAdsViewedTooltip')}
+            {getString(S.REWARDS_ADS_VIEWED_TOOLTIP)}
           </div>
         </Tooltip>
       </div>

@@ -18,7 +18,7 @@ import { style } from './search_results.style'
 function MatchImage(props: { match: AutocompleteMatch }) {
   const { imageUrl, iconUrl } = props.match
 
-  if (props.match.description === getString('searchAskLeoDescription')) {
+  if (props.match.description === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)) {
     return <Icon name='product-brave-leo' className='brave-leo-icon' />
   }
   if (!imageUrl) {

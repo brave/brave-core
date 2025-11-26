@@ -6,28 +6,27 @@
 import { getLocale } from '$web-common/locale'
 import '$web-common/strings'
 
-import { BraveNewsStrings } from 'gen/components/grit/brave_components_webui_strings'
-import { BraveNewTabPageStrings } from 'gen/components/grit/brave_components_webui_strings'
+import {
+  BraveNewsStrings,
+  BraveNewTabPageStrings,
+  BraveRewardsStrings,
+  BraveOmniboxStrings,
+} from 'gen/components/grit/brave_components_webui_strings'
 
 declare global {
   interface Strings {
     BraveNewTabPageStrings: typeof BraveNewTabPageStrings
+    BraveRewardsStrings: typeof BraveRewardsStrings
+    BraveOmniboxStrings: typeof BraveOmniboxStrings
   }
 }
 
 export type StringKey =
-  'rewardsAdsViewedTooltip' |
-  'rewardsFeatureText1' |
-  'rewardsFeatureText2' |
-  'rewardsPayoutCompletedText' |
-  'rewardsPayoutProcessingText' |
-  'rewardsTosUpdateButtonLabel' |
-  'rewardsTosUpdateText' |
-  'rewardsTosUpdateTitle' |
-  'searchAskLeoDescription'
+  BraveNewTabPageStrings
+  | BraveNewsStrings
+  | BraveRewardsStrings
+  | BraveOmniboxStrings
 
-export function getString(
-  key: StringKey | BraveNewTabPageStrings | BraveNewsStrings
-) {
+export function getString(key: StringKey) {
   return getLocale(key)
 }
