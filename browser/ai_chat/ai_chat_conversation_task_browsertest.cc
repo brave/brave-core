@@ -18,6 +18,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
@@ -35,6 +36,7 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -160,12 +162,43 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     conversation_rfh_ = ui_test_utils::NavigateToURLWithDisposition(
         agent_browser_window_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+    // Wait for child frame to exist
+    VerifyElementState("conversation-entries-iframe");
+    EXPECT_TRUE(base::test::RunUntil(
+        [&] { return GetConversationEntriesFrame() != nullptr; }));
+  }
+
+  content::RenderFrameHost* GetConversationEntriesFrame() {
+    content::RenderFrameHost* result = nullptr;
+    conversation_rfh_->ForEachRenderFrameHost(
+        [&](content::RenderFrameHost* frame) {
+          if (frame->GetWebUI() &&
+              frame->GetWebUI()
+                  ->GetController()
+                  ->GetAs<AIChatUntrustedConversationUI>()) {
+            result = frame;
+            return;
+          }
+        });
+    return result;
+  }
+
+  bool VerifyConversationFrameElementState(
+      const std::string& test_id,
+      bool expect_exist = true,
+      base::Location location = base::Location::Current()) {
+    return VerifyElementState(test_id, expect_exist,
+                              GetConversationEntriesFrame(), location);
   }
 
   // Helper to check if an element with a specific data-testid exists
   bool VerifyElementState(const std::string& test_id,
                           bool expect_exist = true,
+                          content::RenderFrameHost* frame = nullptr,
                           base::Location location = base::Location::Current()) {
+    if (!frame) {
+      frame = conversation_rfh_;
+    }
     SCOPED_TRACE(testing::Message()
                  << "VerifyElementState: '" << test_id << "' called from "
                  << location.file_name() << ":" << location.line_number());
@@ -198,7 +231,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     )";
 
     auto result = content::EvalJs(
-        conversation_rfh_,
+        frame,
         content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist));
     return result.ExtractBool();
   }
@@ -582,7 +615,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
           std::make_unique<NiceMock<MockTool>>("mock_tool", "Mock tool")));
 
   testing::Sequence tool_call_seq;
-
+  base::OnceClosure tool_execute;
   // Submit first message
   {
     EngineConsumer::GenerationDataCallback data_callback;
@@ -601,9 +634,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
 
     EXPECT_CALL(*mock_tool, UseTool)
         .InSequence(tool_call_seq)
-        .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
-          std::move(callback).Run(
-              CreateContentBlocksForText("1st tool result"));
+        .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+          // Wait unt the next round is setup to call the callback
+          tool_execute = base::BindOnce(
+              [](Tool::UseToolCallback callback) {
+                std::move(callback).Run(
+                    CreateContentBlocksForText("1st tool result"));
+              },
+              std::move(callback));
         }));
 
     // Complete first message response
@@ -613,15 +651,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   }
 
   // No task UI should be shown with only one tool segment in the loop
-  EXPECT_FALSE(VerifyElementState("assistant-task", false));
-
+  EXPECT_FALSE(VerifyConversationFrameElementState("assistant-task", false));
   // Handle the tool execution response with another tool use request.
   {
     EngineConsumer::GenerationDataCallback data_callback;
     EngineConsumer::GenerationCompletedCallback completed_callback;
     auto wait_for_generate = SetupMockGenerateAssistantResponse(
         &data_callback, &completed_callback, &tool_call_seq);
-
+    std::move(tool_execute).Run();
     std::move(wait_for_generate).Run();
 
     data_callback.Run(EngineConsumer::GenerationResultData(
@@ -637,14 +674,15 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     EXPECT_CALL(*mock_tool, UseTool)
         .InSequence(tool_call_seq)
         .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
-          EXPECT_TRUE(VerifyElementState("assistant-task"));
-          EXPECT_FALSE(VerifyElementState("tool-event-thinking", false));
-
-          std::move(callback).Run(
-              CreateContentBlocksForText("2nd tool result"));
-
-          // Now we should be thinking
-          EXPECT_TRUE(VerifyElementState("tool-event-thinking"));
+          EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
+          EXPECT_FALSE(VerifyConversationFrameElementState(
+              "tool-event-thinking", false));
+          tool_execute = base::BindOnce(
+              [](Tool::UseToolCallback callback) {
+                std::move(callback).Run(
+                    CreateContentBlocksForText("2nd tool result"));
+              },
+              std::move(callback));
         }));
 
     // Complete successful response
@@ -660,10 +698,16 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     auto wait_for_generate = SetupMockGenerateAssistantResponse(
         &data_callback, &completed_callback, &tool_call_seq);
 
+    // Finish executing the tool
+    std::move(tool_execute).Run();
+
     std::move(wait_for_generate).Run();
 
+    // Now we should be thinking
+    EXPECT_TRUE(VerifyConversationFrameElementState("tool-event-thinking"));
+
     // Shouldn't call the tool again because we are pausing.
-    EXPECT_CALL(*mock_tool, UseTool).InSequence(tool_call_seq).Times(0);
+    EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
 
     // Pause the task
     EXPECT_TRUE(ClickElement("pause-task-button"));
@@ -683,7 +727,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   }
 
   // The task should have a "paused" label
-  EXPECT_TRUE(VerifyElementState("assistant-task-paused-label"));
+  EXPECT_TRUE(
+      VerifyConversationFrameElementState("assistant-task-paused-label"));
 
   // When we submit a new message, the task is no longer active. It should still
   // exist but should not have its "paused" label.
@@ -711,9 +756,9 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
-
-  EXPECT_TRUE(VerifyElementState("assistant-task"));
-  EXPECT_FALSE(VerifyElementState("assistant-task-paused-label", false));
+  EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
+  EXPECT_FALSE(VerifyConversationFrameElementState(
+      "assistant-task-paused-label", false));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)

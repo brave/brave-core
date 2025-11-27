@@ -162,6 +162,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
         + conversationContext.conversationUuid
       }
       ref={iframeRef}
+      data-testid='conversation-entries-iframe'
       onLoad={() => setHasLoaded(true)}
     />
   )
