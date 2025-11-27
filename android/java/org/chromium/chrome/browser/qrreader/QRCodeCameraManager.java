@@ -27,8 +27,8 @@ import org.chromium.base.Log;
 import java.io.IOException;
 
 /**
- * Helper class to manage QR code camera operations. This class encapsulates camera source
- * creation, lifecycle management, and 180-degree rotation handling for QR code scanning.
+ * Helper class to manage QR code camera operations. This class encapsulates camera source creation,
+ * lifecycle management, and 180-degree rotation handling for QR code scanning.
  */
 public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTrackerCallback {
     private static final String TAG = "QRCodeCameraManager";
@@ -111,8 +111,7 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
 
         Activity activity = mHostProvider.getHostActivity();
         if (activity != null) {
-            mDisplayManager =
-                    (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
+            mDisplayManager = (DisplayManager) activity.getSystemService(Context.DISPLAY_SERVICE);
             if (mDisplayManager != null) {
                 Display display = activity.getWindowManager().getDefaultDisplay();
                 if (display != null) {
@@ -324,4 +323,3 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
         return mCameraSourcePreview;
     }
 }
-

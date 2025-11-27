@@ -27,6 +27,24 @@ java_cpp_template("brave_config_java") {
   ]
 }
 
+android_library("qrreader_java") {
+  sources = [
+    "java/org/chromium/chrome/browser/qrreader/BarcodeTracker.java",
+    "java/org/chromium/chrome/browser/qrreader/BarcodeTrackerFactory.java",
+    "java/org/chromium/chrome/browser/qrreader/CameraSource.java",
+    "java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
+    "java/org/chromium/chrome/browser/qrreader/QRCodeCameraManager.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//third_party/android_deps:google_play_services_base_java",
+    "//third_party/android_deps:google_play_services_vision_common_java",
+    "//third_party/android_deps:google_play_services_vision_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [

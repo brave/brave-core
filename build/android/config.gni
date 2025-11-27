@@ -21,6 +21,7 @@ brave_android_manifest_includes = [
 ]
 
 brave_chrome_java_deps = [
+  "//brave/android:qrreader_java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/brave_domains/android:java",
   "//brave/browser/customize_menu/android:java",
