@@ -23,6 +23,8 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -30,6 +32,7 @@ import java.io.IOException;
  * Helper class to manage QR code camera operations. This class encapsulates camera source creation,
  * lifecycle management, and 180-degree rotation handling for QR code scanning.
  */
+@NullMarked
 public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTrackerCallback {
     private static final String TAG = "QRCodeCameraManager";
     private static final int INITIAL_ROTATION = -1;
@@ -41,7 +44,7 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
         void onDetectedQrCode(Barcode barcode);
 
         /** Called when Google Play Services is not available. Returns true if handled. */
-        default boolean onPlayServicesUnavailable(Dialog errorDialog) {
+        default boolean onPlayServicesUnavailable(@Nullable Dialog errorDialog) {
             return false;
         }
     }
@@ -53,9 +56,9 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
         boolean isHostValid();
     }
 
-    private CameraSource mCameraSource;
-    private CameraSourcePreview mCameraSourcePreview;
-    private DisplayManager mDisplayManager;
+    private @Nullable CameraSource mCameraSource;
+    private @Nullable CameraSourcePreview mCameraSourcePreview;
+    private @Nullable DisplayManager mDisplayManager;
     private int mLastRotation = INITIAL_ROTATION;
     private final Callback mCallback;
     private final HostProvider mHostProvider;
@@ -319,7 +322,7 @@ public class QRCodeCameraManager implements BarcodeTracker.BarcodeGraphicTracker
     }
 
     /** Returns the camera source preview. */
-    public CameraSourcePreview getCameraSourcePreview() {
+    public @Nullable CameraSourcePreview getCameraSourcePreview() {
         return mCameraSourcePreview;
     }
 }

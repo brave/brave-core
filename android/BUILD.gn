@@ -38,6 +38,7 @@ android_library("qrreader_java") {
 
   deps = [
     "//base:base_java",
+    "//build/android:build_java",
     "//third_party/android_deps:google_play_services_base_java",
     "//third_party/android_deps:google_play_services_vision_common_java",
     "//third_party/android_deps:google_play_services_vision_java",
