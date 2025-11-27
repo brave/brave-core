@@ -56,10 +56,10 @@ END_METADATA
 
 }  // namespace
 
-BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
-                               SidePanelEntry::PanelType type,
-                               bool has_border,
-                               HorizontalAlignment horizontal_alignment)
+SidePanel::SidePanel(BrowserView* browser_view,
+                     SidePanelEntry::PanelType type,
+                     bool has_border,
+                     HorizontalAlignment horizontal_alignment)
     : browser_view_(browser_view), type_(type) {
   // If panel has layer by default, adjust its radius whenever
   // updating shadow at UpdateBorder() instead of destroying layer.
@@ -72,7 +72,7 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
   if (prefs->FindPreference(sidebar::kSidePanelWidth)) {
     side_panel_width_.Init(
         sidebar::kSidePanelWidth, prefs,
-        base::BindRepeating(&BraveSidePanel::OnSidePanelWidthChanged,
+        base::BindRepeating(&SidePanel::OnSidePanelWidthChanged,
                             base::Unretained(this)));
     OnSidePanelWidthChanged();
   } else {
@@ -83,32 +83,32 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
   content_parent_view_->SetVisible(false);
 }
 
-BraveSidePanel::~BraveSidePanel() {
+SidePanel::~SidePanel() {
   scoped_observation_.RemoveObservation(this);
 }
 
-void BraveSidePanel::UpdateWidthOnEntryChanged() {
+void SidePanel::UpdateWidthOnEntryChanged() {
   // Do nothing.
 }
 
-bool BraveSidePanel::ShouldRestrictMaxWidth() const {
+bool SidePanel::ShouldRestrictMaxWidth() const {
   return false;
 }
 
-void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
+void SidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
   horizontal_alignment_ = alignment;
   UpdateBorder();
 }
 
-BraveSidePanel::HorizontalAlignment BraveSidePanel::GetHorizontalAlignment() {
+SidePanel::HorizontalAlignment SidePanel::GetHorizontalAlignment() {
   return horizontal_alignment_;
 }
 
-bool BraveSidePanel::IsRightAligned() {
+bool SidePanel::IsRightAligned() {
   return horizontal_alignment_ == HorizontalAlignment::kRight;
 }
 
-void BraveSidePanel::UpdateBorder() {
+void SidePanel::UpdateBorder() {
   // Border and shadow should be updated together when rounded corner enabled
   // condition is changed.
   if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
@@ -141,30 +141,30 @@ void BraveSidePanel::UpdateBorder() {
   }
 }
 
-void BraveSidePanel::OnSidePanelWidthChanged() {
+void SidePanel::OnSidePanelWidthChanged() {
   SetPanelWidth(side_panel_width_.GetValue());
 }
 
-void BraveSidePanel::OnThemeChanged() {
+void SidePanel::OnThemeChanged() {
   View::OnThemeChanged();
   UpdateBorder();
 }
 
-gfx::Size BraveSidePanel::GetMinimumSize() const {
+gfx::Size SidePanel::GetMinimumSize() const {
   // Use default width as a minimum width.
   return gfx::Size(sidebar::kDefaultSidePanelWidth, 0);
 }
 
-bool BraveSidePanel::IsClosing() {
+bool SidePanel::IsClosing() {
   return false;
 }
 
-void BraveSidePanel::AddedToWidget() {
+void SidePanel::AddedToWidget() {
   resize_widget_ = std::make_unique<SidePanelResizeWidget>(
       this, static_cast<BraveBrowserView*>(browser_view_), this);
 }
 
-void BraveSidePanel::Layout(PassKey) {
+void SidePanel::Layout(PassKey) {
   if (children().empty()) {
     return;
   }
@@ -182,16 +182,16 @@ void BraveSidePanel::Layout(PassKey) {
   children()[0]->SetBoundsRect(GetContentsBounds());
 }
 
-double BraveSidePanel::GetAnimationValue() const {
+double SidePanel::GetAnimationValue() const {
   return 1;
 }
 
-void BraveSidePanel::SetPanelWidth(int width) {
+void SidePanel::SetPanelWidth(int width) {
   // Only the width is used by BrowserViewLayout.
   SetPreferredSize(gfx::Size(width, 0));
 }
 
-void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
+void SidePanel::OnResize(int resize_amount, bool done_resizing) {
   if (!starting_width_on_resize_) {
     starting_width_on_resize_ = width();
   }
@@ -222,13 +222,13 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
   side_panel_width_.SetValue(proposed_width);
 }
 
-void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {}
+void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {}
 
-void BraveSidePanel::RemoveHeaderView() {}
+void SidePanel::RemoveHeaderView() {}
 
-void BraveSidePanel::SetOutlineVisibility(bool visible) {}
+void SidePanel::SetOutlineVisibility(bool visible) {}
 
-void BraveSidePanel::OnChildViewAdded(View* observed_view, View* child) {
+void SidePanel::OnChildViewAdded(View* observed_view, View* child) {
   if (observed_view != this) {
     return;
   }
@@ -237,7 +237,7 @@ void BraveSidePanel::OnChildViewAdded(View* observed_view, View* child) {
   }
 }
 
-void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
+void SidePanel::OnChildViewRemoved(View* observed_view, View* child) {
   if (observed_view != this) {
     return;
   }
@@ -246,22 +246,22 @@ void BraveSidePanel::OnChildViewRemoved(View* observed_view, View* child) {
   }
 }
 
-void BraveSidePanel::Open(bool animated) {
+void SidePanel::Open(bool animated) {
   UpdateVisibility(/*should_be_open=*/true);
 }
 
-void BraveSidePanel::Close(bool animated) {
+void SidePanel::Close(bool animated) {
   UpdateVisibility(/*should_be_open=*/false);
 }
 
-void BraveSidePanel::UpdateVisibility(bool should_be_open) {
+void SidePanel::UpdateVisibility(bool should_be_open) {
   state_ = should_be_open ? State::kOpen : State::kClosed;
   SetVisible(should_be_open);
 }
 
-views::View* BraveSidePanel::GetContentParentView() {
+views::View* SidePanel::GetContentParentView() {
   return content_parent_view_;
 }
 
-BEGIN_METADATA(BraveSidePanel)
+BEGIN_METADATA(SidePanel)
 END_METADATA

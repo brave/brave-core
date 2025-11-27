@@ -121,7 +121,7 @@ class SidebarContainerView::BrowserWindowEventObserver
 SidebarContainerView::SidebarContainerView(
     Browser* browser,
     SidePanelCoordinator* side_panel_coordinator,
-    std::unique_ptr<BraveSidePanel> side_panel)
+    std::unique_ptr<SidePanel> side_panel)
     : views::AnimationDelegateViews(this),
       browser_(browser),
       side_panel_coordinator_(side_panel_coordinator),
@@ -168,8 +168,8 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
   DCHECK(side_panel_);
   side_panel_->SetHorizontalAlignment(
-      sidebar_on_left ? BraveSidePanel::HorizontalAlignment::kLeft
-                      : BraveSidePanel::HorizontalAlignment::kRight);
+      sidebar_on_left ? SidePanel::HorizontalAlignment::kLeft
+                      : SidePanel::HorizontalAlignment::kRight);
 }
 
 bool SidebarContainerView::IsSidebarVisible() const {

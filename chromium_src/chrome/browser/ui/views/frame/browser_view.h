@@ -20,7 +20,6 @@
   void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
-#define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
 
 #define MaybeShowReadingListInSidePanelIPH \
@@ -61,7 +60,6 @@
 #undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView
-#undef SidePanel
 #undef BrowserViewLayout
 #undef BrowserWindow
 #undef BrowserViewLayoutDelegateImplOld

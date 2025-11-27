@@ -22,12 +22,9 @@
   void NotifyDialogPositionRequiresUpdate(); \
   void set_webui_tab_strip
 
-#define SidePanel BraveSidePanel
-
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.h>  // IWYU pragma: export
 
 #undef ShouldDisplayVerticalTabs
 #undef set_webui_tab_strip
-#undef SidePanel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_H_

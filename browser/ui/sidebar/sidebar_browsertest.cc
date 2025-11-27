@@ -183,7 +183,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(GetSidebarContainerView()->operation_from_active_tab_change_);
   }
 
-  BraveSidePanel* GetSidePanel() const {
+  SidePanel* GetSidePanel() const {
     return GetSidebarContainerView()->side_panel_;
   }
 
@@ -639,16 +639,16 @@ class SidebarBrowserWithSplitViewTest
 
   // Use this when left split view is active.
   views::View* GetStartSplitContentsView() {
-      return browser_view()
-          ->GetBraveMultiContentsView()
-          ->GetActiveContentsContainerView();
+    return browser_view()
+        ->GetBraveMultiContentsView()
+        ->GetActiveContentsContainerView();
   }
 
   // Use this when left split view is active.
   views::View* GetEndSplitContentsView() {
-      return browser_view()
-          ->GetBraveMultiContentsView()
-          ->GetInactiveContentsContainerView();
+    return browser_view()
+        ->GetBraveMultiContentsView()
+        ->GetInactiveContentsContainerView();
   }
 
   BraveBrowserView* browser_view() {

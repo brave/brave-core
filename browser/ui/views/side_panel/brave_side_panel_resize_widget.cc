@@ -49,7 +49,7 @@ END_METADATA
 #endif
 
 SidePanelResizeWidget::SidePanelResizeWidget(
-    BraveSidePanel* panel,
+    SidePanel* panel,
     BraveBrowserView* browser_view,
     views::ResizeAreaDelegate* resize_area_delegate)
     : panel_(panel) {

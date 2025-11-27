@@ -13,8 +13,8 @@
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_delegate.h"
 
-class BraveSidePanel;
 class BraveBrowserView;
+class SidePanel;
 
 namespace views {
 class ResizeAreaDelegate;
@@ -27,7 +27,7 @@ class Widget;
 class SidePanelResizeWidget : public views::ViewObserver,
                               public views::WidgetDelegate {
  public:
-  SidePanelResizeWidget(BraveSidePanel* panel,
+  SidePanelResizeWidget(SidePanel* panel,
                         BraveBrowserView* browser_view,
                         views::ResizeAreaDelegate* resize_area_delegate);
   ~SidePanelResizeWidget() override;
@@ -42,7 +42,7 @@ class SidePanelResizeWidget : public views::ViewObserver,
   void OnViewIsDeleting(views::View* observed_view) override;
 
  private:
-  raw_ptr<BraveSidePanel> panel_ = nullptr;
+  raw_ptr<SidePanel> panel_ = nullptr;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedMultiSourceObservation<views::View, views::ViewObserver>
       observations_{this};

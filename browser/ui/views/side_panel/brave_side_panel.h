@@ -31,10 +31,10 @@ class SidebarBrowserTest;
 // Replacement for chromium's SidePanel which defines a
 // unique inset and border style compared to Brave.
 // SidebarContainerView controls this panel's visibility.
-class BraveSidePanel : public views::View,
-                       public views::ViewObserver,
-                       public views::ResizeAreaDelegate {
-  METADATA_HEADER(BraveSidePanel, views::View)
+class SidePanel : public views::View,
+                  public views::ViewObserver,
+                  public views::ResizeAreaDelegate {
+  METADATA_HEADER(SidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
@@ -43,14 +43,14 @@ class BraveSidePanel : public views::View,
   enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(
+  explicit SidePanel(
       BrowserView* browser_view,
       SidePanelEntry::PanelType type,
       bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
-  BraveSidePanel(const BraveSidePanel&) = delete;
-  BraveSidePanel& operator=(const BraveSidePanel&) = delete;
-  ~BraveSidePanel() override;
+  SidePanel(const SidePanel&) = delete;
+  SidePanel& operator=(const SidePanel&) = delete;
+  ~SidePanel() override;
 
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
@@ -135,9 +135,5 @@ class BraveSidePanel : public views::View,
   raw_ptr<views::View> content_parent_view_;
   State state_ = State::kClosed;
 };
-
-// Alias to the original `SidePanel` to the benefit of upstream code, as
-// `BraveSidePanel` is a complete replacement of the upstream class.
-using SidePanel = BraveSidePanel;
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_

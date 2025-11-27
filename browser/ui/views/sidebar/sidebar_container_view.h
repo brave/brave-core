@@ -45,19 +45,18 @@ class SidePanelEntry;
 // In the comments, we use the term "managed panel entry" and it means that
 // entry is managed by sidebar model. Only managed entry has its item in sidebar
 // UI.
-class SidebarContainerView
-    : public sidebar::Sidebar,
-      public SidebarControlView::Delegate,
-      public views::View,
-      public views::AnimationDelegateViews,
-      public sidebar::SidebarModel::Observer,
-      public SidePanelEntryObserver,
-      public TabStripModelObserver {
+class SidebarContainerView : public sidebar::Sidebar,
+                             public SidebarControlView::Delegate,
+                             public views::View,
+                             public views::AnimationDelegateViews,
+                             public sidebar::SidebarModel::Observer,
+                             public SidePanelEntryObserver,
+                             public TabStripModelObserver {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
   SidebarContainerView(Browser* browser,
                        SidePanelCoordinator* side_panel_coordinator,
-                       std::unique_ptr<BraveSidePanel> side_panel);
+                       std::unique_ptr<SidePanel> side_panel);
   ~SidebarContainerView() override;
 
   SidebarContainerView(const SidebarContainerView&) = delete;
@@ -73,7 +72,7 @@ class SidebarContainerView
   // Show sidebar if the hot corner contains |point_in_screen|.
   void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
 
-  BraveSidePanel* side_panel() { return side_panel_; }
+  SidePanel* side_panel() { return side_panel_; }
 
   // Need to know this showing comes from deregistering current entry
   // or not. We're observing contextual/global panel entries when panel is
@@ -192,7 +191,7 @@ class SidebarContainerView
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
-  raw_ptr<BraveSidePanel> side_panel_ = nullptr;
+  raw_ptr<SidePanel> side_panel_ = nullptr;
   raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
