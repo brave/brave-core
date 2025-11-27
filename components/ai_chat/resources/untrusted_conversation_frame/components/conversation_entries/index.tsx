@@ -137,8 +137,12 @@ function ConversationEntries() {
         const showEditIndicator = !showEditInput && !!group[0].edits?.length
 
         // Can't edit complicated structured content (for now)
+        // Not allowed to edit agent conversations until the edit submission
+        // happens on a different frame.
         const canEditEntry =
-          group.length === 1
+          conversationContext.conversationCapability
+            !== Mojom.ConversationCapability.CONTENT_AGENT
+          && group.length === 1
           && !firstEntryEdit.events?.some((event) => !!event.toolUseEvent)
 
         const turnModelKey = firstEntryEdit.modelKey
@@ -248,8 +252,10 @@ function ConversationEntries() {
                                   isOpen={activeMenuId === index}
                                   onClick={() => showHumanMenu(index)}
                                   onClose={hideHumanMenu}
-                                  onEditQuestionClicked={() =>
-                                    setEditInputId(index)
+                                  onEditQuestionClicked={
+                                    canEditEntry
+                                      ? () => setEditInputId(index)
+                                      : undefined
                                   }
                                   onCopyQuestionClicked={handleCopyText}
                                   onSaveAsSkillClicked={() =>
