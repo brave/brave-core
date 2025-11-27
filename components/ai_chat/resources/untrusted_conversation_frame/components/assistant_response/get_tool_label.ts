@@ -60,6 +60,8 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_TYPE_TEXT)
     case Mojom.WAIT_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_WAIT)
+    case Mojom.CODE_EXECUTION_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
     default:
       return toolName
   }
