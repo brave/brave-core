@@ -37,7 +37,6 @@ class WalletBubbleManagerDelegate {
   virtual bool IsBubbleClosedForTesting() = 0;
   virtual content::WebContents* GetWebContentsForTesting() = 0;
   virtual const std::vector<int32_t>& GetPopupIdsForTesting() = 0;
-  virtual void CloseOnDeactivate(bool close) = 0;
 
  protected:
   WalletBubbleManagerDelegate() = default;
