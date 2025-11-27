@@ -41,7 +41,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -334,10 +333,6 @@ class VerticalTabStripScrollContentsView : public views::View {
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override {
-    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
-      return;
-    }
-
     PreferredSizeChanged();
   }
 
@@ -883,16 +878,6 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kVertical);
-    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
-      auto* scroll_container = GetTabStripScrollContainer();
-      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>());
-      scroll_container->scroll_view_->SetTreatAllScrollEventsAsHorizontal(
-          false);
-      scroll_container->scroll_view_->SetVerticalScrollBarMode(
-          views::ScrollView::ScrollBarMode::kHiddenButEnabled);
-      scroll_container->overflow_view_->SetOrientation(
-          views::LayoutOrientation::kVertical);
-    }
   } else {
     if (Contains(original_region_view_)) {
       contents_view_->RemoveChildView(original_region_view_);
@@ -903,16 +888,6 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kHorizontal);
-    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
-      auto* scroll_container = GetTabStripScrollContainer();
-      scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>())
-          ->SetMinimumSizeEnabled(true);
-      scroll_container->scroll_view_->SetTreatAllScrollEventsAsHorizontal(true);
-      scroll_container->scroll_view_->SetVerticalScrollBarMode(
-          views::ScrollView::ScrollBarMode::kDisabled);
-      scroll_container->overflow_view_->SetOrientation(
-          views::LayoutOrientation::kHorizontal);
-    }
   }
 
   UpdateNewTabButtonVisibility();
@@ -1255,16 +1230,6 @@ int BraveVerticalTabStripRegionView::GetPreferredWidthForState(
   CHECK_EQ(state, State::kCollapsed) << "If a new state was added, "
                                      << __FUNCTION__ << " should be revisited.";
   return calculate_collapsed_width();
-}
-
-TabStripScrollContainer*
-BraveVerticalTabStripRegionView::GetTabStripScrollContainer() {
-  CHECK(base::FeatureList::IsEnabled(tabs::kScrollableTabStrip));
-  auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
-      original_region_view_->tab_strip_container_);
-  CHECK(scroll_container)
-      << "TabStripScrollContainer is used by upstream at this moment.";
-  return scroll_container;
 }
 
 bool BraveVerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
