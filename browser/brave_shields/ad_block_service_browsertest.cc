@@ -75,7 +75,7 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/components/speedreader/speedreader_service.h"  // nogncheck
+#include "brave/components/speedreader/speedreader_service.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #endif
 

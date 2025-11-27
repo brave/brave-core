@@ -23,6 +23,8 @@ if (is_android) {
 
   brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
 } else {
-  brave_browser_cosmetic_filters_deps +=
-      [ "//chrome/browser/ui/browser_window" ]
+  brave_browser_cosmetic_filters_deps += [
+    "//chrome/browser/ui/browser_window",
+    "//components/tabs:public",
+  ]
 }
