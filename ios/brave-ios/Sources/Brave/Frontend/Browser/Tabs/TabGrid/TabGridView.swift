@@ -24,6 +24,7 @@ class TabGridHostingController: UIHostingController<TabGridView> {
 
   init(
     tabManager: TabManager,
+    isUsingBottomBar: Bool,
     historyModel: HistoryModel?,
     openTabsModel: OpenTabsModel?,
     toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?,
@@ -38,7 +39,8 @@ class TabGridHostingController: UIHostingController<TabGridView> {
       openTabsModel: openTabsModel,
       toolbarUrlActionsDelegate: toolbarUrlActionsDelegate,
       profileController: profileController,
-      windowProtection: windowProtection
+      windowProtection: windowProtection,
+      isUsingBottomBar: isUsingBottomBar,
     )
     containerView = .init(isPrivateBrowsing: viewModel.isPrivateBrowsing)
     super.init(
@@ -189,7 +191,7 @@ struct TabGridView: View {
         if editMode == .active {
           editModeHeaderBar
             .transition(.blurReplace())
-        } else if !isSearchBarHidden {
+        } else if !isSearchBarHidden && !viewModel.isUsingBottomBar {
           TabGridSearchBar(
             text: $viewModel.searchQuery,
             isFocused: $viewModel.isSearching,
@@ -208,6 +210,16 @@ struct TabGridView: View {
     }
     .overlay(alignment: .bottom) {
       VStack {
+        if !isSearchBarHidden && viewModel.isUsingBottomBar {
+          TabGridSearchBar(
+            text: $viewModel.searchQuery,
+            isFocused: $viewModel.isSearching,
+            scrollView: containerView.collectionView
+          )
+          .padding(.horizontal, 16)
+          .padding(.top, 8)
+          .padding(.bottom, 4)
+        }
         Group {
           if editMode == .active {
             editModeFooterBar
@@ -225,7 +237,11 @@ struct TabGridView: View {
     .onChange(of: viewModel.isSearching) { oldValue, newValue in
       // Reset the bottom inset since we hide the footer when searching
       if newValue {
-        insets.bottom = 0
+        if viewModel.isUsingBottomBar {
+          insets.top = 0
+        } else {
+          insets.bottom = 0
+        }
       }
     }
     .background {
@@ -772,7 +788,8 @@ extension Animation {
     openTabsModel: MockOpenTabsModel(),
     toolbarUrlActionsDelegate: nil,
     profileController: nil,
-    windowProtection: nil
+    windowProtection: nil,
+    isUsingBottomBar: true
   )
   TabGridView(
     viewModel: viewModel,

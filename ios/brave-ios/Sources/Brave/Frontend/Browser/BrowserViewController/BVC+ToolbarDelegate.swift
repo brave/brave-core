@@ -46,6 +46,7 @@ extension BrowserViewController: TopToolbarDelegate {
     if FeatureList.kModernTabTrayEnabled.enabled {
       let tabTrayController = TabGridHostingController(
         tabManager: tabManager,
+        isUsingBottomBar: isUsingBottomBar,
         historyModel: HistoryModel(
           api: self.profileController.historyAPI,
           tabManager: self.tabManager,
