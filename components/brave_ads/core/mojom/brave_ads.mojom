@@ -187,7 +187,7 @@ struct UrlRequestInfo {
 
 struct UrlResponseInfo {
   url.mojom.Url url;
-  int32 status_code = -1;
+  int32 code = -1;
   string body;
   map<string, string> headers;
 };

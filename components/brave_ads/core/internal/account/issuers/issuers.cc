@@ -79,18 +79,18 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
 
   is_fetching_ = false;
 
-  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
     BLOG(0, "Failed to fetch issuers as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
-  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+  if (mojom_url_response.code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Failed to request issuers as forbidden");
     return FailedToFetchIssuers(/*should_retry=*/false);
   }
 
-  if (mojom_url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.code != net::HTTP_OK) {
     return FailedToFetchIssuers(/*should_retry=*/true);
   }
 

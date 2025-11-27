@@ -82,23 +82,23 @@ void CatalogUrlRequest::FetchCallback(
 
   is_fetching_ = false;
 
-  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
     BLOG(0, "Failed to request catalog as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
-  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+  if (mojom_url_response.code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Failed to request catalog as forbidden");
     return FailedToFetchCatalog(/*should_retry=*/false);
   }
 
-  if (mojom_url_response.status_code == net::HTTP_NOT_MODIFIED) {
+  if (mojom_url_response.code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
     return FetchAfterDelay();
   }
 
-  if (mojom_url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.code != net::HTTP_OK) {
     return FailedToFetchCatalog(/*should_retry=*/true);
   }
 

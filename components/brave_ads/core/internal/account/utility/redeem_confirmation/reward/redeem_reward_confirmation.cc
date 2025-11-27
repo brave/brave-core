@@ -179,22 +179,22 @@ base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
 RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& mojom_url_response) {
-  if (mojom_url_response.status_code == net::HTTP_NOT_FOUND) {
+  if (mojom_url_response.code == net::HTTP_NOT_FOUND) {
     return base::unexpected(
         std::make_tuple("Confirmation not found", /*should_retry=*/false));
   }
 
-  if (mojom_url_response.status_code == net::HTTP_BAD_REQUEST) {
+  if (mojom_url_response.code == net::HTTP_BAD_REQUEST) {
     return base::unexpected(
         std::make_tuple("Credential is invalid", /*should_retry=*/false));
   }
 
-  if (mojom_url_response.status_code == net::HTTP_ACCEPTED) {
+  if (mojom_url_response.code == net::HTTP_ACCEPTED) {
     return base::unexpected(
         std::make_tuple("Payment token is not ready", /*should_retry=*/true));
   }
 
-  if (mojom_url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.code != net::HTTP_OK) {
     return base::unexpected(std::make_tuple("Failed to fetch payment token",
                                             /*should_retry=*/true));
   }

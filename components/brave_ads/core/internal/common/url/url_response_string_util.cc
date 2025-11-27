@@ -37,9 +37,8 @@ std::string HeadersToString(
 std::string UrlResponseToString(
     const mojom::UrlResponseInfo& mojom_url_response) {
   return absl::StrFormat(
-      "URL Response:\n  URL: %s\n  Response "
-      "Status Code: %d\n  Response: %s",
-      mojom_url_response.url.spec(), mojom_url_response.status_code,
+      "URL Response:\n  URL: %s\n  Response Code: %d\n  Response: %s",
+      mojom_url_response.url.spec(), mojom_url_response.code,
       mojom_url_response.body);
 }
 

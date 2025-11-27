@@ -1344,7 +1344,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
               brave_ads::mojom::UrlResponseInfo mojom_url_response;
               mojom_url_response.url = copiedURL;
-              mojom_url_response.status_code = statusCode;
+              mojom_url_response.code = statusCode;
               mojom_url_response.body = response;
               mojom_url_response.headers = headers;
               if (cb) {

@@ -136,7 +136,7 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
 base::expected<void, std::tuple<std::string, bool>>
 RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
@@ -144,7 +144,7 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
         /*should_retry=*/false));
   }
 
-  if (mojom_url_response.status_code != net::HTTP_CREATED) {
+  if (mojom_url_response.code != net::HTTP_CREATED) {
     return base::unexpected(std::make_tuple("Failed to request signed tokens",
                                             /*should_retry=*/true));
   }
@@ -210,7 +210,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
   CHECK(tokens_);
   CHECK(blinded_tokens_);
 
-  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
+  if (mojom_url_response.code == net::HTTP_UPGRADE_REQUIRED) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
@@ -218,8 +218,8 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         /*should_retry=*/false));
   }
 
-  if (mojom_url_response.status_code != net::HTTP_OK &&
-      mojom_url_response.status_code != net::HTTP_UNAUTHORIZED) {
+  if (mojom_url_response.code != net::HTTP_OK &&
+      mojom_url_response.code != net::HTTP_UNAUTHORIZED) {
     return base::unexpected(std::make_tuple("Failed to get signed tokens",
                                             /*should_retry=*/true));
   }
@@ -232,7 +232,7 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         /*should_retry=*/false));
   }
 
-  if (mojom_url_response.status_code == net::HTTP_UNAUTHORIZED) {
+  if (mojom_url_response.code == net::HTTP_UNAUTHORIZED) {
     ParseAndRequireCaptcha(*dict);
 
     return base::unexpected(std::make_tuple(

@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "net/base/net_errors.h"
 
 namespace bat_ads {
 
@@ -117,13 +118,13 @@ void OnUrlRequest(
   brave_ads::mojom::UrlResponseInfo mojom_url_response;
 
   if (!mojom_url_response_ptr) {
-    mojom_url_response.status_code = -1;
+    mojom_url_response.code = net::ERR_FAILED;
     std::move(callback).Run(mojom_url_response);
     return;
   }
 
   mojom_url_response.url = mojom_url_response_ptr->url;
-  mojom_url_response.status_code = mojom_url_response_ptr->status_code;
+  mojom_url_response.code = mojom_url_response_ptr->code;
   mojom_url_response.body = mojom_url_response_ptr->body;
   mojom_url_response.headers = mojom_url_response_ptr->headers;
   std::move(callback).Run(mojom_url_response);
@@ -135,7 +136,7 @@ void BatAdsClientMojoBridge::UrlRequest(
   if (!bat_ads_client_associated_remote_.is_bound()) {
     brave_ads::mojom::UrlResponseInfo mojom_url_response;
     mojom_url_response.url = mojom_url_request->url;
-    mojom_url_response.status_code = -1;
+    mojom_url_response.code = net::ERR_FAILED;
     std::move(callback).Run(mojom_url_response);
     return;
   }
