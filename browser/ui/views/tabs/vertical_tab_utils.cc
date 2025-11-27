@@ -39,6 +39,10 @@
 namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
+  if ((true)) {
+    return false;
+  }
+
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableVerticalTabsSwitch)) {
     return false;

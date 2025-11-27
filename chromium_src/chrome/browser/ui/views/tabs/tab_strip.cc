@@ -7,14 +7,12 @@
 
 #include <cmath>
 
-#include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
-#include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 
@@ -27,7 +25,6 @@
 #define param(TAB, MODEL_INDEX, PINNED) \
   param(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
 
-#define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
 
@@ -57,7 +54,6 @@
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
-#undef CompoundTabContainer
 #undef TabContainerImpl
 #undef param
 

@@ -54,13 +54,11 @@ BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
     TabDragContextBase* drag_context,
-    TabSlotController& tab_slot_controller,
-    views::View* scroll_contents_view)
+    TabSlotController& tab_slot_controller)
     : TabContainerImpl(controller,
                        hover_card_controller,
                        drag_context,
-                       tab_slot_controller,
-                       scroll_contents_view),
+                       tab_slot_controller),
       drag_context_(drag_context),
       tab_style_(TabStyle::Get()),
       controller_(controller) {
@@ -144,8 +142,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
 
   const auto [slots_bounds, layout_domain] =
       layout_helper_->CalculateIdealBounds(
-          available_width_callback_.is_null() ||
-                  base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)
+          available_width_callback_.is_null()
               ? std::nullopt
               : std::optional<int>(available_width_callback_.Run()));
   height =
