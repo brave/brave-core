@@ -7,6 +7,8 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -66,8 +68,6 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
   rounded_corners.set_upper_left(rounded_corners_border_radius);
   rounded_corners.set_upper_right(rounded_corners_border_radius);
 
-  const bool show_vertical_tab = tabs::utils::ShouldShowVerticalTabs(
-      browser_window_interface->GetBrowserForMigrationOnly());
   auto* browser_view = BraveBrowserView::From(
       BrowserView::GetBrowserViewForBrowser(browser_window_interface));
 
@@ -76,7 +76,23 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     return rounded_corners;
   }
 
-  const bool is_sidebar_visible = browser_view->IsSidebarVisible();
+  bool show_vertical_tab = tabs::utils::ShouldShowVerticalTabs(
+      browser_window_interface->GetBrowserForMigrationOnly());
+  auto* vertical_tab_strip_widget_delegate_view =
+      browser_view->vertical_tab_strip_widget_delegate_view();
+
+  // When hide completely is on, we think vertical tab is invisible
+  // except it's expanded.
+  if (show_vertical_tab && vertical_tab_strip_widget_delegate_view) {
+    auto* vtsr_view = vertical_tab_strip_widget_delegate_view
+                          ->vertical_tab_strip_region_view();
+    CHECK(vtsr_view);
+    if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
+            browser_window_interface->GetBrowserForMigrationOnly())) {
+      show_vertical_tab = (vtsr_view->state() ==
+                           BraveVerticalTabStripRegionView::State::kExpanded);
+    }
+  }
 
   // Check there is another ui between contents view and browser window border.
   // It affects contents view's lower-left/right radius.
@@ -92,7 +108,7 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     }
   }
 
-  if (is_sidebar_visible) {
+  if (browser_view->IsSidebarVisible()) {
     if (browser_window_interface->GetProfile()->GetPrefs()->GetBoolean(
             prefs::kSidePanelHorizontalAlignment)) {
       has_right_side_ui = true;
