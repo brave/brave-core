@@ -21,10 +21,17 @@ struct VPNRegion: Equatable {
   var flag: String
   /// The display name for the connected server
   var displayName: String
+  /// A boolean value indicates if this region supports smart proxy
+  var smartProxySupported: Bool
 
-  init(countryCode: String, displayName: String) {
+  init(
+    countryCode: String,
+    displayName: String,
+    smartProxySupported: Bool
+  ) {
     self.flag = Self.flagEmojiForCountryCode(code: countryCode)
     self.displayName = displayName
+    self.smartProxySupported = smartProxySupported
   }
 
   private static func flagEmojiForCountryCode(code: String) -> String {
@@ -47,7 +54,12 @@ struct VPNRegion: Equatable {
 
 extension VPNRegion {
   init(region: GRDRegion) {
-    self.init(countryCode: region.countryISOCode, displayName: region.displayName)
+    self.init(
+      countryCode: region.countryISOCode,
+      displayName: region.displayName,
+      smartProxySupported: !region.smartRoutingProxyState.isEmpty
+        && region.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone
+    )
   }
 }
 

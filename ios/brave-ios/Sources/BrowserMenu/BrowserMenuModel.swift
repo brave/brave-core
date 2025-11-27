@@ -140,7 +140,11 @@ import SwiftUI
 extension BrowserMenuModel {
   static var mock: BrowserMenuModel {
     let mockStatus: VPNStatus = .connected(
-      activeRegion: .init(countryCode: "CA", displayName: "Canada")
+      activeRegion: .init(
+        countryCode: "CA",
+        displayName: "Canada",
+        smartProxySupported: false
+      )
     )
     let vpnStatusPublisher = CurrentValueSubject<VPNStatus, Never>(mockStatus)
     let model = BrowserMenuModel(

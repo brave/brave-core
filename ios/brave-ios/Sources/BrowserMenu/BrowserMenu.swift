@@ -118,6 +118,19 @@ public struct BrowserMenu: View {
                 Spacer()
                 Text(region.flag)
                 Text(region.displayName)
+                if region.smartProxySupported {
+                  Image(braveSystemName: "leo.smart.proxy-routing")
+                    .resizable()
+                    .renderingMode(.template)
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(Color(braveSystemName: .iconDefault))
+                    .frame(width: 14, height: 14)
+                    .padding(4)
+                    .background(
+                      RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .fill(Color(braveSystemName: .containerHighlight))
+                    )
+                }
               }
             } icon: {
               Image(braveSystemName: "leo.product.vpn")
