@@ -183,6 +183,7 @@ struct UrlRequestInfo {
   string content;
   string content_type;
   UrlRequestMethodType method;
+  bool use_ohttp = false;
 };
 
 struct UrlResponseInfo {

@@ -5,40 +5,135 @@
 
 #include "brave/components/brave_ads/core/browser/service/network_client.h"
 
+#include <cstddef>
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/browser/service/network_client_util.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_client_impl.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_feature.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_key_config.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-data-view.h"
+#include "services/network/public/mojom/network_context.mojom.h"
+#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "url/gurl.h"
 
 namespace brave_ads {
 
 namespace {
 
+// Converts `mojom::UrlRequestMethodType` to its string representation.
+std::string ToString(mojom::UrlRequestMethodType value) {
+  CHECK(mojom::IsKnownEnumValue(value));
+
+  switch (value) {
+    case mojom::UrlRequestMethodType::kGet: {
+      return net::HttpRequestHeaders::kGetMethod;
+    }
+
+    case mojom::UrlRequestMethodType::kPost: {
+      return net::HttpRequestHeaders::kPostMethod;
+    }
+
+    case mojom::UrlRequestMethodType::kPut: {
+      return net::HttpRequestHeaders::kPutMethod;
+    }
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::UrlRequestMethodType: " << value;
+}
+
+// Builds an `network::mojom::ObliviousHttpRequest` from the given parameters.
+network::mojom::ObliviousHttpRequestPtr BuildObliviousHttpRequest(
+    const GURL& relay_url,
+    const std::string& key_config,
+    const mojom::UrlRequestInfoPtr& mojom_url_request) {
+  auto mojom_http_request = network::mojom::ObliviousHttpRequest::New();
+  mojom_http_request->relay_url = relay_url;
+  mojom_http_request->traffic_annotation =
+      net::MutableNetworkTrafficAnnotationTag(GetNetworkTrafficAnnotationTag());
+  mojom_http_request->timeout_duration = kOhttpTimeoutDuration.Get();
+  mojom_http_request->key_config = key_config;
+  mojom_http_request->resource_url = mojom_url_request->url;
+  mojom_http_request->method = ToString(mojom_url_request->method);
+  mojom_http_request->request_body =
+      network::mojom::ObliviousHttpRequestBody::New(
+          mojom_url_request->content, mojom_url_request->content_type);
+  return mojom_http_request;
+}
+
+// Extracts all HTTP response headers from `net::HttpResponseHeaders` and
+// returns them as a flat map with lowercased keys.
+base::flat_map<std::string, std::string> ExtractHttpResponseHeaders(
+    const scoped_refptr<net::HttpResponseHeaders>& http_response_headers) {
+  CHECK(http_response_headers);
+
+  size_t iter = 0;
+  std::string key;
+  std::string value;
+
+  base::flat_map<std::string, std::string> headers;
+  while (http_response_headers->EnumerateHeaderLines(&iter, &key, &value)) {
+    key = base::ToLowerASCII(key);
+    headers[key] = value;
+  }
+
+  return headers;
+}
+
+// Reports an error to the caller, including the URL and response code. The
+// response code will be a `net::ERR_*` value if the request failed before
+// receiving an HTTP response; otherwise, it will be a `net::HTTP_*` code.
 void ReportError(const GURL& url,
                  int response_code,
                  SendRequestCallback callback) {
   auto mojom_url_response = mojom::UrlResponseInfo::New();
   mojom_url_response->url = url;
   mojom_url_response->code = response_code;
+
+  // Forward the response to the original caller for handling.
   std::move(callback).Run(std::move(mojom_url_response));
 }
 
 }  // namespace
 
 NetworkClient::NetworkClient(
+    PrefService& local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    network::NetworkContextGetter network_context_getter)
-    : url_loader_factory_(std::move(url_loader_factory)),
-      network_context_getter_(std::move(network_context_getter)) {}
+    network::NetworkContextGetter network_context_getter,
+    bool use_ohttp_staging)
+    : local_state_(local_state),
+      url_loader_factory_(std::move(url_loader_factory)),
+      network_context_getter_(std::move(network_context_getter)),
+      oblivious_http_key_config_(std::make_unique<ObliviousHttpKeyConfig>(
+          local_state_.get(),
+          url_loader_factory_,
+          ObliviousHttpKeyConfigUrl(use_ohttp_staging))),
+      oblivious_http_relay_url_(ObliviousHttpRelayUrl(use_ohttp_staging)) {
+  CHECK(oblivious_http_key_config_);
+
+  // Fetch the OHTTP key config so the client is ready.
+  if (kShouldSupportOhttp.Get()) {
+    oblivious_http_key_config_->MaybeFetch();
+  }
+}
 
 NetworkClient::~NetworkClient() = default;
 
@@ -46,7 +141,15 @@ void NetworkClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                                 SendRequestCallback callback) {
   CHECK(mojom_url_request);
 
-  return HttpRequest(std::move(mojom_url_request), std::move(callback));
+  const bool use_ohttp =
+      kShouldSupportOhttp.Get() && mojom_url_request->use_ohttp;
+
+  if (!use_ohttp) {
+    return HttpRequest(std::move(mojom_url_request), std::move(callback));
+  }
+
+  ObliviousHttpRequest(std::move(mojom_url_request), oblivious_http_relay_url_,
+                       std::move(callback));
 }
 
 void NetworkClient::CancelRequests() {
@@ -105,6 +208,57 @@ void NetworkClient::HttpRequestCallback(
   mojom_url_response->code = response->headers->response_code();
   mojom_url_response->body = response_body.value_or("");
   mojom_url_response->headers = ExtractHttpResponseHeaders(response->headers);
+
+  // Forward the response to the original caller for handling.
+  std::move(callback).Run(std::move(mojom_url_response));
+}
+
+void NetworkClient::ObliviousHttpRequest(
+    mojom::UrlRequestInfoPtr mojom_url_request,
+    const GURL& relay_url,
+    SendRequestCallback callback) {
+  CHECK(mojom_url_request);
+  CHECK(!mojom_url_request->content_type.empty());
+  CHECK(relay_url.is_valid());
+
+  std::optional<std::string> key_config = oblivious_http_key_config_->Get();
+  if (!key_config) {
+    // The OHTTP key config is not ready. This can occur while a fetch is still
+    // in progress after first run or after the key config is invalidated.
+    VLOG(6) << "OHTTP key config is not ready";
+    return ReportError(mojom_url_request->url, net::ERR_FAILED,
+                       std::move(callback));
+  }
+
+  network::mojom::NetworkContext* const mojom_network_context =
+      network_context_getter_.Run();
+  if (!mojom_network_context) {
+    VLOG(6) << "Network context is unavailable";
+    return ReportError(mojom_url_request->url, net::ERR_FAILED,
+                       std::move(callback));
+  }
+
+  mojo::PendingRemote<network::mojom::ObliviousHttpClient> mojom_pending_remote;
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ObliviousHttpClientImpl>(
+          mojom_url_request->url,
+          base::BindOnce(&NetworkClient::ObliviousHttpRequestCallback,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))),
+      mojom_pending_remote.InitWithNewPipeAndPassReceiver());
+
+  mojom_network_context->GetViaObliviousHttp(
+      BuildObliviousHttpRequest(relay_url, *key_config, mojom_url_request),
+      std::move(mojom_pending_remote));
+}
+
+void NetworkClient::ObliviousHttpRequestCallback(
+    SendRequestCallback callback,
+    mojom::UrlResponseInfoPtr mojom_url_response) {
+  if (mojom_url_response &&
+      mojom_url_response->code == net::HTTP_UNPROCESSABLE_CONTENT) {
+    // The OHTTP key config is invalid or has been rotated, so refetch it.
+    oblivious_http_key_config_->Refetch();
+  }
 
   // Forward the response to the original caller for handling.
   std::move(callback).Run(std::move(mojom_url_response));
