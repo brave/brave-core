@@ -575,13 +575,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result->event);
-        EXPECT_TRUE(result->event->is_completion_event());
-        EXPECT_EQ(result.value(),
-                  EngineConsumer::GenerationResultData(
-                      mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New("")),
-                      std::nullopt));
+        // No completion was provided on the response body result because
+        // it was provided by SSE to the "data received" callback.
+        EXPECT_FALSE(result->event);
         EXPECT_FALSE(result->is_near_verified.has_value());
       });
 
@@ -709,10 +705,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
       .WillOnce([](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
         EXPECT_EQ(result.value(),
-                  EngineConsumer::GenerationResultData(
-                      mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New("")),
-                      std::nullopt));
+                  EngineConsumer::GenerationResultData(nullptr, std::nullopt));
       });
 
   // Begin request
@@ -823,9 +816,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](const EngineConsumer::GenerationResult& result) {
         ASSERT_TRUE(result.has_value());
-        ASSERT_TRUE(result->event);
-        ASSERT_TRUE(result->event->is_completion_event());
-        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+        ASSERT_FALSE(result->event);
         EXPECT_FALSE(result->model_key.has_value());
       });
 
@@ -1255,9 +1246,7 @@ TEST_F(ConversationAPIUnitTest,
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](const EngineConsumer::GenerationResult& result) {
         ASSERT_TRUE(result.has_value());
-        ASSERT_TRUE(result->event);
-        ASSERT_TRUE(result->event->is_completion_event());
-        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+        ASSERT_FALSE(result->event);
         EXPECT_FALSE(result->model_key.has_value());
       });
 

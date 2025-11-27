@@ -304,6 +304,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // ToolProvider::Observer
   void OnContentTaskStarted(int32_t tab_id) override;
+  void OnTaskStateChanged() override;
 
  private:
   friend class ::AIChatUIBrowserTest;
@@ -345,11 +346,18 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformAssistantGenerationWithPossibleContent();
 
   void PerformAssistantGeneration();
+
+  // When the current batch of tool use requests has been completed, we can
+  // send the results to the engine and wait for the next response for the loop.
+  void PerformPostToolAssistantGeneration();
+
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration();
+
+  bool IsToolLoopPausedByUser() const;
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
@@ -442,6 +450,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool needs_new_entry_ = false;
 
   bool is_print_preview_fallback_requested_ = false;
+
+  // Remember whether the tool loop was previously paused by a ToolProvider
+  // so that we don't resume more than once on chatty state changes.
+  bool tool_loop_was_paused_by_tool_provider_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
   mojom::APIError current_error_ = mojom::APIError::None;
