@@ -127,8 +127,8 @@ public struct BrowserMenu: View {
                     .frame(width: 14, height: 14)
                     .padding(4)
                     .background(
-                      RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .fill(Color(braveSystemName: .containerHighlight))
+                      Color(braveSystemName: .containerHighlight),
+                      in: .rect(cornerRadius: 4, style: .continuous)
                     )
                 }
               }
