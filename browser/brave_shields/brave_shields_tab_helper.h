@@ -25,7 +25,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 
 namespace brave_shields {
 
