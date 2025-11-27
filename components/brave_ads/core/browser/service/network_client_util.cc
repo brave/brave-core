@@ -9,12 +9,26 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_constants.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/mojom/oblivious_http_request.mojom.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
+
+GURL ObliviousHttpKeyConfigUrl(bool use_staging) {
+  return GURL(use_staging ? kStagingObliviousHttpKeyConfigUrl
+                          : kProductionObliviousHttpKeyConfigUrl);
+}
+
+GURL ObliviousHttpRelayUrl(bool use_staging) {
+  return GURL(use_staging ? kStagingObliviousHttpRelayUrl
+                          : kProductionObliviousHttpRelayUrl);
+}
 
 std::string ToString(mojom::UrlRequestMethodType value) {
   CHECK(mojom::IsKnownEnumValue(value));
@@ -57,6 +71,24 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
+}
+
+network::mojom::ObliviousHttpRequestPtr BuildObliviousHttpRequest(
+    const GURL& relay_url,
+    const std::string& key_config,
+    const mojom::UrlRequestInfoPtr& mojom_url_request) {
+  auto mojom_http_request = network::mojom::ObliviousHttpRequest::New();
+  mojom_http_request->relay_url = relay_url;
+  mojom_http_request->traffic_annotation =
+      net::MutableNetworkTrafficAnnotationTag(GetNetworkTrafficAnnotationTag());
+  mojom_http_request->timeout_duration = kOhttpTimeoutDuration.Get();
+  mojom_http_request->key_config = key_config;
+  mojom_http_request->resource_url = mojom_url_request->url;
+  mojom_http_request->method = ToString(mojom_url_request->method);
+  mojom_http_request->request_body =
+      network::mojom::ObliviousHttpRequestBody::New(
+          mojom_url_request->content, mojom_url_request->content_type);
+  return mojom_http_request;
 }
 
 base::flat_map<std::string, std::string> ExtractHttpResponseHeaders(
