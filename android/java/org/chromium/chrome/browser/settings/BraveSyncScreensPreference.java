@@ -16,12 +16,15 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Camera;
+import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -91,10 +94,40 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 SyncService.SyncStateChangedListener {
     public static final int BIP39_WORD_COUNT = 24;
     private static final String TAG = "SYNC";
+    private static final int INITIAL_ROTATION = -1;
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
+
+    private DisplayManager mDisplayManager;
+    private int mLastRotation = INITIAL_ROTATION;
+
+    private final DisplayManager.DisplayListener mDisplayListener =
+            new DisplayManager.DisplayListener() {
+                @Override
+                public void onDisplayAdded(int displayId) {}
+
+                @Override
+                public void onDisplayRemoved(int displayId) {}
+
+                @Override
+                public void onDisplayChanged(int displayId) {
+                    if (getActivity() == null || isRemoving() || isDetached()) {
+                        return;
+                    }
+                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                    if (display == null || display.getDisplayId() != displayId) {
+                        return;
+                    }
+                    int currentRotation = display.getRotation();
+                    if (mLastRotation != INITIAL_ROTATION
+                            && is180DegreeRotation(mLastRotation, currentRotation)) {
+                        recreateCameraSource();
+                    }
+                    mLastRotation = currentRotation;
+                }
+            };
 
     // The have a sync code button displayed in the Sync view.
     private Button mScanChainCodeButton;
@@ -429,6 +462,19 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 getView().findViewById(R.id.brave_sync_add_device_code_words);
 
         mCameraSourcePreview = getView().findViewById(R.id.preview);
+
+        // Initialize display manager and register listener for 180-degree rotation detection
+        if (getActivity() != null) {
+            mDisplayManager =
+                    (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
+            if (mDisplayManager != null) {
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                if (display != null) {
+                    mLastRotation = display.getRotation();
+                }
+                mDisplayManager.registerDisplayListener(mDisplayListener, null);
+            }
+        }
 
         mAddDeviceButton = getView().findViewById(R.id.brave_sync_btn_add_device);
         if (null != mAddDeviceButton) {
@@ -1008,6 +1054,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mDisplayManager != null) {
+            mDisplayManager.unregisterDisplayListener(mDisplayListener);
+        }
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
@@ -1017,6 +1066,37 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (mDeviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
             mDeviceInfoObserverSet = false;
+        }
+    }
+
+    /**
+     * Checks if the rotation change represents a 180-degree rotation. 180-degree rotations are:
+     * ROTATION_0 <-> ROTATION_180, ROTATION_90 <-> ROTATION_270
+     */
+    private boolean is180DegreeRotation(int oldRotation, int newRotation) {
+        return (oldRotation == Surface.ROTATION_0 && newRotation == Surface.ROTATION_180)
+                || (oldRotation == Surface.ROTATION_180 && newRotation == Surface.ROTATION_0)
+                || (oldRotation == Surface.ROTATION_90 && newRotation == Surface.ROTATION_270)
+                || (oldRotation == Surface.ROTATION_270 && newRotation == Surface.ROTATION_90);
+    }
+
+    /** Recreates and restarts the camera source to handle 180-degree rotation. */
+    private void recreateCameraSource() {
+        if (mCameraSourcePreview == null) {
+            return;
+        }
+
+        mCameraSourcePreview.stop();
+        if (mCameraSource != null) {
+            mCameraSource.release();
+            mCameraSource = null;
+        }
+
+        createCameraSource(true, false);
+        try {
+            startCameraSource();
+        } catch (SecurityException exc) {
+            Log.e(TAG, "Security exception when recreating camera source", exc);
         }
     }
 

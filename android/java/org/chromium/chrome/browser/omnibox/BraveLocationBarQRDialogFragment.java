@@ -15,10 +15,13 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
+import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,16 +44,45 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 
 import java.io.IOException;
 
-public class BraveLocationBarQRDialogFragment
-        extends DialogFragment implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+public class BraveLocationBarQRDialogFragment extends DialogFragment
+        implements BarcodeTracker.BarcodeGraphicTrackerCallback {
     private static final String TAG = "Scan QR Code Dialog";
+    private static final int INITIAL_ROTATION = -1;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
     private LocationBarMediator mLocationBarMediator;
+    private DisplayManager mDisplayManager;
+    private int mLastRotation = INITIAL_ROTATION;
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
+
+    private final DisplayManager.DisplayListener mDisplayListener =
+            new DisplayManager.DisplayListener() {
+                @Override
+                public void onDisplayAdded(int displayId) {}
+
+                @Override
+                public void onDisplayRemoved(int displayId) {}
+
+                @Override
+                public void onDisplayChanged(int displayId) {
+                    if (getActivity() == null || isRemoving() || isDetached()) {
+                        return;
+                    }
+                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                    if (display == null || display.getDisplayId() != displayId) {
+                        return;
+                    }
+                    int currentRotation = display.getRotation();
+                    if (mLastRotation != INITIAL_ROTATION
+                            && is180DegreeRotation(mLastRotation, currentRotation)) {
+                        recreateCameraSource();
+                    }
+                    mLastRotation = currentRotation;
+                }
+            };
 
     // The Android Fragment framework requires a zero-argument constructor to
     // instantiate fragments. It usually happens on a fragment re-creation
@@ -97,6 +129,19 @@ public class BraveLocationBarQRDialogFragment
         createCameraSource(true, false);
 
         BraveTouchUtils.ensureMinTouchTarget(backImageView);
+
+        // Initialize display manager and register listener for 180-degree rotation detection
+        if (getActivity() != null) {
+            mDisplayManager =
+                    (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
+            if (mDisplayManager != null) {
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                if (display != null) {
+                    mLastRotation = display.getRotation();
+                }
+                mDisplayManager.registerDisplayListener(mDisplayListener, null);
+            }
+        }
 
         try {
             startCameraSource();
@@ -182,10 +227,45 @@ public class BraveLocationBarQRDialogFragment
 
     @Override
     public void onDestroy() {
+        if (mDisplayManager != null) {
+            mDisplayManager.unregisterDisplayListener(mDisplayListener);
+        }
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
         super.onDestroy();
+    }
+
+    /**
+     * Checks if the rotation change represents a 180-degree rotation. 180-degree rotations are:
+     * ROTATION_0 <-> ROTATION_180, ROTATION_90 <-> ROTATION_270
+     */
+    private boolean is180DegreeRotation(int oldRotation, int newRotation) {
+        return (oldRotation == Surface.ROTATION_0 && newRotation == Surface.ROTATION_180)
+                || (oldRotation == Surface.ROTATION_180 && newRotation == Surface.ROTATION_0)
+                || (oldRotation == Surface.ROTATION_90 && newRotation == Surface.ROTATION_270)
+                || (oldRotation == Surface.ROTATION_270 && newRotation == Surface.ROTATION_90);
+    }
+
+    /** Recreates and restarts the camera source to handle 180-degree rotation. */
+    private void recreateCameraSource() {
+        if (mCameraSourcePreview == null) {
+            return;
+        }
+
+        mCameraSourcePreview.stop();
+        if (mCameraSource != null) {
+            mCameraSource.release();
+            mCameraSource = null;
+        }
+
+        // Recreate camera source and restart
+        createCameraSource(true, false);
+        try {
+            startCameraSource();
+        } catch (SecurityException exc) {
+            Log.e(TAG, "Security exception when recreating camera source", exc);
+        }
     }
 
     @Override
