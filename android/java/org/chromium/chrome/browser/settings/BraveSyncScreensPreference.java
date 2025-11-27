@@ -6,25 +6,19 @@
 package org.chromium.chrome.browser.settings;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.ActivityNotFoundException;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.hardware.Camera;
-import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -46,11 +40,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
@@ -67,10 +57,8 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
-import org.chromium.chrome.browser.qrreader.BarcodeTracker;
-import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
-import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
+import org.chromium.chrome.browser.qrreader.QRCodeCameraManager;
 import org.chromium.chrome.browser.share.qrcode.QRCodeGenerator;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
@@ -80,7 +68,6 @@ import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -89,45 +76,16 @@ import java.util.ArrayList;
 public class BraveSyncScreensPreference extends BravePreferenceFragment
         implements View.OnClickListener,
                 BackPressHelper.ObsoleteBackPressedHandler,
-                BarcodeTracker.BarcodeGraphicTrackerCallback,
+                QRCodeCameraManager.Callback,
+                QRCodeCameraManager.HostProvider,
                 BraveSyncDevices.DeviceInfoChangedListener,
                 SyncService.SyncStateChangedListener {
     public static final int BIP39_WORD_COUNT = 24;
     private static final String TAG = "SYNC";
-    private static final int INITIAL_ROTATION = -1;
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
-    // Intent request code to handle updating play services if needed.
-    private static final int RC_HANDLE_GMS = 9001;
 
-    private DisplayManager mDisplayManager;
-    private int mLastRotation = INITIAL_ROTATION;
-
-    private final DisplayManager.DisplayListener mDisplayListener =
-            new DisplayManager.DisplayListener() {
-                @Override
-                public void onDisplayAdded(int displayId) {}
-
-                @Override
-                public void onDisplayRemoved(int displayId) {}
-
-                @Override
-                public void onDisplayChanged(int displayId) {
-                    if (getActivity() == null || isRemoving() || isDetached()) {
-                        return;
-                    }
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    if (display == null || display.getDisplayId() != displayId) {
-                        return;
-                    }
-                    int currentRotation = display.getRotation();
-                    if (mLastRotation != INITIAL_ROTATION
-                            && is180DegreeRotation(mLastRotation, currentRotation)) {
-                        recreateCameraSource();
-                    }
-                    mLastRotation = currentRotation;
-                }
-            };
+    private QRCodeCameraManager mCameraManager;
 
     // The have a sync code button displayed in the Sync view.
     private Button mScanChainCodeButton;
@@ -149,7 +107,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
-    private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
     private ScrollView mScrollViewSyncInitial;
     private ScrollView mScrollViewSyncChainCode;
@@ -203,18 +160,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (isRemoving() || isDetached()) {
-            return;
-        }
-
-        // Checks the orientation of the screen
         if (newConfig.orientation != Configuration.ORIENTATION_UNDEFINED
-                && null != mCameraSourcePreview) {
-            mCameraSourcePreview.stop();
-            try {
-                startCameraSource();
-            } catch (SecurityException exc) {
-            }
+                && mCameraManager != null) {
+            mCameraManager.handleConfigurationChange();
         }
         adjustImageButtons(newConfig.orientation);
     }
@@ -254,7 +202,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // we have permission, so create the camerasource
-            createCameraSource(true, false);
+            if (mCameraManager != null) {
+                mCameraManager.createCameraSource();
+            }
             return;
         }
 
@@ -463,18 +413,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         mCameraSourcePreview = getView().findViewById(R.id.preview);
 
-        // Initialize display manager and register listener for 180-degree rotation detection
-        if (getActivity() != null) {
-            mDisplayManager =
-                    (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
-            if (mDisplayManager != null) {
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                if (display != null) {
-                    mLastRotation = display.getRotation();
-                }
-                mDisplayManager.registerDisplayListener(mDisplayListener, null);
-            }
-        }
+        // Initialize camera manager for QR code scanning
+        mCameraManager = new QRCodeCameraManager(this, this);
+        mCameraManager.init(mCameraSourcePreview);
 
         mAddDeviceButton = getView().findViewById(R.id.brave_sync_btn_add_device);
         if (null != mAddDeviceButton) {
@@ -552,8 +493,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         Log.v(TAG, "setAppropriateView first setup complete " + firstSetupComplete);
         if (!firstSetupComplete) {
-            if (null != mCameraSourcePreview) {
-                mCameraSourcePreview.stop();
+            if (mCameraManager != null) {
+                mCameraManager.stopCameraSource();
             }
             if (null != mScrollViewSyncInitial) {
                 mScrollViewSyncInitial.setVisibility(View.VISIBLE);
@@ -708,8 +649,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null != mScrollViewSyncStartChain) {
                 mScrollViewSyncStartChain.setVisibility(View.GONE);
             }
-            if (null != mCameraSourcePreview) {
-                mCameraSourcePreview.stop();
+            if (mCameraManager != null) {
+                mCameraManager.stopCameraSource();
             }
             if (null != mScrollViewSyncChainCode) {
                 mScrollViewSyncChainCode.setVisibility(View.GONE);
@@ -943,88 +884,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         getBraveSyncWorker().finalizeSyncSetup();
     }
 
-    @SuppressLint("InlinedApi")
-    private void createCameraSource(boolean autoFocus, boolean useFlash) {
-        Context context = getActivity().getApplicationContext();
-
-        // A barcode detector is created to track barcodes.  An associated multi-processor instance
-        // is set to receive the barcode detection results, track the barcodes, and maintain
-        // graphics for each barcode on screen.  The factory is used by the multi-processor to
-        // create a separate tracker instance for each barcode.
-        BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(this);
-        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
-
-        if (!barcodeDetector.isOperational()) {
-            // Note: The first time that an app using the barcode or face API is installed on a
-            // device, GMS will download a native libraries to the device in order to do detection.
-            // Usually this completes before the app is run for the first time.  But if that
-            // download has not yet completed, then the above call will not detect any barcodes.
-            //
-            // isOperational() can be used to check if the required native libraries are currently
-            // available.  The detectors will automatically become operational once the library
-            // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
-        }
-
-        // Creates and starts the camera.  Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        CameraSource.Builder builder =
-                new CameraSource.Builder(getActivity().getApplicationContext(), barcodeDetector)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
-                        .setRequestedFps(24.0f);
-
-        // make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-
-        mCameraSource =
-                builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
-    }
-
-    private void startCameraSource() throws SecurityException {
-        if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
-            // check that the device has play services available.
-            try {
-                int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                        getActivity().getApplicationContext());
-                if (code != ConnectionResult.SUCCESS) {
-                    Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(
-                            getActivity(), code, RC_HANDLE_GMS);
-                    if (null != dlg) {
-                        dlg.show();
-                    }
-                }
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
-                mCameraSource.release();
-                mCameraSource = null;
-
-                return;
-            }
-            try {
-                mCameraSourcePreview.start(mCameraSource);
-            } catch (IOException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
-                mCameraSource.release();
-                mCameraSource = null;
-            }
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         try {
-            if (null != mCameraSourcePreview
-                    && View.GONE != mScrollViewSyncChainCode.getVisibility()) {
-                startCameraSource();
+            if (mCameraManager != null && View.GONE != mScrollViewSyncChainCode.getVisibility()) {
+                mCameraManager.startCameraSource();
             }
         } catch (SecurityException se) {
             Log.e(TAG, "Do not have permission to start the camera", se);
@@ -1043,8 +908,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (mCameraSourcePreview != null) {
-            mCameraSourcePreview.stop();
+        if (mCameraManager != null) {
+            mCameraManager.stopCameraSource();
         }
         InputMethodManager imm =
                 (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1054,11 +919,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mDisplayManager != null) {
-            mDisplayManager.unregisterDisplayListener(mDisplayListener);
-        }
-        if (mCameraSourcePreview != null) {
-            mCameraSourcePreview.release();
+        if (mCameraManager != null) {
+            mCameraManager.release();
         }
 
         SyncServiceFactory.getForProfile(getProfile()).removeSyncStateChangedListener(this);
@@ -1066,37 +928,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (mDeviceInfoObserverSet) {
             BraveSyncDevices.get().removeDeviceInfoChangedListener(this);
             mDeviceInfoObserverSet = false;
-        }
-    }
-
-    /**
-     * Checks if the rotation change represents a 180-degree rotation. 180-degree rotations are:
-     * ROTATION_0 <-> ROTATION_180, ROTATION_90 <-> ROTATION_270
-     */
-    private boolean is180DegreeRotation(int oldRotation, int newRotation) {
-        return (oldRotation == Surface.ROTATION_0 && newRotation == Surface.ROTATION_180)
-                || (oldRotation == Surface.ROTATION_180 && newRotation == Surface.ROTATION_0)
-                || (oldRotation == Surface.ROTATION_90 && newRotation == Surface.ROTATION_270)
-                || (oldRotation == Surface.ROTATION_270 && newRotation == Surface.ROTATION_90);
-    }
-
-    /** Recreates and restarts the camera source to handle 180-degree rotation. */
-    private void recreateCameraSource() {
-        if (mCameraSourcePreview == null) {
-            return;
-        }
-
-        mCameraSourcePreview.stop();
-        if (mCameraSource != null) {
-            mCameraSource.release();
-            mCameraSource = null;
-        }
-
-        createCameraSource(true, false);
-        try {
-            startCameraSource();
-        } catch (SecurityException exc) {
-            Log.e(TAG, "Security exception when recreating camera source", exc);
         }
     }
 
@@ -1404,8 +1235,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mScrollViewSyncStartChain.setVisibility(View.GONE);
         }
 
-        if (ensureCameraPermission()) {
-            createCameraSource(true, false);
+        if (ensureCameraPermission() && mCameraManager != null) {
+            mCameraManager.createCameraSource();
         }
 
         getActivity().setTitle(R.string.brave_sync_scan_chain_code);
@@ -1417,14 +1248,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mQrInProcessingOrFinalized = false;
         }
 
-        if (null != mCameraSourcePreview) {
+        if (mCameraManager != null) {
             int rc =
                     ActivityCompat.checkSelfPermission(
                             getActivity().getApplicationContext(), Manifest.permission.CAMERA);
             if (rc == PackageManager.PERMISSION_GRANTED) {
                 try {
-                    startCameraSource();
+                    mCameraManager.startCameraSource();
                 } catch (SecurityException exc) {
+                    Log.e(TAG, "Security exception when starting camera source", exc);
                 }
             }
         }
@@ -1565,8 +1397,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 .getWindow()
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getActivity().setTitle(R.string.sync_category_title);
-        if (null != mCameraSourcePreview) {
-            mCameraSourcePreview.stop();
+        if (mCameraManager != null) {
+            mCameraManager.stopCameraSource();
         }
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
@@ -1636,6 +1468,17 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null != view) {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    // QRCodeCameraManager.HostProvider implementation
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
+
+    @Override
+    public boolean isHostValid() {
+        return getActivity() != null && !isRemoving() && !isDetached();
     }
 
     // Handles 'Back' button. Returns true if it is handled, false otherwise.

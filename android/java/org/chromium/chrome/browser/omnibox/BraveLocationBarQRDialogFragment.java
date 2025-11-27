@@ -1,88 +1,38 @@
 /**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * Copyright (c) 2022 The Brave Authors. All rights reserved. This Source Code Form is subject to
+ * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
+ * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package org.chromium.chrome.browser.omnibox;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.Camera;
-import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Patterns;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.qrreader.BarcodeTracker;
-import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
-import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
+import org.chromium.chrome.browser.qrreader.QRCodeCameraManager;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 
-import java.io.IOException;
-
 public class BraveLocationBarQRDialogFragment extends DialogFragment
-        implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+        implements QRCodeCameraManager.Callback, QRCodeCameraManager.HostProvider {
     private static final String TAG = "Scan QR Code Dialog";
-    private static final int INITIAL_ROTATION = -1;
 
-    private CameraSource mCameraSource;
-    private CameraSourcePreview mCameraSourcePreview;
+    private QRCodeCameraManager mCameraManager;
     private LocationBarMediator mLocationBarMediator;
-    private DisplayManager mDisplayManager;
-    private int mLastRotation = INITIAL_ROTATION;
-
-    // Intent request code to handle updating play services if needed.
-    private static final int RC_HANDLE_GMS = 9001;
-
-    private final DisplayManager.DisplayListener mDisplayListener =
-            new DisplayManager.DisplayListener() {
-                @Override
-                public void onDisplayAdded(int displayId) {}
-
-                @Override
-                public void onDisplayRemoved(int displayId) {}
-
-                @Override
-                public void onDisplayChanged(int displayId) {
-                    if (getActivity() == null || isRemoving() || isDetached()) {
-                        return;
-                    }
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    if (display == null || display.getDisplayId() != displayId) {
-                        return;
-                    }
-                    int currentRotation = display.getRotation();
-                    if (mLastRotation != INITIAL_ROTATION
-                            && is180DegreeRotation(mLastRotation, currentRotation)) {
-                        recreateCameraSource();
-                    }
-                    mLastRotation = currentRotation;
-                }
-            };
 
     // The Android Fragment framework requires a zero-argument constructor to
     // instantiate fragments. It usually happens on a fragment re-creation
@@ -123,166 +73,41 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ImageView backImageView = (ImageView) view.findViewById(R.id.back_imageview);
-        backImageView.setOnClickListener(imageview -> { dismiss(); });
+        backImageView.setOnClickListener(
+                imageview -> {
+                    dismiss();
+                });
 
-        mCameraSourcePreview = (CameraSourcePreview) view.findViewById(R.id.preview);
-        createCameraSource(true, false);
+        CameraSourcePreview cameraSourcePreview =
+                (CameraSourcePreview) view.findViewById(R.id.preview);
+
+        mCameraManager = new QRCodeCameraManager(this, this);
+        mCameraManager.init(cameraSourcePreview);
+        mCameraManager.createCameraSource();
 
         BraveTouchUtils.ensureMinTouchTarget(backImageView);
 
-        // Initialize display manager and register listener for 180-degree rotation detection
-        if (getActivity() != null) {
-            mDisplayManager =
-                    (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
-            if (mDisplayManager != null) {
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                if (display != null) {
-                    mLastRotation = display.getRotation();
-                }
-                mDisplayManager.registerDisplayListener(mDisplayListener, null);
-            }
-        }
-
         try {
-            startCameraSource();
+            mCameraManager.startCameraSource();
         } catch (SecurityException exc) {
-        }
-    }
-
-    @SuppressLint("InlinedApi")
-    private void createCameraSource(boolean autoFocus, boolean useFlash) {
-        Context context = getActivity().getApplicationContext();
-        // A barcode detector is created to track barcodes.  An associated multi-processor instance
-        // is set to receive the barcode detection results, track the barcodes, and maintain
-        // graphics for each barcode on screen.  The factory is used by the multi-processor to
-        // create a separate tracker instance for each barcode.
-        BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(this);
-        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
-
-        if (!barcodeDetector.isOperational()) {
-            // Note: The first time that an app using the barcode or face API is installed on a
-            // device, GMS will download a native libraries to the device in order to do detection.
-            // Usually this completes before the app is run for the first time.  But if that
-            // download has not yet completed, then the above call will not detect any barcodes.
-            //
-            // isOperational() can be used to check if the required native libraries are currently
-            // available.  The detectors will automatically become operational once the library
-            // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
-        }
-
-        // Creates and starts the camera.  Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        CameraSource.Builder builder =
-                new CameraSource.Builder(context, barcodeDetector)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
-                        .setRequestedFps(24.0f);
-
-        // Make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-
-        mCameraSource =
-                builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
-    }
-
-    private void startCameraSource() throws SecurityException {
-        if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
-            // Check that the device has play services available.
-            try {
-                int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                        getActivity().getApplicationContext());
-                if (code != ConnectionResult.SUCCESS) {
-                    Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(
-                            getActivity(), code, RC_HANDLE_GMS);
-                    if (null != dlg) {
-                        dlg.show();
-                    }
-
-                    dismiss();
-                }
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
-                mCameraSource.release();
-                mCameraSource = null;
-
-                return;
-            }
-            try {
-                mCameraSourcePreview.start(mCameraSource);
-            } catch (IOException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
-                mCameraSource.release();
-                mCameraSource = null;
-            }
+            Log.e(TAG, "Security exception when starting camera source", exc);
         }
     }
 
     @Override
     public void onDestroy() {
-        if (mDisplayManager != null) {
-            mDisplayManager.unregisterDisplayListener(mDisplayListener);
-        }
-        if (mCameraSourcePreview != null) {
-            mCameraSourcePreview.release();
+        if (mCameraManager != null) {
+            mCameraManager.release();
         }
         super.onDestroy();
-    }
-
-    /**
-     * Checks if the rotation change represents a 180-degree rotation. 180-degree rotations are:
-     * ROTATION_0 <-> ROTATION_180, ROTATION_90 <-> ROTATION_270
-     */
-    private boolean is180DegreeRotation(int oldRotation, int newRotation) {
-        return (oldRotation == Surface.ROTATION_0 && newRotation == Surface.ROTATION_180)
-                || (oldRotation == Surface.ROTATION_180 && newRotation == Surface.ROTATION_0)
-                || (oldRotation == Surface.ROTATION_90 && newRotation == Surface.ROTATION_270)
-                || (oldRotation == Surface.ROTATION_270 && newRotation == Surface.ROTATION_90);
-    }
-
-    /** Recreates and restarts the camera source to handle 180-degree rotation. */
-    private void recreateCameraSource() {
-        if (mCameraSourcePreview == null) {
-            return;
-        }
-
-        mCameraSourcePreview.stop();
-        if (mCameraSource != null) {
-            mCameraSource.release();
-            mCameraSource = null;
-        }
-
-        // Recreate camera source and restart
-        createCameraSource(true, false);
-        try {
-            startCameraSource();
-        } catch (SecurityException exc) {
-            Log.e(TAG, "Security exception when recreating camera source", exc);
-        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (isRemoving() || isDetached()) {
-            return;
-        }
-
-        // Checks the orientation of the screen
         if (newConfig.orientation != Configuration.ORIENTATION_UNDEFINED
-                && null != mCameraSourcePreview) {
-            mCameraSourcePreview.stop();
-            try {
-                startCameraSource();
-            } catch (SecurityException exc) {
-            }
+                && mCameraManager != null) {
+            mCameraManager.handleConfigurationChange();
         }
     }
 
@@ -290,8 +115,8 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     public void onResume() {
         super.onResume();
         try {
-            if (mCameraSourcePreview != null) {
-                startCameraSource();
+            if (mCameraManager != null) {
+                mCameraManager.startCameraSource();
             }
         } catch (SecurityException se) {
             Log.e(TAG, "Do not have permission to start the camera", se);
@@ -303,11 +128,12 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     @Override
     public void onPause() {
         super.onPause();
-        if (mCameraSourcePreview != null) {
-            mCameraSourcePreview.stop();
+        if (mCameraManager != null) {
+            mCameraManager.stopCameraSource();
         }
     }
 
+    // QRCodeCameraManager.Callback implementation
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode == null) {
@@ -328,5 +154,25 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
 
             dismiss();
         }
+    }
+
+    @Override
+    public boolean onPlayServicesUnavailable(Dialog errorDialog) {
+        if (errorDialog != null) {
+            errorDialog.show();
+        }
+        dismiss();
+        return true;
+    }
+
+    // QRCodeCameraManager.HostProvider implementation
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
+
+    @Override
+    public boolean isHostValid() {
+        return getActivity() != null && !isRemoving() && !isDetached();
     }
 }

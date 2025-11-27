@@ -314,6 +314,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/BarcodeTrackerFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
+  "../../brave/android/java/org/chromium/chrome/browser/qrreader/QRCodeCameraManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveRateDialogFragment.java",
