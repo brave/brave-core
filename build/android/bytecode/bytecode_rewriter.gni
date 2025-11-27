@@ -11,7 +11,6 @@ brave_bytecode_jars = [
   "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/java.javac.jar",
   "obj/brave/browser/notifications/java.javac.jar",
-  "obj/brave/browser/tabmodel/android/java.javac.jar",
   "obj/brave/browser/ui/android/logo/java.javac.jar",
   "obj/brave/browser/ui/android/omnibox/java.javac.jar",
   "obj/brave/browser/ui/android/theme/java.javac.jar",

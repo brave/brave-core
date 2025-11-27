@@ -364,7 +364,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl"));
+                classExists("org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
         Assert.assertTrue(
@@ -1167,7 +1167,7 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
+                        "org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl",
                         "shouldGroupWithParent",
                         MethodModifier.REGULAR,
                         boolean.class,
@@ -1175,7 +1175,7 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
+                        "org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl",
                         "isTabModelRestored",
                         MethodModifier.REGULAR,
                         boolean.class));
@@ -2355,10 +2355,6 @@ public class BytecodeTest {
                         "mBookmarkManagerCoordinator"));
         Assert.assertTrue(
                 fieldExists("org/chromium/components/cached_flags/CachedFlag", "mDefaultValue"));
-        Assert.assertFalse(
-                fieldExists(
-                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
-                        "mIsResetting"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
@@ -2603,8 +2599,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge"));
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
-                        "org/chromium/chrome/browser/tabmodel/BraveTabGroupModelFilter"));
+                        "org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl",
+                        "org/chromium/chrome/browser/tabmodel/BraveTabCollectionTabModelImplBase"));
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/media/PictureInPictureActivity",
