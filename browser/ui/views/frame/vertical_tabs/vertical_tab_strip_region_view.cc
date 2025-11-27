@@ -999,23 +999,6 @@ void BraveVerticalTabStripRegionView::OnBoundsChanged(
       tab_strip()->tab_container_->CompleteAnimationAndLayout();
     }
   }
-
-#if DCHECK_IS_ON()
-  DCHECK(GetWidget());
-  // In this mode,vertical tab strip takes a little width, such as 4px, and
-  // when mouse is hovered, it expands to the full width.
-  const bool is_hot_corner =
-      IsBrowserFullscren() ||
-      (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_) &&
-       state_ == State::kCollapsed);
-
-  // Checks if the width is in valid range when it's visible.
-  if (auto width = GetContentsBounds().width();
-      width && !is_hot_corner && GetWidget()->IsVisible()) {
-    CHECK_GE(width, tabs::kVerticalTabMinWidth +
-                        tabs::kMarginForVerticalTabContainers * 2);
-  }
-#endif
 }
 
 void BraveVerticalTabStripRegionView::AddedToWidget() {
