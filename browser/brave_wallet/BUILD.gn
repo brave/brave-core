@@ -38,6 +38,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
