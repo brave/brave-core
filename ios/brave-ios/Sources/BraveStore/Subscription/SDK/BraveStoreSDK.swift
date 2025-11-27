@@ -125,7 +125,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     case .leoMonthly: return "brave-leo-premium"
     case .leoYearly: return "brave-leo-premium-year"
     case .originMonthly: return "brave-origin-premium"
-    case .originYearly: return "brave-origin-yearly"
+    case .originYearly: return "brave-origin-premium-year"
     }
   }
 
