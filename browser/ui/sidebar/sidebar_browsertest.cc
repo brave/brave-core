@@ -27,6 +27,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -909,9 +910,15 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   controller()->ActivateItemAt(web_panel_item_index - 1);
   EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
 
+  // toolbar is always hidden for web panel.
+  EXPECT_FALSE(
+      contents_container_view_for_web_panel->mini_toolbar()->GetVisible());
+
   // Activate another web panel and check panel is still visible.
   controller()->ActivateItemAt(web_panel_item_index);
   EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_FALSE(
+      contents_container_view_for_web_panel->mini_toolbar()->GetVisible());
 
   // Now we have another pinned tab for web panel at 0.
   EXPECT_EQ(2, tab_strip_model->count());
@@ -944,6 +951,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(browser_view->GetContentsView(),
             contents_container_view_for_web_panel->contents_view());
+  EXPECT_FALSE(
+      contents_container_view_for_web_panel->mini_toolbar()->GetVisible());
 
   // Check tab contents test with split view.
   // Create split view with tab at 1.
@@ -953,23 +962,19 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_EQ(2, tab_strip_model->active_index());
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsSplit());
-
   EXPECT_FALSE(GetBraveMultiContentsView()->is_web_panel_active_);
-  web_panel_controller()->panel_contents()->GetDelegate()->ActivateContents(
-      web_panel_controller()->panel_contents());
-  EXPECT_TRUE(GetBraveMultiContentsView()->is_web_panel_active_);
 
-  // Cache current active/inactive split tab contents and check both are not
-  // changed when web panel is activated.
-  auto* active_split_tab_contents =
-      GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents();
+  // Cache current inactive split tab contents and check it's not changed for
+  // inactive contents view when web panel is activated. Only active contents
+  // view is changed to panel's contents as
+  // BraveMultiContentsView::GetActiveContentsView() will give panel's contents.
   auto* inactive_split_tab_contents =
       GetBraveMultiContentsView()->GetInactiveContentsView()->GetWebContents();
-  web_panel_controller()->panel_contents()->GetDelegate()->ActivateContents(
-      web_panel_controller()->panel_contents());
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_TRUE(GetBraveMultiContentsView()->is_web_panel_active_);
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(
-      active_split_tab_contents,
+      web_panel_controller()->panel_contents(),
       GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents());
   EXPECT_EQ(
       inactive_split_tab_contents,
