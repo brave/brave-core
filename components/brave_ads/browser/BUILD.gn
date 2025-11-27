@@ -73,15 +73,10 @@ static_library("browser") {
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//net",
-    "//services/network/public/cpp",
-    "//services/network/public/mojom",
     "//ui/base",
   ]
 
-  public_deps += [
-    "//brave/components/services/bat_ads/public/interfaces",
-    "//services/network/public/mojom",
-  ]
+  public_deps += [ "//brave/components/services/bat_ads/public/interfaces" ]
 }
 
 source_set("unit_tests") {

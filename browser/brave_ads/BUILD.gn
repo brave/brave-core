@@ -80,6 +80,7 @@ source_set("impl") {
     "//components/keyed_service/content",
     "//components/variations",
     "//components/variations/service",
+    "//services/network/public/cpp",
     "//ui/gfx",
     "//ui/message_center/public/cpp",
   ]

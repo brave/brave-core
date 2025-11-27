@@ -8,6 +8,10 @@ source_set("service") {
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
+    "network_client.cc",
+    "network_client.h",
+    "network_client_util.cc",
+    "network_client_util.h",
     "new_tab_page_ad_prefetcher.cc",
     "new_tab_page_ad_prefetcher.h",
     "virtual_pref_provider.cc",
@@ -30,6 +34,9 @@ source_set("service") {
   deps = [
     "//base/version_info",
     "//brave/components/skus/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
   ]
 }
 
