@@ -99,14 +99,15 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
   if (!filter_set_) {
-    base::BindOnce(
-        [](base::WeakPtr<AdBlockEngine> engine,
-           AdblockResourceStorageBox storage) {
-          if (engine) {
-            engine->UseResources(*storage);
-          }
-        },
-        adblock_engine_->AsWeakPtr(), std::move(storage));
+    task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](base::WeakPtr<AdBlockEngine> engine,
+                          AdblockResourceStorageBox storage) {
+                         if (engine) {
+                           engine->UseResources(*storage);
+                         }
+                       },
+                       adblock_engine_->AsWeakPtr(), std::move(storage)));
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,

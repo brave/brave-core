@@ -7,9 +7,10 @@ use adblock::resources::{InMemoryResourceStorage, Resource, ResourceImpl, Resour
 use cxx::CxxString;
 use std::sync::Arc;
 
+/// A wrapper around the inner storage to share ownership of the inner storage.
 #[derive(Clone)]
 pub struct BraveCoreResourceStorage {
-    pub shared_storage: Arc<InMemoryResourceStorage>,
+    shared_storage: Arc<InMemoryResourceStorage>,
 }
 
 impl ResourceStorageBackend for BraveCoreResourceStorage {
@@ -37,7 +38,7 @@ pub fn new_resource_storage(resources_json: &CxxString) -> Box<BraveCoreResource
 }
 
 /// Clones a BraveCoreResourceStorage.
-/// Clones only the Arc, the storage remains shared.
+/// Clones only the Arc-based wrapper, the inner storage remains shared.
 pub fn clone_resource_storage(storage: &BraveCoreResourceStorage) -> Box<BraveCoreResourceStorage> {
     Box::new(storage.clone())
 }
@@ -51,12 +52,12 @@ pub fn extend_resource_storage(
         serde_json::from_str::<Vec<Resource>>(additional_resources_json)
     {
         if !additional_resources.is_empty() {
-            let mut storage = storage.shared_storage.as_ref().clone();
+            let mut inner_storage = storage.shared_storage.as_ref().clone();
 
             for resource in additional_resources {
-                let _ = storage.add_resource(resource);
+                let _ = inner_storage.add_resource(resource);
             }
-            return Box::new(BraveCoreResourceStorage { shared_storage: Arc::new(storage) });
+            return Box::new(BraveCoreResourceStorage { shared_storage: Arc::new(inner_storage) });
         }
     }
     clone_resource_storage(storage)
