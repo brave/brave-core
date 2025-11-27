@@ -8,6 +8,7 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import classnames from '$web-common/classnames'
 import styles from './style.module.scss'
 import { useMemo } from 'react'
+import { FuzzyFinder, Match } from './fuzzy_finder'
 
 export interface Props<T> {
   query: string | null
@@ -19,36 +20,72 @@ export interface Props<T> {
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
 
-  // Note: -1 means no match.
-  matchesQuery: (query: string, entry: T, category?: string) => number
+  // Note: undefined means no match.
+  matchesQuery: (
+    query: FuzzyFinder,
+    entry: T,
+    category?: string,
+  ) => Match | undefined
 
-  children: (entry: T, category?: string) => React.ReactNode
+  children: (entry: T, category?: string, match?: Match) => React.ReactNode
+}
+
+export function MatchedText(props: { text: string; match?: Match }) {
+  if (!props.match) {
+    return props.text
+  }
+
+  let lastIndex = 0
+  let keyCounter = 0
+  const parts: React.ReactNode[] = []
+  for (const range of props.match.ranges) {
+    parts.push(
+      <React.Fragment key={keyCounter++}>
+        {props.text.slice(lastIndex, range.start)}
+      </React.Fragment>,
+    )
+    parts.push(
+      <span
+        key={range.start}
+        className={styles.matchedText}
+      >
+        {props.text.slice(range.start, range.end)}
+      </span>,
+    )
+    lastIndex = range.end
+  }
+  parts.push(props.text.slice(lastIndex))
+
+  return <span>{parts}</span>
 }
 
 export default function FilterMenu<T>(props: Props<T>) {
-  const filtered = useMemo(
-    () =>
+  const [filtered, lookup] = useMemo(() => {
+    const lookup = new Map<T, Match | undefined>()
+    return [
       !props.query
         ? props.categories
         : props.categories
             .map((g) => ({
               ...g,
               entries: g.entries
-                .map(
-                  (entry) =>
-                    [
-                      props.matchesQuery(props.query!, entry, g.category),
-                      entry,
-                    ] as const,
-                )
-                // Note: -1 means no match.
-                .filter(([rank]) => rank !== -1)
-                .sort((a, b) => a[0] - b[0])
+                .map((entry) => {
+                  const match = props.matchesQuery(
+                    new FuzzyFinder(props.query ?? ''),
+                    entry,
+                    g.category,
+                  )
+                  lookup.set(entry, match)
+                  return [match, entry] as const
+                })
+                .filter(([match]) => match)
+                .sort((a, b) => a[0]!.score - b[0]!.score)
                 .map(([_, entry]) => entry),
             }))
             .filter((g) => g.entries.length > 0),
-    [props.query, props.categories],
-  )
+      lookup,
+    ]
+  }, [props.query, props.categories])
 
   const noMatches = useMemo(
     () => !filtered.some((g) => g.entries.length !== 0),
@@ -137,7 +174,7 @@ export default function FilterMenu<T>(props: Props<T>) {
             )}
             {category.entries.map((entry, i) => (
               <React.Fragment key={i}>
-                {props.children(entry, category.category)}
+                {props.children(entry, category.category, lookup.get(entry))}
               </React.Fragment>
             ))}
           </React.Fragment>

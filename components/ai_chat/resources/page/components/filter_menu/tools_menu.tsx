@@ -9,9 +9,10 @@ import Icon from '@brave/leo/react/icon'
 
 import { ActionEntry, Skill } from 'components/ai_chat/resources/common/mojom'
 import { getLocale } from '$web-common/locale'
-import FilterMenu, { Props } from './filter_menu'
+import FilterMenu, { MatchedText, Props } from './filter_menu'
 import { matches } from './query'
 import styles from './style.module.scss'
+import { FuzzyFinder } from './fuzzy_finder'
 
 export type ExtendedActionEntry = ActionEntry | Skill
 
@@ -32,14 +33,14 @@ export const getIsSkill = (item: ExtendedActionEntry): item is Skill => {
   return 'shortcut' in item
 }
 
-function matchesQuery(query: string, entry: ExtendedActionEntry) {
+function matchesQuery(query: FuzzyFinder, entry: ExtendedActionEntry) {
   if (getIsActionEntry(entry)) {
     return matches(query, entry.details!.label)
   }
   if (getIsSkill(entry)) {
     return matches(query, entry.shortcut)
   }
-  return -1
+  return undefined
 }
 
 export default function ToolsMenu(props: ToolsMenuProps) {
@@ -67,7 +68,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
         </div>
       }
     >
-      {(item) => {
+      {(item, category, match) => {
         if ('subheading' in item && item.subheading !== undefined) {
           return <div className={styles.menuSubtitle}>{item.subheading}</div>
         }
@@ -79,7 +80,10 @@ export default function ToolsMenu(props: ToolsMenuProps) {
             onClick={() => props.handleClick(item)}
           >
             <div className={styles.toolsMenuItemContent}>
-              {isActionEntry ? item.details!.label : item.shortcut}
+              <MatchedText
+                text={isActionEntry ? item.details!.label : item.shortcut}
+                match={match}
+              />
               {getIsSkill(item) && (
                 <Button
                   fab
