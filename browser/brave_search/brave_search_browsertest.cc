@@ -69,19 +69,22 @@ constexpr char kBackupSearchContent[] =
 
 constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
-// Use setTimeout to allow opensearch xml to be fetched
-// and template url created.
-// If this is flakey, consider making TemplateURL manually,
-// or observing the TemplateURLService for changes.
+// Script that waits for the API to return true, with a timeout.
+// This handles the async nature of OpenSearch provider registration.
 constexpr char kScriptDefaultAPIGetValue[] = R"(
-  new Promise(resolve => {
-    setTimeout(function () {
-    brave.getCanSetDefaultSearchProvider()
-    .then((canSet) => {
-      resolve(canSet)
-    })
-    }, 1200)
-  });
+  (async () => {
+    const timeout = 5000;
+    const interval = 100;
+    const start = Date.now();
+    while (Date.now() - start < timeout) {
+      const canSet = await brave.getCanSetDefaultSearchProvider();
+      if (canSet) {
+        return true;
+      }
+      await new Promise(r => setTimeout(r, interval));
+    }
+    return false;
+  })()
 )";
 
 std::string GetChromeFetchBackupResultsAvailScript() {
@@ -261,26 +264,23 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
   EXPECT_EQ(base::Value(false), result_first);
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/29631): Test flaky on
-// master for the mac and linux build.
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#define MAYBE_DefaultAPIVisibleKnownHost DISABLED_DefaultAPIVisibleKnownHost
-#else
-#define MAYBE_DefaultAPIVisibleKnownHost DefaultAPIVisibleKnownHost
-#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
-                       MAYBE_DefaultAPIVisibleKnownHost) {
+IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
-  search_test_utils::WaitForTemplateURLServiceToLoad(
-      TemplateURLServiceFactory::GetForProfile(browser()->profile()));
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   EXPECT_EQ(url, contents->GetURL());
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIExists));
+
+  // The JavaScript will poll until the API returns true or timeout.
+  // This handles the async nature of OpenSearch provider registration.
   EXPECT_EQ(true, content::EvalJs(contents, kScriptDefaultAPIGetValue));
 }
 
