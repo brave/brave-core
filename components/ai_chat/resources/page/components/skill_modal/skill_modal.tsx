@@ -197,11 +197,10 @@ export default function SkillModal() {
                 className={classnames({
                   [styles.gradientIcon]: selectedModel === AUTOMATIC_MODEL_KEY,
                 })}
-                name={
+                name={getModelIcon(
                   selectedModelObject
-                    ? getModelIcon(selectedModelObject)
-                    : 'product-brave-leo'
-                }
+                    ?? ({ key: selectedModel } as Mojom.Model),
+                )}
               />
             }
             <div slot='value'>
