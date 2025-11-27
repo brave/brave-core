@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
+index c00044a5778dbd9e7d333b11d4140a7d7b26111e..b27ce7862e60badc81810da0cf1009d5b74c31d5 100644
+--- a/chrome/browser/prefs/BUILD.gn
++++ b/chrome/browser/prefs/BUILD.gn
+@@ -159,6 +159,7 @@ source_set("impl") {
+     "//services/preferences/public/mojom",
+     "//services/preferences/tracked",
+   ]
++  import("//brave/components/brave_wallet/sources.gni") deps += brave_chrome_browser_prefs_impl_deps
+ 
+   if (enable_extensions_core) {
+     deps += [ "//extensions/common" ]
