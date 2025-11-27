@@ -305,6 +305,9 @@ struct ConversationState {
   bool temporary = false;
   // TODO(petemill): include conversation history, once
   // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
+
+  // State of the current task (tool execution loop)
+  TaskState tool_use_task_state = kNone;
 };
 
 // Browser-side handler for a Conversation
@@ -370,12 +373,34 @@ interface ConversationHandler {
   // Make it a temporary conversation, only available at the start of the
   // conversation. It would be a no-op if the conversation is not empty.
   SetTemporary(bool temporary);
+
+  // Manually pause the current task. All tool providers will be told to pause
+  // and the tool loop will not execute any more tools or send any tool
+  // responses.
+  PauseTask();
+
+  // Manually resume the current task. This is not the only mechanism to resume.
+  // Tool Providers can also resume the task, or the user can send a new message
+  // and start a new task.
+  ResumeTask();
+
+  // Manually stop the current task. This will stop the task and prevent any
+  // future tool executions until the next message is sent.
+  StopTask();
 };
 
 interface ConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
+
+  // TODO(https://github.com/brave/brave-browser/issues/51047): Move to a new
+  // OnStateChanged event.
+
   OnAPIRequestInProgress(bool is_request_in_progress);
+
   OnAPIResponseError(APIError error);
+
+  OnTaskStateChanged(TaskState task_state);
+
   // Usually the model is changed from the UI client, but occassionally
   // it could be changed from the browser.
   // When the browser changes the model, it will also provide a new list

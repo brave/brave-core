@@ -142,6 +142,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
 
   MOCK_METHOD(void,
+              OnTaskStateChanged,
+              (mojom::TaskState task_state),
+              (override));
+
+  MOCK_METHOD(void,
               OnModelDataChanged,
               (const std::string& conversation_model_key,
                const std::string& default_model_key,
@@ -323,6 +328,12 @@ class ConversationHandlerUnitTest : public testing::Test {
     }
     conversation_handler_->SetChatHistoryForTesting(std::move(history));
     return expected_history;
+  }
+
+  mojom::ConversationStatePtr GetState() {
+    base::test::TestFuture<mojom::ConversationStatePtr> state_future;
+    conversation_handler_->GetState(state_future.GetCallback());
+    return state_future.Take();
   }
 
  protected:
@@ -524,7 +535,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
   // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
   // Ensure everything is sanitized
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -604,7 +615,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(3);
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
 
@@ -682,7 +693,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
   // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
   // Ensure everything is sanitized.
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -1953,28 +1964,36 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   // No uploaded files
   base::RunLoop loop;
   EXPECT_CALL(client, OnModelDataChanged).Times(0);
-  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  testing::Sequence request_in_progress_seq;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .Times(1)
+      .InSequence(request_in_progress_seq);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
-      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+      .InSequence(request_in_progress_seq)
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit))
+      .WillRepeatedly(testing::Return());
   conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
                                                       std::nullopt);
   loop.Run();
   EXPECT_FALSE(
       conversation_handler_->GetConversationHistory().back()->uploaded_files);
   testing::Mock::VerifyAndClearExpectations(&client);
+  EXPECT_EQ(conversation_handler_->GetConversationHistorySize(), 2u);
 
   // Empty uploaded files
   base::RunLoop loop2;
   EXPECT_CALL(client, OnModelDataChanged).Times(0);
-  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
-      .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit));
+      .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit))
+      .WillRepeatedly(testing::Return());
   conversation_handler_->SubmitHumanConversationEntry(
       kTestPrompt, std::vector<mojom::UploadedFilePtr>());
   loop2.Run();
   EXPECT_FALSE(
       conversation_handler_->GetConversationHistory().back()->uploaded_files);
   testing::Mock::VerifyAndClearExpectations(&client);
+  EXPECT_EQ(conversation_handler_->GetConversationHistorySize(), 4u);
 
   // Create files for each UploadedFileType to exhaustively test all types
   auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
@@ -3073,6 +3092,137 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       tool_event->output->at(0),
       mojom::ContentBlock::NewTextContentBlock(
           mojom::TextContentBlock::New("Weather in New York: 72°F")));
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  // Setup multiple tools with only 1 being called
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  auto tool2 = std::make_unique<NiceMock<MockTool>>("calculator", "Do math");
+
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+  bool second_generation_started = false;
+
+  // First call to engine mocks the use tool requests
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Ok, going to check...")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // We will still be "in progress" whilst any automatic tools are being called
+  EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(
+                                    ConversationEntriesStateIsGenerating(true)))
+      .Times(testing::AtLeast(1));
+
+  // Client and observer should be given the tool use event output when it's
+  // available.
+  auto expected_tool_use_event = mojom::ToolUseEvent::New(
+      "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
+      CreateContentBlocksForText("Weather in New York: 72°F"), nullptr);
+
+  EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
+      .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
+        EXPECT_MOJOM_EQ(*tool_use_event, *expected_tool_use_event);
+      }));
+
+  EXPECT_CALL(observer, OnToolUseEventOutput(_, _, 1, _))
+      .WillOnce(testing::WithArg<3>([&](mojom::ToolUseEventPtr tool_use_event) {
+        EXPECT_MOJOM_EQ(*tool_use_event, *expected_tool_use_event);
+      }));
+
+  // Only the weather_tool UseTool should be called
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Weather in New York: 72°F")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Second call to engine (sending the tool output)returns an error
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::InvokeWithoutArgs(
+              [&]() { second_generation_started = true; }),
+
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::unexpected(mojom::APIError::InternalError));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // We should see the final "generation in progress" change to false
+  EXPECT_CALL(
+      untrusted_client,
+      OnEntriesUIStateChanged(ConversationEntriesStateIsGenerating(false)))
+      .WillRepeatedly(testing::InvokeWithoutArgs([&]() {
+        // This should only be called after the second generation has started
+        EXPECT_TRUE(second_generation_started);
+      }));
+
+  // Submit a human entry to trigger the tool use
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What's the weather in New York?", std::nullopt);
+
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human entry + assistant entry with tool
+  // This test is mainly verifying that we don't enter the tool loop again after
+  // an error response. That is worth testing because the conversation's last
+  // message still has tool output that is pending, but we shouldn't attempt
+  // to send it again in an infinite loop. This is verified with the
+  // EXPECT_CALL.WILLONCE above.
+  ASSERT_EQ(history.size(), 2u);
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::InternalError);
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
@@ -4420,8 +4570,13 @@ TEST_F(ConversationHandlerUnitTest,
   // Title generation should NOT be called
   EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
 
-  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  testing::Sequence request_in_progress_seq;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .Times(testing::AtLeast(1))
+      .InSequence(request_in_progress_seq);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .InSequence(request_in_progress_seq);
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
@@ -4477,8 +4632,13 @@ TEST_F(ConversationHandlerUnitTest,
           }));
 
   // Title failure should be handled silently - no error should be set
-  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  testing::Sequence request_in_progress_seq;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .Times(testing::AtLeast(1))
+      .InSequence(request_in_progress_seq);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .InSequence(request_in_progress_seq);
   EXPECT_CALL(observer, OnConversationTitleChanged).Times(0);
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
@@ -5156,13 +5316,15 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
           testing::WithArg<7>(
-              [](EngineConsumer::GenerationDataCallback callback) {
+              [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool", "tool_id_1",
                                                  "{\"param\":\"value\"}",
                                                  std::nullopt, nullptr)),
                     std::nullopt));
+                // Pause after receiving the tool use event
+                mock_tool_provider_->SetIsPausedByUser(true);
               }),
           testing::WithArg<8>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
@@ -5172,15 +5334,18 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
                 run_loop.Quit();
               })));
 
-  // Pause the tool provider before submitting the entry
-  mock_tool_provider_->SetIsPausedByUser(true);
-
   // Tool should NOT be called since provider is paused
   EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  // Before generation, the task state represents no active task
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   conversation_handler_->SubmitHumanConversationEntry("Test question",
                                                       std::nullopt);
   run_loop.Run();
+
+  // Since pause was called during generation, that should be the state
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
 
   // Verify response with tool requests was added even though tool execution was
   // paused.
@@ -5245,6 +5410,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
                                                       std::nullopt);
   first_loop.Run();
 
+  // Since pause was called during generation, that should be the state
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
+
   // Verify tool was not called yet
   const auto& history_paused = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history_paused.size(), 2u);
@@ -5268,7 +5436,10 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
       .InSequence(seq)
       .WillOnce(testing::DoAll(
           testing::WithArg<7>(
-              [](EngineConsumer::GenerationDataCallback callback) {
+              [&](EngineConsumer::GenerationDataCallback callback) {
+                EXPECT_EQ(GetState()->tool_use_task_state,
+                          mojom::TaskState::kRunning);
+
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Final response")),
@@ -5289,6 +5460,9 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
   mock_tool_provider_->SetIsPausedByUser(false);
   mock_tool_provider_->SetIsPausedByUser(false);
   second_loop.Run();
+
+  // The task ended naturally, so the task state should represent no active task
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   // Verify tool was executed and final response was generated
   const auto& history_final = conversation_handler_->GetConversationHistory();
@@ -5425,6 +5599,90 @@ TEST_F(ConversationHandlerUnitTest,
       tool_entry->events.value()[0]->get_tool_use_event()->output.has_value());
   EXPECT_TRUE(
       tool_entry->events.value()[1]->get_tool_use_event()->output.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, StopTask) {
+  // Test that when a task is stopped, it cannot be resumed and tools are not
+  // executed even if unpause is called.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  tool1->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Engine returns tool use event
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"param\":\"value\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+                // Pause during generation
+                mock_tool_provider_->SetIsPausedByUser(true);
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        nullptr, std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Tool should NOT be called since task will be stopped
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify task is paused
+  const auto& history_paused = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_paused.size(), 2u);
+  auto& assistant_entry_paused = history_paused.back();
+  ASSERT_TRUE(assistant_entry_paused->events.has_value());
+  EXPECT_FALSE(assistant_entry_paused->events.value()[0]
+                   ->get_tool_use_event()
+                   ->output.has_value());
+
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kPaused);
+
+  // Stop the task
+  conversation_handler_->StopTask();
+
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
+
+  // Try to resume - this should not execute the tool because the task was
+  // stopped
+  mock_tool_provider_->SetIsPausedByUser(true);
+  mock_tool_provider_->SetIsPausedByUser(false);
+  conversation_handler_->PauseTask();
+  conversation_handler_->ResumeTask();
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
+
+  // Verify tool still has no output and was never executed
+  const auto& history_stopped = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_stopped.size(), 2u);
+  auto& assistant_entry_stopped = history_stopped.back();
+  ASSERT_TRUE(assistant_entry_stopped->events.has_value());
+  EXPECT_FALSE(assistant_entry_stopped->events.value()[0]
+                   ->get_tool_use_event()
+                   ->output.has_value());
 }
 
 }  // namespace ai_chat
