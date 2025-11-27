@@ -18,7 +18,7 @@ interface ContextMenuHumanProps {
   isOpen: boolean
   onClick: () => void
   onClose: () => void
-  onEditQuestionClicked: () => void
+  onEditQuestionClicked?: () => void
   onCopyQuestionClicked?: () => void
   onSaveAsSkillClicked?: () => void
 }

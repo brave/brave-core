@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
@@ -258,6 +258,106 @@ describe('conversation entries', () => {
     expect(
       Array.from(container.querySelectorAll('img[src*="//favicon2"]')).length,
     ).toBe(1)
+  })
+
+  test('allows editing of entries', () => {
+    const humanTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'What is the meaning of life?',
+      actionType: Mojom.ActionType.QUERY,
+      createdTime: { internalValue: BigInt(0) },
+      events: undefined,
+      edits: [],
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '111',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'gpt-4o',
+    }
+
+    const assistantTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'assistant never renders text property',
+      actionType: Mojom.ActionType.RESPONSE,
+      createdTime: { internalValue: BigInt(4) },
+      events: [getCompletionEvent('It Means this!')],
+      edits: undefined,
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '444',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'any-model',
+    }
+
+    render(
+      <MockContext
+        conversationHistory={[humanTurn1, assistantTurn1]}
+        canSubmitUserEntries={true}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should show the edit button when hovering over the human turn
+    fireEvent.mouseEnter(screen.getByText('What is the meaning of life?'))
+    expect(screen.queryByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)).toBeInTheDocument()
+    // should show the assistant edit button
+    expect(
+      screen.queryByText(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL),
+    ).toBeInTheDocument()
+  })
+
+  test('disallows editing of entries for agent conversations', () => {
+    const humanTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'What is the meaning of life?',
+      actionType: Mojom.ActionType.QUERY,
+      createdTime: { internalValue: BigInt(0) },
+      events: undefined,
+      edits: [],
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '111',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'gpt-4o',
+    }
+
+    const assistantTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'assistant never renders text property',
+      actionType: Mojom.ActionType.RESPONSE,
+      createdTime: { internalValue: BigInt(4) },
+      events: [getCompletionEvent('It Means this!')],
+      edits: undefined,
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '444',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'any-model',
+    }
+
+    render(
+      <MockContext
+        conversationHistory={[humanTurn1, assistantTurn1]}
+        conversationCapability={Mojom.ConversationCapability.CONTENT_AGENT}
+        canSubmitUserEntries={true}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should not show the edit buttons
+    fireEvent.mouseEnter(screen.getByText('What is the meaning of life?'))
+    expect(
+      screen.queryByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
   })
 
   test('displays the edited version of entries', () => {
