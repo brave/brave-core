@@ -183,7 +183,7 @@ fn encode_unsigned_transfer_allow_death(
     buf
 }
 
-fn next_n<'a>(input: &mut &'a [u8], n: usize) -> Result<&'a [u8], Error> {
+fn next_n_bytes<'a>(input: &mut &'a [u8], n: usize) -> Result<&'a [u8], Error> {
     let Some((first, last)) = input.split_at_checked(n) else {
         return Err(Error::InvalidLength);
     };
@@ -211,7 +211,7 @@ fn decode_unsigned_transfer_allow_death_impl(
     let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
         chain_metadata;
 
-    if next_n(&mut input, 4)?
+    if next_n_bytes(&mut input, 4)?
         != &[
             EXTRINSIC_VERSION,
             *balances_pallet_index,
@@ -223,7 +223,7 @@ fn decode_unsigned_transfer_allow_death_impl(
     }
 
     let mut recipient = [0_u8; 32];
-    recipient.copy_from_slice(next_n(&mut input, 32)?);
+    recipient.copy_from_slice(next_n_bytes(&mut input, 32)?);
 
     debug_assert!(!input.is_empty());
 
