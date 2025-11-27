@@ -51,6 +51,7 @@ export type ConversationContext = SendFeedbackState
     userDefaultModel?: Mojom.Model
     suggestedQuestions: string[]
     isGenerating: boolean
+    toolUseTaskState: Mojom.TaskState
     suggestionStatus: Mojom.SuggestionGenerationStatus
     currentError: Mojom.APIError | undefined
     apiHasError: boolean
@@ -100,6 +101,9 @@ export type ConversationContext = SendFeedbackState
     isUploadingFiles: boolean
     setTemporary: (temporary: boolean) => void
     attachImages: (images: Mojom.UploadedFile[]) => void
+    pauseTask: () => void
+    resumeTask: () => void
+    stopTask: () => void
   }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -115,6 +119,7 @@ export const defaultContext: ConversationContext = {
   suggestedQuestions: [],
   associatedContentInfo: [],
   isGenerating: false,
+  toolUseTaskState: Mojom.TaskState.kNone,
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   apiHasError: false,
   shouldDisableUserInput: false,
@@ -158,6 +163,9 @@ export const defaultContext: ConversationContext = {
   isUploadingFiles: false,
   setTemporary: (temporary: boolean) => {},
   attachImages: (images: Mojom.UploadedFile[]) => {},
+  pauseTask: () => {},
+  resumeTask: () => {},
+  stopTask: () => {},
   ...defaultSendFeedbackState,
   ...defaultCharCountContext,
 }
@@ -292,6 +300,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
           associatedContent,
           error,
           temporary,
+          toolUseTaskState,
         },
       } = await conversationHandler.getState()
       setPartialContext({
@@ -303,6 +312,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         associatedContentInfo: associatedContent,
         currentError: error,
         isTemporaryChat: temporary,
+        toolUseTaskState,
       })
     }
 
@@ -321,6 +331,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       (isGenerating: boolean) =>
         setPartialContext({
           isGenerating,
+        }),
+    )
+    listenerIds.push(id)
+
+    id = callbackRouter.onTaskStateChanged.addListener(
+      (toolUseTaskState: Mojom.TaskState) =>
+        setPartialContext({
+          toolUseTaskState,
         }),
     )
     listenerIds.push(id)
@@ -854,6 +872,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       })
       processUploadedFiles(images)
     },
+    pauseTask: () => conversationHandler.pauseTask(),
+    resumeTask: () => conversationHandler.resumeTask(),
+    stopTask: () => conversationHandler.stopTask(),
     clearDragState,
   }
 

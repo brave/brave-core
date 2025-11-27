@@ -49,6 +49,10 @@ class ContentAgentToolProvider : public ToolProvider,
   void ExecuteActions(optimization_guide::proto::Actions actions,
                       Tool::UseToolCallback callback) override;
 
+  tabs::TabHandle GetTaskTabHandleForTesting() const {
+    return task_tab_handle_;
+  }
+
  private:
   friend class BrowserToolsTest;
   friend class ContentAgentToolProviderTest;

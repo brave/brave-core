@@ -11,6 +11,7 @@ import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import ActionTypeLabel from '../../../common/components/action_type_label'
+import * as Mojom from '../../../common/mojom'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -42,6 +43,7 @@ type Props = Pick<
   | 'inputTextCharCountDisplay'
   | 'isToolsMenuOpen'
   | 'setIsToolsMenuOpen'
+  | 'toolUseTaskState'
   | 'shouldDisableUserInput'
   | 'handleVoiceRecognition'
   | 'isGenerating'
@@ -57,6 +59,9 @@ type Props = Pick<
   | 'associateDefaultContent'
   | 'setAttachmentsDialog'
   | 'attachImages'
+  | 'pauseTask'
+  | 'resumeTask'
+  | 'stopTask'
   | 'unassociatedTabs'
   | 'handleSkillClick'
   | 'selectedSkill'
@@ -205,6 +210,9 @@ function InputBox(props: InputBoxProps) {
   const pendingContent = props.context.associatedContentInfo.filter(
     (c) => !c.conversationTurnUuid,
   )
+  const showTaskStateActions =
+    props.context.toolUseTaskState !== Mojom.TaskState.kNone
+    && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput
     || stringifyContent(props.context.inputText) === ''
@@ -256,6 +264,62 @@ function InputBox(props: InputBoxProps) {
             </div>
           </div>
         )}
+
+      {showTaskStateActions && (
+        <div
+          className={styles.taskStateActions}
+          data-testid='task-state-actions'
+        >
+          {props.context.toolUseTaskState === Mojom.TaskState.kPaused && (
+            <Button
+              size='medium'
+              kind='outline'
+              onClick={props.context.resumeTask}
+              title={getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
+            >
+              <Icon
+                slot='icon-before'
+                name='play-circle'
+              />
+              <span data-testid='resume-task-button'>
+                {getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
+              </span>
+            </Button>
+          )}
+
+          {props.context.toolUseTaskState === Mojom.TaskState.kRunning && (
+            <Button
+              kind='outline'
+              onClick={props.context.pauseTask}
+              title={getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
+            >
+              <Icon
+                slot='icon-before'
+                name='pause-circle'
+              />
+              <span data-testid='pause-task-button'>
+                {getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
+              </span>
+            </Button>
+          )}
+
+          <Button
+            kind='outline'
+            onClick={props.context.stopTask}
+            title={getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
+            className={styles.taskStateActionButtonStop}
+          >
+            <Icon
+              slot='icon-before'
+              name='stop-circle'
+            />
+            <span data-testid='stop-task-button'>
+              {getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
+            </span>
+          </Button>
+        </div>
+      )}
+
       {(showUploadedFiles || pendingContent.length > 0) && (
         <div
           className={classnames({
