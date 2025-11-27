@@ -39,6 +39,11 @@ export default function SkillModal() {
   )
   const [showDelete, setShowDelete] = React.useState(false)
 
+  const selectedModelObject = React.useMemo(
+    () => conversationContext.allModels?.find((m) => m.key === selectedModel),
+    [conversationContext.allModels, selectedModel],
+  )
+
   // Memos
   const shortcutError = React.useMemo(() => {
     // Undefined means the user hasn't typed anything yet,
@@ -192,7 +197,10 @@ export default function SkillModal() {
                 className={classnames({
                   [styles.gradientIcon]: selectedModel === AUTOMATIC_MODEL_KEY,
                 })}
-                name={getModelIcon(selectedModel)}
+                name={getModelIcon(
+                  selectedModelObject
+                    ?? ({ key: selectedModel } as Mojom.Model),
+                )}
               />
             }
             <div slot='value'>
