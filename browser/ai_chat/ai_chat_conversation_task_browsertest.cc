@@ -117,11 +117,13 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     // Clear pointers to conversation-related objects
     GetActorService()->ResetForTesting();
-    conversation_handler_ = nullptr;
-    mock_engine_ = nullptr;
     content_agent_tool_provider_ = nullptr;
-    agent_profile_ = nullptr;
+    mock_engine_ = nullptr;
+    conversation_handler_ = nullptr;
+    service_ = nullptr;
     agent_browser_window_ = nullptr;
+    conversation_rfh_ = nullptr;
+    agent_profile_ = nullptr;
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
