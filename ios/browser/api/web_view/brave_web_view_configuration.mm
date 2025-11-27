@@ -5,6 +5,9 @@
 
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration.h"
 
+#include "base/apple/foundation_util.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "components/autofill/core/browser/data_manager/personal_data_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -49,6 +52,14 @@
 - (void)shutDown {
   [_autofillDataManager shutDown];
   [super shutDown];
+}
+
++ (BraveWebViewConfiguration*)configurationForProfile:
+    (id<ProfileBridge>)profileBridge {
+  ProfileIOS* profile =
+      base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge).profile;
+  return BraveWebViewConfigurationProvider::FromBrowserState(profile)
+      .GetConfiguration();
 }
 
 @end

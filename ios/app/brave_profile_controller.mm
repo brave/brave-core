@@ -31,6 +31,7 @@
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_download_manager.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
@@ -104,9 +105,6 @@
 @property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
-@property(nonatomic) BraveWebViewConfiguration* defaultWebViewConfiguration;
-@property(nonatomic)
-    BraveWebViewConfiguration* nonPersistentWebViewConfiguration;
 @end
 
 @implementation BraveProfileController
@@ -165,9 +163,6 @@
 }
 
 - (void)dealloc {
-  [_nonPersistentWebViewConfiguration shutDown];
-  [_defaultWebViewConfiguration shutDown];
-
   _downloadManager.reset();
   _otrDownloadManager.reset();
 
@@ -353,22 +348,14 @@
 }
 
 - (BraveWebViewConfiguration*)defaultWebViewConfiguration {
-  if (!_defaultWebViewConfiguration) {
-    _defaultWebViewConfiguration = [[BraveWebViewConfiguration alloc]
-        initWithBrowserState:ios_web_view::WebViewBrowserState::
-                                 FromBrowserState(_profile)];
-  }
-  return _defaultWebViewConfiguration;
+  return BraveWebViewConfigurationProvider::FromBrowserState(_profile)
+      .GetConfiguration();
 }
 
 - (BraveWebViewConfiguration*)nonPersistentWebViewConfiguration {
-  if (!_nonPersistentWebViewConfiguration) {
-    _nonPersistentWebViewConfiguration = [[BraveWebViewConfiguration alloc]
-        initWithBrowserState:ios_web_view::WebViewBrowserState::
-                                 FromBrowserState(
-                                     _profile->GetOffTheRecordProfile())];
-  }
-  return _nonPersistentWebViewConfiguration;
+  return BraveWebViewConfigurationProvider::FromBrowserState(
+             _profile->GetOffTheRecordProfile())
+      .GetConfiguration();
 }
 
 #pragma mark - Handling of destroying the incognito BrowserState
@@ -427,9 +414,10 @@
 
 - (void)destroyAndRebuildIncognitoProfile {
   DCHECK(_profile->HasOffTheRecordProfile());
-  _nonPersistentWebViewConfiguration = nil;
 
   ProfileIOS* otrProfile = _profile->GetOffTheRecordProfile();
+  BraveWebViewConfigurationProvider::FromBrowserState(otrProfile)
+      .ResetConfiguration();
 
   BrowsingDataRemover* browsingDataRemover =
       BrowsingDataRemoverFactory::GetForProfile(otrProfile);

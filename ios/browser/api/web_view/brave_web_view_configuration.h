@@ -11,10 +11,17 @@
 #import "cwv_export.h"                  // NOLINT
 #import "cwv_web_view_configuration.h"  // NOLINT
 
+@protocol ProfileBridge;
+
 NS_ASSUME_NONNULL_BEGIN
 
 CWV_EXPORT
 @interface BraveWebViewConfiguration : CWVWebViewConfiguration
+
+/// Obtain a BraveWebViewConfiguration for a given profile
++ (BraveWebViewConfiguration*)configurationForProfile:
+    (id<ProfileBridge>)profileBridge NS_SWIFT_NAME(init(profile:));
+
 @end
 
 NS_ASSUME_NONNULL_END
