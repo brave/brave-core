@@ -78,85 +78,162 @@ function SearchSummary(props: { searchQueries: string[] }) {
   )
 }
 
-function AssistantEvent(
-  props: BaseProps & {
-    event: Mojom.ConversationEntryEvent
-    hasCompletionStarted: boolean
-  },
-) {
-  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
+const AssistantEvent = React.memo(
+  function AssistantEvent(
+    props: BaseProps & {
+      event: Mojom.ConversationEntryEvent
+      hasCompletionStarted: boolean
+      eventIndex: number
+    },
+  ) {
+    const { allowedLinks, event, isEntryInProgress, isLeoModel, eventIndex } =
+      props
 
-  if (event.completionEvent) {
-    const numberedLinks =
-      allowedLinks.length > 0
-        ? allowedLinks
-            .map((url: string, index: number) => `[${index + 1}]: ${url}`)
-            .join('\n') + '\n\n'
-        : ''
+    // Store previous text content for each element to track new text chunks.
+    // Key: element index, Value: previous text content
+    // This ref persists for the lifetime of this AssistantEvent component
+    // instance.
+    const elementTextStateRef = React.useRef<Map<number, string>>(new Map())
 
-    // Remove citations with missing links
-    const filteredOutCitationsWithMissingLinks =
-      removeCitationsWithMissingLinks(
-        event.completionEvent.completion,
-        allowedLinks,
+    // Memoize text processing to avoid recalculating on every render
+    const fullText = React.useMemo(() => {
+      if (!event.completionEvent) {
+        return ''
+      }
+
+      const numberedLinks =
+        allowedLinks.length > 0
+          ? allowedLinks
+              .map((url: string, index: number) => `[${index + 1}]: ${url}`)
+              .join('\n') + '\n\n'
+          : ''
+
+      // Remove citations with missing links
+      const filteredOutCitationsWithMissingLinks =
+        removeCitationsWithMissingLinks(
+          event.completionEvent.completion,
+          allowedLinks,
+        )
+
+      // Replaces 2 consecutive citations with a separator and also
+      // adds a space before the citation and the text.
+      const completion = filteredOutCitationsWithMissingLinks.replace(
+        /(\w|\S)\[(\d+)\]/g,
+        '$1 [$2]',
       )
 
-    // Replaces 2 consecutive citations with a separator and also
-    // adds a space before the citation and the text.
-    const completion = filteredOutCitationsWithMissingLinks.replace(
-      /(\w|\S)\[(\d+)\]/g,
-      '$1 [$2]',
-    )
+      return `${numberedLinks}${removeReasoning(completion)}`
+    }, [event.completionEvent?.completion, allowedLinks])
 
-    const fullText = `${numberedLinks}${removeReasoning(completion)}`
-
-    return (
-      <MarkdownRenderer
-        shouldShowTextCursor={isEntryInProgress}
-        text={fullText}
-        allowedLinks={allowedLinks}
-        disableLinkRestrictions={!isLeoModel}
-      />
-    )
-  }
-  if (
-    props.event.searchStatusEvent
-    && props.isEntryInProgress
-    && !props.hasCompletionStarted
-  ) {
-    return (
-      <div className={styles.actionInProgress}>
-        <ProgressRing />
-        Improving answer with Brave Search…
-      </div>
-    )
-  }
-  if (props.event.toolUseEvent) {
-    if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
-      return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+    if (event.completionEvent) {
+      // Use a stable key to ensure MarkdownRenderer is only mounted once
+      // and persists across updates, only receiving text prop updates
+      const stableKey = getEventKey(event, eventIndex)
+      return (
+        <MarkdownRenderer
+          key={`markdown-${stableKey}`}
+          isEntryInProgress={isEntryInProgress}
+          text={fullText}
+          allowedLinks={allowedLinks}
+          disableLinkRestrictions={!isLeoModel}
+          elementTextStateRef={elementTextStateRef}
+        />
+      )
     }
-    return (
-      <ToolEvent
-        toolUseEvent={props.event.toolUseEvent}
-        isEntryActive={props.isEntryInteractivityAllowed}
-      />
-    )
-  }
+    if (
+      props.event.searchStatusEvent
+      && props.isEntryInProgress
+      && !props.hasCompletionStarted
+    ) {
+      return (
+        <div className={styles.actionInProgress}>
+          <ProgressRing />
+          Improving answer with Brave Search…
+        </div>
+      )
+    }
+    if (props.event.toolUseEvent) {
+      if (
+        props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME
+      ) {
+        return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
+      }
+      return (
+        <ToolEvent
+          toolUseEvent={props.event.toolUseEvent}
+          isEntryActive={props.isEntryInteractivityAllowed}
+        />
+      )
+    }
 
-  // TODO(petemill): Consider displaying in-progress queries if the API
-  // timing improves (or worsens for the completion events).
-  // if (event.searchQueriesEvent && props.isEntryInProgress) {
-  //   return (<>
-  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-  //   </>)
-  // }
+    // Unknown events should be ignored
+    return null
+  },
+  (prevProps, nextProps) => {
+    // Returns true if props are equal (skip re-render)
+    // For completion events, check if completion text changed
+    if (prevProps.event.completionEvent && nextProps.event.completionEvent) {
+      const completionChanged =
+        prevProps.event.completionEvent.completion
+        !== nextProps.event.completionEvent.completion
+      const otherPropsChanged =
+        prevProps.isEntryInProgress !== nextProps.isEntryInProgress
+        || prevProps.isEntryInteractivityAllowed
+          !== nextProps.isEntryInteractivityAllowed
+        || prevProps.hasCompletionStarted !== nextProps.hasCompletionStarted
+        || prevProps.isLeoModel !== nextProps.isLeoModel
+        || JSON.stringify(prevProps.allowedLinks)
+          !== JSON.stringify(nextProps.allowedLinks)
 
-  // Unknown events should be ignored
-  return null
-}
+      // Skip re-render only if nothing changed
+      return !completionChanged && !otherPropsChanged
+    }
+
+    // For other event types, check if event reference or other props changed
+    const eventChanged = prevProps.event !== nextProps.event
+    const otherPropsChanged =
+      prevProps.isEntryInProgress !== nextProps.isEntryInProgress
+      || prevProps.isEntryInteractivityAllowed
+        !== nextProps.isEntryInteractivityAllowed
+      || prevProps.hasCompletionStarted !== nextProps.hasCompletionStarted
+      || prevProps.isLeoModel !== nextProps.isLeoModel
+      || JSON.stringify(prevProps.allowedLinks)
+        !== JSON.stringify(nextProps.allowedLinks)
+
+    // Skip re-render only if nothing changed
+    return !eventChanged && !otherPropsChanged
+  },
+)
 
 export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
+}
+
+// Generate a stable key for an event based on its type and content
+function getEventKey(
+  event: Mojom.ConversationEntryEvent,
+  index: number,
+): string {
+  if (event.completionEvent) {
+    // For completion events, use a combination of type and index
+    // The index helps distinguish multiple completion events
+    return `completion-${index}`
+  }
+  if (event.toolUseEvent) {
+    // For tool events, use tool name and index for uniqueness
+    return `tool-${event.toolUseEvent.toolName}-${index}`
+  }
+  if (event.searchStatusEvent) {
+    return `search-status-${index}`
+  }
+  if (event.searchQueriesEvent) {
+    return `search-queries-${index}`
+  }
+  if (event.sourcesEvent) {
+    return `sources-${index}`
+  }
+  // Fallback to index for unknown event types
+  return `event-${index}`
 }
 
 export default function AssistantResponse(props: AssistantResponseProps) {
@@ -184,8 +261,9 @@ export default function AssistantResponse(props: AssistantResponseProps) {
         ))}
       {props.events?.map((event, i) => (
         <AssistantEvent
-          key={i}
+          key={getEventKey(event, i)}
           event={event}
+          eventIndex={i}
           hasCompletionStarted={hasCompletionStarted}
           isEntryInProgress={props.isEntryInProgress}
           isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}

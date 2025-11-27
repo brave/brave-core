@@ -61,6 +61,9 @@
   scrollbar-gutter: stable;
   height: 100%;
   padding-bottom: var(--leo-spacing-xl);
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+  overscroll-behavior: contain;
 
   &::-webkit-scrollbar {
     width: var(--scrollbar-width);
@@ -69,6 +72,11 @@
   &::-webkit-scrollbar-thumb {
     background: var(--leo-color-neutral-20);
     border-radius: var(--leo-spacing-m);
+    transition: background 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--leo-color-neutral-30);
   }
 }
 
