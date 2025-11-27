@@ -50,8 +50,8 @@ void DownloadItemModel::DeleteLocalFile() {
 
 void DownloadItemModel::CopyDownloadLinkToClipboard() {
   auto url = GetURL();
-  CHECK(url.is_valid())
-      << "This call must be reached only when the URL is valid.";
+  // This call must be reached only when the URL is valid.
+  CHECK(url.is_valid());
   ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
   clipboard_writer.WriteText(base::UTF8ToUTF16(url.spec()));
 }
