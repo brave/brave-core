@@ -151,7 +151,7 @@ export default function AssistantTask(props: Props) {
                 className={styles.taskStateLabel}
               >
                 <span data-testid='assistant-task-paused-label'>
-                  {getLocale(S.IDS_CHAT_UI_TASK_STATE_PAUSED_LABEL)}
+                  {getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)}
                 </span>
               </Label>
             )}
@@ -165,7 +165,7 @@ export default function AssistantTask(props: Props) {
                 className={styles.taskStateLabel}
               >
                 <span data-testid='assistant-task-stopped-label'>
-                  {getLocale(S.IDS_CHAT_UI_TASK_STATE_STOPPED_LABEL)}
+                  {getLocale(S.CHAT_UI_TASK_STATE_STOPPED_LABEL)}
                 </span>
               </Label>
             )}

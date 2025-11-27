@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import ToolPermissionChallenge from '../tool_permission_challenge/tool_permission_challenge'
 import { getToolLabel } from './get_tool_label'
@@ -224,7 +225,7 @@ export function ToolEventThinking() {
       data-testid='tool-event-thinking'
     >
       <div className={styles.toolLabel}>
-        {getLocale(S.IDS_CHAT_UI_TOOL_LABEL_THINKING)}
+        {getLocale(S.CHAT_UI_TOOL_LABEL_THINKING)}
       </div>
     </div>
   )

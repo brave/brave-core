@@ -613,7 +613,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   }
 
   // No task UI should be shown with only one tool segment in the loop
-  EXPECT_FALSE(DoesElementExist("assistant-task", false));
+  EXPECT_FALSE(VerifyElementState("assistant-task", false));
 
   // Handle the tool execution response with another tool use request.
   {
@@ -637,14 +637,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     EXPECT_CALL(*mock_tool, UseTool)
         .InSequence(tool_call_seq)
         .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
-          EXPECT_TRUE(DoesElementExist("assistant-task"));
-          EXPECT_FALSE(DoesElementExist("tool-event-thinking", false));
+          EXPECT_TRUE(VerifyElementState("assistant-task"));
+          EXPECT_FALSE(VerifyElementState("tool-event-thinking", false));
 
           std::move(callback).Run(
               CreateContentBlocksForText("2nd tool result"));
 
           // Now we should be thinking
-          EXPECT_TRUE(DoesElementExist("tool-event-thinking"));
+          EXPECT_TRUE(VerifyElementState("tool-event-thinking"));
         }));
 
     // Complete successful response
@@ -683,7 +683,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   }
 
   // The task should have a "paused" label
-  EXPECT_TRUE(DoesElementExist("assistant-task-paused-label"));
+  EXPECT_TRUE(VerifyElementState("assistant-task-paused-label"));
 
   // When we submit a new message, the task is no longer active. It should still
   // exist but should not have its "paused" label.
@@ -712,8 +712,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
-  EXPECT_TRUE(DoesElementExist("assistant-task"));
-  EXPECT_FALSE(DoesElementExist("assistant-task-paused-label", false));
+  EXPECT_TRUE(VerifyElementState("assistant-task"));
+  EXPECT_FALSE(VerifyElementState("assistant-task-paused-label", false));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
