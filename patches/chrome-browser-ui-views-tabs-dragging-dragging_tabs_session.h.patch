@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
+index f0cf1139ec6dfa7fa6fede4923bcc458896041a5..59cee2f1af52f163140a2e19d81070371da4d297 100644
+--- a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
++++ b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
+@@ -14,7 +14,7 @@
+ 
+ // Handles dragging tabs within a single TabDragContext on behalf of
+ // TabDragController.
+-class DraggingTabsSession final {
++class DraggingTabsSession {
+  public:
+   // `drag_data` is a copy of the drag configuration for the full session.
+   // `attached_context` is the context in which the tabs are being dragged.
+@@ -28,7 +28,7 @@ class DraggingTabsSession final {
+                                float offset_to_width_ratio_,
+                                bool initial_move,
+                                gfx::Point point_in_screen);
+-  ~DraggingTabsSession();
++  virtual ~DraggingTabsSession();
+ 
+   void MoveAttached(gfx::Point point_in_screen);
+   gfx::Rect GetEnclosingRectForDraggedTabs();
