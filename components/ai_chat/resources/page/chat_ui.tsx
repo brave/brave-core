@@ -114,7 +114,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
         // button menu's get cut off when the conversation is short since
         // they cant be rendered outside of the iframe.
         // See https://github.com/brave/brave-browser/issues/46042
-        const additionalHeight = Math.max(0, 500 - height)
+        const additionalHeight = Math.max(0, 600 - height)
         document.body.style.setProperty(
           '--iframe-additional-margin-for-menus',
           additionalHeight + 'px',
