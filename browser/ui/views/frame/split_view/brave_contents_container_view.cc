@@ -62,8 +62,11 @@ BraveContentsContainerView* BraveContentsContainerView::From(
 }
 
 BraveContentsContainerView::BraveContentsContainerView(
-    BrowserView* browser_view)
-    : ContentsContainerView(browser_view), browser_view_(*browser_view) {
+    BrowserView* browser_view,
+    bool for_web_panel)
+    : ContentsContainerView(browser_view),
+      browser_view_(*browser_view),
+      for_web_panel_(for_web_panel) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
   reader_mode_toolbar_ =
@@ -110,12 +113,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   container_outline_->SetVisible(false);
   UpdateBorderRoundedCorners();
 
-  // Don't need mini toolbar for web panel.
-  if (for_web_panel_) {
-    mini_toolbar_->SetVisible(false);
-  }
-
-  if (!is_in_split) {
+  if (!is_in_split && !for_web_panel_) {
     return;
   }
 

@@ -30,7 +30,9 @@ class SidebarWebPanelController : public TabStripModelObserver {
 
   void ToggleWebPanel(const SidebarItem& item);
 
-  content::WebContents* panel_contents() const { return panel_contents_.get(); }
+  const content::WebContents* panel_contents() const {
+    return panel_contents_.get();
+  }
 
  private:
   BraveMultiContentsView* GetMultiContentsView();

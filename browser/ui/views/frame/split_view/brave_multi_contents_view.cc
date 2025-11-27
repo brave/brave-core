@@ -49,9 +49,9 @@ void BraveMultiContentsView::Layout(PassKey) {
 
 void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   if (!contents_container_view_for_web_panel_) {
-    contents_container_view_for_web_panel_ = AddChildView(
-        std::make_unique<BraveContentsContainerView>(browser_view_));
-    contents_container_view_for_web_panel_->set_for_web_panel(true);
+    contents_container_view_for_web_panel_ =
+        AddChildView(std::make_unique<BraveContentsContainerView>(
+            browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
     web_contents_focused_subscriptions_.push_back(
         contents_container_view_for_web_panel_->contents_view()
@@ -151,8 +151,9 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
   }
 
   if (!contents_container_view_for_web_panel_->IsActive()) {
+    // Web panel is visible but inactive. Hide border of web panel.
     contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
-        /*is_in_split*/ true, /*is_active*/ false,
+        /*is_in_split*/ false, /*is_active*/ false,
         /*is_highlighted*/ false);
     MultiContentsView::UpdateContentsBorderAndOverlay();
     return;
@@ -160,7 +161,7 @@ void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
 
   // When web panel is active, only it should have active border.
   contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
-      /*is_in_split*/ true, /*is_active*/ true,
+      /*is_in_split*/ false, /*is_active*/ true,
       /*is_highlighted*/ false);
 
   for (auto* contents_container_view : contents_container_views_) {
@@ -191,7 +192,7 @@ void BraveMultiContentsView::OnWebContentsFocused(views::WebView* web_view) {
   // activating tab by clicking contents.
   if (auto* tab =
           tabs::TabInterface::MaybeGetFromContents(web_view->web_contents());
-      tab->IsActivated()) {
+      tab && tab->IsActivated()) {
     return;
   }
 
