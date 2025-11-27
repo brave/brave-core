@@ -10,17 +10,22 @@ import * as Mojom from '../../../common/mojom'
 import { taskConversationEntries } from '../../../page/stories/story_utils/history'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantTask from './assistant_task'
+import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
 type CustomArgs = {
   isActiveTask: boolean
   isGenerating: boolean
+  isToolExecuting: boolean
   hasContentThumbnail: boolean
+  toolUseTaskState: keyof typeof Mojom.TaskState
 }
 
 const args: CustomArgs = {
   isActiveTask: false,
   isGenerating: false,
+  isToolExecuting: false,
   hasContentThumbnail: false,
+  toolUseTaskState: 'kNone' satisfies keyof typeof Mojom.TaskState,
 }
 
 export const _AssistantTask = {
@@ -28,6 +33,9 @@ export const _AssistantTask = {
     return (
       <MockContext
         contentTaskTabId={args.hasContentThumbnail ? 1 : undefined}
+        isGenerating={args.isGenerating}
+        isToolExecuting={args.isToolExecuting}
+        toolUseTaskState={Mojom.TaskState[args.toolUseTaskState]}
         uiObserver={
           {
             thumbnailUpdated: {
@@ -47,7 +55,6 @@ export const _AssistantTask = {
         <AssistantTask
           assistantEntries={taskConversationEntries}
           isActiveTask={args.isActiveTask}
-          isGenerating={args.isGenerating}
           isLeoModel={true}
         />
       </MockContext>
@@ -58,6 +65,12 @@ export const _AssistantTask = {
 export default {
   title: 'Chat/Chat',
   component: AssistantTask,
-  argTypes: InferControlsFromArgs(args),
+  argTypes: {
+    ...InferControlsFromArgs(args),
+    toolUseTaskState: {
+      options: getKeysForMojomEnum(Mojom.TaskState),
+      control: { type: 'select' },
+    },
+  },
   args,
 } as Meta<typeof AssistantTask>

@@ -85,6 +85,7 @@ function AssistantEvent(
   },
 ) {
   const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
+  const context = useUntrustedConversationContext()
 
   if (event.completionEvent) {
     const numberedLinks =
@@ -139,6 +140,7 @@ function AssistantEvent(
       <ToolEvent
         toolUseEvent={props.event.toolUseEvent}
         isEntryActive={props.isEntryInteractivityAllowed}
+        isExecuting={context.isToolExecuting}
       />
     )
   }

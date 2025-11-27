@@ -38,6 +38,10 @@
   }
 }
 
+.taskStateLabel {
+  margin-top: var(--leo-spacing-m);
+}
+
 .taskStep {
   --task-icon-size: 22px;
   --half-task-icon-size: calc(var(--task-icon-size) / 2);
