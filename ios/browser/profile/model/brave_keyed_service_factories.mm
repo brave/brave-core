@@ -8,6 +8,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
+#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
@@ -29,6 +30,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
+  ai_chat::TabTrackerServiceFactory::GetInstance();
   if (brave_account::features::IsBraveAccountEnabled()) {
     brave_account::BraveAccountServiceFactoryIOS::GetInstance();
   }
