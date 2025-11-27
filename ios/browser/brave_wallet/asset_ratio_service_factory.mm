@@ -38,9 +38,9 @@ AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
 
 AssetRatioServiceFactory::AssetRatioServiceFactory()
     : ProfileKeyedServiceFactoryIOS("AssetRatioService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
