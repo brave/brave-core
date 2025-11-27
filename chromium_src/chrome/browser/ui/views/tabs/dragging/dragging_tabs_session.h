@@ -25,6 +25,9 @@ using DraggingTabsSessionBrave = DraggingTabsSession;
                                                    \
   void MoveAttachedImpl(__VA_ARGS__)
 
+// Make MoveAttached() virtual to override it in Brave.
+#define MoveAttached virtual MoveAttached
+
 // Make GetAttachedDragPoint() virtual to override it in Brave.
 #define GetAttachedDragPoint virtual GetAttachedDragPoint
 
@@ -33,9 +36,10 @@ using DraggingTabsSessionBrave = DraggingTabsSession;
 
 #include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h>  // IWYU pragma: export
 
-#undef MoveAttachedImpl
 #undef CalculateGroupForDraggedTabs
 #undef GetAttachedDragPoint
+#undef MoveAttachedImpl
+#undef MoveAttached
 #undef DraggingTabsSession
 
 #include "brave/browser/ui/views/tabs/dragging/dragging_tabs_session.h"
