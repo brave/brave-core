@@ -471,9 +471,13 @@ class NewTabPageViewController: UIViewController {
     if parent == nil {
       videoAdPlayer?.cancelPlayIfNeeded()
       videoAdPlayer?.resetPlayer()
+      
+      richNewTabTakeoverBackgroundView.resetRichNewTabTakeoverLayer()
     } else {
       videoAdPlayer?.createPlayer()
       videoAdPlayer?.seekToStopFrame()
+
+      setupRichNewTabTakeoverIfNeeded()
     }
     backgroundView.playerLayer.player = videoAdPlayer?.player
   }
@@ -498,7 +502,7 @@ class NewTabPageViewController: UIViewController {
         return
       }
       switch background {
-      case .image, .superReferral:
+      case .image, .superReferral, .richNewTabTakeover:
         hideNotification()
       case .sponsoredMedia:
         // Current background is still a sponsored image so it can stay
@@ -656,6 +660,8 @@ class NewTabPageViewController: UIViewController {
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
       case .superReferral:
         backgroundButtonsView.activeButton = .qrCode
+      case .richNewTabTakeover:
+        backgroundButtonsView.activeButton = .none
       }
     } else {
       backgroundButtonsView.activeButton = .none
@@ -1145,6 +1151,8 @@ class NewTabPageViewController: UIViewController {
       tappedSponsorButton(background.logo)
     case .superReferral(_, let code):
       tappedQRCode(code)
+    case .richNewTabTakeover:
+      return
     }
   }
 

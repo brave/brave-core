@@ -29,7 +29,7 @@ struct Flags {
 };
 
 struct ContentSettings {
-  bool allow_javascript;
+  bool allow_javascript = true;
 };
 
 struct WalletInfo {

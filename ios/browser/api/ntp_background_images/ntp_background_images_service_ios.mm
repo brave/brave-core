@@ -126,7 +126,7 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 
 - (NTPSponsoredImageData*)sponsoredImageData {
   auto* data = _service->GetSponsoredImagesData(/*super_referral=*/false,
-                                                /*supports_rich_media=*/false);
+                                                /*supports_rich_media=*/true);
   if (data == nullptr) {
     return nil;
   }
@@ -135,7 +135,7 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 
 - (NTPSponsoredImageData*)superReferralImageData {
   auto* data = _service->GetSponsoredImagesData(/* super_referral=*/true,
-                                                /*supports_rich_media=*/false);
+                                                /*supports_rich_media=*/true);
   if (data == nullptr) {
     return nil;
   }
