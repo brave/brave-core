@@ -27,12 +27,6 @@
     padding: var(--leo-spacing-xl);
   }
 
-  .button-container {
-    display: flex;
-    gap: var(--leo-spacing-m);
-    flex-wrap: wrap;
-  }
-
   .label-secondary {
     font: var(--leo-font-default-regular);
     color: var(--leo-color-text-secondary);
@@ -48,12 +42,6 @@
 
   cr-icon-button.size-20 {
     --iron-icon-width: 20px;
-  }
-
-  .model-name-container {
-    display: flex;
-    align-items: center;
-    gap: var(--leo-spacing-m);
   }
 </style>
 
@@ -110,9 +98,7 @@
       >
         <div class="model">
           <div class="model-info">
-            <div class="model-name-container">
-              <div class="label">[[item.displayName]]</div>
-            </div>
+            <div class="label">[[item.displayName]]</div>
             <div class="label-secondary">
               [[item.options.customModelOptions.modelRequestName]]
             </div>
@@ -124,10 +110,10 @@
               </span>
             </template>
             <cr-icon-button
-                on-click="handleEdit_"
-                class="size-20"
-                iron-icon="edit-pencil"
-              ></cr-icon-button>
+              on-click="handleEdit_"
+              class="size-20"
+              iron-icon="edit-pencil"
+            ></cr-icon-button>
             <template is="dom-if" if="[[!isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value)]]">
               <cr-icon-button
                 on-click="handleDelete_"
@@ -147,13 +133,11 @@
     is="dom-if"
     if="[[!showModelConfig_]]"
   >
-    <div class="button-container">
-      <leo-button
-        on-click="handleAddNewModel_"
-        class="action-button"
-        >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
-      >
-    </div>
+    <leo-button
+      on-click="handleAddNewModel_"
+      class="action-button"
+      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
+    >
   </template>
 </div>
 
