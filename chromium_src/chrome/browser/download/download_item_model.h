@@ -30,6 +30,7 @@ class DownloadItemModel : public DownloadItemModel_Chromium {
 
   // Deletes the local file associated with this download.
   void DeleteLocalFile() override;
+  void CopyDownloadLinkToClipboard() override;
 #if !BUILDFLAG(IS_ANDROID)
   bool IsCommandEnabled(const DownloadCommands* download_commands,
                         DownloadCommands::Command command) const override;

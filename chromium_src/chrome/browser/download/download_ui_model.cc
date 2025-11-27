@@ -8,10 +8,11 @@
 
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadUIModel, so just fall through.
-#define EDIT_WITH_MEDIA_APP                \
-  EDIT_WITH_MEDIA_APP:                     \
-  case DownloadCommands::REMOVE_FROM_LIST: \
-  case DownloadCommands::DELETE_LOCAL_FILE
+#define EDIT_WITH_MEDIA_APP                 \
+  EDIT_WITH_MEDIA_APP:                      \
+  case DownloadCommands::REMOVE_FROM_LIST:  \
+  case DownloadCommands::DELETE_LOCAL_FILE: \
+  case DownloadCommands::COPY_DOWNLOAD_LINK
 
 // There's inconsistency between download bubble and brave://downloads page
 // in showing "File removed" status for removed files. To keep the
