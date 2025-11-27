@@ -8,6 +8,7 @@ import '$test-utils/disable_custom_elements'
 import { act, render, waitFor, fireEvent } from '@testing-library/react'
 import FilterMenu, { Props } from './filter_menu'
 import * as React from 'react'
+import { matches } from './query'
 
 describe('filter_menu', () => {
   const defaultProps: Props<string> = {
@@ -20,7 +21,7 @@ describe('filter_menu', () => {
         entries: ['hello', 'world'],
       },
     ],
-    matchesQuery: (q, item) => item.indexOf(q),
+    matchesQuery: (q, item) => matches(q, item),
     children: () => null,
   }
 

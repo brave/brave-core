@@ -16,7 +16,7 @@ import {
   ConversationContext,
   defaultContext as defaultConversationContext,
 } from '../../state/conversation_context'
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import TabsMenu from './attachments_menu'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 
@@ -148,35 +148,38 @@ describe('TabsMenu', () => {
     expect(menu).toHaveProperty('isOpen', false)
   })
 
-  it('should filter by text after @', () => {
-    const { queryByText } = render(
-      <MockContext
-        inputText={['@2']}
-        tabs={[
-          {
-            contentId: 1,
-            title: 'Test 1',
-            url: {
-              url: 'https://tes1t.com',
+  it('should filter by text after @', async () => {
+    const { container } = await act(async () =>
+      render(
+        <MockContext
+          inputText={['@2']}
+          tabs={[
+            {
+              contentId: 1,
+              title: 'Test 1',
+              url: {
+                url: 'https://tes1t.com',
+              },
+              id: 1,
             },
-            id: 1,
-          },
-          {
-            contentId: 2,
-            title: 'Test 2',
-            url: {
-              url: 'https://test2.com',
+            {
+              contentId: 2,
+              title: 'Test 2',
+              url: {
+                url: 'https://test2.com',
+              },
+              id: 2,
             },
-            id: 2,
-          },
-        ]}
-      >
-        <TabsMenu />
-      </MockContext>,
+          ]}
+        >
+          <TabsMenu />
+        </MockContext>,
+      ),
     )
 
-    expect(queryByText('Test 1')).not.toBeInTheDocument()
-    expect(queryByText('Test 2')).toBeInTheDocument()
+    const matches = Array.from(container.querySelectorAll('.matchedText'))
+    expect(matches).toHaveLength(1)
+    expect(matches[0]).toHaveTextContent('2')
   })
 
   it('selecting an element should clear text and attempt to associate with current conversation', () => {
@@ -249,30 +252,33 @@ describe('TabsMenu', () => {
   })
 
   it('should filter bookmarks by query', async () => {
-    const { findByText, queryByText } = render(
-      <MockContext
-        inputText={['@brave']}
-        getBookmarks={() =>
-          Promise.resolve([
-            {
-              id: BigInt(1),
-              title: 'Brave Browser',
-              url: { url: 'https://brave.com' },
-            },
-            {
-              id: BigInt(2),
-              title: 'MDN Web Docs',
-              url: { url: 'https://developer.mozilla.org' },
-            },
-          ])
-        }
-      >
-        <TabsMenu />
-      </MockContext>,
+    const { container } = await act(async () =>
+      render(
+        <MockContext
+          inputText={['@brave']}
+          getBookmarks={() =>
+            Promise.resolve([
+              {
+                id: BigInt(1),
+                title: 'Brave Browser',
+                url: { url: 'https://brave.com' },
+              },
+              {
+                id: BigInt(2),
+                title: 'MDN Web Docs',
+                url: { url: 'https://developer.mozilla.org' },
+              },
+            ])
+          }
+        >
+          <TabsMenu />
+        </MockContext>,
+      ),
     )
 
-    expect(await findByText('Brave Browser')).toBeInTheDocument()
-    expect(queryByText('MDN Web Docs')).not.toBeInTheDocument()
+    const matches = Array.from(container.querySelectorAll('.matchedText'))
+    expect(matches).toHaveLength(1)
+    expect(matches[0]).toHaveTextContent('Brave')
   })
 
   it('should render history in the list', async () => {
@@ -302,30 +308,33 @@ describe('TabsMenu', () => {
   })
 
   it('should filter history by query', async () => {
-    const { findByText, queryByText } = render(
-      <MockContext
-        inputText={['@search']}
-        getHistory={() =>
-          Promise.resolve([
-            {
-              id: BigInt(1),
-              title: 'Brave Search',
-              url: { url: 'https://search.brave.com' },
-            },
-            {
-              id: BigInt(2),
-              title: 'GitHub',
-              url: { url: 'https://github.com' },
-            },
-          ])
-        }
-      >
-        <TabsMenu />
-      </MockContext>,
+    const { container } = await act(async () =>
+      render(
+        <MockContext
+          inputText={['@search']}
+          getHistory={() =>
+            Promise.resolve([
+              {
+                id: BigInt(1),
+                title: 'Brave Search',
+                url: { url: 'https://search.brave.com' },
+              },
+              {
+                id: BigInt(2),
+                title: 'GitHub',
+                url: { url: 'https://github.com' },
+              },
+            ])
+          }
+        >
+          <TabsMenu />
+        </MockContext>,
+      ),
     )
 
-    expect(await findByText('Brave Search')).toBeInTheDocument()
-    expect(queryByText('GitHub')).not.toBeInTheDocument()
+    const matches = Array.from(container.querySelectorAll('.matchedText'))
+    expect(matches).toHaveLength(1)
+    expect(matches[0]).toHaveTextContent('Search')
   })
 
   it('should pass query to getHistory when query length >= 2', async () => {

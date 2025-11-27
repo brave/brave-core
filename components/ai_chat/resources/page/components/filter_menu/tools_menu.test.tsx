@@ -7,7 +7,7 @@ import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 import ToolsMenu from './tools_menu'
 import { ActionEntry, Skill } from '../../../common/mojom'
@@ -16,6 +16,7 @@ describe('tools_menu', () => {
   const defaultProps: Parameters<typeof ToolsMenu>[0] = {
     handleClick: jest.fn(),
     handleEditClick: jest.fn(),
+    handleNewSkillClick: jest.fn(),
     categories: [
       {
         category: 'skill subheading',
@@ -116,15 +117,19 @@ describe('tools_menu', () => {
     expect(queryByText('category 2')).toBeInTheDocument()
   })
 
-  it('should show skills when filtering', () => {
-    const { getByText } = render(
-      <ToolsMenu
-        {...defaultProps}
-        query='skill'
-      />,
+  it('should show skills when filtering', async () => {
+    const { container } = await act(async () =>
+      render(
+        <ToolsMenu
+          {...defaultProps}
+          query='skill'
+        />,
+      ),
     )
-    expect(getByText('skill 1')).toBeInTheDocument()
-    expect(getByText('skill 2')).toBeInTheDocument()
+    const matches = Array.from(container.querySelectorAll('.matchedText'))
+    expect(matches).toHaveLength(2)
+    expect(matches[0]).toHaveTextContent('skill')
+    expect(matches[1]).toHaveTextContent('skill')
   })
 
   describe('tools menu click handling', () => {
