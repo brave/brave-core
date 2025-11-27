@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
+#include "chrome/browser/actor/actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -346,6 +347,39 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, NavigationTool_BasicNavigation) {
   GURL final_url = web_contents()->GetURL();
   EXPECT_NE(initial_url, final_url);
   EXPECT_EQ(test_url.path(), final_url.path());
+}
+
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
+  // Verify that navigating to the extension store is blocked
+  NavigateToChromiumTestFile("/actor/page_with_clickable_element.html");
+
+  auto nav_tool = FindToolByName("web_page_navigator");
+  ASSERT_TRUE(nav_tool);
+
+  // Get initial URL
+  GURL initial_url = web_contents()->GetVisibleURL();
+
+  // Create input for navigating to a different test page
+  base::Value::Dict input;
+  input.Set("website_url", "https://chromewebstore.google.com/example");
+
+  auto result = ExecuteToolAndWait(nav_tool, *base::WriteJson(input), false);
+  EXPECT_GT(result.size(), 0u);
+  EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("Error")));
+
+  // Verify the page could not navigate to the URL
+  GURL final_url = web_contents()->GetURL();
+  EXPECT_EQ(initial_url, final_url);
+
+  // Also verify that other actions won't be able to execute against tabs
+  // already on an extension store URL.
+  base::test::TestFuture<actor::MayActOnUrlBlockReason> allowed;
+  auto* actor_service =
+      actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
+  actor_service->GetPolicyChecker().MayActOnUrl(
+      GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
+      actor_service->GetJournal(), actor::TaskId(), allowed.GetCallback());
+  EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
 
 // Test drag and release tool with coordinates (since drag needs from/to)

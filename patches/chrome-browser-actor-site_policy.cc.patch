@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/actor/site_policy.cc b/chrome/browser/actor/site_policy.cc
+index e4dc851408f20fbc02d06110c10f441a3e77c79c..b5a670ac861c6c7840877ca8260f5f45b44d49fc 100644
+--- a/chrome/browser/actor/site_policy.cc
++++ b/chrome/browser/actor/site_policy.cc
+@@ -169,6 +169,7 @@ void MayActOnUrlInternal(
+     return;
+   }
+ 
++  BRAVE_MAY_ACT_ON_URL_INTERNAL
+   if (DisableSafetyChecks()) {
+     decision_wrapper->Accept();
+     return;
