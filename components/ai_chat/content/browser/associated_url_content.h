@@ -36,11 +36,9 @@ class PageContentFetcher;
 class AssociatedURLContent : public AssociatedContentDelegate,
                              public content::WebContentsObserver {
  public:
-  AssociatedURLContent(
-      GURL url,
-      std::u16string title,
-      content::BrowserContext* browser_context,
-      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+  AssociatedURLContent(GURL url,
+                       std::u16string title,
+                       content::BrowserContext* browser_context);
   ~AssociatedURLContent() override;
   AssociatedURLContent(const AssociatedURLContent&) = delete;
   AssociatedURLContent& operator=(const AssociatedURLContent&) = delete;
