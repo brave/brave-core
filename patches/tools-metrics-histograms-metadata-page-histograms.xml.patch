@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..01d16c8ab95886a92326b434c19fd531cc5f440d 100644
+index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..9537ec4cb3338a379f80a07d939d9d0511e0f1ff 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
-@@ -507,6 +507,17 @@ chromium-metrics-reviews@google.com.
+@@ -507,6 +507,18 @@ chromium-metrics-reviews@google.com.
    <variant name=".TabSearch"/>
    <variant name=".UserEducation"/>
    <variant name=".UserNotesSidePanel"/>
@@ -11,6 +11,7 @@ index 6cc2b09e6b81edbfb97ca7918b9b723e2eba0893..01d16c8ab95886a92326b434c19fd531
 +-->
 +  <variant name=".AIChatPanel"/>
 +  <variant name=".CookieListOptInBubblePanel"/>
++  <variant name=".EmailAliasesPanel"/>
 +  <variant name=".PlaylistPanel"/>
 +  <variant name=".RewardsPanel"/>
 +  <variant name=".ShieldsPanel"/>

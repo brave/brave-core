@@ -7,17 +7,17 @@
 #define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_CONTROLLER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
-#include "content/public/browser/global_routing_id.h"
 
 class BrowserView;
-class WebUIBubbleManager;
 
 namespace content {
+class WebContents;
 struct ContextMenuParams;
 class RenderFrameHost;
 }  // namespace content
+
+class ConstrainedWebDialogDelegate;
 
 namespace email_aliases {
 
@@ -31,24 +31,22 @@ class EmailAliasesController {
 
   bool IsAvailableFor(const content::ContextMenuParams& params) const;
 
-  void ShowBubble(content::RenderFrameHost* render_frame,
+  void ShowBubble(content::WebContents* initiator,
+                  content::RenderFrameHost* render_frame,
                   uint64_t field_renderer_id);
   void CloseBubble();
   void OpenSettingsPage();
 
-  void OnAliasCreationComplete(const std::string& email);
-
-  WebUIBubbleManager* GetBubbleForTesting();
+  content::WebContents* GetBubbleForTesting();
   static void DisableAutoCloseBubbleForTesting(bool disale_autoclose);
 
  private:
+  void OnBubbleClosed(const std::string&);
+
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;
 
-  content::GlobalRenderFrameHostId field_render_frame_host_id_;
-  uint64_t field_renderer_id_ = 0;
-
-  std::unique_ptr<WebUIBubbleManager> bubble_;
+  raw_ptr<ConstrainedWebDialogDelegate> bubble_ = nullptr;
   base::WeakPtrFactory<EmailAliasesController> weak_factory_{this};
 };
 

@@ -408,12 +408,26 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  auto* email_aliases_controller =
+      browser()->GetFeatures().email_aliases_controller();
 
   EXPECT_EQ("", GetText("#type-email"));
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  InjectHelpers(bubble);
+  Wait("#create-alias-button:not([isDisabled=\"true\"])", bubble);
+  Click("#create-alias-button:not([isDisabled=\"true\"])", bubble);
+
+  // Wait for bubble close
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !email_aliases_controller->GetBubbleForTesting(); }));
 
   EXPECT_TRUE(AwaitText("#type-email", "new@alias.com"));
 }

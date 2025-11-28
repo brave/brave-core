@@ -5,18 +5,19 @@
 
 source_set("email_aliases") {
   sources = [
-    "email_aliases_controller.cc",
-    "email_aliases_controller.h",
+    "email_aliases_panel_ui.cc",
+    "email_aliases_panel_ui.h",
   ]
 
   deps = [
     "//base",
-    "//brave/browser/ui/webui/email_aliases",
+    "//brave/browser/email_aliases",
+    "//brave/browser/resources/settings:resources",
     "//brave/components/constants",
-    "//brave/components/email_aliases:service",
-    "//brave/components/resources:strings_grit",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/webui",
-    "//components/autofill/content/browser",
-    "//ui/web_dialogs",
+    "//ui/webui",
+    "//url",
   ]
 }
