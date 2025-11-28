@@ -3,21 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <utility>
 #include <variant>
 
 #include "absl/functional/overload.h"
+#include "base/check_op.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/types/to_address.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "components/tabs/public/tab_interface.h"
 
+namespace tabs {
+
 // static
-void TreeTabNode::BuildTreeTabs(TabCollection& root) {
+void TreeTabNodeTabCollection::BuildTreeTabs(
+    TabCollection& root,
+    base::RepeatingCallback<void(const TreeTabNode& node)> on_create) {
   auto tabs = root.GetTabsRecursive();
 
   while (!tabs.empty()) {
@@ -33,15 +41,18 @@ void TreeTabNode::BuildTreeTabs(TabCollection& root) {
     auto owned_tab_interface = parent_collection->MaybeRemoveTab(tab_interface);
     CHECK_EQ(tab_interface, owned_tab_interface.get());
 
-    auto tree_node = std::make_unique<TreeTabNode>(
+    auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_tab_interface));
+    on_create.Run(tree_node->node());
     parent_collection->AddCollection(std::move(tree_node), index);
   }
 }
 
-void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
+void TreeTabNodeTabCollection::FlattenTreeTabs(
+    TabCollection& root,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove) {
   // Get all TreeTabNodes recursively from the root.
-  std::vector<TreeTabNode*> all_tree_nodes;
+  std::vector<TreeTabNodeTabCollection*> all_tree_nodes;
   CollectTreeNodesRecursively(root, all_tree_nodes);
 
   // Process tree nodes in reverse order to handle children before parents.
@@ -76,35 +87,66 @@ void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
     // * Remove the tree node itself.
     CHECK(tree_node->GetTreeNodeChildren().empty())
         << "Tree node should not have any children at this point.";
+    on_remove.Run(tree_node->node().id());
     auto tree_node_to_be_removed =
         parent_collection->MaybeRemoveCollection(tree_node);
   }
 }
 
-TreeTabNode::TreeTabNode(const tree_tab::TreeTabNodeId& tree_tab_node_id,
-                         std::unique_ptr<tabs::TabInterface> current_tab)
+TreeTabNodeTabCollection::TreeTabNodeTabCollection(
+    const tree_tab::TreeTabNodeId& tree_tab_node_id,
+    std::unique_ptr<tabs::TabInterface> current_tab)
     : TabCollection(TabCollection::Type::TREE_NODE,
                     /*supported_child_collections=*/
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
-      tree_tab_node_id_(tree_tab_node_id),
-      current_tab_(base::to_address(current_tab)) {
+      current_tab_(current_tab->GetWeakPtr()),
+      node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
   CHECK(current_tab_);
-
-  will_detach_tab_subscription_ = current_tab_->RegisterWillDetach(
-      base::BindRepeating(&TreeTabNode::OnWillDetach, base::Unretained(this)));
 
   AddTab(std::move(current_tab), 0);
 }
 
-TreeTabNode::~TreeTabNode() = default;
+TreeTabNodeTabCollection::~TreeTabNodeTabCollection() = default;
+
+TreeTabNodeTabCollection* TreeTabNodeTabCollection::GetTopLevelAncestor() {
+  auto* parent = GetParentCollection();
+  if (!parent || parent->type() != TabCollection::Type::TREE_NODE) {
+    return this;
+  }
+  return static_cast<TreeTabNodeTabCollection*>(parent)->GetTopLevelAncestor();
+}
+
+const TreeTabNodeTabCollection* TreeTabNodeTabCollection::GetTopLevelAncestor()
+    const {
+  return const_cast<TreeTabNodeTabCollection*>(this)->GetTopLevelAncestor();
+}
+
+void TreeTabNodeTabCollection::OnReparentedImpl(TabCollection* old_parent,
+                                                TabCollection* new_parent) {
+  node_->CalculateLevelAndHeightRecursively({});
+
+  CHECK_NE(old_parent, new_parent);
+
+  if (new_parent) {
+    if (new_parent->type() == TabCollection::Type::TREE_NODE) {
+      static_cast<TreeTabNodeTabCollection*>(new_parent)
+          ->node_->OnChildHeightChanged({});
+    }
+  } else {
+    if (old_parent && old_parent->type() == TabCollection::Type::TREE_NODE) {
+      static_cast<TreeTabNodeTabCollection*>(old_parent)
+          ->node_->OnChildHeightChanged({});
+    }
+  }
+}
 
 // static
-void TreeTabNode::CollectTreeNodesRecursively(
+void TreeTabNodeTabCollection::CollectTreeNodesRecursively(
     tabs::TabCollection& parent,
-    std::vector<TreeTabNode*>& nodes) {
+    std::vector<TreeTabNodeTabCollection*>& nodes) {
   for (auto& child : GetChildrenStatic(parent)) {
     if (std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(child)) {
       continue;  // Skip tabs, we only want collections.
@@ -112,7 +154,8 @@ void TreeTabNode::CollectTreeNodesRecursively(
 
     auto& collection = std::get<std::unique_ptr<tabs::TabCollection>>(child);
     if (collection->type() == TabCollection::Type::TREE_NODE) {
-      auto* tree_node = static_cast<TreeTabNode*>(collection.get());
+      auto* tree_node =
+          static_cast<TreeTabNodeTabCollection*>(collection.get());
       nodes.push_back(tree_node);
     }
 
@@ -122,7 +165,7 @@ void TreeTabNode::CollectTreeNodesRecursively(
 }
 
 std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
-TreeTabNode::GetTreeNodeChildren() {
+TreeTabNodeTabCollection::GetTreeNodeChildren() {
   const auto& unique_children = GetChildrenStatic(*this);
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children;
   children.reserve(unique_children.size());
@@ -136,20 +179,10 @@ TreeTabNode::GetTreeNodeChildren() {
                 child)) {
           return std::get<std::unique_ptr<tabs::TabInterface>>(child).get();
         }
-        auto collection =
-            std::get<std::unique_ptr<tabs::TabCollection>>(child).get();
-        CHECK(collection->type() != TabCollection::Type::TREE_NODE)
-            << "Tree node should not contain tree nodes as children at this "
-               "point.";
-        return collection;
+        return std::get<std::unique_ptr<tabs::TabCollection>>(child).get();
       });
 
   return children;
 }
 
-void TreeTabNode::OnWillDetach(tabs::TabInterface* tab,
-                               tabs::TabInterface::DetachReason detach_reason) {
-  if (current_tab_ == tab) {
-    current_tab_ = nullptr;
-  }
-}
+}  // namespace tabs

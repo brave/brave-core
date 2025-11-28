@@ -28,19 +28,22 @@ class TreeTabNodeUnitTest : public testing::Test {
 
 TEST_F(TreeTabNodeUnitTest, Constructor) {
   // Constructing TreeTabNode with empty |tree_tab_node_id| should fail.
-  EXPECT_DEATH(TreeTabNode(tree_tab::TreeTabNodeId::CreateEmpty(),
-                           std::make_unique<tabs::MockTabInterface>()),
-               "");
+  EXPECT_DEATH(
+      TreeTabNodeTabCollection(tree_tab::TreeTabNodeId::CreateEmpty(),
+                               std::make_unique<tabs::MockTabInterface>()),
+      "");
 
   // Constructing TreeTabNode with nullptr |current_tab| should fail.
-  EXPECT_DEATH(TreeTabNode(tree_tab::TreeTabNodeId::GenerateNew(), nullptr),
-               "");
+  EXPECT_DEATH(
+      TreeTabNodeTabCollection(tree_tab::TreeTabNodeId::GenerateNew(), nullptr),
+      "");
 
   // Valid construction should succeed.
   auto tree_tab_node_id = tree_tab::TreeTabNodeId::GenerateNew();
   auto mock_tab_interface = std::make_unique<tabs::MockTabInterface>();
   auto mock_tab_interface_ptr = mock_tab_interface.get();
-  TreeTabNode tree_tab_node(tree_tab_node_id, std::move(mock_tab_interface));
+  TreeTabNodeTabCollection tree_tab_node(tree_tab_node_id,
+                                         std::move(mock_tab_interface));
 
   // Check that the TreeTabNode is constructed correctly.
   EXPECT_EQ(tree_tab_node_id, tree_tab_node.tree_tab_node_id());
@@ -50,9 +53,9 @@ TEST_F(TreeTabNodeUnitTest, Constructor) {
 
 TEST_F(TreeTabNodeUnitTest, CanNotBeAddedToPinnedCollection) {
   // Create a TreeTabNode and try to add it to a PinnedTabCollection.
-  auto tree_tab_node =
-      std::make_unique<TreeTabNode>(tree_tab::TreeTabNodeId::GenerateNew(),
-                                    std::make_unique<tabs::MockTabInterface>());
+  auto tree_tab_node = std::make_unique<TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
   tabs::PinnedTabCollection pinned_collection;
 
   // Verify that adding a TreeTabNode to a PinnedTabCollection fails.
@@ -62,9 +65,9 @@ TEST_F(TreeTabNodeUnitTest, CanNotBeAddedToPinnedCollection) {
 
 TEST_F(TreeTabNodeUnitTest, CanBeAddedToUnpinnedCollection) {
   // Create a TreeTabNode and add it to an UnpinnedTabCollection.
-  auto tree_tab_node =
-      std::make_unique<TreeTabNode>(tree_tab::TreeTabNodeId::GenerateNew(),
-                                    std::make_unique<tabs::MockTabInterface>());
+  auto tree_tab_node = std::make_unique<TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
   auto tree_tab_node_ptr = tree_tab_node.get();
   tabs::UnpinnedTabCollection unpinned_collection;
   unpinned_collection.AddCollection(std::move(tree_tab_node), 0);
@@ -76,12 +79,12 @@ TEST_F(TreeTabNodeUnitTest, CanBeAddedToUnpinnedCollection) {
 
 TEST_F(TreeTabNodeUnitTest, CanAddAnotherTreeTabNodeRecursively) {
   // Create a TreeTabNode and add another TreeTabNode as a child.
-  auto parent_tree_tab_node =
-      std::make_unique<TreeTabNode>(tree_tab::TreeTabNodeId::GenerateNew(),
-                                    std::make_unique<tabs::MockTabInterface>());
-  auto child_tree_tab_node =
-      std::make_unique<TreeTabNode>(tree_tab::TreeTabNodeId::GenerateNew(),
-                                    std::make_unique<tabs::MockTabInterface>());
+  auto parent_tree_tab_node = std::make_unique<TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
+  auto child_tree_tab_node = std::make_unique<TreeTabNodeTabCollection>(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
   auto child_tree_tab_node_ptr = child_tree_tab_node.get();
 
   parent_tree_tab_node->AddCollection(std::move(child_tree_tab_node), 0);
@@ -92,8 +95,9 @@ TEST_F(TreeTabNodeUnitTest, CanAddAnotherTreeTabNodeRecursively) {
 }
 
 TEST_F(TreeTabNodeUnitTest, CanAddGroupCollection) {
-  TreeTabNode tree_tab_node(tree_tab::TreeTabNodeId::GenerateNew(),
-                            std::make_unique<tabs::MockTabInterface>());
+  TreeTabNodeTabCollection tree_tab_node(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
 
   // Create a TabGroupTabCollection and add it to the TreeTabNode.
   TabGroupDesktop::Factory tab_group_factory(profile());
@@ -109,8 +113,9 @@ TEST_F(TreeTabNodeUnitTest, CanAddGroupCollection) {
 }
 
 TEST_F(TreeTabNodeUnitTest, CanAddSplitTabCollection) {
-  TreeTabNode tree_tab_node(tree_tab::TreeTabNodeId::GenerateNew(),
-                            std::make_unique<tabs::MockTabInterface>());
+  TreeTabNodeTabCollection tree_tab_node(
+      tree_tab::TreeTabNodeId::GenerateNew(),
+      std::make_unique<tabs::MockTabInterface>());
 
   // Create a SplitTabCollection and add it to the TreeTabNode.
   split_tabs::SplitTabId split_id = split_tabs::SplitTabId::GenerateNew();

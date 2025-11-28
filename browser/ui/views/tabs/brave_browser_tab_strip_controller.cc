@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -44,6 +45,28 @@ void BraveBrowserTabStripController::SetCustomTitleForTab(
     const std::optional<std::u16string>& title) {
   static_cast<BraveTabStripModel*>(model_.get())
       ->SetCustomTitleForTab(index, title);
+}
+
+// Gets the TreeTabNode for the given id.
+const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  auto* tree_model =
+      static_cast<BraveTabStripModel*>(model_.get())->tree_model();
+  CHECK(tree_model) << "TreeTabModel is not available.";
+
+  const auto* node = tree_model->GetNode(id);
+  CHECK(node) << "TreeTabNode is not found for id: " << id;
+
+  return *node;
+}
+
+int BraveBrowserTabStripController::GetTreeHeight(
+    const tree_tab::TreeTabNodeId& id) const {
+  auto* tree_model =
+      static_cast<BraveTabStripModel*>(model_.get())->tree_model();
+  CHECK(tree_model) << "TreeTabModel is not available.";
+
+  return tree_model->GetTreeHeight(id);
 }
 
 void BraveBrowserTabStripController::ShowContextMenuForTab(
@@ -98,4 +121,26 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
   }
 
   BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
+}
+
+void BraveBrowserTabStripController::OnTreeTabChanged(
+    const TreeTabChange& change) {
+  switch (change.type) {
+    case TreeTabChange::Type::kNodeCreated: {
+      const auto& created_change = change.GetCreatedChange();
+      auto index = model_->GetIndexOfTab(created_change.node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+      break;
+    }
+    case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      auto* tab = change.GetWillBeDestroyedChange().node->GetTab();
+      CHECK(tab);
+      auto index = model_->GetIndexOfTab(tab);
+      LOG(ERROR) << " " << model_->count();
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+      break;
+    }
+  }
 }

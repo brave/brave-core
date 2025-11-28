@@ -35,12 +35,20 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
+  // Gets the TreeTabNode for the given id.
+  const tabs::TreeTabNode& GetTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const;
+
+  // Returns the height of the tree that given TreeTabNodeId belongs to.
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
+
   // BrowserTabStripController overrides:
   void ShowContextMenuForTab(Tab* tab,
                              const gfx::Point& p,
                              ui::mojom::MenuSourceType source_type) override;
   void ExecuteCommandForTab(TabStripModel::ContextMenuCommand command_id,
                             const Tab* tab) override;
+  void OnTreeTabChanged(const TreeTabChange& change) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.

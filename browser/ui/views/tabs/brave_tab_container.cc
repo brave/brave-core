@@ -87,6 +87,12 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    tree_tabs_enabled_.Init(
+        brave_tabs::kTreeTabsEnabled, prefs,
+        base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
+                            base::Unretained(this)));
+  }
 
   UpdateLayoutOrientation();
 }
@@ -276,6 +282,10 @@ void BraveTabContainer::UpdateLayoutOrientation() {
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
   layout_helper_->set_tab_strip(
       static_cast<TabStrip*>(base::to_address(tab_slot_controller_)));
+
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    layout_helper_->set_use_tree_tabs(*tree_tabs_enabled_);
+  }
 
   // Tab could have different insets per orientation(ex, split tabs).
   const int tab_count = GetTabCount();

@@ -14,25 +14,34 @@
 
 // Make static version of GetPassKey() and GetChildren() available for
 // TreeTabNode to build/flatten tree tabs.
-#define OnTabRemovedFromTree()                                                \
-  OnTabRemovedFromTab_Unused() {}                                             \
-                                                                              \
- protected:                                                                   \
-  static base::PassKey<TabCollection> GetPassKeyStatic() {                    \
-    return {};                                                                \
-  }                                                                           \
-  static const ChildrenVector& GetChildrenStatic(TabCollection& collection) { \
-    return collection.GetChildren();                                          \
-  }                                                                           \
-                                                                              \
- public:                                                                      \
+#define OnTabRemovedFromTree()                             \
+  OnTabRemovedFromTab_Unused() {}                          \
+                                                           \
+ protected:                                                \
+  static base::PassKey<TabCollection> GetPassKeyStatic() { \
+    return {};                                             \
+  }                                                        \
+  static const ChildrenVector& GetChildrenStatic(          \
+      const TabCollection& collection) {                   \
+    return collection.GetChildren();                       \
+  }                                                        \
+                                                           \
+ public:                                                   \
   void OnTabRemovedFromTree()
+
+// Add OnReparentedImpl() method that can be overriden from TreeTabNode.
+// This will be called from OnReparented().
+#define OnCollectionAddedToTree(...)                       \
+  OnCollectionAddedToTree(__VA_ARGS__);                    \
+  virtual void OnReparentedImpl(TabCollection* old_parent, \
+                                TabCollection* new_parent)
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #include <components/tabs/public/tab_collection.h>  // IWYU pragma: export
 
 #if !BUILDFLAG(IS_ANDROID)
+#undef OnCollectionAddedToTree
 #undef OnTabRemovedFromTree
 #undef SPLIT
 #endif  // !BUILDFLAG(IS_ANDROID)
