@@ -424,6 +424,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_group_sync/StartupHelper"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/flags/ChromeCachedFlags"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab/TabHelpers"));
     }
 
     @Test
@@ -1103,6 +1104,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         void.class,
                         List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab/TabHelpers",
+                        "initWebContentsHelpers",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Tab.class));
     }
 
     @Test

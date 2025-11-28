@@ -694,6 +694,10 @@
     <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.tab.TabHelpers {
+    *** initWebContentsHelpers(...);
+}
+
 -keep class org.chromium.chrome.browser.logo.LogoMediator {
     <init>(...);
     *** mLogoModel;
