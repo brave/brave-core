@@ -108,7 +108,7 @@ public struct BrowserMenu: View {
             handleAction($action)
           }
         )
-        if case .connected(let region) = model.vpnStatus {
+        if case .connected(let region, let isSmartProxyEnabled) = model.vpnStatus {
           Button {
             handlePresentation(.vpnRegionPicker)
           } label: {
@@ -118,7 +118,7 @@ public struct BrowserMenu: View {
                 Spacer()
                 Text(region.flag)
                 Text(region.displayName)
-                if model.vpnStatus.shouldShowSmartProxyIndicator {
+                if region.smartProxySupported && isSmartProxyEnabled {
                   Image(braveSystemName: "leo.smart.proxy-routing")
                     .resizable()
                     .renderingMode(.template)
