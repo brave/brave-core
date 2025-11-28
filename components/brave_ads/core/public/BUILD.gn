@@ -36,7 +36,6 @@ source_set("headers") {
     "history/ad_history_item_info.h",
     "history/ad_history_item_value_util.h",
     "history/site_history.h",
-    "network_client_callback.h",
     "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
     "prefs/pref_registry.h",

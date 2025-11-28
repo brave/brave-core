@@ -14,8 +14,8 @@
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/browser/service/network_client_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/network_client_callback.h"
 #include "services/network/public/cpp/network_context_getter.h"
 
 namespace network {
@@ -40,8 +40,8 @@ class NetworkClient {
   // Starts a network request for the given `mojom::UrlRequestInfo`. The
   // provided `callback` will be invoked with a `mojom::UrlResponseInfo` unless
   // the request is canceled or the `NetworkClient` is destroyed.
-  void UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                  UrlRequestCallback callback);
+  void SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                   SendRequestCallback callback);
 
   // Cancels all ongoing network requests. Pending callbacks will not be
   // invoked.
@@ -49,9 +49,9 @@ class NetworkClient {
 
  private:
   void HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                   UrlRequestCallback callback);
+                   SendRequestCallback callback);
   void HttpRequestCallback(network::SimpleURLLoader* url_loader,
-                           UrlRequestCallback callback,
+                           SendRequestCallback callback,
                            std::optional<std::string> response_body);
 
   const scoped_refptr<network::SharedURLLoaderFactory>
