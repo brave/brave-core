@@ -5,6 +5,7 @@
 
 import BraveShared
 import BraveUI
+import BraveVPN
 import DesignSystem
 import GuardianConnect
 import Preferences
@@ -118,7 +119,7 @@ public struct BrowserMenu: View {
                 Spacer()
                 Text(region.flag)
                 Text(region.displayName)
-                if region.smartProxySupported {
+                if region.smartProxySupported, BraveVPN.isSmartProxyRoutingEnabled {
                   Image(braveSystemName: "leo.smart.proxy-routing")
                     .resizable()
                     .renderingMode(.template)

@@ -151,7 +151,8 @@ public struct BraveVPNRegionListView: View {
                 isSelectedRegion
                   ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
               )
-            if !region.smartRoutingProxyState.isEmpty,
+            if BraveVPN.isSmartProxyRoutingEnabled,
+              !region.smartRoutingProxyState.isEmpty,
               region.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone
             {
               Image(braveSystemName: "leo.smart.proxy-routing")
