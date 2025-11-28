@@ -1378,6 +1378,7 @@ class TabManager: NSObject {
           )
           shouldShredTab = siteDomain.shredLevel.shredOnAppExit
         }
+        shouldShredDomainCache[cacheKey] = shouldShredTab
       }
       return shouldShredTab
     }
