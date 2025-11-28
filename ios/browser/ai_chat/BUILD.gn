@@ -8,12 +8,18 @@ import("//ios/build/config.gni")
 
 source_set("ai_chat") {
   sources = [
+    "ai_chat_associated_content_driver_bridge.h",
+    "ai_chat_associated_content_driver_holder.h",
+    "ai_chat_associated_content_driver_holder.mm",
     "ai_chat_service_factory.h",
     "ai_chat_service_factory.mm",
     "ai_chat_settings_helper.h",
     "ai_chat_settings_helper.mm",
     "ai_chat_utils.h",
     "ai_chat_utils.mm",
+    "ai_chat_ui_handler_bridge.h",
+    "ai_chat_ui_handler_bridge_holder.h",
+    "ai_chat_ui_handler_bridge_holder.mm",
     "model_service_factory.h",
     "model_service_factory.mm",
     "tab_tracker_service_factory.h",

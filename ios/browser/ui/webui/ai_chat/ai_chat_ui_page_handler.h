@@ -11,8 +11,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/ios/browser/ai_chat/ai_chat_associated_content_driver_holder.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -95,6 +97,11 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
+
+  raw_ptr<AssociatedContentDriverBridgeHolder> associated_content_driver_;
+  base::ScopedObservation<AssociatedContentDelegate,
+                          AssociatedContentDelegate::Observer>
+      associated_content_delegate_observation_{this};
 
   // Conversations are not content associated either in standalone mode or in
   // global side panel mode, to the owner_web_contents_.

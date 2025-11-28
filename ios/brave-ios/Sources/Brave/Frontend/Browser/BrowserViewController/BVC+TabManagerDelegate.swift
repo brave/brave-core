@@ -34,9 +34,11 @@ extension BrowserViewController: TabManagerDelegate {
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(tab: tab)
+    tab.aiChatWebUIHelper?.webDelegate = tab.leoTabHelper
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }
+    tab.aiChatWebUIHelper?.associatedTab = tabManager.selectedTab
     tab.walletWebUIHelper = .init(
       tab: tab,
       showWalletBackUpHandler: { [weak self] in

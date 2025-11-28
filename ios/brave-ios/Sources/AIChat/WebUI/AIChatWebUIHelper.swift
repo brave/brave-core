@@ -21,9 +21,10 @@ public enum AIChatWebUIPageAction {
 }
 
 /// A tab helper for interacting with Leo AI Chat running in WebUI
-public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler {
+public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler, AIChatAssociatedContentDriver {
   private(set) weak var tab: (any TabState)?
   public var handler: ((any TabState, AIChatWebUIPageAction) -> Void)?
+  public weak var webDelegate: AIChatWebDelegate?
 
   public init?(tab: some TabState) {
     if !tab.isChromiumTab || !FeatureList.kAIChatWebUIEnabled.enabled {
@@ -38,6 +39,8 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler {
     tab?.removeObserver(self)
   }
 
+  public var associatedTab: (any TabState)?
+
   // MARK: - TabObserver
 
   public func tabDidCreateWebView(_ tab: some TabState) {
@@ -49,6 +52,16 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler {
   }
 
   // MARK: - AIChatUIHandler
+
+  public func webViewForAssociatedContent() -> BraveWebView? {
+    if let tab = associatedTab, tab.isChromiumTab {
+      if !tab.isWebViewCreated {
+        tab.createWebView()
+      }
+      return BraveWebView.from(tab: tab)
+    }
+    return nil
+  }
 
   public func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {
     guard let tab else {
@@ -92,6 +105,51 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler {
   public func open(_ url: URL) {
     guard let tab else { return }
     handler?(tab, .openURL(url))
+  }
+
+  // MARK: - AIChatAssociatedContentDriver
+
+  public var pageTitle: String? {
+    tab?.title
+  }
+
+  public var lastCommittedURL: URL? {
+    tab?.lastCommittedURL
+  }
+
+  public func fetchPageContent() async -> (String?, Bool) {
+    guard let webDelegate else {
+      return (nil, false)
+    }
+
+    // FIXME: Have to pass in the Jitsi coordinator?
+    //    if let transcript = await braveTalkScript?.getTranscript() {
+    //      return (transcript, false)
+    //    }
+
+    if await webDelegate.getPageContentType() == "application/pdf" {
+      if let base64EncodedPDF = await webDelegate.getPDFDocument() {
+        return (await AIChatPDFRecognition.parse(pdfData: base64EncodedPDF), false)
+      }
+
+      // Attempt to parse the page as a PDF/Image
+      guard let pdfData = await webDelegate.getPrintViewPDF() else {
+        return (nil, false)
+      }
+      return (await AIChatPDFRecognition.parseToImage(pdfData: pdfData), false)
+    }
+
+    // Fetch regular page content
+    let text = await webDelegate.getMainArticle()
+    if let text = text, !text.isEmpty {
+      return (text, false)
+    }
+
+    // No article text. Attempt to parse the page as a PDF/Image
+    guard let pdfData = await webDelegate.getPrintViewPDF() else {
+      return (nil, false)
+    }
+    return (await AIChatPDFRecognition.parseToImage(pdfData: pdfData), false)
   }
 }
 

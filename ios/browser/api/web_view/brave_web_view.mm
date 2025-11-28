@@ -8,10 +8,12 @@
 #include <memory>
 
 #include "base/notreached.h"
+#include "brave/ios/browser/ai_chat/ai_chat_associated_content_driver_bridge.h"
+#include "brave/ios/browser/ai_chat/ai_chat_associated_content_driver_holder.h"
+#include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/ui/web_view/features.h"
-#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler_bridge_holder.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
@@ -149,7 +151,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 @end
 
 @interface BraveWebView ()
-@property(nonatomic, weak) id<AIChatUIHandlerBridge> aiChatUIHandler;
+@property(nonatomic, weak)
+    id<AIChatUIHandlerBridge, AIChatAssociatedContentDriverBridge>
+        aiChatUIHandler;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @end
 
@@ -202,6 +206,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+      ->SetBridge(self.aiChatUIHandler);
+  ai_chat::AssociatedContentDriverBridgeHolder::GetOrCreateForWebState(
+      self.webState)
       ->SetBridge(self.aiChatUIHandler);
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
@@ -334,10 +341,14 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @implementation BraveWebView (AIChat)
 
-- (void)setAiChatUIHandler:(id<AIChatUIHandlerBridge>)bridge {
+- (void)setAiChatUIHandler:
+    (id<AIChatUIHandlerBridge, AIChatAssociatedContentDriverBridge>)bridge {
   _aiChatUIHandler = bridge;
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(bridge);
+  ai_chat::AssociatedContentDriverBridgeHolder::GetOrCreateForWebState(
+      self.webState)
+      ->SetBridge(self.aiChatUIHandler);
 }
 
 @end
