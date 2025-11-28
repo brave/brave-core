@@ -210,7 +210,7 @@ void CardanoTestRpcServer::SetUpCardanoRpc(
 
   auto address_internal_0 = keyring->GetAddress(
       0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal, 0));
-  AddUtxo(address_internal_0->address_string, /*4684571*/ 7000000);
+  AddUtxo(address_internal_0->address_string, 7000000);
 }
 
 std::array<uint8_t, 32> CardanoTestRpcServer::CreateNewTxHash() {

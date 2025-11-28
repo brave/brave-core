@@ -232,6 +232,7 @@ bool CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   base::CheckedNumeric<uint64_t> total_inputs_amount =
       result.GetTotalInputsAmount();
 
+  // Set to 0 all fields in tx we are going to adjust to find fee.
   tx.set_fee(0);
   if (tx.ChangeOutput()) {
     tx.ChangeOutput()->amount = 0;
@@ -240,6 +241,7 @@ bool CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     tx.TargetOutput()->amount = 0;
   }
 
+  // That is starting fee based on minimum size of tx as fee and outputs are 0.
   uint64_t start_fee =
       CardanoTransactionSerializer({.use_dummy_witness_set = true})
           .CalcMinTransactionFee(result, epoch_parameters);
