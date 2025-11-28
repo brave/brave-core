@@ -12,7 +12,6 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/notreached.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"
@@ -23,15 +22,21 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
-#define BRAVE_WALLET_ENUM_ITEMS     \
+#if BUILDFLAG(IS_ANDROID)
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
-  case RequestType::kBraveCardano:
-
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
-  BRAVE_WALLET_ENUM_ITEMS           \
+  case RequestType::kBraveCardano:  \
   case RequestType::kWidevine:      \
     NOTREACHED();
+#else
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
+  case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
+  case RequestType::kBraveCardano:  \
+  case RequestType::kWidevine:      \
+    NOTREACHED();
+#endif
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
@@ -90,7 +95,6 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH
-#undef BRAVE_WALLET_ENUM_ITEMS
 #undef IsDuplicateOf
 #undef PermissionRequest
 
