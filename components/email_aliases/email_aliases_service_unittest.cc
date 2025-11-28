@@ -21,6 +21,8 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/prefs/testing_pref_service.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -62,11 +64,13 @@ class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    EmailAliasesService::RegisterProfilePref(prefs_.registry());
   }
 
   void SetUp() override {
+    OSCryptMocker::SetUp();
     keyed_service_ = std::make_unique<EmailAliasesService>(
-        test_url_loader_factory_.GetSafeWeakWrapper());
+        test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
     keyed_service_->BindInterface(service_.BindNewPipeAndPassReceiver());
     observer_ = std::make_unique<TestObserver>();
     mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
@@ -74,6 +78,8 @@ class EmailAliasesServiceTest : public ::testing::Test {
     observer_->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
   }
+
+  void TearDown() override { OSCryptMocker::TearDown(); }
 
   // Make authentication request and wait for the response.
   // Returns the error string if any, or std::nullopt on success.
@@ -135,6 +141,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
 
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
+  TestingPrefServiceSimple prefs_;
   std::unique_ptr<EmailAliasesService> keyed_service_;
   mojo::Remote<mojom::EmailAliasesService> service_;
   base::test::TaskEnvironment task_environment_;
@@ -190,6 +197,34 @@ TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
                          "\"service\":\"email-aliases\"}"},
                         AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
+}
+
+TEST_F(EmailAliasesServiceTest, SessionPreserved) {
+  RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
+  // Simulate next start.
+  keyed_service_ = std::make_unique<EmailAliasesService>(
+      test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
+  EXPECT_TRUE(keyed_service_->IsAuthenticated());
+  EXPECT_EQ("auth456", keyed_service_->GetAuthTokenForTesting());
+
+  // Observer is notified.
+  auto observer = std::make_unique<TestObserver>();
+  mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver> remote;
+  observer->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+  keyed_service_->AddObserver(std::move(remote));
+  observer->WaitFor(AuthenticationStatus::kAuthenticated);
+
+  // Prefs contain values.
+  EmailAliasesAuth auth(&prefs_);
+  EXPECT_EQ("test@example.com", auth.GetAuthEmail());
+  EXPECT_EQ("auth456", auth.CheckAndGetAuthToken());
+
+  EXPECT_EQ("test@example.com", prefs_.GetString(prefs::kBaseEmail));
+  const auto prefs_token = prefs_.GetString(prefs::kAuthToken);
+  EXPECT_FALSE(prefs_token.empty());  // token saved
+  EXPECT_NE("auth456", prefs_token);  // token encrypted
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
@@ -250,15 +285,19 @@ TEST_F(EmailAliasesServiceTest,
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
+    OSCryptMocker::SetUp();
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    EmailAliasesService::RegisterProfilePref(prefs_.registry());
     service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper());
+        url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
     observer_ = std::make_unique<TestObserver>();
     mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
         remote;
     observer_->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
   }
+
+  void TearDown() override { OSCryptMocker::TearDown(); }
 
   // Starts auth and captures verify/result request times via interceptor.
   void StartAuthAndCaptureRequests(const std::string& init_body,
@@ -290,6 +329,7 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory url_loader_factory_;
+  TestingPrefServiceSimple prefs_;
   std::unique_ptr<EmailAliasesService> service_;
   std::unique_ptr<TestObserver> observer_;
   std::vector<base::TimeTicks> verify_result_request_times_;
@@ -441,19 +481,36 @@ class EmailAliasesAPITest : public ::testing::Test {
     return result_out;
   }
 
+  void SetupAuth(bool auth = true) {
+    EmailAliasesAuth settings(&prefs_);
+    settings.SetAuthEmail("test@example.com");
+    if (auth) {
+      settings.SetAuthToken("token456");
+    } else {
+      settings.SetAuthEmail({});
+    }
+  }
+
  protected:
   void SetUp() override {
+    OSCryptMocker::SetUp();
+    EmailAliasesService::RegisterProfilePref(prefs_.registry());
+    SetupAuth();
+
     service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper());
+        url_loader_factory_.GetSafeWeakWrapper(), &prefs_);
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
   }
 
+  void TearDown() override { OSCryptMocker::TearDown(); }
+
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
+  TestingPrefServiceSimple prefs_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 };

@@ -7,7 +7,6 @@
 
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/test/run_until.h"
 #include "base/time/time.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
@@ -15,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_auth.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,7 +24,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -499,4 +498,24 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
 
   EXPECT_TRUE(AwaitText("#type-email", ""));  // text not changed
 }
+IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
+  // Prepare auth token
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs());
+  auth.SetAuthEmail(kSuccessEmail);
+  auth.SetAuthToken("success_token");
+
+  // Settings in logged-in state
+  Navigate(GURL("chrome://settings/email-aliases"));
+  InjectHelpers(ActiveWebContents());
+  Wait("#create-new-item-button");
+
+  // Reset token
+  auth.SetAuthToken({});
+  Wait("#get-login-link-button");  // Settings in sing-in state.
+
+  // Logged-in again
+  auth.SetAuthToken("success_token");
+  Wait("#create-new-item-button");  // Logged-in state.
+}
+
 }  // namespace email_aliases

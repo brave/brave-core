@@ -17,6 +17,7 @@ static_library("email_aliases") {
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/user_prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]

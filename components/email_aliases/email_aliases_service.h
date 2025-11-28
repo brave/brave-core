@@ -17,6 +17,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases_auth.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -42,8 +43,11 @@ class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
   EmailAliasesService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* pref_service);
   ~EmailAliasesService() override;
+
+  static void RegisterProfilePref(PrefRegistrySimple* registry);
 
   // KeyedService:
   // Called when the owning profile context is shutting down. Releases
@@ -88,7 +92,7 @@ class EmailAliasesService : public KeyedService,
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
 
   // Returns the current auth token for tests. Empty when unauthenticated.
-  std::string GetAuthTokenForTesting() const;
+  std::string GetAuthTokenForTesting();
 
   // Build the fully-qualified Brave Accounts verification URLs.
   static GURL GetAccountsServiceVerifyInitURL();
@@ -101,6 +105,10 @@ class EmailAliasesService : public KeyedService,
   // Callback that receives the response body as an optional string.
   using BodyAsStringCallback =
       base::OnceCallback<void(std::optional<std::string> response_body)>;
+
+  mojom::AuthenticationStatus GetCurrentStatus();
+
+  void OnAuthChanged();
 
   // Handles the response to the verify/init request. Parses a verification
   // token and, if present, proceeds to poll the session endpoint. Invokes
@@ -176,11 +184,7 @@ class EmailAliasesService : public KeyedService,
   // Temporary token returned by verify/init and used to authorize polling.
   std::string verification_token_;
 
-  // Long-lived token returned by verify/result upon successful authentication.
-  std::string auth_token_;
-
-  // The email address used for the current authentication attempt.
-  std::string auth_email_;
+  EmailAliasesAuth auth_;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

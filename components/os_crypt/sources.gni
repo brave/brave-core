@@ -10,6 +10,7 @@ brave_components_os_crypt_visibility = [
   "//brave/components/brave_account",
   "//brave/components/brave_rewards/content",
   "//brave/components/brave_sync:prefs",
+  "//brave/components/email_aliases:auth",
   "//brave/components/sync/service:unit_tests",
   "//chrome/utility",
   "//components/os_crypt/sync",

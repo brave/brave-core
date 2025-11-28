@@ -33,6 +33,19 @@ static_library("features") {
   public_deps = [ "//base" ]
 }
 
+source_set("auth") {
+  sources = [
+    "email_aliases_auth.cc",
+    "email_aliases_auth.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/os_crypt/sync",
+    "//components/prefs",
+  ]
+}
+
 static_library("service") {
   sources = [
     "email_aliases_service.cc",
@@ -52,6 +65,8 @@ static_library("service") {
     "//services/network/public/cpp",
     "//ui/base",
   ]
+
+  public_deps = [ ":auth" ]
 }
 
 source_set("unit_tests") {
@@ -63,6 +78,7 @@ source_set("unit_tests") {
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
+    "//components/os_crypt/sync:test_support",
     "//components/prefs:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
