@@ -22,7 +22,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -37,6 +37,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -608,6 +612,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       }
       return SidebarItem();
     case SidebarItem::BuiltInItemType::kWallet: {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       if (brave_wallet::IsAllowed(prefs_)) {
         return SidebarItem::Create(
             GURL("chrome://wallet/"),
@@ -616,6 +621,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
             SidebarItem::BuiltInItemType::kWallet,
             /* open_in_panel = */ false);
       }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
       return SidebarItem();
     }
     case SidebarItem::BuiltInItemType::kBookmarks:

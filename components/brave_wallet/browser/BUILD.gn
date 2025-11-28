@@ -407,6 +407,7 @@ if (use_blink) {
       ":utils",
       "//base",
       "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/brave_wallet/common/buildflags",
       "//components/permissions:permissions_common",
       "//third_party/blink/public/common",
       "//third_party/re2",
@@ -433,6 +434,7 @@ source_set("constants") {
 
 source_set("pref_names") {
   sources = [ "pref_names.h" ]
+  deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 }
 
 source_set("utils") {

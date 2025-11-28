@@ -48,6 +48,7 @@ if (enable_brave_wallet) {
 brave_components_permissions_deps = [
   "//base",
   "//brave/brave_domains",
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/constants",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",

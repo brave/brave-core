@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
@@ -196,12 +197,15 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveAfterExpiration) {
     ContentSettingsType type;
     const char* type_key;
   } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
                {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
                 "brave_ethereum"},
                {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA,
                 "brave_solana"},
                {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
-                "brave_cardano"}};
+                "brave_cardano"}
+#endif
+  };
 
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin);
@@ -236,12 +240,15 @@ TEST_F(PermissionExpirationsTest, AddWithAllAndRemoveDataAfterExpiration) {
     const char* type_key;
   } cases[] = {
       {kOrigin, kOrigin2, ContentSettingsType::NOTIFICATIONS, "notifications"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {kOriginWithETHAccount, kOrigin2WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount,
        ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
       {kOriginWithADAAccount, kOrigin2WithADAAccount,
-       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin
                                     << ", " << entry.origin2);
@@ -280,12 +287,15 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
     const char* type_key;
   } cases[] = {
       {kOrigin, kOrigin2, ContentSettingsType::NOTIFICATIONS, "notifications"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {kOriginWithETHAccount, kOrigin2WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount,
        ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
       {kOriginWithADAAccount, kOrigin2WithADAAccount,
-       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ": " << entry.origin
                                     << ", " << entry.origin2);
@@ -338,12 +348,15 @@ TEST_F(PermissionExpirationsTest, RemoveExpiredDifferentTypes) {
   } cases[] = {
       {kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
        ContentSettingsType::GEOLOCATION, "geolocation"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
        "brave_ethereum", ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
       {kOriginWithSOLAccount, ContentSettingsType::BRAVE_SOLANA, "brave_solana",
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
-       "brave_cardano", ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
+       "brave_cardano", ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message() << entry.type_key << ", " << entry.type_key2
                                     << ": " << entry.origin);
@@ -404,6 +417,7 @@ TEST_F(PermissionExpirationsTest, AddRemoveDomainExpiration) {
     const char* type_key2;
   } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
                 kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
                {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
                 "brave_ethereum", kOriginWithSOLAccount,
                 ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
@@ -412,7 +426,9 @@ TEST_F(PermissionExpirationsTest, AddRemoveDomainExpiration) {
                 ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
                {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
                 "brave_cardano", kOriginWithETHAccount,
-                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -456,6 +472,7 @@ TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
     const char* type_key2;
   } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
                 kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
                {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
                 "brave_ethereum", kOriginWithSOLAccount,
                 ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
@@ -464,7 +481,9 @@ TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
                 ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
                {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
                 "brave_cardano", kOriginWithETHAccount,
-                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -508,6 +527,7 @@ TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
     const char* type_key2;
   } cases[] = {{kOrigin, ContentSettingsType::NOTIFICATIONS, "notifications",
                 kOrigin2, ContentSettingsType::GEOLOCATION, "geolocation"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
                {kOriginWithETHAccount, ContentSettingsType::BRAVE_ETHEREUM,
                 "brave_ethereum", kOriginWithSOLAccount,
                 ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
@@ -516,7 +536,9 @@ TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
                 ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
                {kOriginWithADAAccount, ContentSettingsType::BRAVE_CARDANO,
                 "brave_cardano", kOriginWithETHAccount,
-                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}};
+                ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ", " << entry.type_key2 << ": "
@@ -559,12 +581,15 @@ TEST_F(PermissionExpirationsTest, RemoveAllDomainExpirations) {
   } cases[] = {
       {kOrigin, kOrigin2, kOrigin3, ContentSettingsType::NOTIFICATIONS,
        "notifications"},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       {kOriginWithETHAccount, kOrigin2WithETHAccount, kOrigin3WithETHAccount,
        ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
       {kOriginWithSOLAccount, kOrigin2WithSOLAccount, kOrigin3WithSOLAccount,
        ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
       {kOriginWithADAAccount, kOrigin2WithADAAccount, kOrigin3WithADAAccount,
-       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}};
+       ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}
+#endif
+  };
   for (const auto& entry : cases) {
     SCOPED_TRACE(testing::Message()
                  << entry.type_key << ": " << entry.origin << ", "

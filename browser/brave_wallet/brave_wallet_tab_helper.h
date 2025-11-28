@@ -15,10 +15,12 @@
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"
 #include "url/gurl.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace content {
 class BrowserContext;
 struct GlobalRenderFrameHostId;

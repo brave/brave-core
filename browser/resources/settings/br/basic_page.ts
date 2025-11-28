@@ -20,8 +20,10 @@ import '../brave_sync_page/brave_sync_manage_devices_page.js'
 // <if expr="enable_tor">
 import '../brave_tor_page/brave_tor_subpage.js'
 // </if>
+// <if expr="enable_brave_wallet">
 import '../brave_wallet_page/brave_wallet_page.js'
 import '../brave_web3_domains_page/brave_web3_domains_page.js'
+// </if>
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'

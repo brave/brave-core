@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -35,6 +35,10 @@
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -229,6 +233,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kWebViewRoundedCorners] =
       settings_api::PrefType::kBoolean;
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Brave Wallet pref
   (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
       settings_api::PrefType::kDictionary;
@@ -249,6 +254,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // Leo Assistant pref
   (*s_brave_allowlist)[ai_chat::prefs::kBraveChatStorageEnabled] =

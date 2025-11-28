@@ -16,6 +16,7 @@ source_set("brave_stats") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_stats/browser:buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/webcompat_reporter/buildflags",
     "//components/prefs",

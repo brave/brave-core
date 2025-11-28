@@ -18,9 +18,11 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store_frontend.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
 
 namespace base {

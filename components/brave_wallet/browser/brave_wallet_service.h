@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -35,6 +36,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/origin.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace network {
 class SharedURLLoaderFactory;
 }
