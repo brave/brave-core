@@ -5,7 +5,6 @@
 
 import BraveShared
 import BraveUI
-import BraveVPN
 import DesignSystem
 import GuardianConnect
 import Preferences
