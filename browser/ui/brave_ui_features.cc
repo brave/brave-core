@@ -18,4 +18,8 @@ BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_WIN)
 
+// A feature flag to force all popup windows to be opened as tabs.
+// https://github.com/brave/brave-browser/issues/40959
+BASE_FEATURE(kForcePopupToBeOpenedAsTab, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features

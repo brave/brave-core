@@ -17,6 +17,8 @@ BASE_DECLARE_FEATURE(kBraveFilledBookmarkFolderIcon);
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)
 
+BASE_DECLARE_FEATURE(kForcePopupToBeOpenedAsTab);
+
 }  // namespace features
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_UI_FEATURES_H_
