@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/config.gni")
 import("//build/buildflag_header.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
@@ -11,16 +12,10 @@ import("//testing/test.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
+assert(enable_brave_wallet)
+
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
-    "ENABLE_ORCHARD=$enable_orchard",
-  ]
-}
 
 static_library("common") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
@@ -73,12 +68,12 @@ static_library("common") {
     "zcash_utils.h",
   ]
   deps = [
-    ":buildflags",
     ":common_constants",
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
     ":pref_names",
     ":rust_lib",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/net/base:utils",
     "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",
@@ -105,6 +100,7 @@ source_set("common_constants") {
 
 source_set("pref_names") {
   sources = [ "pref_names.h" ]
+  deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 }
 
 generated_types("generated_json_rpc_requests") {

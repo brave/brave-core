@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 # Generate a JSON config file with build flags for Jest tests
 generated_file("jest_build_config") {
@@ -11,6 +12,7 @@ generated_file("jest_build_config") {
 
   contents = {
     enable_ai_chat = enable_ai_chat
+    enable_brave_wallet = enable_brave_wallet
   }
 
   output_conversion = "json"

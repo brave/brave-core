@@ -11,7 +11,7 @@
 #include "base/strings/cstring_view.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
@@ -24,13 +24,19 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 namespace brave {
 
 base::span<const base::cstring_view> GetBravePersistentPrefNames() {
   static constexpr auto kAllowlist = std::to_array<base::cstring_view>({
       kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       kShowWalletIconOnToolbar,
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
       prefs::kSidePanelHorizontalAlignment,
       kTabMuteIndicatorNotClickable,
       brave_tabs::kVerticalTabsExpandedWidth,

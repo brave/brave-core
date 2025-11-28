@@ -1,0 +1,63 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+
+# Deps for chrome/browser/ui
+brave_chrome_browser_ui_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+if (enable_brave_wallet) {
+  brave_chrome_browser_ui_deps += [
+    "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
+  ]
+}
+
+# Deps for chrome/browser/prefs:impl
+brave_chrome_browser_prefs_impl_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+if (enable_brave_wallet) {
+  brave_chrome_browser_prefs_impl_deps += [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/decentralized_dns/core",
+  ]
+}
+if (deprecate_ipfs) {
+  brave_chrome_browser_prefs_impl_deps += [ "//brave/components/ipfs" ]
+}
+
+# Deps for chrome/browser/ui/hid
+brave_hid_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
+if (enable_brave_wallet) {
+  brave_hid_deps += [ "//brave/components/brave_wallet/browser:utils" ]
+}
+
+# Deps for components/content_settings/core/browser
+brave_content_settings_core_browser_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for components/permissions
+brave_components_permissions_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for content/browser
+brave_content_browser_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for net
+brave_net_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for third_party/blink/common
+brave_blink_common_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for third_party/blink/public/common
+brave_blink_public_common_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+
+# Deps for third_party/blink/renderer/modules/permissions
+brave_blink_renderer_modules_permissions_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]

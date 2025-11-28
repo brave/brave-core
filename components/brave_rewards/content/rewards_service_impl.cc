@@ -51,8 +51,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/publisher_utils.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
@@ -75,6 +74,11 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#endif
 
 namespace brave_rewards {
 
@@ -200,14 +204,20 @@ RewardsServiceImpl::RewardsServiceImpl(
     favicon::FaviconService* favicon_service,
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
-    content::StoragePartition* storage_partition,
-    brave_wallet::BraveWalletService* brave_wallet_service)
+    content::StoragePartition* storage_partition
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    ,
+    brave_wallet::BraveWalletService* brave_wallet_service
+#endif
+    )
     : prefs_(prefs),
       favicon_service_(favicon_service),
       request_image_callback_(request_image_callback),
       cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       brave_wallet_service_(brave_wallet_service),
+#endif
       receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -837,6 +847,7 @@ void RewardsServiceImpl::GetSPLTokenAccountBalance(
     const std::string& solana_address,
     const std::string& token_mint_address,
     GetSPLTokenAccountBalanceCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (!brave_wallet_service_) {
     std::move(callback).Run(nullptr);
     return;
@@ -846,8 +857,12 @@ void RewardsServiceImpl::GetSPLTokenAccountBalance(
       solana_address, token_mint_address, brave_wallet::mojom::kSolanaMainnet,
       base::BindOnce(&RewardsServiceImpl::OnGetSPLTokenAccountBalance,
                      AsWeakPtr(), std::move(callback)));
+#else
+  std::move(callback).Run(nullptr);
+#endif
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void RewardsServiceImpl::OnGetSPLTokenAccountBalance(
     GetSPLTokenAccountBalanceCallback callback,
     const std::string& amount,
@@ -866,6 +881,7 @@ void RewardsServiceImpl::OnGetSPLTokenAccountBalance(
   balance->decimals = decimals;
   std::move(callback).Run(std::move(balance));
 }
+#endif
 
 void RewardsServiceImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {

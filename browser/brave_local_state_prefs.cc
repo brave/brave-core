@@ -27,9 +27,8 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -102,6 +101,11 @@
 #include "brave/browser/updater/updater_p3a.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/decentralized_dns/core/utils.h"
+#endif
+
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -114,7 +118,9 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #endif
 
   misc_metrics::UptimeMonitorImpl::RegisterPrefsForMigration(registry);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
+#endif
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
   brave_shields::RegisterPrefsForAdBlockServiceForMigration(registry);
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
@@ -176,7 +182,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   RegisterWidevineLocalstatePrefs(registry);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   decentralized_dns::RegisterLocalStatePrefs(registry);
+#endif
 
   RegisterLocalStatePrefsForMigration(registry);
 
@@ -199,7 +207,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterStringPref(::prefs::kBraveVpnDnsConfig, std::string());
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefs(registry);
+#endif
 
   misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetrics::RegisterPrefs(registry);

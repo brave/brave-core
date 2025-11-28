@@ -11,13 +11,8 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -50,6 +45,15 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 using decentralized_dns::EnsOffchainResolveMethod;
 using decentralized_dns::ResolveMethodTypes;
@@ -110,6 +114,7 @@ BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() = default;
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   web_ui()->RegisterMessageCallback(
       "resetWallet",
       base::BindRepeating(&BraveDefaultExtensionsHandler::ResetWallet,
@@ -127,6 +132,7 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
                             base::Unretained(this)));
   }
 #endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
@@ -188,6 +194,7 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
   ResolveJavascriptCallback(args[0], base::Value(IsRestartNeeded()));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_ORCHARD)
 void BraveDefaultExtensionsHandler::ResetZCashSyncState(
     const base::Value::List& args) {
@@ -220,6 +227,7 @@ void BraveDefaultExtensionsHandler::ResetTransactionInfo(
     brave_wallet_service->tx_service()->Reset();
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
     const std::string& extension_id) const {

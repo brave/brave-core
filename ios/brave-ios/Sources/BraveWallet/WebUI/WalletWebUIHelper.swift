@@ -18,7 +18,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     unlockWalletHandler: (() -> Void)?,
     showOnboardingHandler: ((Bool) -> Void)?
   ) {
-    if !tab.isChromiumTab || !FeatureList.kBraveWalletWebUIIOS.enabled {
+    if !tab.isChromiumTab || !(FeatureList.kBraveWalletWebUIIOS?.enabled ?? false) {
       return nil
     }
     self.tab = tab

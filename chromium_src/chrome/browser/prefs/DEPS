@@ -13,6 +13,7 @@ include_rules = [
   "+brave/components/brave_vpn/common/buildflags/buildflags.h",
   "+brave/components/brave_wallet/browser/brave_wallet_prefs.h",
   "+brave/components/brave_wallet/browser/keyring_service.h",
+  "+brave/components/brave_wallet/common/buildflags/buildflags.h",
   "+brave/components/constants/pref_names.h",
   "+brave/components/decentralized_dns/core/utils.h",
   "+brave/components/ipfs/ipfs_prefs.h",

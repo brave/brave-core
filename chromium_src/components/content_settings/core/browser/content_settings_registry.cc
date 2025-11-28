@@ -10,6 +10,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
@@ -175,6 +176,7 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Register ethereum default value as Ask.
   Register(ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
@@ -210,6 +212,7 @@ void ContentSettingsRegistry::BraveInit() {
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // Register google sign in social media permission default value as Ask.
   // This is INHERIT_IN_INCOGNITO because it sets cookie rules, and cookies

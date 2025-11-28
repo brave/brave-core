@@ -10,8 +10,10 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet {
 
 class MeldIntegrationService;

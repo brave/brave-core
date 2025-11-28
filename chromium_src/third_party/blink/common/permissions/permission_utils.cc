@@ -5,7 +5,24 @@
 
 #include <optional>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
+  case PermissionType::BRAVE_ETHEREUM:                     \
+    return "BraveEthereum";                                \
+  case PermissionType::BRAVE_SOLANA:                       \
+    return "BraveSolana";                                  \
+  case PermissionType::BRAVE_CARDANO:                      \
+    return "BraveCardano";
+#else
+#define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
+  case PermissionType::BRAVE_ETHEREUM:                     \
+  case PermissionType::BRAVE_SOLANA:                       \
+  case PermissionType::BRAVE_CARDANO:                      \
+    NOTREACHED();
+#endif
 
 #define PERMISSION_UTIL_GET_PERMISSION_STRING           \
   case PermissionType::BRAVE_ADS:                       \
@@ -30,39 +47,58 @@
     return "BraveLocalhostAccessPermission";            \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
     return "BraveOpenAIChatPermission";                 \
-  case PermissionType::BRAVE_ETHEREUM:                  \
-    return "BraveEthereum";                             \
-  case PermissionType::BRAVE_SOLANA:                    \
-    return "BraveSolana";                               \
-  case PermissionType::BRAVE_CARDANO:                   \
-    return "BraveCardano";
+    BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING
 
-#define kDisplayCapture                                         \
-  kDisplayCapture;                                              \
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_K_DISPLAY_CAPTURE                          \
   case PermissionType::BRAVE_ETHEREUM:                          \
     return network::mojom::PermissionsPolicyFeature::kEthereum; \
   case PermissionType::BRAVE_SOLANA:                            \
     return network::mojom::PermissionsPolicyFeature::kSolana;   \
-  case PermissionType::BRAVE_ADS:                               \
-  case PermissionType::BRAVE_TRACKERS:                          \
-  case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:         \
-  case PermissionType::BRAVE_FINGERPRINTING_V2:                 \
-  case PermissionType::BRAVE_SHIELDS:                           \
-  case PermissionType::BRAVE_REFERRERS:                         \
-  case PermissionType::BRAVE_COOKIES:                           \
-  case PermissionType::BRAVE_SPEEDREADER:                       \
-  case PermissionType::BRAVE_GOOGLE_SIGN_IN:                    \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:                  \
-  case PermissionType::BRAVE_OPEN_AI_CHAT:                      \
-    return std::nullopt;                                        \
   case PermissionType::BRAVE_CARDANO:                           \
-    return network::mojom::PermissionsPolicyFeature::kCardano
+    return network::mojom::PermissionsPolicyFeature::kCardano;
+#else
+#define BRAVE_WALLET_K_DISPLAY_CAPTURE \
+  case PermissionType::BRAVE_ETHEREUM: \
+  case PermissionType::BRAVE_SOLANA:   \
+  case PermissionType::BRAVE_CARDANO:  \
+    return std::nullopt;
+#endif
+
+#define kDisplayCapture                                 \
+  kDisplayCapture;                                      \
+  BRAVE_WALLET_K_DISPLAY_CAPTURE                        \
+  case PermissionType::BRAVE_ADS:                       \
+  case PermissionType::BRAVE_TRACKERS:                  \
+  case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES: \
+  case PermissionType::BRAVE_FINGERPRINTING_V2:         \
+  case PermissionType::BRAVE_SHIELDS:                   \
+  case PermissionType::BRAVE_REFERRERS:                 \
+  case PermissionType::BRAVE_COOKIES:                   \
+  case PermissionType::BRAVE_SPEEDREADER:               \
+  case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
+  case PermissionType::BRAVE_OPEN_AI_CHAT:              \
+    return std::nullopt
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
+  case PermissionName::BRAVE_ETHEREUM:                             \
+    return PermissionType::BRAVE_ETHEREUM;                         \
+  case PermissionName::BRAVE_SOLANA:                               \
+    return PermissionType::BRAVE_SOLANA;                           \
+  case PermissionName::BRAVE_CARDANO:                              \
+    return PermissionType::BRAVE_CARDANO;
+#else
+#define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
+  case PermissionName::BRAVE_ETHEREUM:                             \
+  case PermissionName::BRAVE_SOLANA:                               \
+  case PermissionName::BRAVE_CARDANO:                              \
+    NOTREACHED();
+#endif
 
 #define BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
-  case PermissionName::BRAVE_ETHEREUM:                                      \
-    return PermissionType::BRAVE_ETHEREUM;                                  \
-  case PermissionName::BRAVE_SOLANA:                                        \
-    return PermissionType::BRAVE_SOLANA;                                    \
+  BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE                \
   case PermissionName::BRAVE_ADS:                                           \
     return PermissionType::BRAVE_ADS;                                       \
   case PermissionName::BRAVE_TRACKERS:                                      \
@@ -84,11 +120,12 @@
   case PermissionName::BRAVE_LOCALHOST_ACCESS:                              \
     return PermissionType::BRAVE_LOCALHOST_ACCESS;                          \
   case PermissionName::BRAVE_OPEN_AI_CHAT:                                  \
-    return PermissionType::BRAVE_OPEN_AI_CHAT;                              \
-  case PermissionName::BRAVE_CARDANO:                                       \
-    return PermissionType::BRAVE_CARDANO;
+    return PermissionType::BRAVE_OPEN_AI_CHAT;
 
 #include <third_party/blink/common/permissions/permission_utils.cc>
 #undef BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE
+#undef BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE
 #undef kDisplayCapture
+#undef BRAVE_WALLET_K_DISPLAY_CAPTURE
 #undef PERMISSION_UTIL_GET_PERMISSION_STRING
+#undef BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING

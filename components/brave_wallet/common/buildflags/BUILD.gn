@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/config.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"",
+    "ENABLE_BRAVE_WALLET=$enable_brave_wallet",
+    "ENABLE_ORCHARD=$enable_orchard",
+  ]
+}

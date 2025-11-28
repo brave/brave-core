@@ -9,6 +9,7 @@ include_rules = [
   "+brave/components/brave_shields/core/common/features.h",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/components/brave_vpn/common/features.h",
+  "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/brave_wallet/common/features.h",
   "+brave/components/debounce/core/common/features.h",
   "+brave/components/google_sign_in_permission/features.h",

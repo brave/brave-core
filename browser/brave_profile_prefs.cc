@@ -39,7 +39,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -151,6 +151,10 @@ using extensions::FeatureSwitch;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/prefs.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #endif
 
 namespace brave {
@@ -272,7 +276,9 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2025
   registry->RegisterBooleanPref(dark_mode::kBraveDarkModeMigrated, false);
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterProfilePrefsForMigration(registry);
+#endif
 
   // Restore "Other Bookmarks" migration
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
@@ -460,8 +466,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   NTPBackgroundPrefs::RegisterPref(registry);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Brave Wallet
   brave_wallet::RegisterProfilePrefs(registry);
+#endif
 
 #if BUILDFLAG(ENABLE_PSST)
   psst::RegisterProfilePrefs(registry);

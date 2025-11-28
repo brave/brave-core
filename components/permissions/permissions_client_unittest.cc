@@ -6,6 +6,7 @@
 #include "components/permissions/permissions_client.h"
 
 #include "base/compiler_specific.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -14,6 +15,7 @@ namespace permissions {
 
 using PermissionsClientUnitTest = testing::Test;
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
   auto* client = PermissionsClient::Get();
   ASSERT_TRUE(client);
@@ -59,5 +61,6 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
         << "case: " << i;
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 }  // namespace permissions

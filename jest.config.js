@@ -55,7 +55,8 @@ function getBuildConfig() {
 
   // Default to all features enabled if no config found
   return {
-    enable_ai_chat: true
+    enable_ai_chat: true,
+    enable_brave_wallet: true
   }
 }
 
@@ -105,7 +106,10 @@ module.exports = {
     '<rootDir>/build/rustup',
     '<rootDir>/third_party',
     '<rootDir>/tools/crates/vendor',
-    ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat'])
+    ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat']),
+    ...(buildConfig.enable_brave_wallet
+      ? []
+      : ['<rootDir>/components/brave_wallet_ui'])
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [

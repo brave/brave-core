@@ -120,6 +120,7 @@ RegisterPolymerTemplateModifications({
       }
       // </if>
 
+      // <if expr="enable_brave_wallet">
       const isNativeBraveWalletEnabled =
           loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       const isCardanoDappSupportFeatureEnabled =
@@ -167,15 +168,16 @@ RegisterPolymerTemplateModifications({
               'label', loadTimeData.getString('siteSettingsCardano'))
           }
         }
+      }
+      // </if>
 
-        const adPersonalization =
-          templateContent.querySelector('#adPersonalization')
-        if (!adPersonalization) {
-          console.error(
-            '[Settings] Could not find adPersonalization element to hide')
-        } else {
-          adPersonalization.remove()
-        }
+      const adPersonalization =
+        templateContent.querySelector('#adPersonalization')
+      if (!adPersonalization) {
+        console.error(
+          '[Settings] Could not find adPersonalization element to hide')
+      } else {
+        adPersonalization.remove()
       }
     }
 

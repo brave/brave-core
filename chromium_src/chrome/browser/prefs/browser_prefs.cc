@@ -21,10 +21,8 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -55,6 +53,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/decentralized_dns/core/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -127,7 +131,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::MigrateObsoleteProfilePrefs(profile_prefs);
+#endif
 
   // Added 05/2021
   profile_prefs->ClearPref(kBraveNewsIntroDismissed);
@@ -240,7 +246,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   tor::MigrateLastUsedProfileFromLocalStatePrefs(local_state);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   decentralized_dns::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022

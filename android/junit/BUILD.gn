@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/android/config.gni")
 import("//third_party/jni_zero/jni_zero.gni")
 
@@ -55,18 +56,20 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
-  robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.crypto_wallet") {
-    sources = [
-      "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
-      "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
-      "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
-    ]
+  if (enable_brave_wallet) {
+    robolectric_library(
+        "brave_junit_tests_org.chromium.chrome.browser.crypto_wallet") {
+      sources = [
+        "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+      ]
 
-    deps = [
-      "//brave/components/brave_wallet/common:mojom_java",
-      "//chrome/android/junit:chrome_junit_tests_helper",
-    ]
+      deps = [
+        "//brave/components/brave_wallet/common:mojom_java",
+        "//chrome/android/junit:chrome_junit_tests_helper",
+      ]
+    }
   }
 
   robolectric_library(
