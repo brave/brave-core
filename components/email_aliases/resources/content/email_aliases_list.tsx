@@ -62,6 +62,7 @@ export const ListIntroduction = ({
       </Description>
     </Col>
     <Button
+      id='create-new-item-button'
       isDisabled={aliasesCount >= MAX_ALIASES}
       kind='filled'
       size='small'
