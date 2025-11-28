@@ -18,6 +18,7 @@ namespace ephemeral_storage {
 static void JNI_BraveEphemeralStorageUtils_CleanupTLDFirstPartyStorage(
     JNIEnv* env,
     const jni_zero::JavaRef<jobject>& tab_object) {
+  CHECK(env);
   // Validate that GetNativeTab returned a valid TabAndroid pointer
   // GetNativeTab handles null JavaRef validation internally
   TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab_object);

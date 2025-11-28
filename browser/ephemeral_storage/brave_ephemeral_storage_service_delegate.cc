@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
@@ -34,7 +36,7 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ephemeral_storage/ignore_onbeforeunload_web_contents_delegate.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -48,12 +50,7 @@
 namespace {
 
 bool PrepareTabToClose(tabs::TabInterface* tab,
-                       const std::string& etldplusone
-#if !BUILDFLAG(IS_ANDROID)
-                       ,
-                       IgnoreOnBeforeUnloadWebContentsDelegate* delegate
-#endif  // !BUILDFLAG(IS_ANDROID)
-) {
+                       const std::string& etldplusone) {
   if (!tab) {
     return false;
   }
@@ -70,10 +67,6 @@ bool PrepareTabToClose(tabs::TabInterface* tab,
   if (auto* ephemeral_storage_tab_helper =
           ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
               contents)) {
-#if !BUILDFLAG(IS_ANDROID)
-    contents->SetDelegate(delegate);
-#endif  // !BUILDFLAG(IS_ANDROID)
-
     ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
     return true;
   }
@@ -175,9 +168,6 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
-#if !BUILDFLAG(IS_ANDROID)
-  web_contents_delegates_.clear();
-#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
@@ -212,7 +202,7 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
   CHECK(profile);
 
 #if !BUILDFLAG(IS_ANDROID)
-  web_contents_delegates_.clear();
+  expected_tabs_to_close_with_onbeforeunload_ignore_.clear();
   for (auto* browser : GetAllBrowserWindowInterfaces()) {
     if (profile != browser->GetProfile()) {
       continue;
@@ -221,21 +211,25 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
     if (!tab_strip) {
       continue;
     }
-
-    std::vector<tabs::TabInterface*> tabs_to_close;
-    for (auto tab_itr = tab_strip->begin(); tab_itr != tab_strip->end();
-         ++tab_itr) {
-      auto current_web_contents_delegate =
-          std::make_unique<IgnoreOnBeforeUnloadWebContentsDelegate>(tab_strip);
-      if (!PrepareTabToClose(*tab_itr, ephemeral_domain,
-                             current_web_contents_delegate.get())) {
+    auto* brave_browser = static_cast<BraveBrowser*>(browser);
+    if (!brave_browser) {
+      continue;
+    }
+    // Set callback to be notified when tabs are closed and onbefore.
+    brave_browser->SetIgnoreBeforeunloadHandlersWhenTabClosing(
+        base::BindRepeating(&BraveEphemeralStorageServiceDelegate::
+                                OnTabClosedWithOnBeforeUnloadIgnore,
+                            weak_ptr_factory_.GetWeakPtr(), brave_browser));
+    for (auto* tab : *tab_strip) {
+      if (!PrepareTabToClose(tab, ephemeral_domain)) {
         continue;
       }
-      web_contents_delegates_.emplace_back(
-          std::move(current_web_contents_delegate));
-      tabs_to_close.emplace_back(*tab_itr);
+      expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser]
+          .push_back(tab);
     }
-    for (auto* tab : tabs_to_close) {
+    for (auto* tab :
+         expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser]) {
+      // initiate the closing of the tab
       tab->GetContents()->Close();
     }
   }
@@ -266,6 +260,35 @@ bool BraveEphemeralStorageServiceDelegate::
     IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
   return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
       url);
+}
+
+void BraveEphemeralStorageServiceDelegate::OnTabClosedWithOnBeforeUnloadIgnore(
+    BraveBrowser* brave_browser,
+    tabs::TabInterface* closed_tab) {
+  CHECK(brave_browser);
+  CHECK(closed_tab);
+
+  if (!expected_tabs_to_close_with_onbeforeunload_ignore_.contains(
+          brave_browser)) {
+    return;
+  }
+
+  auto& tabs_vector =
+      expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser];
+
+  auto it = std::find(tabs_vector.begin(), tabs_vector.end(), closed_tab);
+  if (it == tabs_vector.end()) {
+    return;
+  }
+
+  tabs_vector.erase(it);
+  if (!tabs_vector.empty()) {
+    return;
+  }
+
+  // Reset ignore beforeunload handlers when all expected tabs are closed.
+  brave_browser->SetIgnoreBeforeunloadHandlersWhenTabClosing(
+      BraveBrowser::OnIgnoredBeforeUnloadTabClosingCallback());
 }
 
 }  // namespace ephemeral_storage

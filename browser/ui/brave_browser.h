@@ -26,6 +26,9 @@ class BraveBrowser : public Browser {
   BraveBrowser(const BraveBrowser&) = delete;
   BraveBrowser& operator=(const BraveBrowser&) = delete;
 
+  using OnIgnoredBeforeUnloadTabClosingCallback =
+      base::RepeatingCallback<void(tabs::TabInterface*)>;
+
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;
@@ -77,6 +80,9 @@ class BraveBrowser : public Browser {
     ignore_enable_closing_last_tab_pref_ = true;
   }
 
+  void SetIgnoreBeforeunloadHandlersWhenTabClosing(
+      OnIgnoredBeforeUnloadTabClosingCallback callback);
+
  private:
   friend class BraveTestLauncherDelegate;
   friend class WindowClosingConfirmBrowserTest;
@@ -87,6 +93,8 @@ class BraveBrowser : public Browser {
 
   bool AreAllTabsSharedPinnedTabs();
 
+  bool ShouldSuppressDialogs(content::WebContents* source) override;
+
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.
   bool confirmed_to_close_ = false;
@@ -95,6 +103,10 @@ class BraveBrowser : public Browser {
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.
   bool ignore_enable_closing_last_tab_pref_ = false;
+
+  // Callback to be called when tab closing with ignoring onbeforeunload
+  // handlers is completed.
+  OnIgnoredBeforeUnloadTabClosingCallback on_tab_closing_complete_;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

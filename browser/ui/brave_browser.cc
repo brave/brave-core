@@ -47,6 +47,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
@@ -233,6 +234,14 @@ void BraveBrowser::OnTabStripModelChanged(
       selection.active_tab_changed()) {
     sidebar_controller->sidebar()->UpdateSidebarItemsState();
   }
+
+  // Notify when tab closing with ignoring onbeforeunload handlers is completed.
+  if (!on_tab_closing_complete_.is_null() &&
+      change.type() == TabStripModelChange::Type::kRemoved) {
+    for (const auto& contents : change.GetRemove()->contents) {
+      on_tab_closing_complete_.Run(contents.tab);
+    }
+  }
 }
 
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
@@ -358,4 +367,17 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
 
 BraveBrowserWindow* BraveBrowser::brave_window() {
   return static_cast<BraveBrowserWindow*>(window_.get());
+}
+
+void BraveBrowser::SetIgnoreBeforeunloadHandlersWhenTabClosing(
+    OnIgnoredBeforeUnloadTabClosingCallback callback) {
+  on_tab_closing_complete_ = std::move(callback);
+}
+
+bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
+  if (!on_tab_closing_complete_.is_null()) {
+    return true;
+  }
+
+  return content::WebContentsDelegate::ShouldSuppressDialogs(source);
 }
