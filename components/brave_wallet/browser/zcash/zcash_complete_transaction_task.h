@@ -14,7 +14,7 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 namespace brave_wallet {
 

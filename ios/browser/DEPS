@@ -8,6 +8,7 @@ include_rules += [
   "+brave/components/brave_component_updater/browser",
   "+brave/components/brave_user_agent/browser",
   "+brave/components/brave_wallet/browser",
+  "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/p3a",
   "+ios/chrome/browser",
   "+ios/web/web_state",

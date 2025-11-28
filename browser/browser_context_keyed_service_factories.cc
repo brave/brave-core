@@ -16,13 +16,6 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
-#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
-#include "brave/browser/brave_wallet/simulation_service_factory.h"
-#include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
@@ -41,6 +34,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -107,6 +101,16 @@
 #include "brave/components/psst/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PSST)
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
+#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
+#include "brave/browser/brave_wallet/simulation_service_factory.h"
+#include "brave/browser/brave_wallet/swap_service_factory.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -138,6 +142,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   webcompat_reporter::WebcompatReporterServiceFactory::GetInstance();
 
   brave_news::BraveNewsControllerFactory::GetInstance();
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::MeldIntegrationServiceFactory::GetInstance();
   brave_wallet::SwapServiceFactory::GetInstance();
@@ -146,6 +152,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::WalletNotificationServiceFactory::GetInstance();
 #endif
   brave_wallet::BraveWalletServiceFactory::GetInstance();
+  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
@@ -158,8 +166,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     commander::CommanderServiceFactory::GetInstance();
   }
 #endif
-
-  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
 
   EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();

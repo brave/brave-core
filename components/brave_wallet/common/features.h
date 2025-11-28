@@ -8,7 +8,9 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet::features {
 
 BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);

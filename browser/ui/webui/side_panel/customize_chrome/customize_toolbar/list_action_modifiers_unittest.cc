@@ -14,8 +14,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "chrome/test/base/testing_profile.h"
@@ -32,6 +31,11 @@
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/image/image_skia.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -297,6 +301,7 @@ TEST_F(ListActionModifiersUnitTest,
 
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_WalletShouldNotBeAddedWhenDisabled) {
   // Wallet should be added by default(Wallet enabled by default)
@@ -322,6 +327,7 @@ TEST_F(ListActionModifiersUnitTest,
   // Show Wallet action should not be present
   EXPECT_EQ(wallet_action_it, modified_actions.end());
 }
+#endif
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_RewardsShouldNotBeAddedWhenDisabled) {
@@ -358,7 +364,9 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
+#endif
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
   ASSERT_TRUE(
@@ -371,7 +379,10 @@ TEST_F(ListActionModifiersUnitTest,
       testing::ElementsAre(
           EqId(ActionId::kForward), EqId(ActionId::kShowAddBookmarkButton),
           EqId(ActionId::kNewIncognitoWindow), EqId(ActionId::kShowSidePanel),
-          EqId(ActionId::kTabSearch), EqId(ActionId::kShowWallet),
+          EqId(ActionId::kTabSearch),
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+          EqId(ActionId::kShowWallet),
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
           EqId(ActionId::kShowAIChat),
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)

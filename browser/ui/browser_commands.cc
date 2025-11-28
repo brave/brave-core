@@ -314,6 +314,7 @@ void ToggleAIChat(Browser* browser) {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CreateWalletBubble();
@@ -332,6 +333,7 @@ void CloseWalletBubble(Browser* browser) {
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
 #endif
 }
+#endif
 
 void CopySanitizedURL(Browser* browser, const GURL& url) {
   if (!browser || !browser->profile()) {

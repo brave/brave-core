@@ -6,6 +6,7 @@
 #include "components/permissions/permission_context_base.h"
 
 #include "base/check.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/permissions_client.h"
 
@@ -20,9 +21,13 @@
 namespace {
 
 bool IsGroupedPermissionType(ContentSettingsType type) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   return type == ContentSettingsType::BRAVE_ETHEREUM ||
          type == ContentSettingsType::BRAVE_SOLANA ||
          type == ContentSettingsType::BRAVE_CARDANO;
+#else
+  return false;
+#endif
 }
 
 }  // namespace

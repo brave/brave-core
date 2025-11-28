@@ -19,6 +19,7 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
@@ -69,7 +70,10 @@ class SidebarContainerView;
 class SidePanelEntry;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 class WalletButton;
+#endif
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
@@ -91,11 +95,13 @@ class BraveBrowserView : public BrowserView,
   void ShowUpdateChromeDialog() override;
 
   void ShowBraveVPNBubble(bool show_select = false);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
+#endif
   void UpdateContentsSeparatorVisibility();
 
   // Triggers layout of web modal dialogs

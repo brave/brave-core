@@ -4,10 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/logging.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/permission_bubble/permission_prompt.h"
 #include "components/permissions/request_type.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/views/permission_bubble/brave_wallet_permission_prompt_impl.h"
 #endif
 
@@ -25,7 +26,7 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
     return nullptr;
   }
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (delegate->Requests()[0]->request_type() ==
           permissions::RequestType::kBraveEthereum ||
       delegate->Requests()[0]->request_type() ==

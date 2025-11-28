@@ -111,7 +111,9 @@ export class BraveEducationAppElement extends CrLitElement {
     const commandNames = new Map<string, Command>(
       Object.entries({
         'open-rewards-onboarding': Command.kOpenRewardsOnboarding,
+        // <if expr="enable_brave_wallet">
         'open-wallet-onboarding': Command.kOpenWalletOnboarding,
+        // </if>
         'open-vpn-onboarding': Command.kOpenVPNOnboarding,
         // <if expr="enable_ai_chat">
         'open-ai-chat': Command.kOpenAIChat,

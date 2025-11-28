@@ -13,6 +13,9 @@
 #include <string_view>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class GURL;
 namespace url {
 class Origin;
