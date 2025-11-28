@@ -79,12 +79,12 @@ void SubdivisionUrlRequest::FetchCallback(
 
   is_fetching_ = false;
 
-  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+  if (mojom_url_response.code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Failed to request subdivision as forbidden");
     return FailedToFetchSubdivision(/*should_retry=*/false);
   }
 
-  if (mojom_url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.code != net::HTTP_OK) {
     return FailedToFetchSubdivision(/*should_retry=*/true);
   }
 

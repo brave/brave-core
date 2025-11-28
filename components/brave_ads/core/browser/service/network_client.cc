@@ -24,10 +24,12 @@ namespace brave_ads {
 
 namespace {
 
-void ReportError(const GURL& url, int error_code, UrlRequestCallback callback) {
+void ReportError(const GURL& url,
+                 int response_code,
+                 UrlRequestCallback callback) {
   auto mojom_url_response = mojom::UrlResponseInfo::New();
   mojom_url_response->url = url;
-  mojom_url_response->status_code = error_code;
+  mojom_url_response->code = response_code;
   std::move(callback).Run(std::move(mojom_url_response));
 }
 
@@ -106,7 +108,7 @@ void NetworkClient::HttpRequestCallback(
 
   auto mojom_url_response = mojom::UrlResponseInfo::New();
   mojom_url_response->url = url;
-  mojom_url_response->status_code = response_headers->response_code();
+  mojom_url_response->code = response_headers->response_code();
   mojom_url_response->body = response_body.value_or("");
   mojom_url_response->headers = ExtractHttpResponseHeaders(response_headers);
   std::move(callback).Run(std::move(mojom_url_response));
