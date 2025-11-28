@@ -227,7 +227,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     if Preferences.VPN.vpnReceiptStatus.value
-        == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
+      == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
     {
       vpnEnabledToggleView.onTintColor = .braveErrorLabel
     }
@@ -270,46 +270,46 @@ public class BraveVPNSettingsViewController: TableViewController {
     let expiration = BraveVPN.vpnState == .expired ? "-" : expirationDate
 
     let subscriptionSection =
-    Section(
-      header: .title(Strings.VPN.settingsSubscriptionSection),
-      rows: [
-        Row(
-          text: Strings.VPN.settingsSubscriptionStatus,
-          detailText: subscriptionStatus,
-          cellClass: ColoredDetailCell.self,
-          context: [ColoredDetailCell.colorKey: statusDetailColor],
-          uuid: vpnStatusProductTypeCellId
-        ),
-        Row(
-          text: Strings.VPN.settingsSubscriptionExpiration,
-          detailText: expiration,
-          uuid: vpnStatusExpiryDateCellId
-        ),
-        Row(
-          text: Strings.VPN.settingsManageSubscription,
-          selection: {
-            guard let url = URL.apple.manageSubscriptions else { return }
-            if UIApplication.shared.canOpenURL(url) {
-              // Opens Apple's 'manage subscription' screen.
-              UIApplication.shared.open(url, options: [:])
-            }
-          },
-          cellClass: ButtonCell.self
-        ),
-        Row(
-          text: Strings.VPN.settingsRedeemOfferCode,
-          selection: {
-            self.isLoading = false
-            // Open the redeem code sheet
-            SKPaymentQueue.default().presentCodeRedemptionSheet()
-          },
-          cellClass: ButtonCell.self
-        ),
-      ] + linkReceiptRows,
-      footer: .title(Strings.VPN.settingsLinkReceiptFooter),
-      uuid: subscriptionStatusSectionId
-    )
-    
+      Section(
+        header: .title(Strings.VPN.settingsSubscriptionSection),
+        rows: [
+          Row(
+            text: Strings.VPN.settingsSubscriptionStatus,
+            detailText: subscriptionStatus,
+            cellClass: ColoredDetailCell.self,
+            context: [ColoredDetailCell.colorKey: statusDetailColor],
+            uuid: vpnStatusProductTypeCellId
+          ),
+          Row(
+            text: Strings.VPN.settingsSubscriptionExpiration,
+            detailText: expiration,
+            uuid: vpnStatusExpiryDateCellId
+          ),
+          Row(
+            text: Strings.VPN.settingsManageSubscription,
+            selection: {
+              guard let url = URL.apple.manageSubscriptions else { return }
+              if UIApplication.shared.canOpenURL(url) {
+                // Opens Apple's 'manage subscription' screen.
+                UIApplication.shared.open(url, options: [:])
+              }
+            },
+            cellClass: ButtonCell.self
+          ),
+          Row(
+            text: Strings.VPN.settingsRedeemOfferCode,
+            selection: {
+              self.isLoading = false
+              // Open the redeem code sheet
+              SKPaymentQueue.default().presentCodeRedemptionSheet()
+            },
+            cellClass: ButtonCell.self
+          ),
+        ] + linkReceiptRows,
+        footer: .title(Strings.VPN.settingsLinkReceiptFooter),
+        uuid: subscriptionStatusSectionId
+      )
+
     let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
     let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
 
@@ -317,16 +317,16 @@ public class BraveVPNSettingsViewController: TableViewController {
     let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
       for: userPreferredTunnelProtocol
     )
-    
+
     var smartProxyAvailable = false
     if let activatedRegion = BraveVPN.activatedRegion {
       smartProxyAvailable =
-      !activatedRegion.smartRoutingProxyState.isEmpty
-      && (BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone)
+        !activatedRegion.smartRoutingProxyState.isEmpty
+        && (BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone)
     }
     let rowContext =
-    smartProxyAvailable && BraveVPN.isSmartProxyRoutingEnabled
-    ? [BraveVPNServerLocationCell.textAccessoryKey: "leo.smart.proxy-routing"] : nil
+      smartProxyAvailable && BraveVPN.isSmartProxyRoutingEnabled
+      ? [BraveVPNServerLocationCell.textAccessoryKey: "leo.smart.proxy-routing"] : nil
     let serverSection = Section(
       header: .title(Strings.VPN.settingsServerSection),
       rows: [
@@ -337,7 +337,7 @@ public class BraveVPNSettingsViewController: TableViewController {
             self.selectServerTapped()
           },
           image: BraveVPN.serverLocation.isoCode?.regionFlagImage
-          ?? UIImage(braveSystemNamed: "leo.globe"),
+            ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
           cellClass: BraveVPNServerLocationCell.self,
           context: rowContext,
@@ -363,7 +363,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       ],
       uuid: serverSectionId
     )
-    
+
     let techSupportSection = Section(
       header: .title(Strings.support.capitalized),
       rows: [
@@ -383,7 +383,7 @@ public class BraveVPNSettingsViewController: TableViewController {
         ),
       ]
     )
-    
+
     dataSource.sections = [
       vpnStatusSection,
       subscriptionSection,
