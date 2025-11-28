@@ -40,6 +40,9 @@ source_set("ads") {
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
   ]
 
   frameworks = [
