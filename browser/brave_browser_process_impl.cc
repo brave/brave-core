@@ -19,7 +19,6 @@
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
@@ -36,7 +35,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
-#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -106,6 +105,11 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -276,8 +280,10 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
       std::make_unique<brave_wallet::WalletDataFilesInstallerDelegateImpl>());
+#endif
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {

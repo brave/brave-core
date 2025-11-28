@@ -18,8 +18,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -27,7 +26,6 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
-#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -35,6 +33,11 @@
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
+#endif
 
 @interface Feature () {
   raw_ptr<const base::Feature> _feature;
@@ -229,6 +232,7 @@
   return [[Feature alloc] initWithFeature:&brave_sync::features::kBraveSync];
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 + (Feature*)kBraveWalletAnkrBalancesFeature {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletAnkrBalancesFeature];
@@ -243,6 +247,19 @@
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];
 }
+#else
++ (nullable Feature*)kBraveWalletAnkrBalancesFeature {
+  return nil;
+}
+
++ (nullable Feature*)kBraveWalletBitcoinFeature {
+  return nil;
+}
+
++ (nullable Feature*)kBraveWalletZCashFeature {
+  return nil;
+}
+#endif
 
 + (Feature*)kConstellationEnclaveAttestation {
   return [[Feature alloc]
@@ -285,10 +302,16 @@
       initWithFeature:&brave_search_conversion::features::kNTP];
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 + (Feature*)kNativeBraveWalletFeature {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kNativeBraveWalletFeature];
 }
+#else
++ (nullable Feature*)kNativeBraveWalletFeature {
+  return nil;
+}
+#endif
 
 + (Feature*)kSkusFeature {
   return [[Feature alloc] initWithFeature:&skus::features::kSkusFeature];
@@ -343,10 +366,16 @@
       [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 + (Feature*)kBraveWalletWebUIIOS {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletWebUIIOS];
 }
+#else
++ (nullable Feature*)kBraveWalletWebUIIOS {
+  return nil;
+}
+#endif
 
 + (Feature*)kAIChatWebUIEnabled {
   return

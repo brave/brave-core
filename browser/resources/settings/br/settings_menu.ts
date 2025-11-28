@@ -281,20 +281,21 @@ RegisterPolymerTemplateModifications({
       shieldsEl.insertAdjacentElement('afterend', privacyEl)
     }
 
+    // Track last inserted element to simplify conditional insertions
+    let lastInserted = privacyEl!
+
     // Add web3 item
-    const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
-    let web3El: HTMLElement | null = null
-    if (isBraveWalletAllowed) {
-      web3El = createMenuElement(
+    // <if expr="enable_brave_wallet">
+    if (loadTimeData.getBoolean('isBraveWalletAllowed')) {
+      const web3El = createMenuElement(
         loadTimeData.getString('braveWeb3'),
         '/web3',
         'product-brave-wallet',
         'braveWallet',
       )
-      if (privacyEl && web3El) {
-        privacyEl.insertAdjacentElement('afterend', web3El)
-      }
+      lastInserted = lastInserted.insertAdjacentElement('afterend', web3El)!
     }
+    // </if>
 
     // Add leo item
 // <if expr="enable_ai_chat">
@@ -304,11 +305,8 @@ RegisterPolymerTemplateModifications({
       'product-brave-leo',
       'leoAssistant',
     )
-    if (web3El) {
-      web3El.insertAdjacentElement('afterend', leoAssistantEl)
-    } else if (privacyEl) {
-      privacyEl.insertAdjacentElement('afterend', leoAssistantEl)
-    }
+    lastInserted =
+      lastInserted.insertAdjacentElement('afterend', leoAssistantEl)!
 // </if>
 
     // Add Sync item
@@ -318,16 +316,7 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
-// <if expr="enable_ai_chat">
-    leoAssistantEl.insertAdjacentElement('afterend', syncEl)
-// </if>
-// <if expr="not enable_ai_chat">
-    if (web3El) {
-      web3El.insertAdjacentElement('afterend', syncEl)
-    } else if (privacyEl) {
-      privacyEl.insertAdjacentElement('afterend', syncEl)
-    }
-// </if>
+    lastInserted = lastInserted.insertAdjacentElement('afterend', syncEl)!
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')

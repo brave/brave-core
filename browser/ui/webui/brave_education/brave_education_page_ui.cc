@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_education_resources.h"
 #include "brave/grit/brave_education_resources_map.h"
@@ -105,7 +106,9 @@ void BraveEducationPageUI::CreateBrowserCommandHandler(
       supported_commands.end(),
       {
           brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
           brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+#endif
           brave_browser_command::mojom::Command::kOpenVPNOnboarding,
 #if BUILDFLAG(ENABLE_AI_CHAT)
           brave_browser_command::mojom::Command::kOpenAIChat,

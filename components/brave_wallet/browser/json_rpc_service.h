@@ -26,12 +26,14 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;

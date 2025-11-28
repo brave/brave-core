@@ -11,12 +11,13 @@
 
 #include <vector>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "url/origin.h"
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #endif
@@ -37,11 +38,13 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
   // handling is covered via the browser tests:
   // SolanaProviderRendererTest.Iframe3P and
   // JSEthereumProviderBrowserTest.Iframe3P
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (type == ContentSettingsType::BRAVE_ETHEREUM ||
       type == ContentSettingsType::BRAVE_SOLANA ||
       type == ContentSettingsType::BRAVE_CARDANO) {
     return true;
   }
+#endif
 
   return CanBypassEmbeddingOriginCheck(requesting_origin, embedding_origin);
 }
@@ -52,6 +55,7 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     content::WebContents* web_contents,
     ContentSettingsType type,
     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   const auto& requests = prompt->delegate_public()->Requests();
   if (requests.size() > 0) {
     brave_wallet::mojom::CoinType coin_type =
@@ -72,8 +76,9 @@ ChromePermissionsClient::MaybeCreateMessageUI(
           web_contents, std::move(delegate), coin_type);
     }
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,
                                            std::move(prompt));
 }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)

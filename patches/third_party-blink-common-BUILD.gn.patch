@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
+index 256e5433c3f004098e5be985ff579b1ea93e70ff..4bda25f96f3d99fd4fe74fff81f99e450295084a 100644
+--- a/third_party/blink/common/BUILD.gn
++++ b/third_party/blink/common/BUILD.gn
+@@ -353,6 +353,7 @@ source_set("common") {
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
++  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_common_deps
+ }
+ 
+ test("blink_common_unittests") {
+@@ -498,6 +499,7 @@ source_set("common_unittests_sources") {
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
+   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
++  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_common_deps
+ }
+ 
+ group("common_unittests_data") {

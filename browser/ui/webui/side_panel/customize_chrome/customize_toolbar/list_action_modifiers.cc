@@ -16,7 +16,7 @@
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/prefs/pref_service.h"
@@ -36,6 +36,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace customize_chrome {
 
@@ -189,9 +193,11 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (brave_wallet::IsNativeWalletEnabled()) {
     brave_actions.push_back(kShowWalletAction);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   AddActionsForAddressBarCategory(
       Profile::FromBrowserContext(web_contents.GetBrowserContext()),

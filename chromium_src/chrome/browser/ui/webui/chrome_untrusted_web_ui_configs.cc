@@ -6,16 +6,20 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "base/feature_list.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "content/public/browser/webui_config_map.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "build/build_config.h"
-#include "content/public/browser/webui_config_map.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
@@ -43,6 +47,7 @@
 
 void RegisterChromeUntrustedWebUIConfigs() {
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<market::UntrustedMarketUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
@@ -54,6 +59,9 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<ledger::UntrustedLedgerUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
+#endif  // !BUILDFLAG(IS_ANDROID)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
