@@ -436,8 +436,6 @@ interface PanelHandler {
 
   CancelConnectToSite();
 
-  SetCloseOnDeactivate(bool close);
-
   Focus();
 
   IsSolanaAccountConnected(string account) => (bool connected);
