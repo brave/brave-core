@@ -10,13 +10,15 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/flat_set.h"
-#include "base/containers/unique_ptr_adapters.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/network_client_callback.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "url/gurl.h"
+
+class PrefService;
 
 namespace network {
 class SimpleURLLoader;
@@ -25,42 +27,60 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
-// This class is responsible for sending HTTP network requests.
+class ObliviousHttpKeyConfig;
+
+// Sends network requests, supporting both standard HTTP and Oblivious HTTP
+// (OHTTP). Standard HTTP requests are issued via SimpleURLLoader, while OHTTP
+// requests are routed through the network service’s OHTTP implementation.
 class NetworkClient {
  public:
   NetworkClient(
+      PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      network::NetworkContextGetter network_context_getter);
+      network::NetworkContextGetter network_context_getter,
+      bool use_ohttp_staging);
 
   NetworkClient(const NetworkClient&) = delete;
   NetworkClient& operator=(const NetworkClient&) = delete;
 
   ~NetworkClient();
 
-  // Starts a network request for the given `mojom::UrlRequestInfo`. The
-  // provided `callback` will be invoked with a `mojom::UrlResponseInfo` unless
-  // the request is canceled or the `NetworkClient` is destroyed.
+  // Issues a network request described by `mojom::UrlRequestInfo`. When the
+  // request completes, `callback` is invoked with a `mojom::UrlResponseInfo`.
+  // The callback will not run if the request is canceled or if this instance
+  // is destroyed.
   void UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                   UrlRequestCallback callback);
 
-  // Cancels all ongoing network requests. Pending callbacks will not be
-  // invoked.
+  // Cancels all active requests. Any pending callbacks will be dropped.
   void CancelRequests();
 
  private:
+  // Sends the request using standard HTTP.
   void HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                    UrlRequestCallback callback);
-  void HttpRequestCallback(network::SimpleURLLoader* url_loader,
+  void HttpRequestCallback(std::unique_ptr<network::SimpleURLLoader> url_loader,
                            UrlRequestCallback callback,
                            std::optional<std::string> response_body);
 
+  // Sends the request using Oblivious HTTP (OHTTP). For details, see
+  // https://ietf-wg-ohai.github.io/oblivious-http/draft-ietf-ohai-ohttp.html
+  void ObliviousHttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                            const GURL& relay_url,
+                            UrlRequestCallback callback);
+  void ObliviousHttpRequestCallback(
+      UrlRequestCallback callback,
+      mojom::UrlResponseInfoPtr mojom_url_response);
+
+  const raw_ptr<PrefService> local_state_;  // Not owned.
+
   const scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // Not owned.
-  base::flat_set<std::unique_ptr<network::SimpleURLLoader>,
-                 base::UniquePtrComparator>
-      url_loaders_;
 
   const network::NetworkContextGetter network_context_getter_;
+
+  std::unique_ptr<ObliviousHttpKeyConfig> oblivious_http_key_config_;
+  const GURL oblivious_http_relay_url_;
 
   base::WeakPtrFactory<NetworkClient> weak_ptr_factory_{this};
 };

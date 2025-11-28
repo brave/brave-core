@@ -48,7 +48,13 @@ std::string HeadersToString(const std::vector<std::string>& headers,
 
 std::string UrlRequestToString(
     const mojom::UrlRequestInfoPtr& mojom_url_request) {
-  std::string log = "URL Request:\n";
+  std::string log;
+
+  if (mojom_url_request->use_ohttp) {
+    log += "URL Request [OHTTP]:\n";
+  } else {
+    log += "URL Request:\n";
+  }
 
   log += base::ReplaceStringPlaceholders(
       "  URL: $1\n", {mojom_url_request->url.spec()}, nullptr);

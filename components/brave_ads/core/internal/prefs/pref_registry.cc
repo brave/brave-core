@@ -13,6 +13,11 @@ namespace brave_ads {
 void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
   registry->RegisterTimePref(prefs::kFirstRunAt, base::Time::Now());
+
+  // Ads service prefs.
+  registry->RegisterStringPref(prefs::kObliviousHttpKeyConfig, "");
+  registry->RegisterTimePref(prefs::kObliviousHttpKeyConfigExpiresAt,
+                             base::Time());
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* const registry) {

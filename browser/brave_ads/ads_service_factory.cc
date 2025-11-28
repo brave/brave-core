@@ -24,6 +24,7 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -41,6 +42,10 @@ namespace {
 
 network::mojom::NetworkContext* GetNetworkContextForProfile(
     content::BrowserContext* context) {
+  // Retrieves the `NetworkContext` from the default storage partition on
+  // demand. A cached raw pointer will become invalid if the network service
+  // crashes or restarts, so callers must not persist the returned pointer
+  // beyond the current task.
   return context->GetDefaultStoragePartition()->GetNetworkContext();
 }
 
@@ -114,8 +119,12 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       HostContentSettingsMapFactory::GetForProfile(profile);
 
   auto network_client = std::make_unique<NetworkClient>(
+      local_state,
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
-      base::BindRepeating(&GetNetworkContextForProfile, context));
+      base::BindRepeating(&GetNetworkContextForProfile, context),
+      /*use_oblivious_http_staging_server=*/
+      brave_rewards::RewardsFlags::ForCurrentProcess().environment !=
+          brave_rewards::RewardsFlags::Environment::kProduction);
 
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), prefs, local_state, std::move(network_client),
