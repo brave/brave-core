@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { Bookmark, TabData } from 'components/ai_chat/resources/common/mojom'
+import { Bookmark, TabData } from '../../../common/mojom'
 import FilterMenu from './filter_menu'
 import styles from './style.module.scss'
 import * as React from 'react'
@@ -13,11 +13,28 @@ import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
 import { stringifyContent } from '../input_box/editable_content'
+import Icon from '@brave/leo/react/icon'
 
 type Attachment = TabData | Bookmark
 
 function matchesQuery(query: string, entry: Attachment) {
   return matches(query, entry.title) || matches(query, entry.url.url)
+}
+
+const getType = (entry: Attachment) => {
+  if ('contentId' in entry) {
+    return 'tab'
+  }
+  if (entry instanceof Bookmark) {
+    return 'bookmark'
+  }
+  return 'history'
+}
+
+const icon: Record<ReturnType<typeof getType>, string> = {
+  tab: 'window-tab',
+  history: 'history',
+  bookmark: 'browser-bookmark-normal',
 }
 
 export default function TabsMenu() {
@@ -108,18 +125,12 @@ export default function TabsMenu() {
     <FilterMenu
       categories={[
         {
-          category: getLocale(S.CHAT_UI_ATTACHMENTS_MENU_TABS_SECTION_TITLE),
-          entries: unselectedTabs,
-        },
-        {
-          category: getLocale(
-            S.CHAT_UI_ATTACHMENTS_MENU_BOOKMARKS_SECTION_TITLE,
-          ),
-          entries: unselectedBookmarks,
-        },
-        {
-          category: getLocale(S.CHAT_UI_ATTACHMENTS_MENU_HISTORY_SECTION_TITLE),
-          entries: unselectedHistory,
+          category: '',
+          entries: [
+            ...unselectedTabs,
+            ...unselectedBookmarks,
+            ...unselectedHistory,
+          ],
         },
       ]}
       isOpen={isOpen}
@@ -144,10 +155,8 @@ export default function TabsMenu() {
           onClick={() => selectAttachment(item)}
         >
           <img src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`} />
-          <div className={styles.tabItemInfo}>
-            <span className={styles.tabItemTitle}>{item.title}</span>
-            <span className={styles.tabItemUrl}>{item.url.url}</span>
-          </div>
+          <div className={styles.tabItemInfo}>{item.title}</div>
+          <Icon name={icon[getType(item)]} />
         </leo-menu-item>
       )}
     </FilterMenu>
