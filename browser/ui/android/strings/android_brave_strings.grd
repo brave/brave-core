@@ -629,6 +629,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_FORGET_FIRST_PARTY_STORAGE_SUMMARY" desc="Extended text for First Party Storage cleanup shields setting.">
         Clears cookies and other site data when you close a site
       </message>
+      <message name="IDS_BRAVE_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL" desc="Shields panel toggle label that would allow element blocker in private mode.">
+        Allow element blocking in Private Windows
+      </message>
+      <message name="IDS_BRAVE_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_SUMMARY" desc="Shields panel toggle summary that would allow element blocker in private mode.">
+        Using the Block Elements feature in Private Windows writes data to the normal browsing
+      </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>

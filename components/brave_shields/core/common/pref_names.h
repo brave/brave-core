@@ -41,6 +41,8 @@ inline constexpr char kAdBlockOnlyModeWasEnabledForSupportedLocale[] =
 inline constexpr char kShieldsDisabledCount[] = "brave.shields.disabled_count";
 inline constexpr char kAdBlockOnlyModePromptDismissed[] =
     "brave.shields.adblock_only_mode_prompt_dismissed";
+inline constexpr char kAllowElementBlockerInPrivateMode[] =
+    "brave.allow_element_blocker_in_private_mode";
 
 }  // namespace prefs
 }  // namespace brave_shields

@@ -129,6 +129,8 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
+    private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
+            "allow_elements_blocking_on_private_tabs";
 
     private static final String[] NEW_PRIVACY_PREFERENCE_ORDER = {
         PREF_BRAVE_SHIELDS_GLOBALS_SECTION, //  shields globals  section
@@ -148,6 +150,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SHIELDS_SAVE_CONTACT_INFO,
         PREF_CONTENT_FILTERING,
         PREF_FORGET_FIRST_PARTY_STORAGE,
+        PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS,
         PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
         PREF_CLEAR_ON_EXIT,
         PREF_CLEAR_BROWSING_DATA,
@@ -201,6 +204,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private BraveDialogPreference mRequestOtrPref;
     private ChromeSwitchPreference mBlockScriptsPref;
     private ChromeSwitchPreference mForgetFirstPartyStoragePref;
+    private @Nullable ChromeSwitchPreference mAllowElementsBlockingOnPrivateTabsPref;
     private ChromeSwitchPreference mCloseTabsOnExitPref;
     private @Nullable ChromeSwitchPreference mSendP3A;
     private @Nullable ChromeSwitchPreference mSendCrashReports;
@@ -353,6 +357,15 @@ public class BravePrivacySettings extends PrivacySettings {
         boolean forgetFirstPartyStorageIsEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FORGET_FIRST_PARTY_STORAGE);
         mForgetFirstPartyStoragePref.setVisible(forgetFirstPartyStorageIsEnabled);
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)) {
+            mAllowElementsBlockingOnPrivateTabsPref =
+                    (ChromeSwitchPreference)
+                            findPreference(PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
+            mAllowElementsBlockingOnPrivateTabsPref.setOnPreferenceChangeListener(this);
+        } else {
+            removePreferenceIfPresent(PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
+        }
 
         mCloseTabsOnExitPref = (ChromeSwitchPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         mCloseTabsOnExitPref.setOnPreferenceChangeListener(this);
@@ -618,6 +631,9 @@ public class BravePrivacySettings extends PrivacySettings {
             BraveShieldsContentSettings.setJavascriptPref((boolean) newValue);
         } else if (PREF_FORGET_FIRST_PARTY_STORAGE.equals(key)) {
             BraveShieldsContentSettings.setForgetFirstPartyStoragePref((boolean) newValue);
+        } else if (PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS.equals(key)) {
+            BraveShieldsContentSettings.setAllowElementBlockerInPrivateModeEnabledPref(
+                    (boolean) newValue);
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
             preferencesManager.writeBoolean(
                     BravePreferenceKeys.BRAVE_CLOSE_TABS_ON_EXIT, (boolean) newValue);
@@ -803,6 +819,12 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mForgetFirstPartyStoragePref.setChecked(
                 BraveShieldsContentSettings.getForgetFirstPartyStoragePref());
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+                && mAllowElementsBlockingOnPrivateTabsPref != null) {
+            mAllowElementsBlockingOnPrivateTabsPref.setChecked(
+                    BraveShieldsContentSettings.getAllowElementBlockerInPrivateModeEnabledPref());
+        }
 
         mCanMakePayment.setTitle(
                 getActivity()

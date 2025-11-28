@@ -79,6 +79,11 @@
             android:summary="@string/brave_forget_first_party_storage_summary"
             android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="allow_elements_blocking_on_private_tabs"
+            android:title="@string/brave_allow_element_blocker_in_private_label"
+            android:summary="@string/brave_allow_element_blocker_in_private_summary"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="de_amp"
             android:title="@string/de_amp_switch"
             android:summary="@string/de_amp_summary"
