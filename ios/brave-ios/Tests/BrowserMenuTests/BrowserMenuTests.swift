@@ -314,7 +314,13 @@ class BrowserMenuTests: XCTestCase {
       e.fulfill()
     }
     vpnStatusPublisher.send(
-      .connected(activeRegion: .init(countryCode: "CA", displayName: "ca-east"))
+      .connected(
+        activeRegion: .init(
+          countryCode: "CA",
+          displayName: "ca-east",
+          smartProxySupported: false
+        )
+      )
     )
     await fulfillment(of: [e], timeout: 1)
     switch model.vpnStatus {
