@@ -119,7 +119,7 @@ public struct BrowserMenu: View {
                 Spacer()
                 Text(region.flag)
                 Text(region.displayName)
-                if region.smartProxySupported, BraveVPN.isSmartProxyRoutingEnabled {
+                if model.vpnStatus.shouldShowSmartProxyIndicator {
                   Image(braveSystemName: "leo.smart.proxy-routing")
                     .resizable()
                     .renderingMode(.template)
