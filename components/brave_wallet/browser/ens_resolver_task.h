@@ -18,9 +18,11 @@
 #include "base/notreached.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet {
 
 // Selector for `OffchainLookup(address,string[],bytes,bytes4,bytes)`

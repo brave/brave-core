@@ -14,7 +14,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {

@@ -11,8 +11,10 @@
 
 #include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "url/gurl.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
 
 namespace brave_wallet {

@@ -6,7 +6,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 namespace brave_wallet::features {

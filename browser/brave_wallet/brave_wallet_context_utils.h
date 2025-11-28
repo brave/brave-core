@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_CONTEXT_UTILS_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_CONTEXT_UTILS_H_
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+
 namespace content {
 class BrowserContext;
 }

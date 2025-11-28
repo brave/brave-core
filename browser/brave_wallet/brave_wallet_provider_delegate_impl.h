@@ -13,9 +13,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents_observer.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace content {
 class Page;
 class RenderFrameHost;
