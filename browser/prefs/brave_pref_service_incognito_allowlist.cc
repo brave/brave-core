@@ -35,7 +35,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-      kShowWalletIconOnToolbar,
+      brave_wallet::kShowWalletIconOnToolbar,
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
       prefs::kSidePanelHorizontalAlignment,
       kTabMuteIndicatorNotClickable,

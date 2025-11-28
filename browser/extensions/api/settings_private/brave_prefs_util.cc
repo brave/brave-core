@@ -235,24 +235,28 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Brave Wallet pref
-  (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
+  (*s_brave_allowlist)[brave_wallet::kBraveWalletSelectedNetworks] =
       settings_api::PrefType::kDictionary;
-  (*s_brave_allowlist)[kDefaultEthereumWallet] =
+  (*s_brave_allowlist)[brave_wallet::kDefaultEthereumWallet] =
       settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kDefaultSolanaWallet] = settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kDefaultCardanoWallet] = settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kDefaultBaseCurrency] = settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kDefaultBaseCryptocurrency] =
+  (*s_brave_allowlist)[brave_wallet::kDefaultSolanaWallet] =
+      settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[brave_wallet::kDefaultCardanoWallet] =
+      settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[brave_wallet::kDefaultBaseCurrency] =
       settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
+  (*s_brave_allowlist)[brave_wallet::kDefaultBaseCryptocurrency] =
+      settings_api::PrefType::kString;
+  (*s_brave_allowlist)[brave_wallet::kShowWalletIconOnToolbar] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
+  (*s_brave_allowlist)[brave_wallet::kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kBraveWalletTransactionSimulationOptInStatus] =
-      settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kBraveWalletNftDiscoveryEnabled] =
+  (*s_brave_allowlist)
+      [brave_wallet::kBraveWalletTransactionSimulationOptInStatus] =
+          settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[brave_wallet::kBraveWalletNftDiscoveryEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
+  (*s_brave_allowlist)[brave_wallet::kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

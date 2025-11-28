@@ -53,7 +53,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 namespace policy {
@@ -62,8 +62,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
-     base::Value::Type::BOOLEAN},
+    {policy::key::kBraveWalletDisabled,
+     brave_wallet::kBraveWalletDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveShieldsDisabledForUrls,
      kManagedBraveShieldsDisabledForUrls, base::Value::Type::LIST},

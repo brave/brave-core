@@ -521,26 +521,29 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_TRUE(is_wallet_button_shown(browser()));
 
   // By default, the button in private window should be hidden.
-  EXPECT_FALSE(incognito_prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled));
+  EXPECT_FALSE(incognito_prefs->GetBoolean(
+      brave_wallet::kBraveWalletPrivateWindowsEnabled));
   EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
 
   // Turn on brave wallet in private tabs should reveal the button in private
   // window.
-  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  incognito_prefs->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled,
+                              true);
   EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
 
   // Turning off wallet icon should hide icon on both windows.
-  normal_prefs->SetBoolean(kShowWalletIconOnToolbar, false);
+  normal_prefs->SetBoolean(brave_wallet::kShowWalletIconOnToolbar, false);
   EXPECT_FALSE(is_wallet_button_shown(browser()));
   EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
 
   // Turn on wallet icon should show icons on both windows.
-  incognito_prefs->SetBoolean(kShowWalletIconOnToolbar, true);
+  incognito_prefs->SetBoolean(brave_wallet::kShowWalletIconOnToolbar, true);
   EXPECT_TRUE(is_wallet_button_shown(browser()));
   EXPECT_TRUE(is_wallet_button_shown(incognito_browser));
 
   // Turning off brave wallet in private tabs should hide it again.
-  incognito_prefs->SetBoolean(kBraveWalletPrivateWindowsEnabled, false);
+  incognito_prefs->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled,
+                              false);
   EXPECT_FALSE(is_wallet_button_shown(incognito_browser));
 
   // Normal winwow still has visible button.

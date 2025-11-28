@@ -28,6 +28,9 @@ namespace brave_wallet {
 
 class CardanoAddress;
 
+// Returns true if Brave Wallet is allowed (not disabled by policy).
+bool IsAllowed(PrefService* prefs);
+
 bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(base::span<const std::string> input,
                        std::string* output);

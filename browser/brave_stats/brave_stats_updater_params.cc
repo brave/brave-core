@@ -137,9 +137,9 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   wallet_last_unlocked_ =
-      stats_pref_service_->GetTime(kBraveWalletLastUnlockTime);
-  last_reported_wallet_unlock_ =
-      stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
+      stats_pref_service_->GetTime(brave_wallet::kBraveWalletLastUnlockTime);
+  last_reported_wallet_unlock_ = stats_pref_service_->GetTime(
+      brave_wallet::kBraveWalletPingReportedUnlockTime);
 #endif
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
@@ -167,7 +167,7 @@ void BraveStatsUpdaterParams::SavePrefs() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   last_reported_wallet_unlock_ = wallet_last_unlocked_;
-  stats_pref_service_->SetTime(kBraveWalletPingReportedUnlockTime,
+  stats_pref_service_->SetTime(brave_wallet::kBraveWalletPingReportedUnlockTime,
                                last_reported_wallet_unlock_);
 #endif
 }

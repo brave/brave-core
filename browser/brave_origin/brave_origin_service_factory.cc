@@ -44,7 +44,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 namespace policy {
@@ -121,7 +121,7 @@ constexpr auto kBraveOriginProfileMetadata =
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
         // Brave Wallet preferences
-        {brave_wallet::prefs::kDisabledByPolicy,
+        {brave_wallet::kBraveWalletDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},

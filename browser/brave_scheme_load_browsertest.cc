@@ -344,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
   EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://wallet")));
   TestURLIsNotLoadedInPrivateWindowOrRedirected("brave://wallet");
-  prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+  prefs()->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled, true);
   TestURLIsLoadedInPrivateWindow("chrome://wallet/crypto/onboarding/welcome");
 }
 

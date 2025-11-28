@@ -58,7 +58,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 namespace commands {
@@ -422,7 +422,8 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
     case IDC_SHOW_BRAVE_WALLET_PANEL:
     case IDC_CLOSE_BRAVE_WALLET_PANEL:
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-      return pref_service_->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
+      return pref_service_->GetBoolean(
+          brave_wallet::kBraveWalletDisabledByPolicy);
 #else
       return true;  // Wallet not compiled in, always disabled
 #endif

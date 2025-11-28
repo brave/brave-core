@@ -1108,7 +1108,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   html_source->AddString("autoLockMinutesValue",
                          base::NumberToString(profile->GetPrefs()->GetInteger(
-                             kBraveWalletAutoLockMinutes)));
+                             brave_wallet::kBraveWalletAutoLockMinutes)));
 
   html_source->AddString(
       "transactionSimulationDesc",

@@ -20,12 +20,15 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "build/build_config.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -831,6 +834,53 @@ TEST(BraveWalletCommonUIUnitTest, IsBraveWalletOrigin) {
       IsBraveWalletOrigin(url::Origin::Create(GURL("chrome://wallet/"))));
   ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL("https://a.com"))));
   ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL())));
+}
+
+class BraveWalletPolicyTest : public testing::Test {
+ public:
+  BraveWalletPolicyTest() {
+    prefs_.registry()->RegisterBooleanPref(kBraveWalletDisabledByPolicy, false);
+  }
+
+ protected:
+  void BlockWalletByPolicy(bool value) {
+    prefs_.SetManagedPref(kBraveWalletDisabledByPolicy, base::Value(value));
+  }
+
+  TestingPrefServiceSimple prefs_;
+};
+
+TEST_F(BraveWalletPolicyTest, PolicyDisablesWallet) {
+  // Set policy to disable Brave Wallet
+  BlockWalletByPolicy(true);
+
+  // Test that the policy preference is set correctly
+  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletDisabledByPolicy));
+
+#if BUILDFLAG(IS_ANDROID)
+  // On android the policy is not enforced
+  EXPECT_TRUE(IsAllowed(&prefs_));
+#else
+  // On other platforms, policy should be enforced
+  EXPECT_FALSE(IsAllowed(&prefs_));
+#endif  // BUILDFLAG(IS_ANDROID)
+}
+
+TEST_F(BraveWalletPolicyTest, PolicyEnablesWallet) {
+  // Set policy to enable Brave Wallet
+  BlockWalletByPolicy(false);
+
+  // Test that the policy preference is set correctly
+  EXPECT_FALSE(prefs_.GetBoolean(kBraveWalletDisabledByPolicy));
+
+  // Test that IsAllowed returns true when policy enables it
+  // This should be true on all platforms
+  EXPECT_TRUE(IsAllowed(&prefs_));
+}
+
+TEST_F(BraveWalletPolicyTest, DefaultBehavior) {
+  // Test that IsAllowed returns true when no policy is set
+  EXPECT_TRUE(IsAllowed(&prefs_));
 }
 
 }  // namespace brave_wallet

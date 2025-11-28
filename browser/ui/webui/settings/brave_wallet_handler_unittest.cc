@@ -51,7 +51,7 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           CoinType coin,
                           std::vector<base::Value::Dict>* values) {
-  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  ScopedDictPrefUpdate update(prefs, brave_wallet::kBraveWalletCustomNetworks);
   base::Value::List* list =
       update->EnsureList(brave_wallet::GetPrefKeyForCoinType(coin));
   list->clear();
@@ -354,7 +354,8 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
   UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  ScopedDictPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);
+  ScopedDictPrefUpdate update(handler.prefs(),
+                              brave_wallet::kBraveWalletSelectedNetworks);
   update->Set(brave_wallet::kEthereumPrefKey, "chain_id");
   {
     base::Value::List args;

@@ -80,7 +80,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
 namespace {
