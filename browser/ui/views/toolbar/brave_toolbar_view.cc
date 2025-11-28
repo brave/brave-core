@@ -13,18 +13,14 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -59,6 +55,14 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace {
@@ -200,6 +204,7 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   show_wallet_button_.Init(
       kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
@@ -217,6 +222,7 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                             base::Unretained(this)));
   }
+#endif
 
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
@@ -261,6 +267,7 @@ void BraveToolbarView::Init() {
       std::make_unique<SidePanelButton>(browser()),
       *container_view->GetIndexOf(GetAppMenuButton()) - 1);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   wallet_ = container_view->AddChildViewAt(
       std::make_unique<WalletButton>(GetAppMenuButton(), profile),
       *container_view->GetIndexOf(GetAppMenuButton()) - 1);
@@ -269,6 +276,7 @@ void BraveToolbarView::Init() {
   wallet_->UpdateImageAndText();
 
   UpdateWalletButtonVisibility();
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Don't check policy status since we're going to
@@ -358,9 +366,11 @@ void BraveToolbarView::OnThemeChanged() {
   if (display_mode_ == DisplayMode::NORMAL && bookmark_) {
     bookmark_->UpdateImageAndText();
   }
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (display_mode_ == DisplayMode::NORMAL && wallet_) {
     wallet_->UpdateImageAndText();
   }
+#endif
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -377,9 +387,11 @@ void BraveToolbarView::LoadImages() {
   if (bookmark_) {
     bookmark_->UpdateImageAndText();
   }
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (wallet_) {
     wallet_->UpdateImageAndText();
   }
+#endif
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -532,6 +544,7 @@ void BraveToolbarView::UpdateAIChatButtonVisibility() {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();
   if (brave_wallet::IsNativeWalletEnabled() &&
@@ -553,6 +566,7 @@ void BraveToolbarView::UpdateWalletButtonVisibility() {
 
   wallet_->SetVisible(false);
 }
+#endif
 
 BEGIN_METADATA(BraveToolbarView)
 END_METADATA

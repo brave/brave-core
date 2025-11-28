@@ -1160,10 +1160,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/brave_app_menu_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
     ]
-    if (enable_brave_wallet) {
-      sources +=
-          [ "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc" ]
-    }
     deps += [
       "//brave/browser/email_aliases:browser_tests",
       "//brave/browser/ui/darker_theme:browser_tests",
@@ -1184,6 +1180,11 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/views/bubble",
     ]
 
+    if (enable_brave_wallet) {
+      sources +=
+          [ "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc" ]
+    }
+
     if (enable_brave_vpn) {
       sources += [ "//brave/browser/ui/views/toolbar/brave_vpn_panel_controller_browsertest.cc" ]
     }
@@ -1202,10 +1203,6 @@ test("brave_browser_tests") {
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_browsertest.cc",
     ]
-    if (enable_brave_wallet) {
-      sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
-      deps += [ "//brave/components/brave_wallet/browser:test_support" ]
-    }
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
@@ -1231,6 +1228,11 @@ test("brave_browser_tests") {
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",
     ]
+
+    if (enable_brave_wallet) {
+      sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
+      deps += [ "//brave/components/brave_wallet/browser:test_support" ]
+    }
   }
 
   if (enable_commander) {

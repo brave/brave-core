@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+
 inline constexpr char kShouldShowWalletSuggestionBadge[] =
     "brave.wallet.should_show_wallet_suggestion_badge";
 inline constexpr char kDefaultEthereumWallet[] = "brave.wallet.default_wallet2";

@@ -13,7 +13,9 @@
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet {
 
 using uint256_t = unsigned _BitInt(256);

@@ -13,7 +13,6 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -24,6 +23,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
@@ -44,6 +44,10 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
@@ -173,7 +177,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+#endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =
       gcm::BraveGCMChannelStatus::GetForProfile(profile);

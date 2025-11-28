@@ -9,13 +9,8 @@
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -28,6 +23,15 @@
 #include "ipc/ipc_channel_proxy.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
 #endif
@@ -38,15 +42,21 @@
 
 BraveRendererUpdater::BraveRendererUpdater(
     Profile* profile,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     brave_wallet::KeyringService* keyring_service,
+#endif
     PrefService* local_state)
     : profile_(profile),
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       keyring_service_(keyring_service),
+#endif
       local_state_(local_state) {
   PrefService* pref_service = profile->GetPrefs();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
   brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
   brave_wallet_cardano_provider_.Init(kDefaultCardanoWallet, pref_service);
+#endif
 
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
 #if BUILDFLAG(ENABLE_TOR)
@@ -54,9 +64,12 @@ BraveRendererUpdater::BraveRendererUpdater(
                                   pref_service);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   CheckActiveWallet();
+#endif
 
   pref_change_registrar_.Init(pref_service);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   pref_change_registrar_.Add(
       kDefaultEthereumWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
@@ -69,15 +82,18 @@ BraveRendererUpdater::BraveRendererUpdater(
       kDefaultCardanoWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#endif
   pref_change_registrar_.Add(
       de_amp::kDeAmpPrefEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   pref_change_registrar_.Add(
       kBraveWalletKeyrings,
       base::BindRepeating(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
       tor::prefs::kOnionOnlyInTorWindows,
@@ -111,7 +127,9 @@ void BraveRendererUpdater::InitializeRenderer(
   auto renderer_configuration = GetRendererConfiguration(render_process_host);
   Profile* profile =
       Profile::FromBrowserContext(render_process_host->GetBrowserContext());
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
+#endif
   renderer_configuration->SetInitialConfiguration(profile->IsTor());
   UpdateRenderer(&renderer_configuration);
 }
@@ -152,6 +170,7 @@ BraveRendererUpdater::GetRendererConfiguration(
   return renderer_configuration;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers() {
   if (CheckActiveWallet()) {
     UpdateAllRenderers();
@@ -167,6 +186,7 @@ bool BraveRendererUpdater::CheckActiveWallet() {
   is_wallet_created_ = is_wallet_created;
   return changed;
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 void BraveRendererUpdater::UpdateAllRenderers() {
   auto renderer_configurations = GetRendererConfigurations();
@@ -178,6 +198,7 @@ void BraveRendererUpdater::UpdateAllRenderers() {
 void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
@@ -227,6 +248,7 @@ void BraveRendererUpdater::UpdateRenderer(
       (default_cardano_wallet ==
        brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
@@ -248,13 +270,23 @@ void BraveRendererUpdater::UpdateRenderer(
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
 
-  (*renderer_configuration)
-      ->SetConfiguration(brave::mojom::DynamicParams::New(
-          install_window_brave_ethereum_provider,
-          install_window_ethereum_provider,
-          install_window_brave_cardano_provider,
-          allow_overwrite_window_ethereum_provider,
-          brave_use_native_solana_wallet,
-          allow_overwrite_window_solana_provider, de_amp_enabled,
-          onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
+  auto params = brave::mojom::DynamicParams::New();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  params->install_window_brave_ethereum_provider =
+      install_window_brave_ethereum_provider;
+  params->install_window_ethereum_provider = install_window_ethereum_provider;
+  params->install_window_brave_cardano_provider =
+      install_window_brave_cardano_provider;
+  params->allow_overwrite_window_ethereum_provider =
+      allow_overwrite_window_ethereum_provider;
+  params->brave_use_native_solana_wallet = brave_use_native_solana_wallet;
+  params->allow_overwrite_window_solana_provider =
+      allow_overwrite_window_solana_provider;
+#endif
+  params->de_amp_enabled = de_amp_enabled;
+  params->onion_only_in_tor_windows = onion_only_in_tor_windows;
+  params->widevine_enabled = widevine_enabled;
+  params->playlist_enabled = playlist_enabled;
+
+  (*renderer_configuration)->SetConfiguration(std::move(params));
 }

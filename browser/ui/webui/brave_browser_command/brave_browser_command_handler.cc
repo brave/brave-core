@@ -9,10 +9,10 @@
 
 #include "base/containers/contains.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 
@@ -24,12 +24,18 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 namespace {
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 bool CanShowWalletOnboarding(Profile* profile) {
   return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
              profile) != nullptr;
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 bool CanShowRewardsOnboarding(Profile* profile) {
   return brave_rewards::RewardsServiceFactory::GetForProfile(profile) !=
@@ -77,9 +83,11 @@ void BraveBrowserCommandHandler::CanExecuteCommand(
 
   bool can_execute = false;
   switch (command_id) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       can_execute = CanShowWalletOnboarding(profile_);
       break;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
       can_execute = CanShowRewardsOnboarding(profile_);
       break;
@@ -104,10 +112,12 @@ void BraveBrowserCommandHandler::ExecuteCommand(
   }
 
   switch (command_id) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       delegate_->OpenURL(GURL(kBraveUIWalletURL),
                          WindowOpenDisposition::NEW_FOREGROUND_TAB);
       break;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
       delegate_->OpenRewardsPanel();
       break;

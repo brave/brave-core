@@ -5,14 +5,8 @@
 
 #include "content/browser/permissions/permission_controller_impl.h"
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "content/browser/permissions/permission_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
-
-#define BRAVE_WALLET_NUM_CASES         \
-  case PermissionType::BRAVE_ETHEREUM: \
-  case PermissionType::BRAVE_SOLANA:   \
-  case PermissionType::BRAVE_CARDANO:
 
 #define NUM                                             \
   BRAVE_ADS:                                            \
@@ -23,12 +17,13 @@
   case PermissionType::BRAVE_REFERRERS:                 \
   case PermissionType::BRAVE_COOKIES:                   \
   case PermissionType::BRAVE_SPEEDREADER:               \
-  BRAVE_WALLET_NUM_CASES                                \
+  case PermissionType::BRAVE_ETHEREUM:                  \
+  case PermissionType::BRAVE_SOLANA:                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
+  case PermissionType::BRAVE_CARDANO:                   \
   case PermissionType::NUM
 
 #include <content/browser/permissions/permission_controller_impl.cc>
 #undef NUM
-#undef BRAVE_WALLET_NUM_CASES
