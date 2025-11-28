@@ -235,11 +235,19 @@ void BraveBrowser::OnTabStripModelChanged(
     sidebar_controller->sidebar()->UpdateSidebarItemsState();
   }
 
-  // Notify when tab closing with ignoring onbeforeunload handlers is completed.
-  if (!on_tab_closing_complete_.is_null() &&
+  // Check if all tabs we set to ignore onbeforeunload handler are closed.
+  if (!tabs_closing_with_onbeforeunload_ignore_.empty() &&
       change.type() == TabStripModelChange::Type::kRemoved) {
-    for (const auto& contents : change.GetRemove()->contents) {
-      on_tab_closing_complete_.Run(contents.tab);
+    bool all_suggested_tabs_closed = true;
+    for (auto* tab : tabs_closing_with_onbeforeunload_ignore_) {
+      if (tab_strip_model->GetIndexOfWebContents(tab) !=
+          TabStripModel::kNoTab) {
+        all_suggested_tabs_closed = false;
+        break;
+      }
+    }
+    if (all_suggested_tabs_closed) {
+      tabs_closing_with_onbeforeunload_ignore_.clear();
     }
   }
 }
@@ -369,13 +377,13 @@ BraveBrowserWindow* BraveBrowser::brave_window() {
   return static_cast<BraveBrowserWindow*>(window_.get());
 }
 
-void BraveBrowser::SetIgnoreBeforeunloadHandlersWhenTabClosing(
-    OnIgnoredBeforeUnloadTabClosingCallback callback) {
-  on_tab_closing_complete_ = std::move(callback);
+void BraveBrowser::SetIgnoreBeforeUnloadHandlers(
+    const std::vector<content::WebContents*>& for_contents) {
+  tabs_closing_with_onbeforeunload_ignore_ = for_contents;
 }
 
 bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
-  if (!on_tab_closing_complete_.is_null()) {
+  if (!tabs_closing_with_onbeforeunload_ignore_.empty()) {
     return true;
   }
 

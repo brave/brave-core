@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -25,9 +26,6 @@ class BraveBrowser : public Browser {
 
   BraveBrowser(const BraveBrowser&) = delete;
   BraveBrowser& operator=(const BraveBrowser&) = delete;
-
-  using OnIgnoredBeforeUnloadTabClosingCallback =
-      base::RepeatingCallback<void(tabs::TabInterface*)>;
 
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
@@ -72,6 +70,10 @@ class BraveBrowser : public Browser {
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
+  // Allows ignoring onbeforeunload handlers when closing selected tabs.
+  void SetIgnoreBeforeUnloadHandlers(
+      const std::vector<content::WebContents*>& for_contents);
+
   BraveBrowserWindow* brave_window();
 
   void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
@@ -79,9 +81,6 @@ class BraveBrowser : public Browser {
   void set_ignore_enable_closing_last_tab_pref() {
     ignore_enable_closing_last_tab_pref_ = true;
   }
-
-  void SetIgnoreBeforeunloadHandlersWhenTabClosing(
-      OnIgnoredBeforeUnloadTabClosingCallback callback);
 
  private:
   friend class BraveTestLauncherDelegate;
@@ -104,9 +103,8 @@ class BraveBrowser : public Browser {
   // new tab, like when user tries to "Bring all tabs" to other window.
   bool ignore_enable_closing_last_tab_pref_ = false;
 
-  // Callback to be called when tab closing with ignoring onbeforeunload
-  // handlers is completed.
-  OnIgnoredBeforeUnloadTabClosingCallback on_tab_closing_complete_;
+  // WebContents for which onbeforeunload handlers should be ignored.
+  std::vector<content::WebContents*> tabs_closing_with_onbeforeunload_ignore_;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

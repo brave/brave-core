@@ -23,11 +23,6 @@ namespace content {
 class BrowserContext;
 }
 
-namespace tabs {
-class TabInterface;
-}  // namespace tabs
-
-class BraveBrowser;
 class HostContentSettingsMap;
 
 namespace ephemeral_storage {
@@ -60,9 +55,6 @@ class BraveEphemeralStorageServiceDelegate :
       const GURL& url) const override;
 
  private:
-  void OnTabClosedWithOnBeforeUnloadIgnore(BraveBrowser* brave_browser,
-                                           tabs::TabInterface* closed_tab);
-
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
@@ -71,10 +63,6 @@ class BraveEphemeralStorageServiceDelegate :
 #endif  // !BUILDFLAG(IS_ANDROID)
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;
-  std::map<BraveBrowser*, std::vector<tabs::TabInterface*>>
-      expected_tabs_to_close_with_onbeforeunload_ignore_;
-  base::WeakPtrFactory<BraveEphemeralStorageServiceDelegate> weak_ptr_factory_{
-      this};
 };
 
 }  // namespace ephemeral_storage

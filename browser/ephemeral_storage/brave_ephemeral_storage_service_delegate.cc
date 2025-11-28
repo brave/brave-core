@@ -202,7 +202,6 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
   CHECK(profile);
 
 #if !BUILDFLAG(IS_ANDROID)
-  expected_tabs_to_close_with_onbeforeunload_ignore_.clear();
   for (auto* browser : GetAllBrowserWindowInterfaces()) {
     if (profile != browser->GetProfile()) {
       continue;
@@ -215,22 +214,23 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
     if (!brave_browser) {
       continue;
     }
-    // Set callback to be notified when tabs are closed and onbefore.
-    brave_browser->SetIgnoreBeforeunloadHandlersWhenTabClosing(
-        base::BindRepeating(&BraveEphemeralStorageServiceDelegate::
-                                OnTabClosedWithOnBeforeUnloadIgnore,
-                            weak_ptr_factory_.GetWeakPtr(), brave_browser));
+
+    std::vector<content::WebContents*> tab_vector;
     for (auto* tab : *tab_strip) {
-      if (!PrepareTabToClose(tab, ephemeral_domain)) {
+      if (!tab || !PrepareTabToClose(tab, ephemeral_domain)) {
         continue;
       }
-      expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser]
-          .push_back(tab);
+      tab_vector.emplace_back(tab->GetContents());
     }
-    for (auto* tab :
-         expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser]) {
+    brave_browser->SetIgnoreBeforeUnloadHandlers(tab_vector);
+
+    for (auto* tab : tab_vector) {
+      if (!tab) {
+        continue;
+      }
+
       // initiate the closing of the tab
-      tab->GetContents()->Close();
+      tab->Close();
     }
   }
 #else
@@ -260,35 +260,6 @@ bool BraveEphemeralStorageServiceDelegate::
     IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
   return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
       url);
-}
-
-void BraveEphemeralStorageServiceDelegate::OnTabClosedWithOnBeforeUnloadIgnore(
-    BraveBrowser* brave_browser,
-    tabs::TabInterface* closed_tab) {
-  CHECK(brave_browser);
-  CHECK(closed_tab);
-
-  if (!expected_tabs_to_close_with_onbeforeunload_ignore_.contains(
-          brave_browser)) {
-    return;
-  }
-
-  auto& tabs_vector =
-      expected_tabs_to_close_with_onbeforeunload_ignore_[brave_browser];
-
-  auto it = std::find(tabs_vector.begin(), tabs_vector.end(), closed_tab);
-  if (it == tabs_vector.end()) {
-    return;
-  }
-
-  tabs_vector.erase(it);
-  if (!tabs_vector.empty()) {
-    return;
-  }
-
-  // Reset ignore beforeunload handlers when all expected tabs are closed.
-  brave_browser->SetIgnoreBeforeunloadHandlersWhenTabClosing(
-      BraveBrowser::OnIgnoredBeforeUnloadTabClosingCallback());
 }
 
 }  // namespace ephemeral_storage
