@@ -26,7 +26,7 @@ namespace {
 
 void ReportError(const GURL& url,
                  int response_code,
-                 UrlRequestCallback callback) {
+                 SendRequestCallback callback) {
   auto mojom_url_response = mojom::UrlResponseInfo::New();
   mojom_url_response->url = url;
   mojom_url_response->code = response_code;
@@ -43,8 +43,8 @@ NetworkClient::NetworkClient(
 
 NetworkClient::~NetworkClient() = default;
 
-void NetworkClient::UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                               UrlRequestCallback callback) {
+void NetworkClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                                SendRequestCallback callback) {
   return HttpRequest(std::move(mojom_url_request), std::move(callback));
 }
 
@@ -56,7 +56,7 @@ void NetworkClient::CancelRequests() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
-                                UrlRequestCallback callback) {
+                                SendRequestCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = mojom_url_request->url;
   resource_request->method = ToString(mojom_url_request->method);
@@ -88,7 +88,7 @@ void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
 
 void NetworkClient::HttpRequestCallback(
     network::SimpleURLLoader* url_loader,
-    UrlRequestCallback callback,
+    SendRequestCallback callback,
     std::optional<std::string> response_body) {
   CHECK(url_loader);
 

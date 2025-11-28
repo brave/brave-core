@@ -10,6 +10,7 @@ source_set("service") {
     "ads_service_observer.h",
     "network_client.cc",
     "network_client.h",
+    "network_client_callback.h",
     "network_client_util.cc",
     "network_client_util.h",
     "new_tab_page_ad_prefetcher.cc",

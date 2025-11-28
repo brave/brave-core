@@ -1546,7 +1546,7 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
 void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
                                 UrlRequestCallback callback) {
   if (network_client_) {
-    network_client_->UrlRequest(std::move(url_request), std::move(callback));
+    network_client_->SendRequest(std::move(url_request), std::move(callback));
   }
 }
 
