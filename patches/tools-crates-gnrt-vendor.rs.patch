@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index 2b7fdb1d343be3b9a144b21c813f9aa8a19f8c7a..837a896415ae0507abfaae574fccdf4182638037 100644
+index 213e4a7be4d71f0750bad8399bab5a8391aa48da..c8ade623ce6cd46923dd4112cd1b60ba2f12929c 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
-@@ -115,7 +115,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
+@@ -136,7 +136,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
                  format!("Generating placeholder for removed crate {}", crate_dirname.display());
              println!("{msg}");
              generate_placeholder_crate(p, &crate_path).context(msg)?;
@@ -11,7 +11,7 @@ index 2b7fdb1d343be3b9a144b21c813f9aa8a19f8c7a..837a896415ae0507abfaae574fccdf41
              let msg = format!("Downloading {}", crate_dirname.display());
              println!("{msg}");
              download_crate(p.name(), p.version(), paths).context(msg)?;
-@@ -332,7 +332,7 @@ fn apply_patches(
+@@ -465,7 +465,7 @@ fn apply_patches(
      let crate_dir = get_vendor_dir_for_package(paths, name, version);
  
      let mut patches = Vec::new();

@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "net/base/proxy_server.h"
 #include "net/base/schemeful_site.h"
+#include "net/dns/mock_host_resolver.h"
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
 #include "net/proxy_resolution/proxy_config_service.h"
@@ -43,7 +44,8 @@ class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
 
     service_ = std::make_unique<ConfiguredProxyResolutionService>(
         std::move(config_service),
-        std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr,
+        std::make_unique<MockAsyncProxyResolverFactory>(false),
+        mock_host_resolver_.get(), nullptr,
         /*quick_check_enabled=*/true);
   }
 
@@ -63,6 +65,7 @@ class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
   std::string proxy_uri() const { return proxy_uri_; }
 
  private:
+  std::unique_ptr<MockHostResolverBase> mock_host_resolver_{nullptr};
   std::string proxy_uri_;
   std::unique_ptr<net::ConfiguredProxyResolutionService> service_;
 };

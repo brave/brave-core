@@ -29,6 +29,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/bluss/either"
   cargo_pkg_version = "1.8.1"
 
+  allow_unsafe = true
+
   features = [
     "default",
     "use_std",

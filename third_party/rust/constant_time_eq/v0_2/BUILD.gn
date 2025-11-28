@@ -25,6 +25,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/cesarb/constant_time_eq"
   cargo_pkg_version = "0.2.5"
 
+  allow_unsafe = true
+
   rustenv = []
   rustflags = []
 

@@ -1,0 +1,14 @@
+diff --git a/content/public/browser/web_ui_browser_interface_broker_registry.h b/content/public/browser/web_ui_browser_interface_broker_registry.h
+index e5bd3d6ef12f6bf20e915dcb378ad282cd4a164e..72af4f62bd0c707d3d0e4b98bf717beaa7f363f6 100644
+--- a/content/public/browser/web_ui_browser_interface_broker_registry.h
++++ b/content/public/browser/web_ui_browser_interface_broker_registry.h
+@@ -31,7 +31,8 @@ class InterfaceRegistrationHelper {
+     // binder_map.
+     binder_initializers_->push_back(
+         base::BindRepeating([](WebUIBinderMap* binder_map) {
+-          CHECK(!binder_map->Contains<Interface>());
++          // TODO(fallaciousreasoning)
++          // CHECK(!binder_map->Contains<Interface>());
+           binder_map->Add<Interface>(
+               [](WebUIController* controller,
+                  mojo::PendingReceiver<Interface> receiver) {

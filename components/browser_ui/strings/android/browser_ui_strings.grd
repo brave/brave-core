@@ -668,8 +668,8 @@
       <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR_LIMIT=32]">
           Cookies
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO" desc="Content description for the page icon that gives more site information when clicked. The icon can be a magnifier for search result pages, or other icons representing the page state.">
-        Site information
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO_DIALOG" is_accessibility_with_no_ui="true" desc="Spoken by screen readers to describe the Site information dialog, which provides more site information when clicked.">
+        Site information, dialog
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_VIEW_SITE_INFO" desc="Spoken by screen readers to explain that clicking on the status icon will show more site information when clicked. The string is read in the context of the 'Double tap to...' Android screen reader accessibility prompt e.g. 'Double tap to view site information'.">
         View site information
@@ -1062,6 +1062,12 @@
       <message name="IDS_JUMP_START_OMNIBOX_SUMMARY" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
         Launch Brave with the Omnibox focused, reducing start-up time on low-end devices.
       </message>
+      <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
+        Swipe between pages using a touchpad
+      </message>
+      <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_SUMMARY" desc="Summary of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
+        Navigate back and forth by swiping with two fingers on the touchpad
+      </message>
 
       <message name="IDS_CARET_BROWSING_TITLE" desc="Title of preference that allows the user to navigate pages with a text caret.">
         Navigate pages with a text cursor when a keyboard is attached
@@ -1143,6 +1149,9 @@
       <message name="IDS_PAGE_ZOOM_FULLSCREEN_BUTTON_CONTENT_DESCRIPTION" desc="Content description for the fullscreen button in the zoom menu.">
         Fullscreen
       </message>
+      <message name="IDS_PAGE_ZOOM_POPUP_WINDOW_CONTENT_DESCRIPTION" desc="Content description for the zoom popup window shown when the user taps the zoom indicator.">
+        Popup zoom window
+      </message>
 
       <!-- Search resumption module strings -->
       <message name="IDS_SEARCH_RESUMPTION_MODULE_TITLE" desc="Title of the search resumption module on NTP or Start surface.">
@@ -1192,6 +1201,9 @@
       </message>
       <message name="IDS_HOME_MODULES_CONFIGURATION" desc="The title for the configuration page which customizes the home modules settings.">
         New tab page cards
+      </message>
+      <message name="IDS_HOME_MODULES_MANAGE_CARDS_TITLE" desc="The title for the section of the page which allows the user to manage their NTP magic stack cards.">
+        Manage your cards
       </message>
       <message name="IDS_HOME_MODULES_SINGLE_TAB_TITLE" desc="Title for the single tab modul.">
          Continue with this tab
@@ -1316,6 +1328,15 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_CONTINUE" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
         Continue
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_TITLE" desc="Title of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Tips tailored just for you
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_DESCRIPTION" desc="Description of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Get notifications for insights that enhance your experience on Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_BUTTON" desc="Text on the clickable button on the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Enable
       </message>
 
       <!-- Safety Hub Magic Stack strings -->

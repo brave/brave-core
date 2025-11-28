@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zcash/zip32"
   cargo_pkg_version = "0.1.1"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",

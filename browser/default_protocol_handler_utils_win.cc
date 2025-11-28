@@ -21,7 +21,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
-#include "base/hash/md5.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
@@ -40,10 +39,19 @@
 #include "base/win/windows_version.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/installer/util/shell_util.h"
+#include "crypto/obsolete/md5.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // Most of source code in this file comes from firefox's SetDefaultBrowser -
 // https://github.com/mozilla/gecko-dev/blob/master/toolkit/mozapps/defaultagent/SetDefaultBrowser.cpp
+
+namespace brave {
+std::array<uint8_t, crypto::obsolete::kMd5Size> Md5ForDefaultProtocolHandler(
+    base::span<const uint8_t> data) {
+  return crypto::obsolete::Md5::Hash(std::string_view(
+      reinterpret_cast<const char*>(data.data()), data.size()));
+}
+}  // namespace brave
 
 namespace protocol_handler_utils {
 
@@ -67,9 +75,9 @@ std::wstring HashString(base::wcstring_view input) {
 
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.
-  base::MD5Digest digest;
-  base::MD5Sum(bytes, &digest);
-  auto md5 = base::as_byte_span(digest.a).first<8u>();
+  std::array<uint8_t, crypto::obsolete::kMd5Size> digest =
+      brave::Md5ForDefaultProtocolHandler(bytes);
+  auto md5 = base::as_byte_span(digest).first<8u>();
 
   // The following loop effectively computes two checksums, scrambled like a
   // hash after every DWORD is added.

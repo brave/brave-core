@@ -38,7 +38,6 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
-#include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -246,15 +245,15 @@ void BraveTabStrip::EnterTabRenameModeAt(int index) {
 }
 
 void BraveTabStrip::UpdateTabContainer() {
+  if ((true)) {
+    return;
+  }
+
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
-  const bool should_use_compound_tab_container =
-      using_vertical_tabs || base::FeatureList::IsEnabled(tabs::kSplitTabStrip);
-  const bool is_using_compound_tab_container =
-      views::IsViewClass<BraveCompoundTabContainer>(
-          base::to_address(tab_container_));
+  const bool is_using_compound_tab_container = (false);
 
   base::ScopedClosureRunner layout_lock;
-  if (should_use_compound_tab_container != is_using_compound_tab_container) {
+  if (using_vertical_tabs != is_using_compound_tab_container) {
     // Before removing any child, we should complete the 'tab closing animation'
     // so that we don't delete views twice.
     tab_container_->CompleteAnimationAndLayout();
@@ -263,32 +262,31 @@ void BraveTabStrip::UpdateTabContainer() {
     auto original_container = RemoveChildViewT(
         static_cast<TabContainer*>(base::to_address(tab_container_)));
 
-    if (should_use_compound_tab_container) {
+    if (using_vertical_tabs) {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
-      auto* drag_context = GetDragContext();
-      auto* brave_tab_container = AddChildViewAt(
-          std::make_unique<BraveCompoundTabContainer>(
-              *this, hover_card_controller_.get(), drag_context, *this, this),
-          0);
-      tab_container_ = *brave_tab_container;
-      layout_lock =
-          base::ScopedClosureRunner(brave_tab_container->LockLayout());
+      // auto* drag_context = GetDragContext();
+      // auto* brave_tab_container = AddChildViewAt(
+      //     std::make_unique<BraveCompoundTabContainer>(
+      //         *this, hover_card_controller_.get(), drag_context, *this),
+      //     0);
+      // tab_container_ = *brave_tab_container;
+      // layout_lock =
+      //     base::ScopedClosureRunner(brave_tab_container->LockLayout());
 
-      brave_tab_container->SetScrollEnabled(using_vertical_tabs);
+      // brave_tab_container->SetScrollEnabled(using_vertical_tabs);
 
-      // Make dragged views on top of container's layer.
-      drag_context->SetPaintToLayer();
-      drag_context->layer()->SetFillsBoundsOpaquely(false);
-      drag_context->parent()->ReorderChildView(drag_context, -1);
+      // // Make dragged views on top of container's layer.
+      // drag_context->SetPaintToLayer();
+      // drag_context->layer()->SetFillsBoundsOpaquely(false);
+      // drag_context->parent()->ReorderChildView(drag_context, -1);
     } else {
       // Container should be attached before TabDragContext so that dragged
       // views can be atop container.
-      auto* brave_tab_container =
-          AddChildViewAt(std::make_unique<BraveTabContainer>(
-                             *this, hover_card_controller_.get(),
-                             GetDragContext(), *this, this),
-                         0);
+      auto* brave_tab_container = AddChildViewAt(
+          std::make_unique<BraveTabContainer>(
+              *this, hover_card_controller_.get(), GetDragContext(), *this),
+          0);
       tab_container_ = *brave_tab_container;
       layout_lock =
           base::ScopedClosureRunner(brave_tab_container->LockLayout());
@@ -313,23 +311,9 @@ void BraveTabStrip::UpdateTabContainer() {
             base::Unretained(vertical_region_view)));
       }
     } else {
-      if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
-        auto* browser_view = static_cast<BraveBrowserView*>(
-            BrowserView::GetBrowserViewForBrowser(browser));
-        DCHECK(browser_view);
-        auto* scroll_container = static_cast<TabStripScrollContainer*>(
-            views::AsViewClass<TabStripRegionView>(
-                browser_view->tab_strip_view())
-                ->tab_strip_container_);
-        DCHECK(scroll_container);
-        SetAvailableWidthCallback(base::BindRepeating(
-            &TabStripScrollContainer::GetTabStripAvailableWidth,
-            base::Unretained(scroll_container)));
-      } else {
-        SetAvailableWidthCallback(base::NullCallback());
-      }
+      SetAvailableWidthCallback(base::NullCallback());
 
-      if (should_use_compound_tab_container) {
+      if (using_vertical_tabs) {
         // Upstream's compound tab container lay out its sub containers
         // manually.
         tab_container_->SetLayoutManager(nullptr);

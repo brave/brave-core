@@ -27,6 +27,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/sfackler/rust-phf"
   cargo_pkg_version = "0.8.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/phf_shared/v0_8:lib",
     "//brave/third_party/rust/rand/v0_7:lib",

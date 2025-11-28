@@ -85,7 +85,7 @@
     Ask Brave AI Mode
   </message>
   <message name="IDS_STARTER_PACK_AI_MODE_ACTION_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe omnibox action that invokes the AI mode keyword.">
-    Ask Brave AI Mode
+    Ask AI Mode in Brave Search
   </message>
   <message name="IDS_ACC_STARTER_PACK_AI_MODE_ACTION_SUFFIX" desc="Suffix for spoken suggestion description with omnibox action button, to explain keystroke used to invoke AI mode.">
     <ph name="STARTER_PACK_AI_MODE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Enter to ask Brave AI Mode
@@ -167,6 +167,15 @@
       </message>
       <message name="IDS_OMNIBOX_NAVATTACH_TABS" desc="The text displayed in the omnibox attachments popup. When clicked - opens tabs picker." formatter_data="android_java">
         Tabs
+      </message>
+      <message name="IDS_FUSEBOX_ADD_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup. When clicked - adds the curernt tab as context." formatter_data="android_java">
+        Add current tab
+      </message>
+      <message name="IDS_OMNIBOX_CREATE_IMAGE" desc="The text displayed in the omnibox attachments popup. When clicked - enables image creation." formatter_data="android_java">
+        Create Image
+      </message>
+      <message name="IDS_OMNIBOX_EMPTY_HINT_FOR_IMAGE_GENERATION" desc="The text displayed in the omnibox when it is empty and image generation is selected." formatter_data="android_java">
+        Describe your image
       </message>
     </if>
   </if>
@@ -387,6 +396,12 @@
   <message name="IDS_ACC_OMNIBOX_ACTION_IN_EXTENSION_SUGGEST_SUFFIX" desc="Suffix for spoken suggestion description with actions in suggest button(s) explaining that additional actions are available.">
     <ph name="OMNIBOX_ACTION_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>Call</ex></ph>, press Tab to browse available actions, then Enter to execute selected action.
   </message>
+
+  <!-- Fusebox -->
+  <message name="IDS_AI_MODE_ENTRYPOINT_HINT" desc="Label for the Omnibox entrypoint that encourages the user to toggle AIMode on" formatter_data="android_java">
+    Try AI Mode
+  </message>
+
 
   <!-- Accessibility labels for autocomplete match types.
        These are parameterized on the text being completed into the omnibox.

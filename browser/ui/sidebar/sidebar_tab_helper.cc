@@ -102,7 +102,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
   }
 
   // If side panel is already opened, don't open Leo panel now.
-  if (side_panel_ui->GetCurrentEntryId()) {
+  if (side_panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)) {
     return;
   }
 

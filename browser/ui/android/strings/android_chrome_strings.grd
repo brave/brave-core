@@ -221,6 +221,18 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SEARCH_IN_SETTINGS_HINT" desc="Hint text in search in settings widget. [CHAR_LIMIT=32]">
         Search settings
       </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_RESULTS" desc="Title text for settings search results page. [CHAR_LIMIT=32]">
+        Search results
+      </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_ZERO_STATE" desc="Guide message when search in settings starts or for an empty query. [CHAR_LIMIT=32]">
+        Search for a setting
+      </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_NO_MATCH" desc="Guide message when there is no match for search in settings. [CHAR_LIMIT=32]">
+        No results found
+      </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_HELP_CENTER" desc="Message suggesting user search help center when there is no match in search. [CHAR_LIMIT=32]">
+        Try searching the help center
+      </message>
 
       <!-- Notification channels -->
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
@@ -826,10 +838,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
         System default
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY" desc="Summary for the System Default option.">
-        Turn on dark theme when your device's Battery Saver is on
-      </message>
-      <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY_API_29" desc="Summary for the System Default option (Android Q+).">
-        Turn on dark theme when your device's dark theme or Battery Saver is on
+        Turn on dark theme when your device’s dark theme is on
       </message>
       <message name="IDS_DARKEN_WEBSITES" desc="Title for the option to apply auto-darken to websites. If a website has opt-out from auto-darken, the content will stay the same.">
         Apply dark theme to sites, when possible
@@ -2552,6 +2561,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SYNC_ERROR_CARD_TITLE" desc="Title of the Sync Error Card. [CHAR_LIMIT=32]">
         Sync isn't working
       </message>
+      <message name="IDS_BOOKMARK_SYNC_LIMIT_ERROR_TITLE" desc="Title for the error when the user has too many bookmarks and sync is paused. [CHAR-LIMIT=50]">
+        Some bookmarks aren’t saved
+      </message>
+      <message name="IDS_BOOKMARK_SYNC_LIMIT_ERROR_DESCRIPTION" desc="Description for the error when the user has too many bookmarks and sync is paused.">
+        To save bookmarks in your account, delete your unused bookmarks
+      </message>
       <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR_LIMIT=32]">
         Password sync isn't working
       </message>
@@ -2954,6 +2969,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_NEW_CHROME_TAB" desc="Context sensitive menu item to open the selected link in a new Brave tab from Brave Custom Tab. [CHAR_LIMIT=30]">
         Open in new Brave tab
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_WINDOW" desc="Context sensitive menu item to open the selected link in a Brave window from Brave Custom Tab. Used when there is a dedicated window for Private tabs. [CHAR_LIMIT=30]">
+        Open in Brave window
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
         Open in Private tab
@@ -3699,6 +3717,33 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_PROMO_SIGN_IN" desc="Button to sign into Brave, similar to IDS_SIGNIN_PROMO_SIGN_IN_AS. Used when the user's display names are not available.">
         Sign in
       </message>
+      <message name="IDS_SIGNIN_HISTORY_SYNC_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. The line below this string is 'To see tabs from your other devices, sync your tabs and history'. This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Turn on' button and turn on history and tabs syncing. The tone should be inviting.">
+        Browse across devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP1" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+        To get your tabs and more on all your devices, sign in as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP2" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+        Get your tabs and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP3" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
+        To get your tabs and more on all your devices, sign in to Brave as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP4" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
+        To get your tabs and more on all your devices, sign in to Brave
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP1" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+        To get your bookmarks and more on all your devices, sign in as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP2" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+        Get your bookmarks and more on all your devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP3" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
+        To get your bookmarks and more on all your devices, sign in to Brave as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP4" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
+        To get your bookmarks and more on all your devices, sign in to Brave
+      </message>
 
       <!-- Strings for signin promos when Unified Consent is enabled. -->
       <message name="IDS_SYNC_PROMO_TITLE_BOOKMARKS" desc="This string is the headline of a card that appears when the user opens Brave's bookmarks; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your bookmarks from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
@@ -3781,6 +3826,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_NTP_RECENT_TABS_SYNC_PROMO_TITLE" desc="Header for the promo explaining how users can see the list of tabs open on their other devices">
         Other devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_NO_ACCOUNTS" desc="This string is the title of a card that appears when the user opens Brave's recent tabs page; the user is signed out of Brave and there are no accounts available on the device." meaning="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue'/'Sign in' button and sign-in. The tone should be inviting.">
+        Sign in to get your tabs and more on all your devices
       </message>
       <message name="IDS_NTP_RECENT_TABS_LAST_SYNCED" desc="Label for the time since a device was last synced">
         Last synced: <ph name="WHEN">%1$s<ex>4 hours ago</ex></ph>
@@ -4197,6 +4245,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
         Extensions
       </message>
+      <message name="IDS_MENU_MANAGE_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
+        Manage Extensions
+      </message>
+      <message name="IDS_MENU_CHROME_WEBSTORE" desc="Menu item for opening the chrome webstore that allows the user to install extensions. [CHAR_LIMIT=27]">
+        Visit Web Store
+      </message>
       <message name="IDS_MENU_TINKER_TANK" desc="Menu item for opening the tinker tank bottom sheet. [CHAR_LIMIT=27]" translateable="false">
         Tinker tank
       </message>
@@ -4303,12 +4357,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_REVIEW_PDF_WITH_AI" desc="Menu item to review a PDF file with AI.">
         Review PDF with AI
-      </message>
-      <message name="IDS_MENU_PIN_TAB" desc="Menu item for pinning a tab.">
-        Pin tab
-      </message>
-      <message name="IDS_MENU_UNPIN_TAB" desc="Menu item for unpinning a tab.">
-        Unpin tab
       </message>
       <message name="IDS_MENU_ITEM_CONTENT_FILTER_HELP_CENTER_LINK" desc="Menu item to explain that the content filter is on and to direct the user to the help center article about content filters. Only available when the content filter is on.">
         Content filter is on
@@ -5132,6 +5180,30 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_OMNIBOX_REMOVE_SUGGESTION" desc="Accessibility announcement when the close button for the suggestion is clicked.">
         Remove suggestion
       </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_OPEN_OR_CLOSE_CONTEXT_POPUP" desc="Accessibility announcement when the 'Add context' button in the omnibox is highlighted.">
+        Open or Close the context popup
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ENABLE_AI_MODE" desc="Accessibility announcement when the 'AI Mode' option in the Omnibox 'Add context' popup is highlighted.">
+        Enable AI Mode
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_RESET_MODE" desc="Accessibility announcement when the 'Reset mode' button in the omnibox is highlighted.">
+        Reset current mode <ph name="MODE_NAME">%1$s<ex>AI Mode</ex></ph> to Search
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_FILES" desc="Accessibility announcement when the 'Files' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach files
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_IMAGES" desc="Accessibility announcement when the 'Gallery' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach images from gallery
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_CAMERA_PICTURE" desc="Accessibility announcement when the 'Camera' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach camera picture
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_TABS" desc="Accessibility announcement when the 'Tabs' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach tabs
+      </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_CREATE_IMAGE" desc="Accessibility announcement when the 'Create Image' option in the Omnibox 'Add context' popup is highlighted.">
+        Create image
+      </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -5287,6 +5359,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS" desc="Toast message for when the user has tried to start more than 5 instances of Brave window.">
         You can have up to <ph name="MAX_WINDOW_COUNT">%1$d</ph> windows.
+      </message>
+      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
+        To open a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
+      </message>
+      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
+        To restore a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
       </message>
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
         To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
@@ -6839,11 +6917,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Use another device
       </message>
 
-      <!-- Plus Address accessibility strings: TODO(crbug.com/40276862): Replace with final versions  -->
-      <message name="IDS_PLUS_ADDRESS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the plus address bottom sheet is opened." is_accessibility_with_no_ui="true">
-        Lorem Ipsum
-      </message>
-
       <message name="IDS_READALOUD_VOICE_PREVIEW_MESSAGE" desc="String to be read aloud when a voice's preview button is clicked as a demonstration of how that voice sounds. It also explains how to select the voice by clicking the menu item.">
         Here are the voices you can pick for reading out your web pages. If you like this voice and want me to keep using it just tap the voice name.
       </message>
@@ -7153,26 +7226,22 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           other {(#) inactive items}}
       </message>
       <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE" desc="Shown in the tab switcher to inform the user how long the relevant tabs have been inactive for.">
-        {INACTIVE_TIME_DAYS, plural,
-          =1 {Not used for 1 day or more}
-          other {Not used for # days or more}}
+        Unused or duplicate tabs
       </message>
-      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user how long the relevant tabs and tab groups have been inactive for. [CHAR_LIMIT=32]">
-        {INACTIVE_TIME_DAYS, plural,
-          =1 {Tabs and groups not used for 1 day or more}
-          other {Tabs and groups not used for # days or more}}
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user of their inactive tabs and groups. [CHAR_LIMIT=32]">
+        Unused or duplicate tabs and groups
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE" desc="In product help shown as a message in the archived tabs dialog.">
-        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+        Duplicate tabs or those unused for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and closed after 3 months</ex></ph>. You can change this anytime in <ph name="DECLUTTER_SETTINGS_TITLE">%3$s<ex>settings</ex></ph>.
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="In product help shown as a message in the archived tabs dialog.">
-        Tabs and tab groups you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and deleted after 3 months</ex></ph>. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+        Duplicate tabs and groups or those unused for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here<ph name="AUTODELETE_SECTION">%2$s<ex>and closed after 3 months</ex></ph>. You can change this anytime in <ph name="DECLUTTER_SETTINGS_TITLE">%3$s<ex>settings</ex></ph>.
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_AUTODELETE_SECTION" desc="A section describing auto-delete, shown if it's enabled.">
         \u0020and closed after <ph name="MONTHS_ARCHIVED">%1$d<ex>3</ex></ph> months
       </message>
       <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_SETTINGS_TITLE" desc="The word for settings, used in IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE.">
-        Settings
+        settings
       </message>
 
       <!-- Hub search -->
@@ -7345,6 +7414,30 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_BACK_BUTTON_DESCRIPTION" desc="Acessibility string describing the back icon on the info details page of the promo.">
         Back
       </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Tips Opt In bottom sheet informing the user on what tips notifications are and where to turn it on.">
+        Tips notifications opt-in help and guidance bottom sheet
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Tips Opt In bottom sheet when closed.">
+        Tips notifications opt in closed
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Tips Opt In bottom sheet when opened at half height.">
+        Tips notifications opt in opened at half height
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Tips Opt In bottom sheet when opened at full height.">
+        Tips notifications opt in opened at full height
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT" desc="Button text for the Tips Opt In bottom sheet to go to the notifications settings page.">
+        Turn on Tips notifications
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_NEGATIVE_BUTTON_TEXT" desc="Button text for the Tips Opt In bottom sheet to exit the promo.">
+        Close
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_TITLE" desc="Title of the Tips Opt In bottom sheet promo. [CHAR_LIMIT=32]">
+        Get the most out of Brave
+      </message>
+      <message name="IDS_TIPS_OPT_IN_BOTTOM_SHEET_DESCRIPTION" desc="Description of the Tips Opt In bottom sheet promo.">
+        Turn on notifications for useful tips to help you get the best of Brave
+      </message>
 
       <!-- Caret Browsing -->
       <message name="IDS_CARET_BROWSING_DIALOG_TITLE" desc="Title of the caret browsing confirmation dialog" formatter_data="android_java">
@@ -7352,6 +7445,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_CARET_BROWSING_DIALOG_MESSAGE" desc="Message of the caret browsing confirmation dialog" formatter_data="android_java">
         You can navigate pages with a text cursor. Press F7 to turn off.
+      </message>
+
+       <!-- Automatic Picture-in-Picture Permission Prompt -->
+      <message name="IDS_AUTO_PICTURE_IN_PICTURE_PROMPT_TITLE" desc="Title for the auto-picture-in-picture permission prompt. The placeholder is the website's origin.">
+        <ph name="URL">%1$s<ex>example.com</ex></ph> wants to enter picture-in-picture automatically
       </message>
     </messages>
   </release>

@@ -848,15 +848,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   Click(toolbar, "ai");
   auto* side_panel = browser()->GetFeatures().side_panel_ui();
-  while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+  while (side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) !=
+         SidePanelEntryId::kChatUI) {
     NonBlockingDelay(base::Milliseconds(10));
   }
-  EXPECT_EQ(SidePanelEntryId::kChatUI, side_panel->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kChatUI,
+            side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   Click(toolbar, "ai");
-  while (side_panel->GetCurrentEntryId().has_value()) {
+  while (side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+             .has_value()) {
     NonBlockingDelay(base::Milliseconds(10));
   }
-  EXPECT_FALSE(side_panel->GetCurrentEntryId().has_value());
+  EXPECT_FALSE(
+      side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+          .has_value());
 #endif
 
   Click(toolbar, "appearance");

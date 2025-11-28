@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+
+  <!-- Consent prompt -->
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_TITLE" desc="Title text of the consent dialog.">
+    Save info to Brave Wallet from pages you view
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_NO_THANKS_BUTTON" desc="Text displayed on the decline/cancel button of the consent dialog.">
+    No thanks
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_TURN_ON_BUTTON" desc="Text displayed on the accept/ok button of the consent dialog.">
+    Turn on
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_LEARN_MORE" desc="Text for the 'Learn more' link in the consent dialog.">
+    saving info to Brave Wallet in settings
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_SUBTITLE_DESCRIPTION" desc="Subtitle text of the consent dialog.">
+    Save tickets, events, and other info from pages you view — not just forms you fill. Then quickly access your passes, like event tickets and loyalty cards. Your saved info can appear on your devices and across Brave products.
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_SUBTITLE_ACTION" desc="Subtitle text of the consent dialog.">
+    To offer suggestions and improve this feature, the URL and full page content of the site you visit are shared with Brave. Learn more about <ph name="IDS_WALLET_WALLETABLE_PASS_CONSENT_DIALOG_LEARN_MORE">$1<ex>saving info to Brave Wallet in settings</ex></ph>.
+  </message>
+
+  <!-- Save prompt -->
+  <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_LOYALTY_CARD_DIALOG_TITLE" desc="Title text of the save loyalty card dialog.">
+    Save loyalty card to Wallet
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_EVENT_TICKET_DIALOG_TITLE" desc="Title text of the save event ticket dialog.">
+    Save event ticket to Wallet
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE" desc="The name of the Brave Wallet product.">
+    Brave Wallet
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_DIALOG_SUBTITLE" desc="Subtitle text of the save dialog.">
+    Save your info to get updates from any of your devices. Your info is saved to <ph name="IDS_WALLET_WALLETABLE_PASS_GOOGLE_WALLET_TITLE">$1<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_DIALOG_NO_THANKS_BUTTON" desc="Text displayed on the decline/cancel button of the save dialog.">
+    No thanks
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_SAVE_DIALOG_SAVE_BUTTON" desc="Text displayed on the accept/ok button of the save dialog.">
+    Save
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_LOYALTY_CARD_ISSUER_ATTRIBUTE_NAME" desc="Label for the issuer attribute of a loyalty card.">
+    Issuer
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_LOYALTY_CARD_MEMBER_ID_ATTRIBUTE_NAME" desc="Label for the member id attribute of a loyalty card.">
+    Number
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_EVENT_PASS_EVENT_NAME_ATTRIBUTE_NAME" desc="Label for the event name attribute of an event pass.">
+    Event Name
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_EVENT_PASS_ISSUER_ATTRIBUTE_NAME" desc="Label for the issuer attribute of an event pass.">
+    Issuer
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_EVENT_PASS_VENUE_ATTRIBUTE_NAME" desc="Label for the venue attribute of an event pass.">
+    Venue
+  </message>
+
+  <message name="IDS_WALLET_WALLETABLE_PASS_EVENT_PASS_DATE_ATTRIBUTE_NAME" desc="Label for the date attribute of an event pass.">
+    Date
+  </message>
+</grit-part>
