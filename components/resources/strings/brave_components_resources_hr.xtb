@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Skočni prozor za newsletter</translation>
 <translation id="6136090320163235283">Widget za društvene medije</translation>
 <translation id="6657720240983439091">Widget za čavrljanje</translation>
+<translation id="3597441883564676263">Preglednik nije podržan</translation>
 <translation id="7138678301420049075">Ostalo</translation>
 <translation id="4046860372562593546">Upravljaj značajkom Oglasi Brave</translation>
 <translation id="5136973036012418831">Upravljajte vrstom i učestalosti Oglasa Brave.</translation>
@@ -2236,6 +2237,24 @@
 <translation id="7488762544858401571">Uređeno</translation>
 <translation id="5604254791550001355">Uredi upit</translation>
 <translation id="8115786586976830777">Kopiraj upit</translation>
+<translation id="3666616415490815310">Spremi kao vještinu</translation>
+<translation id="6574544364990812112">Moje vještine</translation>
+<translation id="6696824203401957025">Nova vještina</translation>
+<translation id="6410279677882692627">Vještine će se pojaviti u vašim alatima [/] i bit će im moguće pristupiti upisivanjem "/ime" koje ste ovdje postavili.</translation>
+<translation id="1344606707744657196">Model za upit</translation>
+<translation id="8458341576712814616">Prečac</translation>
+<translation id="1326559827339317236">Ovdje unesite svoju prečicu</translation>
+<translation id="5032574515228824816">Upit</translation>
+<translation id="2573797314568446575">Ovdje upišite upit</translation>
+<translation id="900733896273558337">Uredi vještinu</translation>
+<translation id="7662963028545588801">Izbriši vještinu</translation>
+<translation id="4209790625997566418">Sigurno želite izbrisati ovu vještinu? Ova se radnja ne može opozvati.</translation>
+<translation id="7161540406494327389">Potrebna je prečica</translation>
+<translation id="3722223049736774445">Prečica može sadržavati samo slova, brojeve, donju crtu i crticu</translation>
+<translation id="6997214168632888867">Prečica smije sadržavati najviše 64 znaka</translation>
+<translation id="2806891468525657116">Prečica već postoji</translation>
+<translation id="5497501845974700950">Upit je obavezan</translation>
+<translation id="5642369858603376334">Upit smije imati najviše 5000 znakova</translation>
 <translation id="1406205536570262057">Uredi odgovor</translation>
 <translation id="3386725253392845084">Pokušaj isti model ponovo</translation>
 <translation id="2461822463642141190">Trenutno</translation>
@@ -2273,13 +2292,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> više…</translation>
 <translation id="8103700533980268469">Zatvori ovu obavijest</translation>
 <translation id="3417835166382867856">Pretraživanje kartica</translation>
+<translation id="3828029223314399057">Pretraži knjižne oznake</translation>
+<translation id="381480092025168632">Pretraži povijest preglednika</translation>
 <translation id="7311244614769792472">Nema rezultata</translation>
 <translation id="3112448569149476523">Pokušajte s drugom tražilicom</translation>
 <translation id="1352836459737874921">Priložite sadržaj s drugih kartica</translation>
+<translation id="7173836072258346701">Priloži sadržaj iz knjižnih oznaka</translation>
+<translation id="163680814308917875">Priloži sadržaj iz povijesti preglednika</translation>
 <translation id="7039179822221107025">Pošaljite sadržaj stranice s kartica preglednika kako biste Leu dali više konteksta za razgovor.</translation>
+<translation id="1602382615168212961">Pošaljite sadržaj stranice s kartica u knjižnim oznakama kako biste Leu dali više konteksta za razgovor.</translation>
+<translation id="4808122506413075135">Pošaljite sadržaj stranice iz povijesti preglednika kako biste Leu dali više konteksta za razgovor.</translation>
 <translation id="220541218939267992">Sadržaj stranice bit će poslan Leu zajedno s vašim porukama.</translation>
-<translation id="1446346932629101482">Dodajte sadržaj kartice zbog konteksta. Sadržaj će se poslati Leu zajedno s porukom.</translation>
-<translation id="7193316103691252734">Nema odgovarajućih kartica</translation>
+<translation id="8164365899016970783">Dodajte sadržaj kartica i knjižnih oznaka zbog konteksta. Sadržaj će se poslati Leu zajedno s vašim porukama.</translation>
+<translation id="6237410387937453423">Nema odgovarajućih privitaka</translation>
+<translation id="8076492880354921740">Kartice</translation>
 <translation id="2315654674554095762">Leo će sada pamtiti vaše razgovore kako biste im se mogli vratiti. Oni se čuvaju šifrirani na vašem uređaju i možete ih izbrisati u bilo kojem trenutku.</translation>
 <translation id="7821251979960635244">Vaša povijest razgovora pojavite će se ovdje kad započnete razgovor.</translation>
 <translation id="887511360213807449">Povijest je isključena</translation>
@@ -2338,7 +2364,9 @@
 <translation id="4250229828105606438">Snimka zaslona</translation>
 <translation id="7949596341600215809">Snimka cijelog zaslona</translation>
 <translation id="6332876390231524389">Sadržaj trenutne kartice</translation>
-<translation id="7742969455167760092">Otvori kartice...</translation>
+<translation id="6397861830483632092">Otvori kartice…</translation>
+<translation id="802080272588201037">Knjižne oznake…</translation>
+<translation id="2716127283451902393">Povijest…</translation>
 <translation id="49269513399674318">Upotrijebi mikrofon</translation>
 <translation id="3895031624234442305">Prilagođeni modeli</translation>
 <translation id="4572010449071015143">Započnite novi razgovor</translation>
@@ -2350,6 +2378,22 @@
 <translation id="2593275000606533518">Upravljate svim</translation>
 <translation id="8410199626695516952">U redu, to neću zapamtiti</translation>
 <translation id="8419849467765474535">Spremanje u memoriju nije uspjelo. Pokušajte ponovno.</translation>
+<translation id="5517580030864973329">Navigacija mrežnom stranicom do nove adrese</translation>
+<translation id="8832457834975923266">Mrežna stranica je otvorena na <ph name="URL"/></translation>
+<translation id="5095252080770652994">Napredak</translation>
+<translation id="8332385567036775056">Koraci</translation>
+<translation id="4521931942079977149">Klik na stranici</translation>
+<translation id="7732267913911704962">Povlačenje i ispuštanje na stranici</translation>
+<translation id="7703800915509570212">Navigacija natrag</translation>
+<translation id="4875586490950981498">Navigacija naprijed</translation>
+<translation id="738881387603843066">Pomicanje miša</translation>
+<translation id="4850669014075537160">Pomicanje</translation>
+<translation id="1265072406500460724">Odabir iz padajućeg izbornika</translation>
+<translation id="7573920298077917439">Unos teksta</translation>
+<translation id="4089034800311309656">Čekanje učitavanja stranice</translation>
+<translation id="4798146464408730445">Nisu pronađene vještine. Stvorite novu klikom na gumb „Nova”.</translation>
+<translation id="271033894570825754">Novo</translation>
+<translation id="8266605059880650542">Pohrana pojedinosti o stranici</translation>
 <translation id="3486480638399578250">Čuvajte privatnost svoje osobne e-mail adrese</translation>
 <translation id="7765422154906712751">Stvorite jedinstvene, slučajne adrese koje se prosljeđuju na vašu e-mail adresu povezanu s vašim računom na Braveu i mogu se izbrisati u svakom trenutku. Čuvajte svoju stvarnu e-mail adresu kako je oglašivači ne bi otkrili ili koristili.</translation>
 <translation id="5222676887888702881">Odjava</translation>
@@ -2395,6 +2439,10 @@
 <translation id="7508412964869396375">Nije primljen token za verifikacija od servisa za račune Brave</translation>
 <translation id="3179527991526213624">Nije primljen odgovor od servisa za račune Brave</translation>
 <translation id="7911439408853154309">Nije uspjela provera e-maila</translation>
+<translation id="2595463802839066496">Nije primljen odgovor od servisa za pseudonime e-pošte</translation>
+<translation id="367191282389216837">Nevaljani odgovor od servisa za pseudonime e-pošte</translation>
+<translation id="7203490731644771170">Greška servisa za pseudonime e-pošte: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Greška: Pseudonim nije dostupan</translation>
 <translation id="8370801182970639038">Automatski (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Omogućeni pretraživači</translation>
 <translation id="8285901519864208412">Sakrij karticu Nagrade</translation>
@@ -2440,8 +2488,19 @@
 <translation id="8458987127502506209">Omogući Štitove Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Štitovi su PODIGNUTI<ph name="STATUS_AFTER"/> za ovu stranicu</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Štitovi su SPUŠTENI<ph name="STATUS_AFTER"/> za ovu stranicu</translation>
-<translation id="5623354834493649144">Ako ova stranica ne radi, probajte isključiti funkcionalnost Shields.
-   <ph name="NOTE_BEFORE"/>Napomena: ovo može smanjiti Braveovu zaštitu privatnosti.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Napomena: ovo može smanjiti Braveovu zaštitu privatnosti.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Imate li problema s ovim stranicom?</translation>
+<translation id="9176447766421988172">Pokušavamo eksperiment za povećanje kompatibilnosti s mrežnim mjestima, pri kojem je omogućeno samo blokiranje oglasa. Upozorenje: isključuje sve zaštite privatnosti. Želite li ga isprobati? <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Imajte na umu da za pojedinačna mrežna mjesta „pokvarena” zbog Braveove zaštite privatnosti možete isključiti štitove.</translation>
+<translation id="1836572675775891780">Omogući samo blokiranje oglasa</translation>
+<translation id="6623668214089604469">Radi li stranica sada ispravno?</translation>
+<translation id="8978860854770042258">Razmislite o slanju izvješća ako je stranica i dalje neispravna.</translation>
+<translation id="4677356505199464553">Izgleda dobro</translation>
+<translation id="1992750560347846445">Prijavi mrežno mjesto</translation>
+<translation id="2887186586339544116">Uključen način samo blokiranja oglasa</translation>
+<translation id="673665019618844072">Trenutno koristite način samo blokiranja oglasa. Ovaj način nudi samo zaštitu od oglasa. Ako se želite vratiti u puni način rada Štitova, onemogućite ovaj način u postavkama.</translation>
+<translation id="4820891023903368625">Oglasi su blokirani <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Blokirani elementi za praćenje, oglasi i više <ph name="LINK_BEFORE"/>Doznaj više<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nije zaštićeno štitovima Brave <ph name="LINK_BEFORE"/>Saznajte više <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
@@ -2475,7 +2534,6 @@
 <translation id="8034285923190068220">Dopusti izradu digitalnog otiska</translation>
 <translation id="7638541189782135885">Ne nadograđuj veze HTTP</translation>
 <translation id="2570787596946026998">Povezuj se samo s HTTPS-om</translation>
-<translation id="1992750560347846445">Prijavi mrežno mjesto</translation>
 <translation id="2387532482048804818">Obavijestite nas ako mrežno mjesto ne radi pravilno s omogućenim Štitovima.</translation>
 <translation id="3795015906457257780">Pregledavate ovo mrežno mjesto bez zaštite privatnosti preglednika Brave.</translation>
 <translation id="7194012750329511146">Štitovi Brave

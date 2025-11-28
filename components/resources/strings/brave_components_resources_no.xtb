@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Forgrunnsvindu om nyhetsbrev</translation>
 <translation id="6136090320163235283">Sosiale medier-widget</translation>
 <translation id="6657720240983439091">Chat-widget</translation>
+<translation id="3597441883564676263">Nettleser ikke støttet</translation>
 <translation id="7138678301420049075">Annet</translation>
 <translation id="4046860372562593546">Administrer Brave Ads</translation>
 <translation id="5136973036012418831">Kontroller hvilke typer Brave Ads du ser, og hvor ofte.</translation>
@@ -2234,6 +2235,24 @@
 <translation id="7488762544858401571">Redigert</translation>
 <translation id="5604254791550001355">Rediger ledetekst</translation>
 <translation id="8115786586976830777">Kopier ledetekst</translation>
+<translation id="3666616415490815310">Lagre som ferdighet</translation>
+<translation id="6574544364990812112">Mine ferdigheter</translation>
+<translation id="6696824203401957025">Ny ferdighet</translation>
+<translation id="6410279677882692627">Ferdigheter vises i [/] verktøyene dine og får du tilgang til ved å skrive "/navn" du definerer under.</translation>
+<translation id="1344606707744657196">Modell for spørsmålet</translation>
+<translation id="8458341576712814616">Snarvei</translation>
+<translation id="1326559827339317236">Skriv inn snarvei her</translation>
+<translation id="5032574515228824816">Spørsmål</translation>
+<translation id="2573797314568446575">Skriv inn spørsmål her</translation>
+<translation id="900733896273558337">Rediger ferdighet</translation>
+<translation id="7662963028545588801">Slett ferdighet</translation>
+<translation id="4209790625997566418">Er du sikker på at du vil slette denne ferdigheten? Denne handlingen kan ikke angres.</translation>
+<translation id="7161540406494327389">Snarvei kreves</translation>
+<translation id="3722223049736774445">Snarvei kan kun inneholde bokstaver, tall, understrek og bindestrek</translation>
+<translation id="6997214168632888867">Snarveien må være på maks. 64 tegn</translation>
+<translation id="2806891468525657116">Snarveien finnes allerede</translation>
+<translation id="5497501845974700950">Spørsmål kreves</translation>
+<translation id="5642369858603376334">Spørsmålet må være på maks. 5000 tegn</translation>
 <translation id="1406205536570262057">Rediger svaret</translation>
 <translation id="3386725253392845084">Prøv samme modell igjen</translation>
 <translation id="2461822463642141190">Nåværende</translation>
@@ -2271,13 +2290,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> til …</translation>
 <translation id="8103700533980268469">Lukk denne meldingen</translation>
 <translation id="3417835166382867856">Søk etter faner</translation>
+<translation id="3828029223314399057">Søk i bokmerker</translation>
+<translation id="381480092025168632">Søk i nettleserloggen</translation>
 <translation id="7311244614769792472">Ingen resultater funnet</translation>
 <translation id="3112448569149476523">Prøv et annet søk</translation>
 <translation id="1352836459737874921">Legg til innhold fra andre faner</translation>
+<translation id="7173836072258346701">Legg ved innhold fra bokmerker</translation>
+<translation id="163680814308917875">Legg ved innhold fra nettleserloggen</translation>
 <translation id="7039179822221107025">Send sideinnhold fra fanene i nettleseren din for å gi Leo litt mer kontekst.</translation>
+<translation id="1602382615168212961">Send sideinnhold fra fanene i bokmerkene dine for å gi Leo mer kontekst i samtalen.</translation>
+<translation id="4808122506413075135">Send sideinnhold fra nettleserloggen din for å gi Leo mer kontekst i samtalen.</translation>
 <translation id="220541218939267992">Sideinnhold vil bli sendt til Leo sammen med meldingene dine.</translation>
-<translation id="1446346932629101482">Legg til faneinnhold for å gi mer kontekst. Innholdet sendes til Leo sammen med meldingene dine.</translation>
-<translation id="7193316103691252734">Ingen matchende faner</translation>
+<translation id="8164365899016970783">Legg til fane- og bokmerkeinnhold for kontekst. Innhold blir sendt til Leo sammen med meldingene dine.</translation>
+<translation id="6237410387937453423">Ingen matchende vedlegg</translation>
+<translation id="8076492880354921740">Faner</translation>
 <translation id="2315654674554095762">Fra nå av vil Leo huske samtalene dine, slik at du kan enkelt ta opp tråden. De lagres kryptert på enheten din, og du kan slette dem når som helst.</translation>
 <translation id="7821251979960635244">Samtaleloggen din vil vises her når du innleder din første samtale.</translation>
 <translation id="887511360213807449">Loggen er deaktivert</translation>
@@ -2336,7 +2362,9 @@
 <translation id="4250229828105606438">Skjermbilde</translation>
 <translation id="7949596341600215809">Skjermbilde av hele siden</translation>
 <translation id="6332876390231524389">Innhold i gjeldende fane(r)</translation>
-<translation id="7742969455167760092">Åpne faner...</translation>
+<translation id="6397861830483632092">Åpne faner…</translation>
+<translation id="802080272588201037">Bokmerker…</translation>
+<translation id="2716127283451902393">Logg…</translation>
 <translation id="49269513399674318">Bruk mikrofon</translation>
 <translation id="3895031624234442305">Egendefinerte modeller</translation>
 <translation id="4572010449071015143">Start ny samtale</translation>
@@ -2348,6 +2376,22 @@
 <translation id="2593275000606533518">Administrer alle</translation>
 <translation id="8410199626695516952">Ok, jeg kommer ikke til å huske det</translation>
 <translation id="8419849467765474535">Kunne ikke lagre minnet. Prøv på nytt.</translation>
+<translation id="5517580030864973329">Navigerer nettsiden til en ny adresse</translation>
+<translation id="8832457834975923266">Navigerte nettsiden til <ph name="URL"/></translation>
+<translation id="5095252080770652994">Fremdrift</translation>
+<translation id="8332385567036775056">Trinn</translation>
+<translation id="4521931942079977149">Klikker på siden</translation>
+<translation id="7732267913911704962">Dra og slipp på siden</translation>
+<translation id="7703800915509570212">Navigerer bakover</translation>
+<translation id="4875586490950981498">Navigerer forover</translation>
+<translation id="738881387603843066">Flytter musen</translation>
+<translation id="4850669014075537160">Ruller</translation>
+<translation id="1265072406500460724">Velger fra nedtrekksmeny</translation>
+<translation id="7573920298077917439">Taster inn tekst</translation>
+<translation id="4089034800311309656">Venter på siden</translation>
+<translation id="4798146464408730445">Ingen ferdigheter funnet. Lag en ny ved å klikke på «Ny».</translation>
+<translation id="271033894570825754">Ny</translation>
+<translation id="8266605059880650542">Noterer informasjon til senere om siden</translation>
 <translation id="3486480638399578250">Hold din personlige e-postadresse hemmelig</translation>
 <translation id="7765422154906712751">Lag unike, tilfeldige e-postadresser som videresender alle e-poster til e-postadressen som er knyttet til Brave-kontoen din. Aliasene kan slettes når som helst. Hindre at den ekte e-postadressen din deles eller brukes av annonsører.</translation>
 <translation id="5222676887888702881">Logg ut</translation>
@@ -2393,6 +2437,10 @@
 <translation id="7508412964869396375">Ingen bekreftelsestoken mottatt fra Brave-kontotjenesten</translation>
 <translation id="3179527991526213624">Ingen svar fra Brave-kontotjenesten</translation>
 <translation id="7911439408853154309">Bekreftelse av e-post mislyktes</translation>
+<translation id="2595463802839066496">Ingen svar fra e-alias-tjenesten</translation>
+<translation id="367191282389216837">Ugyldig svar fra e-alias-tjenesten</translation>
+<translation id="7203490731644771170">Feil fra e-alias-tjenesten: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Feil: Alias ikke tilgjengelig</translation>
 <translation id="8370801182970639038">Automatisk (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Aktiverte søkemotorer</translation>
 <translation id="8285901519864208412">Skjul Rewards-kort</translation>
@@ -2438,7 +2486,19 @@
 <translation id="8458987127502506209">Aktiver Brave Shields</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields er AKTIVERT<ph name="STATUS_AFTER"/> på denne siden</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields er DEAKTIVERT<ph name="STATUS_AFTER"/> på denne siden</translation>
-<translation id="5623354834493649144">Hvis siden ikke fungerer, kan du prøve å deaktivere Shields. <ph name="NOTE_BEFORE"/>Merk: Dette kan redusere personvernbeskyttelsen fra Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Hvis dette nettstedet ser ut til å være ødelagt, prøv å slå av Shields.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Merk: dette kan redusere Braves personvernbeskyttelser.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Opplever du problemer med dette nettstedet?</translation>
+<translation id="9176447766421988172">Vi prøver en eksperimentell løsning for å øke kompatibiliteten, hvor bare annonser blokkeres. Advarsel: fjerner alle personvernbeskyttelser. Vil du prøve det? <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Hvis individuelle nettsteder er ødelagt pga. Braves personvernbeskyttelse, kan du sette Shields til AV.</translation>
+<translation id="1836572675775891780">Aktiver kun annonseblokkering</translation>
+<translation id="6623668214089604469">Fungerer nettstedet korrekt nå?</translation>
+<translation id="8978860854770042258">Vurder å sende en rapport hvis dette nettstedet fortsatt er ødelagt.</translation>
+<translation id="4677356505199464553">Ser bra ut</translation>
+<translation id="1992750560347846445">Rapporter nettsted</translation>
+<translation id="2887186586339544116">Kun annonseblokkering er aktivert</translation>
+<translation id="673665019618844072">Du bruker for tiden kun annonseblokkering. Denne modusen blokkerer kun annonser. Hvis du vil tilbake til full Shields-modus, må du slå dette av i innstillingene.</translation>
+<translation id="4820891023903368625">Annonser blokkert <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Sporinger, reklamer og annet blokkert <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Ikke beskyttet av Brave Shields <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Avanserte kontroller</translation>
@@ -2472,7 +2532,6 @@
 <translation id="8034285923190068220">Tillat fingeravtrykk</translation>
 <translation id="7638541189782135885">Ikke oppgrader HTTP-tilkoblinger</translation>
 <translation id="2570787596946026998">Koble bare til med HTTPS</translation>
-<translation id="1992750560347846445">Rapporter nettsted</translation>
 <translation id="2387532482048804818">Fortell oss om nettstedet ikke fungerte som det skulle med Skjoldene oppe.</translation>
 <translation id="3795015906457257780">Du besøker denne nettsiden uten Braves funksjoner for personvernbeskyttelse.</translation>
 <translation id="7194012750329511146">Brave Shields 

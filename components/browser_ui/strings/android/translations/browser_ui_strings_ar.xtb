@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">‏ساعِدنا في تحسين متصفِّح Brave من خلال إخبارنا بأسباب سماحك باستخدام ملفات تعريف الارتباط التابعة لجهات خارجية. <ph name="BEGIN_LINK"/>إرسال ملاحظات<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">يمكنك طلب عرض المواقع الإلكترونية بنسختها المخصّصة لأجهزة الكمبيوتر</translation>
 <translation id="9183227624343766158">‏استخدام Brave بشكلٍ تلقائي</translation>
+<translation id="113098737392899175">التنقُّل بين الصفحات باستخدام مؤشر النص عند توصيل لوحة مفاتيح</translation>
 <translation id="1178015372320901893">البطاقة السفلية "اختصاراتي"</translation>
 <translation id="1178581264944972037">الإيقاف مؤقتًا</translation>
 <translation id="1181037720776840403">إزالة</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">متابعة</translation>
 <translation id="904887679952026733">‏يمكنك تطبيق "المظهر الداكن" على المواقع الإلكترونية عندما يستخدم Brave "المظهر الداكن"، إن أمكن ذلك.</translation>
 <translation id="2390272837142897736">تكبير</translation>
+<translation id="2397689164757137845">تم السماح • دقيق</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> ميغابايت</translation>
 <translation id="2403474027143565107">دقيق</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> وإذن واحد (<ph name="NUM_MORE"/>) آخر.}zero{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذن آخر.}two{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> وإذنَين (<ph name="NUM_MORE"/>) آخرَين.}few{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> أذونات أخرى.}many{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذنًا آخر.}other{تم السماح بالوصول إلى <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="NUM_MORE"/> إذن آخر.}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">المساعدة والملاحظات</translation>
 <translation id="2501278716633472235">الرجوع</translation>
 <translation id="2533138527374486328">عندما يكون هذا الإعداد مفعَّلاً، يمكن للمواقع الإلكترونية طلب الاتصال بأي جهاز على شبكتك المحلية. وعند إيقافه، لا يمكن للمواقع الإلكترونية الاتصال بالأجهزة على الشبكة.</translation>
+<translation id="2536779053640817375">تم السماح هذه المرّة • دقيق</translation>
 <translation id="2544997614631598250">لون المظهر الداكن</translation>
 <translation id="2546283357679194313">ملفات تعريف الارتباط وبيانات الموقع الإلكتروني</translation>
 <translation id="2570922361219980984">‏الوصول إلى الموقع الجغرافي متوقف لهذا الجهاز أيضًا. يمكنك تفعليه في <ph name="BEGIN_LINK"/>إعدادات Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">محظورة في بعض المواقع</translation>
 <translation id="3132996321662585180">إعادة التحميل يوميًا</translation>
 <translation id="3143754809889689516">التشغيل من البداية</translation>
+<translation id="3164169438034704658">‏يمكنك تفعيل ميزة "الموقع الجغرافي الدقيق" في <ph name="BEGIN_LINK"/>إعدادات Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">يمكنك السماح لأحد المواقع الإلكترونية باستخدام ملفات تعريف الارتباط التابعة لجهات خارجية.</translation>
 <translation id="3167868116600277716">خلاصة ميزة "اقتراحات"</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> من البيانات المخزّنة</translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">‏سيُعيد متصفِّح Brave حظر ملفات تعريف الارتباط اليوم</translation>
 <translation id="4338831206024587507">جميع المواقع الإلكترونية ضمن <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">عدم السماح للمواقع الإلكترونية بإرسال الإشعارات</translation>
+<translation id="4341577178275615435">‏يمكنك استخدام الاختصار F7 لتفعيل ميزة "التصفُّح النصي بالمؤشر" أو إيقافها.</translation>
 <translation id="4402755511846832236">منع المواقع الإلكترونية من رصد استخدامك النشط لهذا الجهاز</translation>
 <translation id="8382883799082236806">‏تم فتح البطاقة السفلية لألوان Brave في نصف الشاشة</translation>
 <translation id="4412992751769744546">السماح بملفات تعريف الارتباط التابعة لجهات خارجية</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">إيقاف الفيديو مؤقتًا</translation>
 <translation id="5877248419911025165">تصغير كل الطلبات</translation>
 <translation id="5878945009165002849">حظر طلبات تسجيل الدخول من خدمات إدارة الهوية</translation>
+<translation id="588258955323874662">ملء الشاشة</translation>
 <translation id="5884085660368669834">الإعداد المفضّل للموقع الإلكتروني</translation>
 <translation id="5887687176710214216">تمّت زيارة الموقع الإلكتروني آخر مرة أمس.</translation>
 <translation id="5908617755156109052">عدم السماح للمواقع الإلكترونية بإنشاء خريطة ثلاثية الأبعاد للبيئة المحيطة بك أو تتبُّع موضع الكاميرا</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">حسنًا</translation>
 <translation id="6980861169612950611">هل تريد حذف بيانات الموقع الإلكتروني <ph name="SITE_NAME"/>؟</translation>
 <translation id="6981982820502123353">تسهيل الاستخدام</translation>
+<translation id="6991142177939282156">تم السماح • يتم استخدام الموقع الجغرافي التقريبي</translation>
 <translation id="6992289844737586249">السؤال أولاً قبل السماح للمواقع الإلكترونية باستخدام الميكروفون (موصى به)</translation>
 <translation id="7000754031042624318">‏تم إيقافه في إعدادات Android.</translation>
 <translation id="8683151724374457021">‏يحدّد هذا الموقع الإلكتروني اهتماماتك، ثم يقدّم إلى المواقع الإلكترونية الأخرى اقتراحات عن الإعلانات ذات الصلة باهتماماتك. ويتعرّف أيضًا هذا الموقع الإلكتروني من خلال Brave على مواضيع الإعلانات التي تهمّك، وذلك بهدف عرض إعلانات وثيقة الصلة باهتماماتك.</translation>
+<translation id="7036823721811529709">الاستماع في الخلفية</translation>
 <translation id="7044081119134178347">تم السماح باستخدام الكاميرا هذه المرّة.</translation>
 <translation id="7053983685419859001">حظر</translation>
 <translation id="7055552182600664515">لتشغيل المحتوى المحمي بموجب حقوق الطبع والنشر، قد تتطلّب المواقع الإلكترونية استخدام إحدى خدمات حماية المحتوى. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">يعمل هذا الإعداد بدون تحديد هويتك أو السماح للمواقع الإلكترونية بالاطّلاع على سجلّ التصفُّح، إلا أنّ المواقع الإلكترونية يمكنها مشاركة قليلاً من المعلومات في إطار عملية إثبات الهوية.</translation>
 <translation id="7409735910987429903">قد ترسل المواقع الإلكترونية نوافذ منبثقة لعرض الإعلانات أو تستخدم عمليات إعادة التوجيه لتوجيهك إلى مواقع إلكترونية قد لا ترغب في زيارتها.</translation>
 <translation id="7412160840120117304">اللون الأساسي الست عشري</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{تكبير أو تصغير}zero{‏تكبير أو تصغير: ‎<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%‎}two{‏تكبير أو تصغير: ‎<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%‎}few{‏تكبير أو تصغير: ‎<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%‎}many{‏تكبير أو تصغير: ‎<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%‎}other{‏تكبير أو تصغير: ‎<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%‎}}</translation>
 <translation id="7423098979219808738">السؤال أولاً</translation>
 <translation id="7423538860840206698">تم الحظر من قراءة الحافظة</translation>
 <translation id="7425915948813553151">المظهر الداكن للمواقع الإلكترونية</translation>
@@ -640,6 +649,7 @@
 <translation id="8261506727792406068">حذف</translation>
 <translation id="8284326494547611709">الترجمة والشرح</translation>
 <translation id="8300705686683892304">تتم الإدارة من خلال التطبيق</translation>
+<translation id="8301363963630676147">تم السماح هذه المرّة • يتم استخدام الموقع الجغرافي التقريبي</translation>
 <translation id="8315509175050791576">جارٍ مشاركة علامة تبويب</translation>
 <translation id="8324158725704657629">عدم السؤال مرة أخرى</translation>
 <translation id="8362795839483915693">يمكنك تكبير أو تصغير المواقع الإلكترونية التي تزورها.</translation>

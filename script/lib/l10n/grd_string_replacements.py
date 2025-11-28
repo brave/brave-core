@@ -9,13 +9,13 @@
 # Strings we want to replace but that we also replace automatically
 # for XTB files
 branding_replacements = [
-    (r'The Chromium Authors. All rights reserved.',
+    (r'The\sChromium\sAuthors.\sAll\srights\sreserved.',
      r'The Brave Authors. All rights reserved.'),
-    (r'Google LLC. All rights reserved.',
+    (r'Google\sLLC.\sAll\srights\sreserved.',
      r'The Brave Authors. All rights reserved.'),
-    (r'The Chromium Authors', r'Brave Software Inc'),
-    (r'Google Chrome', r'Brave'),
-    (r'(Google)(?! Play)', r'Brave'),
+    (r'The\sChromium\sAuthors', r'Brave Software Inc'),
+    (r'Google\sChrome', r'Brave'),
+    (r'(Google)(?!\sPlay)', r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
     (r'क्रोमियम', r'Brave'),  # Chromium in Hindi

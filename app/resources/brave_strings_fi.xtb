@@ -60,6 +60,7 @@
 <translation id="6797402139308059782">Jätä Brave käyntiin taustalle</translation>
 <translation id="5875673934455379806">Asenna Brave uudelleen</translation>
 <translation id="4529028207655448215">Brave yrittää seuraavaa: <ph name="AUTHENTICATION_PURPOSE"/></translation>
+<translation id="7362761326208547489">Seuraavan kerran kun avaat Bravein laitteella (<ph name="DEVICE_TYPE"/>), näet kehotteen käyttää Braven salasanoja.</translation>
 <translation id="1838374766361614909">Tyhjennä haku</translation>
 <translation id="3541642064306182066">Jos haluat poistaa selausdatan vain tältä laitteelta, mutta säilyttää sen Brave-tililläsi, <ph name="BEGIN_LINK"/>kirjaudu ulos Braveista<ph name="END_LINK"/>.</translation>
 <translation id="4559627161887338743">Voit ylläpitää sisäänkirjautuneita Brave-tilejäsi. Brave-tilejäsi käytetään Brave-selaimella, Play Kaupassa ja muualla. Jos haluat lisätä tilin jollekulle toiselle, esim. perheenjäsenelle, lisää tämän sijasta uusi henkilö laitteelle (<ph name="DEVICE_TYPE"/>). <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
@@ -71,7 +72,6 @@
 <translation id="8643267611122541711">Bravein päivityspalvelu</translation>
 <translation id="712480009194450642">Kun olet kirjautunut sisään, voit käyttää esimerkiksi Brave-tilin salasanoja Braveissa. Voit muuttaa valintasi milloin tahansa asetuksista.</translation>
 <translation id="1649714546770135458">Poistamalla tämän käytöstä voit kirjautua Brave-sivustoille, esim. Gmailiin, kirjautumatta Braveiin.</translation>
-<translation id="916979339327923175">Poista tämän sovelluksen data Braveista</translation>
 <translation id="189297655255130768">Brave ei vastaa. Käynnistetäänkö uudelleen?</translation>
 <translation id="8422047647688939115">Organisaatiosi (<ph name="MANAGER"/>) edellyttää, että kirjaudut Braveiin</translation>
 <translation id="4035053306113201399">Brave-käyttöjärjestelmä täytyy käynnistää uudelleen, jotta päivitys voidaan ottaa käyttöön.</translation>
@@ -86,7 +86,9 @@
 <translation id="2039417478970545937">Asetukset.</translation>
 <translation id="5499149312981370855">Valitse, käytetäänkö Brave-historiaa personoituun kokemukseen Brave-palveluissa</translation>
 <translation id="5888420425384578947">Sinulla on oltava macOS 12 tai uudempi, jotta saat tulevia Bravein päivityksiä. Tällä tietokoneella on macOS 11.</translation>
+<translation id="6959434860418352144">Muokkaa Braveia klikkaamalla Uusi välilehti ‐sivun Yksilöi Braveia ‑painiketta</translation>
 <translation id="2472891440303445472">Brave on estänyt tämän latauksen, koska tiedosto on harhaanjohtava ja se voi tehdä odottamattomia muutoksia laitteellesi</translation>
+<translation id="2054358978145431867">Näet kehotteen kokeilla ominaisuutta (<ph name="FEATURE_NAME"/>) seuraavan kerran, kun avaat Bravein iOS:llä.</translation>
 <translation id="2726948994393234543">Salasanat ja muu Brave-data tallennetaan Brave-tilillesi ja poistetaan tältä laitteelta. Jos haluat käyttää niitä uudelleen Braveissa, kirjaudu takaisin sisään.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisaatiosi poistaa selausdatan automaattisesti, kun Braveia ei ole käytetty 1 minuuttiin. Tämä voi sisältää historian, automaattisen täytön ja lataukset. Välilehdet pysyvät auki.}other{Organisaatiosi poistaa selausdatan automaattisesti, kun Braveia ei ole käytetty # minuuttiin. Tämä voi sisältää historian, automaattisen täytön ja lataukset. Välilehdet pysyvät auki.}}</translation>
 <translation id="2126108037660393668">Ladattua tiedostoa ei voitu vahvistaa.</translation>
@@ -141,13 +143,13 @@
 <translation id="2620436844016719705">Järjestelmä</translation>
 <translation id="7931230852267968641">Organisaatiosi voi nähdä ja hallinnoida selausdataa, esimerkiksi kirjanmerkkejä, historiaa ja salasanoja. Se ei näe muiden Brave-profiilien selausdataa.</translation>
 <translation id="2257221826278123061">Vahvista henkilöllisyytesi, jotta voit käyttää ja tallentaa Brave-dataa tililläsi: <ph name="ACCOUNT_EMAIL"/></translation>
-<translation id="7788346643684168549">Brave toimii nopeammin ja JavaScriptiä käyttävien ominaisuuksien pitäisi toimia suunnitellusti (suositus)</translation>
 <translation id="7387051847644272380">Asennuksessa ilmeni käyttöjärjestelmävirhe. Lataa Brave uudelleen.</translation>
 <translation id="2648689842065142443">Jos käytät jaettua laitetta, kaverisi ja perheenjäsenesi voivat selata verkkoa erillään ja räätälöidä Braveista juuri itselleen sopivan</translation>
 <translation id="6791166902140255175">Brave-välilehti</translation>
 <translation id="8372880274820509128">Brave lisää suojausta salaamalla tietosi.</translation>
 <translation id="8752006915531191162">Jos haluat poistaa Brave-tilisi Braveista, kirjaudu ulos</translation>
 <translation id="5344406739101555055">Kirjaudu sisään Braveiin, niin voit käyttää salasanoja, kirjanmerkkejä ja muita tietoja kaikilla laitteillasi</translation>
+<translation id="6210597814089402021">Näytä aina Braven tekoälytilan pikakuvake</translation>
 <translation id="2738871930057338499">Internetyhteyden muodostaminen ei onnistu. HTTP 403 (kielletty). Tarkista välityspalvelimen asetukset.</translation>
 <translation id="2753623023919742414">Hae klikkaamalla</translation>
 <translation id="1312769823139326127">Valitse Brave PDF:ien oletuskatseluohjelmaksi</translation>
@@ -167,6 +169,7 @@
 <translation id="2481553173340651149">Datasi salataan tunnuslauseella. Lisää se, niin voit käyttää ja tallentaa Brave-dataa Brave-tililläsi.</translation>
 <translation id="2945997411976714835">Asennusvirhe: Asennusprosessin aloittaminen ei onnistunut.</translation>
 <translation id="2413255940314578781">Kirjaudu sivustoille nopeammin iOS:n Braveiin tallennetuilla salasanoilla</translation>
+<translation id="122765104641632123">Lisää uusi Brave-profiili, jotta kirjanmerkit, salasanat ja asetukset pysyvät erillään.</translation>
 <translation id="3688936822855019158">Organisaatiosi ylläpitää Braveia</translation>
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
 <translation id="5122472867956731189">Jos sivusto yrittää varastaa salasanaasi tai jos lataat haitallisen tiedoston, Brave voi myös lähettää Selaussuojan tarkistettavaksi URL-osoitteita, myös osia sivujen sisällöstä</translation>
@@ -204,6 +207,7 @@
 <translation id="8926637909431618259">Jätä taustasovellukset käyntiin, kun Brave suljetaan</translation>
 <translation id="518125528057094977">Brave varoittaa sinua ennen kuin lataat sivustoja suojaamattomalla yhteydellä</translation>
 <translation id="8652321858775514885">Sinut kirjataan ulos useimmilta sivustoilta, kun suljet kaikki Brave-ikkunat. Tämä ei kuitenkaan koske Brave-tiliäsi, jos olet kirjautuneena Braveiin. <ph name="SETTINGS_LINK"/>, jotta sivustot muistavat sinut.</translation>
+<translation id="3795277300264350702">Oletushakukone on vaihdettu Bravein ulkopuolelta. Brave on nollannut sen suojellakseen sinua.</translation>
 <translation id="3352986031709923790">hakualueen oikea yläkulma: oikea <ph name="RIGHT"/> %, ylä <ph name="TOP"/> %</translation>
 <translation id="7261356974224431851">Tilisi Brave-data</translation>
 <translation id="3369405342922656244">Hae tältä sivulta kuvahaulla</translation>
@@ -229,6 +233,7 @@
 <translation id="3867175562099983425">Ylläpidä Brave-profiileja</translation>
 <translation id="308146532933302843">Katso, miksi Brave estää joitakin latauksia</translation>
 <translation id="2189149060536531804">Brave ilmoittaa, jos jotain on tarkistettava</translation>
+<translation id="8422094375343667686">Brave-profiilien avulla voit pitää eri elämänalueet erillään. Lisää uusi profiili nyt.</translation>
 <translation id="6324134303015966238">Brave esilataa sivut, joilla todennäköisesti käyt, jotta ne latautuisivat avatessa nopeammin</translation>
 <translation id="3810973564298564668">Hallinnoi</translation>
 <translation id="3846683726093018685">**Tee yhteenveto:** Kuvaile kuvakaappauksen sisällön ensisijaista aihetta ja tarkoitusta yhdellä alle 30 sanan lauseella.
@@ -373,6 +378,7 @@
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Näytä Brave tällä kielellä</translation>
 <translation id="569897634095159764">Internetyhteyden muodostaminen ei onnistu. Välityspalvelin edellyttää todennusta.</translation>
+<translation id="3364613146104156465">Brave-profiilien avulla voit pitää henkilökohtaisen selaamisen ja työn erillään. Lisää uusi profiili nyt.</translation>
 <translation id="1834213228893578875">Brave vapauttaa muistia ei-aktiivisilta välilehdiltä. Näin aktiiviset välilehdet ja muut sovellukset voivat käyttää enemmän tietokoneen resursseja ja Brave pysyy nopeana. Ei-aktiiviset välilehdet aktivoituvat automaattisesti, kun palaat niihin. <ph name="BEGIN_LINK"/>Lue lisää Muistinsäästöstä<ph name="END_LINK"/></translation>
 <translation id="899523323751802352">Jos unohdit tunnuslauseen tai haluat muuttaa asetusta, <ph name="SETTINGS_LINK"/> tilin Brave-data</translation>
 <translation id="82926023981336111">Yksilöi Braveia ja muuta sen asetuksia. Valitse Brave oletusselaimeksi.</translation>
@@ -390,6 +396,7 @@
 <translation id="5941711191222866238">Pienennä</translation>
 <translation id="5768962901674164501">Kirjaudu Braveiin, niin voit käyttää tätä kirjanmerkkiä ja muuta sisältöä kaikilla laitteillasi</translation>
 <translation id="5101892358689285100">Tee Braveista näköisesi</translation>
+<translation id="5960071705175224773">Tuntematon sovellus on muuttanut asetuksiasi</translation>
 <translation id="5968400720580217226">Tekoälytila</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Organisaatiosi sulkee Bravein automaattisesti, kun sitä ei ole käytetty 1 minuuttiin.}other{Organisaatiosi sulkee Bravein automaattisesti, kun sitä ei ole käytetty # minuuttiin.}}</translation>
 <translation id="3598551856834560515">Aloita synkronointi päivittämällä Brave.</translation>
@@ -441,6 +448,7 @@
 <translation id="7920857181125123335">Jatka kirjautumalla Braveiin käyttäjänä <ph name="EMAIL"/>. Näin varmistat, että organisaatiosi käytännöt ovat käytössä.</translation>
 <translation id="3256100650978957522">Brave-logo tietokoneen näytöllä.</translation>
 <translation id="6373767849825830651">Brave on selain, jolla verkkosivut ja sovellukset toimivat salamannopeasti. Se on nopea, vakaa ja helppokäyttöinen. Bravein sisäänrakennettu haittaohjelma- ja tietojenkalastelusuojaus tekevät verkkoselauksesta turvallisempaa.</translation>
+<translation id="2532326772258858491">Brave toimii nopeammin ja JavaScriptiä käyttävien ominaisuuksien pitäisi toimia suunnitellusti</translation>
 <translation id="6436260184216827876">Kuvahaku ei ole käytettävissä. Yritä myöhemmin uudelleen.</translation>
 <translation id="2139300032719313227">Käynnistä Brave-käyttöjärjestelmä uudelleen</translation>
 <translation id="638302211119176182">Brave esilataa enemmän sivuja, joilla todennäköisesti käyt, jotta ne latautuisivat avatessa nopeammin</translation>
@@ -465,6 +473,7 @@
 <translation id="9210457680074341078">Jos tallennat kirjanmerkit myös Brave-tilillesi, voit seurata tuotteiden hintoja Braveissa ja saada ilmoituksen, kun hinta laskee</translation>
 <translation id="6676384891291319759">Käytä internetiä</translation>
 <translation id="1363996462118479832">Brave-käyttöjärjestelmä ei voi synkronoida dataa kirjautumisvirheen vuoksi.</translation>
+<translation id="4694512973195649124">Poista tämän sovelluksen data Braveista</translation>
 <translation id="5324448127277983819">Bravein avulla voit vaikuttaa enemmän näkemiisi mainoksiin ja rajoittaa, mitä tietoa sivustot voivat saada sinusta, kun ne näyttävät sinulle personoituja mainoksia</translation>
 <translation id="1257247502847251159">Brave tarvitsee mikrofonin luvan tällä sivustolla</translation>
 <translation id="6712881677154121168">Latausvirhe: <ph name="DOWNLOAD_ERROR"/>.</translation>
@@ -556,6 +565,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="7810005234485217901">Kiinnitä kuvahaku, niin löydät sen helposti</translation>
 <translation id="1652855885539187849">Tämän tilin Brave-profiili on jo tällä laitteella</translation>
 <translation id="7845233973568007926">Kiitos asennuksesta. Tietokone pitää käynnistää uudelleen ennen kuin <ph name="BUNDLE_NAME"/> otetaan käyttöön.</translation>
+<translation id="9148690296223500734">Muokkaa Braveia ja anna sille uusi ilme</translation>
 <translation id="7963515534397191222">Braveia ei voitu päivittää uusimpaan versioon, joten sinulta puuttuu joitakin uusia ominaisuuksia ja tietoturvakorjauksia.</translation>
 <translation id="7872446069773932638">Ladataan… <ph name="SECONDS"/> sekuntia jäljellä</translation>
 <translation id="5545136190679883344">Jos unohdit tunnuslauseen tai haluat muuttaa asetusta, <ph name="BEGIN_LINK"/>poista tilin Brave-data<ph name="END_LINK"/></translation>
@@ -620,10 +630,12 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8601359445272098721">Uutta! Voit kääntää näytöllä näkyvän tekstin ja kuvat valitsemalla "Käännä näyttö" ‑painikkeen</translation>
 <translation id="3052349005266761501">Käynnistetään Braveia…</translation>
 <translation id="5128665650717824082">Brave for Testingistä ei voi tehdä oletusselainta.</translation>
+<translation id="2534273241807562837">Näytä aina Braven tekoälytilan pikakuvake</translation>
 <translation id="2433912322225810055">Määrittää myös Bravein ja omnibox-hakujen aloitussivun.</translation>
 <translation id="4100716194836114130">Tämä on oma Braveisi</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="1419543648228375718">Haluatko kirjautua Braveiin?</translation>
+<translation id="4891728458408976811">Pidä kaikki Braveissa</translation>
 <translation id="8747073452963259673">hakualueen vasen alakulma: vasen <ph name="LEFT"/> %, ala <ph name="BOTTOM"/> %</translation>
 <translation id="878572486461146056">Asennusvirhe: Verkon järjestelmänvalvojan käyttämä ryhmäkäytäntö estää asennuksen: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave tarvitsee oikeuden käyttää kameraasi ja mikrofoniasi tällä sivustolla.</translation>
@@ -679,6 +691,10 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen.}=1{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. Incognito-ikkunaasi ei avata uudelleen.}other{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
+<translation id="1400696845469684552">{COUNT, plural,
+              =0 {Advanced Protection edellyttää, että käynnistät Braven uudelleen, jotta voit soveltaa päivitystä}
+              =1 {Advanced Protection edellyttää, että käynnistät Braven uudelleen, jotta voit soveltaa päivitystä. Yksityisikkuna ei avaudu uudelleen.}
+              other {Advanced Protection edellyttää, että käynnistät Braven uudelleen päivityksen soveltamiseksi. # Yksityisikkunasi ei avaudu uudelleen.}}</translation>
 <translation id="5749154344207139683">Auta meitä parantamaan yksityistä tilaa osallistumalla tähän minuutin kyselyyn.</translation>
 <translation id="79269250264141507">Kun kirjoitat tekstiä osoitepalkkiin tai hakukenttään, Brave lähettää kirjoittamasi tekstin oletushakukoneeseesi, jotta saat parempia ehdotuksia. Tämä on pois päältä yksityisessä tilassa.</translation>
 <translation id="2589970573128789862">Braven yksityinen tila</translation>

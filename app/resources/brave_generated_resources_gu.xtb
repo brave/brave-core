@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">Tor સાથે નવી ખાનગી વિંડો</translation>
 <translation id="4703780849509456860">Tor સાથે ખાનગી વિંડોમાં લિંક ખોલો</translation>
 <translation id="3488584642074079080">Brave પ્રાઇવેટ વિંડો સાથે Tor માં લિંક ખોલો</translation>
-<translation id="8594912907680633924">બંની ઘટક દૃશ્યમાં લિંક ખોલો</translation>
 <translation id="6313675821927505581">Tor સાથે નવી ખાનગી વિંડો</translation>
 <translation id="2638041073279639246">Tor સાથે ખાનગી વિંડોમાં લિંક ખોલો</translation>
 <translation id="3425600262621021599">Brave છુપી વિંડોમાં Tor સાથે લિંક ખોલો</translation>
-<translation id="3795436270513738622">વિભાગીય દૃશ્યમાં લિંક ખોલો</translation>
 <translation id="2545072023356206691">1 ડિસેમ્બર, 2023થી Brave Dev ચેનલ પર બ્રાઉઝર અપડેટ્સ નહીં મળે. અમે યૂઝર્સને Nightly, Beta અથવા Braveના રિલીઝ વર્ઝન પર جانےની ભલામણ કરીએ છીએ.</translation>
 <translation id="474217410105706308">ટૅબ મ્યૂટ કરો</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">બુકમાર્ક ઉમેરવા માટે, સરનામા પટ્ટી પર બુકમાર્ક બટન પર ક્લિક કરો</translation>
 <translation id="8487693399751278191">અત્યારે બુકમાર્ક્સ ઇમ્પોર્ટ કરો...</translation>
 <translation id="2557899542277210112">જલ્દી ઍક્સેસ માટે, તમારાં બુકમાર્ક્સ અહીં બુકમાર્ક બારમાં મૂકો.</translation>
-<translation id="1968543937259008435">ઉત્તમ ઑનલાઇન પ્રાઇવેસી માટે તૈયાર છો?</translation>
-<translation id="6817415381278637662">તમારા સહેજ સરનામા પર Braveનું પ્રાઇવેસી પ્રોટેકશન મેળવવા માટે Braveને તમારા ડિફોલ્ટ બ્રાઉઝર તરીકે સેટ કરો.</translation>
-<translation id="7537601449003285327">ટાસ્કબારમાં પિન કરો</translation>
-<translation id="2307973900865360088">ડૉકમાં રાખો</translation>
 <translation id="961012016278832836">Microsoft Edge લેગસી</translation>
 <translation id="6436994631426134065">ઇમોર્ટ કરેલા <ph name="BROWSER_NAME"/>માંથી.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">બધા વિંડોઝમાં પિન્યું ટેબ બતાવો</translation>
 <translation id="2396127686705429331">બુકમાર્ક્સ બટન બતાવો</translation>
 <translation id="2814998458708016836">વિશાળ સરનામું બાર વાપરો</translation>
+<translation id="4749586705247636385">મુખ્ય સામગ્રી વિસ્તારોમાં રાઉન્ડ કરેલા ખૂણા બતાવો</translation>
 <translation id="4109670531935487117">એડ્રેસ બારમાં ઓટોકમ્પ્લીટ સૂચનો બતાવો</translation>
 <translation id="4579877808890085926">ઑન-ડિવાઇસ સૂચનો</translation>
 <translation id="7859704718976024901">બ્રાઉઝિંગ હિસ્ટ્રી</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">હોમપેજ</translation>
 <translation id="5448570825852364919">ખાલી પાનું</translation>
 <translation id="8244387390464017490">નવી ટેબ પેજને કસ્ટમાઇઝ કરો</translation>
+<translation id="7537601449003285327">ટાસ્કબારમાં પિન કરો</translation>
 <translation id="7461924472993315131">પિન કરો</translation>
 <translation id="735832369569964359">નીચેની Windows સૂચનામાં પિન અને પુષ્ટિકરણ ક્લિક કરો</translation>
 <translation id="7506648566440714944">Brave પહેલાથી પિન થયું છે</translation>
+<translation id="2307973900865360088">ડૉકમાં રાખો</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Brave પહેલેથી Dock માં છે</translation>
 <translation id="3195845168740336657">શિલ્ડ્સ સેટિંગ્સ</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">સ્ક્રિપ્ટલેટ મળી નથી.</translation>
 <translation id="4088315951291671239">અહિયાં કોડ પેસ્ટ ના કરો જેમ કે તમે સમજતા નથી કે તમારી જાતે સમીક્ષા નથી કરી. આ તમારા ઓળખ ઉચકવાનું અથવા તમારા કમ્પ્યુટર કબજે લેવાનું હુમલાખોરોને સંભવિત રીતે મંજૂરી આપી શકશે.</translation>
 <translation id="3020183492814296499">શૉર્ટકટ્સ</translation>
+<translation id="2935698011275148880">Brave મૂળ</translation>
+<translation id="2587535830241068901">Brave ને સપોર્ટ કરતા કરતી વખતે તમારું બ્રાઉઝર કસ્ટમાઇઝ કરો</translation>
+<translation id="553273341094971255">Brave મૂળ તમારા પસંદ પ્રમાણે Brave સુસંગત બનાવવા અને તમારા ઇન્સ્ટોલેશન દરમિયાન સક્ષમ કરેલી એપમાં પ્રમોશન ઓફરો, બ્રાન્ડેડ એડ્સ અને અમારા અનામિક વિશ્લેષણને દૂર કરવા મદદ કરે છે.</translation>
+<translation id="534725333104202278">શું તમે અગાઉ સક્ષમ કર્યા હોય કે ઉપયોગમાં લીધેલ કોઈ પણ એડ-ઓન અથવા સુવિધાઓ દૃશ્યમાં અને જોડાયેલી રહી હશે, જ્યારે બાકીના નિષ્ક્રિય થઈ જશે. Brave માં અમે નવી સુવિધાઓ આપીએ રહ્યાં છે તેમ Brave ને વધુ સુસંગત બનાવતા રહો. તેમ છતાં તેની વિન્ડો Brave મૂળ નિયંત્રણ પેનલમાં મૂળભૂત રીતે શાંતિથી અને છુપાઈને દેખાશે.</translation>
+<translation id="1919345977826869612">જાહેરાતો</translation>
+<translation id="944736176598169208">રિવોર્ડ્સ</translation>
+<translation id="2839742394543397416">વિશ્વ્લેષણ</translation>
+<translation id="1799030480311994998">ફીચર્સ</translation>
+<translation id="6709133671862442373">News</translation>
+<translation id="6297791103122079275">ટોક</translation>
+<translation id="1458638489455808030">વેબેક મશીન</translation>
+<translation id="1199170151481311646">ગોપનીયતા જાળવતો વિશ્લેષણ</translation>
+<translation id="5990642573624858459">આંકડાકીય અહેવાલ</translation>
+<translation id="2441719842399509963">બધાને ડીફોલ્ટ પર રીસેટ કરો</translation>
 <translation id="5567412479632285879">Brave Rewards નિષ્ક્રિય છે</translation>
 <translation id="413570371620795359">સક્રિય કરવા અને પ્રારંભ કરવા માટે_rewards પેનલ ખુલ્લો</translation>
 <translation id="1051600834033686945">સંપૂર્ણ Brave Rewards સેટિંગ્સ ખોલો</translation>
 <translation id="8826461509529116322">Brave Rewards બટન બતાવો</translation>
+<translation id="3328713589982547433">માત્ર એડ બ્લોક મોડ</translation>
+<translation id="1574253307550419595">માત્ર એડ બ્લોક મોડને ઉપયોગમાં લો</translation>
+<translation id="738717058053657696">માત્ર એડ બ્લોક મોડ Brave શિલ્ડ્સના મુખ્ય એડ બ્લોકિંગ નિયમો જાળવે છે. ચેતવણી: આ બધા ગોપનીયતા સંરક્ષણોને દૂર કરે છે. કૃપા કરીને નોંધો કે Brave નો ગોપનીયતા સંરક્ષણ તૂટી ગયેલા વ્યક્તિગત વેબસાઇટ માટે, તમે શિલ્ડ્સને ડાઉન સેટ કરી શકો છો. આ એક પરીક્ષણ મોડ છે. <ph name="BEGIN_LINK"/>વધુ શીખો<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">શિલ્ડ્સ વિકલ્પો હાલમાં નિષ્ક્રિય છે.</translation>
+<translation id="516439939408671102">માત્ર એડ બ્લોક મોડ Brave શિલ્ડ્સના મુખ્ય એડ બ્લોકિંગ નિયમો જાળવે છે અને ગોપનીયતા સંરક્ષણો બંધ કરે છે. જો તમે પ્રમાણભૂત શિલ્ડ્સ સક્ષમ કરવા માંગતા હોવ, તો આ મોડને નિષ્ક્રિય કરો.</translation>
+<translation id="177233004755519660">માત્ર એડ બ્લોક મોડ બંધ કરો</translation>
 <translation id="9185018653595759199">સામાજિક મીડિયા અવરોધન</translation>
 <translation id="863171915776379000">Facebook લૉગિન અને એમ્બેડેડ પોસ્ટને મંજૂર કરો</translation>
 <translation id="7791141927430186653">X ને (અગાઉ Twitter) એમ્બેડેડ ટ્વીટ્સની મંજૂરી આપો</translation>

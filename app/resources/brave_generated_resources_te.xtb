@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">టార్ తో కొత్త ప్రైవేట్ విండో</translation>
 <translation id="4703780849509456860">టార్ తో ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
 <translation id="3488584642074079080">టార్ తో Brave ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
-<translation id="8594912907680633924">స్ప్లిట్ వ్యూ లో లింక్‌ని తెరువు</translation>
 <translation id="6313675821927505581">టార్ తో కొత్త ప్రైవేట్ విండో</translation>
 <translation id="2638041073279639246">టార్ తో ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
 <translation id="3425600262621021599">టార్ తో Brave ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
-<translation id="3795436270513738622">స్ప్లిట్ వ్యూ లో లింక్‌ని తెరువు</translation>
 <translation id="2545072023356206691">2023 డిసెంబర్ 1 నుండి, Brave డెవ్ చానెల్ బ్రౌజర్ నవీకరణలను రాలేదు. వినియోగదారులు Nightly, Beta లేదా విడుదల సంచికలకు మార్చాలని సిఫార్సు చేస్తున్నాము.</translation>
 <translation id="474217410105706308">ట్యాబ్‌ని మ్యూట్ చేయండి</translation>
 <translation id="2804710924397009224">Brave Rewards ఐకాన్‌ను దాచు</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">గుర్తించడం బ్రౌజర్</translation>
 <translation id="8487693399751278191">ఇప్పుడే Bookmarkలైని దిగుమతి చేయండి...</translation>
 <translation id="2557899542277210112">త్వరిత ప్రాప్తి కొరకు Bookmarkల్స్‌లను ఇక్కడ Bookmarkల్బార్ లో చరువు.</translation>
-<translation id="1968543937259008435">ఆన్‌లైన్‌లో ఉత్తమ గుప్తం కొరకు సిద్ధమా?</translation>
-<translation id="6817415381278637662">మీ డిఫాల్ట్ బ్రౌజర్ గా Brave సెట్ చేయండి ప్రతి వంచనను మీరు తెరచిన వినియోగం గురించి Brave గుప్తతను పొందించడానికి.</translation>
-<translation id="7537601449003285327">విధి పట్టీకి పిన్ చేయి</translation>
-<translation id="2307973900865360088">డాక్‌లో ఉంచండి</translation>
 <translation id="961012016278832836">Microsoft Edge లెగసీ</translation>
 <translation id="6436994631426134065">తో దిగుమతి చేయబడినది <ph name="BROWSER_NAME"/>.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">పిన్ చేసిన టాబ్స్ అన్ని విండోల్లో చూపించు</translation>
 <translation id="2396127686705429331">బుక్‌మార్క్‌ల బటన్ చూపించు</translation>
 <translation id="2814998458708016836">వైడ్ అడ్రస్ బార్ ఉపయోగించండి</translation>
+<translation id="4749586705247636385">ముఖ్య కంటెంట్ ప్రాంతాల్లో వంకర మూలలతో చూపించు</translation>
 <translation id="4109670531935487117">చిరునామా నిల్వ బార్ లో ఆటో కంప్లీట్ సూచనలు చూపించు</translation>
 <translation id="4579877808890085926">పరికరంలో ఉండే సూచనలు</translation>
 <translation id="7859704718976024901">బ్రౌజింగ్ చరిత్ర</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">హోమ్పేజీ</translation>
 <translation id="5448570825852364919">ఖాళీ పేజీ</translation>
 <translation id="8244387390464017490">కస్టమైజ్ న్యూ టాబ్ పేజీ</translation>
+<translation id="7537601449003285327">విధి పట్టీకి పిన్ చేయి</translation>
 <translation id="7461924472993315131">పిన్ చేయి</translation>
 <translation id="735832369569964359">విండోస్ నోటిఫికేషన్‌లో పిన్ చేయి మరియు ధృవీకరణ చెయ్యి</translation>
 <translation id="7506648566440714944">Brave ముందే పిన్ చేయబడింది</translation>
+<translation id="2307973900865360088">డాక్‌లో ఉంచండి</translation>
 <translation id="239275665037555969">డాక్</translation>
 <translation id="4057614912106618659">Brave ముందే డాక్‌లో ఉంది</translation>
 <translation id="3195845168740336657">Shields సెట్టింగ్‌లు</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">స్క్రిప్ట్లెట్ కనుగొనబడలేదు.</translation>
 <translation id="4088315951291671239">మీకు అర్థంకాలేదని భావిస్తున్న కోడ్‌ని ఇక్కడ టైప్ చేయవద్దు లేదా మీరు స్వయంగా సమీక్షించడం చేయకండి. ఇది దొంగలను మీ గుర్తింపు చిల్ చేయమో లేదా మీ కంప్యూటర్‌ని నియంత్రించమో చేయవచ్చు.</translation>
 <translation id="3020183492814296499">సంక్షిప్తాలు</translation>
+<translation id="2935698011275148880">Brave మూలం</translation>
+<translation id="2587535830241068901">Brave కు మద్దతు అందిస్తూ మీ browser ను అనుకూలీకరించండి</translation>
+<translation id="553273341094971255">Brave Origin మీకు నచ్చిన విధంగా Brave ను తక్కువగా ట్యూన్ చేసుకునేందుకు సహాయపడుతుంది మరియు ఇన్-అప్ ప్రోమోషనల్ ఆఫర్లు, బ్రాండెడ్ ప్రకటనలు మరియు ఇన్‌స్టాలేషన్ సమయంలో మీరు ఎనేబుల్ చేసిన అపరిగిత గణాంక విశ్లేషణను కూడా తొలగిస్తుంది.</translation>
+<translation id="534725333104202278">మీరు మునుపటి ఎనేబుల్ చేసిన లేదా ఉపయోగించిన ఏదైనా యాడ్-ఆన్లు లేదా ఫీచర్లను చూపించుతూనే ఉంటాయి మరియు అవి సమైక్యంగా ఉండతాయి, మిగిలినవి అచేతనమవుతాయి. మేము browser లో కొత్త ఫీచర్లను అందించినప్పుడు Brave ను ట్యూనింగ్ చేయడం కొనసాగించండి. అవి Brave Origin నిర్మాణ నియంత్రణ ప్యానెల్‌లో మౌనంగా మరియు అదృశ్యంగా డిఫాల్ట్‌గా కనిపిస్తాయి.</translation>
+<translation id="1919345977826869612">ప్రకటనలు</translation>
+<translation id="944736176598169208">Rewards</translation>
+<translation id="2839742394543397416">గణాంక విశ్లేషణ</translation>
+<translation id="1799030480311994998">ఫీచర్లు</translation>
+<translation id="6709133671862442373">వార్తలు</translation>
+<translation id="6297791103122079275">Brave Talk</translation>
+<translation id="1458638489455808030">Wayback మెషిన్</translation>
+<translation id="1199170151481311646">గోప్యతను కాపాడే గణాంక విశ్లేషణ</translation>
+<translation id="5990642573624858459">గణాంక నివేదిక</translation>
+<translation id="2441719842399509963">అన్ని డిఫాల్ట్‌లు పునఃసెట్టు చేయండి</translation>
 <translation id="5567412479632285879">Brave Rewards నిలిపివేయబడింది</translation>
 <translation id="413570371620795359">ప్రారంభించడానికి రివార్డ్స్ ప్యానెల్ తెరవండి</translation>
 <translation id="1051600834033686945">ముఖ్య Brave Rewards సెట్టింగ్‌లను తెరవండి</translation>
 <translation id="8826461509529116322">Brave Rewards బటన్ చూపించండి</translation>
+<translation id="3328713589982547433">Ad Block Only మోడ్</translation>
+<translation id="1574253307550419595">Ad Block Only మోడ్ వాడండి</translation>
+<translation id="738717058053657696">Ad Block Only మోడ్ Brave Shields యొక్క ప్రాథమిక ప్రకటనా బ్లాకింగ్ నిబంధనలను కొనసాగిస్తుంది. హెచ్చరిక: అన్ని గోప్యత రక్షణలను తొలగిస్తుంది. Brave యొక్క గోప్యత రక్షణల వల్ల ఖండితమయిన వ్యక్తిగత వెబ్‌సైట్లకు సంబంధించిన సమస్యల పరిష్కారంగా షీల్డ్స్‌ను DOWNగా సెట్ చేయవచ్చు. ఇది ఒక ప్రయోగాత్మక మోడ్. <ph name="BEGIN_LINK"/>ఇంకా తెలుసుకోండి<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">Shields ఎంపికలు ప్రస్తుతం అచేతంగా ఉన్నాయి.</translation>
+<translation id="516439939408671102">Ad Block Only మోడ్ Brave Shields యొక్క ప్రాథమిక ప్రకటనా బ్లాకింగ్ నిబంధనలను కొనసాగిస్తూ గోప్యత రక్షణలను ఆపేస్తుంది. మీరు ప్రామాణిక Shields ను ఎనేబుల్ చేయాలంటే, ఈ మోడ్ ను అచేతనం చేయండి.</translation>
+<translation id="177233004755519660">Ad Block Only మోడ్ ఆపేయండి</translation>
 <translation id="9185018653595759199">సామాజిక మీడియా నిరోధకం</translation>
 <translation id="863171915776379000">Facebook లాగిన్‌లు మరియు అతికించిన పోస్ట్‌లను అనుమతించండి</translation>
 <translation id="7791141927430186653">X (మునుపు Twitter) స్థానపోస్టులను అనుమతించండి</translation>

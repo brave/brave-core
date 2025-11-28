@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
-<translation id="8594912907680633924">স্প্লিট ভিউতে লিঙ্ক খুলুন</translation>
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
-<translation id="3795436270513738622">স্প্লিট ভিউতে লিঙ্ক খুলুন</translation>
 <translation id="2545072023356206691">1 ডিসেম্বর, 2023 থেকে, Brave Dev চ্যানেল আর ব্রাউজারের আপডেট পাবে না। আমরা ব্যবহারকারীদের Nightly, Beta বা Brave-এর Release ভার্সনে মাইগ্রেট করতে বলি।</translation>
 <translation id="474217410105706308">ট্যাব মিউট করুন</translation>
 <translation id="2804710924397009224">ব্রেভ রিওয়ার্ড আইকন লুকান</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="8487693399751278191">বুকমার্কগুলি এখনই আমদানি করুন...</translation>
 <translation id="2557899542277210112">দ্রুত ব্যবহারের জন্য, আপনার বুকমার্কগুলি এখানে বুকমার্ক বারে রাখুন।</translation>
-<translation id="1968543937259008435">অনলাইন সেরা গোপনীয়তার জন্য প্রস্তুত?</translation>
-<translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
-<translation id="7537601449003285327">কার্যদণ্ডে পিন করুন</translation>
-<translation id="2307973900865360088">ডকে রাখুন</translation>
 <translation id="961012016278832836">Microsoft Edge লেগ্যাসি</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/> থেকে আমদানি করা হয়েছে।</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">সমস্ত উইন্ডোতে পিন করা ট্যাব দেখান</translation>
 <translation id="2396127686705429331">বুকমার্ক বোতাম দেখান</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
+<translation id="4749586705247636385">মূল বিষয়বস্তুর এলাকাগুলিতে বৃত্তাকার প্রান্ত দেখান</translation>
 <translation id="4109670531935487117">ঠিকানা বারে স্বয়ংসম্পূর্ণ পরামর্শ দেখান</translation>
 <translation id="4579877808890085926">ডিভাইসে থাকা সাজেশনসমূহ</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">হোমপেজ</translation>
 <translation id="5448570825852364919">খালি পাতা</translation>
 <translation id="8244387390464017490">নতুন ট্যাব পৃষ্ঠা কাস্টমাইজ করুন</translation>
+<translation id="7537601449003285327">কার্যদণ্ডে পিন করুন</translation>
 <translation id="7461924472993315131">পিন</translation>
 <translation id="735832369569964359">পিন-এ ক্লিক করুন এবং নিচের Windows এর বিজ্ঞপ্তি নিশ্চিত করুন</translation>
 <translation id="7506648566440714944">Brave ইতিমধ্যেই পিন করা হয়েছে</translation>
+<translation id="2307973900865360088">ডকে রাখুন</translation>
 <translation id="239275665037555969">ডক</translation>
 <translation id="4057614912106618659">Brave ইতিমধ্যেই ডকে রয়েছে</translation>
 <translation id="3195845168740336657">শিল্ড সেটিং</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">স্ক্রিপ্টলেট খুঁজে পাওয়া যায়নি।</translation>
 <translation id="4088315951291671239">আপনি বোঝেন না বা নিজে পর্যালোচনা করেননি এমন কোড এখানে পেস্ট করবেন না। এটি আক্রমণকারীদের আপনার পরিচয় চুরি বা আপনার কম্পিউটারের নিয়ন্ত্রণ নিয়ে নেওয়ার অনুমতি দিতে পারে।</translation>
 <translation id="3020183492814296499">শর্টকাট</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="2587535830241068901">Brave-কে সমর্থন করার পাশাপাশি আপনার ব্রাউজারকে কাস্টোমাইজ করুন</translation>
+<translation id="553273341094971255">Brave Origin আপনাকে আপনার পছন্দ অনুযায়ী Brave টিউন করতে সহায়তা করে এবং ইন-অ্যাপ প্রচারমূলক অফার, ব্র্যান্ডেড বিজ্ঞাপন এমনকি আপনি ইনস্টল করার সময় সক্রিয় করে থাকতে পারেন এমন আমাদের নামহীন অ্যানালিটিক্সও সরিয়ে দেয়।</translation>
+<translation id="534725333104202278">আপনি পূর্বে যেসব অ্যাড-অন বা বৈশিষ্ট্য সক্রিয় বা ব্যবহার করেছেন সেগুলি দৃশ্যমান ও সমন্বিত থাকবে, অন্য সবকিছু নিষ্ক্রিয় হয়ে যাবে। আমরা যখন নতুন বৈশিষ্ট্য ব্রাউজারে যুক্ত করব, তখন Brave Origin কন্ট্রোল প্যানে এগুলি স্বয়ংক্রিয়ভাবে, ডিফল্টভাবে অদৃশ্য অবস্থায় থাকবে।</translation>
+<translation id="1919345977826869612">বিজ্ঞাপন</translation>
+<translation id="944736176598169208">পুরস্কার</translation>
+<translation id="2839742394543397416">অ্যানালিটিক্স</translation>
+<translation id="1799030480311994998">বৈশিষ্ট্যসমূহ</translation>
+<translation id="6709133671862442373">সংবাদ</translation>
+<translation id="6297791103122079275">বলুন</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="1199170151481311646">গোপনীয়তা সংরক্ষণকারী বিশ্লেষণ</translation>
+<translation id="5990642573624858459">পরিসংখ্যান প্রতিবেদন</translation>
+<translation id="2441719842399509963">ডিফল্ট করতে সব রিসেট করুন</translation>
 <translation id="5567412479632285879">Brave পুরস্কার নিষ্ক্রিয় করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="1051600834033686945">সম্পূর্ণ Brave Rewards সেটিংস খুলুন</translation>
 <translation id="8826461509529116322">Brave রিওয়ার্ড বোতাম দেখান</translation>
+<translation id="3328713589982547433">শুধু বিজ্ঞাপন ব্লক করার মোড</translation>
+<translation id="1574253307550419595">শুধু বিজ্ঞাপন ব্লক মোড ব্যবহার করুন</translation>
+<translation id="738717058053657696">শুধু বিজ্ঞাপন ব্লক মোড Brave রক্ষাকবচের মূল বিজ্ঞাপন ব্লকিং নিয়ম ধরে রাখে। সতর্কতা: এটি সমস্ত গোপনীয়তা সুরক্ষা সরিয়ে দেয়। কোন নির্দিষ্ট ওয়েবসাইট Brave-এর গোপনীয়তা সুরক্ষার কারণে ভেঙে গেলে আপনি রক্ষাকবচ DOWN করতে পারেন। এটি একটি পরীক্ষামূলক মোড। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">রক্ষাকবচ অপশন বর্তমানে নিষ্ক্রিয়।</translation>
+<translation id="516439939408671102">শুধু বিজ্ঞাপন ব্লক মোড Brave রক্ষাকবচের মূল বিজ্ঞাপন ব্লকিং নিয়ম ধরে রাখে এবং গোপনীয়তা সুরক্ষা বন্ধ করে দেয়। আপনি যদি স্ট্যান্ডার্ড রক্ষাকবচ সক্রিয় করতে চান, এই মোডটি নিষ্ক্রিয় করুন।</translation>
+<translation id="177233004755519660">শুধু বিজ্ঞাপন ব্লক মোড বন্ধ করুন</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="7791141927430186653">X (আগে Twitter নামে পরিচিত ছিল) এম্বেড করা টুইট</translation>

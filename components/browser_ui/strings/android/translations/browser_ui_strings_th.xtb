@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">ช่วยปรับปรุง Brave โดยแจ้งให้เราทราบถึงเหตุผลที่คุณอนุญาตคุกกี้ของบุคคลที่สาม <ph name="BEGIN_LINK"/>ส่งความคิดเห็น<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">คุณสามารถขอดูเว็บไซต์เวอร์ชันเดสก์ท็อปได้</translation>
 <translation id="9183227624343766158">ใช้ Brave โดยค่าเริ่มต้น</translation>
+<translation id="113098737392899175">ไปยังส่วนต่างๆ ของหน้าได้ด้วยเคอร์เซอร์ข้อความเมื่อต่อแป้นพิมพ์</translation>
 <translation id="1178015372320901893">Bottom Sheet ในแป้นพิมพ์ลัดของฉัน</translation>
 <translation id="1178581264944972037">หยุดชั่วคราว</translation>
 <translation id="1181037720776840403">นำออก</translation>
@@ -41,7 +42,7 @@
 <translation id="1508931164824684991">เว็บไซต์ใช้ JavaScript ได้</translation>
 <translation id="1510341833810331442">ไม่อนุญาตให้เว็บไซต์บันทึกข้อมูลในอุปกรณ์ของคุณ</translation>
 <translation id="1532175480576580256">Bottom Sheet ในแป้นพิมพ์ลัดของฉันเปิดอยู่แบบเต็มความสูง</translation>
-<translation id="1538031354170655462">โดยปกติแล้วเว็บไซต์จะใช้ Near Field Communication (NFC) เพื่อทำงานร่วมกับแท็กหรืออุปกรณ์ที่อยู่ใกล้เคียง เช่น การสแกนป้ายหรือการแตะเพื่อจ่าย</translation>
+<translation id="1538031354170655462">โดยปกติแล้วเว็บไซต์จะใช้ Near Field Communication (NFC) เพื่อทำงานร่วมกับแท็กหรืออุปกรณ์ที่อยู่ใกล้เคียง เช่น ใช้ในการสแกนป้ายหรือการแตะเพื่อจ่าย</translation>
 <translation id="1547123415014299762">อนุญาตคุกกี้ของบุคคลที่สาม</translation>
 <translation id="3665719978526894928">เร่งความเร็วเว็บไซต์ด้วยเครื่องมือ V8 ของ Brave แต่ทำให้ Brave ต้านทานการโจมตีได้น้อยลงเล็กน้อย</translation>
 <translation id="1593426485665524382">การดำเนินการใหม่ที่พร้อมใช้งานบริเวณด้านบนของหน้าจอ</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">ต่อไป</translation>
 <translation id="904887679952026733">เมื่อทำได้ ให้ใช้ธีมมืดกับเว็บไซต์เมื่อ Brave ใช้ธีมมืด</translation>
 <translation id="2390272837142897736">เพิ่มการซูม</translation>
+<translation id="2397689164757137845">อนุญาต • แน่นอน</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">แน่นอน</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{อนุญาตให้เข้าถึง<ph name="PERMISSION_1"/> <ph name="PERMISSION_2"/> และอีก <ph name="NUM_MORE"/> รายการ}other{อนุญาตให้เข้าถึง<ph name="PERMISSION_1"/> <ph name="PERMISSION_2"/> และอีก <ph name="NUM_MORE"/> รายการ}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">ความช่วยเหลือและความคิดเห็น</translation>
 <translation id="2501278716633472235">ย้อนกลับ</translation>
 <translation id="2533138527374486328">เมื่อเปิด เว็บไซต์จะขอเชื่อมต่อกับอุปกรณ์ในเครือข่ายภายในของคุณได้ เมื่อปิด เว็บไซต์จะเชื่อมต่อกับอุปกรณ์ในเครือข่ายภายในของคุณไม่ได้</translation>
+<translation id="2536779053640817375">อนุญาตในครั้งนี้ • แน่นอน</translation>
 <translation id="2544997614631598250">ธีมสีมืด</translation>
 <translation id="2546283357679194313">คุกกี้และข้อมูลเว็บไซต์</translation>
 <translation id="2570922361219980984">การเข้าถึงตำแหน่งสำหรับอุปกรณ์เครื่องนี้ปิดอยู่ เปิดการเข้าถึงได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/></translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">บล็อกในบางเว็บไซต์</translation>
 <translation id="3132996321662585180">รีเฟรชทุกวัน</translation>
 <translation id="3143754809889689516">เริ่มเล่นตั้งแต่ต้น</translation>
+<translation id="3164169438034704658">คุณเปิดใช้ตำแหน่งที่แน่นอนได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/></translation>
 <translation id="3165022941318558018">อนุญาตให้เว็บไซต์ใช้คุกกี้ของบุคคลที่สาม</translation>
 <translation id="3167868116600277716">ฟีดสำรวจ</translation>
 <translation id="3198916472715691905">ข้อมูลที่จัดเก็บ <ph name="STORAGE_AMOUNT"/></translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">Brave จะจำกัดคุกกี้อีกครั้งในวันนี้</translation>
 <translation id="4338831206024587507">ทุกเว็บไซต์ในโดเมน <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">ไม่อนุญาตให้เว็บไซต์ส่งการแจ้งเตือน</translation>
+<translation id="4341577178275615435">ใช้แป้นพิมพ์ลัด F7 เพื่อเปิดหรือปิดการเรียกดูด้วยแป้นพิมพ์</translation>
 <translation id="4402755511846832236">บล็อกเว็บไซต์ไม่ให้ทราบเวลาที่คุณใช้งานอุปกรณ์นี้อยู่</translation>
 <translation id="8382883799082236806">Bottom Sheet สีของ Brave เปิดอยู่ครึ่งหน้าจอ</translation>
 <translation id="4412992751769744546">อนุญาตคุกกี้ของบุคคลที่สาม</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">หยุดวิดีโอชั่วคราว</translation>
 <translation id="5877248419911025165">ยุบคำขอทั้งหมด</translation>
 <translation id="5878945009165002849">บล็อกข้อความแจ้งให้ลงชื่อเข้าใช้จากบริการระบุตัวตน</translation>
+<translation id="588258955323874662">เต็มหน้าจอ</translation>
 <translation id="5884085660368669834">ค่ากำหนดสำหรับเว็บไซต์</translation>
 <translation id="5887687176710214216">เข้าชมล่าสุดเมื่อวาน</translation>
 <translation id="5908617755156109052">ไม่อนุญาตให้เว็บไซต์สร้างแผนที่ 3 มิติของสิ่งที่อยู่รอบตัวคุณหรือติดตามตำแหน่งของกล้อง</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">ตกลง</translation>
 <translation id="6980861169612950611">ลบข้อมูลเว็บไซต์ใช่ไหม <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">การช่วยเหลือพิเศษ</translation>
+<translation id="6991142177939282156">อนุญาต • ใช้ตำแหน่งโดยประมาณ</translation>
 <translation id="6992289844737586249">ถามก่อน ก่อนที่จะอนุญาตให้เว็บไซต์ใช้ไมโครโฟน (แนะนำ)</translation>
 <translation id="7000754031042624318">ปิดในการตั้งค่า Android</translation>
 <translation id="8683151724374457021">เว็บไซต์นี้จะระบุสิ่งที่คุณชื่นชอบแล้วแนะนําโฆษณาในเว็บไซต์อื่น เว็บไซต์นี้ยังรับหัวข้อโฆษณาของคุณจาก Brave เพื่อแสดงโฆษณาที่เกี่ยวข้องมากขึ้นด้วย</translation>
+<translation id="7036823721811529709">เล่นเป็นแบ็กกราวน์</translation>
 <translation id="7044081119134178347">อนุญาตให้ใช้กล้องในครั้งนี้</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="7055552182600664515">เว็บไซต์อาจต้องใช้บริการป้องกันเนื้อหาเพื่อเล่นเนื้อหาที่มีลิขสิทธิ์คุ้มครอง <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">การตั้งค่านี้จะทำงานโดยไม่ระบุตัวตนของคุณหรือไม่อนุญาตให้เว็บไซต์ดูประวัติการท่องเว็บ แม้ว่าเว็บไซต์จะสามารถแชร์ข้อมูลบางส่วนเพื่อใช้ในการยืนยัน</translation>
 <translation id="7409735910987429903">เว็บไซต์อาจส่งป๊อปอัปเพื่อแสดงโฆษณา หรือใช้การเปลี่ยนเส้นทางเพื่อนำคุณไปยังเว็บไซต์ที่คุณอาจไม่ต้องการเข้าชม</translation>
 <translation id="7412160840120117304">สีหลักแบบเลขฐานสิบหก</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{ซูม}other{ซูม: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">ถามก่อน</translation>
 <translation id="7423538860840206698">บล็อกไม่ให้อ่านคลิปบอร์ด</translation>
 <translation id="7425915948813553151">ธีมมืดสำหรับเว็บไซต์</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">ลบ</translation>
 <translation id="8284326494547611709">คำบรรยายแทนเสียง</translation>
 <translation id="8300705686683892304">จัดการโดยแอป</translation>
+<translation id="8301363963630676147">อนุญาตในครั้งนี้ • ใช้ตำแหน่งโดยประมาณ</translation>
 <translation id="8315509175050791576">กำลังแชร์แท็บ</translation>
 <translation id="8324158725704657629">ไม่ต้องถามอีก</translation>
 <translation id="8362795839483915693">คุณซูมเข้าหรือออกในเว็บไซต์ที่เข้าชมได้</translation>

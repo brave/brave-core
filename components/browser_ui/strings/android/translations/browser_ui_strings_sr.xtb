@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Помозите нам да побољшамо Brave тако што ћете нам рећи зашто сте дозволили колачиће треће стране. <ph name="BEGIN_LINK"/>Пошаљите повратне информације<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Можете да затражите да видите верзију сајтова за рачунаре</translation>
 <translation id="9183227624343766158">Подразумевано користите Brave</translation>
+<translation id="113098737392899175">Крећите се страницама помоћу курсора за текст када је прикључена тастатура</translation>
 <translation id="1178015372320901893">Доња табела Моје пречице</translation>
 <translation id="1178581264944972037">Паузирај</translation>
 <translation id="1181037720776840403">Уклони</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Настави</translation>
 <translation id="904887679952026733">Када је то могуће, тамна тема се примењује за сајтове када је Brave користи</translation>
 <translation id="2390272837142897736">Повећајте зумирање</translation>
+<translation id="2397689164757137845">Дозвољено • Прецизно</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Прецизна</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Одобрене су дозволе <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и још <ph name="NUM_MORE"/>}one{Одобрене су дозволе <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и још <ph name="NUM_MORE"/>}few{Одобрене су дозволе <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и још <ph name="NUM_MORE"/>}other{Одобрене су дозволе <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и још <ph name="NUM_MORE"/>}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Помоћ и повратне информације</translation>
 <translation id="2501278716633472235">Назад</translation>
 <translation id="2533138527374486328">Када је укључено, сајтови могу да траже да се повежу са било којим уређајем на локалној мрежи. Када је искључено, сајтови не могу да се повезују са уређајима на локалној мрежи.</translation>
+<translation id="2536779053640817375">Дозвољено овај пут • Прецизно</translation>
 <translation id="2544997614631598250">Тамна боја теме</translation>
 <translation id="2546283357679194313">Колачићи и подаци о сајтовима</translation>
 <translation id="2570922361219980984">Приступ локацији је искључен и за овај уређај. Укључите га у <ph name="BEGIN_LINK"/>Android подешавањима<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">Блокирано на неким сајтовима</translation>
 <translation id="3132996321662585180">Освежавај дневно</translation>
 <translation id="3143754809889689516">Пусти испочетка</translation>
+<translation id="3164169438034704658">Прецизну локацију можете да укључите у <ph name="BEGIN_LINK"/>Android подешавањима<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Дозволите сајту да користи колачиће треће стране</translation>
 <translation id="3167868116600277716">Discover фид</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> сачуваних података</translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Brave ће данас поново ограничити колачиће</translation>
 <translation id="4338831206024587507">Сви сајтови у оквиру домена <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Не дозвољавај сајтовима да шаљу обавештења</translation>
+<translation id="4341577178275615435">Да бисте укључили или искључили навигацију курсором, користите F7</translation>
 <translation id="4402755511846832236">Не дозволите сајтовима да знају када активно користите овај уређај</translation>
 <translation id="8382883799082236806">Доња табела Brave боја је отворена до половине екрана</translation>
 <translation id="4412992751769744546">Дозволи колачиће треће стране</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">Паузирај видео</translation>
 <translation id="5877248419911025165">Скупи све захтеве</translation>
 <translation id="5878945009165002849">Блокирајте упите за пријављивање које приказују услуге за идентитет</translation>
+<translation id="588258955323874662">Цеo екран</translation>
 <translation id="5884085660368669834">Подешавање сајта</translation>
 <translation id="5887687176710214216">Последња посета: јуче</translation>
 <translation id="5908617755156109052">Не дозвољавај сајтовима да праве 3D мапу окружења ни да прате положај камере</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">Потврди</translation>
 <translation id="6980861169612950611">Желите да избришете податке сајта? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Приступачност</translation>
+<translation id="6991142177939282156">Дозвољено • Користи се приближна локација</translation>
 <translation id="6992289844737586249">Питај пре него што дозволиш сајтовима да користе микрофон (препоручено)</translation>
 <translation id="7000754031042624318">Искључено је у Android подешавањима</translation>
 <translation id="8683151724374457021">Овај сајт одређује ствари које вам се свиђају, а затим предлаже огласе за друге сајтове. Овај сајт такође прима податке о вашим темама огласа из Brave-а да би вам приказивао релевантније огласе.</translation>
+<translation id="7036823721811529709">Слушајте у позадини</translation>
 <translation id="7044081119134178347">Камера је дозвољена овај пут</translation>
 <translation id="7053983685419859001">Блокирај</translation>
 <translation id="7055552182600664515">Да би пуштали садржај заштићен ауторским правима, сајтови ће можда морати да користе услугу заштите садржаја. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">Ово подешавање ради, а да не мора да вас идентификује или да дозволи сајтовима да виде историју прегледања, иако сајтови могу да деле малу количину података у оквиру верификације</translation>
 <translation id="7409735910987429903">Сајтови могу да приказују искачуће прозоре са огласима или да користе преусмеравања да би вас упућивали на веб-сајтове које можда не желите да посетите</translation>
 <translation id="7412160840120117304">Хексадецимални кôд примарне боје</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Зумирање}one{Зумирање: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}few{Зумирање: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{Зумирање: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Прво питај</translation>
 <translation id="7423538860840206698">Читање привремене меморије је блокирано</translation>
 <translation id="7425915948813553151">Тамна тема за сајтове</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">Избриши</translation>
 <translation id="8284326494547611709">Титл</translation>
 <translation id="8300705686683892304">Управља апликација</translation>
+<translation id="8301363963630676147">Дозвољено овај пут • Користи се приближна локација</translation>
 <translation id="8315509175050791576">Дели се картица</translation>
 <translation id="8324158725704657629">Не питај поново</translation>
 <translation id="8362795839483915693">Можете да увећавате или умањујете приказ сајтова које посећујете</translation>

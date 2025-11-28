@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Ventá emerxente de subscrición ao boletín</translation>
 <translation id="6136090320163235283">Widget social</translation>
 <translation id="6657720240983439091">Widget de chat</translation>
+<translation id="3597441883564676263">Navegador non compatíbel</translation>
 <translation id="7138678301420049075">Outros</translation>
 <translation id="4046860372562593546">Xestionar Anuncios de Brave</translation>
 <translation id="5136973036012418831">Controle os tipos de Anuncios de Brave que ve e a súa frecuencia.</translation>
@@ -2234,6 +2235,24 @@
 <translation id="7488762544858401571">Editado</translation>
 <translation id="5604254791550001355">Editar petición</translation>
 <translation id="8115786586976830777">Copiar petición</translation>
+<translation id="3666616415490815310">Gardar como habilidade</translation>
+<translation id="6574544364990812112">As miñas habilidades</translation>
+<translation id="6696824203401957025">Nova habilidade</translation>
+<translation id="6410279677882692627">As habilidades aparecerán nas túas ferramentas [/] e son accesibles só escribindo o "/nome" que definas a continuación.</translation>
+<translation id="1344606707744657196">Modelo para aviso</translation>
+<translation id="8458341576712814616">Atallo</translation>
+<translation id="1326559827339317236">Introduce o teu atallo aquí</translation>
+<translation id="5032574515228824816">Aviso</translation>
+<translation id="2573797314568446575">Introduce un aviso aquí</translation>
+<translation id="900733896273558337">Editar habilidade</translation>
+<translation id="7662963028545588801">Eliminar habilidade</translation>
+<translation id="4209790625997566418">Estás seguro de que queres eliminar esta habilidade? Esta acción non se pode desfacer.</translation>
+<translation id="7161540406494327389">Requírese o atallo</translation>
+<translation id="3722223049736774445">O atallo só pode conter letras, números, guión baixo ou guión</translation>
+<translation id="6997214168632888867">O atallo debe ter 64 caracteres ou menos</translation>
+<translation id="2806891468525657116">O atallo xa existe</translation>
+<translation id="5497501845974700950">Requírese un aviso</translation>
+<translation id="5642369858603376334">O aviso debe ter 5000 caracteres ou menos</translation>
 <translation id="1406205536570262057">Editar resposta</translation>
 <translation id="3386725253392845084">Volver a intentar co mesmo modelo</translation>
 <translation id="2461822463642141190">Actual</translation>
@@ -2271,13 +2290,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> máis…</translation>
 <translation id="8103700533980268469">Pechar esta noticia</translation>
 <translation id="3417835166382867856">Separadores de busca</translation>
+<translation id="3828029223314399057">Buscar na barra de marcadores</translation>
+<translation id="381480092025168632">Buscar no historial do navegador</translation>
 <translation id="7311244614769792472">Non se encontraron resultados</translation>
 <translation id="3112448569149476523">Probe cunha busca diferente</translation>
 <translation id="1352836459737874921">Engadir contido desde outros separadores</translation>
+<translation id="7173836072258346701">Engadir contido desde marcadores</translation>
+<translation id="163680814308917875">Engadir contido desde o historial do navegador</translation>
 <translation id="7039179822221107025">Envía o contido dos teus separadores do navegador para que Leo teña máis contexto na conversa.</translation>
+<translation id="1602382615168212961">Envía o contido dos teus separadores do navegador para que Leo teña máis contexto na conversa.</translation>
+<translation id="4808122506413075135">Envía o contido do teu historial do navegador para que Leo teña máis contexto na conversa.</translation>
 <translation id="220541218939267992">O contido da páxina enviarase a Leo xunto coas túas mensaxes.</translation>
-<translation id="1446346932629101482">Engade o contido dos separadores para que Leo teña contexto. Este contido enviarase xunto coas túas mensaxes.</translation>
-<translation id="7193316103691252734">Ningún separador coincide</translation>
+<translation id="8164365899016970783">Engade o contido dos separadores e marcadores para que Leo teña contexto. Este contido enviarase xunto coas túas mensaxes.</translation>
+<translation id="6237410387937453423">Ningún anexo coincide</translation>
+<translation id="8076492880354921740">Pestanas</translation>
 <translation id="2315654674554095762">Leo agora recordará as túas conversas para que poidas acceder a elas de novo. Gárdanse de forma encriptada no teu dispositivo, e podes borralas cando queiras.</translation>
 <translation id="7821251979960635244">O historial aparecerá aquí cando comeces unha conversa.</translation>
 <translation id="887511360213807449">O historial está desactivado</translation>
@@ -2336,7 +2362,9 @@
 <translation id="4250229828105606438">Captura de pantalla</translation>
 <translation id="7949596341600215809">Captura de pantalla completa</translation>
 <translation id="6332876390231524389">Contidos do separador actual</translation>
-<translation id="7742969455167760092">Abrir separadores...</translation>
+<translation id="6397861830483632092">Abrir separadores…</translation>
+<translation id="802080272588201037">Marcadores…</translation>
+<translation id="2716127283451902393">Historial…</translation>
 <translation id="49269513399674318">Usar micrófono</translation>
 <translation id="3895031624234442305">Modelos personalizados</translation>
 <translation id="4572010449071015143">Iniciar nova conversa</translation>
@@ -2348,6 +2376,22 @@
 <translation id="2593275000606533518">Xestionar todo</translation>
 <translation id="8410199626695516952">Vale, non o vou lembrar</translation>
 <translation id="8419849467765474535">Erro ao gardar a memoria. Proba de novo.</translation>
+<translation id="5517580030864973329">Navegando pola páxina web cara a un novo enderezo</translation>
+<translation id="8832457834975923266">Navegouse pola páxina web ata <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progreso</translation>
+<translation id="8332385567036775056">Pasos</translation>
+<translation id="4521931942079977149">Facendo clic na páxina</translation>
+<translation id="7732267913911704962">Arrastrando e soltando na páxina</translation>
+<translation id="7703800915509570212">Volvendo atrás</translation>
+<translation id="4875586490950981498">Avanzando</translation>
+<translation id="738881387603843066">Movendo o rato</translation>
+<translation id="4850669014075537160">Desprazándose</translation>
+<translation id="1265072406500460724">Seleccionando desde un despregábel</translation>
+<translation id="7573920298077917439">Escribindo texto</translation>
+<translation id="4089034800311309656">Agardando pola páxina</translation>
+<translation id="4798146464408730445">Non se atoparon habilidades. Crea unha nova facendo clic no botón "Nova".</translation>
+<translation id="271033894570825754">Nova</translation>
+<translation id="8266605059880650542">Anotando algunha información para máis tarde sobre a páxina</translation>
 <translation id="3486480638399578250">Mantén o teu enderezo de correo electrónico privado</translation>
 <translation id="7765422154906712751">Crea enderezos únicos e aleatorios que se reenvían ao teu enderezo de correo electrónico de Brave e pódense borrar en calquera momento. Evita que o teu enderezo auténtico se revele ou se empregue por anunciantes.</translation>
 <translation id="5222676887888702881">Pechar sesión</translation>
@@ -2393,6 +2437,10 @@
 <translation id="7508412964869396375">Non se recibiu un token de verificación do servizo de contas de Brave</translation>
 <translation id="3179527991526213624">Sen resposta do servizo de contas de Brave</translation>
 <translation id="7911439408853154309">Erro na verificación do enderezo electrónico</translation>
+<translation id="2595463802839066496">Sen resposta do servizo de alias de correo electrónico</translation>
+<translation id="367191282389216837">Resposta non válida do servizo de alias de correo electrónico</translation>
+<translation id="7203490731644771170">Erro do servizo de alias de correo electrónico: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Erro: Alias non dispoñíbel</translation>
 <translation id="8370801182970639038">Automático (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motores de busca habilitados</translation>
 <translation id="8285901519864208412">Ocultar tarxeta de Recompensas</translation>
@@ -2438,8 +2486,19 @@
 <translation id="8458987127502506209">Activar Escudos de Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Os escudos están ACTIVADOS<ph name="STATUS_AFTER"/> neste sitio</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Os escudos están DESACTIVADOS<ph name="STATUS_AFTER"/> neste sitio</translation>
-<translation id="5623354834493649144">Se o sitio non funciona, proba a desactivar os Escudos.
-   <ph name="NOTE_BEFORE"/>Aviso: isto pode reducir a efectividade das proteccións de privacidade de Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Se este sitio aparece roto, proba Escudos.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Nota: isto pode reducir a protección da privacidade de Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Tes problemas con este sitio?</translation>
+<translation id="9176447766421988172">Estamos a probar un experimento para mellorar a compatibilidade dos sitios web, onde só mantemos o bloqueo de anuncios activado. Aviso: isto elimina toda protección de privacidade. Queres probalo? <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Ten en conta que para sitios web individuais que se rompan pola protección da privacidade de Brave, podes poñer os Escudos a ABAIXO.</translation>
+<translation id="1836572675775891780">Activar só o modo de bloqueo de anuncios</translation>
+<translation id="6623668214089604469">Está a funcionar correctamente este sitio agora?</translation>
+<translation id="8978860854770042258">Pensa en enviar un informe se este sitio segue roto.</translation>
+<translation id="4677356505199464553">Parece estar ben</translation>
+<translation id="1992750560347846445">Denunciar sitio</translation>
+<translation id="2887186586339544116">Activouse só o modo de bloqueo de anuncios</translation>
+<translation id="673665019618844072">Estás a usar actualmente só o modo de bloqueo de anuncios. Este modo só ofrece protección contra anuncios. Se queres volver ao modo completo de Escudos, desactiva este modo desde a configuración.</translation>
+<translation id="4820891023903368625">Anuncios bloqueados <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Bloqueáronse rastreadores e anuncios, entre outras cousas <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Sen a protección de Escudos de Brave <ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Controis avanzados</translation>
@@ -2473,7 +2532,6 @@
 <translation id="8034285923190068220">Permitir as pegadas dixitais</translation>
 <translation id="7638541189782135885">Non actualizar conexións de HTTP</translation>
 <translation id="2570787596946026998">Conectar só con HTTPS</translation>
-<translation id="1992750560347846445">Denunciar sitio</translation>
 <translation id="2387532482048804818">Indíquenos se o sitio non funcionaba correctamente con Shields activo.</translation>
 <translation id="3795015906457257780">Estás vendo este sitio sen as proteccións da privacidade de Brave</translation>
 <translation id="7194012750329511146">Escudos de Brave

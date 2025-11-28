@@ -131,6 +131,7 @@
 <translation id="8759753423332885148">Ətraflı məlumat.</translation>
 <translation id="8611976753572844841">Tor qoşulması ilə Gizli Pəncərə</translation>
 <translation id="1645589858096839236">Brave Gizli Pəncərədə baxış fəaliyyətinizi yadda saxlamır. Tor qoşulması ilə saytlara doğru IP ünvanınızı və şəbəkə müşahidəçilərinizin ziyarət etdiyiniz saytı görməyi daha çətinləşdirir. Lakin, şəxsi təhlükəsizliyiniz anonim qalmağa bağlıdırsa, bunun yerinə Tor Browser istifadə edin.</translation>
+<translation id="7919374705736538787">Gizli şəkildə axtarış edin ilə</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Məxfi axtarışla, Brave yalnız Məxfi Pəncərələrdəki axtarışlar üçün DuckDuckGo-dan istifadə edəcək. DuckDuckGo axtarış tarixçənizi izləmir, beləliklə, məxfi şəkildə axtarış edə bilərsiniz.</translation>
 <translation id="1925197199485958903">Tor ilə Məxfi Pəncərələrdə, əsas axtarış mühərriki DuckDuckGo-dur. Digər məşhur axtarış mühərrikləri Tor ilə istifadə etmək daha çətindir. DuckDuckGo axtarış tarixçənizi izləmir; Tor ilə isə hətta sizin IP ünvanınızı belə bilmir.</translation>
@@ -195,6 +196,7 @@
 <translation id="7279636930553631442">Bülleten popup</translation>
 <translation id="6136090320163235283">Sosial widget</translation>
 <translation id="6657720240983439091">Chat widget</translation>
+<translation id="3597441883564676263">Brauzer dəstəklənmir</translation>
 <translation id="7138678301420049075">Digər</translation>
 <translation id="4046860372562593546">Brave Reklamlarını idarə et</translation>
 <translation id="5136973036012418831">Görəcəyiniz reklamların tiplərini və nə qədər tez-tez göstəriləcəyini idarə edin.</translation>
@@ -2214,6 +2216,24 @@
 <translation id="7488762544858401571">Redaktə edildi</translation>
 <translation id="5604254791550001355">Komanda düzəliş et</translation>
 <translation id="8115786586976830777">Komandanı kopyalayın</translation>
+<translation id="3666616415490815310">Bacarıq kimi yadda saxla</translation>
+<translation id="6574544364990812112">Bacarıqlarım</translation>
+<translation id="6696824203401957025">Yeni bacarıq</translation>
+<translation id="6410279677882692627">Kontekstdə istifadə üçün bacarıqlarınız [/] alətlər menyusunda görünəcək və aşağıda təyin etdiyiniz “/ad” yolla çağırıla biləcək.</translation>
+<translation id="1344606707744657196">Sual modeli</translation>
+<translation id="8458341576712814616">Qısayol</translation>
+<translation id="1326559827339317236">Qısayolunuzu buraya daxil edin</translation>
+<translation id="5032574515228824816">Təlimat</translation>
+<translation id="2573797314568446575">Təlimatınızı buraya daxil edin</translation>
+<translation id="900733896273558337">Bacarığı redaktə et</translation>
+<translation id="7662963028545588801">Bacarığı sil</translation>
+<translation id="4209790625997566418">Bu bacarığı silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz.</translation>
+<translation id="7161540406494327389">Qısayol tələb olunur</translation>
+<translation id="3722223049736774445">Qısayol yalnız hərflər, rəqəmlər, alt xətt və defis simvollarını əhatə edə bilər</translation>
+<translation id="6997214168632888867">Qısayol 64 simvoldan artıq ola bilməz</translation>
+<translation id="2806891468525657116">Qısayol artıq mövcuddur</translation>
+<translation id="5497501845974700950">Təlimat tələb olunur</translation>
+<translation id="5642369858603376334">Təlimat 5000 simvoldan artıq ola bilməz</translation>
 <translation id="1406205536570262057">Cavabı redaktə et</translation>
 <translation id="3386725253392845084">Eyni modeli təkrar et</translation>
 <translation id="2461822463642141190">Cari</translation>
@@ -2251,13 +2271,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> daha çox…</translation>
 <translation id="8103700533980268469">Bu bildirişi bağlayın</translation>
 <translation id="3417835166382867856">Axtarış tabları</translation>
+<translation id="3828029223314399057">Əlfəcinlər üzrə axtar</translation>
+<translation id="381480092025168632">Brauzer tarixçəsində axtar</translation>
 <translation id="7311244614769792472">Nəticə tapılmadı</translation>
 <translation id="3112448569149476523">Zəhmət olmasa fərqli axtarış cəhd edin</translation>
 <translation id="1352836459737874921">Digər tab-vərəqələrdən məzmun əlavə et</translation>
+<translation id="7173836072258346701">Əlfəcinlərdən məzmun əlavə et</translation>
+<translation id="163680814308917875">Brauzer tarixçəsindən məzmun əlavə et</translation>
 <translation id="7039179822221107025">Leo-ya söhbət üçün daha çox mövzu vermək istəsəniz brauzerinizin tab-vərəqələrindən məzmun göndərin.</translation>
+<translation id="1602382615168212961">Leo-ya söhbət üçün daha çox mövzu vermək istəsəniz, əlfəcinlərdəki səhifələrdən məzmun göndərin.</translation>
+<translation id="4808122506413075135">Leo-ya söhbət üçün əlavə məlumat vermək üçün brauzer tarixçənizdəki səhifə məzmununu göndərin.</translation>
 <translation id="220541218939267992">Səhifə məzmunu mesajlarınızla birlikdə Leo-ya göndəriləcək.</translation>
-<translation id="1446346932629101482">Kontekst üçün tab məzmunlarını əlavə edin. Məzmun Leo’ya mesajlarınızla birlikdə göndəriləcək.</translation>
-<translation id="7193316103691252734">Uyğun tablar yoxdur</translation>
+<translation id="8164365899016970783">Kontekst üçün tab və əlfəcin məzmunlarını əlavə edin. Məzmun Leo’ya mesajlarınızla birlikdə göndəriləcək.</translation>
+<translation id="6237410387937453423">Uyğun əlavələr yoxdur</translation>
+<translation id="8076492880354921740">Tabulyasiyalar</translation>
 <translation id="2315654674554095762">Leo artıq söhbətlərinizi yaddaşda saxlayacaq, beləliklə siz onlara yenidən baxa biləcəksiniz. Onlar cihazınızda şifrəli bir şəkildə saxlanılır və onları istənilən vaxt silə bilərsiniz.</translation>
 <translation id="7821251979960635244">Söhbətə başladığınızda söhbət tarixi burada görünəcək.</translation>
 <translation id="887511360213807449">Tarix deaktiv edilib</translation>
@@ -2316,7 +2343,9 @@
 <translation id="4250229828105606438">Ekran görüntüsü</translation>
 <translation id="7949596341600215809">Tam səhifə ekran görüntüsü</translation>
 <translation id="6332876390231524389">Cari tabın məzmunu</translation>
-<translation id="7742969455167760092">Tab-vərəqələri aç...</translation>
+<translation id="6397861830483632092">Tab-vərəqələri aç…</translation>
+<translation id="802080272588201037">Əlfəcinlər…</translation>
+<translation id="2716127283451902393">Tarixçə…</translation>
 <translation id="49269513399674318">Mikrofondan istifadə et</translation>
 <translation id="3895031624234442305">Xüsusi modellər</translation>
 <translation id="4572010449071015143">Yeni söhbətə başla</translation>
@@ -2328,6 +2357,22 @@
 <translation id="2593275000606533518">Hamısını idarə et</translation>
 <translation id="8410199626695516952">Yaxşı, bunu yadda saxlamayacağam</translation>
 <translation id="8419849467765474535">Yaddaşı saxlamaq alınmadı. Zəhmət olmasa yenidən cəhd edin.</translation>
+<translation id="5517580030864973329">Veb səhifəni yeni ünvana yönləndirmək</translation>
+<translation id="8832457834975923266">Veb səhifə <ph name="URL"/> ünvanına yönləndirilib</translation>
+<translation id="5095252080770652994">İrəliləyiş</translation>
+<translation id="8332385567036775056">Addımlar</translation>
+<translation id="4521931942079977149">Səhifədə klikləmə</translation>
+<translation id="7732267913911704962">Səhifədə sürüklə və burax</translation>
+<translation id="7703800915509570212">Brauzer tarixçəsində geriyə naviqasiya</translation>
+<translation id="4875586490950981498">Brauzer tarixçəsində irəli naviqasiya</translation>
+<translation id="738881387603843066">Siçanı hərəkət etdirmək</translation>
+<translation id="4850669014075537160">Səhifədə sürüşdürmək</translation>
+<translation id="1265072406500460724">Açılan siyahıdan seçim etmək</translation>
+<translation id="7573920298077917439">Mətn daxil etmək</translation>
+<translation id="4089034800311309656">Səhifənin yüklənməsini gözləmək</translation>
+<translation id="4798146464408730445">Heç bir bacarıq tapılmadı. “Yeni” düyməsini klikləməklə yenisini yaradın.</translation>
+<translation id="271033894570825754">Yeni</translation>
+<translation id="8266605059880650542">Səhifə haqqında bəzi məlumatları sonradan istifadə üçün qeyd etmək</translation>
 <translation id="3486480638399578250">Şəxsi e-poçt ünvanınızı gizli saxlayın</translation>
 <translation id="7765422154906712751">Unikal, təsadüfi ünvanlar yaradın ki, Brave hesab e-poçt ünvanınıza yönəldilsin və istənilən vaxt silinə bilsin. Əsas e-poçt ünvanınızın ifşa edilməməsini və ya reklamçılar tərəfindən istifadə olunmamasını təmin edin.</translation>
 <translation id="5222676887888702881">Çıxış</translation>
@@ -2373,6 +2418,10 @@
 <translation id="7508412964869396375">Brave Accounts xidmətindən təsdiqləmə tokeni alınmadı</translation>
 <translation id="3179527991526213624">Brave Accounts xidmətindən cavab alınmadı</translation>
 <translation id="7911439408853154309">E-poçt təsdiq uğursuz oldu</translation>
+<translation id="2595463802839066496">Email Aliases xidmətindən cavab alınmadı</translation>
+<translation id="367191282389216837">Email Aliases xidmətindən etibarsız cavab alındı</translation>
+<translation id="7203490731644771170">Email Aliases xidməti xətası: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Səhv: Ləqəb əlçatmazdır</translation>
 <translation id="8370801182970639038">Avtomatik (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Axtarış mühərrikləri aktivdir</translation>
 <translation id="8285901519864208412">Mükafat kartını gizlədin</translation>
@@ -2418,8 +2467,19 @@
 <translation id="8458987127502506209">Brave Qalxanını aktivləşdir</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Bu sayt üçün Təhlükəsizlik Qalxanları YUXARIDADIR<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Bu sayt üçün Təhlükəsizlik Qalxanları AŞAĞIDADIR<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">Bu sayt pozulmuş görsənirsə, Təhlükəsizlik Qalxanlarını aşağı salmağa çalışın.
-   <ph name="NOTE_BEFORE"/>Qeyd: bu Brave-in məxfilik müdafiələrini azalda bilər.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Bu saytda nasazlıq varsa Qalxanlardan istifadə edin.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Qeyd: bu, Brave-ın məxfilik qorunmalarını azalda bilər.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Bu saytda problemi təcrübə edirsiniz?</translation>
+<translation id="9176447766421988172">Vebsayt uyğunluğunu artırmaq üçün bir sınaq həyata keçiririk, burada yalnız reklam bloklama aktivdir. Xəbərdarlıq: bütün məxfilik qorunmalarını silir. Sınaqdan keçirmək istəyirsiniz? <ph name="LINK_BEFORE"/>Ətraflı məlumat<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Brave-ın məxfilik qorunmaları ilə bağlı problemi olan fərdi vebsaytlar üçün Qalxanları AŞAĞI vəziyyətinə gətirə bilərsiniz.</translation>
+<translation id="1836572675775891780">Yalnız Reklam Bloklama rejimini aktivləşdir</translation>
+<translation id="6623668214089604469">Sayt indi düzgün işləyirmi?</translation>
+<translation id="8978860854770042258">Əgər sayt hələ də nasazdırsa, zəhmət olmasa hesabat təqdim etməyi düşünün.</translation>
+<translation id="4677356505199464553">Yaxşı görünür</translation>
+<translation id="1992750560347846445">Saytı şikayət et</translation>
+<translation id="2887186586339544116">Yalnız Reklam Bloklama rejimi aktivləşdirilib</translation>
+<translation id="673665019618844072">Hazırda yalnız Reklam Bloklama rejimindən istifadə edirsiniz. Bu rejim yalnız reklam bloklama qorunması təklif edir. Əgər tam Qalxan rejiminə qayıtmaq istəyirsinizsə, bu rejimi ayarlardan deaktivləşdirin.</translation>
+<translation id="4820891023903368625">Reklamlar bloklandı <ph name="LINK_BEFORE"/>Ətraflı məlumat<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">İzləyicilər, reklamlar və daha çoxu bloklanır <ph name="LINK_BEFORE"/>Ətraflı öyrənin<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Təhlükəsizlik Qalxanları tərəfindən qorunmur <ph name="LINK_BEFORE"/>Ətraflı öyrənin<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Qabaqcıl idarəetmələr</translation>
@@ -2453,7 +2513,6 @@
 <translation id="8034285923190068220">Bütün barmaq izlərinə icazə ver</translation>
 <translation id="7638541189782135885">HTTP bağlantılarını yeniləmə</translation>
 <translation id="2570787596946026998">Yalnız HTTPS ilə qoşul</translation>
-<translation id="1992750560347846445">Saytı şikayət et</translation>
 <translation id="2387532482048804818">Saytın qalxanlarla düzgün işləmədiyini bizə bildirin.</translation>
 <translation id="3795015906457257780">Bu saytı Brave-in məxfilik qorunmaları olmadan baxırsınız.</translation>
 <translation id="7194012750329511146">Brave Təhlükəsizlik Qalxanları

@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">ការបង្ហាញព័ត៌មានពាណិជ្ជកម្មត្រូវបានប្រកាន់អាន</translation>
 <translation id="6136090320163235283">បញ្ជីគេង</translation>
 <translation id="6657720240983439091">បញ្ជីជជែក</translation>
+<translation id="3597441883564676263">កម្មវិធីរុករកមិនត្រូវបានគាំទ្រ</translation>
 <translation id="7138678301420049075">ផ្សេងទៀត</translation>
 <translation id="4046860372562593546">គ្រប់គ្រងការផ្សាយពាណិជ្ជកម្ម Brave</translation>
 <translation id="5136973036012418831">គ្រប់គ្រងថាប្រភេទការផ្សាយពាណិជ្ជកម្ម Brave  និងភាពច្រើនកន្លែងភ្ជាប់។</translation>
@@ -439,6 +440,7 @@
 <translation id="2729085694451916573">ខ្សែសន្ទាបីរហុងឆ្តឈាប់ <ph name="PART_ONE"/>ភាងស្េ​ឧបឆុដេរេ​អ្រអម្តាកស្កេ<ph name="PART_ONE_END"/>អិក្ដោហ្រកែសំេ<ph name="PART_TWO"/>តាមិិនជាខ្ន់<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Domainយ៉ាងអាចលោតបាន</translation>
 <translation id="4492298165410552103">ធ្វើឱ្យ Brave អាចប្រើ Unstoppable Domains បានឬគី?</translation>
+<translation id="5015092481905019948">Brave នឹងប្រើ <ph name="PROVIDER_NAME"/> ដើម្បីដោះស្រាយឈ្មោះដែន <ph name="DOMAIN_LIST"/> ដែលស្ថិតនៅលើ <ph name="DOMAIN_PROVIDER_NAME"/>។ Brave លាក់អាសយដ្ឋាន IP របស់អ្នក។ ប្រសិនបើអ្នកបើកជម្រើសនេះ <ph name="PROVIDER_NAME"/> នឹងឃើញថាមាននរណាម្នាក់កំពុងព្យាយាមចូលទៅកាន់ដែនទាំងនេះ ប៉ុន្តាមិនអាចឃើញព័ត៌មានផ្សេងទៀតបានឡើយ។ សូមមើល <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>លក្ខខណ្ឌនៃការប្រើប្រាស់<ph name="END_PROVIDER_TOU_LINK"/> និង <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>គោលនយោបាយ bảo mật<ph name="END_PROVIDER_PRIVACY_LINK"/>។</translation>
 <translation id="6513892817556267573">សេវាកម្មឈ្មោះ Ethereum</translation>
 <translation id="2789190492285945209">សេវាកម្មឈ្មោះ Ethereum (ENS)</translation>
 <translation id="4335039108389860301">បើកការគាំទ្រ សេវាកម្មឈ្មោះ Ethereum (ENS) នៅក្នុង Brave?</translation>
@@ -478,6 +480,7 @@
 <translation id="8797999629784150206">អ្នកអាចផ្លាស់ប្តូរ <ph name="SITE_PERMISSIONS"/> របស់អ្នកនៅពេលណាក៏បាន។ <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">អនុញ្ញាតគេហទំព័រ</translation>
 <translation id="7222371875290545057">Allow opening Leo AI conversations in Brave?</translation>
+<translation id="1518915449477235311">អនុញ្ញាតឲ្យ <ph name="URL"/> បើកការជជែកជាមួយ Leo AI នៅក្នុង Brave?</translation>
 <translation id="4355784577209159847">អនុញ្ញាតការប្រើខូគីរបស់ភាគីទីតាំងសម្រាប់ការចូលគណនី Google ថ្មី</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ចង់ប្រើខូគីរបស់ភាគីទីតាំងសម្រាប់ការចូលគណនី Google ថ្មី</translation>
 <translation id="6053826678715267477">អនុញ្ញាតការចូលប្រើធនធាន localhost</translation>
@@ -629,7 +632,9 @@
 <translation id="1053740665683265460">ប្រើកាបូប Web3 របស់អ្នកដើម្បីផ្ញើការរួមចំណែកម្តងទៅកាន់អ្នកនិងបង្ហាញសំណព្វចិត្តរបស់អ្នក</translation>
 <translation id="6859705040495339375">ផ្ញើជាមួយកាបូប Web3</translation>
 <translation id="7615852194054434287">វាមើលទៅដូចជាបច្ចុប្បន្នអ្នកបង្កើតនេះមិនបានកំណត់ឡើងក្នុងការ​ទទួលបរិច្ចាគតាមរយៈកាបូប Web3 នៅឡើយទេ។</translation>
+<translation id="8817096698141999876">គណនីការផ្ទុក (ត្រូវការ​ការ​ផ្ទៀងផ្ទាត់​អត្តសញ្ញាណ)</translation>
 <translation id="1539433155512862005">គណនីទុកចិត្តគឺគណនីដែលមានសេវាភាគីទីបីបានទុកទុកចិត្តដែលកាន់ BAT សម្រាប់អ្នក។</translation>
+<translation id="6834831484510296932">ផ្ទុក​ខ្លួន​ឯង</translation>
 <translation id="4208917415153655958">ការរក្សា​ទុកដោយ​ខ្លួនឯងផ្ដល់នូវការត្រួវ​ការ​ពេញសម្រាប់ BAT របស់អ្នក នៅក្លួនឯង ដូច្នេះក៏ចុះអាន​សម្រាប់​នយោបាយ​សុវត្ថិភាពសម្រាប់វា។</translation>
 <translation id="9118326146754987354">ជាមួយនឹងការរក្សា​ទុក BAT ជា SPL-BAT នៅលើបណ្ដាញ Solana។</translation>
 <translation id="6751803821780922506">ជ្រើសរើសកន្លែងនៅនិយាយប្រាប់ទាំងថាBAT។</translation>
@@ -803,6 +808,7 @@
 <translation id="9021834401351805394">ស្វែងរកតាមឈ្មោះឬបិទអាសយដ្ឋាន</translation>
 <translation id="5009335307032488349">ស្វែងរក NFT តាមឈ្មោះ, id</translation>
 <translation id="8667560635828712526">ជ្រើសរើសទ្រព្យសកម្ម</translation>
+<translation id="4853960199138416955">Brave Wallet មិន​គាំទ្រ NFTs Bitcoin (ordinals) នៅឡើយ​ទេ។ ការផ្ញើ BTC ពីអាសយដ្ឋាន​ដែលមាន ordinals អាចនាំឲ្យ ordinals ទាំងនោះ​ត្រូវបានផ្ទេរដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="29976300677902325">ជ្រើសរើសអ្នកទទួល</translation>
 <translation id="7231620608040154667">អាសយដ្ឋានរបស់ខ្ញុំ</translation>
 <translation id="4504682768625050939">បញ្ចូលអាស័យដ្ឋានសាធារណៈ ឬកម្មសិទ្ធិ។</translation>
@@ -2216,6 +2222,24 @@
 <translation id="7488762544858401571">បានកែតម្រូវ</translation>
 <translation id="5604254791550001355">កែប្រែសំណួរ</translation>
 <translation id="8115786586976830777">ចម្លងសំណួរ</translation>
+<translation id="3666616415490815310">រក្សាទុកជា​ជំនាញ</translation>
+<translation id="6574544364990812112">ជំនាញ​របស់ខ្ញុំ</translation>
+<translation id="6696824203401957025">ជំនាញ​ថ្មី</translation>
+<translation id="6410279677882692627">ជំនាញនឹងបង្ហាញនៅក្នុងឧបករណ៍ [/] របស់អ្នក ហើយអាចប្រើបានដោយគ្រាន់តែវាយ “/name” ដែលអ្នកបានកំណត់ខាងក្រោម។</translation>
+<translation id="1344606707744657196">ម៉ូដែលសម្រាប់ពាក្យសួរ</translation>
+<translation id="8458341576712814616">ផ្លូវកាត់</translation>
+<translation id="1326559827339317236">បញ្ចូលផ្លូវកាត់របស់អ្នកទីនេះ</translation>
+<translation id="5032574515228824816">ពាក្យសួរ</translation>
+<translation id="2573797314568446575">បញ្ចូលពាក្យសួររបស់អ្នកទីនេះ</translation>
+<translation id="900733896273558337">កែជំនាញ</translation>
+<translation id="7662963028545588801">លុបជំនាញ</translation>
+<translation id="4209790625997566418">តើអ្នកប្រាកដថាចង់លុបជំនាញនេះ? សកម្មភាពនេះមិនអាចដកហូតបានវិញទេ។</translation>
+<translation id="7161540406494327389">ត្រូវការផ្លូវកាត់</translation>
+<translation id="3722223049736774445">ផ្លូវកាត់អាចមានតែអក្សរ ខ្ទង់លេខ អ័ណ្ឌសកុន និងសញ្ញា—ប៉ុណ្ណោះ</translation>
+<translation id="6997214168632888867">ផ្លូវកាត់ត្រូវតែមានតិចជាងឬស្មើនឹង 64 តួអក្សរ</translation>
+<translation id="2806891468525657116">ផ្លូវកាត់មានរួចហើយ</translation>
+<translation id="5497501845974700950">ត្រូវការពាក្យសួរ</translation>
+<translation id="5642369858603376334">ពាក្យសួរត្រូវតែមានតិចជាងឬស្មើ 5000 តួអក្សរ</translation>
 <translation id="1406205536570262057">កែសម្រួលចម្លើយ</translation>
 <translation id="3386725253392845084">ព្យាយាមម៉ូដែលដូចគ្នា</translation>
 <translation id="2461822463642141190">បច្ចុប្បន្ន</translation>
@@ -2253,13 +2277,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> បន្ថែម...</translation>
 <translation id="8103700533980268469">បិទសេចក្តីជូនដំណឹងនេះ</translation>
 <translation id="3417835166382867856">ស្វែងរកផ្ទាំង</translation>
+<translation id="3828029223314399057">ស្វែងរកចំណាំ</translation>
+<translation id="381480092025168632">ស្វែងរកប្រវត្តិកម្មវិធីរុករក</translation>
 <translation id="7311244614769792472">រកមិនឃើញលទ្ធផល</translation>
 <translation id="3112448569149476523">សូមសាកល្បងស្វែងរកផ្សេងទៀត</translation>
 <translation id="1352836459737874921">ភ្ជាប់មាតិកាពីផ្ទាំងផ្សេងទៀត</translation>
+<translation id="7173836072258346701">ភ្ជាប់មាតិការពីចំណាំ</translation>
+<translation id="163680814308917875">ភ្ជាប់មាតិការពីប្រវត្តិកម្មវិធីរុករក</translation>
 <translation id="7039179822221107025">ផ្ញើមាតិកាទំព័រពីផ្ទាំងកម្មវិធីរុករករបស់អ្នកដើម្បីផ្តល់ឱ្យ Leo បរិបទបន្ថែមទៀតសម្រាប់ការសន្ទនា។</translation>
+<translation id="1602382615168212961">ផ្ញើខ្លឹមសារទំព័រពីផ្ទាំងនៅក្នុងចំណាំរបស់អ្នកដើម្បីផ្តល់ context ច្រើនឲ្យ Leo សម្រាប់សន្ទនា។</translation>
+<translation id="4808122506413075135">ផ្ញើខ្លឹមសារទំព័រពីប្រវត្តិកម្មវិធីរុករករបស់អ្នកដើម្បីផ្តល់ context ច្រើនឲ្យ Leo សម្រាប់សន្ទនា។</translation>
 <translation id="220541218939267992">មាតិកាទំព័រនឹងត្រូវផ្ញើទៅអ្នកជំនួយការ Leo ជាមួយនឹងសាររបស់អ្នក។</translation>
-<translation id="1446346932629101482">បន្ថែមខ្លឹមសារផារោងតាប់ដើម្បីថប context។ ការបញ្ចូលគេហទំព័រនេះនឹងត្រូវត្រាបទៅ Leo រួមជាមួយនឹងសារបស់អ្នក។</translation>
-<translation id="7193316103691252734">មិនមានផ្ទាំងដែលប្រាចាប់គ្នា</translation>
+<translation id="8164365899016970783">បន្ថែមខ្លឹមសារផ្ទាំង និងចំណាំសម្រាប់ context។ ខ្លឹមសារនឹងត្រូវផ្ញើទៅកាន់ Leo ជាមួយនឹងសាររបស់អ្នក។</translation>
+<translation id="6237410387937453423">មិនមានឯកសារភ្ជាប់ដែលឆបគ្នា</translation>
+<translation id="8076492880354921740">ផ្ទាំង</translation>
 <translation id="2315654674554095762">ឥឡូវនេះ Leo នឹងចងចាំការសន្ទនារបស់អ្នក ដូច្នេះអ្នកអាចត្រឡប់ទៅរកពួកគេវិញ។ ពួកវាត្រូវបានរក្សាទុកដោយអ៊ិនគ្រីបនៅលើឧបករណ៍របស់អ្នក ហើយអ្នកអាចលុបវាបានគ្រប់ពេល។</translation>
 <translation id="7821251979960635244">ប្រវត្តិការជជែករបស់លោក​អ្នកនឹងបង្ហាញនៅទីនេះនៅពេលលោក​អ្នកចាប់ផ្តើមជជែក។</translation>
 <translation id="887511360213807449">ប្រវត្តិត្រូវបានបិទ។</translation>
@@ -2318,7 +2349,9 @@
 <translation id="4250229828105606438">រូបថតអេក្រង់</translation>
 <translation id="7949596341600215809">រូបថតអេក្រង់ពេញទំព័រ</translation>
 <translation id="6332876390231524389">ខ្លឹមសារលើផ្ទាំងបច្ចុប្បន្ន</translation>
-<translation id="7742969455167760092">បើកផ្ទាំង...</translation>
+<translation id="6397861830483632092">បើកផ្ទាំង…</translation>
+<translation id="802080272588201037">របាចំណាំ…</translation>
+<translation id="2716127283451902393">ប្រវត្តិ…</translation>
 <translation id="49269513399674318">ប្រើម៉ៃក្រូហ្វូន</translation>
 <translation id="3895031624234442305">តូមាត្រពិសេស</translation>
 <translation id="4572010449071015143">ចាប់ផ្តើមការសន្ទនាថ្មី</translation>
@@ -2330,6 +2363,22 @@
 <translation id="2593275000606533518">គ្រប់គ្រងទាំងអស់</translation>
 <translation id="8410199626695516952">បាទ/ចាស ខ្ញុំនឹងមិនចាំរឿងនោះទេ</translation>
 <translation id="8419849467765474535">មិនជោគជ័យក្នុងការរក្សាទុកអង្គចងចាំ។ សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="5517580030864973329">កំពុងរុករកគេហទំព័រទៅអាសយដ្ឋានថ្មី</translation>
+<translation id="8832457834975923266">បានរុករកគេហទំព័រទៅ <ph name="URL"/></translation>
+<translation id="5095252080770652994">វឌ្ឍនភាព</translation>
+<translation id="8332385567036775056">ជំហាន</translation>
+<translation id="4521931942079977149">ចុចលើទំព័រ</translation>
+<translation id="7732267913911704962">អូសនិងទម្លាក់លើទំព័រ</translation>
+<translation id="7703800915509570212">រុករកថយក្រោយ</translation>
+<translation id="4875586490950981498">រុករកបន្តទៅមុខ</translation>
+<translation id="738881387603843066">ផ្លាស់ទីកណ្តុរ</translation>
+<translation id="4850669014075537160">រំកិល</translation>
+<translation id="1265072406500460724">ជ្រើសរើសពីបញ្ជីរប្វិលចុះ</translation>
+<translation id="7573920298077917439">វាយអត្ថបទ</translation>
+<translation id="4089034800311309656">រង់ចាំទំព័រ</translation>
+<translation id="4798146464408730445">មិនមានជំនាញ។ បង្កើតថ្មីដោយចុចប៊ូតុង "ថ្មី"។</translation>
+<translation id="271033894570825754">ថ្មី</translation>
+<translation id="8266605059880650542">កំពុងកត់ត្រាព័ត៌មានអំពីទំព័រសម្រាប់ពេលក្រោយ</translation>
 <translation id="3486480638399578250">រក្សាអាសយដ្ឋានអ៊ីមែលផ្ទាល់ខ្លួនរបស់អ្នកជាឯកជន</translation>
 <translation id="7765422154906712751">បង្កើតអាសយដ្ឋានចៃដន្យតែមួយគត់ ដែលបញ្ជូនបន្តទៅអ៊ីមែលគណនី Brave របស់អ្នក ហើយអាចលុបបានគ្រប់ពេល។ រក្សាអាសយដ្ឋានអ៊ីមែលពិតប្រាកដរបស់អ្នកមិនឱ្យត្រូវបានបង្ហាញ ឬប្រើប្រាស់ដោយអ្នកផ្សាយពាណិជ្ជកម្ម។</translation>
 <translation id="5222676887888702881">ចាកចេញ</translation>
@@ -2375,6 +2424,10 @@
 <translation id="7508412964869396375">មិនមានសញ្ញាសម្គាល់ផ្ទៀងផ្ទាត់ដែលបានទទួលពីសេវាកម្មគណនី Brave ទេ</translation>
 <translation id="3179527991526213624">មិនមានការឆ្លើយតបពីសេវាកម្មគណនី Brave ទេ</translation>
 <translation id="7911439408853154309">ការផ្ទៀងផ្ទាត់អ៊ីមែលមិនបានជោគជ័យ</translation>
+<translation id="2595463802839066496">មិនមានការឆ្លើយតបពីសេវាកម្ម Email Aliases ទេ</translation>
+<translation id="367191282389216837">ការឆ្លើយតបមិនត្រឹមត្រូវពីសេវាកម្ម Email Aliases</translation>
+<translation id="7203490731644771170">កំហុស​ពីសេវាកម្ម Email Aliases: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">កំហុស៖ អាសយដ្ឋានមិនអាចប្រើបាន</translation>
 <translation id="8370801182970639038">ស្វ័យប្រវត្តិ (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">ម៉ាស៊ីនស្វែងរកដែលបានបើក</translation>
 <translation id="8285901519864208412">លាក់កាតរង្វាន់</translation>
@@ -2420,8 +2473,19 @@
 <translation id="8458987127502506209">បើកខែលការពារ Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>បានបើកខែលការពារ<ph name="STATUS_AFTER"/> សម្រាប់គេហទំព័រនេះ</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>បានបិទខែលការពារ<ph name="STATUS_AFTER"/> សម្រាប់គេហទំព័រនេះ</translation>
-<translation id="5623354834493649144">ប្រសិនបើបណ្តាញគេហទំព័រនេះនៅតែធ្លាក់ដាច់ សូមសាកល្បងបិទធានារនេះ។
-    <ph name="NOTE_BEFORE"/>កំណត់ចំណាំ: វាអាចបន្ថយការការពារឯកជនភាពរបស់ Brave។<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">ប្រសិនបើគេហទំព័រនេះហាក់ដូចជាមិនដំណើរការ សាកល្បងបិទខែលការពារ។</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ចំណាំ៖ វាអាចបន្ថយការពារភាពឯកជនរបស់ Brave។<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">តើអ្នកកំពុងជួបបញ្ហាជាមួយគេហទំព័រនេះឬទេ?</translation>
+<translation id="9176447766421988172">យើងកំពុងសាកល្បងប្រើប្រាស់ដំណើរការថ្មីមួយដើម្បីបង្កើនការចចង compatibility គេហទំព័រ ដោយផ្តល់សិទ្ធិបិទការការពារផ្សេងទៀតទុកជារបស់ផ្សេងជាមួយការទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម។ ការព្រមព្រៀង៖ ធ្វើឲ្យការពារពីភាពឯកជនទាំងអស់ត្រូវបានដកចេញ។ តើអ្នកចង់សាកល្បងទេ? <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/>។</translation>
+<translation id="5372101283158221516">សូមចំណាំថា សម្រាប់គេហទំព័រដែលខូចដោយសារការពារភាពឯកជនរបស់ Brave អ្នកអាចកំណត់ខែលការពារឱ្យជារបៀប OFF (DOWN)។</translation>
+<translation id="1836572675775891780">បើករបៀបទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្មតែប៉ុណ្ណោះ</translation>
+<translation id="6623668214089604469">តើគេហទំព័រនេះដំណើរការត្រឹមត្រូវឥឡូវនេះហើយឬ ?</translation>
+<translation id="8978860854770042258">សូមពិចារណាដាក់របាយការណ៍ប្រសិនបើគេហទំព័រនេះនៅតែខូច។</translation>
+<translation id="4677356505199464553">មើលទៅល្អ</translation>
+<translation id="1992750560347846445">រាយការណ៍គេហទំព័រ</translation>
+<translation id="2887186586339544116">បានបើករបៀបទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្មប៉ុណ្ណោះ</translation>
+<translation id="673665019618844072">អ្នកកំពុងប្រើរបៀបទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្មប៉ុណ្ណោះ។ របៀបនេះផ្តល់ការការពារបែកពាណិជ្ជកម្មតែប៉ុណ្ណោះ។ ប្រសិនបើអ្នកចង់ត្រឡប់ទៅរបៀបខែលការពារលំដាប់ពេញលេញ សូមបិទរបៀបនេះនៅក្នុងកំណត់រចនាសម្ព័ន្ធ។</translation>
+<translation id="4820891023903368625">បានទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">បានទប់ស្កាត់អ្នកតាមដាន ការផ្សាយពាណិជ្ជកម្ម និងការផ្សេងទៀត <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">មិនបានការពារដោយខែលការពារ Brave <ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ការគ្រប់គ្រងកម្រិតខ្ពស់</translation>
@@ -2455,7 +2519,6 @@
 <translation id="8034285923190068220">អនុញ្ញាតចំពោះការចាប់សម្គាល់ម្រាមដៃ</translation>
 <translation id="7638541189782135885">កុំ​ធ្វើឱ្យការភ្ជាប់ជា HTTP</translation>
 <translation id="2570787596946026998">ភ្ជាប់ជា HTTPS មិនអាចបោះចោល</translation>
-<translation id="1992750560347846445">រាយការណ៍គេហទំព័រ</translation>
 <translation id="2387532482048804818">ប្រាប់យើងប្រសិនបើគេហទំព័រមិនដំណើរការត្រឹមត្រូវជាមួយ Shields លើ។</translation>
 <translation id="3795015906457257780">អ្នកកំពុងមើលគេហទំព័រនេះដោយគ្មានការការពារឯកជនភាពរបស់ Brave។</translation>
 <translation id="7194012750329511146">ខែលការពារ Brave

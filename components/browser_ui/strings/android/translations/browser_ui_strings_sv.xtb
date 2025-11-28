@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Hjälp oss att förbättra Brave genom att berätta varför du har tillåtit cookies från tredje part. <ph name="BEGIN_LINK"/>Skicka feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kan begära att se webbplatsernas datorversion</translation>
 <translation id="9183227624343766158">Använd Brave som standard</translation>
+<translation id="113098737392899175">Navigera på sidor med en textmarkör när ett tangentbord är anslutet</translation>
 <translation id="1178015372320901893">Ark på nedre delen av skärmen för Mina genvägar</translation>
 <translation id="1178581264944972037">Paus</translation>
 <translation id="1181037720776840403">Ta bort</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="904887679952026733">Använd mörkt tema på webbplatser om Brave använder mörkt tema, när det är möjligt</translation>
 <translation id="2390272837142897736">Öka zoom</translation>
+<translation id="2397689164757137845">Tillåts • Exakt</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Exakt</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> och <ph name="NUM_MORE"/> till tillåts}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> och <ph name="NUM_MORE"/> till tillåts}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Hjälp och feedback</translation>
 <translation id="2501278716633472235">Föregående</translation>
 <translation id="2533138527374486328">När detta är aktiverat kan webbplatser begära tillstånd att ansluta till enheter i det lokala nätverket. När detta är inaktiverat får webbplatser inte ansluta till enheter i det lokala nätverket.</translation>
+<translation id="2536779053640817375">Tillåts den här gången • Exakt</translation>
 <translation id="2544997614631598250">Temafärg: mörk</translation>
 <translation id="2546283357679194313">Cookies och webbplatsdata</translation>
 <translation id="2570922361219980984">Platsåtkomst har inaktiverats på enheten också. Aktivera det i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="3123473560110926937">Blockeras på vissa webbplatser</translation>
 <translation id="3132996321662585180">Uppdatera dagligen</translation>
 <translation id="3143754809889689516">Spela upp från början</translation>
+<translation id="3164169438034704658">Du kan aktivera exakt plats i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Tillåt att en webbplats använder tredjepartscookies</translation>
 <translation id="3167868116600277716">Förslagsflödet</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> sparad data</translation>
@@ -308,6 +312,7 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="8601682686806697614">Brave begränsar cookies igen i dag</translation>
 <translation id="4338831206024587507">Alla webbplatser under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Tillåt inte att webbplatser skickar aviseringar</translation>
+<translation id="4341577178275615435">Aktivera eller inaktivera textmarkörläge med kortkommandot F7</translation>
 <translation id="4402755511846832236">Blockera webbplatser från att veta när du använder enheten aktivt</translation>
 <translation id="8382883799082236806">Ark på nedre delen av skärmen för Brave-färger har öppnats över halva skärmen</translation>
 <translation id="4412992751769744546">Tillåt cookies från tredje part</translation>
@@ -436,6 +441,7 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="5876056640971328065">Pausa video</translation>
 <translation id="5877248419911025165">Komprimera alla förfrågningar</translation>
 <translation id="5878945009165002849">Blockera inloggningsmeddelanden från identitetstjänster</translation>
+<translation id="588258955323874662">Helskärm</translation>
 <translation id="5884085660368669834">Webbplatsinställning</translation>
 <translation id="5887687176710214216">Besöktes senast i går</translation>
 <translation id="5908617755156109052">Tillåt inte att webbplatser skapar en 3D-karta över dina omgivningar eller registrera kamerans position</translation>
@@ -531,9 +537,11 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Vill du radera webbplatsdata? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Tillgänglighet</translation>
+<translation id="6991142177939282156">Tillåts • Använder ungefärlig</translation>
 <translation id="6992289844737586249">Fråga innan webbplatser tillåts att använda mikrofonen (rekommenderas)</translation>
 <translation id="7000754031042624318">Inaktiverad i Android-inställningarna</translation>
 <translation id="8683151724374457021">Den här webbplatsen avgör vad du gillar och föreslår sedan annonser till andra webbplatser. Webbplatsen hämtar dessutom dina annonsämnen från Brave för att visa mer relevanta annonser för dig.</translation>
+<translation id="7036823721811529709">Spela upp i bakgrunden</translation>
 <translation id="7044081119134178347">Kameran tillåts den här gången</translation>
 <translation id="7053983685419859001">Blockera</translation>
 <translation id="7055552182600664515">Webbplatser kan behöva använda en tjänst för innehållsskydd för att spela upp upphovsrättsskyddat innehåll <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="7406113532070524618">Den här inställningen fungerar utan att du identifieras eller att webbplatser tillåts se din webbhistorik, men webbplatser kan dela en del uppgifter som en del av verifieringen</translation>
 <translation id="7409735910987429903">Webbplatser kan öppna popup-fönster med annonser eller omdirigera dig till webbplatser som du kanske inte vill besöka</translation>
 <translation id="7412160840120117304">Hexadecimal primär färg</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zoom}other{Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER"/> %%}}</translation>
 <translation id="7423098979219808738">Fråga först</translation>
 <translation id="7423538860840206698">Läsbehörighet till Urklipp har nekats</translation>
 <translation id="7425915948813553151">Mörkt tema för webbplatser</translation>
@@ -639,6 +648,7 @@ Avancerat skydd styr följande Brave-inställningar:
 <translation id="8261506727792406068">Radera</translation>
 <translation id="8284326494547611709">Textning</translation>
 <translation id="8300705686683892304">Hanteras av app</translation>
+<translation id="8301363963630676147">Tillåts den här gången • Använder ungefärlig</translation>
 <translation id="8315509175050791576">Dela en flik</translation>
 <translation id="8324158725704657629">Fråga inte igen</translation>
 <translation id="8362795839483915693">Du kan zooma in eller ut på webbplatser</translation>

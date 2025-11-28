@@ -19,6 +19,7 @@
 <translation id="1035509598913574970">Cyan 3</translation>
 <translation id="1035709686865413354">Mga Filter at Purifier ng Tubig</translation>
 <translation id="1036348656032585052">I-off</translation>
+<translation id="1036436692654972538">Sine-save sa iyong device</translation>
 <translation id="1036881361735705143">Envelope C4</translation>
 <translation id="1038842779957582377">Hindi kilalang pangalan</translation>
 <translation id="1041998700806130099">Mensahe sa sheet ng trabaho</translation>
@@ -78,6 +79,7 @@
 <translation id="1132735979845538847"><ph name="ORIGIN"/> – Para lumabas sa full screen, mag-drag mula sa itaas at pindutin ang button na bumalik</translation>
 <translation id="1138458427267715730">Makatanggap ng mga alerto kapag bumaba ang presyo sa anumang site sa buong web</translation>
 <translation id="1142713751288681188">Uri ng papel</translation>
+<translation id="1142965388643537393">Impormasyon sa paglalakbay</translation>
 <translation id="1144136880160289237">Wala ka pang aktibong paksa</translation>
 <translation id="1149617035358809955">i-verify na ikaw ito para mapunan nito ang iyong impormasyon sa pagbabayad</translation>
 <translation id="1150565364351027703">Sunglasses</translation>
@@ -176,6 +178,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="1285320974508926690">Huwag isalin kailanman ang site na ito</translation>
 <translation id="1292571435393770077">Tray 16</translation>
 <translation id="1209478311331937175">"Pinipigilan ng software sa iyong computer na makakonekta nang ligtas ang Brave sa web" (mga Windows computer lang)</translation>
+<translation id="1293556467332435079">Mga File</translation>
 <translation id="1293797321964802402">Envelope 9 x 11 in</translation>
 <translation id="129553762522093515">Kamakailang isinara</translation>
 <translation id="1296930489679394997">Sales</translation>
@@ -209,7 +212,6 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
           <ph name="LIST_ITEM"/>Iyong employer o paaralan
           <ph name="LIST_ITEM"/>Internet service provider mo
         <ph name="END_LIST"/></translation>
-<translation id="1335042910556016570">Subaybayan ang item na ito</translation>
 <translation id="1337692097987160377">Ibahagi ang tab na ito</translation>
 <translation id="1339601241726513588">Domain ng pagpapatala:</translation>
 <translation id="1340482604681802745">Address sa pag-pick up</translation>
@@ -284,6 +286,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{Tingnan ang 0 na review}=1{Tingnan ang 1 review}one{Tingnan ang lahat ng # review}other{Tingnan ang lahat ng # na review}}</translation>
 <translation id="1458059624921545588">Mga Tao at Lipunan</translation>
 <translation id="1458140305240870199">Mga Panloob na Damit</translation>
+<translation id="1458770162980644530">Screen ng mga tuntunin ng serbisyo ng Buy-Now-Pay-Later. Naka-hide ang keyboard.</translation>
 <translation id="1459693405370120464">Lagay ng Panahon</translation>
 <translation id="1461041542809785877">Pagganap</translation>
 <translation id="1462245070427461050">JIS B9</translation>
@@ -318,7 +321,6 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="5524011986660000129">Brave Sheets</translation>
 <translation id="1524669537550112617">Mga Pinaparentahang May Kagamitan</translation>
 <translation id="1527263332363067270">Naghihintay ng koneksyon…</translation>
-<translation id="1528311629279578926">Na-block ang koneksyon dahil sinimulan ito ng isang pampublikong page para kumonekta sa mga device o server sa iyong pribadong network. I-reload ang page na ito para payagan ang koneksyon.</translation>
 <translation id="1529789484829130889">Tray 8</translation>
 <translation id="1530707389502320859">Mukhang peke ang site na sinubukan mong bisitahin. Kung minsan, ginagaya ng mga nang-aatake ang mga site sa pamamagitan ng paggawa ng mga pagbabago sa URL na maliit at mahirap makita.</translation>
 <translation id="1532118530259321453">Isinasaad ng page na ito na</translation>
@@ -478,7 +480,6 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="1762779605905950734">Pangalan ng kalye</translation>
 <translation id="1763864636252898013">Hindi mapatunayan ng server na ito na ito ay <ph name="DOMAIN"/>; hindi pinagkakatiwalaan ng operating system ng iyong device ang certificate ng seguridad nito. Maaaring dulot ito ng maling configuration o isang umaatake na hinahadlangan ang iyong koneksyon.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Subukang patakbuhin ang Windows Network Diagnostics<ph name="END_LINK"/>.</translation>
-<translation id="1771254328977666895">Tingnan ang History ng Presyo</translation>
 <translation id="1777422078676229054">Photo (Archival)</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1785118555253503473">Mag-install ng mga web app?</translation>
@@ -786,6 +787,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="22792995594807632">Kinakailangan ang pagsusuri bago i-download</translation>
 <translation id="2283340219607151381">I-save at punan ang mga address</translation>
 <translation id="2283447177162560884">Na-delete ang '<ph name="PAGE_TITLE"/>'</translation>
+<translation id="2283599456633275070">Paglalakbay</translation>
 <translation id="2286383991450886080">34 x 44 in</translation>
 <translation id="2288422996159078444">Binabantayan ang anumang bagay na tina-type mo, ang anumang page na iyong tinitingnan, o ang anupamang aktibidad mo sa web. Puwedeng mabago ang content sa mga site nang hindi mo alam.</translation>
 <translation id="2289385804009217824">Paikliin</translation>
@@ -810,6 +812,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="2320564945062300737">Mga Produkto para sa Pangangalaga sa Mukha</translation>
 <translation id="2321291402658100099">Pamahalaan ang impormasyon</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{1 window}one{# window}other{# na window}}</translation>
+<translation id="4848600035394410348">Puwede ka na ngayong mag-autofill ng mas maraming impormasyon mula sa Brave Wallet</translation>
 <translation id="2328651992442742497">Pinapayagan (default)</translation>
 <translation id="2328955282645810595">Konstruksyon at Mga Power Tool</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, mag-e-expire sa <ph name="EXPIRATION_DATE_ABBR"/></translation>
@@ -820,6 +823,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="2346319942568447007">Larawang kinopya mo</translation>
 <translation id="2347764072711098973">Gumamit ng Affirm, Zip, o Klarna para magbayad sa paglipas ng panahon</translation>
 <translation id="2348509731468399833">Ihininto ang pagsubaybay sa presyo.</translation>
+<translation id="2348836501965732644">Pamahalaan ang iyong impormasyon o i-off ang mga suhestyong ito sa Mga Setting</translation>
 <translation id="2350796302381711542">Papayagan ang <ph name="HANDLER_HOSTNAME"/> na buksan ang lahat ng <ph name="PROTOCOL"/> (na) link sa halip na ang <ph name="REPLACED_HANDLER_TITLE"/>?</translation>
 <translation id="2353297238722298836">Pinapayagan ang camera at mikropono</translation>
 <translation id="2354001756790975382">Iba pang mga bookmark</translation>
@@ -828,6 +832,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="2357481397660644965">Pinapamahalaan ng <ph name="DEVICE_MANAGER"/> ang iyong device at pinapamahalaan ng <ph name="ACCOUNT_MANAGER"/> ang account mo.</translation>
 <translation id="2359629602545592467">Marami</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
+<translation id="236000571258713023">Mga sasakyan</translation>
 <translation id="2361263712565360498">275 x 395 mm</translation>
 <translation id="236340516568226369">Menu ng toggle sa pag-resize</translation>
 <translation id="2365355378251437925">Ilagay ang <ph name="FIELD"/></translation>
@@ -872,6 +877,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="2436976580469434549">Fiber at Textile Arts</translation>
 <translation id="4819123264415400027">Hindi ma-save ang card na ito sa iyong Brave sync chain. Na-save lang ito sa Brave sa device na ito.</translation>
 <translation id="2438874542388153331">Quad punch right</translation>
+<translation id="2440855519769445271">Para i-hide ang mga opsyon sa pay later, pumunta sa <ph name="BEGIN_LINK"/>mga setting ng pagbabayad<ph name="END_LINK"/></translation>
 <translation id="2441854154602066476">Mga paraan ng pagbabayad na available na mapunan kapag pinindot. Naka-hide ang keyboard.</translation>
 <translation id="2448295565072560657">Mga peripheral na naka-attach sa device na ito habang naka-log in ka</translation>
 <translation id="7174054574169352743">Mga paraan ng pagbabayad at iba pang impormasyon mula sa Brave Wallet</translation>
@@ -965,6 +971,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="2595719060046994702">Ang device at account na ito ay hindi pinapamahalaan ng kumpanya o iba pang organisasyon.</translation>
 <translation id="2597378329261239068">Protektado ng password ang dokumentong ito.  Mangyaring magpasok ng password.</translation>
 <translation id="8100082401435090746">I-autofill ang card na ito para sa mga pagbiling ginawa sa Brave kapag na-save ito para magamit sa Google Pay</translation>
+<translation id="2602283642570832995">Posibleng lumabag ang aksyong ito sa mga patakaran ng <ph name="DOMAIN"/></translation>
 <translation id="2605979593348332811">Phonetic na pangalan</translation>
 <translation id="2606760465469169465">Awtomatikong pag-verify</translation>
 <translation id="2608019759319359258">Kapag naka-block ang isang paksa, hindi ito magagamit para mag-personalize ng mga ad</translation>
@@ -1212,6 +1219,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="8418829431154568330">History ng Remote na Desktop ng Brave, kabilang ang mga timestamp, host, at client session id</translation>
 <translation id="2396578282884469363">Kadalasang secure kang nakakakonekta sa mga site, pero hindi makagamit ng secure na koneksyon ang Brave sa ngayon. Posibleng may attacker na sumusubok na alamin o baguhin ang iyong koneksyon ng network. <ph name="BEGIN_LEARN_MORE_LINK"/>Matuto pa tungkol sa babalang ito<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> pagbaba ng presyo ng <ph name="PRODUCT_NAME"/></translation>
+<translation id="3056660797732519147">Screen ng error ng Buy-Now-Pay-Later. Naka-hide ang keyboard.</translation>
 <translation id="3061707000357573562">Serbisyo sa Pag-patch</translation>
 <translation id="3062655045399308513">I-delete ang Data mula sa Pag-browse...</translation>
 <translation id="3063453392496098461">Hindi na-install ang mga serbisyo sa background ng VPN.</translation>
@@ -1380,7 +1388,6 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="3325662270238538525">Kamakailang pag-access at mga pagbabago sa file, kabilang ang mga pangalan ng file, mga digital na fingerprint ng content ng file, source ng download, at metadata</translation>
 <translation id="3329013043687509092">Saturation</translation>
 <translation id="3333762389743153920">Hindi kwalipikado para sa virtual card</translation>
-<translation id="3336044043987989409">Pindutin ang button sa pag-reload para payagan ang koneksyon sa mga device o server sa iyong pribadong network.</translation>
 <translation id="3338095232262050444">Secure</translation>
 <translation id="333839153442689579">High Intensity Interval Training</translation>
 <translation id="3339446062576134663">Cloud (Ash)</translation>
@@ -1424,6 +1431,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="340924996148642843">Hindi available ang maghambing sa ngayon</translation>
 <translation id="3409896703495473338">Pamahalaan ang mga setting ng seguridad</translation>
 <translation id="3411091017011773343">I-upload sa loob ng <ph name="HOURS"/> (na) oras</translation>
+<translation id="341134412449102894">Naka-save ang iyong impormasyon sa <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> para sa <ph name="ACCOUNT"/></translation>
 <translation id="3413466783792948876">Pinakaligtas na bisitahin ang site na ito sa ibang pagkakataon kung gumagamit ka ng pampublikong network. Mas mababa ang panganib mula sa isang pinagkakatiwalaang network, gaya ng iyong Wi-Fi sa bahay o trabaho.</translation>
 <translation id="3414275587143250384">Distributed Computing at Cloud Computing</translation>
 <translation id="3414952576877147120">Laki:</translation>
@@ -1800,6 +1808,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4014895360827978999">Mga Serbisyo ng Merchant at System ng Pagbabayad</translation>
 <translation id="4018819349042761761">Pampublikong Key</translation>
 <translation id="4023431997072828269">Dahil isinusumite ang form na ito gamit ang isang koneksyong hindi secure, makikita ng iba ang iyong impormasyon.</translation>
+<translation id="4024673763872230929">I-save ang iyong impormasyon at mas mabilis na mapunan ang mga form. Sine-save sa iyong device.</translation>
 <translation id="4025325634010721551">Na-reload na ang mga patakaran</translation>
 <translation id="4025338605225449265">Mga Currency at Foreign Exchange</translation>
 <translation id="4025777154208238692">Baligtarin ang pagkakasunod-sunod</translation>
@@ -1940,6 +1949,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4242981939686657948">Para sa mas mahusay na paraan para maghanap sa iyong history ng pag-browse, i-on ang</translation>
 <translation id="4244926541863471678">Film</translation>
 <translation id="4246517972543675653">Mag-aral sa Ibang Bansa</translation>
+<translation id="4250343410682686342">Binuksan nang buo ang screen ng error ng Buy-Now-Pay-Later.</translation>
 <translation id="4250431568374086873">Hindi ganap na ligtas ang iyong koneksyon sa site na ito</translation>
 <translation id="4250680216510889253">Hindi</translation>
 <translation id="4250716950689692560">A4x4</translation>
@@ -1966,6 +1976,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4281998142035485137">{0,plural, =1{Buksan ang kumpidensyal na file?}one{Buksan ang mga kumpidensyal na file?}other{Buksan ang mga kumpidensyal na file?}}</translation>
 <translation id="4282280603030594840">Pamimili ng Sasakyan</translation>
 <translation id="4282346679996504092">Na-off ang mga alerto para sa produktong ito at inalis ang bookmark</translation>
+<translation id="4284885181066817063">Na-block ng <ph name="DOMAIN"/></translation>
 <translation id="4285498937028063278">I-unpin</translation>
 <translation id="2820825061680010514">Pinahusay na privacy sa mga ad sa Brave</translation>
 <translation id="4288101205645068104">I-delete ang sasakyan</translation>
@@ -2136,6 +2147,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4598556348158889687">Pamamahala sa storage</translation>
 <translation id="459914240367517409">Pagdidisenyo at Paggawa ng Website</translation>
 <translation id="4602465984861132303">Bowling</translation>
+<translation id="4603727370377253901">Mga reservation ng flight</translation>
 <translation id="8338928872956435647">Tingnan ang mga tip sa Brave</translation>
 <translation id="460848736049414407">Na-block ng Admin</translation>
 <translation id="4610279718074907952">Ang site na ito ay nasa isang grupo, na tinukoy ng <ph name="SET_OWNER"/>, na makakakita ng iyong aktibidad</translation>
@@ -2144,6 +2156,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4619564267100705184">I-verify na ikaw ito</translation>
 <translation id="4622292761762557753">Ilipat pa rin</translation>
 <translation id="4622647778991854660">Mag-enable ng mga notification sa Notification Center. Buksan ang <ph name="LINK"/>.</translation>
+<translation id="4623894491222334521">Mga doc ng pagkakakilanlan</translation>
 <translation id="6398431831028858802">Hindi maitatakda ang patakarang ito sa antas ng profile ng Brave at babalewalain ito.</translation>
 <translation id="4628678854894591460">Mga Alok sa Bakasyon</translation>
 <translation id="4628948037717959914">Larawan</translation>
@@ -2161,6 +2174,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4648262692072505866">SHA-256 dapat ang format ng hash.</translation>
 <translation id="4652266463001779298">Hindi pinapayagan</translation>
 <translation id="4652440160515225514">Na-block ng iyong organisasyon ang site na ito dahil lumalabag ito sa isang patakaran.</translation>
+<translation id="4654457557264366314">Napapailalim sa pagiging kwalipikado ang mga plan sa pagbabayad.</translation>
 <translation id="4658638640878098064">Staple top left</translation>
 <translation id="4660592918803576381">Buksan sa Drive</translation>
 <translation id="4661556981531699496">Mga Alaga at Hayop</translation>
@@ -2206,6 +2220,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4732860731866514038">Dina-download ang <ph name="LANGUAGE"/> language pack... <ph name="PERCENT"/>%</translation>
 <translation id="4733082559415072992">Gustong gamitin ng <ph name="URL"/> ang lokasyon ng iyong device</translation>
 <translation id="473414950835101501">Gamitin ang iyong mga camera</translation>
+<translation id="4734343956394152985"><ph name="BEGIN_BOLD"/>Kasalukuyang default<ph name="END_BOLD"/> · <ph name="MARKETING_SNIPPET"/></translation>
 <translation id="4736934858538408121">Virtual na card</translation>
 <translation id="473775607612524610">I-update</translation>
 <translation id="4738601419177586157">Suhestyon sa paghahanap para sa <ph name="TEXT"/></translation>
@@ -2228,6 +2243,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4758311279753947758">Magdagdag ng impormasyon sa pakikipag-ugnayan</translation>
 <translation id="4761326898079498987">Suriin para sa higit pang detalye</translation>
 <translation id="1980929286541331105">Magpatakbo ng Pag-check sa Kaligtasan sa Brave</translation>
+<translation id="4762097990764616058">Magpatuloy sa pagbabayad gamit ang <ph name="BNPL_ISSUER_NAME"/>?</translation>
 <translation id="4763196677855776703">Inihatid ang mga tuntunin at kundisyon ng <ph name="URL"/></translation>
 <translation id="4764680219299728632">Mga Range, Cooktop, at Oven</translation>
 <translation id="4764776831041365478">Ang webpage sa <ph name="URL"/> ay maaaring pansamantalang hindi gumagana o maaaring permanente itong inilipat sa isang bagong web address.</translation>
@@ -2265,6 +2281,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="4822493756793346865">Nakabatay ang mga karaniwang presyo sa mga store sa buong web sa nakalipas na 90 araw.</translation>
 <translation id="4822922322149719535">Suriin ang log ng error</translation>
 <translation id="4823699521959851389">Kailangan ng <ph name="SHORT_PRODUCT_NAME"/> ng access sa <ph name="PERMISSION"/> ng iyong device</translation>
+<translation id="4825311006392962663">Ipakita ang mga opsyon sa pay later sa pag-checkout</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pindutin ang Tab at pagkatapos ay ang Enter para gumawa ng bagong Brave Sheet nang mabilis</translation>
 <translation id="4826588772550366629">camera at mikropono</translation>
 <translation id="4827283332383516812">I-delete ang card</translation>
@@ -2449,6 +2466,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="5122786942953798871">Envelope (Cotton)</translation>
 <translation id="5123063207673082822">Weekend</translation>
 <translation id="5123433949759960244">Basketball</translation>
+<translation id="5124797626438336458">Binuksan nang kalahati ang screen ng error ng Buy-Now-Pay-Later.</translation>
 <translation id="5125575917473813637">I-edit ang identity card</translation>
 <translation id="5125751979347152379">Di-wastong URL.</translation>
 <translation id="512592033764059484">Soccer</translation>
@@ -2751,6 +2769,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="5617949217645503996">Masyadong maraming beses kang na-redirect ng <ph name="HOST_NAME"/>.</translation>
 <translation id="5619721953841297650">Preset</translation>
 <translation id="5624120631404540903">Pamahalaan ang mga password</translation>
+<translation id="5109810772708173100">I-save ang iyong impormasyon para mas mabilis na tapusin ang mga bagay, sa lahat ng produkto ng Brave. Naka-save ang iyong impormasyon sa <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> para sa <ph name="ACCOUNT"/>.</translation>
 <translation id="5629630648637658800">Nabigong i-load ang mga setting ng patakaran</translation>
 <translation id="3863024219771184526">Button na Magtanong sa Brave tungkol sa page na ito, i-activate para magtanong sa Brave tungkol sa page na ito</translation>
 <translation id="5631439013527180824">Di-wastong token sa pamamahala ng device</translation>
@@ -2850,9 +2869,9 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="5813119285467412249">&amp;Gawing Muli ang Pagdagdag</translation>
 <translation id="5813753398265398978">Physics</translation>
 <translation id="5817918615728894473">Ipares</translation>
-<translation id="5820625124144807242">Kapag nasuri mo na ang iyong order, dapat kang mag-sign in o gumawa ng account sa <ph name="BNPL_ISSUER_NAME"/>. Awtomatikong ili-link ang account na ito sa Google Pay.</translation>
 <translation id="5826507051599432481">Common Name (CN)</translation>
 <translation id="5830698870816298009">paggamit at paggalaw ng camera</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="583281660410589416">Hindi-alam</translation>
 <translation id="5832976493438355584">Naka-lock</translation>
 <translation id="5837220895135257862">Magbakante ng space sa <ph name="CLOUD_PROVIDER"/> bago subukan ulit</translation>
@@ -3240,6 +3259,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6433501201775827830">Pumili ng iyong search engine</translation>
 <translation id="6433595998831338502">Tumangging kumonekta ang <ph name="HOST_NAME"/>.</translation>
 <translation id="6433797564277305076">Kumpirmahin nang mas mabilis ang iyong mga card sa pamamagitan ng paggamit sa pag-unlock ng device mula ngayon</translation>
+<translation id="6436994298828707228">Na-block ang koneksyon dahil sinimulan ito ng isang pampublikong page para kumonekta sa mga device o server sa iyong lokal na network.</translation>
 <translation id="4314443819377484539">Brave Drawings</translation>
 <translation id="643917412048333145">Mga Bestida</translation>
 <translation id="6440503408713884761">Binalewala</translation>
@@ -3299,6 +3319,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6521745193039995384">Hindi aktibo</translation>
 <translation id="6522682797352430154">Classical Music</translation>
 <translation id="7379829935006425840">Button na Pamahalaan ang mga setting ng accessibility, i-activate para ma-personalize ang iyong mga tool sa accessibility sa mga setting ng Brave</translation>
+<translation id="6525222262307262764">Panatilihin ang kasalukuyang default</translation>
 <translation id="6527049834925947126">Paggawa ng Pagkain</translation>
 <translation id="6529173248185917884">Ikapitong Rolyo</translation>
 <translation id="6529602333819889595">&amp;Gawing Muli ang Pagtanggal</translation>
@@ -3311,6 +3332,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6547208576736763147">Dual punch left</translation>
 <translation id="6549443526281184652">Mga costume</translation>
 <translation id="6550245281449521513">Hindi pinapayagan ang pag-lock ng mouse</translation>
+<translation id="6552566579578780089">Mga Pagbabayad</translation>
 <translation id="6554732001434021288">Huling binisita <ph name="NUM_DAYS"/> (na) araw ang nakalipas</translation>
 <translation id="6556866813142980365">Redo</translation>
 <translation id="6557715786897013164">14 x 17 in</translation>
@@ -3318,6 +3340,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6567832540451970450">Pinapayagan ng iyong administrator ang <ph name="PERMISSION"/> para sa site na ito</translation>
 <translation id="3720758671413152948">Button na Pamahalaan ang mga paraan ng pagbabayad, i-activate para mapamahalaan ang iyong mga pagbabayad at impormasyon ng credit card mo sa mga setting ng Brave</translation>
 <translation id="6569060085658103619">Isang page ng extension ang tinitingnan mo</translation>
+<translation id="6571992525120410251">Magtanong sa <ph name="ENGINE_NAME"/> ng kahit ano</translation>
 <translation id="6572867903637058088">Nakatulong ba ito?</translation>
 <translation id="6573200754375280815">Dual punch right</translation>
 <translation id="6575408526598156416">I-save sa account</translation>
@@ -3357,6 +3380,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6649510485211003056">195 x 270 mm</translation>
 <translation id="6651270836885078973">Pinapamahalaan ng:</translation>
 <translation id="6652101503459149953">Gamitin ang Windows Hello</translation>
+<translation id="6653684225271066234">Titingnan ng <ph name="BNPL_ISSUER_NAME"/> ang pagiging kwalipikado mo (hindi ito makakaapekto sa iyong credit score). Kung matutugunan mo ang mga pamantayan sa pagiging kwalipikado, ibibigay ng <ph name="BNPL_ISSUER_NAME"/> ang iyong (mga) potensyal na plan sa pagbabayad para makumpleto ang pagbili mo.</translation>
 <translation id="6654224358955673568">Gawing pormal</translation>
 <translation id="6654244995031366386">Glass (May Texture)</translation>
 <translation id="6657585470893396449">Password</translation>
@@ -3366,6 +3390,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="666259744093848177">(na-translate sa x86_64)</translation>
 <translation id="6665553082534466207">Triple punch right</translation>
 <translation id="6668389483194953109">May nakitang pangalan ng laki ng papel na "custom," pero walang laman o invalid ang property na "custom_size."</translation>
+<translation id="6670729408462528018">Gallery</translation>
 <translation id="6671169470640320959">Financing para sa Kotse</translation>
 <translation id="6675846980676550611">Hindi pinapayagan ang AR</translation>
 <translation id="6677351035258626477">Fast Food</translation>
@@ -3405,7 +3430,6 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6716039223770814796">Paghambingin ang <ph name="COMPARE_SET_NAME"/> · <ph name="ITEMS"/> (na) item</translation>
 <translation id="6716672519412350405">Gusto ng <ph name="URL"/> na gumawa ng 3D na mapa ng iyong kapaligiran at subaybayan ang posisyon ng camera</translation>
 <translation id="6717692133381953670">Ipinadala ang tab mula sa <ph name="DEVICE_NAME"/></translation>
-<translation id="6718524733720986924">I-save ang impormasyon mo para mapunan ng autofill ang higit pang field para sa iyo sa susunod</translation>
 <translation id="6718612893943028815">Gamitin ang camera?</translation>
 <translation id="6721164594124191969">Mga Label (Glossy)</translation>
 <translation id="6726832600570791992">(32-bit emulated)</translation>
@@ -3457,6 +3481,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6817217109584391709">javascript</translation>
 <translation id="6820143000046097424">mga serial port</translation>
 <translation id="6820686453637990663">CVC</translation>
+<translation id="6820949753458790123">Magbayad sa pamamagitan ng madadaling installment</translation>
 <translation id="6825578344716086703">Tinangka mong abutin ang <ph name="DOMAIN"/>, ngunit nagpakita ang server ng certificate na nilagdaan gamit ang isang mahinang signature algorithm (tulad ng SHA-1). Nangangahulugan ito na maaaring pineke ang mga panseguridad na kredensyal na ipinakita ng server, at ang server ay maaaring hindi ang server na inaasahan mo (maaaring nakikipag-ugnayan ka sa isang attacker).</translation>
 <translation id="6826993739343257035">Payagan ang AR?</translation>
 <translation id="6828150717884939426">Tawagan</translation>
@@ -3517,6 +3542,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6925267999184670015">North American B+</translation>
 <translation id="6926216138694948720">Body Art</translation>
 <translation id="692638818576287323">Mga Sasakyang Pang-negosyo</translation>
+<translation id="6180127155218089557">Kapag nasuri mo na ang iyong order, dapat kang mag-sign in o gumawa ng account sa <ph name="BNPL_ISSUER_NAME"/>. Awtomatikong ili-link ang account na ito sa iyong Brave account.</translation>
 <translation id="6930607614725241390">Maghanap sa panel sa gilid</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>Magbibigay-daan ang iyong default na search engine para makapaghanap ka sa web at pagaganahin nito ang mga feature ng Brave<ph name="END_BOLD"/> gaya ng paghahanap mula sa address bar at mula sa mga larawan sa mga web page. Posibleng hindi maging available ang isang feature kung hindi ito sinusuportahan ng iyong search engine.</translation>
 <translation id="6722453239914327220">Nagmula ang pangalang ito sa iyong Brave sync chain</translation>
@@ -3568,6 +3594,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="6997288673234694149">Kagamitan sa Baseball at Softball</translation>
 <translation id="6998512609912910179">Punan ang mga form nang mas mabilis</translation>
 <translation id="6999480632062519056">Pagtuturo ng Fitness at Personal na Pagsasanay</translation>
+<translation id="7002897669829306463">Address ng tahanan, <ph name="ADDRESS"/></translation>
 <translation id="7003278537452757231">Mga Basahan at Karpet</translation>
 <translation id="7003322000677139268">Mga Piyesa at Accessory ng Sasakyan</translation>
 <translation id="7004499039102548441">Mga Kamakailang Tab</translation>
@@ -3584,6 +3611,7 @@ Kung ayaw mo, iba-block ito ng iyong mga setting ng privacy. Papayagan nito ang 
 <translation id="7020464868401003526">Lumampas ang URL ng shortcut sa maximum na pinapayagang haba na <ph name="MAX_LENGTH"/> (na) character.</translation>
 <translation id="8683151724374457021">Tinutukoy ng site na ito ang mga bagay na gusto mo at pagkatapos ay nagmumungkahi ito ng mga ad sa iba pang site. Kinukuha rin ng site na ito ang mga paksa ng ad mo mula sa Brave para magpakita sa iyo ng higit pang kaugnay na ad.</translation>
 <translation id="7023162328967545559">Babala ng admin</translation>
+<translation id="7023765275461720661">I-link ang account at magbayad gamit ang <ph name="BNPL_ISSUER_NAME"/>?</translation>
 <translation id="7029809446516969842">Mga Password</translation>
 <translation id="7030164307377592766">baguhin ang mga setting para sa paglalagay ng mga paraan ng pagbabayad</translation>
 <translation id="7031110846419387930">Impormasyon tungkol sa iyong browser, OS, device, naka-install na software, mga file, at mga IP address</translation>
@@ -3861,7 +3889,6 @@ Mga karagdagang detalye:
 <translation id="7485085230273446323">Negosyo at Industriya</translation>
 <translation id="7485870689360869515">Walang nahanap na data.</translation>
 <translation id="7486880426035242089">OneDrive</translation>
-<translation id="7489255442002627311">Titingnan ng <ph name="BNPL_ISSUER_NAME"/> ang pagiging kwalipikado mo (hindi ito makakaapekto sa iyong credit score). Kung maaaprubahan, magbibigay ang <ph name="BNPL_ISSUER_NAME"/> ng mga plan sa pagbabayad na mapagpipilian mo at para makumpleto ang iyong pagbili.</translation>
 <translation id="7489392576326061356">Mga Shampoo at Conditioner</translation>
 <translation id="7489919936111034362">Puno na ang storage ng Google Drive mo</translation>
 <translation id="7495528107193238112">Naka-block ang content na ito. Makipag-ugnayan sa may-ari ng site para maayos ang isyu.</translation>
@@ -3897,6 +3924,7 @@ Mga karagdagang detalye:
 <translation id="796823723482603597">Pinapagana ng Brave</translation>
 <translation id="1015559447832000638">Alisin ang address ng tahanan sa autofill sa Brave?</translation>
 <translation id="7537536606612762813">Kinakailangan</translation>
+<translation id="7541043894191476250">Mga gawaing batay sa konteksto</translation>
 <translation id="7543525346216957623">I-request sa magulang mo</translation>
 <translation id="7546409722674205727">Magsisimula <ph name="APP_NAME"/></translation>
 <translation id="7548892272833184391">Ayusin ang mga error sa koneksyon</translation>
@@ -4095,6 +4123,7 @@ Mga karagdagang detalye:
 <translation id="7860345425589240791">Ilagay ang iyong bagong petsa ng pag-expire at CVC sa <ph name="SIDE_OF_CARD"/></translation>
 <translation id="7862185352068345852">Umalis sa site?</translation>
 <translation id="7865448901209910068">Pinakamabilis</translation>
+<translation id="7865482168955081228">Isinara ang screen ng error ng Buy-Now-Pay-Later.</translation>
 <translation id="7870281855125116701">May Nakitang Diskwento</translation>
 <translation id="7971990257511863579">Palitan ang password ng iyong Brave sync chain</translation>
 <translation id="5478215009057706238">Mag-sign in sa Brave para mag-share ng at sumali sa mga grupo ng tab, at makipagtulungan sa mga ideya</translation>
@@ -4122,6 +4151,8 @@ Mga karagdagang detalye:
 <translation id="7916162853251942238">Flexo Base</translation>
 <translation id="791698251820376781">Hindi ka pinapayagan ng iyong organisasyon na mag-sign in</translation>
 <translation id="7926503317156566022">Industriya ng Aviation</translation>
+<translation id="7930282586031445870">Nakasara ang screen ng mga tuntunin ng serbisyo ng Buy-Now-Pay-Later.</translation>
+<translation id="7932035970207573919">Address ng trabaho, <ph name="ADDRESS"/></translation>
 <translation id="793209273132572360">I-update ang address?</translation>
 <translation id="7932579305932748336">Coat</translation>
 <translation id="79338296614623784">Maglagay ng wastong numero ng telepono</translation>
@@ -4416,6 +4447,7 @@ Mga karagdagang detalye:
 <translation id="8406071103346257942">ihinto ang paggamit sa iyong lock ng screen para sa paglalagay ng mga password</translation>
 <translation id="8407031780528483338">Mga Gamit sa Pagluluto</translation>
 <translation id="8409413588194360210">mga tagapangasiwa ng pagbabayad</translation>
+<translation id="8410956920192583322">Buwanan o 4 na installment</translation>
 <translation id="8412145213513410671">Mga Pag-crash (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Dapat mong ilagay ang parehong passphrase nang dalawang beses.</translation>
 <translation id="8414322570408428950">Nagkaroon ng event sa extension</translation>
@@ -4530,6 +4562,7 @@ Mga karagdagang detalye:
 <translation id="5748651208190537252"><ph name="BEGIN_BOLD"/>Anong data ang ginagamit:<ph name="END_BOLD"/> Iyong aktibidad sa site na binisita mo gamit ang Brave sa device na ito.</translation>
 <translation id="8601456038554914806">Kagamitan sa Water Sports</translation>
 <translation id="8601782593888534566">Science Fiction at Fantasy</translation>
+<translation id="8604103095921958091">Nakabukas ang screen ng mga tuntunin ng serbisyo ng Buy-Now-Pay-Later nang sakop ang buong screen.</translation>
 <translation id="5017966143250326204">Tinutulungan ng mga paksa ng ad ang mga site na magpakita sa iyo ng mga may kaugnayang ad habang pinoprotektahan ang pagkakakilanlan at history ng pag-browse mo. Posibleng magtala ang Brave ng mga paksa kung saan ka interesado batay sa kamakailan mong history ng pag-browse. Sa ibang pagkakataon, puwedeng humiling sa Brave ang site na binibisita mo ng mga nauugnay na paksa para ma-personalize ang mga ad na nakikita mo.</translation>
 <translation id="8612919051706159390">Mga Online na Komunidad</translation>
 <translation id="8617269623452051934">iyong paggamit ng device</translation>
@@ -4701,6 +4734,7 @@ Mga karagdagang detalye:
 <translation id="8922734931659847428">Limitadong listahan ng mga URL ng mga page na binisita mo kung saan may <ph name="BEGIN_LINK"/>mga event ng legacy na teknolohiya<ph name="END_LINK"/></translation>
 <translation id="892588693504540538">Punch top right</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
+<translation id="8926400492587758246">Magbayad sa pamamagitan ng mabababang buwanang installment</translation>
 <translation id="8932102934695377596">Nahuhuli ang iyong orasan</translation>
 <translation id="893332455753468063">Magdagdag ng Pangalan</translation>
 <translation id="8938242527120341116">Na-block ng mga filter ng content ng iyong device ang <ph name="BLOCKED_URL"/></translation>
@@ -4765,6 +4799,7 @@ Mga karagdagang detalye:
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9046578823518542618">Gusto ng <ph name="URL"/> na maghanap ng at kumonekta sa anumang device sa iyong lokal na network</translation>
 <translation id="9046864189129893978">Mga Mikropono (<ph name="MICS_COUNT"/>)</translation>
+<translation id="9046865906192819796">Nakabukas ang screen ng mga tuntunin ng serbisyo ng Buy-Now-Pay-Later nang sakop ang kalahati ng screen.</translation>
 <translation id="9047528041803621289">Nagbibigay-daan sa iyo ang default mo na makapaghanap sa web. Mababago mo ito sa mga setting.</translation>
 <translation id="9048035366624198823">Nire-require sa mga pagkilos na ito na nakatakda ang patakarang <ph name="POLICY_NAME"/> sa <ph name="POLICY_VALUE"/>: <ph name="ACTION_LIST"/>.</translation>
 <translation id="9048662076076074925">24 x 36 in</translation>
