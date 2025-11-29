@@ -28,6 +28,7 @@
 #include "base/types/optional_ref.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/browser/service/network_client.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -62,6 +63,9 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/apple/url_conversions.h"
+#include "net/base/net_errors.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -107,6 +111,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
+  std::unique_ptr<brave_ads::NetworkClient> networkClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -155,6 +160,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     virtualPrefProvider = std::make_unique<brave_ads::VirtualPrefProvider>(
         self.profilePrefService, self.localStatePrefService,
         std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
+
+    networkClient = std::make_unique<brave_ads::NetworkClient>(
+        profile->GetSharedURLLoaderFactory(),
+        base::BindRepeating(
+            [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
+            profile));
   }
   return self;
 }
@@ -167,6 +178,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   [self stopNetworkMonitor];
 
   virtualPrefProvider.reset();
+
+  networkClient.reset();
 
   [self deallocAdsClientNotifier];
 
@@ -1311,46 +1324,23 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback {
-  std::map<brave_ads::mojom::UrlRequestMethodType, std::string> methodMap{
-      {brave_ads::mojom::UrlRequestMethodType::kGet, "GET"},
-      {brave_ads::mojom::UrlRequestMethodType::kPost, "POST"},
-      {brave_ads::mojom::UrlRequestMethodType::kPut, "PUT"}};
+  CHECK(url_request);
+  CHECK(networkClient);
 
-  const auto copiedURL = url_request->url;
+  networkClient->SendRequest(
+      std::move(url_request),
+      base::BindOnce(
+          [](brave_ads::UrlRequestCallback callback,
+             brave_ads::mojom::UrlResponseInfoPtr mojom_url_response) {
+            if (!mojom_url_response) {
+              brave_ads::mojom::UrlResponseInfo failed_mojom_url_response;
+              failed_mojom_url_response.code = net::ERR_FAILED;
+              return std::move(callback).Run(failed_mojom_url_response);
+            }
 
-  auto cb = std::make_shared<decltype(callback)>(std::move(callback));
-  const auto __weak weakSelf = self;
-  return [self.commonOps
-      loadURLRequest:url_request->url.spec()
-             headers:url_request->headers
-             content:url_request->content
-        content_type:url_request->content_type
-              method:methodMap[url_request->method]
-            callback:^(
-                const std::string& errorDescription, int statusCode,
-                NSData* responseData,
-                const base::flat_map<std::string, std::string>& headers) {
-              const auto strongSelf = weakSelf;
-              if (!strongSelf || ![strongSelf isServiceRunning]) {
-                return;
-              }
-
-              std::string response;
-              if (responseData && responseData.length > 0) {
-                response =
-                    std::string(static_cast<const char*>(responseData.bytes),
-                                responseData.length);
-              }
-
-              brave_ads::mojom::UrlResponseInfo mojom_url_response;
-              mojom_url_response.url = copiedURL;
-              mojom_url_response.code = statusCode;
-              mojom_url_response.body = response;
-              mojom_url_response.headers = headers;
-              if (cb) {
-                std::move(*cb).Run(mojom_url_response);
-              }
-            }];
+            std::move(callback).Run(*mojom_url_response);
+          },
+          std::move(callback)));
 }
 
 - (void)save:(const std::string&)name
