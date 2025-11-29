@@ -46,7 +46,7 @@ base::FilePath GetVpnHelperServiceProfileDir() {
 
 bool IsBraveVPNHelperServiceInstalled() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
             << brave_vpn::GetBraveVpnHelperServiceName()
             << ", error: " << std::hex << HRESULTFromLastError();
@@ -58,7 +58,7 @@ bool IsBraveVPNHelperServiceInstalled() {
 
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
-  return service.IsValid();
+  return service.is_valid();
 }
 
 bool IsNetworkFiltersInstalled() {
