@@ -31,7 +31,7 @@ bool IsWindowsServiceRunning(const std::wstring& service_name) {
 
 std::optional<DWORD> GetWindowsServiceStatus(const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return std::nullopt;
@@ -41,7 +41,7 @@ std::optional<DWORD> GetWindowsServiceStatus(const std::wstring& service_name) {
 
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
-  if (!service.IsValid()) {
+  if (!service.is_valid()) {
     return std::nullopt;
   }
   SERVICE_STATUS service_status = {0};
