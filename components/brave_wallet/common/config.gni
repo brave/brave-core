@@ -7,8 +7,6 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 declare_args() {
-  brave_infura_project_id = ""
-
   # Flag is used to allow future size difference calculation
   # iOS temporary disabled due build errors
   enable_orchard = !is_ios

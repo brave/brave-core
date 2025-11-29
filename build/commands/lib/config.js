@@ -269,7 +269,6 @@ const Config = function () {
     'brave_android_developer_options_code',
     'brave_google_api_endpoint',
     'brave_google_api_key',
-    'brave_infura_project_id',
     'brave_safebrowsing_api_key',
     'brave_services_dev_domain',
     'brave_services_key_id',
