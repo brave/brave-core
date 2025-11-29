@@ -61,13 +61,13 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
                                StateChangedCallback callback) {
   scm_.Set(::OpenSCManager(
       nullptr, nullptr, SERVICE_QUERY_STATUS | SC_MANAGER_ENUMERATE_SERVICE));
-  if (!scm_.IsValid()) {
+  if (!scm_.is_valid()) {
     return false;
   }
   service_.Set(
       ::OpenService(scm_.Get(), service_name.c_str(), SERVICE_QUERY_STATUS));
 
-  if (!service_.IsValid()) {
+  if (!service_.is_valid()) {
     return false;
   }
   service_name_ = service_name;
@@ -83,7 +83,7 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
 }
 
 void ServiceWatcher::StartWatching() {
-  DCHECK(service_.IsValid());
+  DCHECK(service_.is_valid());
   DCHECK(!service_name_.empty());
 
   if (service_watcher_) {

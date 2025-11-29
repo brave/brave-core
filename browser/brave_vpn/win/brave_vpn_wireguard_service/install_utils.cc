@@ -111,14 +111,14 @@ bool SetServiceTriggerForVPNConnection(SC_HANDLE hService,
 bool ConfigureServiceAutoRestart(const std::wstring& service_name,
                                  const std::wstring& brave_vpn_entry) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
   }
   ScopedScHandle service(
       ::OpenService(scm.Get(), service_name.c_str(), SERVICE_ALL_ACCESS));
-  if (!service.IsValid()) {
+  if (!service.is_valid()) {
     VLOG(1) << "::OpenService failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
@@ -145,7 +145,7 @@ base::FilePath GetBraveVpnHelperServicePath(const base::FilePath& root_dir) {
 
 bool ConfigureBraveWireguardService(const std::wstring& service_name) {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
@@ -153,7 +153,7 @@ bool ConfigureBraveWireguardService(const std::wstring& service_name) {
 
   ScopedScHandle service(
       ::OpenService(scm.Get(), service_name.c_str(), SERVICE_ALL_ACCESS));
-  if (!service.IsValid()) {
+  if (!service.is_valid()) {
     VLOG(1) << "Failed to create service_name: " << service_name
             << ", error: " << std::hex << HRESULTFromLastError();
     return false;
