@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "base/numerics/checked_math.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
@@ -162,6 +163,8 @@ class CardanoTransaction {
   void ArrangeTransactionForTesting();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest, ValidateAmounts);
+
   std::vector<TxInput> inputs_;
   std::vector<TxOutput> outputs_;
   std::vector<TxWitness> witnesses_;

@@ -30,20 +30,21 @@ base::expected<CardanoTransaction, std::string> CardanoMaxSendSolver::Solve() {
   DCHECK(base_transaction_.TargetOutput());
   DCHECK(base_transaction_.sending_max_amount());
 
-  auto result = base_transaction_;
-  result.AddInputs(std::move(inputs_));
+  auto tx_with_inputs = std::move(base_transaction_);
+  tx_with_inputs.AddInputs(std::move(inputs_));
 
-  if (!CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-          result, latest_epoch_parameters_)) {
+  auto found_valid_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+      tx_with_inputs, latest_epoch_parameters_);
+  if (!found_valid_tx) {
     return base::unexpected(WalletInsufficientBalanceErrorMessage());
   }
 
   CHECK(CardanoTransactionSerializer::ValidateAmounts(
-      result, latest_epoch_parameters_));
+      *found_valid_tx, latest_epoch_parameters_));
 
-  result.set_amount(result.TargetOutput()->amount);
+  found_valid_tx->set_amount(found_valid_tx->TargetOutput()->amount);
 
-  return base::ok(result);
+  return base::ok(*found_valid_tx);
 }
 
 }  // namespace brave_wallet

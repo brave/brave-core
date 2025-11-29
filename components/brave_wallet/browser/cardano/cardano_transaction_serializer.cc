@@ -224,24 +224,26 @@ bool CardanoTransactionSerializer::ValidateMinValue(
 }
 
 // static
-bool CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-    CardanoTransaction& tx,
+// static
+std::optional<CardanoTransaction>
+CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+    const CardanoTransaction& base_tx,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  CardanoTransaction& result = tx;
+  CardanoTransaction result = base_tx;
 
   base::CheckedNumeric<uint64_t> total_inputs_amount =
       result.GetTotalInputsAmount();
 
-  // Set to 0 all fields in tx we are going to adjust to find fee.
-  tx.set_fee(0);
-  if (tx.ChangeOutput()) {
-    tx.ChangeOutput()->amount = 0;
+  // These values are not supposed to be set before.
+  CHECK_EQ(result.fee(), 0u);
+  if (result.ChangeOutput()) {
+    CHECK_EQ(result.ChangeOutput()->amount, 0u);
   }
-  if (tx.sending_max_amount()) {
-    tx.TargetOutput()->amount = 0;
+  if (result.sending_max_amount()) {
+    CHECK_EQ(result.TargetOutput()->amount, 0u);
   }
 
-  // That is starting fee based on minimum size of tx as fee and outputs are 0.
+  // This is starting fee based on minimum size of tx as fee and outputs are 0.
   uint64_t start_fee =
       CardanoTransactionSerializer({.use_dummy_witness_set = true})
           .CalcMinTransactionFee(result, epoch_parameters);
@@ -250,15 +252,15 @@ bool CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   for (int i = 0; i < kFeeSearchMaxIterations; i++) {
     // Adjust outputs based on current tx fee.
     if (result.sending_max_amount()) {
-      if (!base::CheckSub(total_inputs_amount, tx.fee())
+      if (!base::CheckSub(total_inputs_amount, result.fee())
                .AssignIfValid(&result.TargetOutput()->amount)) {
-        return false;
+        return std::nullopt;
       }
     } else if (result.ChangeOutput()) {
-      if (!base::CheckSub(total_inputs_amount, tx.fee(),
+      if (!base::CheckSub(total_inputs_amount, result.fee(),
                           result.TargetOutput()->amount)
                .AssignIfValid(&result.ChangeOutput()->amount)) {
-        return false;
+        return std::nullopt;
       }
     }
 
@@ -269,20 +271,23 @@ bool CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     // Break search loop if required fee is less than or equal to current fee.
     // That means current tx fee is enough to cover the transaction costs(based
     // on its binary size).
-    if (required_fee <= tx.fee()) {
-      return ValidateAmounts(tx, epoch_parameters);
+    if (required_fee <= result.fee()) {
+      if (ValidateAmounts(result, epoch_parameters)) {
+        return result;
+      }
+      return std::nullopt;
     }
 
     // Run the loop again with larger fee.
-    tx.set_fee(required_fee);
+    result.set_fee(required_fee);
   }
 
-  return false;
+  return std::nullopt;
 }
 
 // static
 bool CardanoTransactionSerializer::ValidateAmounts(
-    CardanoTransaction& tx,
+    const CardanoTransaction& tx,
     const cardano_rpc::EpochParameters& epoch_parameters) {
   for (auto& output : tx.outputs()) {
     if (!ValidateMinValue(output, epoch_parameters)) {

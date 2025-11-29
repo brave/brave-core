@@ -151,11 +151,8 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
     return;
   }
 
-  if (!CardanoTransactionSerializer().ValidateMinValue(
-          *solved_transaction->TargetOutput(), *latest_epoch_parameters_)) {
-    StopWithError(WalletAmountTooSmallErrorMessage());
-    return;
-  }
+  CHECK(CardanoTransactionSerializer::ValidateAmounts(
+      *solved_transaction, *latest_epoch_parameters_));
 
   transaction_ = std::move(*solved_transaction);
   if (g_arrange_tx_for_test) {

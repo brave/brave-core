@@ -70,19 +70,23 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
         next_transaction.AddInput(inputs_[input_index]);
 
         // Given set of inputs and outputs try to find valid outputs' amounts
-        // and fee. If it fails to find a valid transaction: proceed to the next
-        // iteration with current input. Otherwise check if it is the best
-        // tx so far and proceed to the next iteration without current input.
-        if (!CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
-                next_transaction, latest_epoch_parameters_)) {
-          picked_inputs[input_index] = true;
-          cur_transaction = std::move(next_transaction);
-        } else {
+        // and tx fee.
+        if (auto found_valid_tx =
+                CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+                    next_transaction, latest_epoch_parameters_)) {
+          // Found a valid tx with given inputs. Check if it is the best
+          // tx so far and don't update `cur_transaction` as it doesn't make
+          // sense to add new inputs into it.
           has_valid_transaction_for_iteration = true;
           if (!current_best_solution_ ||
-              current_best_solution_->fee() > next_transaction.fee()) {
-            current_best_solution_ = next_transaction;
+              current_best_solution_->fee() > found_valid_tx->fee()) {
+            current_best_solution_ = std::move(*found_valid_tx);
           }
+        } else {
+          // Could not find a valid tx with given inputs. proceed to the next
+          // iteration with current input added to `cur_transaction`.
+          picked_inputs[input_index] = true;
+          cur_transaction = std::move(next_transaction);
         }
       }
     }
@@ -94,6 +98,11 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   DCHECK(base_transaction_.TargetOutput());
   DCHECK(base_transaction_.ChangeOutput());
   DCHECK(!base_transaction_.sending_max_amount());
+
+  if (!CardanoTransactionSerializer().ValidateMinValue(
+          *base_transaction_.TargetOutput(), latest_epoch_parameters_)) {
+    return base::unexpected(WalletAmountTooSmallErrorMessage());
+  }
 
   // Try to find the best transaction with a change output which receives a
   // fee surplus.
