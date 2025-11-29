@@ -52,7 +52,7 @@ void RasConnectionObserver::StopRasConnectionChangeMonitoring() {
 
 bool RasConnectionObserver::IsRasConnectionObserverActive() const {
   return connected_disconnected_event_watcher_.IsWatching() &&
-         event_handle_for_connected_disconnected_.IsValid();
+         event_handle_for_connected_disconnected_.is_valid();
 }
 
 }  // namespace ras

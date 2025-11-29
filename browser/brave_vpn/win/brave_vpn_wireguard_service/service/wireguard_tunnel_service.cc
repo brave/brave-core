@@ -201,7 +201,7 @@ bool LaunchWireguardService(const std::wstring& config) {
 
 bool RemoveExistingWireguardService() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
             << GetBraveVpnWireguardTunnelServiceName()
             << ", error: " << std::hex << HRESULTFromLastError();
@@ -211,7 +211,7 @@ bool RemoveExistingWireguardService() {
       ::OpenService(scm.Get(), GetBraveVpnWireguardTunnelServiceName().c_str(),
                     SERVICE_ALL_ACCESS));
 
-  if (service.IsValid()) {
+  if (service.is_valid()) {
     if (IsServiceRunning(service.Get())) {
       SERVICE_STATUS stt;
       if (!ControlService(service.Get(), SERVICE_CONTROL_STOP, &stt)) {
@@ -243,7 +243,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
     return false;
   }
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_ALL_ACCESS));
-  if (!scm.IsValid()) {
+  if (!scm.is_valid()) {
     VLOG(1) << "::OpenSCManager failed. service_name: "
             << GetBraveVpnWireguardTunnelServiceName()
             << ", error: " << std::hex << HRESULTFromLastError();
@@ -265,7 +265,7 @@ bool CreateAndRunBraveWireguardService(const std::wstring& encoded_config) {
       SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
       service_cmd.GetCommandLineString().c_str(), NULL, NULL, L"Nsi\0TcpIp\0",
       NULL, NULL));
-  if (!service.IsValid()) {
+  if (!service.is_valid()) {
     VLOG(1) << "::CreateService failed. service_name: "
             << GetBraveVpnWireguardTunnelServiceName() << ", error: 0x"
             << ::GetLastError();
