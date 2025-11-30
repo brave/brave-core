@@ -19,40 +19,50 @@ const api = {
   cosmeticFilterManage: () => {
     cf_worker.manageCustomFilters()
   },
-  getElementPickerThemeInfo: (callback: (
-    isDarkModeEnabled: boolean, bgcolor: number) => void) => {
-    cf_worker.getElementPickerThemeInfo().then(
-      (val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
+  getElementPickerThemeInfo: (
+    callback: (isDarkModeEnabled: boolean, bgcolor: number) => void,
+  ) => {
+    cf_worker
+      .getElementPickerThemeInfo()
+      .then((val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
         callback(val.isDarkModeEnabled, val.bgcolor)
       })
   },
-  getLocalizedTexts: (callback: (
-    btnCreateDisabledText: string,
-    btnCreateEnabledText: string,
-    btnManageText: string,
-    btnShowRulesBoxText: string,
-    btnHideRulesBoxText: string,
-    btnQuitText: string) => void) => {
-    cf_worker.getLocalizedTexts().then(
-      (val: {
-        btnCreateDisabledText: string;
-        btnCreateEnabledText: string;
-        btnManageText: string;
-        btnShowRulesBoxText: string;
-        btnHideRulesBoxText: string;
-        btnQuitText: string
-      }) => {
-        callback(val.btnCreateDisabledText,
-          val.btnCreateEnabledText,
-          val.btnManageText,
-          val.btnShowRulesBoxText,
-          val.btnHideRulesBoxText,
-          val.btnQuitText)
-      })
+  getLocalizedTexts: (
+    callback: (
+      btnCreateDisabledText: string,
+      btnCreateEnabledText: string,
+      btnManageText: string,
+      btnShowRulesBoxText: string,
+      btnHideRulesBoxText: string,
+      btnQuitText: string,
+    ) => void,
+  ) => {
+    cf_worker
+      .getLocalizedTexts()
+      .then(
+        (val: {
+          btnCreateDisabledText: string
+          btnCreateEnabledText: string
+          btnManageText: string
+          btnShowRulesBoxText: string
+          btnHideRulesBoxText: string
+          btnQuitText: string
+        }) => {
+          callback(
+            val.btnCreateDisabledText,
+            val.btnCreateEnabledText,
+            val.btnManageText,
+            val.btnShowRulesBoxText,
+            val.btnHideRulesBoxText,
+            val.btnQuitText,
+          )
+        },
+      )
   },
   getPlatform: (): string => {
     return cf_worker.getPlatform()
-  }
+  },
 }
 
 // When the picker is activated, it eats all pointer events and takes up the
@@ -70,11 +80,11 @@ const elementFromFrameCoords = (x: number, y: number): Element | null => {
 }
 
 enum SpecificityFlags {
-  Id = (1 << 0),
-  Hierarchy = (1 << 1),
-  Attributes = (1 << 2),
-  Class = (1 << 3),
-  NthOfType = (1 << 4)
+  Id = 1 << 0,
+  Hierarchy = 1 << 1,
+  Attributes = 1 << 2,
+  Class = 1 << 3,
+  NthOfType = 1 << 4,
 }
 
 const mostSpecificMask = 0b11111
@@ -83,7 +93,7 @@ enum Selector {
   Id,
   Class,
   Attributes,
-  NthOfType
+  NthOfType,
 }
 
 interface Rule {
@@ -112,7 +122,9 @@ class ElementSelectorBuilder {
     if (Array.isArray(rule.value) && rule.value.length === 0) {
       return
     }
-    if (rule.type === Selector.Id) { this.hasId = true }
+    if (rule.type === Selector.Id) {
+      this.hasId = true
+    }
     this.rules.push(rule)
   }
 
@@ -134,21 +146,21 @@ class ElementSelectorBuilder {
         continue
       }
       if (
-        !(mask & SpecificityFlags.Attributes) &&
-        rule.type === Selector.Attributes
+        !(mask & SpecificityFlags.Attributes)
+        && rule.type === Selector.Attributes
       ) {
         continue
       }
       if (
-        !(mask & SpecificityFlags.NthOfType) &&
-        rule.type === Selector.NthOfType
+        !(mask & SpecificityFlags.NthOfType)
+        && rule.type === Selector.NthOfType
       ) {
         continue
       }
       if (
-        this.hasId &&
-        mask & SpecificityFlags.Id &&
-        rule.type === Selector.Class
+        this.hasId
+        && mask & SpecificityFlags.Id
+        && rule.type === Selector.Class
       ) {
         continue
       }
@@ -180,7 +192,9 @@ class ElementSelectorBuilder {
           selector += `:nth-of-type(${rule.value})`
           break
         }
-        default: { /* Unreachable */ }
+        default: {
+          /* Unreachable */
+        }
       }
     }
     return selector
@@ -193,11 +207,13 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   const builder = new ElementSelectorBuilder(elem)
 
   // ID
-  if (elem.id.length > 0 &&
-    document.querySelectorAll(`#${elem.id}`).length === 1) {
+  if (
+    elem.id.length > 0
+    && document.querySelectorAll(`#${elem.id}`).length === 1
+  ) {
     builder.addRule({
       type: Selector.Id,
-      value: CSS.escape(elem.id)
+      value: CSS.escape(elem.id),
     })
   }
 
@@ -205,7 +221,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   if (elem.classList.length > 0) {
     builder.addRule({
       type: Selector.Class,
-      value: Array.from(elem.classList).map((c: string) => CSS.escape(c))
+      value: Array.from(elem.classList).map((c: string) => CSS.escape(c)),
     })
   }
 
@@ -221,7 +237,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
         if (url !== undefined && url.length > 0) {
           attributes.push({
             attr: 'href',
-            value: url
+            value: url,
           })
         }
         break
@@ -231,7 +247,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
         if (url !== undefined && url.length > 0) {
           attributes.push({
             attr: 'src',
-            value: url.slice(0, 256)
+            value: url.slice(0, 256),
           })
         }
         break
@@ -249,43 +265,47 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
           if (alttext !== undefined && alttext.length > 0) {
             attributes.push({
               attr: 'alt',
-              value: alttext
+              value: alttext,
             })
           }
         } else {
           attributes.push({
             attr: 'src',
-            value: data
+            value: data,
           })
         }
         break
       }
-      default: { break }
+      default: {
+        break
+      }
     }
     if (attributes.length > 0) {
       builder.addRule({
         type: Selector.Attributes,
-        value: attributes
+        value: attributes,
       })
     }
   }
 
   const querySelectorNoExcept = (
     node: Element | null,
-    selector: string
+    selector: string,
   ): Element[] => {
     if (node !== null) {
       try {
         const r = node.querySelectorAll(selector)
         return Array.from(r)
-      } catch { /* Deliberately left empty */ }
+      } catch {
+        /* Deliberately left empty */
+      }
     }
     return []
   }
 
   if (
-    builder.size() === 0 ||
-    querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1
+    builder.size() === 0
+    || querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1
   ) {
     builder.addTag(tag)
     if (
@@ -294,12 +314,14 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
       let index = 1
       let sibling: Element | null = elem.previousElementSibling
       while (sibling !== null) {
-        if (sibling.localName === tag) { index++ }
+        if (sibling.localName === tag) {
+          index++
+        }
         sibling = sibling.previousElementSibling
       }
       builder.addRule({
         type: Selector.NthOfType,
-        value: index
+        value: index,
       })
     }
   }
@@ -406,14 +428,15 @@ class TargetsCollection {
     this.targets.length = 0
     elems.forEach((elem: Element) => {
       this.targets.push(new Target(elem))
-    });
+    })
   }
 
   forceRecalcCoords() {
-    this.targets.forEach(t => t.forceRecalcCoords())
+    this.targets.forEach((t) => t.forceRecalcCoords())
     // for case when element no longer in the DOM
-    this.targets = this.targets.filter(item =>
-      item.coord.height !== 0 && item.coord.width !== 0)
+    this.targets = this.targets.filter(
+      (item) => item.coord.height !== 0 && item.coord.width !== 0,
+    )
     if (this.targets.length === 0 && this.togglePicker) {
       this.togglePicker(false)
     }
@@ -430,12 +453,12 @@ const targetRectFromElement = (elem: Element): TargetRect => {
     x: rect.left,
     y: rect.top,
     width: rect.right - rect.left,
-    height: rect.bottom - rect.top
+    height: rect.bottom - rect.top,
   }
 }
 
 let lastHoveredElem: HTMLElement | null = null
-const targetedElems = new TargetsCollection
+const targetedElems = new TargetsCollection()
 
 const recalculateAndSendTargets = (elems: Element[] | null) => {
   if (elems) {
@@ -459,17 +482,19 @@ const hideByCssSelector = (selector: string) => {
 }
 
 interface SliderOptions {
-  onChange?: (value: number) => void;
+  onChange?: (value: number) => void
 }
 
 interface SliderAPI {
-  getValue: () => number;
-  min: number;
-  max: number;
+  getValue: () => number
+  min: number
+  max: number
 }
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
-  if (lastHoveredElem === null) { return '' }
+  if (lastHoveredElem === null) {
+    return ''
+  }
 
   let elem: Element | null = selected
   const selectorBuilders = []
@@ -478,7 +503,7 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     0b11101, // No DOM hierarchy
     0b01011, // No nth-of-type, no attributes
     0b10011, // No attributes, no class names
-    0b11111 // All selector rules (default)
+    0b11111, // All selector rules (default)
   ]
   const mask: number = specificityMasks[index]
 
@@ -496,8 +521,10 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
     try {
-      if ((mask & SpecificityFlags.Id) && b.hasId ||
-        document.querySelectorAll(b.toString(mask)).length === 1) {
+      if (
+        (mask & SpecificityFlags.Id && b.hasId)
+        || document.querySelectorAll(b.toString(mask)).length === 1
+      ) {
         break
       }
     } catch {
@@ -521,9 +548,9 @@ const elementPickerHoverCoordsChanged = (x: number, y: number) => {
 }
 
 const getElementBySelector = (selector: string) => {
-  let elements: Element[] | null;
-  const nodeList = document.querySelectorAll(selector);
-  elements = nodeList.length > 0 ? Array.from(nodeList) : null;
+  let elements: Element[] | null
+  const nodeList = document.querySelectorAll(selector)
+  elements = nodeList.length > 0 ? Array.from(nodeList) : null
   return elements
 }
 
@@ -533,7 +560,7 @@ const elementPickerUserSelectedTarget = (specificity: number) => {
     if (selector !== '') {
       try {
         recalculateAndSendTargets(getElementBySelector(selector))
-      } catch { }
+      } catch {}
     }
     return {
       isValid: selector !== '',
@@ -550,12 +577,14 @@ const elementPickerUserModifiedRule = (selector: string) => {
   if (selector.length > 0) {
     try {
       recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
-    } catch { }
+    } catch {}
   }
 }
 
 const setShowRulesHiddenBtnState = (
-  showRulesButton: HTMLElement | null, show: boolean) => {
+  showRulesButton: HTMLElement | null,
+  show: boolean,
+) => {
   if (!showRulesButton) return
   showRulesButton.textContent = show ? btnHideRulesBoxText : btnShowRulesBoxText
 }
@@ -565,49 +594,50 @@ const setMinimizeState = (minimized: boolean) => {
   pickerDiv.classList.toggle('minimized', minimized)
 }
 
-function initSlider(element: HTMLElement
-  | null, options: SliderOptions = {}): SliderAPI | undefined {
-  if (!element) return;
+function initSlider(
+  element: HTMLElement | null,
+  options: SliderOptions = {},
+): SliderAPI | undefined {
+  if (!element) return
 
-  const inputElement =  element as HTMLInputElement
-  if (!inputElement) return;
+  const inputElement = element as HTMLInputElement
+  if (!inputElement) return
 
-  const min = parseInt(inputElement.min ?? '1', 10);
-  const max = parseInt(inputElement.max ?? '4', 10);
+  const min = parseInt(inputElement.min ?? '1', 10)
+  const max = parseInt(inputElement.max ?? '4', 10)
   const initialValue = 4
 
-  inputElement.tabIndex = 0;
+  inputElement.tabIndex = 0
 
-  let currentValue = initialValue;
+  let currentValue = initialValue
 
   const updateSlider = (fireEvent: boolean): number => {
+    const value = parseFloat(inputElement.value)
+    const currMin = parseFloat(inputElement.min)
+    const currMax = parseFloat(inputElement.max)
 
-    const value = parseFloat(inputElement.value);
-    const currMin = parseFloat(inputElement.min);
-    const currMax = parseFloat(inputElement.max);
+    const percentage = ((value - currMin) / (currMax - currMin)) * 100
 
-    const percentage = ((value - currMin) / (currMax - currMin)) * 100;
+    inputElement.style.setProperty('--value', `${percentage}%`)
 
-    inputElement.style.setProperty('--value', `${percentage}%`);
-
-    currentValue = value;
+    currentValue = value
 
     if (fireEvent && options.onChange) {
-      options.onChange(currentValue);
+      options.onChange(currentValue)
     }
-    return value;
-  };
+    return value
+  }
 
-  inputElement.addEventListener('input', () => updateSlider(true));
+  inputElement.addEventListener('input', () => updateSlider(true))
 
   // Initial update
-  updateSlider(false);
+  updateSlider(false)
   // Return API for external control
   return {
     getValue: () => currentValue,
     min,
-    max
-  };
+    max,
+  }
 }
 
 const launchElementPicker = (root: ShadowRoot) => {
@@ -635,15 +665,15 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
   const maximizeButton = root.getElementById('desktop-min-icon-container')!
   maximizeButton.addEventListener('click', () => {
-    setMinimizeState(false);
+    setMinimizeState(false)
   })
 
-  const sliderElement = root.getElementById('custom-slider');
+  const sliderElement = root.getElementById('custom-slider')
   const slider = initSlider(sliderElement, {
     onChange: () => {
       dispatchSelect()
-    }
-  });
+    },
+  })
 
   root.addEventListener(
     'keydown',
@@ -658,8 +688,10 @@ const launchElementPicker = (root: ShadowRoot) => {
   )
 
   const svg = root.getElementById('picker-ui')!
-  if (window.matchMedia("(pointer: fine)").matches &&
-    window.matchMedia("(hover: hover)").matches) {
+  if (
+    window.matchMedia('(pointer: fine)').matches
+    && window.matchMedia('(hover: hover)').matches
+  ) {
     svg.addEventListener(
       'mousemove',
       (event) => {
@@ -692,14 +724,14 @@ const launchElementPicker = (root: ShadowRoot) => {
 
   const section = root.getElementById('main-section')!
   const enableButtons = (isDisabled: boolean) => {
-    const elements = root.querySelectorAll('.button');
-    elements.forEach(element => {
+    const elements = root.querySelectorAll('.button')
+    elements.forEach((element) => {
       if (isDisabled) {
         element.classList.add('disabled')
       } else {
-        element.classList.remove('disabled');
+        element.classList.remove('disabled')
       }
-    });
+    })
   }
 
   if (!isAndroid) {
@@ -725,8 +757,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
   const setTitleBarColor = (bgcolor: number) => {
     const section = root.host as HTMLElement
-    if (section)
-    {
+    if (section) {
       const r = (bgcolor >> 16) & 0xff
       const g = (bgcolor >> 8) & 0xff
       const b = bgcolor & 0xff
@@ -736,23 +767,24 @@ const launchElementPicker = (root: ShadowRoot) => {
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
       (isDarkModeEnabled: boolean, bgcolor: number) => {
-        const bgcolorMaskOut = bgcolor & 0xFFFFFF
+        const bgcolorMaskOut = bgcolor & 0xffffff
         const colorHex = `#${bgcolorMaskOut.toString(16).padStart(6, '0')}`
         section.style.setProperty('--theme-background-color', colorHex)
         setTitleBarColor(bgcolor)
         dispatchSelect()
-      })
+      },
+    )
   }
-  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
   const handleColorSchemeChange = (event: MediaQueryListEvent) => {
     retrieveTheme()
-  };
-  prefersDarkScheme.addEventListener('change', handleColorSchemeChange);
+  }
+  prefersDarkScheme.addEventListener('change', handleColorSchemeChange)
   retrieveTheme()
 
   const dispatchSelect = () => {
     const { isValid, selector } = elementPickerUserSelectedTarget(
-      slider?.getValue() ?? 4
+      slider?.getValue() ?? 4,
     )
 
     hasSelectedTarget = isValid
@@ -763,12 +795,12 @@ const launchElementPicker = (root: ShadowRoot) => {
   const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
 
-    setMinimizeState(false);
+    setMinimizeState(false)
 
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
     } else if (event instanceof TouchEvent) {
-      const touch = event.touches[0];
+      const touch = event.touches[0]
       elem = elementFromFrameCoords(touch.clientX, touch.clientY)
     }
 
@@ -802,15 +834,17 @@ const launchElementPicker = (root: ShadowRoot) => {
 
   const manageButton = root.getElementById('btn-manage')!
   manageButton.addEventListener('click', () => {
-    api.cosmeticFilterManage();
+    api.cosmeticFilterManage()
   })
 
-  const toggleDisplay = (target: HTMLElement | null,
-    trigger: HTMLElement | null) => {
+  const toggleDisplay = (
+    target: HTMLElement | null,
+    trigger: HTMLElement | null,
+  ) => {
     if (!target || !trigger) {
       return
     }
-    trigger.addEventListener('click', e => {
+    trigger.addEventListener('click', (e) => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
         setShowRulesHiddenBtnState(trigger, true)
@@ -830,10 +864,10 @@ const highlightElements = () => {
   const svg = shadowRoot.getElementById('picker-ui')!
   const svgMask = shadowRoot.getElementById('highlight-mask')!
 
-  svg.querySelectorAll('.mask').forEach(el => el.remove());
+  svg.querySelectorAll('.mask').forEach((el) => el.remove())
 
-  const svgMaskFragment = document.createDocumentFragment();
-  const svgFragment = document.createDocumentFragment();
+  const svgMaskFragment = document.createDocumentFragment()
+  const svgFragment = document.createDocumentFragment()
 
   const createMaskElement = (): SVGRectElement => {
     const mask = document.createElementNS(NSSVG, 'rect')
@@ -847,11 +881,11 @@ const highlightElements = () => {
   for (const target of targetedElems.targets) {
     // Add the mask to the SVG definition so the dark background is removed
     const mask = createMaskElement()
-    mask.x.baseVal.value = target.coord.x;
-    mask.y.baseVal.value = target.coord.y;
-    mask.width.baseVal.value = target.coord.width;
-    mask.height.baseVal.value = target.coord.height;
-    mask.rx.baseVal.value = 10;
+    mask.x.baseVal.value = target.coord.x
+    mask.y.baseVal.value = target.coord.y
+    mask.width.baseVal.value = target.coord.width
+    mask.height.baseVal.value = target.coord.height
+    mask.rx.baseVal.value = 10
     svgMaskFragment.appendChild(mask)
 
     // Use the same element, but add the target class which turns the
@@ -866,13 +900,15 @@ const highlightElements = () => {
   svg.appendChild(svgFragment)
 }
 
-const localizeTextData = (root: ShadowRoot,
+const localizeTextData = (
+  root: ShadowRoot,
   btnCrDisText: string,
   btnCrEnblText: string,
   btnManageText: string,
   btnShowRulesText: string,
   btnHideRulesText: string,
-  btnQuitText: string) => {
+  btnQuitText: string,
+) => {
   btnCreateDisabledText = btnCrDisText
   btnCreateEnabledText = btnCrEnblText
   btnShowRulesBoxText = btnShowRulesText
@@ -900,18 +936,26 @@ if (!active) {
   isAndroid = api.getPlatform() === 'android'
   const root = attachElementPicker()
   api.getLocalizedTexts(
-    (btnCreateDisabledText: string,
+    (
+      btnCreateDisabledText: string,
       btnCreateEnabledText: string,
       btnManageText: string,
       btnShowRulesBoxText: string,
       btnHideRulesBoxText: string,
-      btnQuitText: string) => {
-      localizeTextData(root, btnCreateDisabledText,
-        btnCreateEnabledText, btnManageText,
-        btnShowRulesBoxText, btnHideRulesBoxText,
-        btnQuitText)
+      btnQuitText: string,
+    ) => {
+      localizeTextData(
+        root,
+        btnCreateDisabledText,
+        btnCreateEnabledText,
+        btnManageText,
+        btnShowRulesBoxText,
+        btnHideRulesBoxText,
+        btnQuitText,
+      )
       launchElementPicker(root)
-    });
+    },
+  )
 } else {
   active.classList.toggle('minimized', false)
 }

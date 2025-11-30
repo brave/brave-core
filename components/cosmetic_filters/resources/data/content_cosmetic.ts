@@ -9,7 +9,10 @@
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
-import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
+import {
+  applyCompiledSelector,
+  compileProceduralSelector,
+} from './procedural_filters'
 
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
@@ -52,9 +55,10 @@ const styleAttrMap = new Map<string, string>()
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
 
-const notYetQueriedElements: Array<(Element[] | NodeListOf<Element>)> = []
+const notYetQueriedElements: Array<Element[] | NodeListOf<Element>> = []
 
-const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
+const classIdWithoutHtmlOrBody =
+  '[id]:not(html):not(body),[class]:not(html):not(body)'
 
 // Each of these get setup once the mutation observer starts running.
 let notYetQueriedClasses: string[] = []
@@ -74,7 +78,10 @@ CC.secondRunQueue = CC.secondRunQueue || new Set<string>()
 // more time.
 CC.finalRunQueue = CC.finalRunQueue || new Set<string>()
 CC.allQueues = CC.allQueues || [
-  CC.firstRunQueue, CC.secondRunQueue, CC.finalRunQueue]
+  CC.firstRunQueue,
+  CC.secondRunQueue,
+  CC.finalRunQueue,
+]
 CC.numQueues = CC.numQueues || CC.allQueues.length
 CC.alreadyUnhiddenSelectors = CC.alreadyUnhiddenSelectors || new Set<string>()
 CC.alreadyKnownFirstPartySubtrees =
@@ -96,35 +103,38 @@ CC.fetchNewClassIdRulesThrottlingMs =
  */
 const idleize = (onIdle: Function, timeout: number) => {
   let idleId: number | undefined
-  return function WillRunOnIdle () {
+  return function WillRunOnIdle() {
     if (idleId !== undefined) {
       return
     }
-    idleId = window.requestIdleCallback(() => {
-      idleId = undefined
-      onIdle()
-    }, { timeout })
+    idleId = window.requestIdleCallback(
+      () => {
+        idleId = undefined
+        onIdle()
+      },
+      { timeout },
+    )
   }
 }
 
 const isRelativeUrl = (url: string): boolean => {
   return (
-    !url.startsWith('//') &&
-    !url.startsWith('http://') &&
-    !url.startsWith('https://')
+    !url.startsWith('//')
+    && !url.startsWith('http://')
+    && !url.startsWith('https://')
   )
 }
 
 const isElement = (node: Node): boolean => {
-  return (node.nodeType === 1)
+  return node.nodeType === 1
 }
 
 const asElement = (node: Node): Element | null => {
-  return isElement(node) ? node as Element : null
+  return isElement(node) ? (node as Element) : null
 }
 
 const isHTMLElement = (node: Node): boolean => {
-  return ('innerText' in node)
+  return 'innerText' in node
 }
 
 // The fetchNewClassIdRules() can be called of each MutationObserver event.
@@ -144,18 +154,14 @@ const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
   const msToWait = nextFetchNewClassIdRulesCall - now
   if (msToWait > 0) {
     // Schedule the call in |msToWait| ms and return.
-    fetchNewClassIdRulesTimeoutId =
-      window.setTimeout(
-        () => {
-          fetchNewClassIdRulesTimeoutId = undefined
-          fetchNewClassIdRules()
-        }
-        , msToWait)
+    fetchNewClassIdRulesTimeoutId = window.setTimeout(() => {
+      fetchNewClassIdRulesTimeoutId = undefined
+      fetchNewClassIdRules()
+    }, msToWait)
     return true
   }
 
-  nextFetchNewClassIdRulesCall =
-    now + CC.fetchNewClassIdRulesThrottlingMs
+  nextFetchNewClassIdRulesCall = now + CC.fetchNewClassIdRulesThrottlingMs
   return false
 }
 
@@ -180,16 +186,20 @@ const fetchNewClassIdRules = () => {
     }
   }
   notYetQueriedElements.length = 0
-  if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
-    (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
+  if (
+    (!notYetQueriedClasses || notYetQueriedClasses.length === 0)
+    && (!notYetQueriedIds || notYetQueriedIds.length === 0)
+  ) {
     return
   }
   // Callback to c++ renderer process
   // @ts-expect-error
   cf_worker.hiddenClassIdSelectors(
-      JSON.stringify({
-        classes: notYetQueriedClasses, ids: notYetQueriedIds
-      }))
+    JSON.stringify({
+      classes: notYetQueriedClasses,
+      ids: notYetQueriedIds,
+    }),
+  )
   notYetQueriedClasses = []
   notYetQueriedIds = []
 }
@@ -204,7 +214,7 @@ const useMutationObserver = () => {
   const observerConfig = {
     subtree: true,
     childList: true,
-    attributeFilter: ['id', 'class']
+    attributeFilter: ['id', 'class'],
   }
   observer.observe(document.documentElement, observerConfig)
 }
@@ -216,11 +226,15 @@ const usePolling = (observer?: MutationObserver) => {
   }
 
   const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
-  const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(undefined,
-                                                                  futureTimeMs)
+  const queryAttrsFromDocumentBound = queryAttrsFromDocument.bind(
+    undefined,
+    futureTimeMs,
+  )
 
-  selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound,
-                                                  selectorsPollingIntervalMs)
+  selectorsPollingIntervalId = window.setInterval(
+    queryAttrsFromDocumentBound,
+    selectorsPollingIntervalMs,
+  )
 }
 
 const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
@@ -269,7 +283,10 @@ const queueAttrsFromMutations = (mutations: MutationRecord[]): number => {
   return mutationScore
 }
 
-const onMutations = (mutations: MutationRecord[], observer: MutationObserver) => {
+const onMutations = (
+  mutations: MutationRecord[],
+  observer: MutationObserver,
+) => {
   // Callback to c++ renderer process
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onHandleMutationsBegin?.()
@@ -297,20 +314,23 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
   }
 
   if (CC.hasProceduralActions) {
-    const addedElements : Element[] = [];
-    mutations.forEach(mutation =>
-      mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n => {
-        if (n.nodeType === Node.ELEMENT_NODE) {
-          addedElements.push(n as Element)
-          const childNodes = (n as Element).querySelectorAll('*')
-          childNodes.length !== 0 && childNodes.forEach(c => {
-            c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
-          })
-        }
-      })
+    const addedElements: Element[] = []
+    mutations.forEach(
+      (mutation) =>
+        mutation.addedNodes.length !== 0
+        && mutation.addedNodes.forEach((n) => {
+          if (n.nodeType === Node.ELEMENT_NODE) {
+            addedElements.push(n as Element)
+            const childNodes = (n as Element).querySelectorAll('*')
+            childNodes.length !== 0
+              && childNodes.forEach((c) => {
+                c.nodeType === Node.ELEMENT_NODE && addedElements.push(c)
+              })
+          }
+        }),
     )
     if (addedElements.length !== 0) {
-      executeProceduralActions(addedElements);
+      executeProceduralActions(addedElements)
     }
   }
 
@@ -331,8 +351,14 @@ const isFirstPartyUrl = (url: string): boolean => {
   return cf_worker.isFirstPartyUrl(url)
 }
 
-const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string): string => {
-  const childElms = Array.from(elm.getElementsByTagName(tagName)) as HTMLElement[]
+const stripChildTagsFromText = (
+  elm: HTMLElement,
+  tagName: string,
+  text: string,
+): string => {
+  const childElms = Array.from(
+    elm.getElementsByTagName(tagName),
+  ) as HTMLElement[]
   let localText = text
   for (const anElm of childElms) {
     localText = localText.replaceAll(anElm.innerText, '')
@@ -403,7 +429,10 @@ interface IsFirstPartyQueryResult {
  *
  * Finally, special case some ids we know are used only for third party ads.
  */
-const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQueryResult): boolean => {
+const isSubTreeFirstParty = (
+  elm: Element,
+  possibleQueryResult?: IsFirstPartyQueryResult,
+): boolean => {
   let queryResult: IsFirstPartyQueryResult
   let isTopLevel: boolean
 
@@ -414,7 +443,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     queryResult = {
       foundFirstPartyResource: false,
       foundThirdPartyResource: false,
-      foundKnownThirdPartyAd: false
+      foundKnownThirdPartyAd: false,
     }
     isTopLevel = true
   }
@@ -422,9 +451,11 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   if (elm.getAttribute) {
     if (elm.hasAttribute('id')) {
       const elmId = elm.getAttribute('id')!
-      if (elmId.startsWith('google_ads_iframe_') ||
-        elmId.startsWith('div-gpt-ad') ||
-        elmId.startsWith('adfox_')) {
+      if (
+        elmId.startsWith('google_ads_iframe_')
+        || elmId.startsWith('div-gpt-ad')
+        || elmId.startsWith('adfox_')
+      ) {
         queryResult.foundKnownThirdPartyAd = true
         return false
       }
@@ -442,8 +473,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
 
     if (elm.hasAttribute('style')) {
       const elmStyle = elm.getAttribute('style')!
-      if (elmStyle.includes('url(') ||
-        elmStyle.includes('//')) {
+      if (elmStyle.includes('url(') || elmStyle.includes('//')) {
         queryResult.foundThirdPartyResource = true
       }
     }
@@ -477,7 +507,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   }
 
   if (!isTopLevel) {
-    return (!queryResult.foundThirdPartyResource)
+    return !queryResult.foundThirdPartyResource
   }
 
   if (queryResult.foundThirdPartyResource) {
@@ -492,8 +522,8 @@ const unhideSelectors = (selectors: Set<string>) => {
   }
   // Find selectors we have a rule index for
   const rulesToRemove = Array.from(selectors)
-    .map(selector => CC.allSelectorsToRules.get(selector))
-    .filter(i => i !== undefined)
+    .map((selector) => CC.allSelectorsToRules.get(selector))
+    .filter((i) => i !== undefined)
     .sort()
     .reverse()
   // Delete the rules
@@ -520,7 +550,11 @@ const unhideSelectors = (selectors: Set<string>) => {
     }
     if (oldIdx !== i) {
       // Probably out of sync
-      console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
+      console.error('Cosmetic Filters: old index did not match lookup index', {
+        selector,
+        oldIdx,
+        i,
+      })
     }
     CC.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
   }
@@ -555,7 +589,10 @@ const pumpCosmeticFilterQueues = () => {
       continue
     }
 
-    const currentWorkLoad = Array.from(currentQueue.values()).slice(0, maxWorkSize)
+    const currentWorkLoad = Array.from(currentQueue.values()).slice(
+      0,
+      maxWorkSize,
+    )
     const comboSelector = currentWorkLoad.join(',')
     const matchingElms = document.querySelectorAll(comboSelector)
     // Will hold selectors identified by _this_ queue pumping, that were
@@ -610,7 +647,8 @@ const pumpCosmeticFilterQueues = () => {
     for (const aUsedSelector of currentWorkLoad) {
       currentQueue.delete(aUsedSelector)
       // Don't requeue selectors we know identify first party content.
-      const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.has(aUsedSelector)
+      const selectorMatchedFirstParty =
+        newlyIdentifiedFirstPartySelectors.has(aUsedSelector)
       if (nextQueue && !selectorMatchedFirstParty) {
         nextQueue.add(aUsedSelector)
       }
@@ -635,7 +673,7 @@ const pumpCosmeticFilterQueues = () => {
 
 const pumpCosmeticFilterQueuesOnIdle = idleize(
   pumpCosmeticFilterQueues,
-  pumpIntervalMaxMs
+  pumpIntervalMaxMs,
 )
 
 const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
@@ -652,7 +690,7 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
     fetchNewClassIdRules()
   }
 
-  if (CC.hasProceduralActions) executeProceduralActions();
+  if (CC.hasProceduralActions) executeProceduralActions()
 
   if (eventId) {
     // Callback to c++ renderer process
@@ -660,8 +698,10 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
     cf_worker.onQuerySelectorsEnd(eventId)
   }
 
-  if (switchToMutationObserverAtTime !== undefined &&
-        window.Date.now() >= switchToMutationObserverAtTime) {
+  if (
+    switchToMutationObserverAtTime !== undefined
+    && window.Date.now() >= switchToMutationObserverAtTime
+  ) {
     useMutationObserver()
   }
 }
@@ -690,19 +730,22 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   }
   // Third / final possibility, this is this the first time this has been
   // called, in which case set up a timer and quit
-  CC._startCheckingId = window.requestIdleCallback(_ => {
-    CC._hasDelayOcurred = true
-    if (!genericHide || CC.hasProceduralActions) {
-      if (CC.firstSelectorsPollingDelayMs === undefined) {
-        startObserving()
-      } else {
-        window.setTimeout(startObserving, CC.firstSelectorsPollingDelayMs)
+  CC._startCheckingId = window.requestIdleCallback(
+    (_) => {
+      CC._hasDelayOcurred = true
+      if (!genericHide || CC.hasProceduralActions) {
+        if (CC.firstSelectorsPollingDelayMs === undefined) {
+          startObserving()
+        } else {
+          window.setTimeout(startObserving, CC.firstSelectorsPollingDelayMs)
+        }
       }
-    }
-    if (!hide1pContent) {
-      pumpCosmeticFilterQueuesOnIdle()
-    }
-  }, { timeout: maxTimeMSBeforeStart })
+      if (!hide1pContent) {
+        pumpCosmeticFilterQueuesOnIdle()
+      }
+    },
+    { timeout: maxTimeMSBeforeStart },
+  )
 }
 
 const tryScheduleQueuePump = () => {
@@ -755,40 +798,48 @@ const executeProceduralActions = (added?: Element[]) => {
       // classList.remove(tokens...) always triggers another mutation
       // even if nothing was removed.
       if (element.classList.contains(action.arg)) {
-        element.classList.remove(action.arg);
+        element.classList.remove(action.arg)
       }
     }
   }
   for (const { selector, action } of CC.proceduralActionFilters) {
     try {
-      let matchingElements: Element[] | NodeListOf<any>;
-      let startOperator: number;
+      let matchingElements: Element[] | NodeListOf<any>
+      let startOperator: number
 
       if (selector[0].type === 'css-selector' && added === undefined) {
-        matchingElements = document.querySelectorAll(selector[0].arg);
-        startOperator = 1;
+        matchingElements = document.querySelectorAll(selector[0].arg)
+        startOperator = 1
       } else if (added === undefined) {
-        matchingElements = document.querySelectorAll('*');
-        startOperator = 0;
+        matchingElements = document.querySelectorAll('*')
+        startOperator = 0
       } else {
-        matchingElements = added;
-        startOperator = 0;
+        matchingElements = added
+        startOperator = 0
       }
 
       if (startOperator === selector.length) {
         // First `css-selector` was already handled, and no more elements remain
-        matchingElements.forEach(elem => performAction(elem, action))
+        matchingElements.forEach((elem) => performAction(elem, action))
       } else {
-        const filter = compileProceduralSelector(selector.slice(startOperator));
-        applyCompiledSelector(filter, matchingElements as HTMLElement[]).forEach(elem => performAction(elem, action))
+        const filter = compileProceduralSelector(selector.slice(startOperator))
+        applyCompiledSelector(
+          filter,
+          matchingElements as HTMLElement[],
+        ).forEach((elem) => performAction(elem, action))
       }
     } catch (e) {
-      console.error('Failed to apply filter ' + JSON.stringify(selector)
-        + ' ' + JSON.stringify(action) + ': ');
-      console.error(e.message);
-      console.error(e.stack);
+      console.error(
+        'Failed to apply filter '
+          + JSON.stringify(selector)
+          + ' '
+          + JSON.stringify(action)
+          + ': ',
+      )
+      console.error(e.message)
+      console.error(e.stack)
     }
   }
-};
+}
 
-if (CC.hasProceduralActions) executeProceduralActions();
+if (CC.hasProceduralActions) executeProceduralActions()
