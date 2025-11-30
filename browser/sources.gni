@@ -299,10 +299,10 @@ if (enable_brave_wallet) {
     "//brave/browser/brave_wallet:brave_wallet_delegate",
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/decentralized_dns/content",
     "//brave/components/decentralized_dns/core",
   ]

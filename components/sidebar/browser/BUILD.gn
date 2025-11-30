@@ -45,7 +45,7 @@ static_library("browser") {
   }
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/common" ]
+    deps += [ "//brave/components/brave_wallet/browser:utils" ]
   }
 }
 

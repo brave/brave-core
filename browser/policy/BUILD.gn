@@ -65,6 +65,6 @@ source_set("brave_simple_policy_map") {
   }
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/common:pref_names" ]
+    deps += [ "//brave/components/brave_wallet/browser:pref_names" ]
   }
 }

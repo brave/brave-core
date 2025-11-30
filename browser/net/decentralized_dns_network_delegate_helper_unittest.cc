@@ -20,10 +20,10 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
@@ -460,7 +460,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   // Disable Brave Wallet by policy
   auto* prefs = profile()->GetTestingPrefService();
-  prefs->SetManagedPref(brave_wallet::prefs::kDisabledByPolicy,
+  prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
                         base::Value(true));
 
   // Create test request for an unstoppable domain
@@ -493,7 +493,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 
   // Enable Brave Wallet by policy (this is the default)
   auto* prefs = profile()->GetTestingPrefService();
-  prefs->SetManagedPref(brave_wallet::prefs::kDisabledByPolicy,
+  prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
                         base::Value(false));
 
   // Create test request for an unstoppable domain

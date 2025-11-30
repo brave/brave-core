@@ -65,7 +65,7 @@ inline constexpr BraveAction kShowWalletAction = {
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_WALLET,
     .anchor = side_panel::customize_chrome::mojom::ActionId::kTabSearch,
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
-    .pref_name = kShowWalletIconOnToolbar,
+    .pref_name = brave_wallet::kShowWalletIconOnToolbar,
     .icon = kLeoProductBraveWalletIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

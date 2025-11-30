@@ -328,7 +328,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common:common_constants",
-    "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",

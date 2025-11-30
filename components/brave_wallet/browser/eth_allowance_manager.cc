@@ -64,7 +64,7 @@ std::string GetBlocknumberFilterFromCache(
     const std::string& hex_account_address) {
   std::string result(kEarliestBlock);
   const auto& allowance_cache_dict =
-      prefs->GetDict(kBraveWalletEthAllowancesCache);
+      prefs->GetDict(brave_wallet::kBraveWalletEthAllowancesCache);
 
   const auto* last_block_number_ptr =
       allowance_cache_dict.FindStringByDottedPath(base::JoinString(

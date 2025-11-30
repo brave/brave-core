@@ -12,9 +12,9 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,13 +81,16 @@ class BraveWalletPolicyTest : public InProcessBrowserTest,
 // Verify that brave_wallet::IsDisabledByPolicy works correctly based on the
 // preference set by the policy.
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
-  EXPECT_TRUE(prefs()->FindPreference(brave_wallet::prefs::kDisabledByPolicy));
+  EXPECT_TRUE(
+      prefs()->FindPreference(brave_wallet::kBraveWalletDisabledByPolicy));
   if (IsBraveWalletDisabledTest()) {
-    EXPECT_TRUE(prefs()->GetBoolean(brave_wallet::prefs::kDisabledByPolicy));
+    EXPECT_TRUE(
+        prefs()->GetBoolean(brave_wallet::kBraveWalletDisabledByPolicy));
     EXPECT_FALSE(brave_wallet::IsAllowed(prefs()));
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(profile()));
   } else {
-    EXPECT_FALSE(prefs()->GetBoolean(brave_wallet::prefs::kDisabledByPolicy));
+    EXPECT_FALSE(
+        prefs()->GetBoolean(brave_wallet::kBraveWalletDisabledByPolicy));
     EXPECT_TRUE(brave_wallet::IsAllowed(prefs()));
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(profile()));
 
@@ -117,7 +120,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
 
     // Setting pref should allow it for incognito, but not for guest, or tor.
-    prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
+    prefs()->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled, true);
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
 #if BUILDFLAG(ENABLE_TOR)
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));

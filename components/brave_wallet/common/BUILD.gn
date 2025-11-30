@@ -71,7 +71,6 @@ static_library("common") {
     ":common_constants",
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
-    ":pref_names",
     ":rust_lib",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/net/base:utils",
@@ -96,11 +95,6 @@ source_set("common_constants") {
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
-}
-
-source_set("pref_names") {
-  sources = [ "pref_names.h" ]
-  deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 }
 
 generated_types("generated_json_rpc_requests") {
@@ -170,10 +164,8 @@ source_set("unit_tests") {
     ":common",
     ":common_constants",
     ":mojom",
-    ":pref_names",
     ":test_support",
     "//base/test:test_support",
-    "//components/prefs:test_support",
     "//testing/gtest",
     "//url",
   ]

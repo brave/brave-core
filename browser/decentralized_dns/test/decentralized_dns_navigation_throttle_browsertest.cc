@@ -8,8 +8,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_opt_in_page.h"
 #include "brave/components/decentralized_dns/core/constants.h"

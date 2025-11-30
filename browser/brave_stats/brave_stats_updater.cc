@@ -361,7 +361,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
+  registry->RegisterTimePref(brave_wallet::kBraveWalletPingReportedUnlockTime,
+                             base::Time());
 #endif
 }
 

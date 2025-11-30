@@ -10,7 +10,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
@@ -27,7 +27,7 @@ namespace policy {
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {
         policy::key::kBraveWalletDisabled,
-        brave_wallet::prefs::kDisabledByPolicy,
+        brave_wallet::kBraveWalletDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
     {

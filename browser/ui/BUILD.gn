@@ -128,7 +128,6 @@ source_set("ui") {
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/decentralized_dns/core",
     ]
   }
@@ -1318,7 +1317,6 @@ source_set("ui") {
         "//brave/components/brave_wallet/browser:wallet_handler",
         "//brave/components/brave_wallet/common",
         "//brave/components/brave_wallet/common:mojom",
-        "//brave/components/brave_wallet/common:pref_names",
         "//brave/components/brave_wallet/common/buildflags",
         "//brave/components/brave_wallet_ui:resources",
         "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",

@@ -98,7 +98,7 @@ class WalletButtonMenuModel : public ui::SimpleMenuModel,
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override {
     if (command_id == HideBraveWalletIcon) {
-      prefs_->SetBoolean(kShowWalletIconOnToolbar, false);
+      prefs_->SetBoolean(brave_wallet::kShowWalletIconOnToolbar, false);
     }
   }
 
@@ -269,7 +269,7 @@ bool WalletButton::IsBubbleClosedForTesting() {
 
 views::View* WalletButton::GetAsAnchorView() {
   View* anchor_view = this;
-  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar)) {
+  if (!prefs_->GetBoolean(brave_wallet::kShowWalletIconOnToolbar)) {
     anchor_view = backup_anchor_view_;
   }
   return anchor_view;

@@ -60,9 +60,9 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace {
@@ -206,19 +206,21 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   show_wallet_button_.Init(
-      kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
+      brave_wallet::kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
 
   wallet_disabled_by_policy_.Init(
-      brave_wallet::prefs::kDisabledByPolicy, browser_->profile()->GetPrefs(),
+      brave_wallet::kBraveWalletDisabledByPolicy,
+      browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
 
   if (browser_->profile()->IsIncognitoProfile() &&
       !browser_->profile()->IsTor()) {
     wallet_private_window_enabled_.Init(
-        kBraveWalletPrivateWindowsEnabled, browser_->profile()->GetPrefs(),
+        brave_wallet::kBraveWalletPrivateWindowsEnabled,
+        browser_->profile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                             base::Unretained(this)));
   }

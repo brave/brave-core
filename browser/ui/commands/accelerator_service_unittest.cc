@@ -39,7 +39,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 namespace commands {
@@ -333,12 +333,12 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   for (int command : wallet_commands) {
     EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
   }
-  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+  profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    true);
   for (int command : wallet_commands) {
     EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
   }
-  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+  profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    false);
 #endif
 
@@ -412,7 +412,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, true);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+  profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    true);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -441,7 +441,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
+  profile().GetPrefs()->SetBoolean(brave_wallet::kBraveWalletDisabledByPolicy,
                                    false);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)

@@ -34,6 +34,7 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/version_info/version_info.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
@@ -44,6 +45,16 @@
 namespace brave_wallet {
 
 namespace {
+
+bool IsDisabledByPolicy(PrefService* prefs) {
+#if BUILDFLAG(IS_ANDROID)
+  return false;
+#else
+  DCHECK(prefs);
+  return prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
+         prefs->GetBoolean(kBraveWalletDisabledByPolicy);
+#endif
+}
 
 constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
@@ -189,6 +200,10 @@ bool EncodeStringArrayInternal(base::span<const StringType> input,
 }
 
 }  // namespace
+
+bool IsAllowed(PrefService* prefs) {
+  return !IsDisabledByPolicy(prefs);
+}
 
 bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
   return url.DomainIs("wallet.brave.com") ||

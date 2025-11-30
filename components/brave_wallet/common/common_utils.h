@@ -15,7 +15,6 @@
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
-class PrefService;
 
 namespace brave_wallet {
 
@@ -30,8 +29,6 @@ bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
-
-bool IsAllowed(PrefService* prefs);
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);

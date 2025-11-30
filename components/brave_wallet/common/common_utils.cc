@@ -16,27 +16,10 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/net/base/url_util.h"
-#include "build/build_config.h"
-#include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
 
 namespace brave_wallet {
-
-namespace {
-
-bool IsDisabledByPolicy(PrefService* prefs) {
-#if BUILDFLAG(IS_ANDROID)
-  return false;
-#else
-  DCHECK(prefs);
-  return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
-         prefs->GetBoolean(prefs::kDisabledByPolicy);
-#endif
-}
-
-}  // namespace
 
 bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(features::kNativeBraveWalletFeature);
@@ -88,10 +71,6 @@ bool IsAnkrBalancesEnabled() {
 bool IsTransactionSimulationsEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletTransactionSimulationsFeature);
-}
-
-bool IsAllowed(PrefService* prefs) {
-  return !IsDisabledByPolicy(prefs);
 }
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {

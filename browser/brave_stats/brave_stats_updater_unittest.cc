@@ -688,7 +688,8 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
-  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(brave_wallet::kBraveWalletLastUnlockTime,
+                       base::Time::Now());
 
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
@@ -697,7 +698,8 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(6));
-  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(brave_wallet::kBraveWalletLastUnlockTime,
+                       base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=true&monthly=false"));
@@ -705,7 +707,8 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
-  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(brave_wallet::kBraveWalletLastUnlockTime,
+                       base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=false&monthly=false"));

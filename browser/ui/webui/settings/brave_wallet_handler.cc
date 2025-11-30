@@ -161,9 +161,9 @@ void BraveWalletHandler::RegisterMessages() {
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args[0],
-      base::Value(GetPrefs()->GetInteger(kBraveWalletAutoLockMinutes)));
+  ResolveJavascriptCallback(args[0],
+                            base::Value(GetPrefs()->GetInteger(
+                                brave_wallet::kBraveWalletAutoLockMinutes)));
 }
 
 void BraveWalletHandler::GetSolanaProviderOptions(
@@ -462,7 +462,7 @@ void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
   CHECK_EQ(args.size(), 2U);
   bool enabled = args[1].GetBool();
   Profile::FromWebUI(web_ui())->GetPrefs()->SetBoolean(
-      kBraveWalletPrivateWindowsEnabled, enabled);
+      brave_wallet::kBraveWalletPrivateWindowsEnabled, enabled);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
@@ -471,7 +471,7 @@ void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   bool enabled = Profile::FromWebUI(web_ui())->GetPrefs()->GetBoolean(
-      kBraveWalletPrivateWindowsEnabled);
+      brave_wallet::kBraveWalletPrivateWindowsEnabled);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], enabled);
 }

@@ -52,9 +52,10 @@ NSString* const kWebcompatReportEndpoint =
 }
 
 - (NSDictionary<NSString*, NSString*>*)walletParams {
-  auto wallet_last_unlocked = _localPrefs->GetTime(kBraveWalletLastUnlockTime);
+  auto wallet_last_unlocked =
+      _localPrefs->GetTime(brave_wallet::kBraveWalletLastUnlockTime);
   auto last_reported_wallet_unlock =
-      _localPrefs->GetTime(kBraveWalletPingReportedUnlockTime);
+      _localPrefs->GetTime(brave_wallet::kBraveWalletPingReportedUnlockTime);
   uint8_t usage_bitset = 0;
   if (wallet_last_unlocked > last_reported_wallet_unlock) {
     usage_bitset = brave_stats::UsageBitfieldFromTimestamp(
@@ -70,8 +71,9 @@ NSString* const kWebcompatReportEndpoint =
 }
 
 - (void)notifyStatsPingSent {
-  auto wallet_last_unlocked = _localPrefs->GetTime(kBraveWalletLastUnlockTime);
-  _localPrefs->SetTime(kBraveWalletPingReportedUnlockTime,
+  auto wallet_last_unlocked =
+      _localPrefs->GetTime(brave_wallet::kBraveWalletLastUnlockTime);
+  _localPrefs->SetTime(brave_wallet::kBraveWalletPingReportedUnlockTime,
                        wallet_last_unlocked);
 }
 

@@ -53,9 +53,12 @@ BraveRendererUpdater::BraveRendererUpdater(
       local_state_(local_state) {
   PrefService* pref_service = profile->GetPrefs();
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  brave_wallet_ethereum_provider_.Init(kDefaultEthereumWallet, pref_service);
-  brave_wallet_solana_provider_.Init(kDefaultSolanaWallet, pref_service);
-  brave_wallet_cardano_provider_.Init(kDefaultCardanoWallet, pref_service);
+  brave_wallet_ethereum_provider_.Init(brave_wallet::kDefaultEthereumWallet,
+                                       pref_service);
+  brave_wallet_solana_provider_.Init(brave_wallet::kDefaultSolanaWallet,
+                                     pref_service);
+  brave_wallet_cardano_provider_.Init(brave_wallet::kDefaultCardanoWallet,
+                                      pref_service);
 #endif
 
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
@@ -71,15 +74,15 @@ BraveRendererUpdater::BraveRendererUpdater(
   pref_change_registrar_.Init(pref_service);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   pref_change_registrar_.Add(
-      kDefaultEthereumWallet,
+      brave_wallet::kDefaultEthereumWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kDefaultSolanaWallet,
+      brave_wallet::kDefaultSolanaWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kDefaultCardanoWallet,
+      brave_wallet::kDefaultCardanoWallet,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
 #endif
@@ -89,7 +92,7 @@ BraveRendererUpdater::BraveRendererUpdater(
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   pref_change_registrar_.Add(
-      kBraveWalletKeyrings,
+      brave_wallet::kBraveWalletKeyrings,
       base::BindRepeating(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));

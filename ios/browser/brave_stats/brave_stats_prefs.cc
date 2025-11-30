@@ -14,7 +14,8 @@ namespace brave_stats {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kStatsReportingEnabled, true);
-  registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
+  registry->RegisterTimePref(brave_wallet::kBraveWalletPingReportedUnlockTime,
+                             base::Time());
 }
 
 }  // namespace brave_stats
