@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/containers/content/browser/contained_tab_handler.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -235,8 +236,9 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-a",
-      browser()->profile()->IsOffTheRecord());
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container-a", browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_container_a =
@@ -298,8 +300,9 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-b",
-      browser()->profile()->IsOffTheRecord());
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container-b", browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 
   content::WebContents* web_contents_container_b =
@@ -320,7 +323,167 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
                                            GetIndexedDBJS("test_key")));
 }
 
-IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_StoragePersistenceAcrossSessions) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to the page
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Set persistent storage data
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetCookieJS("persistent_cookie", "persistent_value")));
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetLocalStorageJS("persistent_key", "persistent_value")));
+
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetIndexedDBJS("persistent_key", "persistent_value")));
+
+  // Verify data is set
+  content::EvalJsResult cookie_result =
+      content::EvalJs(web_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "persistent_cookie=persistent_value") != std::string::npos);
+
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents, GetLocalStorageJS("persistent_key")));
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents, GetIndexedDBJS("persistent_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       StoragePersistenceAcrossSessions) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to the page
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_reloaded =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_reloaded);
+
+  // Verify persistent data is still available after reload
+  content::EvalJsResult cookie_result_reloaded =
+      content::EvalJs(web_contents_reloaded, GetCookiesJS());
+  EXPECT_TRUE(cookie_result_reloaded.ExtractString().find(
+                  "persistent_cookie=persistent_value") != std::string::npos);
+
+  EXPECT_EQ("persistent_value",
+            content::EvalJs(web_contents_reloaded,
+                            GetLocalStorageJS("persistent_key")));
+  EXPECT_EQ(
+      "persistent_value",
+      content::EvalJs(web_contents_reloaded, GetIndexedDBJS("persistent_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       LinkNavigationInheritsContainerStoragePartition) {
+  const GURL url("https://a.test/simple.html");
+
+  // Navigate to base URL with a container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container-for-links", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* container_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(container_web_contents);
+
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetCookieJS("container_cookie", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetLocalStorageJS("container_key", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetSessionStorageJS("container_key", "container_value")));
+  EXPECT_TRUE(
+      content::ExecJs(container_web_contents,
+                      SetIndexedDBJS("container_key", "container_value")));
+
+  // Inject a link that opens in new tab
+  std::string inject_new_tab_link_js = content::JsReplace(
+      "const link = document.createElement('a');"
+      "link.href = $1;"
+      "link.textContent = 'New Tab Link';"
+      "link.id = 'new-tab-link';"
+      "link.target = '_blank';"
+      "document.body.appendChild(link);"
+      "link.click();",
+      url);
+
+  content::WebContentsAddedObserver new_tab_observer;
+  EXPECT_TRUE(content::ExecJs(container_web_contents, inject_new_tab_link_js));
+  content::WebContents* new_tab_contents = new_tab_observer.GetWebContents();
+  ASSERT_TRUE(new_tab_contents);
+
+  ASSERT_NE(new_tab_contents, container_web_contents);
+
+  // Wait for the new tab to load
+  EXPECT_TRUE(content::WaitForLoadStop(new_tab_contents));
+
+  // Verify the new tab is on the correct URL
+  EXPECT_EQ(url, new_tab_contents->GetLastCommittedURL());
+
+  // Verify the new tab has access to the same container storage partition
+  content::EvalJsResult cookie_result =
+      content::EvalJs(new_tab_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "container_cookie=container_value") != std::string::npos);
+  EXPECT_EQ(
+      "container_value",
+      content::EvalJs(new_tab_contents, GetLocalStorageJS("container_key")));
+  EXPECT_EQ(
+      base::Value(),
+      content::EvalJs(new_tab_contents, GetSessionStorageJS("container_key")));
+  EXPECT_EQ("container_value",
+            content::EvalJs(new_tab_contents, GetIndexedDBJS("container_key")));
+
+  // Verify that setting storage in the new tab affects the container
+  EXPECT_TRUE(content::ExecJs(new_tab_contents,
+                              SetCookieJS("new_tab_cookie", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(
+      new_tab_contents, SetLocalStorageJS("new_tab_key", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(
+      new_tab_contents, SetSessionStorageJS("new_tab_key", "new_tab_value")));
+  EXPECT_TRUE(content::ExecJs(new_tab_contents,
+                              SetIndexedDBJS("new_tab_key", "new_tab_value")));
+
+  // Verify the original container tab can see the new storage
+  cookie_result = content::EvalJs(container_web_contents, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "new_tab_cookie=new_tab_value") != std::string::npos);
+  EXPECT_EQ("new_tab_value", content::EvalJs(container_web_contents,
+                                             GetLocalStorageJS("new_tab_key")));
+  EXPECT_EQ(base::Value(), content::EvalJs(container_web_contents,
+                                           GetSessionStorageJS("new_tab_key")));
+  EXPECT_EQ("new_tab_value", content::EvalJs(container_web_contents,
+                                             GetIndexedDBJS("new_tab_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       IsolateServiceWorkersBetweenContainers) {
   const GURL url("https://a.test/containers/container_test.html");
   const GURL worker_url("https://a.test/containers/container_worker.js");
   const std::string scope = "https://a.test/containers/";
@@ -344,12 +507,13 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open a new tab with a different storage partition (container-a)
+  // Open a new tab with a different storage partition (container_a)
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-a",
-      browser()->profile()->IsOffTheRecord());
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container-a", browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params);
 
   content::WebContents* web_contents_container_a =
@@ -389,12 +553,13 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
   EXPECT_EQ(1, content::EvalJs(web_contents_default,
                                GetServiceWorkerRegistrationCountJS()));
 
-  // Open another container (container-b)
+  // Open another container (container_b)
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
   params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), "default", "container-b",
-      browser()->profile()->IsOffTheRecord());
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "container-b", browser()->profile()->IsOffTheRecord());
   ui_test_utils::NavigateToURL(&params_b);
 
   content::WebContents* web_contents_container_b =
@@ -460,6 +625,74 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
                             CheckServiceWorkerRegisteredJS(scope)));
   EXPECT_EQ(1, content::EvalJs(web_contents_container_b,
                                GetServiceWorkerRegistrationCountJS()));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_ServiceWorkerPersistenceAcrossSessions) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  // Navigate to the page with a container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "persistent-container", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Register service worker
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, RegisterServiceWorkerJS(worker_url.spec(), scope)));
+
+  // Verify service worker is registered
+  EXPECT_EQ(
+      "registered",
+      content::EvalJs(web_contents, CheckServiceWorkerRegisteredJS(scope)));
+
+  // Set some persistent storage data that the service worker might use
+  EXPECT_TRUE(content::ExecJs(
+      web_contents, SetLocalStorageJS("sw_data", "persistent_value")));
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              SetCookieJS("sw_cookie", "persistent_cookie")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       ServiceWorkerPersistenceAcrossSessions) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const std::string scope = "https://a.test/containers/";
+
+  // Navigate to the page with the same container
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(),
+      base::StrCat({containers::ContainedTabHandler::kIdPrefix, "default"}),
+      "persistent-container", browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents_reloaded =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_reloaded);
+
+  // Verify service worker is still registered after browser restart
+  EXPECT_EQ("registered",
+            content::EvalJs(web_contents_reloaded,
+                            CheckServiceWorkerRegisteredJS(scope)));
+
+  // Verify persistent storage data is still available
+  EXPECT_EQ("persistent_value", content::EvalJs(web_contents_reloaded,
+                                                GetLocalStorageJS("sw_data")));
+
+  content::EvalJsResult cookie_result =
+      content::EvalJs(web_contents_reloaded, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find(
+                  "sw_cookie=persistent_cookie") != std::string::npos);
 }
 
 }  // namespace containers

@@ -6,12 +6,20 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_DELEGATE_H_
 
+#include <optional>
+
+#include "content/public/browser/storage_partition_config.h"
+
 #define AddNewContents                                                        \
   AddNewContents_ChromiumImpl(                                                \
       WebContents* source, std::unique_ptr<WebContents> new_contents,         \
       const GURL& target_url, WindowOpenDisposition disposition,              \
       const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
       bool* was_blocked);                                                     \
+  virtual std::optional<content::StoragePartitionConfig>                      \
+  MaybeInheritStoragePartition(                                               \
+      WebContents* source,                                                    \
+      const content::StoragePartitionConfig& partition_config);               \
   virtual WebContents* AddNewContents
 
 #include <content/public/browser/web_contents_delegate.h>  // IWYU pragma: export

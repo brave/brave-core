@@ -45,6 +45,9 @@ class BraveBrowser : public Browser {
   bool NormalBrowserSupportsWindowFeature(
       WindowFeature feature,
       bool check_can_support) const override;
+  std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
+      content::WebContents* source,
+      const content::StoragePartitionConfig& partition_config) override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.
