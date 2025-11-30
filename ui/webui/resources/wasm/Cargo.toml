@@ -1,3 +1,12 @@
 [workspace]
 resolver = "2"
 members = ["opaque_ke"]
+
+# Patch opaque_ke dependencies to use GNRT-vendored crates (where available):
+[patch.crates-io.hex_v0_4]
+path = "../../../../../third_party/rust/chromium_crates_io/vendor/hex-v0_4"
+package = "hex"
+
+[patch.crates-io.rand_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-v0_8"
+package = "rand"
