@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -98,4 +99,25 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
   }
 
   BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
+}
+
+void BraveBrowserTabStripController::OnTreeTabChanged(
+    const TreeTabChange& change) {
+  switch (change.type) {
+    case TreeTabChange::Type::kNodeCreated: {
+      const auto& created_change = change.GetCreatedChange();
+      auto index = model_->GetIndexOfTab(created_change.node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+      break;
+    }
+    case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      auto* tab = change.GetWillBeDestroyedChange().node->GetTab();
+      CHECK(tab);
+      auto index = model_->GetIndexOfTab(tab);
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
+      break;
+    }
+  }
 }
