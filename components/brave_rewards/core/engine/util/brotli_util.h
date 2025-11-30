@@ -9,12 +9,12 @@
 #include <string>
 #include <string_view>
 
+#include "base/containers/span.h"
+
 namespace brave_rewards::internal {
 namespace util {
 
-bool DecodeBrotliString(std::string_view input,
-                        size_t uncompressed_size,
-                        std::string* output);
+bool DecodeBrotliString(std::string_view input, base::span<uint8_t> output);
 
 bool DecodeBrotliStringWithBuffer(std::string_view input,
                                   size_t buffer_size,
