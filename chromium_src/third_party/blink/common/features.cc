@@ -79,6 +79,11 @@ BASE_FEATURE(kMiddleButtonClickAutoscroll,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+BASE_FEATURE(kForceContextMenuOnShiftRightClick,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+
 bool IsPrerender2Enabled() {
   return false;
 }

@@ -545,6 +545,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
 #endif
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+#define BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY            \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "force-context-menu-on-shift-right-click",                               \
+      "Force context menu on Shift + Right Click on elements in pages",        \
+      "Always show the context menu when Shift + Right Click is used, "        \
+      "even if a web page is preventing it.",                                  \
+      kOsWin | kOsLinux | kOsMac,                                              \
+      FEATURE_VALUE_TYPE(blink::features::kForceContextMenuOnShiftRightClick), \
+  })
+#else
+#define BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                          \
   EXPAND_FEATURE_ENTRIES(                                                      \
@@ -1299,6 +1313,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
+  BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
