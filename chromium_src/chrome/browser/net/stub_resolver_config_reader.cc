@@ -18,6 +18,18 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include <CoreFoundation/CoreFoundation.h>
+
+namespace {
+bool ShouldDisableDohForMacosParentalControls() {
+  Boolean forced = CFPreferencesAppValueIsForced(
+      CFSTR("restrictWeb"), CFSTR("com.apple.familycontrols.contentfilter"));
+  return forced;
+}
+}  // namespace
+#endif
+
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 namespace {
 
@@ -133,7 +145,18 @@ SecureDnsConfig::ManagementMode MaybeOverrideForcedManagementMode(
                              is_managed),                                      \
       ADDITIONAL_DNS_TYPES_ENABLED)
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(IS_MAC)
+#define BRAVE_SHOULD_DISABLE_DOH_FOR_MACOS_PARENTAL_CONTROLS  \
+    return ShouldDisableDohForMacosParentalControls();
+#else
+#define BRAVE_SHOULD_DISABLE_DOH_FOR_MACOS_PARENTAL_CONTROLS
+#endif
+
 #include <chrome/browser/net/stub_resolver_config_reader.cc>
+
+#undef BRAVE_SHOULD_DISABLE_DOH_FOR_MACOS_PARENTAL_CONTROLS
+
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef ConfigureStubHostResolver
 #undef SecureDnsConfig
