@@ -55,7 +55,7 @@ class AdBlockEngine {
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  void UseResources(const std::string& resources);
+  void UseResources(const adblock::BraveCoreResourceStorage& storage);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
@@ -71,9 +71,9 @@ class AdBlockEngine {
 
   void Load(bool deserialize,
             const DATFileDataBuffer& dat_buf,
-            const std::string& resources_json);
+            const adblock::BraveCoreResourceStorage& storage);
   void Load(rust::Box<adblock::FilterSet> filter_set,
-            const std::string& resources_json);
+            const adblock::BraveCoreResourceStorage& storage);
 
   class TestObserver : public base::CheckedObserver {
    public:
@@ -88,14 +88,14 @@ class AdBlockEngine {
  protected:
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
-                           const std::string& resources_json);
+                           const adblock::BraveCoreResourceStorage& storage);
 
   void OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
-                         const std::string& resources_json);
+                         const adblock::BraveCoreResourceStorage& storage);
   void OnListSourceLoaded(const DATFileDataBuffer& filters,
-                          const std::string& resources_json);
+                          const adblock::BraveCoreResourceStorage& storage);
   void OnDATLoaded(const DATFileDataBuffer& dat_buf,
-                   const std::string& resources_json);
+                   const adblock::BraveCoreResourceStorage& storage);
 
   rust::Box<adblock::Engine> ad_block_client_
       GUARDED_BY_CONTEXT(sequence_checker_);

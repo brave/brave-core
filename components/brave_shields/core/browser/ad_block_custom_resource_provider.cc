@@ -14,7 +14,6 @@
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -85,29 +84,7 @@ base::Value::List::iterator FindResource(base::Value::List& resources,
   });
 }
 
-std::string_view JsonListStr(std::string_view json) {
-  const auto start = json.find('[');
-  const auto end = json.rfind(']');
-  if (start == std::string_view::npos || end == std::string_view::npos ||
-      start >= end) {
-    return std::string_view();
-  }
-  return json.substr(start + 1, end - start - 1);
-}
 
-std::string MergeResources(const std::string& default_resources,
-                           const std::string& custom_resources) {
-  auto default_resources_str = JsonListStr(default_resources);
-  if (default_resources_str.empty()) {
-    return custom_resources;
-  }
-  auto custom_resources_str = JsonListStr(custom_resources);
-  if (custom_resources_str.empty()) {
-    return default_resources;
-  }
-  return base::StrCat(
-      {"[", default_resources_str, ",", custom_resources_str, "]"});
-}
 
 }  // namespace
 
@@ -203,18 +180,18 @@ void AdBlockCustomResourceProvider::RemoveObserver(
 }
 
 void AdBlockCustomResourceProvider::LoadResources(
-    base::OnceCallback<void(const std::string& resources_json)> on_load) {
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load) {
   default_resource_provider_->LoadResources(
       base::BindOnce(&AdBlockCustomResourceProvider::OnDefaultResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(on_load)));
 }
 
 void AdBlockCustomResourceProvider::OnResourcesLoaded(
-    const std::string& resources_json) {
+    AdblockResourceStorageBox storage) {
   OnDefaultResourcesLoaded(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()),
-      resources_json);
+      std::move(storage));
 }
 
 void AdBlockCustomResourceProvider::AddResourceInternal(
@@ -286,28 +263,29 @@ void AdBlockCustomResourceProvider::SaveResources(base::Value resources) {
 }
 
 void AdBlockCustomResourceProvider::OnDefaultResourcesLoaded(
-    base::OnceCallback<void(const std::string& resources_json)> on_load,
-    const std::string& resources_json) {
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+    AdblockResourceStorageBox storage) {
   GetCustomResources(base::BindOnce(
       &AdBlockCustomResourceProvider::OnCustomResourcesLoaded,
-      weak_ptr_factory_.GetWeakPtr(), std::move(on_load), resources_json));
+      weak_ptr_factory_.GetWeakPtr(), std::move(on_load), std::move(storage)));
 }
 
 void AdBlockCustomResourceProvider::OnCustomResourcesLoaded(
-    base::OnceCallback<void(const std::string& resources_json)> on_load,
-    const std::string& default_resources_json,
+    base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+    AdblockResourceStorageBox default_storage,
     base::Value custom_resources) {
   CHECK(custom_resources.is_list());
 
   if (custom_resources.GetList().empty()) {
-    std::move(on_load).Run(default_resources_json);
+    std::move(on_load).Run(std::move(default_storage));
   } else {
     auto custom_resources_json = base::WriteJson(custom_resources);
     if (!custom_resources_json) {
-      std::move(on_load).Run(default_resources_json);
+      std::move(on_load).Run(std::move(default_storage));
     } else {
-      std::move(on_load).Run(
-          MergeResources(default_resources_json, *custom_resources_json));
+      auto merged_storage = adblock::extend_resource_storage(
+          *default_storage, *custom_resources_json);
+      std::move(on_load).Run(std::move(merged_storage));
     }
   }
 }

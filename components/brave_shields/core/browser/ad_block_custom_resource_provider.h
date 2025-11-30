@@ -64,11 +64,11 @@ class AdBlockCustomResourceProvider
 
   // AdBlockResourceProvider:
   void LoadResources(
-      base::OnceCallback<void(const std::string& resources_json)>) override;
+      base::OnceCallback<void(AdblockResourceStorageBox)>) override;
 
  private:
   // AdBlockResourceProvider::Observer:
-  void OnResourcesLoaded(const std::string& resources_json) override;
+  void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
   void AddResourceInternal(base::Value resource,
                            StatusCallback on_complete,
@@ -84,11 +84,11 @@ class AdBlockCustomResourceProvider
   void SaveResources(base::Value resources);
 
   void OnDefaultResourcesLoaded(
-      base::OnceCallback<void(const std::string& resources_json)> on_load,
-      const std::string& resources_json);
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+      AdblockResourceStorageBox storage);
   void OnCustomResourcesLoaded(
-      base::OnceCallback<void(const std::string& resources_json)> on_load,
-      const std::string& default_resources,
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load,
+      AdblockResourceStorageBox default_storage,
       base::Value custom_resources);
 
   void ReloadResourcesAndNotify();

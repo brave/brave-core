@@ -37,7 +37,7 @@ OBJC_EXPORT
 - (void)registerCatalogChanges:(void (^)())callback;
 
 /// Listen to downloaded version changes of resources
-- (void)registerResourcesChanges:(void (^)(NSString* resourcesJSON))callback;
+- (void)registerResourcesChanges:(void (^)())callback;
 
 /// Update the filter lists
 - (void)updateFilterLists:(void (^)(bool))callback;
