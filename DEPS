@@ -146,6 +146,11 @@ hooks = [
     'action': ['vpython3', 'script/web_discovery_project.py', '--install'],
   },
   {
+    'name': 'download_opengrep',
+    'pattern': '.',
+    'action': ['vpython3', 'third_party/opengrep/download_opengrep.py'],
+  },
+  {
     'name': 'generate_licenses',
     'pattern': '.',
     'action': ['vpython3', 'script/generate_licenses.py'],
