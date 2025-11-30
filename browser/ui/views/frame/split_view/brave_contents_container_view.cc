@@ -62,8 +62,11 @@ BraveContentsContainerView* BraveContentsContainerView::From(
 }
 
 BraveContentsContainerView::BraveContentsContainerView(
-    BrowserView* browser_view)
-    : ContentsContainerView(browser_view), browser_view_(*browser_view) {
+    BrowserView* browser_view,
+    bool for_web_panel)
+    : ContentsContainerView(browser_view),
+      browser_view_(*browser_view),
+      for_web_panel_(for_web_panel) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
   reader_mode_toolbar_ =
@@ -89,6 +92,15 @@ BraveContentsContainerView::BraveContentsContainerView(
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
 
+bool BraveContentsContainerView::IsActive() const {
+  auto* web_contents = contents_view_->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
+}
+
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {
@@ -101,7 +113,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   container_outline_->SetVisible(false);
   UpdateBorderRoundedCorners();
 
-  if (!is_in_split) {
+  if (!is_in_split && !for_web_panel_) {
     return;
   }
 
