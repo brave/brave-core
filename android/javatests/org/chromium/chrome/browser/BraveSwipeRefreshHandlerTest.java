@@ -92,7 +92,7 @@ public class BraveSwipeRefreshHandlerTest {
     @SmallTest
     public void testPullToRefreshIgnored() {
         BraveSwipeRefreshHandler braveHandler = createBraveHandler();
-        braveHandler.setIgnorePullToRefresh(true);
+        braveHandler.mIgnorePullToRefresh = true;
         triggerRefresh(braveHandler);
 
         // SwipeRefreshLayout is initialized in a lazy way during swipe itself
@@ -105,7 +105,7 @@ public class BraveSwipeRefreshHandlerTest {
     public void testPullToRefreshPassthrough() {
         BraveSwipeRefreshHandler braveHandler = createBraveHandler();
 
-        // By default ignorePullToRefresh is set to false
+        // By default mIgnorePullToRefresh is set to false
         triggerRefresh(braveHandler);
 
         assertNotNull(mSwipeRefreshLayout);
@@ -117,7 +117,7 @@ public class BraveSwipeRefreshHandlerTest {
     public void testSetIgnorePullToRefresh() {
         BraveSwipeRefreshHandler braveHandler = createBraveHandler();
 
-        braveHandler.setIgnorePullToRefresh(false);
+        braveHandler.mIgnorePullToRefresh = false;
         triggerRefresh(braveHandler);
 
         assertNotNull(mSwipeRefreshLayout);
@@ -125,7 +125,7 @@ public class BraveSwipeRefreshHandlerTest {
 
         clearInvocations(mSwipeRefreshLayout);
 
-        braveHandler.setIgnorePullToRefresh(true);
+        braveHandler.mIgnorePullToRefresh = true;
         triggerRefresh(braveHandler);
         Mockito.verify(mSwipeRefreshLayout, Mockito.never()).start();
     }
@@ -136,7 +136,7 @@ public class BraveSwipeRefreshHandlerTest {
      *
      * @param handler The {@link SwipeRefreshHandler} to use.
      */
-    private void triggerRefresh(BraveSwipeRefreshHandler handler) {
+    private void triggerRefresh(SwipeRefreshHandler handler) {
         ThreadUtils.runOnUiThreadBlocking(
                 () ->
                         handler.start(
@@ -156,6 +156,6 @@ public class BraveSwipeRefreshHandlerTest {
         SwipeRefreshHandler chromeHandler =
                 SwipeRefreshHandler.from(mTab, mSwipeRefreshLayoutCreator);
         chromeHandler.initWebContents(mock()); // Needed to enable the overscroll refresh handler.
-        return BraveSwipeRefreshHandler.from(mTab);
+        return (BraveSwipeRefreshHandler) chromeHandler;
     }
 }
