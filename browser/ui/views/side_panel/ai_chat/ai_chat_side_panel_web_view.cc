@@ -11,9 +11,17 @@
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -65,4 +73,41 @@ void AIChatSidePanelWebView::OnShow() {
     RequestFocus();
     should_focus_ = false;
   }
+}
+
+content::WebContents* AIChatSidePanelWebView::AddNewContents(
+    content::WebContents* source,
+    std::unique_ptr<content::WebContents> new_contents,
+    const GURL& target_url,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& window_features,
+    bool user_gesture,
+    bool* was_blocked) {
+  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
+      this->GetWidget()->GetNativeWindow());
+  auto* browser = browser_view->browser();
+
+  // If AI Chat is not open in the side panel, don't open the tab.
+  if (browser->browser_window_features()
+          ->side_panel_ui()
+          ->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+    return nullptr;
+  }
+
+  // Rather than opening a new tab from the side panel we navigate the active
+  // tab next to the sidepanel.
+  auto* active_tab = browser->tab_strip_model()->GetActiveWebContents();
+  NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
+
+  // Sets source_contents and disposition so that the url can be loaded the
+  // current active tab
+  params.source_contents = active_tab;
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+
+  params.window_action = NavigateParams::NO_ACTION;
+  params.user_gesture = user_gesture;
+
+  Navigate(&params);
+
+  return params.navigated_or_inserted_contents;
 }

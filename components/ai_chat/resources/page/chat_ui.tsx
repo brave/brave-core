@@ -155,7 +155,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
 
   return (
     <iframe
-      sandbox='allow-scripts allow-same-origin allow-modals allow-forms'
+      sandbox='allow-scripts allow-same-origin allow-modals allow-forms allow-popups'
       allow='clipboard-write'
       src={
         'chrome-untrusted://leo-ai-conversation-entries/'

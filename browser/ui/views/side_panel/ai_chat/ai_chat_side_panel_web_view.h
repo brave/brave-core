@@ -32,6 +32,16 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   AIChatSidePanelWebView(const AIChatSidePanelWebView&) = delete;
   AIChatSidePanelWebView& operator=(const AIChatSidePanelWebView&) = delete;
 
+  // WebUIContentsWrapper::Host:
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
+
  private:
   // This callback is invoked multiple times, so we need to ensure that
   // focus is set only once with `should_focus_`.

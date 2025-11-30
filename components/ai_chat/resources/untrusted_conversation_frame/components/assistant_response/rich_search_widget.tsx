@@ -49,7 +49,7 @@ export default function RichSearchWidget(props: { jsonData: string }) {
   return (
     <iframe
       className={styles.richSearchWidget}
-      sandbox='allow-scripts allow-same-origin allow-forms'
+      sandbox='allow-scripts allow-same-origin allow-forms allow-popups'
       src={`${RICH_SEARCH_WIDGETS_ORIGIN}/embed.html`}
       ref={frameHandler}
     />
