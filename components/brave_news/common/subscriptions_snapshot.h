@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -49,8 +49,8 @@ class SubscriptionsSnapshot {
  public:
   SubscriptionsSnapshot();
   SubscriptionsSnapshot(
-      base::flat_set<std::string> enabled_publishers,
-      base::flat_set<std::string> disabled_publishers,
+      absl::flat_hash_set<std::string> enabled_publishers,
+      absl::flat_hash_set<std::string> disabled_publishers,
       std::vector<DirectFeed> direct_feeds,
       base::flat_map<std::string, std::vector<std::string>> channels);
   SubscriptionsSnapshot(const SubscriptionsSnapshot&);
@@ -77,12 +77,12 @@ class SubscriptionsSnapshot {
   SubscriptionsDiff DiffChannels(const SubscriptionsSnapshot& old) const;
 
   // List of enabled publisher_ids
-  const base::flat_set<std::string>& enabled_publishers() const {
+  const absl::flat_hash_set<std::string>& enabled_publishers() const {
     return enabled_publishers_;
   }
 
   // List of disabled publisher_ids
-  const base::flat_set<std::string>& disabled_publishers() const {
+  const absl::flat_hash_set<std::string>& disabled_publishers() const {
     return disabled_publishers_;
   }
 
@@ -98,8 +98,8 @@ class SubscriptionsSnapshot {
   }
 
  private:
-  base::flat_set<std::string> enabled_publishers_;
-  base::flat_set<std::string> disabled_publishers_;
+  absl::flat_hash_set<std::string> enabled_publishers_;
+  absl::flat_hash_set<std::string> disabled_publishers_;
   std::vector<DirectFeed> direct_feeds_;
   base::flat_map<std::string, std::vector<std::string>> channels_;
 };
