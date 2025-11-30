@@ -7,8 +7,6 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 source_set("endpoints") {
   sources = [
-    "host.cc",
-    "host.h",
     "login_finalize.h",
     "login_init.h",
     "password_finalize.h",
@@ -17,13 +15,7 @@ source_set("endpoints") {
     "verify_result.h",
   ]
 
-  deps = [
-    "//base",
-    "//brave/brave_domains",
-    "//brave/components/brave_account/endpoint_client",
-    "//net",
-    "//url",
-  ]
+  deps = [ "//brave/components/brave_account/endpoint_client" ]
 
   public_deps =
       [ "//brave/components/brave_account/endpoints:generated_api_types" ]
