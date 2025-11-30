@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -69,6 +70,10 @@ class BraveBrowser : public Browser {
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
+  // Allows ignoring onbeforeunload handlers when closing selected tabs.
+  void SetIgnoreBeforeUnloadHandlers(
+      const std::vector<content::WebContents*>& for_contents);
+
   BraveBrowserWindow* brave_window();
 
   void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
@@ -87,6 +92,8 @@ class BraveBrowser : public Browser {
 
   bool AreAllTabsSharedPinnedTabs();
 
+  bool ShouldSuppressDialogs(content::WebContents* source) override;
+
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.
   bool confirmed_to_close_ = false;
@@ -95,6 +102,9 @@ class BraveBrowser : public Browser {
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.
   bool ignore_enable_closing_last_tab_pref_ = false;
+
+  // WebContents for which onbeforeunload handlers should be ignored.
+  std::vector<content::WebContents*> tabs_closing_with_onbeforeunload_ignore_;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

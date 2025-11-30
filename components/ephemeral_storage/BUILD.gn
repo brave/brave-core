@@ -17,6 +17,7 @@ static_library("ephemeral_storage") {
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/core/common",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
