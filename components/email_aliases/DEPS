@@ -2,6 +2,9 @@ include_rules = [
   "+absl/strings/str_format.h",
   "+components/keyed_service/core",
   "+components/grit/brave_components_strings.h",
+  "+components/os_crypt/sync/os_crypt.h",
+  "+components/os_crypt/sync/os_crypt_mocker.h",
+  "+components/prefs",
   "+services/network/public/cpp",
   "+services/network/test",
 ]
