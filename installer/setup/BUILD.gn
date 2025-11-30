@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+assert(is_win)
+
+source_set("unit_tests") {
+  sources = [
+    "archive_patch_helper_unittest.cc",
+    "brave_setup_util_unittest.cc",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/common:constants",
+    "//chrome/installer/setup:lib",
+    "//chrome/installer/util:constants",
+    "//chrome/installer/util:metainstaller_utils",
+    "//chrome/installer/util:with_no_strings",
+    "//testing/gtest",
+  ]
+  testonly = true
+}
+
+# As of this writing, the sole purpose of this GN target is to call
+# chrome::RegisterPathProvider() for archive_patch_helper_unittest.cc.
+source_set("run_all_unittests") {
+  sources = [ "run_all_unittests.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/common:constants",
+  ]
+  testonly = true
+}

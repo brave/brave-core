@@ -5,31 +5,47 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-brave_chromium_src_chrome_installer_setup_sources = []
-brave_chromium_src_chrome_installer_setup_deps = []
+assert(is_win)
 
-if (is_win) {
+brave_chromium_src_chrome_installer_setup_sources = [
+  # We try to avoid adding entries to upstream `sources`, but there is a
+  # circular dependency here that seems hard to avoid in any other way:
+  # archive_patch_helper.cc depends on chrome/installer/setup:lib because it
+  # needs setup_util.cc. At the same time, chrome/installer/setup:lib indirectly
+  # depends on archive_patch_helper.cc via its own unpack_archive.cc.
+  "//brave/installer/setup/archive_patch_helper.cc",
+  "//brave/installer/setup/archive_patch_helper.h",
+
+  # Similarly to above, brave_setup_util.cc depends on
+  # chrome/installer/setup:lib via installer_state.cc. And that GN target
+  # depends on brave_setup_util.cc via unpack_archive.cc. The only feasible way
+  # to resolve this circular dependency seems to be add to upstream's `sources`.
+  "//brave/installer/setup/brave_setup_util.cc",
+  "//brave/installer/setup/brave_setup_util.h",
+]
+brave_chromium_src_chrome_installer_setup_deps = [
+  "//brave/components/brave_vpn/common/buildflags",
+  "//brave/installer/util",
+  "//brave/third_party/bspatch",
+  "//chrome/installer/util:work_item",
+  "//components/zucchini:zucchini_io",
+  "//components/zucchini:zucchini_lib",
+]
+
+if (enable_brave_vpn) {
   brave_chromium_src_chrome_installer_setup_deps += [
-    "//brave/components/brave_vpn/common/buildflags",
-    "//brave/installer/util",
-    "//chrome/installer/util:work_item",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:install_utils",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
   ]
+}
 
-  if (enable_brave_vpn) {
-    brave_chromium_src_chrome_installer_setup_deps += [
-      "//brave/browser/brave_vpn/win:wireguard_utils",
-      "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
-      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:install_utils",
-      "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
-    ]
-  }
-
-  if (is_official_build) {
-    # These should be added to the lib target, but don't want to add another
-    # patch.
-    brave_chromium_src_chrome_installer_setup_sources += [
-      "channel_override_work_item.cc",
-      "channel_override_work_item.h",
-    ]
-  }
+if (is_official_build) {
+  # These should be added to the lib target, but don't want to add another
+  # patch.
+  brave_chromium_src_chrome_installer_setup_sources += [
+    "channel_override_work_item.cc",
+    "channel_override_work_item.h",
+  ]
 }
