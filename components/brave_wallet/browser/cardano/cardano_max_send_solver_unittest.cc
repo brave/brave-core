@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "crypto/hash.h"
@@ -120,8 +121,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
 
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 228u);
-    EXPECT_EQ(min_fee, 165413u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
+    EXPECT_EQ(min_fee, 165237u);
 
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -131,18 +132,20 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     ASSERT_TRUE(tx.has_value());
 
     // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount());
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount());
     EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 
   // Sending twice of send_amount.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 228u);
-    EXPECT_EQ(min_fee, 165413u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
+    EXPECT_EQ(min_fee, 165237u);
 
     uint32_t total_input = 2 * send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -152,18 +155,20 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     ASSERT_TRUE(tx.has_value());
 
     // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), 2 * send_amount());
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), 2 * send_amount());
     EXPECT_EQ(tx->TargetOutput()->amount, 2 * send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 
   // Sending slightly less than send_amount.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 228u);
-    EXPECT_EQ(min_fee, 165413u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
+    EXPECT_EQ(min_fee, 165237u);
 
     uint32_t total_input = send_amount() - 1000 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -173,18 +178,20 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
     ASSERT_TRUE(tx.has_value());
 
     // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), send_amount() - 1000);
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), send_amount() - 1000);
     EXPECT_EQ(tx->TargetOutput()->amount, send_amount() - 1000);
     EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 
   // Sending one tenth of send_amount fails min value req.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 227u);
-    EXPECT_EQ(min_fee, 165369u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
+    EXPECT_EQ(min_fee, 165237u);
 
     uint32_t total_input = send_amount() / 10 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -202,8 +209,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
 
   // Fee for typical 1 input -> 1 output transaction.
   uint32_t min_fee =
-      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13884u);
-  EXPECT_EQ(min_fee, 766277u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13880u);
+  EXPECT_EQ(min_fee, 766101u);
 
   {
     uint32_t total_input = 100 * send_amount() + min_fee;
@@ -217,12 +224,14 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
     ASSERT_TRUE(tx.has_value());
 
     // We have exactly send amount + fee.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
+    EXPECT_EQ(tx->fee(), min_fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
     EXPECT_EQ(tx->inputs().size(), 100u);
-    EXPECT_EQ(tx->TotalOutputsAmount(), 100 * send_amount());
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), 100 * send_amount());
     EXPECT_EQ(tx->TargetOutput()->amount, 100 * send_amount());
     EXPECT_FALSE(tx->ChangeOutput());
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
   }
 }
 

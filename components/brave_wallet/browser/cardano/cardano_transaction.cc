@@ -15,7 +15,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/numerics/checked_math.h"
-#include "base/numerics/clamped_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/optional_util.h"
@@ -315,6 +314,7 @@ base::Value::Dict CardanoTransaction::ToValue() const {
   dict.Set("invalid_after", base::NumberToString(invalid_after_));
   dict.Set("to", to_.ToString());
   dict.Set("amount", base::NumberToString(amount_));
+  dict.Set("fee", base::NumberToString(fee_));
   dict.Set("sending_max_amount", sending_max_amount_);
 
   return dict;
@@ -384,6 +384,14 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
     return std::nullopt;
   }
 
+  if (!base::OptionalUnwrapTo(ReadUint64String(value, "fee"), result.fee_)) {
+    base::CheckedNumeric<uint64_t> fee =
+        result.GetTotalInputsAmount() - result.GetTotalOutputsAmount();
+    if (!fee.AssignIfValid(&result.fee_)) {
+      return std::nullopt;
+    }
+  }
+
   result.sending_max_amount_ =
       value.FindBool("sending_max_amount").value_or(false);
 
@@ -398,29 +406,22 @@ bool CardanoTransaction::IsSigned() const {
   return inputs_.size() == witnesses_.size();
 }
 
-uint64_t CardanoTransaction::TotalInputsAmount() const {
+base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalInputsAmount()
+    const {
   base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& input : inputs_) {
     result += input.utxo_value;
   }
-  return result.ValueOrDie();
+  return result;
 }
 
-uint64_t CardanoTransaction::TotalOutputsAmount() const {
+base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalOutputsAmount()
+    const {
   base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& output : outputs_) {
     result += output.amount;
   }
-  return result.ValueOrDie();
-}
-
-bool CardanoTransaction::AmountsAreValid(uint64_t min_fee) const {
-  return TotalInputsAmount() >=
-         base::CheckAdd(TotalOutputsAmount(), min_fee).ValueOrDie();
-}
-
-uint64_t CardanoTransaction::EffectiveFeeAmount() const {
-  return base::ClampSub(TotalInputsAmount(), TotalOutputsAmount());
+  return result;
 }
 
 void CardanoTransaction::AddInput(TxInput input) {
@@ -493,24 +494,6 @@ CardanoTransaction::TxOutput* CardanoTransaction::ChangeOutput() {
     }
   }
   return nullptr;
-}
-
-bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
-  auto* change = ChangeOutput();
-  CHECK(change);
-  auto* target = TargetOutput();
-  CHECK(target);
-
-  base::CheckedNumeric<uint64_t> total_input = TotalInputsAmount();
-  base::CheckedNumeric<uint64_t> change_amount =
-      total_input - min_fee - target->amount;
-  if (!change_amount.IsValid()) {
-    return false;
-  }
-
-  change->amount = change_amount.ValueOrDie();
-  DCHECK_EQ(EffectiveFeeAmount(), min_fee);
-  return true;
 }
 
 void CardanoTransaction::ArrangeTransactionForTesting() {
