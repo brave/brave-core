@@ -32,12 +32,10 @@
   <settings-memory-page slot="view" id="memory" prefs="{{prefs}}" in-search-mode="[[inSearchMode_]]">
   </settings-memory-page>
 
-  <template is="dom-if" if="[[showBatterySettings_]]">
-    <settings-battery-page slot="view" id="battery" prefs="{{prefs}}"
-      hidden="[[!showBatterySettings_]]"
-      in-search-mode="[[inSearchMode_]]">
-    </settings-battery-page>
-  </template>
+  <settings-battery-page slot="view" id="battery" prefs="{{prefs}}"
+    hidden="[[!showBatterySettings_]]"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-battery-page>
 
   <template is="dom-if" if="[[showShortcutsPage_]]">
     <settings-brave-shortcuts-page

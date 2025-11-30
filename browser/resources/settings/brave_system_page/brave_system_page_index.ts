@@ -124,10 +124,7 @@ export class SettingsBraveSystemPageIndexElement extends
     // </if>
 
     views.push('memory')
-
-    if (this.showBatterySettings_) {
-      views.push('battery')
-    }
+    views.push('battery')
 
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
