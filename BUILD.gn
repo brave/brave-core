@@ -253,8 +253,41 @@ if (is_win) {
   }
 }
 
+action("validate_pwa_manifests") {
+  script = "//brave/build/commands/scripts/validate_pwa_manifests.py"
+
+  # Discover all .webmanifest files to watch for changes
+  _webmanifest_files = exec_script(
+      script,
+      [
+        "--list-files",
+        "--root-dir",
+        rebase_path("//brave", root_build_dir),
+      ],
+      "value")
+
+  # Use a stamp file as output to satisfy GN requirements
+  stamp_file = "$target_gen_dir/validate_pwa_manifests.stamp"
+  outputs = [ stamp_file ]
+
+  # Watch the validation script and all manifest files for changes
+  inputs = [ script ] + _webmanifest_files
+
+  # Pass the discovered files to the validation script to avoid re-walking the tree
+  args = [
+    "--stamp",
+    rebase_path(stamp_file, root_build_dir),
+  ]
+  foreach(file, _webmanifest_files) {
+    args += [ rebase_path(file, root_build_dir) ]
+  }
+}
+
 group("brave") {
-  deps = [ "build/$target_os:brave" ]
+  deps = [
+    ":validate_pwa_manifests",
+    "build/$target_os:brave",
+  ]
   if (!is_android && !is_ios) {
     deps += [
       "//brave/components/version_info:generate_version",

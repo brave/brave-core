@@ -6,4 +6,7 @@
 brave_exec_script_allowlist = [
   # //brave/.env parser.
   "//brave/build/env_config.gni",
+
+  # PWA manifest validation
+  "//brave/BUILD.gn",
 ]
