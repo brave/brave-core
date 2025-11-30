@@ -12,7 +12,7 @@ enum VPNStatus: Equatable {
   /// VPN is not connected
   case disconnected
   /// VPN is connected to a given region
-  case connected(activeRegion: VPNRegion)
+  case connected(activeRegion: VPNRegion, isSmartProxyRoutingEnabled: Bool)
 }
 
 /// The VPN region details to show
@@ -66,7 +66,10 @@ extension VPNRegion {
 extension VPNStatus {
   static var liveVPNStatus: VPNStatus {
     if BraveVPN.isConnected, let region = BraveVPN.activatedRegion.map(VPNRegion.init) {
-      return .connected(activeRegion: region)
+      return .connected(
+        activeRegion: region,
+        isSmartProxyRoutingEnabled: BraveVPN.isSmartProxyRoutingEnabled
+      )
     }
     return .disconnected
   }

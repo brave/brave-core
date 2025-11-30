@@ -183,6 +183,20 @@ public class BraveVPNSettingsViewController: TableViewController {
       object: nil
     )
 
+    setUpSections()
+
+    Task { @MainActor in
+      self.credentialSummary = await fetchCredentialSummary()
+      self.updateSubscriptionStatus()
+      self.updateSubscriptionExpiryDate()
+    }
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
+  private func setUpSections() {
     let vpnEnabledToggleView = SwitchAccessoryView(
       initialValue: BraveVPN.isConnected,
       valueChange: { vpnOn in
@@ -196,8 +210,10 @@ public class BraveVPNSettingsViewController: TableViewController {
 
     let vpnSmartProxyToggleView = BraveVPNLinkSwitchView(
       isOn: { BraveVPN.isSmartProxyRoutingEnabled },
-      valueChange: { isSmartProxyEnabled in
+      valueChange: { [weak self] isSmartProxyEnabled in
         BraveVPN.isSmartProxyRoutingEnabled = isSmartProxyEnabled
+        self?.setUpSections()
+        self?.tableView.reloadData()
       },
       openURL: openURL
     )
@@ -309,7 +325,7 @@ public class BraveVPNSettingsViewController: TableViewController {
         && (BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone)
     }
     let rowContext =
-      smartProxyAvailable
+      smartProxyAvailable && BraveVPN.isSmartProxyRoutingEnabled
       ? [BraveVPNServerLocationCell.textAccessoryKey: "leo.smart.proxy-routing"] : nil
     let serverSection = Section(
       header: .title(Strings.VPN.settingsServerSection),
@@ -374,16 +390,6 @@ public class BraveVPNSettingsViewController: TableViewController {
       serverSection,
       techSupportSection,
     ]
-
-    Task { @MainActor in
-      self.credentialSummary = await fetchCredentialSummary()
-      self.updateSubscriptionStatus()
-      self.updateSubscriptionExpiryDate()
-    }
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(self)
   }
 
   private var hostname: String {
