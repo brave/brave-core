@@ -18,6 +18,19 @@ enum NTPWallpaper {
     return nil
   }
 
+  var richNewTabTakeoverURL: URL? {
+    //    return URL(string: "brave://ads-internals")
+    if case .sponsoredMedia(let background) = self {
+      return background.isRichNewTabTakeoverFile ? background.imagePath : nil
+    }
+
+    // TODO(aseren): Remove following statement. Done for testing only
+    if case .image(let background) = self {
+      return background.imagePath
+    }
+    return nil
+  }
+
   var backgroundImage: UIImage? {
     let imagePath: URL
     switch self {
@@ -224,5 +237,11 @@ extension NTPBackgroundImage {
 extension NTPSponsoredImageBackground {
   var isVideoFile: Bool {
     imagePath.pathExtension == "mp4"
+  }
+
+  var isRichNewTabTakeoverFile: Bool {
+    imagePath.schemeIsValid
+      && (imagePath.scheme == "brave" || imagePath.scheme == "chrome"
+        || imagePath.scheme == "chrome-untrusted")
   }
 }
