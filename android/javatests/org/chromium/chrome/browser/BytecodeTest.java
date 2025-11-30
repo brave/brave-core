@@ -2115,6 +2115,12 @@ public class BytecodeTest {
                         Context.class,
                         ActivityTabProvider.class,
                         Supplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/SwipeRefreshHandler",
+                        "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
+                        Tab.class,
+                        SwipeRefreshHandler.SwipeRefreshLayoutCreator.class));
     }
 
     @Test
