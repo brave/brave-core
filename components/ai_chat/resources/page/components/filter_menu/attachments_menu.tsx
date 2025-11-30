@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Bookmark, TabData } from 'components/ai_chat/resources/common/mojom'
-import FilterMenu from './filter_menu'
+import FilterMenu, { MatchedText } from './filter_menu'
 import styles from './style.module.scss'
 import * as React from 'react'
 import { useExtractedQuery, matches } from './query'
@@ -13,11 +13,12 @@ import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
 import { stringifyContent } from '../input_box/editable_content'
+import { FuzzyFinder } from './fuzzy_finder'
 
 type Attachment = TabData | Bookmark
 
-function matchesQuery(query: string, entry: Attachment) {
-  return matches(query, entry.title) || matches(query, entry.url.url)
+function matchesQuery(query: FuzzyFinder, entry: Attachment) {
+  return matches(query, entry.title)
 }
 
 export default function TabsMenu() {
@@ -137,7 +138,7 @@ export default function TabsMenu() {
         </div>
       }
     >
-      {(item) => (
+      {(item, category, match) => (
         <leo-menu-item
           class={styles.tabMenuItem}
           key={item.id.toString()}
@@ -145,7 +146,12 @@ export default function TabsMenu() {
         >
           <img src={`//favicon2?pageUrl=${encodeURIComponent(item.url.url)}`} />
           <div className={styles.tabItemInfo}>
-            <span className={styles.tabItemTitle}>{item.title}</span>
+            <span className={styles.tabItemTitle}>
+              <MatchedText
+                text={item.title}
+                match={match}
+              />
+            </span>
             <span className={styles.tabItemUrl}>{item.url.url}</span>
           </div>
         </leo-menu-item>

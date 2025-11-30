@@ -4,18 +4,19 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { FuzzyFinder } from './fuzzy_finder'
 
-function normalizeText(text: string) {
-  return text.trim().replace(/\s/g, '').toLocaleLowerCase()
-}
-
-export function matches(query: string, text: string) {
+export function matches(finder: FuzzyFinder, text: string) {
   // Note: Empty string should match anything.
-  if (query === '') {
-    return 0
+  if (finder.needle === '') {
+    return { score: 0, ranges: [] }
   }
 
-  return normalizeText(text).indexOf(normalizeText(query))
+  const result = finder.find(text)
+  if (result.ranges.length === 0) {
+    return undefined
+  }
+  return result
 }
 
 export function extractQuery(
