@@ -153,8 +153,9 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
 
   // Executing the command destroys |this|, and can also end up destroying
   // |controller_|. So stop the highlights before executing the command.
-  controller_->ExecuteCommandForTab(
-      static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
+  controller_->ExecuteContextMenuCommand(
+      tab_index_, static_cast<TabStripModel::ContextMenuCommand>(command_id),
+      event_flags);
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
