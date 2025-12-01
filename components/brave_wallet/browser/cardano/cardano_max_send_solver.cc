@@ -30,7 +30,7 @@ base::expected<CardanoTransaction, std::string> CardanoMaxSendSolver::Solve() {
   DCHECK(base_transaction_.TargetOutput());
   DCHECK(base_transaction_.sending_max_amount());
 
-  auto tx_with_inputs = std::move(base_transaction_);
+  auto tx_with_inputs = base_transaction_;
   tx_with_inputs.AddInputs(std::move(inputs_));
 
   auto found_valid_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(

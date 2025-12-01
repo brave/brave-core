@@ -306,7 +306,7 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
 
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(valid_tx,
                                                             epoch_parameters));
-
+  // Changing inputs, outpus or fee would fail validation.
   {
     CardanoTransaction tx = valid_tx;
     tx.inputs_[0].utxo_value++;
@@ -334,6 +334,7 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
         CardanoTransactionSerializer::ValidateAmounts(tx, epoch_parameters));
   }
 
+  // Overflow test.
   {
     CardanoTransaction tx = valid_tx;
     tx.inputs_[0].utxo_value = std::numeric_limits<uint64_t>::max();
@@ -371,6 +372,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
   output.address = *CardanoAddress::FromString(kMockCardanoAddress1);
   base_tx.AddOutput(std::move(output));
 
+  // Some inputs, no change.
   {
     auto tx_no_change = base_tx;
     tx_no_change.TargetOutput()->amount = 6000000 - 177161u;
@@ -391,6 +393,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
         tx_no_change, epoch_parameters));
   }
 
+  // Some inputs, has change.
   {
     auto tx_with_change = base_tx;
     CardanoTransaction::TxOutput change_output;
@@ -432,6 +435,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
         tx_with_change, epoch_parameters));
   }
 
+  // Sending max amount.
   {
     CardanoTransaction tx_max_send = base_tx;
     tx_max_send.set_sending_max_amount(true);
