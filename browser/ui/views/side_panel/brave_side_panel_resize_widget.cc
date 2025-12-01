@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "build/build_config.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"

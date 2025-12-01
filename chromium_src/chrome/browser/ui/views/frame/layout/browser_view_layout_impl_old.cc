@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
 
-#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"

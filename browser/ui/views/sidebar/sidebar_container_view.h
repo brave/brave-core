@@ -13,7 +13,7 @@
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
+#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
