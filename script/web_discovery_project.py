@@ -10,8 +10,10 @@ from lib.util import execute_stdout, scoped_cwd
 WEB_DISCOVERY_DIR = os.path.join(
     SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
+PNPM = 'pnpm'
 NPM = 'npm'
 if PLATFORM in ['win32', 'cygwin']:
+    PNPM += '.cmd'
     NPM += '.cmd'
 
 
@@ -23,10 +25,19 @@ def main():
         if args.verbose:
             enable_verbose_mode()
         if args.install:
-            execute_stdout([NPM, 'install', '--no-save', '--yes'], env=env)
+            # Check if pnpm-lock.yaml exists - vendor directories may use npm
+            pnpm_lock = os.path.join(WEB_DISCOVERY_DIR, 'pnpm-lock.yaml')
+            if os.path.exists(pnpm_lock):
+                execute_stdout([PNPM, 'install', '--frozen-lockfile'], env=env)
+            else:
+                # Fall back to npm with package-lock.json
+                execute_stdout([NPM, 'ci'], env=env)
         if args.build:
             env["OUTPUT_PATH"] = args.output_path
-            execute_stdout([NPM, 'run', 'build-module'], env=env)
+            # Use npm for build-module script as well
+            pnpm_lock = os.path.join(WEB_DISCOVERY_DIR, 'pnpm-lock.yaml')
+            pkg_manager = PNPM if os.path.exists(pnpm_lock) else NPM
+            execute_stdout([pkg_manager, 'run', 'build-module'], env=env)
 
 
 def parse_args():

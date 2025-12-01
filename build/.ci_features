@@ -6,3 +6,4 @@ generate_about_credits
 presubmit_all_files
 
 brave_interactive_ui_tests
+pnpm
