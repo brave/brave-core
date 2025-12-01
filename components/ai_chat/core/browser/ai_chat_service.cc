@@ -1358,21 +1358,4 @@ void AIChatService::GetFocusTabsWithEngine(const std::vector<Tab>& tabs,
   tab_organization_engine_->GetFocusTabs(tabs, topic, std::move(callback));
 }
 
-std::string AIChatService::StoreCodeExecutionToolScript(std::string script) {
-  auto request_id = base::UnguessableToken::Create().ToString();
-  code_execution_tool_scripts_[request_id] = std::move(script);
-  return request_id;
-}
-
-std::optional<std::string> AIChatService::ConsumeCodeExecutionToolScript(
-    std::string_view request_id) {
-  auto it = code_execution_tool_scripts_.find(request_id);
-  if (it != code_execution_tool_scripts_.end()) {
-    auto script = std::move(it->second);
-    code_execution_tool_scripts_.erase(it);
-    return script;
-  }
-  return std::nullopt;
-}
-
 }  // namespace ai_chat

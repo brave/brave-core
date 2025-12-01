@@ -250,10 +250,6 @@ class AIChatService : public KeyedService,
     ai_chat_db_ = std::move(db);
   }
 
-  std::string StoreCodeExecutionToolScript(std::string script);
-  std::optional<std::string> ConsumeCodeExecutionToolScript(
-      std::string_view request_id);
-
  private:
   friend class AIChatServiceUnitTest;
 
@@ -363,9 +359,6 @@ class AIChatService : public KeyedService,
 
   // Memory tool that is available and shared across all conversations.
   std::unique_ptr<MemoryStorageTool> memory_tool_;
-
-  // Storage for code execution tool scripts
-  base::flat_map<std::string, std::string> code_execution_tool_scripts_;
 
   base::FilePath profile_path_;
 

@@ -18,18 +18,20 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class Profile;
 
 namespace content {
 class WebContents;
 class BrowserContext;
+class RenderFrameHost;
 }  // namespace content
 
 namespace ai_chat {
 
-class AIChatService;
 class CodeSandboxWebContentsObserver;
 
 // Tool for executing JavaScript code and returning console.log output.
@@ -63,20 +65,26 @@ class CodeExecutionTool : public Tool {
  private:
   struct CodeExecutionRequest {
     CodeExecutionRequest(std::unique_ptr<content::WebContents> web_contents,
+                         std::string wrapped_js,
                          UseToolCallback callback);
     ~CodeExecutionRequest();
 
     std::unique_ptr<content::WebContents> web_contents;
+    std::string wrapped_js;
     std::unique_ptr<CodeSandboxWebContentsObserver> observer;
+    mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector;
     base::OneShotTimer timeout_timer;
     UseToolCallback callback;
   };
 
+  void OnPageLoadComplete(std::list<CodeExecutionRequest>::iterator request_it,
+                          content::RenderFrameHost* render_frame_host);
   void HandleResult(std::list<CodeExecutionRequest>::iterator request_it,
-                    std::string output);
+                    base::Value result);
+  void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
+                      std::string output);
 
   raw_ptr<Profile> profile_;
-  raw_ptr<AIChatService> ai_chat_service_;
   std::list<CodeExecutionRequest> requests_;
   std::optional<base::TimeDelta> execution_time_limit_for_testing_;
   base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};

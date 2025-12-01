@@ -14,18 +14,19 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/mojom/script/script_evaluation_params.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -39,55 +40,42 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 
 class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
  public:
-  using LoadCompleteCallback = base::OnceCallback<void(std::string)>;
+  using LoadCompleteCallback =
+      base::OnceCallback<void(content::RenderFrameHost*)>;
 
-  explicit CodeSandboxWebContentsObserver(content::WebContents* web_contents,
-                                          LoadCompleteCallback callback)
+  CodeSandboxWebContentsObserver(content::WebContents* web_contents,
+                                 LoadCompleteCallback callback)
       : content::WebContentsObserver(web_contents),
         load_complete_callback_(std::move(callback)) {}
 
   ~CodeSandboxWebContentsObserver() override = default;
 
-  void OnDidAddMessageToConsole(
-      content::RenderFrameHost* source_frame,
-      blink::mojom::ConsoleMessageLevel log_level,
-      const std::u16string& message,
-      int32_t line_no,
-      const std::u16string& source_id,
-      const std::optional<std::u16string>& untrusted_stack_trace) override {
-    console_messages_.push_back(base::UTF16ToUTF8(message));
-  }
-
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override {
-    if (!render_frame_host->GetParent() && load_complete_callback_) {
-      auto console_output = base::JoinString(console_messages_, "\n");
-      // Post the task since we cannot delete the WebContents while
-      // the observer is notifying us.
+    // If the frame has a parent, we can assume this is the iframe
+    if (render_frame_host->GetParent() && load_complete_callback_) {
       base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE, base::BindOnce(std::move(load_complete_callback_),
-                                    std::move(console_output)));
+                                    render_frame_host));
     }
   }
 
  private:
-  std::vector<std::string> console_messages_;
   LoadCompleteCallback load_complete_callback_;
 };
 
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
     std::unique_ptr<content::WebContents> web_contents,
+    std::string wrapped_js,
     UseToolCallback callback)
-    : web_contents(std::move(web_contents)), callback(std::move(callback)) {}
+    : web_contents(std::move(web_contents)),
+      wrapped_js(std::move(wrapped_js)),
+      callback(std::move(callback)) {}
 
 CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() = default;
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
-    : profile_(Profile::FromBrowserContext(browser_context)),
-      ai_chat_service_(
-          AIChatServiceFactory::GetForBrowserContext(browser_context)) {
-  CHECK(ai_chat_service_);
-}
+    : profile_(Profile::FromBrowserContext(browser_context)) {}
 
 CodeExecutionTool::~CodeExecutionTool() = default;
 
@@ -96,11 +84,11 @@ std::string_view CodeExecutionTool::Name() const {
 }
 
 std::string_view CodeExecutionTool::Description() const {
-  return "Execute JavaScript code and return console.log output. "
-         "Use this tool to run JavaScript code snippets and see their output. "
-         "The code must be synchronous and not use any asynchronous functions. "
-         "The code will be executed in a sandboxed environment and any "
-         "console.log statements will be captured and returned as the result.";
+  return "Execute JavaScript code and return a human-readable formatted "
+         "string as a result. "
+         "Do not use console.log statements or similar statements. Always "
+         "return a string as a result."
+         "The code will be executed in a sandboxed environment.";
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
@@ -150,42 +138,65 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
     return;
   }
 
-  auto wrapped_js = base::StrCat({"try {", *script,
-                                  "} catch (error) {console.error('Error:', "
-                                  "error.toString()); }"});
-
-  auto request_id =
-      ai_chat_service_->StoreCodeExecutionToolScript(std::move(wrapped_js));
+  auto wrapped_js =
+      base::StrCat({"(async function() { try {", *script,
+                    "} catch (error) { return error.toString(); } })()"});
 
   auto* otr_profile =
       profile_->GetPrimaryOTRProfile(true /* create_if_needed */);
   content::WebContents::CreateParams create_params(otr_profile);
   auto web_contents = content::WebContents::Create(create_params);
 
-  requests_.emplace_back(std::move(web_contents), std::move(callback));
+  requests_.emplace_back(std::move(web_contents), wrapped_js,
+                         std::move(callback));
 
   auto request_it = std::prev(requests_.end());
   request_it->observer = std::make_unique<CodeSandboxWebContentsObserver>(
       request_it->web_contents.get(),
-      base::BindOnce(&CodeExecutionTool::HandleResult,
+      base::BindOnce(&CodeExecutionTool::OnPageLoadComplete,
                      weak_ptr_factory_.GetWeakPtr(), request_it));
 
-  auto sandbox_url =
-      GURL(base::StrCat({kAIChatCodeSandboxUIURL, request_id, "/"}));
   request_it->web_contents->GetController().LoadURL(
-      sandbox_url, content::Referrer(), ui::PAGE_TRANSITION_TYPED,
-      std::string());
+      GURL(kAIChatCodeSandboxUIURL), content::Referrer(),
+      ui::PAGE_TRANSITION_TYPED, std::string());
 
   auto time_limit =
       execution_time_limit_for_testing_.value_or(kExecutionTimeLimit);
   request_it->timeout_timer.Start(
       FROM_HERE, time_limit,
-      base::BindOnce(&CodeExecutionTool::HandleResult,
+      base::BindOnce(&CodeExecutionTool::ResolveRequest,
                      weak_ptr_factory_.GetWeakPtr(), request_it,
                      "Error: Time limit exceeded"));
 }
 
+void CodeExecutionTool::OnPageLoadComplete(
+    std::list<CodeExecutionRequest>::iterator request_it,
+    content::RenderFrameHost* render_frame_host) {
+  render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(
+      &request_it->injector);
+
+  auto wrapped_js_utf16 = base::UTF8ToUTF16(request_it->wrapped_js);
+  request_it->injector->RequestAsyncExecuteScript(
+      content::ISOLATED_WORLD_ID_GLOBAL, wrapped_js_utf16,
+      blink::mojom::UserActivationOption::kActivate,
+      blink::mojom::PromiseResultOption::kAwait,
+      base::BindOnce(&CodeExecutionTool::HandleResult,
+                     weak_ptr_factory_.GetWeakPtr(), request_it));
+}
+
 void CodeExecutionTool::HandleResult(
+    std::list<CodeExecutionRequest>::iterator request_it,
+    base::Value result) {
+  std::string output;
+  if (result.is_string()) {
+    output = result.GetString();
+  } else {
+    output = "Error: Invalid return type";
+  }
+  ResolveRequest(request_it, output);
+}
+
+void CodeExecutionTool::ResolveRequest(
     std::list<CodeExecutionRequest>::iterator request_it,
     std::string output) {
   auto callback = std::move(request_it->callback);

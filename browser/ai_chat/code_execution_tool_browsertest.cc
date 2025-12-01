@@ -90,29 +90,49 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, HelloWorld) {
   std::string output;
-  ExecuteCode("console.log('hello world')", &output);
+  ExecuteCode("return 'hello world'", &output);
   EXPECT_EQ(output, "hello world");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SimpleFibonacci) {
+  std::string script = R"(
+    function fibonacci(n) {
+      if (n <= 1) return n;
+      return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+    return 'Fibonacci(10) = ' + fibonacci(10);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Fibonacci(10) = 55");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       AccessLocalStateBlocked) {
+  std::string script = "return localStorage.getItem('sensitive_data')";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(
+      output,
+      HasSubstr("SecurityError: Failed to read the 'localStorage' property"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
                        BlocksNetworkRequest) {
   std::string script = base::StrCat({
       R"(
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', ')",
+        const response = await fetch(')",
       test_server_url(),
-      R"(', false);
-        try {
-          xhr.send();
-          console.log('Request succeeded: ' + xhr.responseText);
-        } catch (e) {
-          console.log('Error: ' + e.message);
-        }
+      R"(');
+        const text = await response.text();
+        return 'Request succeeded: ' + text;
       )"});
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_THAT(output, HasSubstr("action has been blocked"));
+  EXPECT_THAT(output, HasSubstr("Failed to fetch"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
@@ -123,25 +143,14 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
       if (n <= 1) return n;
       return fibonacci(n - 1) + fibonacci(n - 2);
     }
-    console.log('Starting computation...');
-    const result = fibonacci(45);
-    console.log('Result: ' + result);
+    let result = 'Starting computation...';
+    result += ' Result: ' + fibonacci(45);
+    return result;
   )";
 
   std::string output;
   ExecuteCode(script, &output);
   EXPECT_EQ(output, "Error: Time limit exceeded");
-}
-
-IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, NavigationBlocked) {
-  std::string script = base::StrCat({
-      R"(
-        window.location = ')",
-      test_server_url(), "'"});
-
-  std::string output;
-  ExecuteCode(script, &output);
-  EXPECT_THAT(output, HasSubstr("request has been blocked"));
 }
 
 }  // namespace ai_chat

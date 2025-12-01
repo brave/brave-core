@@ -40,6 +40,7 @@ preprocess_if_expr("preprocess_html") {
   in_folder = "."
   in_files = [
     "page/ai_chat_ui.html",
+    "page/code_sandbox.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]
   out_folder = "$target_gen_dir/preprocessed"
