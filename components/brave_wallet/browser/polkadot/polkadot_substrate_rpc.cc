@@ -480,6 +480,60 @@ void PolkadotSubstrateRpc::OnGetBlockHash(GetBlockHashCallback callback,
   return std::move(callback).Run(block_hash, std::nullopt);
 }
 
+void PolkadotSubstrateRpc::GetRuntimeVersion(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    GetRuntimeVersionCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (block_hash) {
+    params.Append(base::HexEncodeLower(*block_hash));
+  }
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getRuntimeVersion", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetRuntimeVersion,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetRuntimeVersion(
+    GetRuntimeVersionCallback callback,
+    APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotRuntimeVersion>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  if (res->result->spec_version < 0 || res->result->transaction_version < 0) {
+    // The RPC docs claim these are intended to be a u32 so a negative value is
+    // invalid.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  PolkadotRuntimeVersion version;
+  version.spec_version = res->result->spec_version;
+  version.transaction_version = res->result->transaction_version;
+
+  return std::move(callback).Run(version, std::nullopt);
+}
+
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }

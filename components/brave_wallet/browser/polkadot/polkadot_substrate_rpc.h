@@ -21,6 +21,11 @@ struct PolkadotBlockHeader {
   uint32_t block_number = 0;
 };
 
+struct PolkadotRuntimeVersion {
+  uint32_t spec_version = 0;
+  uint32_t transaction_version = 0;
+};
+
 // The main driver for the Polkadot-based RPC calls against the relay chain and
 // the Substrate-based parachains.
 class PolkadotSubstrateRpc {
@@ -49,6 +54,10 @@ class PolkadotSubstrateRpc {
   using GetBlockHashCallback = base::OnceCallback<void(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
       std::optional<std::string>)>;
+
+  using GetRuntimeVersionCallback =
+      base::OnceCallback<void(std::optional<PolkadotRuntimeVersion>,
+                              std::optional<std::string>)>;
 
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
@@ -99,6 +108,11 @@ class PolkadotSubstrateRpc {
                     std::optional<uint32_t> block_number,
                     GetBlockHashCallback callback);
 
+  void GetRuntimeVersion(
+      std::string_view chain_id,
+      std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      GetRuntimeVersionCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -112,6 +126,8 @@ class PolkadotSubstrateRpc {
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
   void OnGetBlockHeader(GetBlockHeaderCallback callback, APIRequestResult res);
   void OnGetBlockHash(GetBlockHashCallback callback, APIRequestResult res);
+  void OnGetRuntimeVersion(GetRuntimeVersionCallback callback,
+                           APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
