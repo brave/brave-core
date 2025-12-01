@@ -164,13 +164,15 @@ class ModelListSection extends ModelListSectionBase {
   }
 
   private isOllamaManagedModel_(
-      model: Model, ollamaSyncEnabled: boolean): boolean {
-    // Only consider it managed if both:
+      model: Model, ollamaSyncEnabled: boolean,
+      isOllamaConnected: boolean): boolean {
+    // Only consider it managed if all three:
     // 1. It points to Ollama endpoint
     // 2. Ollama sync preference is enabled
+    // 3. Ollama is actually connected
     const isOllamaEndpoint =
         model.options.customModelOptions?.endpoint.url === OLLAMA_ENDPOINT
-    return !!(isOllamaEndpoint && ollamaSyncEnabled)
+    return !!(isOllamaEndpoint && ollamaSyncEnabled && isOllamaConnected)
   }
 }
 
