@@ -11,6 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -1325,6 +1326,388 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
 
     EXPECT_EQ(error, WalletParsingErrorMessage());
     EXPECT_EQ(block_hash, std::nullopt);
+  }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<std::optional<PolkadotRuntimeVersion>,
+                         std::optional<std::string>>
+      future;
+
+  {
+    // Successful RPC call (nullary).
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getRuntimeVersion",
+        "params": []
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": 1020001,
+          "implVersion": 0,
+          "apis": [
+            ["0xdf6acb689907609b", 5],
+            ["0x37e397fc7c91f5e4", 2],
+            ["0xccd9de6396c899ca", 1]
+          ],
+          "transactionVersion": 27,
+          "systemVersion": 1,
+          "stateVersion": 1
+        }
+      })");
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(runtime_version->spec_version, 1020001u);
+    EXPECT_EQ(runtime_version->transaction_version, 27u);
+  }
+
+  {
+    // Successful RPC call (specific block hash provided).
+
+    url_loader_factory_.ClearResponses();
+
+    const char genesis_hash[] =
+        R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash, block_hash));
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, block_hash,
+                                               future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getRuntimeVersion",
+        "params": ["e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e"]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": 1,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": 1,
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(runtime_version->spec_version, 1u);
+    EXPECT_EQ(runtime_version->transaction_version, 1u);
+  }
+
+  {
+    // Failed RPC call, block hash doesn't exist.
+
+    url_loader_factory_.ClearResponses();
+
+    std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+    block_hash.fill(0xff);
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, block_hash,
+                                               future.GetCallback());
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error": {
+          "code":4003,
+          "message": "Client error: Api called for an unknown Block: Header was not found in the database: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      })");
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(
+        error,
+        "Client error: Api called for an unknown Block: Header was not found "
+        "in the database: "
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because result is non-conforming (bad specVersion).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": "hello, world!",
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": 1,
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because result is non-conforming (bad transactionVersion).
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": 1,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": "hello, world!!!",
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because spec and transaction version are missing.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because we have no result.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "body": {}
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because spec version exceeds numeric limits.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": 1234123412341234123412341234123412341234123412341234123412341234,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": 1,
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because transaction version exceeds numeric limits.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": 1,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": 1234123412341234123412341234123412341234123412341234123412341234,
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
+  }
+
+  {
+    // Error because transaction version and spec version were negative.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "specName": "westend",
+          "implName": "parity-westend",
+          "authoringVersion": 2,
+          "specVersion": -1,
+          "implVersion": 1,
+          "apis": [
+            ["0xdf6acb689907609b", 2],
+            ["0x37e397fc7c91f5e4", 1]
+          ],
+          "transactionVersion": -1,
+          "systemVersion": 0,
+          "stateVersion": 0
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetRuntimeVersion(chain_id, std::nullopt,
+                                               future.GetCallback());
+
+    auto [runtime_version, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(runtime_version, std::nullopt);
   }
 }
 

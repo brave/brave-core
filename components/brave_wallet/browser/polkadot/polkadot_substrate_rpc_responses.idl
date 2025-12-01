@@ -70,4 +70,27 @@ namespace polkadot_substrate_rpc_responses {
 
     Error? error;
   };
+
+  dictionary RuntimeVersion {
+    // The current version of the running chain specification.
+    long specVersion;
+
+    // The current version of the transaction format.
+    long transactionVersion;
+  };
+
+  // state_getRuntimeVersion's RPC structure is described here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#11110-state_getruntimeversion
+  //
+  // But it's not _quite_ accurate. Modern versions properly include the transactionVersion as well.
+  // See also:
+  // https://spec.polkadot.network/chap-runtime-api#defn-rt-core-version
+
+  dictionary PolkadotRuntimeVersion {
+    DOMString jsonrpc;
+    long id;
+
+    RuntimeVersion? result;
+    Error? error;
+  };
 };
