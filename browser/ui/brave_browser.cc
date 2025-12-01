@@ -238,16 +238,8 @@ void BraveBrowser::OnTabStripModelChanged(
   // Check if all tabs we set to ignore onbeforeunload handler are closed.
   if (!tabs_closing_with_onbeforeunload_ignore_.empty() &&
       change.type() == TabStripModelChange::Type::kRemoved) {
-    bool all_suggested_tabs_closed = true;
-    for (auto* tab : tabs_closing_with_onbeforeunload_ignore_) {
-      if (tab_strip_model->GetIndexOfWebContents(tab) !=
-          TabStripModel::kNoTab) {
-        all_suggested_tabs_closed = false;
-        break;
-      }
-    }
-    if (all_suggested_tabs_closed) {
-      tabs_closing_with_onbeforeunload_ignore_.clear();
+    for (auto& removed_tab : change.GetRemove()->contents) {
+      tabs_closing_with_onbeforeunload_ignore_.erase(removed_tab.contents);
     }
   }
 }
@@ -378,12 +370,12 @@ BraveBrowserWindow* BraveBrowser::brave_window() {
 }
 
 void BraveBrowser::SetIgnoreBeforeUnloadHandlers(
-    const std::vector<content::WebContents*>& for_contents) {
+    const base::flat_set<content::WebContents*>& for_contents) {
   tabs_closing_with_onbeforeunload_ignore_ = for_contents;
 }
 
 bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
-  if (!tabs_closing_with_onbeforeunload_ignore_.empty()) {
+  if (tabs_closing_with_onbeforeunload_ignore_.contains(source)) {
     return true;
   }
 

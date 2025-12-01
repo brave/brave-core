@@ -266,7 +266,7 @@ void EphemeralStorageService::RemoveObserver(
 }
 
 void EphemeralStorageService::CleanupTLDFirstPartyStorage(
-    content::WebContents* contents,
+    const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config,
     const bool enforced_by_user) {
   if (!base::FeatureList::IsEnabled(
@@ -274,17 +274,14 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
     return;
   }
 
-  CHECK(contents);
   if (!enforced_by_user &&
-      delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          contents->GetLastCommittedURL())) {
+      delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(url)) {
     // Do not start auto shred if shields is disabled on any host matching the
     // domain or ephemeral_domain is empty.
     return;
   }
 
-  const auto ephemeral_domain =
-      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+  const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
   delegate_->PrepareTabsForStorageCleanup(std::move(ephemeral_domain));
 }
 

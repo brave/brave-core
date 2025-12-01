@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -215,16 +216,16 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
       continue;
     }
 
-    std::vector<content::WebContents*> tab_vector;
+    base::flat_set<content::WebContents*> tabs;
     for (auto* tab : *tab_strip) {
       if (!tab || !PrepareTabToClose(tab, ephemeral_domain)) {
         continue;
       }
-      tab_vector.emplace_back(tab->GetContents());
+      tabs.emplace(tab->GetContents());
     }
-    brave_browser->SetIgnoreBeforeUnloadHandlers(tab_vector);
+    brave_browser->SetIgnoreBeforeUnloadHandlers(std::move(tabs));
 
-    for (auto* tab : tab_vector) {
+    for (auto* tab : tabs) {
       if (!tab) {
         continue;
       }

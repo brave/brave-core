@@ -271,7 +271,6 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
       host_content_settings_map_->GetSettingsForOneType(
           ContentSettingsType::BRAVE_SHIELDS);
 
-  bool result = false;
   const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
 
   for (const auto& setting : all_shield_settings) {
@@ -283,14 +282,7 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
 
     // Skip wildcard patterns that match all hosts
     if (setting.primary_pattern.MatchesAllHosts()) {
-      result = true;
-      continue;
-    }
-
-    // Convert ContentSettingsPattern to GURL to extract ephemeral domain
-    std::string pattern_host = setting.primary_pattern.GetHost();
-    if (pattern_host.empty()) {
-      continue;
+      return true;
     }
 
     if (const GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
@@ -300,7 +292,7 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
     }
   }
 
-  return result;
+  return false;
 }
 
 }  // namespace brave_shields

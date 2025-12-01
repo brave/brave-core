@@ -39,7 +39,7 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDFirstPartyStorage(
   }
 
   ephemeral_storage_service->CleanupTLDFirstPartyStorage(
-      web_contents,
+      web_contents->GetLastCommittedURL(),
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 

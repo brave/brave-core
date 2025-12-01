@@ -483,7 +483,8 @@ void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
 
   // Start manual cleanup.
   ephemeral_storage_service_->CleanupTLDFirstPartyStorage(
-      web_contents(), site_instance->GetStoragePartitionConfig(), true);
+      web_contents()->GetLastCommittedURL(),
+      site_instance->GetStoragePartitionConfig(), true);
 }
 
 void BraveShieldsTabHelper::AllowScriptsOnce(
