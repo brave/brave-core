@@ -224,7 +224,6 @@ bool CardanoTransactionSerializer::ValidateMinValue(
 }
 
 // static
-// static
 std::optional<CardanoTransaction>
 CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     const CardanoTransaction& base_tx,
