@@ -14,13 +14,4 @@ source_set("util") {
     "//chrome/install_static:install_static_util",
     "//components/version_info",
   ]
-  public_deps = [ ":chromium_index_helper" ]
-}
-
-source_set("chromium_index_helper") {
-  sources = [
-    "chromium_index_helper_begin.h",
-    "chromium_index_helper_end.h",
-  ]
-  deps = [ "//build:branding_buildflags" ]
 }

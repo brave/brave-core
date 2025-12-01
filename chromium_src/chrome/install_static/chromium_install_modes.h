@@ -31,6 +31,9 @@ enum InstallConstantIndex {
 };
 
 #if defined(OFFICIAL_BUILD)
+
+#define CHROMIUM_INDEX STABLE_INDEX
+
 // Regarding the install switch, use the same values that are in
 // chrome/installer/mini_installer/configuration.cc
 inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
@@ -226,6 +229,9 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
     },
 });
 #else
+
+#define CHROMIUM_INDEX DEVELOPER_INDEX
+
 inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
     // The primary (and only) install mode for Brave developer build.
     {
