@@ -18,8 +18,15 @@
   ShouldCompactLeadingEdge() const = 0; \
   virtual bool ShouldAlwaysHideCloseButton()
 
+// Add a method to TabSlotController to check if vertical tabs are in floating
+// mode.
+#define EndDrag(...)        \
+  EndDrag(__VA_ARGS__) = 0; \
+  virtual bool IsVerticalTabsFloating() const
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef EndDrag
 #undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed
 

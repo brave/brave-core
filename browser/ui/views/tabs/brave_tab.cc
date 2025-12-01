@@ -16,6 +16,8 @@
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/win/windows_types.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -206,7 +208,8 @@ void BraveTab::UpdateIconVisibility() {
 
     // When we show only icon for pinned vertical tab, we want to keep it
     // centered all the time.
-    if (showing_icon_ && !title_->GetVisible() && !showing_close_button_) {
+    if ((showing_icon_ || showing_alert_indicator_) &&
+        !ShouldRenderAsNormalTab()) {
       center_icon_ = true;
     }
     return;
@@ -275,7 +278,7 @@ bool BraveTab::ShouldRenderAsNormalTab() const {
   }
 
   if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
-      data().pinned) {
+      data().pinned && !controller_->IsVerticalTabsFloating()) {
     // In cased of pinned vertical tabs, we never render as normal tab, i.e.
     // always show only icon.
     return false;
