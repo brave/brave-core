@@ -22,11 +22,12 @@ namespace brave_ads {
 // Converts `mojom::UrlRequestMethodType` to its string representation.
 std::string ToString(mojom::UrlRequestMethodType value);
 
-// Returns the network traffic annotation tag for network requests.
+// Returns the network traffic annotation tag used to identify and audit network
+// requests.
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag();
 
-// Extracts all HTTP response headers from a `net::HttpResponseHeaders` object
-// and returns them as a flat map with lowercased keys.
+// Extracts all HTTP response headers from `net::HttpResponseHeaders` and
+// returns them as a flat map with lowercased keys.
 base::flat_map<std::string, std::string> ExtractHttpResponseHeaders(
     const scoped_refptr<net::HttpResponseHeaders>& http_response_headers);
 

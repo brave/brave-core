@@ -12,7 +12,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/browser/service/network_client_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "net/base/net_errors.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -45,18 +44,21 @@ NetworkClient::~NetworkClient() = default;
 
 void NetworkClient::SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                                 SendRequestCallback callback) {
+  CHECK(mojom_url_request);
+
   return HttpRequest(std::move(mojom_url_request), std::move(callback));
 }
 
 void NetworkClient::CancelRequests() {
   weak_ptr_factory_.InvalidateWeakPtrs();
-  url_loaders_.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                                 SendRequestCallback callback) {
+  CHECK(mojom_url_request);
+
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = mojom_url_request->url;
   resource_request->method = ToString(mojom_url_request->method);
@@ -68,49 +70,43 @@ void NetworkClient::HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), GetNetworkTrafficAnnotationTag());
+  auto* raw_url_loader = url_loader.get();
 
-  url_loader->SetAllowHttpErrorResults(true);
+  raw_url_loader->SetAllowHttpErrorResults(true);
 
   if (!mojom_url_request->content.empty()) {
-    url_loader->AttachStringForUpload(mojom_url_request->content,
-                                      mojom_url_request->content_type);
+    raw_url_loader->AttachStringForUpload(mojom_url_request->content,
+                                          mojom_url_request->content_type);
   }
 
-  auto* url_loader_copy = url_loader.get();
-  url_loaders_.insert(std::move(url_loader));
-
-  url_loader_copy->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+  raw_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&NetworkClient::HttpRequestCallback,
-                     weak_ptr_factory_.GetWeakPtr(), url_loader_copy,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(url_loader),
                      std::move(callback)));
 }
 
 void NetworkClient::HttpRequestCallback(
-    network::SimpleURLLoader* url_loader,
+    std::unique_ptr<network::SimpleURLLoader> url_loader,
     SendRequestCallback callback,
     std::optional<std::string> response_body) {
   CHECK(url_loader);
 
-  auto iter = url_loaders_.find(url_loader);
-  CHECK(iter != url_loaders_.cend());
-  auto owned_url_loader = std::move(*iter);
-  url_loaders_.erase(iter);
+  const GURL& url = url_loader->GetFinalURL();
 
-  const GURL& url = owned_url_loader->GetFinalURL();
-
-  const auto* response = owned_url_loader->ResponseInfo();
+  const auto* response = url_loader->ResponseInfo();
   if (!response || !response->headers) {
-    return ReportError(url, net::ERR_FAILED, std::move(callback));
+    // DNS failure, connection error, timeout etc.
+    return ReportError(url, url_loader->NetError(), std::move(callback));
   }
-
-  const auto response_headers = response->headers;
 
   auto mojom_url_response = mojom::UrlResponseInfo::New();
   mojom_url_response->url = url;
-  mojom_url_response->code = response_headers->response_code();
+  mojom_url_response->code = response->headers->response_code();
   mojom_url_response->body = response_body.value_or("");
-  mojom_url_response->headers = ExtractHttpResponseHeaders(response_headers);
+  mojom_url_response->headers = ExtractHttpResponseHeaders(response->headers);
+
+  // Forward the response to the original caller for handling.
   std::move(callback).Run(std::move(mojom_url_response));
 }
 

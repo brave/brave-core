@@ -10,8 +10,6 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/flat_set.h"
-#include "base/containers/unique_ptr_adapters.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/browser/service/network_client_callback.h"
@@ -25,7 +23,8 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
-// This class is responsible for sending HTTP network requests.
+// Sends network requests, supporting standard HTTP. Standard HTTP requests are
+// issued via `SimpleURLLoader`.
 class NetworkClient {
  public:
   NetworkClient(
@@ -37,28 +36,26 @@ class NetworkClient {
 
   ~NetworkClient();
 
-  // Starts a network request for the given `mojom::UrlRequestInfo`. The
-  // provided `callback` will be invoked with a `mojom::UrlResponseInfo` unless
-  // the request is canceled or the `NetworkClient` is destroyed.
+  // Issues a network request described by `mojom::UrlRequestInfo`. When the
+  // request completes, `callback` is invoked with a `mojom::UrlResponseInfo`.
+  // The callback will not run if the request is canceled or if this instance
+  // is destroyed.
   void SendRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                    SendRequestCallback callback);
 
-  // Cancels all ongoing network requests. Pending callbacks will not be
-  // invoked.
+  // Cancels all active requests. Any pending callbacks will be dropped.
   void CancelRequests();
 
  private:
+  // Sends the request using standard HTTP.
   void HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                    SendRequestCallback callback);
-  void HttpRequestCallback(network::SimpleURLLoader* url_loader,
+  void HttpRequestCallback(std::unique_ptr<network::SimpleURLLoader> url_loader,
                            SendRequestCallback callback,
                            std::optional<std::string> response_body);
 
   const scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // Not owned.
-  base::flat_set<std::unique_ptr<network::SimpleURLLoader>,
-                 base::UniquePtrComparator>
-      url_loaders_;
 
   const network::NetworkContextGetter network_context_getter_;
 
