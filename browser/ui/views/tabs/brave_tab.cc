@@ -16,8 +16,6 @@
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/win/windows_types.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"

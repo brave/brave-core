@@ -27,6 +27,56 @@ namespace tabs {
 
 namespace {
 
+void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
+                             std::optional<int> width,
+                             std::vector<gfx::Rect>* result) {
+  DCHECK(tabs.size());
+  DCHECK(result);
+
+  if (result->size() == tabs.size()) {
+    // No tabs to lay out vertically.
+    return;
+  }
+
+  if (!result->empty()) {
+    // Usually this shouldn't happen, as pinned tabs and unpinned tabs belong to
+    // separated containers. But this could happen on start-up. In this case,
+    // fills bounds for unpinned tabs with empty rects.
+    while (result->size() < tabs.size()) {
+      result->push_back({});
+    }
+    return;
+  }
+
+  gfx::Rect rect;
+  rect.set_y(kMarginForVerticalTabContainers);
+  for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
+    auto& tab = *iter;
+    rect.set_x(
+        kMarginForVerticalTabContainers +
+        (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
+    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
+    rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
+                                                         : 0);
+    result->push_back(rect);
+
+    // Update rect for the next tab.
+    if (tab.state().open() == TabOpen::kOpen) {
+      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
+    }
+  }
+}
+
+}  // namespace
+
+int GetTabCornerRadius(const Tab& tab) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
+    return tab.data().pinned ? 8 : 4;
+  }
+
+  return tabs::kTabBorderRadius;
+}
+
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
@@ -117,56 +167,6 @@ void CalculatePinnedTabsBoundsInGrid(
       rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
     }
   }
-}
-
-void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
-                             std::optional<int> width,
-                             std::vector<gfx::Rect>* result) {
-  DCHECK(tabs.size());
-  DCHECK(result);
-
-  if (result->size() == tabs.size()) {
-    // No tabs to lay out vertically.
-    return;
-  }
-
-  if (!result->empty()) {
-    // Usually this shouldn't happen, as pinned tabs and unpinned tabs belong to
-    // separated containers. But this could happen on start-up. In this case,
-    // fills bounds for unpinned tabs with empty rects.
-    while (result->size() < tabs.size()) {
-      result->push_back({});
-    }
-    return;
-  }
-
-  gfx::Rect rect;
-  rect.set_y(kMarginForVerticalTabContainers);
-  for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
-    auto& tab = *iter;
-    rect.set_x(
-        kMarginForVerticalTabContainers +
-        (tab.is_tab_in_group() ? BraveTabGroupHeader::kPaddingForGroup : 0));
-    rect.set_width(width.value_or(tab.GetPreferredWidth()) - rect.x() * 2);
-    rect.set_height(tab.state().open() == TabOpen::kOpen ? kVerticalTabHeight
-                                                         : 0);
-    result->push_back(rect);
-
-    // Update rect for the next tab.
-    if (tab.state().open() == TabOpen::kOpen) {
-      rect.set_y(rect.bottom() + kVerticalTabsSpacing);
-    }
-  }
-}
-
-}  // namespace
-
-int GetTabCornerRadius(const Tab& tab) {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    return tab.data().pinned ? 8 : 4;
-  }
-
-  return tabs::kTabBorderRadius;
 }
 
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(

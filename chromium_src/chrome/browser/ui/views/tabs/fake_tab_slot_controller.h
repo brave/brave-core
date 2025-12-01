@@ -26,8 +26,14 @@
   }                                                     \
   bool ShouldAlwaysHideCloseButton()
 
+// Add override for IsVerticalTabsFloating()
+#define EndDrag(...)             \
+  EndDrag(__VA_ARGS__) override; \
+  bool IsVerticalTabsFloating() const
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef EndDrag
 #undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed
 

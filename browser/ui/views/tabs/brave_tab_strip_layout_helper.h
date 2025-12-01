@@ -33,6 +33,12 @@ inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
 int GetTabCornerRadius(const Tab& tab);
 
+void CalculatePinnedTabsBoundsInGrid(
+    const std::vector<TabWidthConstraints>& tabs,
+    std::optional<int> width,
+    bool is_floating_mode,
+    std::vector<gfx::Rect>* result);
+
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,

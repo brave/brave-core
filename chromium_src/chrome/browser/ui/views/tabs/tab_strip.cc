@@ -68,3 +68,7 @@ const Browser* TabStrip::GetBrowser() const {
 bool TabStrip::ShouldAlwaysHideCloseButton() const {
   return false;
 }
+
+bool TabStrip::IsVerticalTabsFloating() const {
+  return false;
+}
