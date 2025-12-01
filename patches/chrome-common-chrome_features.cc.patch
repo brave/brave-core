@@ -1,0 +1,66 @@
+diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
+index f97428db6f561ceea2b57ac89301a94a6df4b151..37525df36f039efb2627075379d86870f0b7f696 100644
+--- a/chrome/common/chrome_features.cc
++++ b/chrome/common/chrome_features.cc
+@@ -922,30 +922,6 @@ BASE_FEATURE(kGlicButtonPressedState, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kGlicShareImage, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kGlicActorAutofill, base::FEATURE_DISABLED_BY_DEFAULT);
+-
+-// The amount of time to wait for a fill to happen if no credit card fetch is
+-// ongoing.
+-BASE_FEATURE_PARAM(base::TimeDelta,
+-                   kGlicActorAutofillFillingTimeout,
+-                   &kGlicActorAutofill,
+-                   "glic-actor-autofill-filling-timeout",
+-                   base::Seconds(2));
+-
+-// The maximum amount of time to wait for a fill to happen (including credit
+-// card fetches)
+-BASE_FEATURE_PARAM(base::TimeDelta,
+-                   kGlicActorAutofillMaximumTimeout,
+-                   &kGlicActorAutofill,
+-                   "glic-actor-autofill-maximum-timeout",
+-                   base::Minutes(1));
+-
+-BASE_FEATURE(kActorFormFillingServiceEnableAddress,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-
+-BASE_FEATURE(kActorFormFillingServiceEnableCreditCard,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-
+ BASE_FEATURE(kGlicWebActuationSetting, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<std::string> kGlicWebActuationAllowedTiers{
+@@ -974,6 +950,30 @@ const base::FeatureParam<base::TimeDelta> kGlicMetricsSessionStartTimeout{
+ 
+ #endif  // BUILDFLAG(ENABLE_GLIC)
+ 
++BASE_FEATURE(kGlicActorAutofill, base::FEATURE_DISABLED_BY_DEFAULT);
++
++// The amount of time to wait for a fill to happen if no credit card fetch is
++// ongoing.
++BASE_FEATURE_PARAM(base::TimeDelta,
++                   kGlicActorAutofillFillingTimeout,
++                   &kGlicActorAutofill,
++                   "glic-actor-autofill-filling-timeout",
++                   base::Seconds(2));
++
++// The maximum amount of time to wait for a fill to happen (including credit
++// card fetches)
++BASE_FEATURE_PARAM(base::TimeDelta,
++                   kGlicActorAutofillMaximumTimeout,
++                   &kGlicActorAutofill,
++                   "glic-actor-autofill-maximum-timeout",
++                   base::Minutes(1));
++
++BASE_FEATURE(kActorFormFillingServiceEnableAddress,
++             base::FEATURE_ENABLED_BY_DEFAULT);
++
++BASE_FEATURE(kActorFormFillingServiceEnableCreditCard,
++             base::FEATURE_ENABLED_BY_DEFAULT);
++
+ // Enables the `google-chrome://` URI scheme.
+ BASE_FEATURE(kGoogleChromeScheme, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
