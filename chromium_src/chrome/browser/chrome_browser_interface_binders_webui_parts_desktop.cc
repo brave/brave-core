@@ -17,6 +17,7 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #endif
 
@@ -28,7 +29,8 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define AI_CHAT_HANDLERS                       \
   .Add<ai_chat::mojom::AIChatSettingsHelper>() \
-  .Add<ai_chat::mojom::CustomizationSettingsHandler>()
+  .Add<ai_chat::mojom::CustomizationSettingsHandler>() \
+  .Add<ai_chat::mojom::OllamaService>()
 #else
 #define AI_CHAT_HANDLERS
 #endif

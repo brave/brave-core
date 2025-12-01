@@ -1875,6 +1875,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER" desc="The placeholder text for the memory search input field">
     Search for a memory
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL" desc="The label for the Ollama sync toggle button">
+    Sync your Ollama local models
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_MANAGED_LABEL" desc="The label shown for models managed by Ollama">
+    Managed by Ollama
+  </message>
 
   <!-- Settings / Survey Panelist -->
   <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">

@@ -59,6 +59,19 @@
   </div>
 </div>
 
+<!-- Provider Sync Section -->
+<template
+  is="dom-if"
+  if="[[isOllamaConnected_]]"
+>
+  <settings-toggle-button
+    class="cr-row"
+    label="$i18n{braveLeoAssistantOllamaSyncLabel}"
+    icon="ollama"
+    pref="{{prefs.brave.ai_chat.ollama_fetch_enabled}}">
+  </settings-toggle-button>
+</template>
+
 <div class="list-container">
   <template
     is="dom-if"
@@ -91,16 +104,23 @@
             </div>
           </div>
           <div class="model-actions">
+            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+              <span class="label-secondary" style="font-size: 12px; padding: 8px;">
+                $i18n{braveLeoAssistantOllamaManagedLabel}
+              </span>
+            </template>
             <cr-icon-button
               on-click="handleEdit_"
               class="size-20"
               iron-icon="edit-pencil"
             ></cr-icon-button>
-            <cr-icon-button
-              on-click="handleDelete_"
-              class="size-20"
-              iron-icon="trash"
-            ></cr-icon-button>
+            <template is="dom-if" if="[[!isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+              <cr-icon-button
+                on-click="handleDelete_"
+                class="size-20"
+                iron-icon="trash"
+              ></cr-icon-button>
+            </template>
           </div>
         </div>
       </template>

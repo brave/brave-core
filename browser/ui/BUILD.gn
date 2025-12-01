@@ -142,7 +142,9 @@ source_set("ui") {
       ]
       deps += [
         "//brave/browser/ai_chat",
+        "//brave/browser/ai_chat/ollama",
         "//brave/components/ai_chat/core/browser",
+        "//brave/components/ai_chat/core/browser/ollama",
       ]
     }
   }

@@ -263,7 +263,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeDoesntTriggersRemove) {
     return count == 2;
   }));
 
-  // Disable Ollama fetching - this triggers RemoveModels
+  // Disable Ollama fetching
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, false);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
