@@ -85,24 +85,26 @@ def audit_path(path, args):
     """Audit the specified path (relative, or absolute)."""
 
     full_path = os.path.join(os.path.abspath(path), "")
-    if os.path.isfile(os.path.join(path, 'package.json')) and \
-       os.path.isfile(os.path.join(path, 'package-lock.json')) and \
+    has_package_json = os.path.isfile(os.path.join(path, 'package.json'))
+    has_lockfile = (os.path.isfile(os.path.join(path, 'pnpm-lock.yaml'))
+                    or os.path.isfile(os.path.join(path, 'package-lock.json')))
+    if has_package_json and has_lockfile and \
        not any(full_path.startswith(os.path.join(args.source_root, p, ""))
                for p in NPM_EXCLUDE_PATHS):
-        print(f'Auditing (npm) {path}')
+        print(f'Auditing (pnpm) {path}')
         return npm_audit_deps(path, args)
 
     return 0
 
 
 def npm_audit_deps(path, args):
-    """Run `npm audit' in the specified path."""
+    """Run `pnpm audit' in the specified path."""
 
-    npm_cmd = 'npm'
+    pnpm_cmd = 'pnpm'
     if sys.platform.startswith('win'):
-        npm_cmd = 'npm.cmd'
+        pnpm_cmd = 'pnpm.cmd'
 
-    npm_args = [npm_cmd, 'audit', '--json']
+    npm_args = [pnpm_cmd, 'audit', '--json']
     if not args.audit_dev_deps:
         # Don't support npm audit --production until dev dependencies are
         # correctly identified in package.json
