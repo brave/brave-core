@@ -17,6 +17,7 @@ class WebState;
 // Add methods to override in BraveWebClient for BraveCRWWKNavigationHandler
 #define IsBrowserLockdownModeEnabled                                           \
   ShouldBlockJavaScript(web::WebState* web_state, NSURLRequest* request);      \
+  virtual void UpdateScripts();                                                \
   virtual NSString* GetUserAgentForRequest(web::WebState* web_state,           \
                                            web::UserAgentType user_agent_type, \
                                            NSURLRequest* request);             \

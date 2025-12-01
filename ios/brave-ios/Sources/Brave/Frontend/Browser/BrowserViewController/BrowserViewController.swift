@@ -546,6 +546,15 @@ public class BrowserViewController: UIViewController {
 
     // Revised Review Handling
     AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
+
+    if FeatureList.kUseChromiumWebViews.enabled {
+      BraveWebView.updateScripts = { [weak self] in
+        guard let self else { return }
+        for tab in tabManager.allTabs {
+          tab.browserData?.loadInjectedScripts()
+        }
+      }
+    }
   }
 
   private func setupAdsNotificationHandler() {

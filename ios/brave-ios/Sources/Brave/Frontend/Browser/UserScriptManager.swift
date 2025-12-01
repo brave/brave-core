@@ -282,8 +282,7 @@ class UserScriptManager {
 
   public func loadScripts(
     into userContentController: WKUserContentController,
-    scripts: Set<ScriptType>,
-    tab: any TabState
+    scripts: Set<ScriptType>
   ) {
     if Preferences.UserScript.blockAllScripts.value {
       return
@@ -292,9 +291,6 @@ class UserScriptManager {
     var scripts = scripts
 
     userContentController.do { scriptController in
-      scriptController.removeAllUserScripts()
-      tab.updateScripts()
-
       // Inject all base scripts
       self.baseScripts.forEach {
         scriptController.addUserScript($0)
@@ -357,7 +353,10 @@ class UserScriptManager {
       "Loaded \(userScripts.count + customScripts.count) script(s): \n\(logComponents.joined(separator: "\n"))"
     )
 
-    loadScripts(into: userContentController, scripts: userScripts, tab: tab)
+    if !FeatureList.kUseChromiumWebViews.enabled {
+      userContentController.removeAllUserScripts()
+    }
+    loadScripts(into: userContentController, scripts: userScripts)
 
     userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this

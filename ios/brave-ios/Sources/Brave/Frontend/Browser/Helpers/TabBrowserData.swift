@@ -379,7 +379,16 @@ class TabBrowserData: NSObject, TabObserver {
     }
   }
 
-  private func updateInjectedScripts() {
+  func updateInjectedScripts() {
+    guard let tab else { return }
+    if FeatureList.kUseChromiumWebViews.enabled {
+      tab.updateScripts()
+    } else {
+      loadInjectedScripts()
+    }
+  }
+
+  func loadInjectedScripts() {
     guard let tab else { return }
     UserScriptManager.shared.loadCustomScripts(
       into: tab,

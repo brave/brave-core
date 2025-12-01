@@ -54,6 +54,8 @@
 
 namespace {
 
+UpdateScriptsCallback gUpdateScriptsCallback;
+
 class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
  public:
   BraveWebViewWebStatePolicyDecider(web::WebState* web_state,
@@ -179,6 +181,14 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
     return nil;
   }
   return holder->web_view();
+}
+
++ (UpdateScriptsCallback)updateScripts {
+  return gUpdateScriptsCallback;
+}
+
++ (void)setUpdateScripts:(UpdateScriptsCallback)callback {
+  gUpdateScriptsCallback = callback;
 }
 
 - (void)resetWebStateWithCoder:(NSCoder*)coder

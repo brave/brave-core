@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AIChatUIHandlerBridge;
 @protocol WalletPageHandlerBridge;
 
+typedef void (^UpdateScriptsCallback)();
+
 CWV_EXPORT
 @interface BraveNavigationAction : CWVNavigationAction
 /// YES if the navigation target frame is the main frame.
@@ -97,6 +99,8 @@ CWV_EXPORT
 /// some Brave specific features
 CWV_EXPORT
 @interface BraveWebView : CWVWebView
+
+@property(nonatomic, class, nullable) UpdateScriptsCallback updateScripts;
 
 // This web view's navigation delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewNavigationDelegate>

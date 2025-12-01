@@ -49,6 +49,7 @@ class BraveWebClient : public ChromeWebClient {
                                    NSURLRequest* request) override;
   bool ShouldBlockUniversalLinks(web::WebState* web_state,
                                  NSURLRequest* request) override;
+  void UpdateScripts() override;
 
  private:
   std::string legacy_user_agent_;

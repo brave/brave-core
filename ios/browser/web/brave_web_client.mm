@@ -192,3 +192,9 @@ NSString* BraveWebClient::GetUserAgentForRequest(
   }
   return nil;
 }
+
+void BraveWebClient::UpdateScripts() {
+  if (BraveWebView.updateScripts) {
+    BraveWebView.updateScripts();
+  }
+}

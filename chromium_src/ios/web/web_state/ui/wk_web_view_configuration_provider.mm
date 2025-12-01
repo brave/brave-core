@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+
 #include "base/notreached.h"
 #include "base/supports_user_data.h"
+#include "ios/web/public/web_client.h"
 
 // Replace the `WKWebViewConfigurationProvider` constructor call with the Brave
 // subclass inside of `WKWebViewConfigurationProvider::FromBrowserState`
@@ -46,6 +49,11 @@ void BraveWKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
 
   // Reset fullscreen to default as it wasn't set in Brave
   [[configuration_ preferences] setElementFullscreenEnabled:NO];
+}
+
+void BraveWKWebViewConfigurationProvider::UpdateScripts() {
+  WKWebViewConfigurationProvider::UpdateScripts();
+  GetWebClient()->UpdateScripts();
 }
 
 }  // namespace web

@@ -16,7 +16,11 @@
 #define ResetWithWebViewConfiguration \
   Unused() {}                         \
   virtual void ResetWithWebViewConfiguration
+#define UpdateScripts \
+  Unused2() {}        \
+  virtual void UpdateScripts
 #include <ios/web/web_state/ui/wk_web_view_configuration_provider.h>  // IWYU pragma: export
+#undef UpdateScripts
 #undef ResetWithWebViewConfiguration
 #undef browser_state_
 
@@ -27,6 +31,7 @@ class BraveWKWebViewConfigurationProvider
 
   void ResetWithWebViewConfiguration(
       WKWebViewConfiguration* configuration) override;
+  void UpdateScripts() override;
 };
 }  // namespace web
 

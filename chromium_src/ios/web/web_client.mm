@@ -20,5 +20,6 @@ bool WebClient::ShouldBlockUniversalLinks(web::WebState* web_state,
                                           NSURLRequest* request) {
   return false;
 }
+void WebClient::UpdateScripts() {}
 
 }  // namespace web
