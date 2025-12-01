@@ -1481,7 +1481,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDFirstPartyStorage(site_a_tab, storage_partition_config, true);
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanupAfterKeepAlive(profile);
@@ -1567,7 +1568,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDFirstPartyStorage(site_a_tab, storage_partition_config, true);
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanupAfterKeepAlive(profile);
@@ -1651,8 +1653,8 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDFirstPartyStorage(site_a_tab, storage_partition_config,
-                                    false);
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, false);
 
   // Wait for the cleanup to finish.
   WaitForCleanupAfterKeepAlive(profile);
