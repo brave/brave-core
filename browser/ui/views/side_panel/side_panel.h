@@ -74,6 +74,14 @@ class SidePanel : public views::View,
   HorizontalAlignment horizontal_alignment() const {
     return horizontal_alignment_;
   }
+  void set_animation_starting_bounds_for_content(
+      const gfx::Rect& content_starting_bounds) {
+    content_starting_bounds_ = content_starting_bounds;
+  }
+  // Reparents the side panel animation content to the |content_parent_view_|
+  // and resets the animation.
+  void ResetSidePanelAnimationContent();
+  gfx::Rect GetContentAnimationBounds(const gfx::Rect& side_panel_final_bounds);
 
   // Only used by tests.
   template <typename T>
@@ -162,6 +170,10 @@ class SidePanel : public views::View,
 
   // Owned by `this` indirectly through the views tree.
   raw_ptr<views::View> content_parent_view_;
+
+  // Starting bounds for the side panel content if kOpenWithContentTransition
+  // animation is shown.
+  std::optional<gfx::Rect> content_starting_bounds_;
 
   State state_ = State::kClosed;
 };
