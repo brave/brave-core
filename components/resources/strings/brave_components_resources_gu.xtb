@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">ન્યુઝલેટર પૉપઅપ</translation>
 <translation id="6136090320163235283">સોશ્યલ વિજેટ</translation>
 <translation id="6657720240983439091">ચેટ વિઝેટ</translation>
+<translation id="3597441883564676263">બ્રાઉઝર સપોર્ટેડ નથી</translation>
 <translation id="7138678301420049075">અન્ય</translation>
 <translation id="4046860372562593546">Brave એડ્સને સંચાલિત કરો</translation>
 <translation id="5136973036012418831">શું પ્રકારની Brave એડ્સ તમે જોઈ શકો છો અને કેટલા વાર, તે નિયંત્રિત કરો.</translation>
@@ -430,12 +431,13 @@
 <translation id="3651550649176056334">તમારા ડેટા વિશે</translation>
 <translation id="1544192797660353713">વૉલેટ</translation>
 <translation id="616639131065447379">Brave ક્રિપ્ટો વૉલેટ્સમાં આપનું સ્વાગત છે</translation>
+<translation id="1740464057879304704">Crypto Wallets તમને Brave માં ક્રિપ્ટોકરન્સી અને સંબંધિત એસેટ્સ સાથે કામ કરવાની મંજૂરી આપે છે. Crypto Wallets ઈથિરિયમ ટોકન્સ જેમ કે ETH અને BAT ઉપરાંત કલેક્ટિબલ્સ માટે સહયોગ આપે છે અને Ðapps તથા અન્ય સ્માર્ટ કોન્ટ્રાક્ટ્સ સાથે કામ કરવાની પણ મંજૂરી આપે છે. આ બધું તે લોકો માટે નિર્મિત છે જેઓ ઈથિરિયમ અને અન્ય બ્લોકચેન સિસ્ટમની વિષયશહેર છે — અથવા શીખવા માટે ઉત્સાહી હોય છે.</translation>
 <translation id="4855440621031541830">ક્રિપ્ટો વૉલેટ્સનો ઉપયોગ ફક્ત ત્યારે કરો જો તમે તૈયાર છો કે આ ઉપયોગ સાથે જોડાયેલ તમામ જોખમો માટે તમને પોતે જવાબદાર હોવું છે અને Brave Software કોઈપણ નુકસાનો માટે જવાબદાર નથી જેમાં શૈળું કે પરિબળ કેટેગરીના નુકસાનો પણ હોઈ શકે છે જે તમે આ ઉપયોગના પરિણામ રૂપે ભોગવશો.</translation>
 <translation id="3187473319809074178">આ બધું થી સંપૂર્ણપણે અલગ છે</translation>
 <translation id="8327818101454798856">તેથી જો તમે તમારા મનપસંદ સાઇટ્સને સમર્થન આપવા માંગતા હો, તો અહીં જાઓ.</translation>
 <translation id="412480955826088549">ઘટક ડાઉનલોડ કરી રહ્યો છે...</translation>
 <translation id="4894106830958548828">હું સમજું છું</translation>
-<translation id="2729085694451916573"><ph name="PART_ONE"/>પ્લેસ હોલ્ડર્સ <ph name="PART_ONE_END"/> માટે ટેસ્ટ સ્ટ્રિંગ. <ph name="PART_TWO"/>વધુ જાણો <ph name="PART_TWO_END"/></translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>પ્લેસ હોલ્ડર્સ<ph name="PART_ONE_END"/> માટે ટેસ્ટ સ્ટ્રિંગ. <ph name="PART_TWO"/>વધુ જાણો <ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">અનસ્ટોપેબલ ડોમેન</translation>
 <translation id="4492298165410552103">Braveમાં Unstoppable Domains ના સપોર્ટને સક્રિય કરવો?</translation>
 <translation id="5015092481905019948">Brave <ph name="PROVIDER_NAME"/> નો ઉપયોગ કરશે <ph name="DOMAIN_LIST"/> ડોમેન નામો માટે જે <ph name="DOMAIN_PROVIDER_NAME"/> પર છે. Brave તમારું IP સરનામું છુપાવે છે. જો તમે આ સક્રિય કરો છો, તો <ph name="PROVIDER_NAME"/> જણાઈ શકે છે કે કોઈ આ ડોમેનમાં જવા પ્રયાસ કરી રહ્યું છે પણ બીજું કશું જ નહીં. જુઓ <ph name="PROVIDER_NAME"/>'s <ph name="BEGIN_PROVIDER_TOU_LINK"/>વાપરવાની શરતો<ph name="END_PROVIDER_TOU_LINK"/> અને <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>ગોપનીયતા નીતિ<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -862,6 +864,13 @@
 <translation id="9209024278910716955">ચીપ કેવી રીતે નહીં ખરીદી શકાય તે પસંદ કરેલ નેટવર્ક માટે સપોર્ટેડ નથી</translation>
 <translation id="4982630604810554641">ડોમેન શોધી રહ્યા છીએ...</translation>
 <translation id="5467044307473123584">Brave .eth ડોમેનને હલ કરવા માટે ઑફ-ચેન ગેટવેનો ઉપયોગ સપોર્ટ કરે છે.</translation>
+<translation id="4896417414446851895">ایسا લાગે છે કે તમે ENS એડ્રેસ દાખલ કર્યો છે. આ વિનંતીને ઉકેલવા માટે અમારે તૃતીય પક્ષ રિઝોલ્વરનો ઉપયોગ કરવો પડશે, જે શક્ય છે કે તમારા IP એડ્રેસ તથા ડોમેઈન જોઈ શકે.</translation>
+<translation id="8646078615727397565">ENS ડોમેઈન નો ઉપયોગ કરો</translation>
+<translation id="1191686659164947414">ટ્રાન્ઝેકશન કદાચ પૂર્વગામી રીતે પૂલ થઈ શકે છે</translation>
+<translation id="4500473291496079954">મૂદ્તિ સમાપ્ત થશે અંદર</translation>
+<translation id="2236833281018938257">વૉલેટ એડ્રેસ અથવા URL</translation>
+<translation id="928500657730628112">વૉલેટ એડ્રેસ</translation>
+<translation id="6812967455478797345">Brave <ph name="LINK_BEFORE"/><ph name="SWAP_PROVIDER"/><ph name="LINK_AFTER"/> નો ઉપયોગ DEX એગ્રીગેટર તરીકે કરે છે.</translation>
 <translation id="151946611346774041">0x એ ટ્રાન્ઝેક્શનને પૂર્ણ કરવા માટે Ethereum ઍડ્રેસ અને IP ઍડ્રેસને પ્રોસેસ કરશે (જેમણે ક્વોટ્સ મેળવવાનું પણ સમાવેશ થાય છે). 0x આ ડેટાનો ઉપયોગ માત્ર ટ્રાન્ઝેક્શન પ્રોસેસ કરવા માટે કરશે.</translation>
 <translation id="7465227658364622464">Jupiter એ ટ્રાન્ઝેક્શનને પૂર્ણ કરવા માટે Solana ઍડ્રેસ અને IP ઍડ્રેસને પ્રોસેસ કરશે (જેમણે ક્વોટ્સ મેળવવાનું પણ સમાવેશ થાય છે). Jupiter આ ડેટાનો ઉપયોગ માત્ર ટ્રાન્ઝેક્શન પ્રોસેસ કરવા માટે કરશે.</translation>
 <translation id="712738518060477110">ક્વોટમાં <ph name="SWAP_FEE_PERCENTAGE"/> Brave ફીનો સમાવેશ થાય છે.</translation>
@@ -1546,7 +1555,7 @@
 <translation id="5419707890586509000">MetaMask પરથી આયાત કરો</translation>
 <translation id="2265945811107390939">તમારા MetaMask પાસવર્ડ નો ઉપયોગ કરીને તમ મીટફ્રેજ ઉારો સુ માણસ krણું</translation>
 <translation id="7060680423657442298">કે. ભુકણ mી આસૃત વિમ્રણ ન માણતોં નો ઉપ યાર્થી ત કરીને ઉ વાલેઝ.</translation>
-<translation id="1932878136775815535">મારી પાસે છે <ph name="LENGTH"/>- શબ્દ રિકવરી ફ્રેઝ </translation>
+<translation id="1932878136775815535">મારી પાસે છે <ph name="LENGTH"/>- શબ્દ રિકવરી ફ્રેઝ</translation>
 <translation id="7877416315564177070">તમારી રિકવરી ફ્રેઝ તપાસો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="6503538941917874992">તમારી રિકવરી ફ્રેઝની મદદથી આયાત કરો</translation>
 <translation id="782167880151571109">Metamask વૉલેટ મળ્યા!</translation>
@@ -2220,6 +2229,24 @@
 <translation id="7488762544858401571">સંપાદિત કર્યું</translation>
 <translation id="5604254791550001355">પ્રોમ્પ્ટ સંપાદિત કરો</translation>
 <translation id="8115786586976830777">પ્રોમ્પ્ટ નકલ કરો</translation>
+<translation id="3666616415490815310">સ્કિલ તરીકે સેવિ કરો</translation>
+<translation id="6574544364990812112">મારા સ્કિલ્સ</translation>
+<translation id="6696824203401957025">નવું સ્કિલ</translation>
+<translation id="6410279677882692627">સંદર્ભ તરીકે ટૂલ્સમાં સ્કિલ્સ દેખાશે અને તમે નીચે સેટ કરેલા "/name" ટાઈપ કરીને તેને ઍક્સેસ કરી શકો છો.</translation>
+<translation id="1344606707744657196">પ્રોમ્પ્ટ માટે મોડલ</translation>
+<translation id="8458341576712814616">શૉર્ટકટ</translation>
+<translation id="1326559827339317236">અહીં તમારું શૉર્ટકટ દાખલ કરો</translation>
+<translation id="5032574515228824816">પ્રોમ્પ્ટ</translation>
+<translation id="2573797314568446575">અહીં તમારું પ્રોમ્પ્ટ દાખલ કરો</translation>
+<translation id="900733896273558337">સ્કિલમાં ફેરફાર કરો</translation>
+<translation id="7662963028545588801">સ્કિલ કાઢી નાખો</translation>
+<translation id="4209790625997566418">શું તમને ખાતરી છે કે તમે આ સ્કિલ કાઢી નાખવા માંગો છો? આ ક્રિયા પૂર્વવત્ કરી શકાશે નહીં.</translation>
+<translation id="7161540406494327389">શૉર્ટકટ જરૂરી છે</translation>
+<translation id="3722223049736774445">શૉર્ટકટમાં ફક્ત અક્ષરો, અંક, અંડર્સ્કોર અને હાઇફન હોઈ શકે છે</translation>
+<translation id="6997214168632888867">શૉર્ટકટ વધુમાં વધુ 64 અક્ષરનો હોવો જોઈએ</translation>
+<translation id="2806891468525657116">શૉર્ટકટ પહેલાથી જ અસ્તિત્વમાં છે</translation>
+<translation id="5497501845974700950">પ્રોમ્પ્ટ જરૂરી છે</translation>
+<translation id="5642369858603376334">પ્રોમ્પ્ટ વધુમાં વધુ 5000 અક્ષરોનો હોવો જોઈએ</translation>
 <translation id="1406205536570262057">જવાબ સંપાદિત કરો</translation>
 <translation id="3386725253392845084">સમાન મોડલ ફરીથી પ્રયાસ કરો</translation>
 <translation id="2461822463642141190">હાલનું</translation>
@@ -2257,13 +2284,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> વધુ…</translation>
 <translation id="8103700533980268469">આ નોટીસ બંધ કરો</translation>
 <translation id="3417835166382867856">શોધ ટેબ્સ</translation>
+<translation id="3828029223314399057">બુકમાર્ક શોધો</translation>
+<translation id="381480092025168632">બ્રાઉઝર ઇતિહાસ શોધો</translation>
 <translation id="7311244614769792472">કોઈ પરિણામ મળ્યા નથી</translation>
 <translation id="3112448569149476523">કૃપા કરી કોઇ અલગ શોધ અજમાવો</translation>
 <translation id="1352836459737874921">અન્ય ટૅબ પરથી કન્ટેન્ટ જોડો</translation>
+<translation id="7173836072258346701">બુકમાર્કમાંથી સામગ્રી જોડો</translation>
+<translation id="163680814308917875">બ્રાઉઝર ઇતિહાસમાંથી સામગ્રી જોડો</translation>
 <translation id="7039179822221107025">Leo ને સંવાદ માટે વધુ સંદર્ભ આપવા માટે તમારા બ્રાઉઝર ટેબ્સમાંથી પેજ સામગ્રી મોકલો.</translation>
+<translation id="1602382615168212961">Leo ને સંવાદ માટે વધુ સંદર્ભ આપવા માટે તમારા બુકમાર્ક ટૅબમાંથી પેજ સામગ્રી મોકલો.</translation>
+<translation id="4808122506413075135">Leo ને સંવાદ માટે વધુ સંદર્ભ આપવા માટે તમારા બ્રાઉઝર ઇતિહાસમાંથી પેજ સામગ્રી મોકલો.</translation>
 <translation id="220541218939267992">પેજની માહિતી અને તમારાં સંદેશાઓ લિયો સુધી પહોંચાડવામાં આવશે.</translation>
-<translation id="1446346932629101482">સંદર્ભ માટે ટેબ સામગ્રી ઉમેરો. તમારી સંદેશાઓ સાથે Leo ને સામગ્રી મોકલવામાં આવશે.</translation>
-<translation id="7193316103691252734">કોઈ મિલતા સંબંધી ટેબ નથી</translation>
+<translation id="8164365899016970783">સંદર્ભ માટે ટૅબ અને બુકમાર્ક સામગ્રી ઉમેરો. સામગ્રી તમારી સંદેશાઓ સાથે Leo ને મોકલવામાં આવશે.</translation>
+<translation id="6237410387937453423">મિલતી મળી આવતા જોડાણો નથી</translation>
+<translation id="8076492880354921740">ટૅબ્સ</translation>
 <translation id="2315654674554095762">Leo હવે તમારી વાતચીતોને યાદ રાખશે જેથી તમે તેમને ફરીથી જોઈ શકો. તેઓને તમારા ડિવાઇસ પર એન્ક્રિપ્ટ કરીને સ્ટોર કરવામાં આવે છે અને તમે તેઓને કોઈપણ સમયે ડિલીટ કરી શકો છો.</translation>
 <translation id="7821251979960635244">જ્યારે તમે સંવાદ શરૂ કરશો ત્યારે તમારો સંવાદ ઇતિહાસ અહીં દેખાશે.</translation>
 <translation id="887511360213807449">ઇતિહાસ અરક્ષણ અક્ષમ છે</translation>
@@ -2322,7 +2356,9 @@
 <translation id="4250229828105606438">સ્ક્રીનશૉટ</translation>
 <translation id="7949596341600215809">પૂર્ણ પેજનો સ્ક્રીનશૉટ</translation>
 <translation id="6332876390231524389">વર્તમાન ટેબની સામગ્રી</translation>
-<translation id="7742969455167760092">ટૅબ્સ ખોલો...</translation>
+<translation id="6397861830483632092">ટૅબ્સ ખોલો…</translation>
+<translation id="802080272588201037">બુકમાર્ક્સ…</translation>
+<translation id="2716127283451902393">ઇતિહાસ…</translation>
 <translation id="49269513399674318">માઇક્રોફોન વાપરો</translation>
 <translation id="3895031624234442305">કસ્ટમ મોડેલો</translation>
 <translation id="4572010449071015143">નવી વાતચીત શરૂ કરો</translation>
@@ -2334,6 +2370,22 @@
 <translation id="2593275000606533518">બધાને મેનેજ કરો</translation>
 <translation id="8410199626695516952">સારું, હું તેને યાદ નહીં રાખું</translation>
 <translation id="8419849467765474535">મેમરી સાચવવાનું નિષ્ફળ થયું. કૃપા કરીને ફરી પ્રયાસ કરો.</translation>
+<translation id="5517580030864973329">વેબપેજને નવા સરનામે દોરવું</translation>
+<translation id="8832457834975923266">વેબપેજને <ph name="URL"/> પર દોરવામાં આવ્યું</translation>
+<translation id="5095252080770652994">પ્રગતિ</translation>
+<translation id="8332385567036775056">પગલાં</translation>
+<translation id="4521931942079977149">પેજ પર ક્લિક કરી રહ્યા છે</translation>
+<translation id="7732267913911704962">પેજ પર ડ્રેગ અને ડ્રોપ કરી રહ્યા છે</translation>
+<translation id="7703800915509570212">પાછળ નૅવિગેટ કરી રહ્યા છે</translation>
+<translation id="4875586490950981498">આગળ નૅવિગેટ કરી રહ્યા છે</translation>
+<translation id="738881387603843066">માઉસ હલાવી રહ્યા છે</translation>
+<translation id="4850669014075537160">સ્ક્રોલિંગ</translation>
+<translation id="1265072406500460724">ડ્રોપડાઉનમાંથી પસંદ કરી રહ્યા છે</translation>
+<translation id="7573920298077917439">ટેક્સ્ટ લખી રહ્યા છે</translation>
+<translation id="4089034800311309656">પેજ માટે રાહ જોઈ રહ્યા છે</translation>
+<translation id="4798146464408730445">કોઈ સ્કિલ મળ્યાં નથી. "નવી" બટન પર ક્લિક કરીને નવી સ્કિલ બનાવો.</translation>
+<translation id="271033894570825754">નવી</translation>
+<translation id="8266605059880650542">પેજ વિશે માહિતી નોંધવી</translation>
 <translation id="3486480638399578250">તમારા વ્યક્તિગત ઇમેઇલ એડ્રેસને ગુપ્ત રાખો</translation>
 <translation id="7765422154906712751">અનોખા, રેન્ડમ સરનામાંઓ બનાવો જે તમારા Brave અકાઉન્ટ ઇમેઇલ પર ફોરવર્ડ થઈ શકે છે અને તમારી ઇચ્છા પર ડિલીટ કરી શકાય છે. તમારા વાસ્તવિક ઇમેઇલ એડ્રેસને જાહેરાતકર્તાઓ સામે જાહેર થવાથી અથવા તેમના દ્વારા ઉપયોગ થવાથી બચાવો.</translation>
 <translation id="5222676887888702881">સાઇન આઉટ કરો</translation>
@@ -2379,6 +2431,10 @@
 <translation id="7508412964869396375">Brave Accounts સર્વિસ તરફથી કોઈ વેરિફિકેશન ટોકન પ્રાપ્ત ન થયો</translation>
 <translation id="3179527991526213624">Brave Accounts સર્વિસ તરફથી કોઈ પ્રતિસાદ નથી</translation>
 <translation id="7911439408853154309">ઇમેઇલ વેરિફિકેશન નિષ્ફળ</translation>
+<translation id="2595463802839066496">ઈમેલ એલાયસ સર્વિસ તરફથી કોઈ પ્રતિસાદ નથી</translation>
+<translation id="367191282389216837">ઈમેલ એલાયસ સર્વિસથી અમાન્ય પ્રતિસાદ મળ્યો</translation>
+<translation id="7203490731644771170">ઈમેલ એલાયસ સર્વિસમાં ભૂલ: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">ત્રુટિ: એલાયસ ઉપલબ્ધ નથી</translation>
 <translation id="8370801182970639038">આપમેળે (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">સક્રિય થયેલ શોધ એન્જિન</translation>
 <translation id="8285901519864208412">રિવોર્ડ કાર્ડ છુપાવો</translation>
@@ -2424,8 +2480,19 @@
 <translation id="8458987127502506209">Brave શિલ્ડ સક્ષમ કરો</translation>
 <translation id="8443488493738411048">આ સાઇટ માટે <ph name="STATUS_BEFORE"/>Shields ચાલુ છે<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">આ સાઇટ માટે <ph name="STATUS_BEFORE"/>Shields બંધ છે<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">જો આ સાઇટ તૂટેલી લાગે છે, તો શિલ્ડ્સ ક્રિપ્ટ કરો.
-   <ph name="NOTE_BEFORE"/>નોંધ: તે Braveના ગોપનીયતા સંરક્ષણોને ઘટાડે છે.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">જો આ સાઇટ બરાબર ન દેખાતી હોય, તો શિલ્ડ નીચે કરી જુઓ.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>નોંધ: આ Brave ના ગોપનીયતા સંરક્ષણ ઘટાડે છે.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">શું તમે આ સાઇટમાં તકલીફ અનુભવતા હોવ છો?</translation>
+<translation id="9176447766421988172">અમે સાઇટ સુસંગતતા વધારવા માટે એક પ્રયોગ કરી રહ્યા છીએ, જેમાં અમે ફક્ત એડ બ્લોકિંગ ચાલુ રાખીએ છીએ. ચેતવણી: તમામ ગોપનીયતા સંરક્ષણ દૂર કરે છે. શું તમે આ પ્રયાસ કરવા ઈચ્છો છો? <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">વ્યક્તિગત વેબસાઇટ્સ જે Brave ના ગોપનીયતા સંરક્ષણથી બગડી ગઈ હોય, માટે તમે શિલ્ડ્સને નીચે ઘસાડી શકો છો.</translation>
+<translation id="1836572675775891780">માત્ર એડ બ્લોક મોડ ચાલુ કરો</translation>
+<translation id="6623668214089604469">શું સાઇટ હવે યોગ્ય રીતે કાર્ય કરી રહી છે?</translation>
+<translation id="8978860854770042258">જો આ સાઇટ હજી પણ કામ ન કરતી હોય તો, કૃપા કરીને રિપોર્ટ સબમિટ કરવાનો વિચાર કરો.</translation>
+<translation id="4677356505199464553">બરાબર દેખાય છે</translation>
+<translation id="1992750560347846445">સાઇટનો અહેવાલ આપો</translation>
+<translation id="2887186586339544116">માત્ર એડ બ્લોક મોડ ચાલુ કરવામાં આવ્યો</translation>
+<translation id="673665019618844072">તમે હાલમાં માત્ર એડ બ્લોકિંગ મોડ વાપરી રહ્યા છો. આ મોડ માત્ર એડ બ્લોકિંગ સંરક્ષણ આપે છે. જો તમે સંપૂર્ણ શિલ્ડ્સ મોડ પર પાછા જવા માગો, તો આ મોડ સેટિંગ્સમાંથી બંધ કરો.</translation>
+<translation id="4820891023903368625">એડ્સ બ્લોક થયાં <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ટ્રેકર્સ, એડ્સ, અને વધુને બ્લોક કર્યું <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave શિલ્ડ્સ દ્વારા સુરક્ષિત નથી <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ઉન્નત કંટ્રોલ</translation>
@@ -2459,7 +2526,6 @@
 <translation id="8034285923190068220">ફિંગરપ્રિન્ટીંગને મંજૂરી આપો</translation>
 <translation id="7638541189782135885">HTTP કનેક્શન અપગ્રેડ ન કરો</translation>
 <translation id="2570787596946026998">માત્ર HTTPS સાથે જોડાવો</translation>
-<translation id="1992750560347846445">સાઇટનો અહેવાલ આપો</translation>
 <translation id="2387532482048804818">જેવું Shields ચાલુ હોય તેવું સાઇટ યોગ્ય રીતે કામ ન કરતું હોય તો જણાવો.</translation>
 <translation id="3795015906457257780">તમે આ સાઇટને Braveના ગોપનીયતા સંરક્ષણો વિના જોઈ રહ્યા છો.</translation>
 <translation id="7194012750329511146">Brave શિલ્ડ્સ

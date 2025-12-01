@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Na ndihmo të përmirësojmë Brave duke na treguar se pse ke lejuar kukit e palëve të treta. <ph name="BEGIN_LINK"/>Dërgo komente<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Mund të kërkosh për të parë versionin e desktopit të sajteve</translation>
 <translation id="9183227624343766158">Përdor Brave si parazgjedhje</translation>
+<translation id="113098737392899175">Navigo te faqet me një kursor teksti kur lidhet një tastierë</translation>
 <translation id="1178015372320901893">Fleta e poshtme e shkurtoreve të mia</translation>
 <translation id="1178581264944972037">Pauzë</translation>
 <translation id="1181037720776840403">Hiq</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Vazhdo</translation>
 <translation id="904887679952026733">Kur është e mundur, zbato temën e errët për sajtet kur Brave përdor temën e errët</translation>
 <translation id="2390272837142897736">Rrit zmadhimin</translation>
+<translation id="2397689164757137845">Lejohet • E saktë</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">E saktë</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> dhe <ph name="NUM_MORE"/> tjetër e lejuar}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> dhe <ph name="NUM_MORE"/> të tjera të lejuara}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Ndihmë dhe komente</translation>
 <translation id="2501278716633472235">Kthehu prapa</translation>
 <translation id="2533138527374486328">Kur cilësimi është aktiv, sajtet mund të kërkojnë që të lidhen me çdo pajisje në rrjetin tënde lokal. Kur cilësimi është joaktiv, sajtet nuk mund të lidhen me pajisjet në rrjetin tënd lokal.</translation>
+<translation id="2536779053640817375">Lejohet këtë herë • E saktë</translation>
 <translation id="2544997614631598250">Ngjyra e temës e errët</translation>
 <translation id="2546283357679194313">Kukit dhe të dhënat e faqes</translation>
 <translation id="2570922361219980984">Qasja te vendndodhja është po ashtu joaktive për këtë pajisje. Aktivizoje te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">Bllokuar në disa sajte</translation>
 <translation id="3132996321662585180">Rifresko çdo ditë</translation>
 <translation id="3143754809889689516">Luaj nga fillimi</translation>
+<translation id="3164169438034704658">Mund ta aktivizosh vendndodhjen e saktë te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Lejo që një sajt të përdorë kukit e palëve të treta</translation>
 <translation id="3167868116600277716">Furnizimi i "Zbulo"</translation>
 <translation id="3198916472715691905">Të dhënat e ruajtura <ph name="STORAGE_AMOUNT"/></translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">Brave do t'i kufizojë kukit përsëri sot</translation>
 <translation id="4338831206024587507">Të gjitha sajtet nën domenin <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Mos lejo që sajtet të dërgojnë njoftime</translation>
+<translation id="4341577178275615435">Për të aktivizuar ose çaktivizuar shfletimin me kursor teksti, përdor shkurtoren F7</translation>
 <translation id="4402755511846832236">Blloko sajtet që të mos e dinë kur ti e përdor këtë pajisje në mënyrë aktive</translation>
 <translation id="8382883799082236806">Fleta e poshtme e ngjyrave të Brave u hap në gjysmë lartësi</translation>
 <translation id="4412992751769744546">Lejo kukit e palëve të treta</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">Vendose videon në pauzë</translation>
 <translation id="5877248419911025165">Palos të gjitha kërkesat</translation>
 <translation id="5878945009165002849">Blloko kërkesat për identifikim nga shërbimet e identitetit</translation>
+<translation id="588258955323874662">Ekrani i plotë</translation>
 <translation id="5884085660368669834">Preferenca e sajtit</translation>
 <translation id="5887687176710214216">Vizituar së fundi dje</translation>
 <translation id="5908617755156109052">Mos lejo që sajtet të krijojnë një hartë 3D të ambientit tënd rrethues apo të monitorojnë pozicionin e kamerës</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">Në rregull</translation>
 <translation id="6980861169612950611">Të fshihen të dhënat e sajtit? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Qasja</translation>
+<translation id="6991142177939282156">Lejohet • Po përdoret vendndodhja e përafërt</translation>
 <translation id="6992289844737586249">Pyet përpara se sajtet të lejohen të përdorin mikrofonin (rekomandohet)</translation>
 <translation id="7000754031042624318">E çaktivizuar te cilësimet e Android</translation>
 <translation id="8683151724374457021">Ky sajt përcakton gjërat që të pëlqejnë dhe më pas sugjeron reklama për sajtet e tjera. Ky sajt merr po ashtu temat e tua të reklamave nga Brave për të të shfaqur reklama më të përshtatshme</translation>
+<translation id="7036823721811529709">Dëgjo në sfond</translation>
 <translation id="7044081119134178347">Kamera lejohet këtë herë</translation>
 <translation id="7053983685419859001">Bllokoje</translation>
 <translation id="7055552182600664515">Për të luajtur përmbajtjet e mbrojtura nga të drejtat e autorit, sajtet mund të kenë nevojë të përdorin një shërbim të mbrojtjes së përmbajtjeve. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">Ky cilësim funksionon pa të identifikuar ty ose pa i lejuar sajtet që të shikojnë historikun tënd të shfletimit, megjithëse sajtet mund të ndajnë një sasi të vogël informacionesh si pjesë e verifikimit</translation>
 <translation id="7409735910987429903">Sajtet mund të dërgojnë dritare kërcyese për të të shfaqur reklama ose mund të përdorin ridrejtimet për të të drejtuar te sajte uebi që mund të mos dëshirosh t'i vizitosh</translation>
 <translation id="7412160840120117304">Kodi hekzadecimal i ngjyrës kryesore</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zmadho}other{Zmadho: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Pyet në fillim</translation>
 <translation id="7423538860840206698">Bllokuar për leximin e kujtesës së fragmenteve</translation>
 <translation id="7425915948813553151">Tema e errët për sajtet</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">Fshi</translation>
 <translation id="8284326494547611709">Titrat</translation>
 <translation id="8300705686683892304">Menaxhuar nga aplikacioni</translation>
+<translation id="8301363963630676147">Lejohet këtë herë • Po përdoret vendndodhja e përafërt</translation>
 <translation id="8315509175050791576">Po ndahet një skedë</translation>
 <translation id="8324158725704657629">Mos pyet më</translation>
 <translation id="8362795839483915693">Mund të zmadhosh ose zvogëlosh në sajtet që viziton ti</translation>

@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
-<translation id="8594912907680633924">スプリットビューでリンクを開く</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
-<translation id="3795436270513738622">スプリットビューでリンクを開く</translation>
 <translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
@@ -253,10 +251,6 @@
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
-<translation id="1968543937259008435">オンライン上のプライバシーを確保しましょう</translation>
-<translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
-<translation id="7537601449003285327">タスクバーにピン留めする</translation>
-<translation id="2307973900865360088">Dockにキープ</translation>
 <translation id="961012016278832836">Microsoft Edgeレガシー</translation>
 <translation id="6436994631426134065"><ph name="BROWSER_NAME"/>からインポート</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -397,6 +391,7 @@
 <translation id="5219886318310413094">すべてのウィンドウでピン留めされたタブを表示</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
+<translation id="4749586705247636385">メインコンテンツに角丸を表示</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="4579877808890085926">オンデバイス候補</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
@@ -414,7 +409,7 @@
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="5522420266446076076">Speedreader機能を有効にする。</translation>
 <translation id="5211997910936574251">可能な時は自動的にSpeedreaderを使用</translation>
-<translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
+<translation id="2025435450953474282">記事を自動的にリーダーモードで読み込んで、時間を節約します</translation>
 <translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
 <translation id="832432428796481785">サイドバーのボタンを表示</translation>
 <translation id="5581036754486769849">プライベートウィンドウでオートフィルを許可</translation>
@@ -425,9 +420,11 @@
 <translation id="3719826155360621982">ホームページ</translation>
 <translation id="5448570825852364919">空白のページ</translation>
 <translation id="8244387390464017490">新規タブページのカスタマイズ</translation>
+<translation id="7537601449003285327">タスクバーにピン留めする</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="735832369569964359">ピンをクリックして、以下のWindows通知で確認</translation>
 <translation id="7506648566440714944">Braveは既に固定されています</translation>
+<translation id="2307973900865360088">Dockにキープ</translation>
 <translation id="239275665037555969">Dock</translation>
 <translation id="4057614912106618659">Braveは既にDockに登録されています</translation>
 <translation id="3195845168740336657">シールド設定</translation>
@@ -499,10 +496,30 @@
 <translation id="2718718846210516552">スクリプトレットが見つかりません。</translation>
 <translation id="4088315951291671239">理解していない、あるいは自分で確認していないコードをここに貼り付けないでください。攻撃者にあなたのIDが盗まれたり、あなたのコンピューターが乗っ取られたりする可能性が生じます。</translation>
 <translation id="3020183492814296499">ショートカット</translation>
+<translation id="2935698011275148880">ブレイブ・オリジン</translation>
+<translation id="2587535830241068901">ブレイブをサポートしながらブラウザをカスタマイズ</translation>
+<translation id="553273341094971255">ブレイブオリジンでは、アプリ内のプロモーションやブランド広告、インストール時に有効にしていた匿名アナリティクスをすべて削除し、お好みに合わせてブレイブを調整することができます。</translation>
+<translation id="534725333104202278">以前有効にしていた、または使用していたアドオンや機能は表示されたまま統合されますが、それ以外は無効になります。Braveを調整して、ブラウザに新機能を追加してください。これらの機能はBrave Originではデフォルトで非表示となり、コントロールパネルのみに表示されます。</translation>
+<translation id="1919345977826869612">広告</translation>
+<translation id="944736176598169208">リワード</translation>
+<translation id="2839742394543397416">アナリティクス</translation>
+<translation id="1799030480311994998">機能</translation>
+<translation id="6709133671862442373">ニュース</translation>
+<translation id="6297791103122079275">Talk</translation>
+<translation id="1458638489455808030">ウェイバック・マシン</translation>
+<translation id="1199170151481311646">プライバシー保護分析</translation>
+<translation id="5990642573624858459">統計報告</translation>
+<translation id="2441719842399509963">デフォルトにリセット</translation>
 <translation id="5567412479632285879">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
 <translation id="8826461509529116322">Brave Rewardsボタンを表示する</translation>
+<translation id="3328713589982547433">広告ブロック専用モード</translation>
+<translation id="1574253307550419595">広告ブロック専用モードを使用する</translation>
+<translation id="738717058053657696">広告ブロックのみモードは、Brave Shieldsのコア広告ブロックルールを保持します。警告: すべてのプライバシー保護を削除します。Braveのプライバシー保護によって破壊された個々のウェブサイトについては、ShieldsをDOWNに設定できることに注意してください。 <ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">シールドのオプションは現在無効になっています</translation>
+<translation id="516439939408671102">広告ブロック専用モードは、ブレイブシールドのコアな広告ブロックルールを保持し、プライバシー保護をオフにします。標準のシールドを有効にしたい場合は、このモードを無効にしてください。</translation>
+<translation id="177233004755519660">広告ブロック専用モードをオフにする</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="7791141927430186653">X (旧Twitter) の埋め込みツイートを許可する</translation>
