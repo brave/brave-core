@@ -125,6 +125,7 @@ browser/brave_wallet/ @brave/crypto-wallets-core
 browser/ui/brave_wallet/ @brave/crypto-wallets-core
 browser/ui/wallet_bubble_manager_delegate_impl.* @brave/crypto-wallets-core
 browser/ui/webui/brave_wallet/ @brave/crypto-wallets-core
+browser/ui/views/wallet_bubble_focus_observer* @brave/crypto-wallets-core
 components/brave_wallet/ @brave/crypto-wallets-core
 components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/crypto-wallets-ios
 components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/crypto-wallets-ios
