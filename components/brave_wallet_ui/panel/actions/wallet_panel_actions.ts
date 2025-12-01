@@ -26,6 +26,3 @@ export const cancelConnectHardwareWallet =
 export const setSelectedTransactionId = createAction<
   TransactionInfoLookup | undefined
 >('setSelectedTransactionId')
-export const setCloseOnDeactivate = createAction<boolean>(
-  'setCloseOnDeactivate',
-)

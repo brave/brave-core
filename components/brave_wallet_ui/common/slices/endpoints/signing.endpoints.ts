@@ -180,7 +180,7 @@ export const signingEndpoints = ({
           }
 
           if (api.panelHandler) {
-            navigateToConnectHardwareWallet(api.panelHandler, store)
+            navigateToConnectHardwareWallet(store)
           }
 
           const info = arg.account.hardware

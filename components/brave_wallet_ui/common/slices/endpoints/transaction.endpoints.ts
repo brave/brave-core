@@ -487,7 +487,7 @@ export const transactionEndpoints = ({
           }
 
           if (panelHandler) {
-            navigateToConnectHardwareWallet(panelHandler, store)
+            navigateToConnectHardwareWallet(store)
           }
 
           // Send serialized requests to hardware keyring to sign.
@@ -1151,7 +1151,7 @@ export const transactionEndpoints = ({
             foundAccount.hardware
 
           if (apiProxy.panelHandler) {
-            navigateToConnectHardwareWallet(apiProxy.panelHandler, store)
+            navigateToConnectHardwareWallet(store)
           }
 
           if (hardwareAccount.vendor === BraveWallet.HardwareVendor.kLedger) {
@@ -1193,7 +1193,6 @@ export const transactionEndpoints = ({
                 }),
               )
               store.dispatch(PanelActions.navigateTo('transactionStatus'))
-              apiProxy.panelHandler?.setCloseOnDeactivate(true)
               return {
                 data: { success: true },
               }
@@ -1256,7 +1255,6 @@ export const transactionEndpoints = ({
                 }),
               )
               store.dispatch(PanelActions.navigateTo('transactionStatus'))
-              apiProxy.panelHandler?.setCloseOnDeactivate(true)
               // By default the focus is moved to the browser window
               // automatically when Trezor popup closed which triggers
               // an OnDeactivate event that would close the wallet panel

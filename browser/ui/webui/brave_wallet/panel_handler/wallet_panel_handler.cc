@@ -21,12 +21,10 @@
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
     TopChromeWebUIController* webui_controller,
-    content::WebContents* active_web_contents,
-    PanelCloseOnDeactivationCallback close_on_deactivation)
+    content::WebContents* active_web_contents)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      active_web_contents_(active_web_contents),
-      close_on_deactivation_(std::move(close_on_deactivation)) {
+      active_web_contents_(active_web_contents) {
   DCHECK(active_web_contents_);
 }
 
@@ -55,12 +53,6 @@ void WalletPanelHandler::ConnectToSite(
 
 void WalletPanelHandler::CancelConnectToSite() {
   permissions::BraveWalletPermissionContext::Cancel(active_web_contents_);
-}
-
-void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
-  if (close_on_deactivation_) {
-    close_on_deactivation_.Run(close);
-  }
 }
 
 void WalletPanelHandler::Focus() {
