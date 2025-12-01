@@ -1,7 +1,7 @@
-diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
+diff --git a/remoting/host/installer/linux/installer.include b/remoting/host/installer/linux/installer.include
 index 3c2946d335fb8325395ec6468209eafa1c8836b2..037eca85d776e036144aa8c7cd372ab8389f28b2 100644
---- a/chrome/installer/linux/common/installer.include
-+++ b/chrome/installer/linux/common/installer.include
+--- a/remoting/host/installer/linux/installer.include
++++ b/remoting/host/installer/linux/installer.include
 @@ -142,6 +142,8 @@ stage_install_common() {
      install -m 644 "${OUTPUTDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
