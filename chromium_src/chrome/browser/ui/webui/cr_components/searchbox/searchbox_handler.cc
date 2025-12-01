@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/webui/searchbox/searchbox_handler.h"
+#include "chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.h"
 
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/omnibox/browser/autocomplete_input.h"
@@ -37,7 +37,7 @@ constexpr char kLeoMessageBubbleAskIconResourceName[] =
   autocomplete_input.set_prefer_keyword(true)
 #define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
 
-#include <chrome/browser/ui/webui/searchbox/searchbox_handler.cc>
+#include <chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc>
 
 #undef set_prefer_keyword
 #undef set_allow_exact_keyword_match
