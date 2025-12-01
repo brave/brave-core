@@ -331,6 +331,7 @@ if (!is_android) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
