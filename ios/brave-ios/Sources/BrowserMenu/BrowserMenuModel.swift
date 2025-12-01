@@ -144,7 +144,8 @@ extension BrowserMenuModel {
         countryCode: "CA",
         displayName: "Canada",
         smartProxySupported: false
-      )
+      ),
+      isSmartProxyRoutingEnabled: false
     )
     let vpnStatusPublisher = CurrentValueSubject<VPNStatus, Never>(mockStatus)
     let model = BrowserMenuModel(
