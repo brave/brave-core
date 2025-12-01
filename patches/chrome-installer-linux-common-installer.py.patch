@@ -1,0 +1,53 @@
+diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
+index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..5b54c1d7299c27923180daedbaaf506a6dacf228 100644
+--- a/chrome/installer/linux/common/installer.py
++++ b/chrome/installer/linux/common/installer.py
+@@ -63,20 +63,22 @@ def normalize_channel(channel):
+     if channel == "stable":
+         return (
+             "stable",
+-            "https://chromereleases.googleblog.com/search/label/Stable%20updates",
++            "https://brave.com/latest/",
+         )
+     elif channel in ["beta", "testing"]:
+         return (
+             "beta",
+-            "https://chromereleases.googleblog.com/search/label/Beta%20updates",
++            "https://brave.com/latest/",
+         )
+     elif channel in ["dev", "unstable", "alpha"]:
+         return (
+-            "unstable",
+-            "https://chromereleases.googleblog.com/search/label/Dev%20updates",
++            "dev",
++            "https://brave.com/latest/",
+         )
+     elif channel == "canary":
+         return "canary", "N/A"
++    elif channel == "nightly":
++        return "nightly", "https://brave.com/latest/"
+     else:
+         print(
+             f"ERROR: '{channel}' is not a valid channel type.", file=sys.stderr)
+@@ -111,6 +113,8 @@ def gen_changelog(context, staging_dir, deb_changelog):
+     gzlog_dir = (
+         staging_dir /
+         f"usr/share/doc/{context['PACKAGE']}-{context['CHANNEL']}")
++    if context['CHANNEL'] == "stable":
++        gzlog_dir = (staging_dir / f"usr/share/doc/{context['PACKAGE']}")
+     gzlog_dir.mkdir(parents=True, exist_ok=True)
+     gzlog = gzlog_dir / "changelog.gz"
+ 
+@@ -254,6 +258,7 @@ class Installer:
+                 "RDN_DESKTOP"] = f"{self.context['RDN']}.{self.channel}"
+         else:
+             self.context["RDN_DESKTOP"] = self.context["RDN"]
++        self.context["PACKAGEANDCHANNEL"] = self.context["PACKAGE"]; self.context["USR_BIN_SYMLINK_NAME"] = self.context["PACKAGE"]; self.context['VERSION'] = f"{self.context['MINOR']}.{self.context['BUILD']}.{self.context['PATCH']}"; self.context["VERSIONFULL"] = self.context["VERSION"]
+ 
+     @property
+     def shlib_perms(self):
+@@ -822,3 +827,4 @@ class Installer:
+                         msg += f", but they were {oct(actual_perms)}"
+                         print(msg, file=sys.stderr)
+                         sys.exit(1)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
