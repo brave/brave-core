@@ -20,6 +20,8 @@ export interface Props<T> {
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
 
+  onSelectedItemChanged?: (item: T | null) => void
+
   // Note: undefined means no match.
   matchesQuery: (
     query: FuzzyFinder,
@@ -27,7 +29,7 @@ export interface Props<T> {
     category?: string,
   ) => Match | undefined
 
-  children: (entry: T, category?: string, match?: Match) => React.ReactNode
+  children: (entry: T, category?: string, match?: Match) => React.ReactElement
 }
 
 export function MatchedText(props: { text: string; match?: Match }) {
@@ -60,6 +62,7 @@ export function MatchedText(props: { text: string; match?: Match }) {
 }
 
 export default function FilterMenu<T>(props: Props<T>) {
+  const domToItem = React.useRef(new Map<HTMLElement, T>())
   const [filtered, lookup] = useMemo(() => {
     const lookup = new Map<T, Match | undefined>()
     return [
@@ -144,6 +147,36 @@ export default function FilterMenu<T>(props: Props<T>) {
     }
   }, [props.isOpen, props.query])
 
+  React.useEffect(() => {
+    if (!props.isOpen) {
+      props.onSelectedItemChanged?.(null)
+      return
+    }
+
+    const handler = () => {
+      const focused =
+        ref.current?.querySelector<HTMLElement>(':focus')
+        ?? ref.current?.querySelector<HTMLElement>('leo-menu-item')
+      if (!focused) {
+        props.onSelectedItemChanged?.(null)
+        return
+      }
+
+      const item = domToItem.current.get(focused)
+      if (!item) {
+        props.onSelectedItemChanged?.(null)
+        return
+      }
+
+      props.onSelectedItemChanged?.(item)
+    }
+    handler()
+    ref.current?.addEventListener('focusin', handler)
+    return () => {
+      ref.current?.removeEventListener('focusout', handler)
+    }
+  }, [props.isOpen, props.onSelectedItemChanged, filtered])
+
   return (
     <ButtonMenu
       // This is weird but there seems to be a bug in Nala where the menu is not
@@ -174,7 +207,19 @@ export default function FilterMenu<T>(props: Props<T>) {
             )}
             {category.entries.map((entry, i) => (
               <React.Fragment key={i}>
-                {props.children(entry, category.category, lookup.get(entry))}
+                {React.cloneElement(
+                  props.children(entry, category.category, lookup.get(entry)),
+                  {
+                    ref: (el: HTMLElement | null) => {
+                      if (!el) {
+                        const r = domToItem.current
+                          .entries()
+                          .find(([k, e]) => e === entry)
+                        if (r) domToItem.current.delete(r[0])
+                      } else domToItem.current.set(el, entry)
+                    },
+                  },
+                )}
               </React.Fragment>
             ))}
           </React.Fragment>

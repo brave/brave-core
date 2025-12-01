@@ -24,6 +24,7 @@ function matchesQuery(query: FuzzyFinder, entry: Attachment) {
 export default function TabsMenu() {
   const aiChat = useAIChat()
   const conversation = useConversation()
+  const [selected, setSelected] = React.useState<Attachment | null>(null)
 
   const query = useExtractedQuery(stringifyContent(conversation.inputText), {
     onlyAtStart: false,
@@ -35,15 +36,24 @@ export default function TabsMenu() {
   const setIsOpen = React.useCallback(
     (isOpen: boolean) => {
       if (!isOpen) {
+        if (!selected) return
+
         const editor = document.querySelector<HTMLElement>('[data-editor]')
         if (!editor) return
 
-        makeEdit(editor).selectRangeToTriggerChar('@').replaceSelectedRange('')
+        makeEdit(editor)
+          .selectRangeToTriggerChar('@')
+          .ifHasSelection()
+          ?.replaceSelectedRange({
+            id: selected?.id.toString() ?? '',
+            text: selected?.title ?? '',
+            type: 'attachment',
+          })
 
         editor?.focus()
       }
     },
-    [conversation.setInputText],
+    [conversation.setInputText, selected],
   )
 
   const selectAttachment = React.useCallback(
@@ -141,6 +151,7 @@ export default function TabsMenu() {
           {getLocale(S.CHAT_UI_ATTACHMENTS_MENU_NO_MATCHING_ATTACHMENTS)}
         </div>
       }
+      onSelectedItemChanged={setSelected as (item: Attachment | null) => void}
     >
       {(item, category, match) => (
         <leo-menu-item
