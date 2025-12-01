@@ -36,6 +36,10 @@
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #include "brave/components/email_aliases/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #endif
