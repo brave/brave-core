@@ -299,6 +299,17 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       content,
       conversationState.conversationUuid,
     )
+
+    // If the attachment was removed then remove any references to it in the input text.
+    const matchingRef = inputText.findIndex(
+      (c) =>
+        typeof c !== 'string'
+        && c.type === 'attachment'
+        && c.url === content.url.url,
+    )
+    if (matchingRef !== -1) {
+      setInputText(inputText.filter((c, i) => i !== matchingRef))
+    }
   }
 
   const associateDefaultContent = React.useMemo(() => {

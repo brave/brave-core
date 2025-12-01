@@ -53,4 +53,19 @@
     border-radius: 6px;
     padding: 0 var(--leo-spacing-s);
   }
+
+  & [data-type='attachment'] {
+    background-color: var(--leo-color-primary-10);
+    color: var(--leo-color-primary-60);
+    border-radius: 6px;
+    padding: 0 var(--leo-spacing-s);
+
+    vertical-align: bottom;
+
+    /* Don't let tags be wider than 200px */
+    max-width: 200px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+  }
 }
