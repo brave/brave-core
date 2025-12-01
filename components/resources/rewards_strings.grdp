@@ -28,10 +28,10 @@
   <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_NOTE" desc="">
     Don't worry: Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account won't be affected by resetting.
   </message>
-  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TEXT" desc="">
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TEXT" desc="" formatter_data="webui=BraveRewards">
     You will not earn for ads while connected to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Reset Brave Rewards and connect a different payout account to keep earning. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>
   </message>
-  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TITLE" desc="">
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TITLE" desc="" formatter_data="webui=BraveRewards">
     <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account no longer supported.
   </message>
 
@@ -435,7 +435,7 @@
   <message name="IDS_REWARDS_HELP_BUTTON_LABEL" desc="">
     Help
   </message>
-  <message name="IDS_REWARDS_MORE_BUTTON_LABEL" desc="">
+  <message name="IDS_REWARDS_MORE_BUTTON_LABEL" desc="" formatter_data="webui=BraveRewards">
     More
   </message>
   <message name="IDS_REWARDS_NAVIGATION_CREATORS_LABEL" desc="">
