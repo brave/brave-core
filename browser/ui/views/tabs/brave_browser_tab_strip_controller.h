@@ -35,12 +35,16 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
+  bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
+                              const Tab* tab) const;
+
   // BrowserTabStripController overrides:
   void ShowContextMenuForTab(Tab* tab,
                              const gfx::Point& p,
                              ui::mojom::MenuSourceType source_type) override;
-  void ExecuteCommandForTab(TabStripModel::ContextMenuCommand command_id,
-                            const Tab* tab) override;
+  void ExecuteContextMenuCommand(int index,
+                                 TabStripModel::ContextMenuCommand command_id,
+                                 int event_flags) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.
