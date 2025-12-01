@@ -205,11 +205,11 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL" desc="Shields panel toggle label that would allow element blocker in private mode.">
-    Allow element blocking in Private Windows
+    Allow element blocking in private windows
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL_SUBLABEL" desc="Description for shields panel toggle label that would allow element blocker in private mode.">
-    Using the Block Elements feature in Private Windows writes data to the normal browsing profile.
+    Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">

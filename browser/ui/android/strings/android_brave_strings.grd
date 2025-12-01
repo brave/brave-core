@@ -630,10 +630,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Clears cookies and other site data when you close a site
       </message>
       <message name="IDS_BRAVE_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_LABEL" desc="Shields panel toggle label that would allow element blocker in private mode.">
-        Allow element blocking in Private Windows
+        Allow element blocking in private windows
       </message>
       <message name="IDS_BRAVE_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE_SUMMARY" desc="Shields panel toggle summary that would allow element blocker in private mode.">
-        Using the Block Elements feature in Private Windows writes data to the normal browsing
+        Enables the Shields Block Elements feature in private windows. Note that elements blocked in private windows will also be blocked in non-private windows.
       </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
