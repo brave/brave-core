@@ -459,11 +459,7 @@ test("brave_unit_tests") {
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
       "//brave/chromium_src/components/translate/core/browser/translate_manager_unittest.cc",
     ]
-    if (enable_brave_wallet) {
-      sources += [
-        "//brave/browser/ui/views/wallet_bubble_focus_observer_unittest.cc",
-      ]
-    }
+
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/app/theme:brave_theme_resources_grit",
