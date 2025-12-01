@@ -149,18 +149,27 @@ extension BrowserViewController: TabObserver {
     }
 
     // check if web view is loading a different origin than the one currently loaded
-    if let selectedTab = tabManager.selectedTab,
-      selectedTab.visibleURL?.origin != visibleURL?.origin
-    {
-      // new site has a different origin, hide wallet icon.
-      tabManager.selectedTab?.isWalletIconVisible = false
-      // new site, reset connected addresses
-      tabManager.selectedTab?.browserData?.clearSolanaConnectedAccounts()
-      // close wallet panel if it's open
-      if let popoverController = self.presentedViewController as? PopoverController,
-        popoverController.contentController is WalletPanelHostingController
+    if let selectedTab = tabManager.selectedTab {
+      if selectedTab.visibleURL?.origin != visibleURL?.origin {
+        // new site has a different origin, hide wallet icon.
+        tabManager.selectedTab?.isWalletIconVisible = false
+        // new site, reset connected addresses
+        tabManager.selectedTab?.browserData?.clearSolanaConnectedAccounts()
+        // close wallet panel if it's open
+        if let popoverController = self.presentedViewController as? PopoverController,
+          popoverController.contentController is WalletPanelHostingController
+        {
+          self.dismiss(animated: true)
+        }
+      } else if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
+        let selectedTabVisibleURL = selectedTab.visibleURL,
+        selectedTabVisibleURL.isWalletWebUIURL
       {
-        self.dismiss(animated: true)
+        // loading wallet webui. show wallet button in url bar if there are
+        // 1. pending web requests
+        // 2. pending transactions
+        tabManager.selectedTab?.isWalletIconVisible = true
+        updateURLBarWalletButton()
       }
     }
 

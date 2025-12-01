@@ -70,11 +70,33 @@ extension BrowserViewController {
 
   /// Presents Wallet without an origin (ex. from menu)
   func presentWallet() {
+    Task {
+      guard let walletStore = self.walletStore ?? newWalletStore() else { return }
+      if await walletStore.keyringStore.webUIValidation() == true {
+        self.dismiss(animated: true) {
+          self.tabManager.addTabAndSelect(
+            URLRequest(url: .brave.wallet),
+            isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+          )
+        }
+      } else {
+        presentNativeWallet()
+      }
+    }
+  }
+
+  /// Present Native Wallet from a Wallet WebUI Action
+  func presentNativeWallet(webUIAction: WalletWebUIAction? = nil) {
     guard let walletStore = self.walletStore ?? newWalletStore() else { return }
     walletStore.origin = nil
+    var presentingContext = PresentingContext.default(.portfolio)
+    if let webUIAction {
+      presentingContext = .webUI(action: webUIAction)
+    }
     let vc = WalletHostingViewController(
       walletStore: walletStore,
-      webImageDownloader: profileController.webImageDownloader
+      webImageDownloader: profileController.webImageDownloader,
+      presentingContext: presentingContext
     )
     vc.delegate = self
     self.dismiss(animated: true) {

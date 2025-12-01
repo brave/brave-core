@@ -103,6 +103,7 @@ extension URL {
       string:
         "https://support.brave.app/hc/en-us/articles/36550092449165"
     )!
+    public static let wallet = URL(string: "brave://wallet")!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
