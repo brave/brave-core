@@ -58,8 +58,11 @@
  public:                                                                    \
   std::unique_ptr<PerWebUIBrowserInterfaceBroker> CreateInterfaceBroker
 
+#define BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI if (false)
+
 #include <content/public/browser/web_ui_browser_interface_broker_registry.h>  // IWYU pragma: export
 
+#undef BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI
 #undef CreateInterfaceBroker
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_

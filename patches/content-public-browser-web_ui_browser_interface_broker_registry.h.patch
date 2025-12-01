@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/web_ui_browser_interface_broker_registry.h b/content/public/browser/web_ui_browser_interface_broker_registry.h
+index d92382a7b00b2bec59a15cb3dcf629f06c1fdf8d..0eb571a97df2b6b733354429da93beb79b34046a 100644
+--- a/content/public/browser/web_ui_browser_interface_broker_registry.h
++++ b/content/public/browser/web_ui_browser_interface_broker_registry.h
+@@ -109,6 +109,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+     // class declaration.
+     WebUIController::Type type = &ControllerType::kWebUIControllerType;
+ 
++    BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI
+     DCHECK(binder_initializers_.count(type) == 0)
+         << "Interfaces for a WebUI should be registered together.";
+ 

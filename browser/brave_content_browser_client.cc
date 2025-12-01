@@ -50,6 +50,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -68,12 +69,17 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -193,13 +199,23 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -621,6 +637,38 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       base::BindRepeating(&MaybeBindColorChangeHandler));
 #endif
 
+  // BraveSettingsUI interfaces
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<commands::mojom::CommandsService>();
+  }
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<email_aliases::mojom::EmailAliasesService>();
+  }
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  registry.ForWebUI<BraveSettingsUI>()
+      .Add<ai_chat::mojom::AIChatSettingsHelper>()
+      .Add<ai_chat::mojom::CustomizationSettingsHandler>()
+      .Add<ai_chat::mojom::OllamaService>();
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<containers::mojom::ContainersSettingsHandler>();
+  }
+#endif
+#if !BUILDFLAG(IS_ANDROID)
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::RowHandlerFactory>();
+  }
+  registry.ForWebUI<BraveSettingsUI>()
+      .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
+#endif
+  // End of BraveSettingsUI interfaces
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
@@ -921,14 +969,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatUIHandler, AIChatUI>(map);
-#if !BUILDFLAG(IS_ANDROID)
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::OllamaService, BraveSettingsUI>(map);
-#endif
   }
 #if BUILDFLAG(IS_ANDROID)
   if (ai_chat::IsAIChatEnabled(prefs)) {
