@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { AppModelContext } from '../lib/app_model_context'
 import { createModel } from './storybook_model'
-import { scoped } from '../../rewards_page/lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 import { App } from '../components/app'
 
 export default {

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { scoped, global } from '../../rewards_page/lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 
 import rewardsLogoImage from '../../rewards_page/assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../../rewards_page/assets/rewards_logo_dark.svg'
@@ -149,90 +149,88 @@ export const style = scoped.css`
   }
 `
 
-global.css`
-  @scope (${style.selector}) {
-    & {
-      font: ${font.default.regular};
-      color: ${color.text.primary};
+style.passthrough.css`
+  & {
+    font: ${font.default.regular};
+    color: ${color.text.primary};
+  }
+
+  h1 {
+    margin: 0;
+    font: ${font.heading.h3};
+    text-align: center;
+  }
+
+  h3 {
+    font: ${font.heading.h3};
+    margin: 0;
+  }
+
+  h4 {
+    font: ${font.heading.h4};
+    margin: 0;
+  }
+
+  .key-value-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px;
+
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 0;
+
+      &:not(:last-child) {
+        border-bottom: solid 1px ${color.divider.subtle};
+      }
+    }
+  }
+
+  table {
+    flex-grow: 1;
+    margin: 8px;
+
+    th {
+      text-align: left;
     }
 
-    h1 {
-      margin: 0;
-      font: ${font.heading.h3};
-      text-align: center;
+    td, th {
+      padding: 8px 4px;
     }
 
-    h3 {
-      font: ${font.heading.h3};
-      margin: 0;
+    tbody tr {
+      td, th {
+        border-top: solid 1px ${color.divider.subtle};
+      }
+    }
+  }
+
+  .content-card {
+    border-radius: 16px;
+    padding: 4px;
+    background-color: rgba(255, 255, 255, 0.55);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    section {
+      border-radius: 12px;
+      background: ${color.container.background};
+      width: 100%;
+      overflow-x: auto;
     }
 
     h4 {
-      font: ${font.heading.h4};
-      margin: 0;
+      padding: 8px;
     }
 
-    .key-value-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 8px 16px;
-
-      > div {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 8px 0;
-
-        &:not(:last-child) {
-          border-bottom: solid 1px ${color.divider.subtle};
-        }
-      }
-    }
-
-    table {
-      flex-grow: 1;
-      margin: 8px;
-
-      th {
-        text-align: left;
-      }
-
-      td, th {
-        padding: 8px 4px;
-      }
-
-      tbody tr {
-        td, th {
-          border-top: solid 1px ${color.divider.subtle};
-        }
-      }
-    }
-
-    .content-card {
-      border-radius: 16px;
-      padding: 4px;
-      background-color: rgba(255, 255, 255, 0.55);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-
-      section {
-        border-radius: 12px;
-        background: ${color.container.background};
-        width: 100%;
-        overflow-x: auto;
-      }
-
-      h4 {
-        padding: 8px;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        background-color: rgba(37, 37, 37, 0.58);
-      }
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(37, 37, 37, 0.58);
     }
   }
 `

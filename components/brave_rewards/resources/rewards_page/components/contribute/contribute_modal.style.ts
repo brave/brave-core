@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color } from '@brave/leo/tokens/css/variables'
-import { scoped } from '../../lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 
 import successBackground1URL from '../../assets/success_background_1.svg'
 import successBackground1DarkURL from '../../assets/success_background_1_dark.svg'
