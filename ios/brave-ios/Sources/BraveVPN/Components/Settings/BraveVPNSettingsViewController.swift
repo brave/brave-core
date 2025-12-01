@@ -210,10 +210,9 @@ public class BraveVPNSettingsViewController: TableViewController {
 
     let vpnSmartProxyToggleView = BraveVPNLinkSwitchView(
       isOn: { BraveVPN.isSmartProxyRoutingEnabled },
-      valueChange: { [weak self] isSmartProxyEnabled in
+      valueChange: { [unowned self] isSmartProxyEnabled in
         BraveVPN.isSmartProxyRoutingEnabled = isSmartProxyEnabled
-        self?.setUpSections()
-        self?.tableView.reloadData()
+        self.updateSmartProxyRow()
       },
       openURL: openURL
     )
@@ -596,6 +595,23 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
 
     present(alert, animated: true)
+  }
+
+  private func updateSmartProxyRow() {
+    guard
+      let locationIndexPath =
+        dataSource.indexPath(rowUUID: locationCellId, sectionUUID: serverSectionId)
+    else { return }
+
+    let smartProxyAvailable =
+      (BraveVPN.activatedRegion?.smartRoutingProxyState.isEmpty == false)
+      && (BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone)
+    let newContext =
+      smartProxyAvailable && BraveVPN.isSmartProxyRoutingEnabled
+      ? [BraveVPNServerLocationCell.textAccessoryKey: "leo.smart.proxy-routing"]
+      : nil
+
+    dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row].context = newContext
   }
 
   @objc func vpnConfigChanged(_ notification: NSNotification) {
