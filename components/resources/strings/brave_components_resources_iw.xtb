@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">חלונית קופצת של ניוזלטר</translation>
 <translation id="6136090320163235283">ווידג'ט רשת חברתית</translation>
 <translation id="6657720240983439091">ווידג'ט צ'אט</translation>
+<translation id="3597441883564676263">הדפדפן אינו נתמך</translation>
 <translation id="7138678301420049075">אחר</translation>
 <translation id="4046860372562593546">נהל את Brave Ads</translation>
 <translation id="5136973036012418831">שליטה באילו סוגי Brave Ads תראה ובאיזו תדירות.</translation>
@@ -2249,6 +2250,24 @@ CoinGecko</translation>
 <translation id="7488762544858401571">נערך</translation>
 <translation id="5604254791550001355">עריכת פרומפט</translation>
 <translation id="8115786586976830777">העתקת פרומפט</translation>
+<translation id="3666616415490815310">שמור כמיומנות</translation>
+<translation id="6574544364990812112">הכישורים שלי</translation>
+<translation id="6696824203401957025">מיומנות חדשה</translation>
+<translation id="6410279677882692627">המיומנויות יופיעו בכלי ה-[/] שלך וניתן לגשת אליהן על ידי הקלדת "/name" שהגדרת להלן.</translation>
+<translation id="1344606707744657196">מודל להנחיה</translation>
+<translation id="8458341576712814616">קיצור דרך</translation>
+<translation id="1326559827339317236">הזן כאן את קיצור הדרך שלך</translation>
+<translation id="5032574515228824816">הנחיה</translation>
+<translation id="2573797314568446575">הזן את ההנחיה שלך כאן</translation>
+<translation id="900733896273558337">ערוך מיומנות</translation>
+<translation id="7662963028545588801">מחק מיומנות</translation>
+<translation id="4209790625997566418">האם אתה בטוח שברצונך למחוק מיומנות זו? פעולה זו אינה ניתנת לביטול.</translation>
+<translation id="7161540406494327389">קיצור דרך נדרש</translation>
+<translation id="3722223049736774445">קיצור יכול להכיל רק אותיות, מספרים, קו תחתון ומקף</translation>
+<translation id="6997214168632888867">קיצור הדרך חייב להיות בן 64 תווים לכל היותר</translation>
+<translation id="2806891468525657116">קיצור הדרך כבר קיים</translation>
+<translation id="5497501845974700950">נדרשת הנחיה</translation>
+<translation id="5642369858603376334">ההנחיה חייבת להיות באורך של 5000 תווים לכל היותר.</translation>
 <translation id="1406205536570262057">ערוך תשובה</translation>
 <translation id="3386725253392845084">לנסות שוב עם אותו מודל</translation>
 <translation id="2461822463642141190">נוכחי</translation>
@@ -2286,13 +2305,20 @@ CoinGecko</translation>
 <translation id="7307396647043599949">עוד <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">סגירת התראה זו</translation>
 <translation id="3417835166382867856">חיפוש בכרטיסיות</translation>
+<translation id="3828029223314399057">חיפוש בסימניות</translation>
+<translation id="381480092025168632">חיפוש בהיסטוריית הדפדפן</translation>
 <translation id="7311244614769792472">לא נמצאו תוצאות</translation>
 <translation id="3112448569149476523">נסה לחפש מונח אחר</translation>
 <translation id="1352836459737874921">צירוף תוכן מכרטיסיות אחרות</translation>
+<translation id="7173836072258346701">צרף תוכן מסימניות</translation>
+<translation id="163680814308917875">צרף תוכן מהיסטוריית הדפדפן</translation>
 <translation id="7039179822221107025">שליחת תוכן דפים מכרטיסיות הדפדפן שלך כדי לתת ל-Leo הקשר נוסף לשיחה.</translation>
+<translation id="1602382615168212961">שלח את תוכן הדף מהכרטיסיות בסימניות שלך כדי לספק לליאו יותר הקשר לשיחה.</translation>
+<translation id="4808122506413075135">שלח את תוכן הדף מההיסטוריה של הדפדפן שלך כדי לספק לליאו יותר הקשר לשיחה.</translation>
 <translation id="220541218939267992">תוכן הדף יישלח ללאו יחד עם ההודעות שלך.</translation>
-<translation id="1446346932629101482">אפשר להוסיף תכני כרטיסיות למטרת הקשר. התכנים יישלחו אל Leo יחד עם ההודעות שלך.</translation>
-<translation id="7193316103691252734">אין כרטיסיות תואמות</translation>
+<translation id="8164365899016970783">הוסף כרטיסייה ותוכן סימניות להקשר. התוכן יישלח לליאו יחד עם ההודעות שלך.</translation>
+<translation id="6237410387937453423">אין קבצים מצורפים תואמים</translation>
+<translation id="8076492880354921740">כרטיסיות</translation>
 <translation id="2315654674554095762">עכשיו Leo יזכור את השיחות שלך כך שתהיה לך אפשרות לחזור אליהן. הן מאוחסנות באופן מוצפן במכשיר שלך, ובאפשרותך למחוק אותן בכל עת.</translation>
 <translation id="7821251979960635244">היסטוריית השיחות שלך תופיע כאן ברגע שתתחיל/י שיחה.</translation>
 <translation id="887511360213807449">היסטוריה מושבתת</translation>
@@ -2351,7 +2377,9 @@ CoinGecko</translation>
 <translation id="4250229828105606438">צילום מסך</translation>
 <translation id="7949596341600215809">צילום מסך של עמוד מלא</translation>
 <translation id="6332876390231524389">תוכן כרטיסיה נוכחי</translation>
-<translation id="7742969455167760092">כרטיסיות פתוחות...</translation>
+<translation id="6397861830483632092">כרטיסיות פתוחות…</translation>
+<translation id="802080272588201037">סימניות…</translation>
+<translation id="2716127283451902393">היסטוריה…</translation>
 <translation id="49269513399674318">השתמש במיקרופון</translation>
 <translation id="3895031624234442305">התאמים אישית מודלים</translation>
 <translation id="4572010449071015143">התחל שיחה חדשה</translation>
@@ -2363,6 +2391,22 @@ CoinGecko</translation>
 <translation id="2593275000606533518">ניהול הכל</translation>
 <translation id="8410199626695516952">אוקיי, לא אזכור את זה</translation>
 <translation id="8419849467765474535">שמירת זיכרון נכשלה. נא לנסות שוב.</translation>
+<translation id="5517580030864973329">ניווט בדף האינטרנט לכתובת חדשה</translation>
+<translation id="8832457834975923266">ניווט בדף האינטרנט ל- <ph name="URL"/></translation>
+<translation id="5095252080770652994">התקדמות</translation>
+<translation id="8332385567036775056">שלבים</translation>
+<translation id="4521931942079977149">לחיצה על הדף</translation>
+<translation id="7732267913911704962">גרירה ושחרור על הדף</translation>
+<translation id="7703800915509570212">חזרה</translation>
+<translation id="4875586490950981498">ניווט קדימה</translation>
+<translation id="738881387603843066">הזזת העכבר</translation>
+<translation id="4850669014075537160">גלילה</translation>
+<translation id="1265072406500460724">בחירה מתפריט נפתח</translation>
+<translation id="7573920298077917439">הקלדת טקסט</translation>
+<translation id="4089034800311309656">מחכה לדף</translation>
+<translation id="4798146464408730445">לא נמצאו כישורים. צור כישורים חדשים על ידי לחיצה על כפתור "חדש".</translation>
+<translation id="271033894570825754">חדש</translation>
+<translation id="8266605059880650542">רישום מידע על הדף לשימוש עתידי</translation>
 <translation id="3486480638399578250">לשמור על כתובת המייל האישית שלך פרטית</translation>
 <translation id="7765422154906712751">יצירת כתובות ייחודיות ואקראיות המפנות לאימייל החשבון שלך ב-Brave וניתן למחוק אותן בכל עת. זה שומר על כתובת במייל האמיתית שלך מלהתגלות או להיות בשימוש על ידי מפרסמים.</translation>
 <translation id="5222676887888702881">התנתקות</translation>
@@ -2408,6 +2452,10 @@ CoinGecko</translation>
 <translation id="7508412964869396375">לא התקבל אסימון אימות משירות Brave Accounts</translation>
 <translation id="3179527991526213624">אין תגובה משירות Brave Accounts</translation>
 <translation id="7911439408853154309">אימות אימייל נכשל</translation>
+<translation id="2595463802839066496">אין תגובה משירות כינויי דוא"ל</translation>
+<translation id="367191282389216837">תגובה לא חוקית משירות כינויי דוא"ל</translation>
+<translation id="7203490731644771170">שגיאת שירות כינויי דוא"ל: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">שגיאה: כינוי לא זמין</translation>
 <translation id="8370801182970639038">אוטומטי (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">מנועי חיפושי מופעלים</translation>
 <translation id="8285901519864208412">הסתרת כרטיס תגמולים</translation>
@@ -2453,7 +2501,19 @@ CoinGecko</translation>
 <translation id="8458987127502506209">אפשר Brave מגנים</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>מגנים מופעלים<ph name="STATUS_AFTER"/> עבור אתר זה</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>מגנים מושבתים<ph name="STATUS_AFTER"/> עבור אתר זה</translation>
-<translation id="5623354834493649144">אם אתר האינטרנט הזה נראה שבור, כדאי לנסות להשבית את מגינים.   <ph name="NOTE_BEFORE"/>לתשומת לבך: זה עלול להפחית את הגנות הפרטיות של Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">אם האתר נראה מקולקל, נסה להוריד את Shields.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>הערה: פעולה זו עלולה להפחית את רמת ההגנה על הפרטיות של Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">האם אתה נתקל בבעיות באתר זה?</translation>
+<translation id="9176447766421988172">אנו מנסים ניסוי כדי להגביר את תאימות האתר, שבו אנו משאירים רק את חסימת הפרסומות מופעלת. אזהרה: מסיר את כל הגנות הפרטיות. האם ברצונך לנסות זאת? <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">שימו לב: עבור אתרים בודדים שנפגעים מהגנות הפרטיות של Brave, ניתן להגדיר את Shields למצב DOWN.</translation>
+<translation id="1836572675775891780">הפעל מצב חסימת מודעות בלבד</translation>
+<translation id="6623668214089604469">האתר פועל כעת כראוי?</translation>
+<translation id="8978860854770042258">אם האתר עדיין לא פועל כראוי, אנא שקול לשלוח דיווח.</translation>
+<translation id="4677356505199464553">נראה טוב</translation>
+<translation id="1992750560347846445">דיווח על בעיה באתר</translation>
+<translation id="2887186586339544116">מצב חסימת מודעות בלבד מופעל</translation>
+<translation id="673665019618844072">כרגע אתה משתמש במצב חסימת פרסומות בלבד. מצב זה מציע רק הגנה מפני חסימת פרסומות. אם ברצונך לחזור למצב מגן מלא, השבת מצב זה מההגדרות.</translation>
+<translation id="4820891023903368625">מודעות חסומות <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">עוקבים, מודעות ועוד חסומים <ph name="LINK_BEFORE"/>
 למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">ללא ההגנה של Brave Shields <ph name="LINK_BEFORE"/> לפרטים נוספים <ph name="LINK_AFTER"/></translation>
@@ -2488,7 +2548,6 @@ CoinGecko</translation>
 <translation id="8034285923190068220">אפשרו טביעות אצבע</translation>
 <translation id="7638541189782135885">אל תשדרג את חיבורי HTTP</translation>
 <translation id="2570787596946026998">התחבר רק עם HTTPS</translation>
-<translation id="1992750560347846445">דיווח על בעיה באתר</translation>
 <translation id="2387532482048804818">ספר לנו אם האתר לא פעל כשורה במצב הגנות מופעלות.</translation>
 <translation id="3795015906457257780">הצפייה שלך באתר זה נעשית בלי הגנת הפרטיות של Brave.</translation>
 <translation id="7194012750329511146">ההגנות של Brave 

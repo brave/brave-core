@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Üçüncü tərəf kukilərinə icazə vermə səbəbinizi bildirərək Brave-u təkmilləşdirməyə kömək edin. <ph name="BEGIN_LINK"/>Rəy göndərin<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Saytların masaüstü versiyasına baxmağı istəyə bilərsiniz</translation>
 <translation id="9183227624343766158">Defolt olaraq Brave istifadə edin</translation>
+<translation id="113098737392899175">Klaviatura qoşulduqda mətn kursoru ilə səhifələrə keçin</translation>
 <translation id="1178015372320901893">Qısayollarım üzrə aşağıdakı vərəq</translation>
 <translation id="1178581264944972037">Durdurun</translation>
 <translation id="1181037720776840403">Silin</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Davam edin</translation>
 <translation id="904887679952026733">Mümkün olduqda, Brave tünd temadan istifadə edərkən saytlara tünd tema tətbiq edin</translation>
 <translation id="2390272837142897736">Zoom'u artırın</translation>
+<translation id="2397689164757137845">İcazə verilib • Dəqiq</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Dəqiq</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> üçün icazə verilib}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="NUM_MORE"/> üçün icazə verilib}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Yardım və geri əlaqə</translation>
 <translation id="2501278716633472235">Geri qayıdın</translation>
 <translation id="2533138527374486328">Aktiv olduqda saytlar yerli şəbəkənizdəki istənilən cihaza qoşulmağı istəyə bilər. Deaktiv olduqda saytlar yerli şəbəkənizdəki cihazlara qoşula bilməz.</translation>
+<translation id="2536779053640817375">Bu dəfə icazə verilib • Dəqiq</translation>
 <translation id="2544997614631598250">Tema rəngi tünd</translation>
 <translation id="2546283357679194313">Kukilər və sayt datası</translation>
 <translation id="2570922361219980984">Bu cihazda məkan girişi də deaktivdir. <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> girişi aktiv edin.</translation>
@@ -199,6 +202,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3123473560110926937">Bəzi saytlarda bloklandı</translation>
 <translation id="3132996321662585180">Gündəlik yeniləyin</translation>
 <translation id="3143754809889689516">Başdan oxudun</translation>
+<translation id="3164169438034704658"><ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> dəqiq məkanı aktiv edə bilərsiniz.</translation>
 <translation id="3165022941318558018">Sayta üçüncü tərəf kukilərindən istifadə etməyə icazə verin</translation>
 <translation id="3167868116600277716">Təkliflər lenti</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> saxlanılan data</translation>
@@ -308,6 +312,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8601682686806697614">Brave bu gün kukiləri yenidən məhdudlaşdıracaq</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> domenindəki bütün saytlar</translation>
 <translation id="4340799661701629185">Saytlara bildirişlər göndərmək icazəsi verməyin</translation>
+<translation id="4341577178275615435">Klaviatura ilə baxışı aktiv və ya deaktiv etmək üçün F7 qısayolunu istifadə edin</translation>
 <translation id="4402755511846832236">Saytların bu cihazdan nə zaman aktiv şəkildə istifadə etdiyinizi bilməsini bloklayın</translation>
 <translation id="8382883799082236806">Brave Colors üzrə aşağıdakı vərəq yarım hündürlükdə açıldı</translation>
 <translation id="4412992751769744546">Üçüncü tərəf kukilərinə icazə verin</translation>
@@ -436,6 +441,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5876056640971328065">Videoya pauza verin</translation>
 <translation id="5877248419911025165">Bütün sorğuları yığcamlaşdırın</translation>
 <translation id="5878945009165002849">Kimlik xidmətlərindən daxil olma sorğularını bloklayın</translation>
+<translation id="588258955323874662">Tam ekran</translation>
 <translation id="5884085660368669834">Sayt tərcihi</translation>
 <translation id="5887687176710214216">Son ziyarət dünən olub</translation>
 <translation id="5908617755156109052">Saytlara ətrafın 3D xəritəsini yaratmaq və ya kameranın mövqeyini izləmək icazəsi verməyin</translation>
@@ -531,9 +537,11 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Sayt datası silinsin? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Giriş İmkanı</translation>
+<translation id="6991142177939282156">İcazə verilir • Təxmini məkan istifadə edilir</translation>
 <translation id="6992289844737586249">Saytlara mikrofonunuzu istifadə etmək icazəsi verməmişdən əvvəl soruşun (tövsiyə olunur)</translation>
 <translation id="7000754031042624318">Android ayarlarında söndürülüb</translation>
 <translation id="8683151724374457021">Bu sayt bəyəndiklərinizi müəyyənləşdirir və sonra digər saytlara reklam təklif edir. Bu sayt sizə daha uyğun reklamlar göstərmək üçün Brave'dan reklam mövzularınızı da əldə edir.</translation>
+<translation id="7036823721811529709">Fonda dinləyin</translation>
 <translation id="7044081119134178347">Bu dəfə üçün kameraya icazə verilib</translation>
 <translation id="7053983685419859001">Bloklayın</translation>
 <translation id="7055552182600664515">Müəllif hüququ ilə qorunan kontenti işə salmaq üçün saytlar kontent qoruma xidmətindən istifadə etməli ola bilər. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7406113532070524618">Bu ayar kimliyi müəyyən etmir və ya saytlara brauzer tarixçəsini görmək imkanı vermir. Lakin saytlar doğrulamanın bir hissəsi kimi az miqdarda məlumat paylaşa bilər</translation>
 <translation id="7409735910987429903">Saytlar reklamları göstərmək üçün ani bildirişlər göndərə və ya sizi ziyarət etmək istəmədiyiniz veb-saytlara aparmaq üçün yönləndirmələrdən istifadə edə bilər</translation>
 <translation id="7412160840120117304">Əsas rəngin hex kodu</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zum}other{Zum: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Öncə soruşun</translation>
 <translation id="7423538860840206698">Buferdə oxu girişi blok edildi</translation>
 <translation id="7425915948813553151">Saytlar üçün tünd tema</translation>
@@ -639,6 +648,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8261506727792406068">Silin</translation>
 <translation id="8284326494547611709">Başlıqlar</translation>
 <translation id="8300705686683892304">Tədbiq tərəfindən idarə edilən</translation>
+<translation id="8301363963630676147">Bu dəfə icazə verilib • Təxmini məkan istifadə edilir</translation>
 <translation id="8315509175050791576">Tab paylaşılır</translation>
 <translation id="8324158725704657629">Daha soruşma</translation>
 <translation id="8362795839483915693">Ziyarət etdiyiniz saytlarda böyütmə və ya kiçiltmə edə bilərsiniz</translation>

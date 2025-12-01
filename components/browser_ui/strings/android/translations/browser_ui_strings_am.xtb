@@ -1,17 +1,13 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
-<translation id="3586180167003092914"><ph name="BEGIN_LINK1"/>Android ቅንብሮች<ph name="END_LINK1"/> ውስጥ ያስተዳድሩ
-
-የላቀ ጥበቃ እነዚህን የBrave ቅንብሮች ይቆጣጠራል፦
-• «ሁልጊዜ የተመሰጠሩ ግንኙነቶች ተጠቀም» በርቷል።
-• «ጃቫስክሪፕት አመቻቺ» ጠፍቷል። <ph name="BEGIN_LINK2"/>የጣቢያ ለየት ያሉ ነገሮችን ያስተዳድሩ<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">መስመር ላይ ክፈት</translation>
 <translation id="1036348656032585052">አጥፋ</translation>
 <translation id="1070329623210597193">ይህ ጣቢያ ማየት ወይም አርትዖት ማድረግ የሚችላቸው ፋይሎች</translation>
 <translation id="1882093842020941518">የሦስተኛ ወገን ኩኪዎችን ለምን እንደፈቀዱ ለእኛ በመንገር Brave እንድናሻሽል ያግዙን። <ph name="BEGIN_LINK"/>ግብረመልስ ይላኩ<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">የጣቢያዎችን የዴስክቶፕ ስሪት ለማየት መጠየቅ ይችላሉ</translation>
 <translation id="9183227624343766158">በነባሪነት Braveን ይጠቀሙ</translation>
+<translation id="113098737392899175">የቁልፍ ሰሌዳ ተያይዞ ሳለ በጽሑፍ ጠቋሚ ገጾችን ያስሱ</translation>
 <translation id="1178015372320901893">የእኔ አቋራጮች የግርጌ ሉህ</translation>
 <translation id="1178581264944972037">ለአፍታ አቁም</translation>
 <translation id="1181037720776840403">አስወግድ</translation>
@@ -45,6 +41,7 @@
 <translation id="1500473259453106018">በትሮች ካርድ ላይ የዋጋ ቅነሳዎችን ደብቅ</translation>
 <translation id="1508931164824684991">ጣቢያዎች ጃቫስክሪፕትን መጠቀም ይችላሉ</translation>
 <translation id="1510341833810331442">ጣቢያዎች በመሣሪያዎ ላይ ውሂብ እንዲያስቀምጡ አይፈቀድላቸውም</translation>
+<translation id="1532175480576580256">የእኔ አቋራጮች የግርጌ ሉህ በሙሉ ቁመት ተከፍቷል</translation>
 <translation id="1538031354170655462">ጣቢያዎች በተለምዶ ባጆችን በመቃኘት ወይም ንክኪ-አልባ መክፈያ ባሉ ነገሮች በአቅራቢያ ካሉ መለያዎች ወይም መሣሪያዎች ጋር ለመሥራት በቅርብ ርቀት ግንኙነት (NFC) ይጠቀማሉ</translation>
 <translation id="1547123415014299762">የሶስተኛ ወገን ኩኪዎች ይፈቀዳሉ</translation>
 <translation id="3665719978526894928">በBrave V8 ፕሮግራም ጣቢያዎችን አፋጥን ነገር ግን Brave ለጥቃቶች ያለውን የመቋቋም ኃይል በትንሹ ቀንስ</translation>
@@ -74,6 +71,7 @@
 <translation id="6704867734300244173">በሚበራበት ጊዜ Brave በበለጠ ፍጥነት ይሄዳል እና ጃቫስክሪፕት የሚጠቀሙ ባህሪያት እንደተነደፉት ሊሠሩ ይገባል። በሚጠፋበት ጊዜ ይህ አፈጻጸምን ይቀንሳል ነገር ግን V8 ጥቃቶችን ይበልጥ እንዲቋቋም ያደርጋል።</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> ኤአር እንዲጠቀም ለማስቻል፣ በ <ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ ካሜራን በተጨማሪ ያብሩ።</translation>
 <translation id="1848033246551405023">የቅርጸ-ቁምፊ ሳንስ ሰሪፍ</translation>
+<translation id="1861262398884155592">ይህ አቃፊ ባዶ ነው</translation>
 <translation id="1881806992065048905">የአዲስ ትር ገፅ ዕይታ ግርጌ ሉህ</translation>
 <translation id="1887786770086287077">የአካባቢ መዳረሻ ለዚህ መሣሪያ ጠፍቷል። በ<ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ ያብሩት።</translation>
 <translation id="1906181697255754968">ጣቢያዎች እንደ ስራዎን በራስ-ሰር ማስቀመጥ ያሉ ባህሪያትን ለማግኘት አብዛኛውን ጊዜ በመሣሪያዎ ላይ ያሉትን ፋይሎች እና አቃፊዎች ይደርሳሉ።</translation>
@@ -119,9 +117,11 @@
 <translation id="228293613124499805">እርስዎ የሚጎበኟቸው አብዛኞቹ ጣቢያዎች ምርጫዎችዎን ወይም እርስዎ ያጋሩትን መረጃ በጣቢያው ውስጥ በማስቀመጥ ብዙ ጊዜ የእርስዎን ተሞክሮ ለማሻሻል በመሣሪያዎ ላይ ውሂብን ሊያስቀምጡ ይችላሉ። ይህ ቅንብር እንደበራ እንዲቆይ እንመክራለን።</translation>
 <translation id="2289270750774289114">አንድ ጣቢያ በአቅራቢያ ያሉ ብሉቱዝ መሣሪያዎችን ፈልጎ ለማግኘት ሲፈልግ ጠይቅ (የሚመከር)</translation>
 <translation id="2315043854645842844">የደንበኛ ወገን ዕውቅና ማረጋገጫ ምርጫ በስርዓተ-ክወናው አይደገፍም።</translation>
+<translation id="2347601491101454548">የእኔ አቋራጮች የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="904887679952026733">በሚቻልበት ጊዜ Brave ጠቆር ያለ ገጽታ ሲጠቀም ጠቆር ያለ ገጽታን ጣቢያዎች ላይ ተግብር</translation>
 <translation id="2390272837142897736">ማጉላትን ጨምር</translation>
+<translation id="2397689164757137845">የተፈቀደ • ትክክለኛ</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> ሜባ</translation>
 <translation id="2403474027143565107">ትክክለኛ</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/>፣ እና <ph name="NUM_MORE"/> ተጨማሪ ተፈቅደዋል}one{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/> እና <ph name="NUM_MORE"/> ተጨማሪ ተፈቅደዋል}other{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/> እና <ph name="NUM_MORE"/> ተጨማሪ ተፈቅደዋል}}</translation>
@@ -141,6 +141,7 @@
 <translation id="2498359688066513246">እገዛ እና ግብረመልስ</translation>
 <translation id="2501278716633472235">ወደ ኋላ ተመለስ</translation>
 <translation id="2533138527374486328">ሲበራ ጣቢያዎች በአካባቢያዊ አውታረ መረብዎ ላይ ከማንኛውም መሣሪያ ጋር ለመገናኘት መጠየቅ ይችላሉ። ሲጠፋ ጣቢያዎ በአካባቢያዊ አውታረ መረብዎ ላይ ከማንኛውም መሣሪያ ጋር ለመገናኘት መጠየቅ አይችሉም።</translation>
+<translation id="2536779053640817375">በዚህ ጊዜ የተፈቀደ • ትክክለኛ</translation>
 <translation id="2544997614631598250">የገጽታ ቀለም ጠቆር ያለ</translation>
 <translation id="2546283357679194313">ኩኪዎች እና የጣቢያ ውሂብ</translation>
 <translation id="2570922361219980984">የአካባቢ መዳረሻ እንዲሁም ለዚህ መሣሪያ ጠፍቷል። በ<ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ ያብሩት።</translation>
@@ -149,6 +150,11 @@
 <translation id="2588271083332682494">በትር ቡድኖች ያጽዱ</translation>
 <translation id="2597457036804169544">ጠቆር ያለ ገጽታን ጣቢያዎች ላይ አትተግብር</translation>
 <translation id="2606760465469169465">በራስ-ሰር ማረጋገጥ</translation>
+<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android ቅንብሮች<ph name="END_LINK1"/> ውስጥ ያስተዳድሩ
+
+የላቀ ጥበቃ እነዚህን የBrave ቅንብሮች ይቆጣጠራል፦
+• «ሁልጊዜ የተመሰጠሩ ግንኙነቶች ተጠቀም» በርቷል።
+• «ጃቫስክሪፕት አመቻቺ» ጠፍቷል። <ph name="BEGIN_LINK2"/>የጣቢያ ለየት ያሉ ነገሮችን ያስተዳድሩ<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">ጃቫስክሪፕትን ለአንድ የተወሰነ ጣቢያ ፍቀድ።</translation>
 <translation id="2626708220538466178">የነባሪ አሳሽ የግርጌ ሉህ ተዘግቷል</translation>
 <translation id="2653659639078652383">አስገባ</translation>
@@ -196,6 +202,7 @@
 <translation id="3123473560110926937">በአንዳንድ ጣቢያዎች ላይ ታግዷል</translation>
 <translation id="3132996321662585180">በየቀኑ ዳግም አድስ</translation>
 <translation id="3143754809889689516">ከመጀመሪያው አጫውት</translation>
+<translation id="3164169438034704658"><ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ ትክክለኛ አካባቢን ማብራት ይችላሉ።</translation>
 <translation id="3165022941318558018">አንድ ጣቢያ የሦስተኛ ወገን ኩኪዎችን እንዲጠቀም ይፍቀዱ</translation>
 <translation id="3167868116600277716">ምግብ ያግኙ</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> የተከማቸ ውሂብ</translation>
@@ -305,7 +312,9 @@
 <translation id="8601682686806697614">Brave ዛሬ እንደገና ኩኪዎችን ያግዳል</translation>
 <translation id="4338831206024587507">በ<ph name="DOMAIN"/> ስር ያሉ ሁሉም ጣቢያዎች</translation>
 <translation id="4340799661701629185">ጣቢያዎች ማሳወቂያዎችን እንዲልኩ አይፍቀዱ</translation>
+<translation id="4341577178275615435">የጽሑፍ ጠቋሚ አሰሳን ለማብራት ወይም ለማጥፋት የF7 አቋራጭን ይጠቀሙ</translation>
 <translation id="4402755511846832236">እርስዎ ይህን መሣሪያ በንቃት ሲጠቀሙ ጣቢያዎች እንዳያውቁ ያግዱ</translation>
+<translation id="8382883799082236806">የBrave ቀለማት የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="4412992751769744546">የሶስተኛ ወገን ኩኪዎችን ፍቀድ</translation>
 <translation id="1675197434085185531">ጣቢያዎች እርስዎ በማሰስ ላይ እንዳሉ እርስዎን ለመከታተል የሦስተኛ ወገን ኩኪዎችን እንዳይጠቀሙ Brave ያግዳቸዋል። <ph name="BEGIN_LINK"/>ለሦስተኛ ወገን ኩኪዎች መዳረሻ ለማስተዳደር<ph name="END_LINK"/> ቅንብሮችን ይጎብኙ።</translation>
 <translation id="4425416282877905577">የቅርጸ-ቁምፊ ሰሪፍ</translation>
@@ -338,6 +347,7 @@
 <translation id="4816495437032298535">ለጣቢያዎች የተቀመጠ አጉላ</translation>
 <translation id="4836046166855586901">እርስዎ ይህን መሣሪያ መቼ በንቃት እየተጠቀሙ እንደሆነ አንድ ጣቢያ ማወቅ ሲፈልግ ይጠይቁ</translation>
 <translation id="483914009762354899">በዚህ ጎራ ሁሉንም ጣቢያዎች ያካትቱ</translation>
+<translation id="4852997963351138624">የበስተጀርባ ቀለም ሄክስ</translation>
 <translation id="4882919381756638075">ጣቢያዎች አብዛኛው ጊዜ ማይክሮፎንዎን እንደ የቪዲዮ ውይይት ላሉ የመገናኛ ባህሪዎች ይጠቀሙበታል</translation>
 <translation id="4883854917563148705">የሚተዳደሩ ቅንብሮች ዳግም ሊጀመሩ አይችሉም</translation>
 <translation id="4887024562049524730">ጣቢያዎች የእርስዎን የምናባዊ እውነታ መሣሪያ እና ውሂብ እንዲጠቀሙ ፈቃድ ከማግኘታቸው በፊት ይጠይቁ (የሚመከር)</translation>
@@ -358,7 +368,6 @@
 <translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="5048398596102334565">ጣቢያዎች የእንቅስቃሴ ዳሳሾችን እንዲደርሱባቸው ይፍቀዱ (የሚመከር)</translation>
 <translation id="5048841907079026162">የአሰሳ ውሂብዎን ያስተዳድሩ</translation>
-<translation id="8623552597614912461">ይህ ጣቢያ ማንነት ከማያሳውቅ ሁነታ ውጭ ላለ መተግበሪያ መረጃ ሊያጋራ ነው።</translation>
 <translation id="5063480226653192405">አጠቃቀም</translation>
 <translation id="5068293087784369013">የአዲስ ትር ገጽዎን ያብጁት</translation>
 <translation id="5091013926750941408">የተንቀሳቃሽ ስልክ ጣቢያ</translation>
@@ -368,6 +377,7 @@
 <translation id="5100237604440890931">ተሰብስቧል - ለመዘርጋት ጠቅ ያድርጉ</translation>
 <translation id="7143053178237996319">አገናኞችን በመልዕክቶች፣ በሰነዶች እና በሌሎች መተግበሪያዎች ውስጥ መታ በሚያደርጉበት በማንኛውም ጊዜ Brave መጠቀም ይችላሉ</translation>
 <translation id="512938610812707830">የአዲስ ትር ገፅ መልክ ገጽታ ስብስቦች የግርጌ ሉህ በሙሉ ቁመት ተከፍቷል</translation>
+<translation id="5137460097045297858">የምግብ ያግኙ የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{ክፍት በሆኑ ትሮችዎ ላይ የዋጋ ቅናሽ}one{ክፍት በሆኑ ትሮችዎ ላይ የዋጋ ቅናሽ}other{ክፍት በሆኑ ትሮችዎ ላይ የዋጋዎች ቅናሽ}}</translation>
 <translation id="5186036860380548585">አማራጮች ከማያ ገጹ አናት አጠገብ ይገኛሉ</translation>
 <translation id="5197729504361054390">የመረጧቸው እውቂያዎች ለ<ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> ይጋራሉ።</translation>
@@ -386,7 +396,6 @@
 <translation id="5335288049665977812">ጣቢያዎች ጃቫስክሪፕትን እንዲያሄዱ ፍቀድላቸው (የሚመከር)</translation>
 <translation id="534295439873310000">የNFC መሣሪያዎች</translation>
 <translation id="5344522958567249764">የማስታወቂያ ግላዊነትን ያስተዳድሩ</translation>
-<translation id="5371407439562620893">ጃቫስክሪፕት ማትባት እና ደህንነት</translation>
 <translation id="5373874281522292782">የእርስዎ የትር ቡድኖች ተቀምጠዋል</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 ተጨማሪ)}one{(+ # ተጨማሪ)}other{(+ # ተጨማሪ)}}</translation>
 <translation id="5403592356182871684">ስሞች</translation>
@@ -432,6 +441,7 @@
 <translation id="5876056640971328065">ቪዲዮ ባለበት አቁም</translation>
 <translation id="5877248419911025165">ሁሉንም ጥያቄዎች ይሰብስቡ</translation>
 <translation id="5878945009165002849">የመግቢያ መጠይቆችን ከማንነት አገልግሎቶች ያግዱ</translation>
+<translation id="588258955323874662">ሙሉ ገፅ ዕይታ</translation>
 <translation id="5884085660368669834">የጣቢያ ምርጫ</translation>
 <translation id="5887687176710214216">ለመጨረሻ ጊዜ የተጎበኘው ትላንትና</translation>
 <translation id="5908617755156109052">ጣቢያዎች በዙሪያዎ ያሉትን ነገሮች 3ል ካርታ እንዲፈጥሩ ወይም የካሜራ ቦታ እንዲከታተሉ አትፍቅድ</translation>
@@ -468,6 +478,7 @@
 <translation id="6207207788774442484">ውሂብ ሰርዝ እና ፈቃዶችን ዳግም አስጀምር</translation>
 <translation id="6231752747840485235">«<ph name="APP_NAME"/>» ይራገፍ?</translation>
 <translation id="4789073065838177382">የአሳሽ መተግበሪያ &gt; Brave ላይ መታ ያድርጉ</translation>
+<translation id="6260830281887654268">የአዲስ ትር ገፅ መልክ ገጽታ ስብስቦች የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="6262191102408817757">በእርስዎ የመጨረሻ ትር ላይ በመመስረት</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> እና <ph name="PERMISSION_2"/> ታግደዋል</translation>
 <translation id="6270391203985052864">ጣቢያዎች ማሳወቂያዎችን ለመላክ መጠየቅ ይችላሉ</translation>
@@ -499,8 +510,10 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> ጊባ</translation>
 <translation id="6612358246767739896">ጥበቃ የሚደረግለት ይዘት</translation>
 <translation id="662080504995468778">ቆይ</translation>
+<translation id="6630443592285535486">እዚህ ሄክስ ይተይቡ</translation>
 <translation id="6635327442719709864">ሲበራ፣ ጣቢያዎች ተከታታይ ወደቦችን ለመጠቀም መጠየቅ ይችላሉ። ሲጠፋ፣ ጣቢያዎች ተከታታይ ወደቦችን መጠቀም አይችሉም።</translation>
 <translation id="6678072580827808850">የደኅንነት ፍተሻን ገምግም</translation>
+<translation id="6682057173375416470">አዲስ ትር ገጽ ላይ የሚጠቆሙ ጽሑፎችን ያግኙ</translation>
 <translation id="6683865262523156564">ይህ ጣቢያ እንቅስቃሴዎን ማየት በሚችል አንድ ቡድን ውስጥ ነው። ይህ ቡድን በ<ph name="RWS_OWNER"/> የሚገለጽ ነው።</translation>
 <translation id="6689172468748959065">የመገለጫ ፎቶዎች</translation>
 <translation id="6697925417670533197">ንቁ ውርዶች</translation>
@@ -524,9 +537,11 @@
 <translation id="6965382102122355670">እሺ</translation>
 <translation id="6980861169612950611">የጣቢያ ውሂብ ይሰረዝ? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ተደራሽነት</translation>
+<translation id="6991142177939282156">የተፈቀደ • ግምታዊ በመጠቀም ላይ</translation>
 <translation id="6992289844737586249">ጣቢያዎች ማይክሮፎንዎን እንዲጠቀሙ ከመፍቀድዎ በፊት ይጠይቅ (የሚመከር)</translation>
 <translation id="7000754031042624318">በAndroid ቅንብሮች ውስጥ ጠፍቷል</translation>
 <translation id="8683151724374457021">ይህ ጣቢያ እርስዎ የሚወዷቸውን ነገሮች ይወስናል እና ከዚያም ማስታወቂያዎችን ለሌሎች ጣቢያዎች ይጠቁማል። እንዲሁም ይህ ጣቢያ ይበልጥ አግባብነት ያላቸው ማስታወቂያዎችን ለእርስዎ ለማሳየት የእርስዎን የማስታወቂያ ርዕሶች ከBrave ያገኛል።</translation>
+<translation id="7036823721811529709">ከዳራ ያዳምጡ</translation>
 <translation id="7044081119134178347">ካሜራ ለዚህ ጊዜ ይፈቀዳል</translation>
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="7055552182600664515">በቅጂ መብት የተጠበቀ ይዘትን ለማጫወት ጣቢያዎች የይዘት መከላከያ አገልግሎትን መጠቀም ሊያስፈልጋቸው ይችላል። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
@@ -550,13 +565,17 @@
 <translation id="728412880473384942">ጣቢያዎች ይበልጥ ፈጣን ነገር ግን ያነሰ ደህንነት ያላቸው ናቸው</translation>
 <translation id="7366415735885268578">አንድ ጣቢያ ያክሉ</translation>
 <translation id="7368695150573390554">ማንኛውም ከመስመር ውጭ ውሂብ ይሰረዛል</translation>
+<translation id="7369678931043226462">በግማሽ ቁመት የተከፈተውን የአዲስ ትር ገጽ የግርጌ ሉህ ያብጁ</translation>
 <translation id="7383715096023715447">የ<ph name="DOMAIN"/> ቅንብሮች</translation>
 <translation id="7399802613464275309">የደህንነት ፍተሻ</translation>
 <translation id="7406113532070524618">ምንም እንኳን ጣቢያዎች እንደ የማረጋገጫው አካል ትንሽ መጠን ያለው መረጃን ማጋራት ቢችሉም ይህ ቅንብር እርስዎን ሳይለይ ወይም ጣቢያዎች የአሰሳ ታሪክዎን እንዲያዩ ሳይፈቅድ ይሠራል።</translation>
 <translation id="7409735910987429903">ጣቢያዎች ማስታወቂያዎችን ለማሳየት ብቅ-ባዮችን ይልኩ ወይም ሊጎበኟቸው የማይፈልጓቸውን ድር ጣቢያዎች ሊወስዱዎት አቅጣጫ ማዞሪያዎችን ሊጠቀሙ ይችላሉ</translation>
+<translation id="7412160840120117304">ዋና ቀለም ሄክስ</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{አጉላ}one{አጉላ፦ <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{አጉላ፦ <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">መጀመሪያ ጠይቅ</translation>
 <translation id="7423538860840206698">ቅንጥብ ሰሌዳን ከማንበብ ታግዷል</translation>
 <translation id="7425915948813553151">ለጣቢያዎች ጠቆር ያለ ገጽታ</translation>
+<translation id="746412105358554870">ጃቫስክሪፕት ማመቻቸት እና ደህንነት</translation>
 <translation id="7478658909253570368">ጣቢያዎች ከተከታታይ ወደቦች ጋር እንዲገናኙ አይፍቀዱ</translation>
 <translation id="7488573225650545859">በመተግበሪያ ዝርዝር ውስጥ ያሉ ትሮችን ደብቅ</translation>
 <translation id="7521387064766892559">ጃቫስክሪፕት</translation>
@@ -586,6 +605,7 @@
 <translation id="7804248752222191302">አንድ ጣቢያ ካሜራዎን እየተጠቀመ ነው</translation>
 <translation id="7805832099057502789">በሙሉ ቁመት የተከፈተ የአዲስ ትር ገፅ ካርዶች ግርጌ ሉህ</translation>
 <translation id="6720480757902085971">በBrave የቀረበ</translation>
+<translation id="7809029041571842593">አዲስ የትር ገፅ ካርዶች የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="7815680994978050279">አደገኛ ውርድ ታግዷል</translation>
 <translation id="7835852323729233924">ሚዲያን በማጫወት ላይ</translation>
 <translation id="783819812427904514">የቪዲዮን ድምጸ-ከል አንሳ</translation>
@@ -628,6 +648,7 @@
 <translation id="8261506727792406068">ሰርዝ</translation>
 <translation id="8284326494547611709">መግለጫ ጽሑፎች</translation>
 <translation id="8300705686683892304">በመተግበሪያ የሚተዳደር</translation>
+<translation id="8301363963630676147">በዚህ ጊዜ የተፈቀደ • ግምታዊ በመጠቀም ላይ</translation>
 <translation id="8315509175050791576">ትር በማጋራት ላይ</translation>
 <translation id="8324158725704657629">ዳግም አትጠይቅ</translation>
 <translation id="8362795839483915693">እርስዎ በሚገበኟቸው ጣቢያዎች ላይ ማጉላት ወይም ማሳነስ ይችላሉ</translation>
@@ -643,6 +664,7 @@
 <translation id="8441146129660941386">ወደኋላ ፈልግ</translation>
 <translation id="8444433999583714703"><ph name="APP_NAME"/> የእርስዎን መገኛ አካባቢ እንዲደርስበት ለማድረግ፣ በተጨማሪ በ <ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ መገኛ አካባቢን ያብሩ።</translation>
 <translation id="8447861592752582886">የመሣሪያ ፈቃድ ሻር</translation>
+<translation id="8467359479529706065">አዲስ የትር ገፅ ካርዶች የግርጌ ሉህ በግማሽ ቁመት ተከፍቷል</translation>
 <translation id="8471525937465764768">ጣቢያዎች እንደ ሰነድ ማተም ወይም ወደ የማከማቻ መሣሪያ ማስቀመጥ ያሉ ባህሪያትን ለማግኘት አብዛኛው ጊዜ ከዩኤስቢ መሣሪያዎች ጋር ይገናኛሉ</translation>
 <translation id="8473055640493819707">«<ph name="APP_NAME"/>» ጊዜው ያለፈበት ነው። እባክዎ መተግበሪያውን እንደገና ይጫኑት።</translation>
 <translation id="847433688444405067">በመላው መሣሪያዎች ላይ ያስሱ</translation>
@@ -658,7 +680,6 @@
 <translation id="8549127125482561383">ጥያቄዎችን እንዴት ማሳየት እንደሚቻል</translation>
 <translation id="4273503381657013953">አሁን በሚያስሱበት ወይም በመልዕክቶች ውስጥ አገናኞችን መታ በሚያደርጉበት በማንኛውም ጊዜ Braveን እና ሌሎች መተግበሪያዎችን መጠቀም ይችላሉ።</translation>
 <translation id="857943718398505171">ተፈቅዷል (የሚመከር)</translation>
-<translation id="8580511488901768832">የእኔ አቋራጮች የግርጌ ሉህ በሙሉ ቁመት ተከፍቷል</translation>
 <translation id="8593422116412089302">በሚበራበት ጊዜ፣ ጣቢያዎች ስለ እርስዎ ያስቀመጡትን መረጃ ለመጠቀም ሊጠይቁ ይችላሉ። በሚጠፋበት ጊዜ፣ ጣቢያዎች ስለ እርስዎ ያስቀመጡትን መረጃ እንዲጠቀሙ ሊጠይቁዎት አይችሉም።</translation>
 <translation id="8609465669617005112">ወደላይ አውጣ</translation>
 <translation id="8617611086246832542">ሲበራ፣ የድር ጣቢያዎች የዴስክቶፕ እይታ ይታያል። ሲጠፋ፣ የድር ጣቢያዎች የሞባይል እይታ ይታያል።</translation>
@@ -676,6 +697,7 @@
 <translation id="8730621377337864115">ተከናውኗል</translation>
 <translation id="8737426583868847403">ብጁ የማጉላት-ደረጃ ያስቀመጡላቸው ጣቢያዎች እዚህ ይታያሉ</translation>
 <translation id="8751914237388039244">ምስል ይምረጡ</translation>
+<translation id="8775741625735357092">ቅንብሮች &gt; ገጽታ ውስጥ የዕልባቶች አሞሌን ማብራት ይችላሉ</translation>
 <translation id="8800034312320686233">ጣቢያው እየሰራ አይደለም?</translation>
 <translation id="8801436777607969138">ጃቫስክሪፕትን ለአንድ የተወሰነ ጣቢያ አግድ።</translation>
 <translation id="2026315747406172223">V8 የBrave ጃቫስክሪፕት እና የWebAssembly ሞተር የጣቢያን አፈጻጸም ለማሻሻል ጥቅም ላይ ይውላል</translation>
@@ -702,6 +724,7 @@
 <translation id="9019902583201351841">በእርስዎ ወላጆች የሚቀናበር</translation>
 <translation id="902236149563113779">ጣቢያዎች እንደ ካሜራዎች ወይም ትኩረት የሚሰጣቸው አቅጣጫዎች ላሉት የኤአር ባህሪዎች የካሜራዎን አቀማመጥ ይከታተላሉ</translation>
 <translation id="9039697262778250930">ከእነዚህ ጣቢያዎች በመለያ ሊወጡ ይችላሉ</translation>
+<translation id="9065203028668620118">አርትዕ</translation>
 <translation id="9074739597929991885">ብሉቱዝ</translation>
 <translation id="9106233582039520022">ኩኪዎችን ይሰረዙ?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/>፣ እና <ph name="NUM_MORE"/> ተጨማሪ}one{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/>፣ እና <ph name="NUM_MORE"/> ተጨማሪ}other{<ph name="PERMISSION_1"/>፣ <ph name="PERMISSION_2"/>፣ እና <ph name="NUM_MORE"/> ተጨማሪ}}</translation>
@@ -718,6 +741,7 @@
 <translation id="967624055006145463">የተከማቸ ውሂብ</translation>
 <translation id="969975166333045662">ጣቢያን V8 አትቢን ከመጠቀም ያግዱ።</translation>
 <translation id="3110967157686007724">ማንነት የማያሳውቅ ትር</translation>
+<translation id="8623552597614912461">ይህ ጣቢያ በግል ሁኔታ ውስጥ በመጠቀም ካለ አፕሊኬሽን ጋር መረጃ ለመካፈል ነው።</translation>
 <translation id="8157212814767579028">ማንነት ከማያሳውቅ ሁነታ ይውጡ?</translation>
 <translation id="1593610935874634135">አንድ ኩባንያ እንቅስቃሴዎን በቡድኑ ውስጥ ለማጋራት cookies ሊጠቀሙ የሚችሉ የጣቢያዎች ቡድን ሊገልጽ ይችላል። ይህ በግል ሁኔታ ይጠፋል።</translation>
 </translationbundle>

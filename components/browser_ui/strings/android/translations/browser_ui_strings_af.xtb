@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Help ons om Brave te verbeter deur ons te vertel hoekom jy derdepartywebkoekies toegelaat het. <ph name="BEGIN_LINK"/>Stuur terugvoer<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Jy kan vra om die rekenaarweergawe van werwe te sien</translation>
 <translation id="9183227624343766158">Gebruik Brave by verstek</translation>
+<translation id="113098737392899175">Navigeer bladsy met ’n teksskermpyltjie as daar ’n sleutelbord aangeheg is</translation>
 <translation id="1178015372320901893">My kortpaaie se onderste blad</translation>
 <translation id="1178581264944972037">Laat wag</translation>
 <translation id="1181037720776840403">Verwyder</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Gaan voort</translation>
 <translation id="904887679952026733">Pas donkertema op werwe toe wanneer Brave donkertema gebruik, indien moontlik</translation>
 <translation id="2390272837142897736">Vergroot zoem</translation>
+<translation id="2397689164757137845">Toegelaat • Presies</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Presies</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/> word toegelaat}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/> word toegelaat}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Hulp en terugvoer</translation>
 <translation id="2501278716633472235">Gaan terug</translation>
 <translation id="2533138527374486328">Wanneer dit aan is, kan werwe vra om aan enige toestel op jou plaaslike netwerk te koppel. Wanneer dit af is, kan werwe nie aan toestelle op jou plaaslike netwerk koppel nie.</translation>
+<translation id="2536779053640817375">Hierdie keer toegelaat • Presies</translation>
 <translation id="2544997614631598250">Temakleur donker</translation>
 <translation id="2546283357679194313">Webkoekies en werfdata</translation>
 <translation id="2570922361219980984">Liggingtoegang is ook af vir hierdie toestel. Skakel dit in <ph name="BEGIN_LINK"/>Android-instellings<ph name="END_LINK"/> aan.</translation>
@@ -199,6 +202,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="3123473560110926937">Geblokkeer op sommige werwe</translation>
 <translation id="3132996321662585180">Herlaai daagliks</translation>
 <translation id="3143754809889689516">Speel van die begin af</translation>
+<translation id="3164169438034704658">Jy kan presiese ligging in <ph name="BEGIN_LINK"/>Android-instellings<ph name="END_LINK"/> aanskakel.</translation>
 <translation id="3165022941318558018">Laat ’n werf toe om derdepartywebkoekies te gebruik</translation>
 <translation id="3167868116600277716">Ontdek-stroom</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> gestoorde data</translation>
@@ -308,6 +312,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="8601682686806697614">Brave sal vandag weer webkoekies beperk</translation>
 <translation id="4338831206024587507">Alle werwe onder <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Moenie werwe toelaat om kennisgewings te stuur nie</translation>
+<translation id="4341577178275615435">Gebruik die kortpad F7 om karetblaai aan of af te skakel</translation>
 <translation id="4402755511846832236">Keer dat werwe weet wanneer jy hierdie toestel aktief gebruik</translation>
 <translation id="8382883799082236806">Onderste blad van Brave-kleure teen halwe hoogte oopgemaak</translation>
 <translation id="4412992751769744546">Laat derdeparty-webkoekies toe</translation>
@@ -436,6 +441,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="5876056640971328065">Onderbreek video</translation>
 <translation id="5877248419911025165">Vou alle versoeke in</translation>
 <translation id="5878945009165002849">Blokkeer aanmeldporboodskappe van identiteitsdienste af</translation>
+<translation id="588258955323874662">Volskerm</translation>
 <translation id="5884085660368669834">Werfvoorkeur</translation>
 <translation id="5887687176710214216">Gister laas besoek</translation>
 <translation id="5908617755156109052">Moenie werwe toelaat om ’n 3D-kaart van jou omgewing te skep of jou kameraposisie na te spoor nie</translation>
@@ -531,9 +537,11 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Vee werfdata uit? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Toeganklikheid</translation>
+<translation id="6991142177939282156">Toegelaat • Gebruik geskatte ligging</translation>
 <translation id="6992289844737586249">Vra eers voordat werwe toegelaat word om jou mikrofoon te gebruik (aanbeveel)</translation>
 <translation id="7000754031042624318">Afgeskakel in Android-instellings</translation>
 <translation id="8683151724374457021">Hierdie werf bepaal van watter dinge jy hou, en stel dan advertensies aan ander werwe voor. Hierdie werf kry ook jou advertensieonderwerpe van Brave af om vir jou relevanter advertensies te wys.</translation>
+<translation id="7036823721811529709">Luister op die agtergrond</translation>
 <translation id="7044081119134178347">Kamera hierdie keer toegelaat</translation>
 <translation id="7053983685419859001">Blokkeer</translation>
 <translation id="7055552182600664515">Werwe sal dalk ’n inhoudbeskermingdiens moet gebruik om inhoud te speel wat deur kopiereg beskerm word. <ph name="BEGIN_LINK"/>Meer inligting<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="7406113532070524618">Hierdie instelling werk sonder om jou te identifiseer of werwe toe te laat om jou blaaigeskiedenis te sien, hoewel werwe ’n klein hoeveelheid inligting as deel van die verifikasie kan stoor</translation>
 <translation id="7409735910987429903">Werwe kan dalk opspringers stuur om advertensies te wys, of herleidings gebruik om jou te lei na webwerwe wat jy dalk nie wil besoek nie</translation>
 <translation id="7412160840120117304">Primêre kleur se hekskode</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zoem}other{Zoem: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Vra eers</translation>
 <translation id="7423538860840206698">Geblokkeer om knipbord te lees</translation>
 <translation id="7425915948813553151">Donkertema vir werwe</translation>
@@ -639,6 +648,7 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:
 <translation id="8261506727792406068">Vee uit</translation>
 <translation id="8284326494547611709">Onderskrifte</translation>
 <translation id="8300705686683892304">Bestuur deur app</translation>
+<translation id="8301363963630676147">Hierdie keer toegelaat • Gebruik geskatte ligging</translation>
 <translation id="8315509175050791576">Deel tans ’n oortjie</translation>
 <translation id="8324158725704657629">Moenie weer vra nie</translation>
 <translation id="8362795839483915693">Jy kan in- of uitzoem op werwe wat jy besoek</translation>

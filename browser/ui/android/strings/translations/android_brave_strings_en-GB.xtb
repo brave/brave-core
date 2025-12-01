@@ -2,48 +2,9 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
 <translation id="7630214457764713113">Copy clean link</translation>
-<translation id="3478449063771497234">Notifications are disabled</translation>
-<translation id="2862978891748913252">Select your country</translation>
-<translation id="3970520675790340955">Select your country so we can show you the right options and ads for your region.</translation>
 <translation id="721490496276866468">Import passwords</translation>
 <translation id="8178175542325151321">Select a .csv file that contains your passwords to import them into Brave's password manager.</translation>
-<translation id="7301741773883122509">Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!</translation>
-<translation id="6439128034594289376">Woohoo! You’re all set!</translation>
-<translation id="370665806235115550">Loading...</translation>
-<translation id="7931127789630755251">Earn tokens for private ads you see in Brave</translation>
-<translation id="7859066142771796818">Use tokens to buy gift cards, exchange for other currencies, support content creators and more.</translation>
-<translation id="3863981251715594911">How does it work?</translation>
-<translation id="5547108999862247665">How does Brave Rewards work?</translation>
-<translation id="2965798296974325760">Start using Rewards</translation>
-<translation id="8220484609979012449">\n\nYou can still send crypto contributions to this creator by using your Web3 wallet.</translation>
-<translation id="6385969012847057348">This creator is unable to receive contributions from <ph name="CUSTODIAN"/>.</translation>
-<translation id="735733310778086206">This creator isn't set up to receive Web3 or crypto contributions yet.</translation>
-<translation id="6268134562674951939">You don't have enough tokens</translation>
-<translation id="4529874892536380156">Make this a monthly recurring contribution. You can cancel it at any time.</translation>
-<translation id="5562948772940025260">You can only send up to <ph name="AMOUNT"/> BATs using your Brave Rewards balance.</translation>
-<translation id="5012991400231464322">Monthly contributions</translation>
-<translation id="5907051927340164207">You're already sending monthly contributions to this creator</translation>
-<translation id="4848906651275579475">You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="MONTHLY_CONTRIBUTION"/>.</translation>
-<translation id="5379685283876547860">Contribution sent!</translation>
-<translation id="1041398280582063935">Share your support</translation>
-<translation id="8855543392451028706">Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.</translation>
-<translation id="1235176624390585199"><ph name="TITLE"/> on <ph name="PROVIDER"/></translation>
-<translation id="3699420827646925694">Logged out of <ph name="CUSTODIAN"/></translation>
-<translation id="9038728316393235637">Log in to <ph name="CUSTODIAN"/></translation>
-<translation id="7063168612616047608">Thanks for supporting your favourite creators</translation>
-<translation id="3796032246917966749">It looks like you're logged out of <ph name="CUSTODIAN"/> for Brave Rewards. Log in again to continue.</translation>
-<translation id="5202112619925434373">This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified. <ph name="LEARN_MORE"/></translation>
-<translation id="3733094367889291358">Send contribution</translation>
-<translation id="1899434873745933492">Can't send your contribution</translation>
-<translation id="1794046983410841192">Use Brave Rewards</translation>
-<translation id="8037118277449189044">Use Web3 wallet</translation>
-<translation id="9059356165618961685">Brave Rewards balance</translation>
-<translation id="86107454835395919">Set as monthly contribution</translation>
 <translation id="1177863135347784049">Custom</translation>
-<translation id="4827581232860040208">There was a problem sending your contribution</translation>
-<translation id="3259723213051400722">Please try again.</translation>
-<translation id="5298965408768377685">This creator has registered with Brave and can receive contributions from Brave Rewards users. <ph name="LEARN_MORE"/></translation>
-<translation id="7466579932043491502">Brave Rewards may not work while notifications are disabled.</translation>
 <translation id="6112331814131703370">Block 'Switch to App' notices</translation>
 <translation id="4744921452903670666">Tell us what you think!</translation>
 <translation id="2524310205387880526">Rate Brave</translation>
@@ -58,7 +19,6 @@
 <translation id="5488843227043643519">Leave a Play Store rating?</translation>
 <translation id="5867854497245948308">Thanks for your feedback!</translation>
 <translation id="4935400164159327304">Let us know how we can improve Brave.</translation>
-<translation id="1420756770787071946">Support this creator</translation>
 <translation id="8966035543003363155">Brave notifications make it easier</translation>
 <translation id="7662771815233894695">Manage downloads, earn tokens, see weekly usage stats and more.</translation>
 <translation id="4265429476391459783">You're not earning Rewards or receiving Privacy Reports</translation>
@@ -75,11 +35,9 @@
 <translation id="325187916104529570">Open Settings and turn on device notifications for Brave Ads.</translation>
 <translation id="5744802588121897886">Turn on Brave notifications</translation>
 <translation id="7307834434086582547">Enable/disable Brave Shields</translation>
+<translation id="15346379325756892">Enter picture-in-picture mode</translation>
 <translation id="6945863270524203017">Get weekly privacy updates on tracker &amp; ad blocking.</translation>
 <translation id="4324735664183300693">Turn on notifications</translation>
-<translation id="6395059271589866759">Brave collects 5% of the sent amount as a processing fee.</translation>
-<translation id="6661699662755460155">exchange</translation>
-<translation id="6790981891677399838">I just contributed <ph name="AMOUNT"/> BATs using the Brave Browser. See how you can support your favourite creators and sites too: https://brave.com/rewards</translation>
 <translation id="5510493033031835532">Auto-redirect AMP pages</translation>
 <translation id="5197219128592971597">Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions</translation>
 <translation id="920638232916443453">Auto-redirect tracking URLs</translation>
@@ -104,6 +62,8 @@
 <translation id="5713644099811900409">Brave Account</translation>
 <translation id="4472575034687746823">Get started</translation>
 <translation id="1799030480311994998">Features</translation>
+<translation id="1919345977826869612">Ads</translation>
+<translation id="2839742394543397416">Analytics</translation>
 <translation id="2005732746077850308">Brave Shields &amp; privacy</translation>
 <translation id="4692623383562244444">Search engines</translation>
 <translation id="1468415711258933398">Standard tab</translation>
@@ -114,8 +74,6 @@
 <translation id="6285118765755298263">Index other search engines</translation>
 <translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
 <translation id="9148058034647219655">Exit</translation>
-<translation id="8047754398610073499">Block cookie consent notices</translation>
-<translation id="2621893359845808115">Blocks website pop-ups that ask you to accept/decline cookies on their site</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="6486983549008741930">Content filtering</translation>
 <translation id="2398817776566547893">Enable custom filters that block regional and language-specific trackers and Annoyances</translation>
@@ -251,7 +209,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> and other ads &amp; trackers blocked</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; trackers blocked</translation>
 <translation id="8281886186245836920">Skip</translation>
-<translation id="1377600615067678409">Skip for now</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="986879628471635371">Troubleshooting onboarding</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -274,7 +231,6 @@
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">To search by QR code, align the QR code in the centre of frame.</translation>
-<translation id="2734870894159530879">Log in to <ph name="WALLET_PROVIDER"/> to see your balance</translation>
 <translation id="7658239707568436148">Cancel</translation>
 <translation id="1201402288615127009">Next</translation>
 <translation id="8481779960444041069">To improve your privacy, set Brave as your default browser</translation>
@@ -303,16 +259,7 @@
 <translation id="7002271985859760052">Page actions</translation>
 <translation id="7104487676473617844">The following items will only appear in the menu when supported by the currently open webpage.</translation>
 <translation id="4159764849281393303">WebApp</translation>
-<translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Settings</translation>
-<translation id="6020176662032623904">Verified creator</translation>
-<translation id="2369994359029526515">Unverified creator</translation>
-<translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="1848737374354350807">Balance</translation>
-<translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE"/> BAT.</translation>
-<translation id="2429828319207652823">There was a problem processing your contribution.</translation>
-<translation id="683765328936486920">on YouTube</translation>
-<translation id="8969049974285901797">on Twitch</translation>
 <translation id="8038539967102225446">Brave Ads are here!</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="4157741509680155021">DEVICES ON SYNC CHAIN</translation>
@@ -369,7 +316,6 @@
 <translation id="4114170343590425996">There was an error resetting Brave Rewards. Please relaunch Brave and try again.</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5611966874859284786">Show notification ads when Brave is not in use</translation>
-<translation id="6606319453795180219">This will delete your Brave Rewards and reset all of your Brave Rewards data</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Reset Brave Rewards data …<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Clear Brave Ads data …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Add bookmark</translation>
@@ -417,12 +363,6 @@ Are you sure you want to do this?</translation>
 <translation id="1413177583895309156">Brave VPN encrypts and protects anything you do online, even outside the Brave browser.</translation>
 <translation id="3974348661685061050">Try free for 7 days</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
-<translation id="4973347371961481083">Contributions</translation>
-<translation id="7047578174221019462">Your monthly contributions have been processed.</translation>
-<translation id="3124090095880236567">Turn on Ads</translation>
-<translation id="2975780980638932742">Brave Ads has arrived!</translation>
-<translation id="7541582550122501404">Pending contribution</translation>
-<translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> recently verified</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">New tab page</translation>
 <translation id="5927196110206824867">Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.</translation>
@@ -438,26 +378,14 @@ Are you sure you want to do this?</translation>
 <translation id="2898634658146274982">Open external links in Brave</translation>
 <translation id="5616508928556767259">Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.</translation>
 <translation id="2394961582378297792">Logged out</translation>
-<translation id="5308380583665731573">Connect</translation>
 <translation id="3368922792935385530">Connected</translation>
-<translation id="6569877533335686968">Uphold</translation>
-<translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
-<translation id="6011108706830742093">ZebPay</translation>
-<translation id="1665118090708049096">Go to my <ph name="WALLET_PROVIDER"/> account</translation>
-<translation id="4858636682078269312">Log in to your <ph name="WALLET_PROVIDER"/> account</translation>
 <translation id="8874184842967597500">Not connected</translation>
-<translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Share Brave with your friends!</translation>
 <translation id="717952606991220586">Oops, something is wrong. Please try again later.</translation>
 <translation id="987264212798334818">General</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="1275213816424141989">Maybe later</translation>
-<translation id="8164992819127316581">The payout for <ph name="CURRENT_MONTH"/> rewards will begin processing by <ph name="PAYOUT_DATE"/>.</translation>
-<translation id="33967210973550414">The payout for <ph name="CURRENT_MONTH"/> rewards is in progress. <ph name="CHECK_STATUS"/></translation>
-<translation id="1622952853310946314">The payout for <ph name="CURRENT_MONTH"/> rewards has completed. <ph name="SUPPORT"/></translation>
-<translation id="7717357606512850995">Check status</translation>
 <translation id="3624048886326677117">Block trackers &amp; ads (Aggressive)</translation>
 <translation id="7151914815476509258">Block trackers &amp; ads (Standard)</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
@@ -564,31 +492,8 @@ Are you sure you want to do this?</translation>
 <translation id="13296465911709339">Your text has been copied to the clipboard.</translation>
 <translation id="2735834606413553397">Public address has been copied to the clipboard.</translation>
 <translation id="2977461003134694205">Privacy Stats</translation>
-<translation id="2956070106555335453">Summary</translation>
-<translation id="7465614181960492526">Earn Tokens &amp; Give Back</translation>
-<translation id="2731539192954672606">Earn tokens by viewing privacy-respecting ads and support your favorite sites and content creators automatically.</translation>
-<translation id="631124996535890460">By proceeding, you agree to the <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Privacy Policy</translation>
-<translation id="8363792084628930008">By enabling Rewards, you agree to the <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
-<translation id="185034574799484512">Let’s take a quick tour</translation>
-<translation id="7930505144430343145">Welcome to Brave Rewards!</translation>
-<translation id="3477340970981564961">Brave Private Ads reward you with tokens to support content creators unlike traditional ads, all while keeping your personal information private.</translation>
-<translation id="6973095375773523904">Where do ads show up?</translation>
-<translation id="4328028439561659455">Brave Private Ads appear as notifications on your screen. You control how often you see these ads.</translation>
-<translation id="7712287524451429139">Giving back made effortless</translation>
-<translation id="105037569026952831">Creators receive your token contributions automatically based on your engagement levels that we measure as ‘Attention’.</translation>
-<translation id="3025802705256919103">Say thank you with contributions</translation>
-<translation id="8235783939971604011">Tipping is a way to personally encourage and support content or creators that you love. Get tipping!</translation>
-<translation id="4215679190414901888">Lastly, let’s get you set up</translation>
-<translation id="3494356595346329740">You can change this later.</translation>
-<translation id="3286390186030710347">Slider</translation>
-<translation id="3115702351969988294">How often do you want to see ads?</translation>
-<translation id="2353222426385080466">More private ads, more rewards.</translation>
-<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> Ads per hour</translation>
-<translation id="827315274423079662">Woohoo, you’re done!</translation>
-<translation id="3895246934788932488">By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="5705882733397021510">Go Back</translation>
-<translation id="3985567919248057638">Let's take a quick tour</translation>
 <translation id="7889432931837317731">Automatically open when possible</translation>
 <translation id="1029304566263314007">Show download progress notifications</translation>
 <translation id="2910433761530295035">Ask where to save files (if SD card is detected)</translation>
@@ -606,7 +511,6 @@ Are you sure you want to do this?</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
-<translation id="6915830896450988084">Send with <ph name="CUSTODIAN"/></translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="4556086616242530072">Browser native.\nSelf-custody.\nAnd multi-chain.</translation>
@@ -837,14 +741,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7373308452149471621">Per-gas price limit (Gwei)</translation>
 <translation id="5891811606602061966">Failed to import account, please try again.</translation>
 <translation id="4351811224047421378">Decimals of precision</translation>
-<translation id="3494964159182650590">Rewards Summary</translation>
-<translation id="590733288489975971">Rewards from Ads</translation>
-<translation id="1450735350187803276">Ads seen this month</translation>
-<translation id="1767561995429774671">Contribute</translation>
-<translation id="6727102863431372879">Set</translation>
-<translation id="3074127054582480056">Attention</translation>
-<translation id="2280319752798785157">Monthly Contribution</translation>
-<translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="1241283133946520352">Networks</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2512821599885971349">Add network</translation>
@@ -871,6 +767,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4945690646623486292">Select network</translation>
 <translation id="5233638681132016545">New tab</translation>
 <translation id="8006088103295786154">Access Brave Wallet</translation>
+<translation id="5308380583665731573">Connect</translation>
 <translation id="8030169304546394654">Disconnected</translation>
 <translation id="3423275441470187644">Trust</translation>
 <translation id="2391762656119864333">Revoke</translation>
@@ -1011,9 +908,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8382368767453083629">Initialise multisig 2</translation>
 <translation id="77243237706803459">Initialise mint 2</translation>
 <translation id="583281660410589416">Unknown</translation>
-<translation id="909076461795862330">Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.</translation>
-<translation id="7352651011704765696">Something went wrong</translation>
-<translation id="7144878232160441200">Retry</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="7710469167917867539">Transaction fee</translation>
 <translation id="7843211152394841558">Max retries:</translation>
@@ -1045,41 +939,25 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6365389672683343144">Your Brave VPN subscription can protect up to 5 devices, across Android, iOS and desktop. Just link your Google Play subscription to your Brave account.</translation>
 <translation id="6610899852831463073">Cannot enable Safe Browsing</translation>
 <translation id="7954263306665462056">Safe Browsing has been disabled on your device. To enable it, ensure that Google Play Services is installed and that it's up to date.</translation>
-<translation id="6605147707233193230">Turn on to help support content creators</translation>
-<translation id="5899814466108868020">You are helping support Brave and the BAT community</translation>
-<translation id="6067959437127691361">Using Brave Rewards helps support content creators, and lets you earn BATs.</translation>
-<translation id="3264975266761862670">Ready to start earning?</translation>
-<translation id="265337947574975838">Connect or create an account with one of our partners.</translation>
-<translation id="654447476965480878">Learn more about earning BATs</translation>
-<translation id="6278643716658443228">Rewards settings</translation>
-<translation id="6516984207843289176">Connect account</translation>
-<translation id="4272136334824111854">This month, you've visited <ph name="CREATOR_COUNT"/> creators supported by Brave Rewards</translation>
-<translation id="6845311459433734326">Connect a custodial account so you can earn BATs and withdraw your rewards</translation>
-<translation id="928980476243133540">I’ll do it later</translation>
-<translation id="579702532610384533">Reconnect</translation>
-<translation id="1619753851206150396">You are logged out</translation>
-<translation id="8208669151660770401">This can happen to keep your account secure. Click below to reconnect now.</translation>
-<translation id="6390041270339783491">Monthly contribution failed</translation>
-<translation id="9074594632540931067">Error: BAT unavailable</translation>
-<translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
-<translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
-<translation id="1677961202754619328">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.</translation>
-<translation id="5425006356459378415">Brave Rewards not available</translation>
-<translation id="833643743158564518">New sign-ups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Primary networks</translation>
 <translation id="2781668117338732220">Secondary networks</translation>
 <translation id="282560918037172384">Test networks</translation>
-<translation id="8949422576126100041">View page with Speedreader?</translation>
-<translation id="3435896845095436175">Enable</translation>
-<translation id="5296840868251496327">Enable Speedreader</translation>
-<translation id="591648995518106347">Automatically loads eligible articles in reader mode</translation>
-<translation id="1295796122927221823">View in reader mode</translation>
 <translation id="7568430944629653319">Enable NFT discovery</translation>
 <translation id="622372328961630111">Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1"/>Learn more.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
 <translation id="5494920125229734069">Select all</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="944736176598169208">Rewards</translation>
+<translation id="4272190451231642425">Automatically send crash reports</translation>
+<translation id="1199170151481311646">Privacy preserving analytics</translation>
+<translation id="1706715315466634757">Email aliases</translation>
+<translation id="6709133671862442373">News</translation>
+<translation id="5990642573624858459">Statistics reporting</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2441719842399509963">Reset to defaults</translation>
+<translation id="4922034974043704366">This feature is enabled because you opted into it</translation>
+<translation id="3144818380093107753">Brave Origin is a subscription-based way to disable the revenue-generating features that otherwise support Brave as a business. Brave Origin subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like Brave Leo, News, Rewards, Wallet, VPN, Web3 domains, and more.&lt;br/&gt;&lt;br/&gt;Subscribers will see a new control panel in the browser settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Note: Brave Origin will not disable browser features that you currently use, and will not affect Brave Search features or Brave Search Ads.&lt;/b&gt;</translation>
 <translation id="8613144770663526433">Sign in with Brave Wallet</translation>
 <translation id="3696514931437952995">You are signing into <ph name="ORIGIN"/>. Brave wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">See details</translation>
@@ -1171,8 +1049,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5543505256451301851">Try 7 days free</translation>
 <translation id="614530507403667291">Default model for new conversations</translation>
 <translation id="4071849832011229600">Default model</translation>
-<translation id="4185473179105062442">Receive BATs directly to a self-custody crypto address</translation>
-<translation id="5802986777701714573">We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.</translation>
 <translation id="7557539689487606886">Go Premium</translation>
 <translation id="5538904824395606812">Use your current service provider or Quad9</translation>
 <translation id="6393423486818299209">Use your current service provider or Wikimedia DNS</translation>
@@ -1203,10 +1079,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8051552210542030943">pin code</translation>
 <translation id="5233247193491045452">postcode</translation>
 <translation id="3300502432153878901">zip</translation>
-<translation id="4130750466177569591">I agree</translation>
-<translation id="3251885322612056119">Updated Terms of Service</translation>
-<translation id="4049035689681585146">We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="RESET_START"/>reset<ph name="RESET_END"/> Brave Rewards, which will disable the feature.</translation>
-<translation id="2165953574528546737">See <ph name="TOS_START"/>Brave Rewards Terms of Service<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Enable multiple windows</translation>
 <translation id="6167344249617630304">Open up to 5 windows at a time and move tabs from one window to another</translation>
 <translation id="1063948063403254568">Multiple windows detected</translation>
@@ -1231,10 +1103,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2735247450315842119">Allow screenshots in private tabs</translation>
 <translation id="8420414929552321089">If allowed, private tabs will also be visible when multiple apps are open.</translation>
 <translation id="7956713633345437162">Mobile bookmarks</translation>
-<translation id="3176467469116060712">Support Brave's industry-leading work for Web privacy and open-source adblocking lists</translation>
-<translation id="5896375129784311037">Optimised for a more minimalist browser interface</translation>
-<translation id="746156554966264308">A core of Brave Shields for adblock, privacy, and speed</translation>
-<translation id="1432661650699782509">Support for IT-managed policies at work</translation>
+<translation id="6261139507111008244">Support our mission &amp; open-source work</translation>
+<translation id="7882690061170175552">Minimal browser UI centered on Shields</translation>
+<translation id="2267973897341040743">Maintain core adblock, privacy, &amp; speed</translation>
 <translation id="1361157028850796410">best value</translation>
 <translation id="7280825497485894053">Monthly subscription</translation>
 <translation id="4570901726096223030">Learn more about Origin</translation>

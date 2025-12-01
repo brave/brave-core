@@ -197,6 +197,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7279636930553631442">ป๊อปอัปจดหมายข่าว</translation>
 <translation id="6136090320163235283">วิดเจ็ตโซเชียล</translation>
 <translation id="6657720240983439091">วิดเจ็ตแชท</translation>
+<translation id="3597441883564676263">ไม่รองรับเบราว์เซอร์</translation>
 <translation id="7138678301420049075">อื่น ๆ</translation>
 <translation id="4046860372562593546">จัดการ Brave Ads</translation>
 <translation id="5136973036012418831">ควบคุมประเภท Brave Ads ที่คุณดูและความถี่</translation>
@@ -2234,6 +2235,24 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7488762544858401571">มีการแก้ไข</translation>
 <translation id="5604254791550001355">แก้ไขพรอมต์</translation>
 <translation id="8115786586976830777">คัดลอกพรอมต์</translation>
+<translation id="3666616415490815310">บันทึกเป็นทักษะ</translation>
+<translation id="6574544364990812112">ทักษะของฉัน</translation>
+<translation id="6696824203401957025">ทักษะใหม่</translation>
+<translation id="6410279677882692627">ทักษะจะปรากฏในเครื่องมือ [/] ของคุณและสามารถเข้าถึงได้โดยการพิมพ์ "/name" ที่คุณตั้งค่าไว้ด้านล่าง</translation>
+<translation id="1344606707744657196">แบบฟอร์มสำหรับคำสั่ง</translation>
+<translation id="8458341576712814616">ทางลัด</translation>
+<translation id="1326559827339317236">ป้อนทางลัดของคุณที่นี่</translation>
+<translation id="5032574515228824816">คำสั่ง</translation>
+<translation id="2573797314568446575">ป้อนข้อความที่คุณต้องการที่นี่</translation>
+<translation id="900733896273558337">ทักษะการแก้ไข</translation>
+<translation id="7662963028545588801">ลบทักษะ</translation>
+<translation id="4209790625997566418">คุณแน่ใจหรือไม่ว่าต้องการลบทักษะนี้ การดำเนินการนี้ไม่สามารถย้อนกลับได้</translation>
+<translation id="7161540406494327389">ต้องการทางลัด</translation>
+<translation id="3722223049736774445">ทางลัดสามารถประกอบด้วยตัวอักษร, ตัวเลข, ตัวอักษรใต้เส้น, และขีดกลางได้เท่านั้น</translation>
+<translation id="6997214168632888867">ทางลัดต้องมีความยาวไม่เกิน 64 ตัวอักษร</translation>
+<translation id="2806891468525657116">มีทางลัดอยู่แล้ว</translation>
+<translation id="5497501845974700950">จำเป็นต้องมีข้อความเริ่มต้น</translation>
+<translation id="5642369858603376334">ข้อความต้องไม่เกิน 5000 ตัวอักษร</translation>
 <translation id="1406205536570262057">แก้ไขคำตอบ</translation>
 <translation id="3386725253392845084">ลองโมเดลเดิมใหม่</translation>
 <translation id="2461822463642141190">ปัจจุบัน</translation>
@@ -2271,13 +2290,20 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7307396647043599949"><ph name="COUNT"/> เพิ่มเติม…</translation>
 <translation id="8103700533980268469">ปิดการแจ้งเตือนนี้</translation>
 <translation id="3417835166382867856">แท็บการค้นหา</translation>
+<translation id="3828029223314399057">ค้นหาที่คั่นหน้า</translation>
+<translation id="381480092025168632">ค้นหาประวัติการท่องเว็บ</translation>
 <translation id="7311244614769792472">ไม่พบผลการค้นหา</translation>
 <translation id="3112448569149476523">ลอง Search อื่น</translation>
 <translation id="1352836459737874921">แนบเนื้อหาจากแท็บอื่น</translation>
+<translation id="7173836072258346701">แนบเนื้อหาจากบุ๊กมาร์ก</translation>
+<translation id="163680814308917875">แนบเนื้อหาจากประวัติเบราว์เซอร์</translation>
 <translation id="7039179822221107025">ส่งเนื้อหาจากแท็บเบราว์เซอร์ของคุณ เพื่อให้ Leo เข้าใจบริบทของบทสนทนาได้มากขึ้น.</translation>
+<translation id="1602382615168212961">ส่งเนื้อหาจากแท็บในบุ๊กมาร์กของคุณเพื่อให้ Leo มีบริบทเพิ่มเติมสำหรับการสนทนา</translation>
+<translation id="4808122506413075135">ส่งเนื้อหาหน้าเว็บจากประวัติการเข้าชมของคุณเพื่อให้ Leo มีบริบทเพิ่มเติมสำหรับการสนทนา</translation>
 <translation id="220541218939267992">เนื้อหาบนหน้านี้จะถูกส่งไปยัง Leo พร้อมกับข้อความของคุณ</translation>
-<translation id="1446346932629101482">เพิ่มเนื้อหาของแท็บเพื่อใช้เป็นบริบท เนื้อหาจะถูกส่งไปยัง Leo พร้อมกับข้อความของคุณ</translation>
-<translation id="7193316103691252734">ไม่มีแท็บที่ตรงกัน</translation>
+<translation id="8164365899016970783">เพิ่มแท็บและบุ๊กมาร์กเนื้อหาเพื่อบริบท เนื้อหาจะถูกส่งไปยัง Leo พร้อมกับข้อความของคุณ</translation>
+<translation id="6237410387937453423">ไม่มีไฟล์แนบที่ตรงกัน</translation>
+<translation id="8076492880354921740">แท็บ</translation>
 <translation id="2315654674554095762">ตอนนี้ Leo จะจดจำการสนทนาของคุณเพื่อให้คุณสามารถกลับไปดูได้ พวกมันถูกจัดเก็บในรูปแบบเข้ารหัสบนอุปกรณ์ของคุณ และคุณสามารถลบได้ทุกเมื่อ</translation>
 <translation id="7821251979960635244">ประวัติการสนทนาของคุณจะแสดงที่นี่เมื่อคุณเริ่มการสนทนา</translation>
 <translation id="887511360213807449">ประวัติถูกปิดใช้งาน</translation>
@@ -2336,7 +2362,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4250229828105606438">ภาพแคปหน้าจอ</translation>
 <translation id="7949596341600215809">ภาพหน้าจอเต็มหน้า</translation>
 <translation id="6332876390231524389">เนื้อหาของแท็บปัจจุบัน</translation>
-<translation id="7742969455167760092">เปิดแท็บ…</translation>
+<translation id="6397861830483632092">แท็บที่เปิดอยู่…</translation>
+<translation id="802080272588201037">บุ๊กมาร์ก…</translation>
+<translation id="2716127283451902393">ประวัติ…</translation>
 <translation id="49269513399674318">ใช้ไมโครโฟน</translation>
 <translation id="3895031624234442305">โมเดลแบบกำหนดเอง</translation>
 <translation id="4572010449071015143">เริ่มการสนทนาใหม่</translation>
@@ -2348,6 +2376,22 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2593275000606533518">จัดการทั้งหมด</translation>
 <translation id="8410199626695516952">ตกลง ฉันจะไม่จดจำอะไรแบบนั้น</translation>
 <translation id="8419849467765474535">ไม่สามารถบันทึกหน่วยความจำได้ กรุณาลองอีกครั้ง</translation>
+<translation id="5517580030864973329">การนำทางไปยังหน้าเว็บที่ที่อยู่ใหม่</translation>
+<translation id="8832457834975923266">นำทางไปยังหน้าเว็บที่ <ph name="URL"/></translation>
+<translation id="5095252080770652994">ความก้าวหน้า</translation>
+<translation id="8332385567036775056">ขั้นตอน</translation>
+<translation id="4521931942079977149">การคลิกที่หน้า</translation>
+<translation id="7732267913911704962">การลากและวางบนหน้าเว็บ</translation>
+<translation id="7703800915509570212">การนำทางกลับ</translation>
+<translation id="4875586490950981498">การนำทางไปข้างหน้า</translation>
+<translation id="738881387603843066">การเคลื่อนเมาส์</translation>
+<translation id="4850669014075537160">การเลื่อน</translation>
+<translation id="1265072406500460724">การเลือกจากรายการแบบดรอปดาวน์</translation>
+<translation id="7573920298077917439">การพิมพ์ข้อความ</translation>
+<translation id="4089034800311309656">กำลังรอหน้า</translation>
+<translation id="4798146464408730445">ไม่พบทักษะ. สร้างทักษะใหม่โดยคลิกที่ปุ่ม 'ใหม่'.</translation>
+<translation id="271033894570825754">ใหม่</translation>
+<translation id="8266605059880650542">จดบันทึกข้อมูลบางอย่างสำหรับภายหลังเกี่ยวกับหน้านี้</translation>
 <translation id="3486480638399578250">เก็บที่อยู่อีเมลส่วนตัวของคุณเป็นส่วนตัว</translation>
 <translation id="7765422154906712751">สร้างที่อยู่แบบสุ่มที่ไม่ซ้ำซึ่งจะส่งต่อไปยังอีเมลบัญชี Brave ของคุณและสามารถลบได้ตลอดเวลา เก็บที่อยู่อีเมลจริงของคุณไม่ให้ถูกเปิดเผยหรือถูกใช้โดยผู้โฆษณา</translation>
 <translation id="5222676887888702881">ออกจากระบบ</translation>
@@ -2393,6 +2437,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7508412964869396375">ไม่ได้รับโทเค็นยืนยันตัวตนจากบริการบัญชี Brave</translation>
 <translation id="3179527991526213624">ไม่มีการตอบสนองจากบริการบัญชี Brave</translation>
 <translation id="7911439408853154309">การยืนยันอีเมลล้มเหลว</translation>
+<translation id="2595463802839066496">ไม่มีการตอบกลับจากบริการอีเมลนามแฝง</translation>
+<translation id="367191282389216837">การตอบกลับไม่ถูกต้องจากบริการอีเมลล์อาลีแอส</translation>
+<translation id="7203490731644771170">บริการนามแฝงอีเมล: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">ข้อผิดพลาด: ไม่พบชื่อเล่น</translation>
 <translation id="8370801182970639038">อัตโนมัติ (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">เครื่องมือค้นหาที่เปิดใช้งานแล้ว</translation>
 <translation id="8285901519864208412">ซ่อนบัตรสะสมรางวัล</translation>
@@ -2438,8 +2486,19 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8458987127502506209">เปิดใช้งานการป้องกันของ Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>โล่ป้องกันเปิดใช้งานแล้ว<ph name="STATUS_AFTER"/> สำหรับเว็บไซต์นี้</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields ถูกปิด<ph name="STATUS_AFTER"/> สำหรับเว็บไซต์นี้</translation>
-<translation id="5623354834493649144">หากเว็บไซต์นี้ดูเหมือนมีปัญหา ลองปิด Shields ดู
-   <ph name="NOTE_BEFORE"/>หมายเหตุ: การทำเช่นนี้อาจลดการปกป้องความเป็นส่วนตัวของ Brave<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">หากเว็บไซต์นี้ดูเหมือนไม่ทำงาน, ลองปิดระบบป้องกัน.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>หมายเหตุ: การดำเนินการนี้อาจลดการปกป้องความเป็นส่วนตัวของ Brave<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">คุณกำลังประสบปัญหาเกี่ยวกับเว็บไซต์นี้หรือไม่?</translation>
+<translation id="9176447766421988172">เรากำลังทดลองเพื่อเพิ่มความเข้ากันได้ของเว็บไซต์ โดยเราจะเปิดใช้งานเฉพาะการบล็อกโฆษณาเท่านั้น คำเตือน: จะลบการป้องกันความเป็นส่วนตัวทั้งหมด คุณต้องการลองหรือไม่? <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">โปรดทราบว่าสำหรับเว็บไซต์แต่ละแห่งที่ถูกบล็อกโดยการป้องกันความเป็นส่วนตัวของ Brave คุณสามารถตั้งค่า Shields เป็น ปิด ได้</translation>
+<translation id="1836572675775891780">เปิดใช้งานโหมดบล็อกโฆษณาเท่านั้น</translation>
+<translation id="6623668214089604469">เว็บไซต์ทำงานถูกต้องแล้วหรือยัง?</translation>
+<translation id="8978860854770042258">กรุณาพิจารณาการส่งรายงานหากเว็บไซต์นี้ยังไม่สามารถใช้งานได้</translation>
+<translation id="4677356505199464553">ดูดี</translation>
+<translation id="1992750560347846445">รายงานเว็บไซต์</translation>
+<translation id="2887186586339544116">โหมดบล็อกโฆษณาเท่านั้นเปิดใช้งานแล้ว</translation>
+<translation id="673665019618844072">ขณะนี้คุณกำลังใช้โหมดบล็อกโฆษณาเท่านั้น โหมดนี้จะให้การป้องกันเฉพาะการบล็อกโฆษณาเท่านั้น หากคุณต้องการกลับไปยังโหมดป้องกันเต็มรูปแบบ กรุณาปิดโหมดนี้จากการตั้งค่า</translation>
+<translation id="4820891023903368625">โฆษณาถูกบล็อก <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">บล็อกตัวติดตาม โฆษณา และอื่นๆ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">ไม่มีการปกป้องจาก Brave Shields <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">การควบคุมขั้นสูง</translation>
@@ -2473,7 +2532,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8034285923190068220">อนุญาตการพิมพ์ลายนิ้วมือ</translation>
 <translation id="7638541189782135885">ห้ามอัปเกรดการเชื่อมต่อ HTTP</translation>
 <translation id="2570787596946026998">เชื่อมต่อกับ HTTPS เท่านั้น</translation>
-<translation id="1992750560347846445">รายงานเว็บไซต์</translation>
 <translation id="2387532482048804818">แจ้งเราหากเว็บไซต์ทำงานผิดปกติเมื่อเปิด Shields</translation>
 <translation id="3795015906457257780">คุณกำลังดูเว็บไซต์นี้โดยไม่มีการป้องกันความเป็นส่วนตัวของ Brave</translation>
 <translation id="7194012750329511146">Brave Shields

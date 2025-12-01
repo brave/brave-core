@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">আপনি কেন থার্ড-পার্টি কুকিতে অনুমতি দিয়েছেন তা আমাদের জানিয়ে Brave উন্নত করতে সাহায্য করুন। <ph name="BEGIN_LINK"/>মতামত জানান<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">আপনি সাইটের ডেস্কটপ ভার্সন দেখতে চাইতে পারেন</translation>
 <translation id="9183227624343766158">ডিফল্ট হিসেবে Brave ব্যবহার করুন</translation>
+<translation id="113098737392899175">কোনও কীবোর্ড অ্যাটাচ করা থাকলে টেক্সট কার্সরের মাধ্যমে পৃষ্ঠায় নেভিগেট করুন</translation>
 <translation id="1178015372320901893">স্ক্রিনের নিচে অ্যাটাচ করা শিটে আমার শর্টকাট</translation>
 <translation id="1178581264944972037">বিরতি</translation>
 <translation id="1181037720776840403">সরান</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">চালিয়ে যান</translation>
 <translation id="904887679952026733">যখনই সম্ভব, Brave-এ ডার্ক থিম ব্যবহার করার সময় সাইটে ডার্ক থিম প্রয়োগ করুন</translation>
 <translation id="2390272837142897736">জুম বাড়ান</translation>
+<translation id="2397689164757137845">অনুমতি দেওয়া হয়েছে • সুনির্দিষ্ট</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> এমবি</translation>
 <translation id="2403474027143565107">সুনির্দিষ্ট</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ও আরও <ph name="NUM_MORE"/>টি সুবিধা ব্যবহারের অনুমতি দেওয়া হয়েছে}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ও আরও <ph name="NUM_MORE"/>টি সুবিধা ব্যবহারের অনুমতি দেওয়া হয়েছে}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ও আরও <ph name="NUM_MORE"/>টি সুবিধা ব্যবহারের অনুমতি দেওয়া হয়েছে}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">সহায়তা ও প্রতিবার্তা</translation>
 <translation id="2501278716633472235">ফিরে যান</translation>
 <translation id="2533138527374486328">চালু থাকলে, আপনার স্থানীয় নেটওয়ার্কে যেকোনও ডিভাইসে কানেক্ট করার জন্য সাইট বলতে পারে। বন্ধ থাকলে, আপনার স্থানীয় নেটওয়ার্কে ডিভাইসে সাইট কানেক্ট করতে পারছে না।</translation>
+<translation id="2536779053640817375">এইবার অনুমতি দেওয়া হয়েছে • সুনির্দিষ্ট</translation>
 <translation id="2544997614631598250">থিম কালার ডার্ক</translation>
 <translation id="2546283357679194313">কুকিজ ও সাইট ডেটা</translation>
 <translation id="2570922361219980984">এই ডিভাইসেও লোকেশন অ্যাক্সেস বন্ধ আছে। চালু করতে <ph name="BEGIN_LINK"/>Android সেটিংসে<ph name="END_LINK"/> যান।</translation>
@@ -199,6 +202,7 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="3123473560110926937">কিছু সাইটে ব্লক করা হয়েছে</translation>
 <translation id="3132996321662585180">প্রতিদিন রিফ্রেশ করুন</translation>
 <translation id="3143754809889689516">শুরু থেকে চালান</translation>
+<translation id="3164169438034704658">আপনি <ph name="BEGIN_LINK"/>Android সেটিংস<ph name="END_LINK"/> থেকে সুনির্দিষ্ট লোকেশন চালু করতে পারবেন।</translation>
 <translation id="3165022941318558018">একটি সাইটকে থার্ড-পার্টি কুকি ব্যবহার করার অনুমতি দিন</translation>
 <translation id="3167868116600277716">ডিসকভার ফিড</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> সংরক্ষিত ডেটা</translation>
@@ -308,6 +312,7 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="8601682686806697614">Brave আজ আবার কুকির ব্যবহার সীমিত করে দেবে</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/>-এর সবকটি সাইট</translation>
 <translation id="4340799661701629185">সাইটগুলিকে বিজ্ঞপ্তি পাঠানোর অনুমতি দেয় না</translation>
+<translation id="4341577178275615435">ক্যারেট ব্রাউজিং চালু বা বন্ধ করার জন্য, F7 শর্টকাটটি ব্যবহার করুন</translation>
 <translation id="4402755511846832236">আপনি ডিভাইস কখন সক্রিয়ভাবে ব্যবহার করছেন, সাইট যাতে জানতে না পারে তার জন্য সাইট ব্লক করুন</translation>
 <translation id="8382883799082236806">স্ক্রিনের নিচে অ্যাটাচ করা শিট অর্ধেক খুলে রাখা অবস্থায় সেখানে দেখানো Brave কালার</translation>
 <translation id="4412992751769744546">তৃতীয় পক্ষের কুকিজ মঞ্জুর করুন</translation>
@@ -436,6 +441,7 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="5876056640971328065">ভিডিও পজ করুন</translation>
 <translation id="5877248419911025165">সব অনুরোধ আড়াল করুন</translation>
 <translation id="5878945009165002849">পরিচয় পরিষেবা প্রদানকারী থেকে সাইন-ইন প্রম্পট ব্লক করুন</translation>
+<translation id="588258955323874662">সম্পূর্নস্ক্রীণ</translation>
 <translation id="5884085660368669834">সাইটের অগ্রাধিকার</translation>
 <translation id="5887687176710214216">গতকাল শেষবার দেখা হয়েছে</translation>
 <translation id="5908617755156109052">সাইটগুলিকে, আপনার আশেপাশের জায়গার 3D ম্যাপ তৈরি করতে অথবা ক্যামেরার অবস্থান ট্র্যাক করার অনুমতি দেবেন না</translation>
@@ -531,9 +537,11 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="6965382102122355670">ঠিক আছে</translation>
 <translation id="6980861169612950611">সাইট ডেটা মুছতে চান? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ব্যবহারযোগ্যতা</translation>
+<translation id="6991142177939282156">অনুমতি দেওয়া হয়েছে • আনুমানিক লোকেশন ব্যবহার করা হচ্ছে</translation>
 <translation id="6992289844737586249">সাইটগুলিকে আপনার মাইক্রোফোন ব্যবহার করতে দিতে মঞ্জুরি দেওয়ার আগে প্রথমে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
 <translation id="7000754031042624318">Android সেটিংসে বন্ধ করা আছে</translation>
 <translation id="8683151724374457021">এই সাইটটি আপনার পছন্দের জিনিসগুলি নির্ধারণ করে এবং তারপরে অন্যান্য সাইটে বিজ্ঞাপন সাজেস্ট করে। এই সাইটটি আপনাকে আরও প্রাসঙ্গিক বিজ্ঞাপন দেখানোর জন্য Brave থেকে আপনার বিজ্ঞাপনের বিষয় নেয়।</translation>
+<translation id="7036823721811529709">ব্যাকগ্রাউন্ডে শুনুন</translation>
 <translation id="7044081119134178347">এই সময় ক্যামেরার অনুমতি দেওয়া হয়েছে</translation>
 <translation id="7053983685419859001">ব্লক করুন</translation>
 <translation id="7055552182600664515">কপিরাইট দ্বারা সুরক্ষিত কন্টেন্ট চালাতে, সাইটকে কন্টেন্ট সুরক্ষা পরিষেবা ব্যবহার করতে হতে পারে। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="7406113532070524618">এই সেটিং আপনাকে শনাক্ত না করে অথবা সাইটকে আপনার ব্রাউজিং ইতিহাস দেখার অনুমতি না দিয়েই কাজ করে, যদিও সাইট যাচাইকরণের অঙ্গ হিসেবে অল্প পরিমাণ তথ্য শেয়ার করতে পারে</translation>
 <translation id="7409735910987429903">আপনি দেখতে চান না এমন ওয়েবসাইটে নিয়ে যেতে সাইট আপনাকে পপ-আপের মাধ্যমে বিজ্ঞাপন দেখাতে পারে অথবা সেই ওয়েবসাইটে রিডাইরেক্ট করতে পারে</translation>
 <translation id="7412160840120117304">প্রাইমারি কালার হেক্স</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{জুম করুন}one{জুম করুন: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{জুম করুন: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">প্রথমে জিজ্ঞাসা করুন</translation>
 <translation id="7423538860840206698">ক্লিপবোর্ড পড়া ব্লক করা হয়েছে</translation>
 <translation id="7425915948813553151">সাইটের জন্য ডার্ক থিম</translation>
@@ -639,6 +648,7 @@ Brave-এর এই সেটিংস উন্নত সুরক্ষা ন
 <translation id="8261506727792406068">মুছুন</translation>
 <translation id="8284326494547611709">পরিচয়লিপিগুলি</translation>
 <translation id="8300705686683892304">অ্যাপ ম্যানেজ করে</translation>
+<translation id="8301363963630676147">এই সময়ের জন্য অনুমতি দেওয়া হয়েছে • আনুমানিক লোকেশন ব্যবহার করা হচ্ছে</translation>
 <translation id="8315509175050791576">ট্যাব শেয়ার করা হচ্ছে</translation>
 <translation id="8324158725704657629">আর দেখতে চাই না</translation>
 <translation id="8362795839483915693">আপনার ভিজিট করা সাইটে বড় বা ছোট করতে পারবেন</translation>

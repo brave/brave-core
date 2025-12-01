@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Ajude-nos a melhorar o Brave ao dizer-nos o motivo pelo qual permitiu cookies de terceiros. <ph name="BEGIN_LINK"/>Envie feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Pode pedir para ver a versão para computador dos sites</translation>
 <translation id="9183227624343766158">Use o Brave por predefinição</translation>
+<translation id="113098737392899175">Navegar pelas páginas com um cursor de texto quando tiver um teclado ligado</translation>
 <translation id="1178015372320901893">Secção inferior de Os meus atalhos</translation>
 <translation id="1178581264944972037">Pausa</translation>
 <translation id="1181037720776840403">Remover</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="904887679952026733">Aplique o tema escuro aos sites quando o Brave utiliza o tema escuro, quando possível</translation>
 <translation id="2390272837142897736">Aumentar zoom</translation>
+<translation id="2397689164757137845">Permitida • Exata</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Exata</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e mais <ph name="NUM_MORE"/> permitidas.}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e mais <ph name="NUM_MORE"/> permitidas.}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Ajuda e comentários</translation>
 <translation id="2501278716633472235">Voltar</translation>
 <translation id="2533138527374486328">Quando esta opção está ativada, os sites podem pedir para fazer ligação a qualquer dispositivo na sua rede local. Quando esta opção está desativada, os sites não podem fazer ligação aos dispositivos na sua rede local.</translation>
+<translation id="2536779053640817375">Permitida desta vez • Exata</translation>
 <translation id="2544997614631598250">Cor do tema: escuro</translation>
 <translation id="2546283357679194313">Cookies e dados de Web sites</translation>
 <translation id="2570922361219980984">O acesso à localização também está desativado para este dispositivo. Ative-o nas <ph name="BEGIN_LINK"/>Definições do Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="3123473560110926937">Bloqueado em alguns sites.</translation>
 <translation id="3132996321662585180">Atualizar diariamente</translation>
 <translation id="3143754809889689516">Reproduzir desde o início</translation>
+<translation id="3164169438034704658">Pode ativar a localização exata nas <ph name="BEGIN_LINK"/>Definições do Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Permita que um site use cookies de terceiros</translation>
 <translation id="3167868116600277716">Feed do Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> de dados armazenados</translation>
@@ -308,6 +312,7 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="8601682686806697614">O Brave vai limitar os cookies novamente hoje</translation>
 <translation id="4338831206024587507">Todos os sites em <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Não permitir que os sites enviem notificações</translation>
+<translation id="4341577178275615435">Para ativar ou desativar a navegação por cursor, utilize o atalho F7.</translation>
 <translation id="4402755511846832236">Impeça os sites de saberem quando está ativamente a utilizar este dispositivo.</translation>
 <translation id="8382883799082236806">Secção inferior de cores do Brave aberta a meia altura</translation>
 <translation id="4412992751769744546">Permitir cookies de terceiros</translation>
@@ -436,6 +441,7 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="5876056640971328065">Colocar vídeo em pausa</translation>
 <translation id="5877248419911025165">Reduzir todos os pedidos</translation>
 <translation id="5878945009165002849">Bloquear pedidos de início de sessão de serviços de identidade</translation>
+<translation id="588258955323874662">Ecrã inteiro</translation>
 <translation id="5884085660368669834">Preferência do site</translation>
 <translation id="5887687176710214216">Última visita ontem</translation>
 <translation id="5908617755156109052">Não permitir que os sites criem um mapa 3D do ambiente à sua volta nem monitorizem a posição da câmara</translation>
@@ -531,9 +537,11 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Eliminar dados do site? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Acessibilidade</translation>
+<translation id="6991142177939282156">Permitida • A usar a localização aproximada</translation>
 <translation id="6992289844737586249">Perguntar antes de permitir que os sites utilizem o microfone (recomendado)</translation>
 <translation id="7000754031042624318">Desativada nas Definições do Android</translation>
 <translation id="8683151724374457021">Este site determina o conteúdo de que gosta e, em seguida, sugere anúncios para outros sites. Este site também obtém os seus tópicos de anúncios do Brave para lhe mostrar anúncios mais relevantes.</translation>
+<translation id="7036823721811529709">Ouvir em segundo plano</translation>
 <translation id="7044081119134178347">Câmara permitida desta vez</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="7055552182600664515">Para reproduzir conteúdo protegido por direitos de autor, os sites podem ter de usar um serviço de proteção de conteúdo. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="7406113532070524618">Esta definição funciona sem saber a sua identidade nem permitir que os sites vejam o seu histórico de navegação, embora os sites possam partilhar uma pequena quantidade de informações como parte da validação</translation>
 <translation id="7409735910987429903">Os sites podem enviar pop-ups para mostrar anúncios ou utilizar redirecionamentos para levar o utilizador a Websites que pode não querer visitar.</translation>
 <translation id="7412160840120117304">Cor principal (hexadecimal)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zoom}other{Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Perguntar primeiro</translation>
 <translation id="7423538860840206698">Leitura da área de transferência bloqueada</translation>
 <translation id="7425915948813553151">Tema escuro para sites</translation>
@@ -639,6 +648,7 @@ A Proteção avançada controla estas definições do Brave:
 <translation id="8261506727792406068">Eliminar</translation>
 <translation id="8284326494547611709">Legendas</translation>
 <translation id="8300705686683892304">Geridos por aplicação</translation>
+<translation id="8301363963630676147">Permitida desta vez • A usar a localização aproximada</translation>
 <translation id="8315509175050791576">A partilhar um separador</translation>
 <translation id="8324158725704657629">Não perguntar novamente</translation>
 <translation id="8362795839483915693">Pode aumentar ou diminuir o zoom nos sites que visitar</translation>
