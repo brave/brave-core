@@ -36,13 +36,13 @@ def validate_tags_in_one_string(string_tag, textify_callback):
     lxml.etree.strip_elements(string_tag, 'ph', with_tail=False)
     string_text = textify_callback(string_tag)
     string_text = string_text.replace('&lt;', '<').replace('&gt;', '>')
-    # print(f'Validating: {string_text.encode('utf-8')}')
+    # print(f'Validating: {string_text}')
     try:
         string_xml = lxml.etree.fromstring(
             '<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
         errors = '\n--------------------\n' \
-            f"{string_text.encode('utf-8')}\nERROR: {str(e)}\n"
+            f"{string_text}\nERROR: {str(e)}\n"
         print(errors)
         cont = input(
             'Enter C to ignore and continue. Enter anything else to exit : ')

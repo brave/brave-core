@@ -65,11 +65,9 @@
 <translation id="1434416574322382019">გახსენით ახალი პირადი ფანჯარა Tor-ის გამოყენებით</translation>
 <translation id="4703780849509456860">გახსნა ბმული პირად ფანჯარაში Tor-ით</translation>
 <translation id="3488584642074079080">ბმული გახსნილია Brave-ის პირად ფანჯარაში Tor-ის გამოყენებით</translation>
-<translation id="8594912907680633924">ბმულის გახსნა გაყოფილ ხედვაში</translation>
 <translation id="6313675821927505581">ახალი პირადი ფანჯარა Tor-ით</translation>
 <translation id="2638041073279639246">ბმულის გახსნა პირად ფანჯარაში Tor-ით</translation>
 <translation id="3425600262621021599">ბმული გახსნა Brave-ის პირად ფანჯარაში Tor-ის გამოყენებით</translation>
-<translation id="3795436270513738622">ბმულის გახსნა გაყოფილ ხედვაში</translation>
 <translation id="2545072023356206691">2023 წლის 1 დეკემბრიდან Brave Dev არხი აღარ მიიღებს ბრაუზერის განახლებებს. რეკომენდაცია ვაძლევთ მომხმარებლებს გადაიტანონ Nightly, Beta ან Release Brave ვერსიებზე.</translation>
 <translation id="474217410105706308">ჩანართის ჩუმად მხილება</translation>
 <translation id="2804710924397009224">Brave Rewards-ის ხატი დამალვა</translation>
@@ -250,10 +248,6 @@
 <translation id="796831669370432378">სანიშნების დასამატებლად, დააჭირეთ სანიშნების ღილაკს მისამართის ზოლთან ახლოს</translation>
 <translation id="8487693399751278191">სანიშნების იმპორტი...</translation>
 <translation id="2557899542277210112">სანახავად, დასახარგებლად, დაამატეთ სანიშნები სანიშნების პანელზე.</translation>
-<translation id="1968543937259008435">მზად ხართ საუკეთესო ონლაინ კონფიდენციალურობისთვის?</translation>
-<translation id="6817415381278637662">გაყენეთ Brave როგორც თქვენი ნაგულისხმევი ბრაუზერი ყველა ვებ გვერდზე.</translation>
-<translation id="7537601449003285327">სამუშაო დაფაზე მიმაგრება</translation>
-<translation id="2307973900865360088">დოკში შენახვა</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">იმპორტირებულია <ph name="BROWSER_NAME"/>-დან.</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -394,6 +388,7 @@
 <translation id="5219886318310413094">საფოსტო ჩანართების ჩვენება ყველა ფანჯარაში</translation>
 <translation id="2396127686705429331">სანიშნებიები ღილაკის ჩვენება</translation>
 <translation id="2814998458708016836">გაფართოებული მისამართების ზოლის გამოყენება</translation>
+<translation id="4749586705247636385">მთავარი შიგთავსის არეალზე მოჭრილი კუთხეების ჩვენება</translation>
 <translation id="4109670531935487117">ავტომატური შევსების შემოთავაზებების მისამართის ზოლში ჩვენება</translation>
 <translation id="4579877808890085926">მოწყობილობაზე გენერირებული შემოთავაზებები</translation>
 <translation id="7859704718976024901">ბრაუზინგის ისტორია</translation>
@@ -411,7 +406,7 @@
 <translation id="1013121820689882118">სწრაფმკითხველი</translation>
 <translation id="5522420266446076076">ჩართეთ Speedreader ფუნქცია.</translation>
 <translation id="5211997910936574251">ავტომატურად გამოიყენეთ Speedreader, შესაძლებლობის შემთხვევაში</translation>
-<translation id="2025435450953474282">სტატიები ავტო-დაყნედის რეჟიმში იტვირთება, დროის უკიონების სიმშემდეგი.</translation>
+<translation id="2025435450953474282">სტატიები ავტომატურად იტვირთება მკითხველის რეჟიმში და ზოგავთ დროს</translation>
 <translation id="7984721311211272523">ჩანართის მოსაუბრეზე ჩუმი ფუნქციის გამორთვა</translation>
 <translation id="832432428796481785">გვერდითი პანელის ღილაკის ჩვენება</translation>
 <translation id="5581036754486769849">ავტო-შევსების ნებართვა პირად ფანჯრებში</translation>
@@ -422,9 +417,11 @@
 <translation id="3719826155360621982">მთავარი გვერდი</translation>
 <translation id="5448570825852364919">ცარიელი გვერდი</translation>
 <translation id="8244387390464017490">ახალი ჩანართის გვერდის პერსონალიზაცია</translation>
+<translation id="7537601449003285327">სამუშაო დაფაზე მიმაგრება</translation>
 <translation id="7461924472993315131">დამაგრება</translation>
 <translation id="735832369569964359">დაკლიკეთ 'დამაგრებაზე' და დადასტურეთ მას Windows-ის შეტყობინებაში</translation>
 <translation id="7506648566440714944">Brave უკვე დამაგრებულია</translation>
+<translation id="2307973900865360088">დოკში შენახვა</translation>
 <translation id="239275665037555969">დოკი</translation>
 <translation id="4057614912106618659">Brave უკვე დოკშია</translation>
 <translation id="3195845168740336657">Shields-ის პარამეტრები</translation>
@@ -496,10 +493,32 @@
 <translation id="2718718846210516552">სქრიპტლეტი ვერ მოიძებნა.</translation>
 <translation id="4088315951291671239">არ ჩასვათ აქ კოდი, რომ არ გესმით ან არ შეგიმოწმებია. ეს შეიძლება თავდასხმელებმა გამოიყენონ თქვენი ვინაობის მოპარვისთვის ან თქვენი კომპიუტერის გაკონტროლებისთვის.</translation>
 <translation id="3020183492814296499">მოკლე გზები</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="2587535830241068901">დააკონფიგურირეთ თქვენი ბრაუზერი ისე, რომ Brave-ის მხარდაჭერა შეინარჩუნოთ</translation>
+<translation id="553273341094971255">Brave Origin გაძლევთ საშუალებას მოირგოთ Brave თქვენზე ისე, რომ გამორთოს ყველა შიგნითა რეკლამა, ბრენდის შეთავაზებები და ანონიმური ანალიტიკა, რომელიც შესაძლოა გააქტიურებული გქონდეთ ინსტალაციის დროს.</translation>
+<translation id="534725333104202278">ნებისმიერი ადონები ან მახასიათებლები, რომლებიც ადრე გქონდათ გააქტიურებული ან გამოყენებული, დარჩება ხილვად და ინტეგრირებული. დარჩენილი კი გამორთული იქნება. განაგრძეთ Brave-ის მორგება, როდესაც ბრაუზერში ახალ შესაძლებლობებს დავამატებთ — ისინი გამოჩნდება ჩუმად და დამალულად Brave Origin-ის პანელში.</translation>
+<translation id="1919345977826869612">რეკლამები</translation>
+<translation id="944736176598169208">ჯილდოები</translation>
+<translation id="2839742394543397416">ანალიტიკა</translation>
+<translation id="1799030480311994998">ფუნქციები</translation>
+<translation id="6709133671862442373">სიახლეები</translation>
+<translation id="6297791103122079275">Brave Talk</translation>
+<translation id="1458638489455808030">Wayback Machine</translation>
+<translation id="1199170151481311646">კონფიდენციალურობის დამცველი ანალიტიკა</translation>
+<translation id="5990642573624858459">სტატისტიკის გაგზავნა</translation>
+<translation id="2441719842399509963">ყველას დაბრუნება ნაგულისხმევად</translation>
 <translation id="5567412479632285879">Brave Rewards გამორთულია</translation>
 <translation id="413570371620795359">გახსენით ჯილდოების პანელი გასააქტიურებლად და დასაწყებად</translation>
 <translation id="1051600834033686945">გახსენით სრული Brave Rewards პარამეტრები</translation>
 <translation id="8826461509529116322">Brave Rewards-ის ღილაკის ჩვენება</translation>
+<translation id="3328713589982547433">მხოლოდ რეკლამების ბლოკირების რეჟიმი</translation>
+<translation id="1574253307550419595">მოითხოვე მხოლოდ რეკლამების ბლოკირების რეჟიმის გამოყენება</translation>
+<translation id="738717058053657696">მხოლოდ რეკლამების ბლოკირების რეჟიმი ინარჩუნებს Brave Shields-ის რეკლამების ბლოკირების მთავარ წესებს.
+გაფრთხილება: გამორთავს კონფიდენციალურობის დაცვის ელემენტებს. თუ კონკრეტული საიტები Brave-ის კონფიდენციალურობის დაცვით ირღვევა, შეგიძლიათ Shields დააყენოთ დაბალ დონეზე.
+ეს ექსპერიმენტული რეჟიმია. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/></translation>
+<translation id="3055675200351793825">Shields პარამეტრები ამჟამად გათიშულია.</translation>
+<translation id="516439939408671102">მხოლოდ რეკლამების ბლოკირების რეჟიმი ინარჩუნებს Brave Shields-ის ძირითად ბლოკირების წესებს და გამორთავს კონფიდენციალურობის დამცავ მახასიათებლებს. თუ გსურთ სისტემური Shields-ის დაბრუნება, გამორთეთ ეს რეჟიმი.</translation>
+<translation id="177233004755519660">გამორთე მხოლოდ რეკლამების ბლოკირების რეჟიმი</translation>
 <translation id="9185018653595759199">სოციალური მედიის დაბლოკვა</translation>
 <translation id="863171915776379000">Facebook-ით შესვლისა და ჩაშენებული პოსტების დაშვება</translation>
 <translation id="7791141927430186653">X-ის (ადრე Twitter) ინტეგრირებული ტვიტების ჩართვა</translation>
@@ -811,6 +830,7 @@
 <translation id="8137606697798069075">გამოიყენეთ ნებისმიერი OpenAI Chat Protocol-ის შესაბამისი სისტემა, როგორიცაა Ollama. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">მოდელის შენახვა</translation>
 <translation id="6304169450064541679">სისტემური მოთხოვნა</translation>
+<translation id="3081947790648024460">მოდელისთვის მორგებული ინსტრუქციები და/ან კონტექსტი, რათა პასუხების სტილი ან მიმართულება განსაზღვროს. გამოიყენეთ %datetime% იმ ადგილას, სადაც გსურთ რომ განთავსდეს მიმდინარე თარიღი და დრო.</translation>
 <translation id="5688878061573389791">შეიცავს ≈<ph name="TOKENS_COUNT"/> ტოკენს</translation>
 <translation id="6911466383346197271">ლეოს პერსონალიზაცია</translation>
 <translation id="5702085383070170010">თქვენს შესახებ</translation>

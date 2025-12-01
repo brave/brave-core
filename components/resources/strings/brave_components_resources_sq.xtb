@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Popup për newsletter</translation>
 <translation id="6136090320163235283">Widget social</translation>
 <translation id="6657720240983439091">Widget i bisedës</translation>
+<translation id="3597441883564676263">Shfletuesi nuk mbështetet</translation>
 <translation id="7138678301420049075">Tjetër</translation>
 <translation id="4046860372562593546">Menaxhoni Reklama Brave</translation>
 <translation id="5136973036012418831">Kontrolloni çfarë lloj Reklama Brave shihni dhe sa shpesh.</translation>
@@ -2226,6 +2227,24 @@
 <translation id="7488762544858401571">E redaktuar</translation>
 <translation id="5604254791550001355">Redakto promptin</translation>
 <translation id="8115786586976830777">Kopjo promptin</translation>
+<translation id="3666616415490815310">Ruaje si aftësi</translation>
+<translation id="6574544364990812112">Aftësitë e mia</translation>
+<translation id="6696824203401957025">Aftësi e re</translation>
+<translation id="6410279677882692627">Aftësitë do të shfaqen te mjetet e tua [/] dhe mund t’i përdorësh duke shtypur vetëm komandën "/emri" që vendos poshtë.</translation>
+<translation id="1344606707744657196">Model për komandën</translation>
+<translation id="8458341576712814616">Komanda e Shpejtë</translation>
+<translation id="1326559827339317236">Vendos komandën tënde këtu</translation>
+<translation id="5032574515228824816">Komanda</translation>
+<translation id="2573797314568446575">Vendos komandën tënde këtu</translation>
+<translation id="900733896273558337">Përpunoje aftësinë</translation>
+<translation id="7662963028545588801">Fshije aftësinë</translation>
+<translation id="4209790625997566418">A jeni i sigurt që dëshironi të fshini këtë aftësi? Ky veprim nuk mund të zhbëhet.</translation>
+<translation id="7161540406494327389">Komanda është e domosdoshme</translation>
+<translation id="3722223049736774445">Komanda lejon vetëm shkronja, numra, nënviza dhe vizë</translation>
+<translation id="6997214168632888867">Komanda duhet të jetë maksimumi 64 karaktere</translation>
+<translation id="2806891468525657116">Komanda ekziston tashmë</translation>
+<translation id="5497501845974700950">Komanda është e domosdoshme</translation>
+<translation id="5642369858603376334">Komanda duhet të jetë 5000 karaktere ose më pak</translation>
 <translation id="1406205536570262057">Redaktoni përgjigjen</translation>
 <translation id="3386725253392845084">Riprovo modelin e njëjtë</translation>
 <translation id="2461822463642141190">E tanishme</translation>
@@ -2263,13 +2282,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> më shumë...</translation>
 <translation id="8103700533980268469">Mbylle këtë njoftim</translation>
 <translation id="3417835166382867856">Kërko skedat</translation>
+<translation id="3828029223314399057">Kërko te faqeshënuesit</translation>
+<translation id="381480092025168632">Kërko në historikun tënd</translation>
 <translation id="7311244614769792472">S’u gjetën përfundime kërkimi</translation>
 <translation id="3112448569149476523">Ju lutem provoni një kërkim tjetër</translation>
 <translation id="1352836459737874921">Bashkëngjit përmbajtje nga skeda të tjera</translation>
+<translation id="7173836072258346701">Bashkëngjit përmbajtje nga faqeshënuesit</translation>
+<translation id="163680814308917875">Bashkëngjit përmbajtje nga historiku i shfletuesit</translation>
 <translation id="7039179822221107025">Dërgoni përmbajtjen e skedës suaj nga shfletuesi për t'i dhënë Leos më shumë kontekst për bisedën.</translation>
+<translation id="1602382615168212961">Dërgoni përmbajtjen e skedës suaj nga faqeshënuesit për t'i dhënë Leos më shumë kontekst për bisedën.</translation>
+<translation id="4808122506413075135">Dërgoni përmbajtjen e skedës suaj nga historiku i shfletuesit për t'i dhënë Leos më shumë kontekst për bisedën.</translation>
 <translation id="220541218939267992">Përmbajtja e faqes do t’i dërgohet Leo-s bashkë me mesazhet tuaja.</translation>
-<translation id="1446346932629101482">Shto përmbajtjen e skedave për kontekst. Përmbajtjet do të dërgohen te Leo së bashku me mesazhet tuaja.</translation>
-<translation id="7193316103691252734">Nuk ka skeda që përputhen</translation>
+<translation id="8164365899016970783">Shto përmbajtjen e skedave dhe faqeshënuesve për kontekst. Përmbajtjet do të dërgohen te Leo së bashku me mesazhet tuaja.</translation>
+<translation id="6237410387937453423">Nuk ka bashkangjitje që përputhen</translation>
+<translation id="8076492880354921740">Skedat</translation>
 <translation id="2315654674554095762">Leo do t'i kujtojë bisedat e tua, kështu që mund t'u kthehesh. Ato ruhen të koduara në pajisjen tënde dhe mund t'i fshish në çdo kohë.</translation>
 <translation id="7821251979960635244">Historia e bisedës tënde do të shfaqet këtu pasi të filloni një bisedë.</translation>
 <translation id="887511360213807449">Historia është ç'aktivizuar</translation>
@@ -2328,7 +2354,9 @@
 <translation id="4250229828105606438">Pamje e ekranit</translation>
 <translation id="7949596341600215809">Screenshot i plotë i faqes</translation>
 <translation id="6332876390231524389">Përmbajtja e skedës aktuale</translation>
-<translation id="7742969455167760092">Hap skedat...</translation>
+<translation id="6397861830483632092">Hap skedat…</translation>
+<translation id="802080272588201037">Faqeshënuesit…</translation>
+<translation id="2716127283451902393">Historiku…</translation>
 <translation id="49269513399674318">Përdor mikrofonin</translation>
 <translation id="3895031624234442305">Modele të personalizuara</translation>
 <translation id="4572010449071015143">Fillo bisedë të re</translation>
@@ -2340,6 +2368,22 @@
 <translation id="2593275000606533518">Menaxho gjithë memoriet</translation>
 <translation id="8410199626695516952">Në rregull, nuk do ta mbaj mend atë</translation>
 <translation id="8419849467765474535">Dështoi ruajtja e memories. Ju lutemi provoni përsëri.</translation>
+<translation id="5517580030864973329">Drejtimi i faqes në një adresë të re</translation>
+<translation id="8832457834975923266">Faqja u drejtua te <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progresi</translation>
+<translation id="8332385567036775056">Hapat</translation>
+<translation id="4521931942079977149">Klikim në faqe</translation>
+<translation id="7732267913911704962">Rrëshqit dhe lësho në faqe</translation>
+<translation id="7703800915509570212">Lëvizje prapa</translation>
+<translation id="4875586490950981498">Lëvizje përpara</translation>
+<translation id="738881387603843066">Lëvizja e mausit</translation>
+<translation id="4850669014075537160">Rrëshqitje</translation>
+<translation id="1265072406500460724">Zgjedhje nga një listë</translation>
+<translation id="7573920298077917439">Shtypje teksti</translation>
+<translation id="4089034800311309656">Në pritje të faqes</translation>
+<translation id="4798146464408730445">Nuk u gjet asnjë aftësi. Krijo një të re duke klikuar butonin "E re".</translation>
+<translation id="271033894570825754">E re</translation>
+<translation id="8266605059880650542">Shënim i disa informatave për më vonë rreth faqes</translation>
 <translation id="3486480638399578250">Mbaje private adresën tënde personale të email-it</translation>
 <translation id="7765422154906712751">Krijo adresa unike dhe të rastësishme që dërgojnë te email-i yt i llogarisë Brave dhe mund të fshihen në çdo kohë. Mbaje adresën tënde aktuale të email-it nga zbulimi ose përdorimi nga reklamuesit.</translation>
 <translation id="5222676887888702881">Dil</translation>
@@ -2385,6 +2429,10 @@
 <translation id="7508412964869396375">Asnjë shenjë verifikimi nuk u mor nga shërbimi i Llogarive Brave</translation>
 <translation id="3179527991526213624">Asnjë përgjigje nga shërbimi i Llogarive Brave</translation>
 <translation id="7911439408853154309">Dështoi verifikimi i emailit</translation>
+<translation id="2595463802839066496">Asnjë përgjigje nga shërbimi i Aliaseve të Email-it</translation>
+<translation id="367191282389216837">Përgjigje e pavlefshme nga shërbimi i Aliaseve të Email-it</translation>
+<translation id="7203490731644771170">Gabim nga shërbimi i Aliaseve të Email-it: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Gabim: Alias nuk është i disponueshëm</translation>
 <translation id="8370801182970639038">Automatike (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Motorët e kërkimit të aktivizuar</translation>
 <translation id="8285901519864208412">Fshi kartën e Shpërblimeve</translation>
@@ -2430,8 +2478,19 @@
 <translation id="8458987127502506209">Aktivizo Mburojat Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Mburojat janë NGRITUR<ph name="STATUS_AFTER"/> për këtë sajt</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Mburojat janë POSHTË<ph name="STATUS_AFTER"/> për këtë sajt</translation>
-<translation id="5623354834493649144">Nëse kjo faqe duket e prishur, provojeni Mburojat ulur.
-<ph name="NOTE_BEFORE"/>Shënim: kjo mund të reduktojë mbrojtjet e privacisë së Braveit.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Nëse kjo faqe duket e prishur, provoje me Mburoja të çaktivizuara.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Shënim: kjo mund të ulë mbrojtjen e privatësisë nga Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Po keni probleme me këtë faqe?</translation>
+<translation id="9176447766421988172">Po testojmë një eksperiment për të rritur përputhshmërinë me faqet e internetit, ku mbajmë vetëm bllokimin e reklamave të aktivizuar. Paralajmërim: heq të gjitha mbrojtjet e privatësisë. Dëshironi ta provoni? <ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Ju lutemi vini re se për faqe të veçanta të dëmtuara nga mbrojtjet e privatësisë së Brave, mund të vendosni Mburojat në POXHË.</translation>
+<translation id="1836572675775891780">Aktivizo vetëm Bllokimin e Reklamave</translation>
+<translation id="6623668214089604469">A po funksionon siç duhet kjo faqe tani?</translation>
+<translation id="8978860854770042258">Ju lutemi konsideroni të dërgoni një raport nëse kjo faqe është ende e dëmtuar.</translation>
+<translation id="4677356505199464553">Duket mirë</translation>
+<translation id="1992750560347846445">Raporto Sajt</translation>
+<translation id="2887186586339544116">Mënyra vetëm për Bllokimin e Reklamave është aktivizuar</translation>
+<translation id="673665019618844072">Aktualisht jeni duke përdorur mënyrën e vetëm Bllokimit të Reklamave. Kjo mënyrë ofron vetëm mbrojtjen kundër reklamave. Nëse dëshironi të riktheheni në mënyrën e plotë me Mburoja, çaktivizoni këtë mënyrë nga rregullimet.</translation>
+<translation id="4820891023903368625">Reklamat e bllokuara <ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Gjurmues, reklama, dhe më shumë të bllokuara <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nuk është e mbrojtur nga Mburojat Brave <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrolle të përparuara</translation>
@@ -2465,7 +2524,6 @@
 <translation id="8034285923190068220">Lejo gjurmimin</translation>
 <translation id="7638541189782135885">Mos përmirëso lidhjet HTTP</translation>
 <translation id="2570787596946026998">Lidhu vetëm me HTTPS</translation>
-<translation id="1992750560347846445">Raporto Sajt</translation>
 <translation id="2387532482048804818">Na trego nëse sajti nuk funksionoi mirë me Mburojat aktiv.</translation>
 <translation id="3795015906457257780">Po shikon këtë sajt pa mbrojtjet e privatësisë së Brave.</translation>
 <translation id="7194012750329511146">Mburojat Brave

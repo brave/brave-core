@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">న్యూస్‌లెటర్ పాప్‌అప్</translation>
 <translation id="6136090320163235283">సోషియల్ విడ్జెట్</translation>
 <translation id="6657720240983439091">చాట్ విడ్జెట్</translation>
+<translation id="3597441883564676263">బ్రౌజర్‌కు మద్దతు లేదు</translation>
 <translation id="7138678301420049075">ఇతర</translation>
 <translation id="4046860372562593546">Brave Ads ని నిర్వహించండి</translation>
 <translation id="5136973036012418831">మీరు ఏ రకమైన Brave Ads చూడాలనుకుంటున్నారో మరియు ఎంత తేలిగా చూడాలనే నియంత్రించండి</translation>
@@ -439,6 +440,7 @@
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">ఛేదించని డొమెయిన్స్</translation>
 <translation id="4492298165410552103">Brave లో Unstoppable Domains అనే విధానాన్ని ప్రారంభిస్తాను?</translation>
+<translation id="5015092481905019948">Brave <ph name="DOMAIN_PROVIDER_NAME"/> లో ఉన్న <ph name="DOMAIN_LIST"/> డొమెయిన్ నేమ్‌లను చెదరగొట్టేందుకు <ph name="PROVIDER_NAME"/> ను ఉపయోగిస్తుంది. Brave మీ IP చిరునామాను దాచుతుంది. మీరు దీనిని ప్రారంభిస్తే, <ph name="PROVIDER_NAME"/> ఈ డొమెయిన్‌లను సందర్శించేందుకు ఎవరో ప్రయత్నిస్తున్నారు అనేది మాత్రమే తెలుసుకుంటుంది కానీ మిగిలిన సమాచారం కాదు. <ph name="PROVIDER_NAME"/> యొక్క <ph name="BEGIN_PROVIDER_TOU_LINK"/>ఉపయోగ నిబంధనలు<ph name="END_PROVIDER_TOU_LINK"/> మరియు <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>గోప్యతా విధానం<ph name="END_PROVIDER_PRIVACY_LINK"/>ని చూడండి.</translation>
 <translation id="6513892817556267573">ఎథెరియం నేమ్ సర్వీస్</translation>
 <translation id="2789190492285945209">Ethereum Name Service (ENS)</translation>
 <translation id="4335039108389860301">Brave లో Ethereum Name Service (ENS) ని ప్రారంభిస్తాను?</translation>
@@ -448,6 +450,7 @@
 <translation id="4047002754575891955">ఆఫ్ చైన్ గమనించడానికి కొనసాగీంచండి</translation>
 <translation id="531747189990625622">సోలనా నేమ్ సర్వీస్</translation>
 <translation id="1090584614351290462">Brave లో Solana Name Service (SNS) ని ప్రారంభిస్తాను?</translation>
+<translation id="7769345036263036863"><ph name="DOMAIN_LIST"/> డొమైన్ పేర్లను పరిష్కరించడానికి బ్రేవ్ మూడవ పక్షాన్ని ఉపయోగిస్తుంది. బ్రేవ్ మీ IP చిరునామాను దాచిపెడుతుంది. మీరు దీన్ని ప్రారంభిస్తే, ఈ <ph name="DOMAIN_LIST"/> డొమైన్‌లను ఎవరో సందర్శించడానికి ప్రయత్నిస్తున్నారని మూడవ పక్షం చూస్తుంది కానీ మరేమీ కాదు. మేము ఏ మూడవ పక్షాలను ఉపయోగిస్తాము మరియు వారి గోప్యతా విధానాల గురించి మరింత సమాచారం కోసం, దయచేసి మా <ph name="BEGIN_SNS_WIKI_LINK"/>సహాయ పేజీ<ph name="END_SNS_WIKI_LINK"/> చూడండి;.</translation>
 <translation id="884864496166128252"><ph name="PROVIDER_NAME"/> సర్వర్‌ను ఉపయోగించి కొనసాగించండి</translation>
 <translation id="4388873516324656141">SNS సర్వర్‌ను ఉపయోగించి కొనసాగించండి</translation>
 <translation id="2356070529366658676">అడుగు</translation>
@@ -510,6 +513,11 @@
 <translation id="3264975266761862670">సంపాదించడానికి సిద్ధమా?</translation>
 <translation id="2784412028126205842">ఒక చెల్లింపు ఖాతాను కనెక్ట్ చేయండి</translation>
 <translation id="766126983336630294">{ADS_VIEWED, plural, =0 {మీరు ఈ నెలలో <ph name="COUNT_BEGIN"/># ప్రకటనలను<ph name="COUNT_END"/> చూశారు} =1 {మీరు ఈ నెలలో చూసిన <ph name="COUNT_BEGIN"/># ప్రకటన<ph name="COUNT_END"/> కోసం చెల్లింపులు పొందవచ్చు.} other {మీరు ఈ నెలలో చూసిన <ph name="COUNT_BEGIN"/># ప్రకటనలు<ph name="COUNT_END"/> కోసం చెల్లింపులు పొందవచ్చు.}}</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {ఈ నెల మీరు వీక్షించిన <ph name="COUNT_BEGIN"/># యాడ్స్<ph name="COUNT_END"/> ఉన్నాయి}
+      =1 {ఈ నెల మీరు వీడియో చేస్తున్న <ph name="COUNT_BEGIN"/># యాడ్<ph name="COUNT_END"/> ఏర్పరచుకోవచ్చు}
+      other {ఈ నెల మీరు వీక్షించిన <ph name="COUNT_BEGIN"/># యాడ్స్<ph name="COUNT_END"/> ఏర్పరచుకోవచ్చు}
+    }</translation>
 <translation id="6067959437127691361">Brave Rewards ఉపయోగించడం కంటెంట్ క్రియేటర్లను సపోర్ట్ చేస్తుంది మరియు మీరు BAT ని సంపాదించేందుకు అనుమతిస్తుంది.</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="3863981251715594911">ఇది ఎలా పని చేస్తుంది?</translation>
@@ -674,7 +682,6 @@
 <translation id="3266055641283174315">Ad రకం</translation>
 <translation id="8706824117053903390">ఈ నెల వీక్షణలు</translation>
 <translation id="5105890735834548623">Ads సెట్టింగ్‌లు</translation>
-<translation id="96989662637180657">Brave సెర్చ్ Ads <ph name="LINK_BEGIN"/>Brave సెర్చ్<ph name="LINK_END"/> లో కనిపిస్తాయి.</translation>
 <translation id="3138160233953903250">Ads సెట్టింగ్‌లు</translation>
 <translation id="2446517297521536638">Brave Ads మీరు చూడగలిగే రకాలను మరియు ఎప్పుడు సందర్శించగలరని నిర్ధారించండి. మీరు మరిన్ని చూస్తే, మరిన్ని సంపాదించవచ్చు.</translation>
 <translation id="3479272537858623647">ఈ నెల మీరు చూసిన గణనీయమైన Brave Ads సంఖ్య ఈ క్రింది BAT సంపాదించడానికి అర్హత కలిగి ఉంటాయి.</translation>
@@ -836,7 +843,16 @@
 <translation id="3751611888003301070">మార్గాలు</translation>
 <translation id="3799091982455573025"><ph name="NETWORK_NAME"/> ద్వారా <ph name="EXCHANGE_NAME"/> లో స్వాప్ చేయండి</translation>
 <translation id="5136093123841570193">తొలి నెట్‌వర్క్ నుండి <ph name="FRIST_NETWORK_NAME"/> నుండి <ph name="SECOND_NETWORK_NAME"/></translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} అడుగు}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} అడుగులు}
+    }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> ద్వారా <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">పరివర్తనను నిర్ధారించండి</translation>
+<translation id="6264944956989873014">బ్రిడ్జ్‌ను నిర్ధారించండి</translation>
+<translation id="7067917728851842589">పంపిణీని నిర్ధారించండి</translation>
+<translation id="2351357639951873714">షీల్డ్‌ను నిర్ధారించండి</translation>
+<translation id="8332923694292360653">ఖర్చు చేయండి</translation>
 <translation id="3735740477244556633">దీని ద్వారా క్రమీకరించు</translation>
 <translation id="6484605214219822434">సమీక్షా వారధి</translation>
 <translation id="3365052891357224017">అంచనా సమయం</translation>
@@ -888,6 +904,7 @@
 <translation id="3747079125031086337">మీ రికవరీ ఫ్రేజ్‌లోని పదాలను వాటి కచ్చితమైన క్రమంలో ఎంచుకోండి.</translation>
 <translation id="802060020117206314">రికవరీ ఫ్రేజ్ సరిపోలలేదు, దయచేసి మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="7345730059518887993">పరిశీలిద్దాం</translation>
+<translation id="2226686084760581391">మీ రికవరీ పదబంధంలోని <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/>(<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/>, మరియు <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> పదాలను క్లిక్ చేయండి.</translation>
 <translation id="7575574239720542222">తిరిగి పొందు పదజాలం సరిపోలలేదు</translation>
 <translation id="8692301574305033504">కొత్త పాస్వర్డ్ సృష్టించండి</translation>
 <translation id="4384286220811524581">మీ వాలెట్‌ను యాక్సెస్ చేసే ప్రతిసారి మీరు ఈ పాస్వర్డ్‌ని ఉపయోగిస్తారు.</translation>
@@ -945,6 +962,7 @@
 <translation id="3451958544919449297">ZEC టెస్ట్‌నెట్ ఆస్తులను నిల్వ చేయండి</translation>
 <translation id="8459631690385393533">కార్డానో ఆస్తులు నిల్వ చేయండి</translation>
 <translation id="4915057812371523845">కార్డానో టెస్ట్‌నెట్ ఆస్తులు నిల్వ చేయండి</translation>
+<translation id="5387140102951033657">Polkadot రిలే చైన్ మరియు Substrate ప్యారాచెయిన్‌లపై Substrate ఆస్తులను మద్దతిస్తుంది</translation>
 <translation id="8500387257977999003">ప్రైవేట్ కీ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">దిగుమతి చెయ్యి</translation>
 <translation id="232925166623833246">హార్డ్‌వేర్ వాలెట్ నుండి ఇంపోర్ట్ చేయండి</translation>
@@ -1056,6 +1074,10 @@
 <translation id="8904889345035514635">ప్రస్తుతం అనుమతి</translation>
 <translation id="7073918978411974168">ప్రతిపాదిత భత్యం</translation>
 <translation id="9019403281000653275">అపరిమిత అనుమతి అభ్యర్థించబడింది</translation>
+<translation id="9108474191347769758">ఖర్చుల హద్దు</translation>
+<translation id="2102091845281366189">అనుమతి లక్ష్యం</translation>
+<translation id="772196962479335292">ప్రస్తుతం అనుమతించిన ఖర్చు పరిమితి</translation>
+<translation id="8215431557133305629">ప్రతిపాదిత ఖర్చు పరిమితి</translation>
 <translation id="4717431746210146708">ఈ సైట్ ని నెట్వర్క్ కలుపడానికి అనుమతించాలా?</translation>
 <translation id="2521480044079508357">Brave Wallet లో ఈ నెట్‌వర్క్ ఉపయోగించడానికి ఈ అనుమతి ఇస్తుంది.</translation>
 <translation id="1982257600591932657">నెట్వర్క్ పేరు</translation>
@@ -1072,7 +1094,7 @@
 <translation id="3948067511324628726">గ్యాస్ ఫీజు</translation>
 <translation id="7163997622278957886">బిడ్</translation>
 <translation id="1074360622426001342">మొత్తం + గ్యాస్</translation>
-<translation id="2186011161688824046">మొత్తం + రుసుము</translation>
+<translation id="7542099582407803878">రూ. మొత్తం + నెట్‌వర్క్ ఫీజు</translation>
 <translation id="7084089311475827950">డేటా లేదు.</translation>
 <translation id="5821668936183240062">తరువాత</translation>
 <translation id="793994607260936590">మొదటి</translation>
@@ -1395,6 +1417,8 @@
 <translation id="1908159733454294871">భద్రతా ప్రమాదం కాగడితనం</translation>
 <translation id="3621202678540785336">ఇన్‌పుట్</translation>
 <translation id="3009178788565917040">అవుట్పుట్</translation>
+<translation id="7953669802889559161">ఇన్పుట్లు</translation>
+<translation id="4554024082642878647">ఔట్పుట్లు</translation>
 <translation id="1965889974717516497">రెండవ నెట్వర్క్‌లు</translation>
 <translation id="7691821949666755802">టెస్ట్ నెట్వర్క్‌లు</translation>
 <translation id="2816106784624007524">గ్యాస్ లిమిట్ 0 కన్నా ఎక్కువ ఇన్‌టికర్ ఆరోహి అయినట్టయితే తప్పనిసరిగా ఉండాలి</translation>
@@ -2117,17 +2141,24 @@
 <translation id="5872363163901278000">ప్లేబ్యాక్ వేగాన్ని పెంచు</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">సారాంశ ఫీచర్ ప్రస్తుతం ఎంపిక చేసిన కథనాలు మరియు ఇతర దీర్ఘ రూప వెబ్ పేజీలకు మాత్రమే అందుబాటులో ఉంది.</translation>
-<translation id="1223498995510244364">Summarize</translation>
 <translation id="7491773233732232424">Leo గురించి</translation>
 <translation id="4611072979071082355">Brave Leo అనేది ప్రైవేట్ AI తెలివైన సహాయకుడు, ఇది వెబ్ యొక్క మీ వినియోగాన్ని పెంచుతుంది. లిమిటెడ్ యాక్సెస్‌తో లియో ఉచితంగా ఉపయోగించుకోవచ్చు. Brave Leo ప్రీమియం మరిన్ని మోడళ్లు, ఉన్నత పరిమితులు అందిస్తుంది మరియు సబ్‌స్క్రైబర్‌కి కొత్త ఫీచర్‌లకు ముందస్తు ఆక్సెస్‌ను ఇస్తుంది. డిఫాల్ట్ మోడల్ నిర్దిష్ట కాలంలో మారుతుంటుంది. మరిన్ని వివరాల కోసం <ph name="LINK_BEFORE"/>Brave హెల్ప్ సెంటర్<ph name="LINK_AFTER"/> చూడండి.</translation>
 <translation id="7297056998057521697">డిఫాల్ట్‌గా, మీరు వీక్షిస్తున్న వెబ్‌సైట్ లేదా పేజీ గురించి లియోను ఒక ప్రశ్న అడిగితే, మీరువీక్షిస్తున్న వెబ్‌పేజీ యొక్క కంటెంట్ లేదా మీరు ఒక పేజీలో ఎంచుకున్న ఏదైనా పాఠ్యము, అలాగే మీ శోధన వాక్యం,  లియో ప్రతిస్పందనను అందించేందుకు, brave సర్వర్లకు పంపబడును. కొన్ని సందర్భాలలో, లియో మీ ఇన్‌పుట్ నుండి పుట్టుకొచ్చిన ప్రశ్నలను Brave Search కి పంపించి, మీ ప్రశ్నకు మెరుగైన సమాధానం ఇవ్వడానికి శోధన ఫలితాలను ఉపయోగిస్తాడు. Brave, ప్రతిస్పందనల ఖచ్చితత్వాన్నిగుర్తించబోతుండదు, ప్రతిస్పందనల్లో అస్తీరముగా ఉండవచ్చు, పుట్టబోయినవిగా ఉండవచ్చు, లేదా తప్పుడు సమాచారం ఉండవచ్చు. సంభందిత లేదా ప్రైవేట్ సమాచారాన్ని Brave Leoకి సమర్పించకుండా ఉండండి. మరియు మీరు ఆరోగ్యం, ఆర్థిక వ్యవహారాలు, వ్యక్తిగత భద్రత లేదా దీని వంటి విషయాలకు సమాధానాలలో జాగ్రత్తగా ఉండండి. ఏ క్షణములోనైనా సెట్టింగులలో లియో యొక్క ఎంపికలని సర్దుబాటు చేయవచ్చు. సెట్టింగులు &gt; లియో కి వెళ్ళండి.</translation>
 <translation id="6644545214304085600">లియో మీకు లింక్ చేయగలిగే గుర్తింపులనుzoals మీరు వైపు ను వసూలు చేయదు. మేము మీ డేటా ఆధారంగా మా మోడళ్లను శిక్షణ ఇవ్వము, మరియు మీ శోధనలు లేదా లియో యొక్క ప్రతిస్పందనలను సేకరించడం లేదు. మా సర్వర్లు పై, ఇతర.ServletException గా ఎరువమరియాదా. మరింత సమాచారం కోసం <ph name="LINK_BEFORE"/>గోప్యతా విధానం<ph name="LINK_AFTER"/> చూడండి.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {ఈ పేజీ కంటెంట్ గురుంచి ప్రశ్న అడగండి}
+      other {ఈ పేజీల కంటెంట్ గురుంచి ప్రశ్న అడగండి}
+    }</translation>
 <translation id="6961721183181597848">నేడు నేను మీకు ఏం సహాయం చేయగలను?</translation>
 <translation id="2966135729673253768">తరువాతి అడిగండి</translation>
 <translation id="6219262425964000211">ఇమేజెస్‌ని ఇక్కడ వదలండి</translation>
 <translation id="4313763911013851687">చర్చలో వాటిని జోడించడానికి ఏ ఫైళ్లనైనా ఇక్కడ వదలండి</translation>
 <translation id="4524675003624341892">ప్రశ్నలను సూచించు…</translation>
 <translation id="4567071417854988869">ఈ వీడియో సారాంశం</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {ఈ పేజీని సారాంశం చేయండి}
+      other {ఈ పేజీలను సారాంశం చేయండి}
+    }</translation>
 <translation id="7921782882718083488">ఈ పేజీ సారాంశం</translation>
 <translation id="7932221068776853847">Leo కి ఈ పేజీ సమగ్ర వచనాన్ని పంపడం ఆపడానికి డిస్కనెక్ట్ చేసి, కొత్త సంభాషణ ప్రారంభించండి</translation>
 <translation id="8743383817154663379">మీ అభ్యర్థనను ప్రాసెస్ చేయడంలో ఏదో తప్పు జరిగింది. దయచేసి మరికొద్ది సమయం తర్వాత ప్రయత్నించండి.</translation>
@@ -2143,7 +2174,7 @@
 <translation id="7127671672828944579">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Qwen 14B, Alibaba Cloud ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Qwen అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Gemma 3 12B, Google DeepMind ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Gemma అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను DeepSeek R1 , DeepSeek ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా ఎనలిటీకల్ పనులకు శక్తినిస్తుంది. DeepSeek R1 అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Instant, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Instant అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">హాయ్, నేను లియోను. నేను Brave సంస్థచే అందించబడిన AI సహాయకుడు. నేను Anthropic రూపొందించిన Claude Instant మోడల్ ఆధారంగా పనిచేస్తాను. Brave Claude Instant‌ను తెలివిగా మా స్వంత సురక్షిత మౌలిక సదుపాయాల ద్వారా హోస్ట్ చేస్తుంది.<ph name="LINK_BEFORE"/>ఇంకా తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Haiku, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Haiku అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Sonnet, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Sonnet అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">ప్రీమియం</translation>
@@ -2156,6 +2187,7 @@
 <translation id="7557539689487606886">గో ప్రీమియమ్</translation>
 <translation id="1691256669639196606">Manage subscription</translation>
 <translation id="3840096463915153852">సంభాషణ చరిత్ర</translation>
+<translation id="6761921176674289184">మెమరీలను నిర్వహించండి</translation>
 <translation id="2304783958703511257">అధునాతన సెట్టింగులు</translation>
 <translation id="3037594989275592390">భాష నమూనాలు</translation>
 <translation id="5543505256451301851">7 రోజులు ఉచితంగా ప్రయత్నించండి</translation>
@@ -2192,6 +2224,24 @@
 <translation id="7488762544858401571">సవరించబడింది</translation>
 <translation id="5604254791550001355">ప్రాంప్ట్‌ను సవరించండి</translation>
 <translation id="8115786586976830777">ప్రాంప్ట్ కాపీ చెయ్యండి</translation>
+<translation id="3666616415490815310">సాధనంగా భద్రపరచండి</translation>
+<translation id="6574544364990812112">నా నైపుణ్యాలు</translation>
+<translation id="6696824203401957025">క్రొత్త నైపుణ్యం</translation>
+<translation id="6410279677882692627">నైపుణ్యాలు మీ [/] టూల్‌లలో కనిపిస్తాయి మరియు మీరు క్రింద సెటప్ చేసిన "/name" ను టైప్ చేసి యాక్సెస్ చేయవచ్చు.</translation>
+<translation id="1344606707744657196">ప్రాంప్ట్‌ కోసం మోడల్</translation>
+<translation id="8458341576712814616">సంక్షిప్తం</translation>
+<translation id="1326559827339317236">మీ సంక్షిప్తాన్ని ఇక్కడ నమోదు చేయండి</translation>
+<translation id="5032574515228824816">ప్రాంప్ట్</translation>
+<translation id="2573797314568446575">మీ ప్రాంప్ట్‌ను ఇక్కడ నమోదు చేయండి</translation>
+<translation id="900733896273558337">నైపుణ్యాన్ని సవరిం</translation>
+<translation id="7662963028545588801">నైపుణ్యాన్ని తొలగించండి</translation>
+<translation id="4209790625997566418">మీరు ఈ నైపుణ్యాన్ని తొలగించాలనుకుంటున్నారా? ఈ చర్యను రివర్స్ చేయలేరు.</translation>
+<translation id="7161540406494327389">సంక్షిప్తం అవసరం</translation>
+<translation id="3722223049736774445">సంక్షిప్తంగా అక్షరాలు, సంఖ్యలు, అండర్స్‌కోర్ మరియు హైఫన్ మాత్రమే ఉండాలి</translation>
+<translation id="6997214168632888867">సంక్షిప్తం గరిష్టంగా 64 అక్షరాలు లేదా తక్కువగా ఉండాలి</translation>
+<translation id="2806891468525657116">సంక్షిప్తం ఇప్పటికే ఉంది</translation>
+<translation id="5497501845974700950">ప్రాంప్ట్ అవసరం</translation>
+<translation id="5642369858603376334">ప్రాంప్ట్ గరిష్టంగా 5000 అక్షరాలకు తక్కువగా ఉండాలి</translation>
 <translation id="1406205536570262057">సమాధానాన్ని సవరించండి</translation>
 <translation id="3386725253392845084">పునః ప్రయత్నించండి అదే మోడల్ తో</translation>
 <translation id="2461822463642141190">ప్రస్తుతము</translation>
@@ -2228,31 +2278,45 @@
 <translation id="5794962229997281366">గురించి మెరుగుపరచబడిన సమాధానం <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> మరిన్ని…</translation>
 <translation id="8103700533980268469">ఈ నోటీస్‌ను మూసివేయండి</translation>
-<translation id="3417835166382867856">టాబ్ లు శోధించండి</translation>
-<translation id="1352836459737874921">ఇతర ట్యాబ్‌ల నుండి కంటెంట్‌ని జత చేయండి</translation>
-<translation id="3028258613451571431">సంభాషణ కోసం లియోకు మరిన్ని సందర్భాన్ని ఇవ్వడానికి మీ బ్రౌజర్ ట్యాబ్‌లు నుండి పేజీ కంటెంట్‌ని పంపండి</translation>
-<translation id="4300920590112551536">బ్రౌజర్ టాబ్లు</translation>
-<translation id="1446346932629101482">పరిస్థితుల కోసం ట్యాబ్ కంటెంట్ జోడించండి. కంటెంట్‌లు లియోకు మీ సందేశాలతో పాటు పంపబడతాయి.</translation>
-<translation id="7193316103691252734">ఏమి సరిపోవడం లేదు ట్యాబ్స్</translation>
+<translation id="3417835166382867856">ట్యాబ్‌లను అన్వేషించండి</translation>
+<translation id="3828029223314399057">బుక్‌మార్క్‌లు శోధించండి</translation>
+<translation id="381480092025168632">బ్రౌజర్ చరిత్ర శోధించండి</translation>
+<translation id="7311244614769792472">ఏ ఫలితాలు కనిపించలేదు</translation>
+<translation id="3112448569149476523">దయచేసి వేరే శోధన ప్రయత్నించండి</translation>
+<translation id="1352836459737874921">మరిన్ని ట్యాబ్‌ల నుండి కంటెంట్ జోడించండి</translation>
+<translation id="7173836072258346701">బుక్‌మార్క్‌ల నుండి కంటెంట్ జోడించండి</translation>
+<translation id="163680814308917875">బ్రౌజర్ చరిత్ర నుండి కంటెంట్ జోడించండి</translation>
+<translation id="7039179822221107025">మీ బ్రౌజర్ ట్యాబ్‌ల నుండి లియోకు ఇంకా ఎక్కువ సందర్భాన్ని ఇవ్వడానికి పేజీ కంటెంట్ పంపండి.</translation>
+<translation id="1602382615168212961">ఒక సంభాషణకు మరింత సందర్భాన్ని అందించేందుకు లియోకు బుక్‌మార్క్ ట్యాబ్‌లలోని పేజీ కంటెంట్‌ను పంపండి.</translation>
+<translation id="4808122506413075135">ఒక సంభాషణకు మరింత సందర్భాన్ని ఇవ్వడానికి లియోకు మీ బ్రౌజర్ చరిత్ర నుండి పేజీ కంటెంట్ పంపండి.</translation>
+<translation id="220541218939267992">మీ సందేశాలతో పాటు పేజీ విషయాలు లియోకు పంపబడతాయి.</translation>
+<translation id="8164365899016970783">సందర్శన కొరకు ట్యాబ్లు మరియు బుక్‌మార్క్ కంటెంట్‌లను జోడించండి. ఈ కంటెంట్‌లు మీ సందేశాలతో పాటు లియోకు పంపబడతాయి.</translation>
+<translation id="6237410387937453423">గమ్యమైన అటాచ్మెంట్‌లు లేవు</translation>
+<translation id="8076492880354921740">ట్యాబ్‌లు</translation>
 <translation id="2315654674554095762">లియో ఇప్పుడు మీ సంభాషణలను గుర్తుంచుకోగలడు కాబట్టి మీరు వాటిని తిరిగి వెళ్లవచ్చు. అవి మీ పరికరంలో шరి保ింతం  భద్ర సంకేతికానికి నిల్వ చేయబడతాయి మరియు మీరు ఎప్పుడైనా వాటిని తొలగించవచ్చు.</translation>
 <translation id="7821251979960635244">మీ సంభాషణ చరిత్ర మీ మాటల చరిత్రను ప్రారంభించినప్పుడు ఇక్కడ కనిపిస్తుంది.</translation>
 <translation id="887511360213807449">చరిత్ర నిలిపేవుగా ఉంది</translation>
 <translation id="5380979378058584412">లియోతో, కాబట్టి మీరు చూడటానికి ఆసక్తి ఉన్నట్లయితే, మీరు చర్చ చరిత్రను ప్రారంభించాల్సి ఉంటుంది.</translation>
-<translation id="6291843235651817590">సాధారణ బాధ్యత ముఖార్పడూతానే.</translation>
+<translation id="7348809809749151120">వేగవంతమైనది • శోధన</translation>
 <translation id="3185367320601718531">పాట లిఖ నేక్క - కలం మీద</translation>
-<translation id="7979673624064378842">తంత్ర తెలివితేటలు మరియు ధైర్యశీలిగావుండడానికి తేలిక</translation>
-<translation id="2836330653441111204">టీమ్ సమతుల్య తిరుపతి</translation>
-<translation id="6695329447007213917">సాధారణ ప్రయోజన చాట్, కోడింగ్, మరియు మరింత</translation>
-<translation id="7168072214482631597">సామాన్య పాఠ్య మరియు చిత్రాల అర్థం చేసుకోవటం</translation>
-<translation id="7226508434216060960">రీజనింగ్ మోడల్</translation>
+<translation id="2793458212460902934">వేగవంతమైనది • శోధన • సాధనాలు</translation>
+<translation id="8506027496671575183">శోధన • దృష్టి • సాధనాలు</translation>
+<translation id="3213834013136637671">శోధన • దృష్టి</translation>
+<translation id="7697693533305615127">శోధన • ఆలోచన</translation>
 <translation id="8782867266498869301">ఉత్తమమైనది టాస్క్ కోసం ప్రధానంగా డైనమిక్ గా మోడల్ మారుతుంది</translation>
 <translation id="3965507912994218570">లియో సెట్టింగ్స్</translation>
-<translation id="1037324977127422019">హాయ్, నేనూ లియో!</translation>
-<translation id="8930348081963284873">పట మాధ్యమ సంబంధించిన ఉపకరణాల సముపార్జకులకు గుర్తుపంచుతీరిన ఒక బ్లేగా.</translation>
-<translation id="1558192229187362674">నేను వర్థమాన వ్యాసాలు జోడించగలనని మరియు సోధన వివరణలో బహుభయాంగా పునాదియన్ చేయగల, مکمل.</translation>
-<translation id="861953757568623294">నేను విస్తృతం పరిథిలో వివిధ నిర్దేశాలు చేయగలనని మరియు మీరు ఒక వ్యాసం పోల్చుకుంటి ఇంకా కనుక్కొటంతో, వివరణలో కారణంగా.</translation>
-<translation id="5642775487085641191">చర్చు.</translation>
-<translation id="8857222718794549840">మీరు ఎలాంటి విషయం తో సరస్సులు చేయండి కావ్యత్యాలలో ఉంటుంది. నేనే మీకు ఇవ్వబడే ఒకటని చెప్పగలను.</translation>
+<translation id="3754337604877048671">Leo AI పరిచయ కార్యక్రమం</translation>
+<translation id="5295261408976371809">మీ <ph name="TEXT_BEFORE"/>ప్రైవేట్<ph name="TEXT_AFTER"/> AI సహాయకుడు, నేరుగా బ్రౌజర్‌లో నిర్మించబడ్డది.</translation>
+<translation id="7452913484571004528">వాస్తవంగా గోప్యమైన AI</translation>
+<translation id="8525501048785085223">లియో చాట్‌లను నిల్వ చేయదు లేదా పంచకునేరు, లేదా మోడల్ శిక్షణ కోసం వాటిని ఉపయోగించబడదు. ఖాతా అవసరం లేదు మరియూ లాగిన్ అవసరం లేదు. యథేచ్ఛగా తెరిచి చాట్ చేయండి. పూర్తి గోప్యతతో.</translation>
+<translation id="6401201054391523929">మీ ట్యాబ్స్ మరియు ఫైళ్లతో చాట్ చేయండి</translation>
+<translation id="8522038408130089105">మీరు సందర్శిస్తున్న వెబ్‌సైట్‌ల గురించి మరింత తెలుసుకోవలసిన అవసరమా? వాటిని చాట్‌లో జోడించండి. వేగవంతమైన, సంబంధిత సమాధానాల కోసం మీ ట్యాబ్‌లు మరియు లోకల్ ఫైళ్లను అటాచ్ చేయండి.</translation>
+<translation id="3844955602461425647">తలిస్తే బోదును ఆటోమేట్ చేయండి</translation>
+<translation id="2196247864500723577">మీ సహాయకుడిగా Brave‌ను ఉపయోగించి మీరు బ్రౌజర్‌లో చేసే ప్రతిదానిపై పని చేయండి. నావి పనులను వదిలించండి, ముఖ్యమైన వాటికి మీ సమయాన్ని నిల్వ చేయండి.</translation>
+<translation id="235457946228076038">మీ మోడల్‌ను తెచ్చుకోండి</translation>
+<translation id="7024005267156189454">మీ స్వంత AI మోడళ్లను లొకల్ గా లేదా రిమోట్ గా కనెక్ట్ చేయండి. లియో నడవడిని, అవుట్‌పుట్లను, మరియు సామర్థ్యాలను మీ ఇష్టానికి అనుగుణించండి.</translation>
+<translation id="7291578285403921288">Leo AI గురించి మరింత తెలుసుకోండి</translation>
+<translation id="9051226419897869406">బ్రేవ్ లియోతో నాయిటి చాట్</translation>
 <translation id="2414904697165579184">ట్యాబ్(ల) కంటెంట్‌ల ఆధారంగా సమాధానాలను ఆకారంలోకి తెచ్చుకోండి</translation>
 <translation id="8258324391302611485">ఈ పేజీ యొక్క కంటెంట్ మీ సందేశాలతో పాటు లియోకు పంపబడుతుంది.</translation>
 <translation id="318819763888864209">ప్రతి సబ్ మరియు ప్రతి ముందే అభ్యంతరాలతో సమర్పణ తీయగలదు.</translation>
@@ -2260,6 +2324,7 @@
 <translation id="8732450785281947197">Leo AI టూల్స్</translation>
 <translation id="6535533770697728087">త్వరిత చర్యలు</translation>
 <translation id="3237710083340813756">మళ్లీ రాయండి</translation>
+<translation id="1223498995510244364">Summarize</translation>
 <translation id="1252805982772190086">చిన్న పోస్ట్</translation>
 <translation id="2087555497198267113">చిరకాల పోస్ట్</translation>
 <translation id="4170307327863874820">బ్లాగు పోస్ట్</translation>
@@ -2286,7 +2351,9 @@
 <translation id="4250229828105606438">స్క్రీన్‌షాట్</translation>
 <translation id="7949596341600215809">పూర్తి పేజీ స్క్రీన్‌షాట్</translation>
 <translation id="6332876390231524389">ప్రస్తుత టాబ్ కంటెంట్</translation>
-<translation id="7742969455167760092">ఓపెన్ ట్యాబ్‌లు...</translation>
+<translation id="6397861830483632092">ఓపెన్ ట్యాబ్‌లు…</translation>
+<translation id="802080272588201037">బుక్‌మార్క్‌లు…</translation>
+<translation id="2716127283451902393">చరిత్ర…</translation>
 <translation id="49269513399674318">మైక్రోఫోన్ ఉపయోగించు</translation>
 <translation id="3895031624234442305">కస్టమ్ మోడల్స్</translation>
 <translation id="4572010449071015143">కొత్త సంభాషణ ప్రారంభించు</translation>
@@ -2298,6 +2365,22 @@
 <translation id="2593275000606533518">అన్నింటిని నిర్వహించండి</translation>
 <translation id="8410199626695516952">సరే, నేను దాన్ని జ్ఞాపకం ఉంచను</translation>
 <translation id="8419849467765474535">జ్ఞాపక మార్పిడిలో విఫలమైంది. దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="5517580030864973329">వెబ్‌పేజీని ఓ కొత్త చిరునామాకు మారుస్తోంది</translation>
+<translation id="8832457834975923266">వెబ్‌పేజీని <ph name="URL"/> కు మారారు</translation>
+<translation id="5095252080770652994">ప్రమోషన్</translation>
+<translation id="8332385567036775056">దశలు</translation>
+<translation id="4521931942079977149">పేజీపై క్లిక్ చేస్తోంది</translation>
+<translation id="7732267913911704962">పేజీపై లాగుతూ విడిచింది</translation>
+<translation id="7703800915509570212">వెనక్కి నావిగేట్ చేస్తోంది</translation>
+<translation id="4875586490950981498">ముందుకు నావిగేట్ చేస్తోంది</translation>
+<translation id="738881387603843066">మౌస్‌ను కదుపుతోంది</translation>
+<translation id="4850669014075537160">స్క్రోల్ చేస్తోంది</translation>
+<translation id="1265072406500460724">డ్రాప్డౌన్ నుండి ఎంపిక చేస్తోంది</translation>
+<translation id="7573920298077917439">అక్షరాలను టైప్ చేస్తోంది</translation>
+<translation id="4089034800311309656">పేజీకి వేచిచూస్తోంది</translation>
+<translation id="4798146464408730445">నైపుణ్యాలు కనుగొనబడలేదు. "క్రొత్తది" బటన్‌ను నొక్కి కొత్త నైపుణ్యం సృష్టించండి.</translation>
+<translation id="271033894570825754">క్రొత్తది</translation>
+<translation id="8266605059880650542">ఈ పేజీ గురించి సమాచారం నోట్లు తీసుకుంటోంది</translation>
 <translation id="3486480638399578250">మీ వ్యక్తిగత ఇమెయిల్ చిరునామాను అభిప్రాయం వద్ద ఉంచండి</translation>
 <translation id="7765422154906712751">మీ అనువర్తనం ఇమెయిల్కు దారితీసే ప్రత్యేక, యాదృచ్ఛిక చిరునామాలను సృష్టించండి మరియు ఎప్పుడైనా చెరిపేయవచ్చు. మీ అసలు ఇమెయిల్ చిరునామా ప్రకటనదారులచే ప్రదర్శించబడటానికి లేదా ఉపయోగించబడటానికి నివారించండి.</translation>
 <translation id="5222676887888702881">సైన్ అవుట్</translation>
@@ -2343,6 +2426,10 @@
 <translation id="7508412964869396375">బ్రేవ్ ఖాతా సేవ నుండి ధృవీకరణ టోకెన్ అందలేదు</translation>
 <translation id="3179527991526213624">బ్రేవ్ ఖాతా సేవ నుండి స్పందనం లేదు</translation>
 <translation id="7911439408853154309">మెయిల్ ధృవీకరణ విఫలమైంది</translation>
+<translation id="2595463802839066496">ఈమెయిల్ అలియాస్‌లు సేవ నుండి స్పందన లేదు</translation>
+<translation id="367191282389216837">ఈమెయిల్ అలియాస్‌లు సేవ నుండి చెల్లని స్పందన</translation>
+<translation id="7203490731644771170">ఈమెయిల్ అలియాస్‌లు సేవ లోపం: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">లోపం: అలియాస్ అందుబాటులో లేదు</translation>
 <translation id="8370801182970639038">ఆటోమేటిక్ (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">ఏనబుల్ చేసిన సెర్చ్ ఇంజిన్లు</translation>
 <translation id="8285901519864208412">రివార్డ్స్ కార్డ్ విడిచిపెట్టండి</translation>
@@ -2388,10 +2475,19 @@
 <translation id="8458987127502506209">Brave Shields ప్రారంభించు</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>ఈ సైట్ కోసం షీల్డ్స్ UP <ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>ఈ సైట్ కోసం షీల్డ్స్ DOWN <ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">ఈ సైట్ సరిగా పనిచేయడం లేదనిపిస్తే, Shields డౌన్ ప్రయత్నించండి. 
-<ph name="NOTE_BEFORE"/>
-గమనిక: ఇది Brave యొక్క ప్రైవసీ పరిరక్షణలను తగ్గిస్తుంది.
-<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">ఈ సైట్ చెడు చూపనిపిస్తే, షీల్డ్స్‌ను డౌన్‌ చేయడం ప్రయత్నించండి.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>గమనిక: ఇది బ్రేవ్ యొక్క గోప్యతా పరిరక్షణలను తగ్గిస్తుందని గమనించండి.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">మీకు ఈ సైట్‌తో సమస్యలు ఎదురవుతున్నాయా?</translation>
+<translation id="9176447766421988172">మేము సైట్ అనుకూలతను మెరుగుపరచడానికి ఒక ప్రయోగం నిర్వహిస్తున్నాం, ఇందులో యాడ్ బ్లాకింగ్ మాత్రమే ప్రారంభిస్తుంది. హెచ్చరిక: ఇది అన్ని గోప్యతా రక్షణలను తొలగిస్తుంది. మీరు దీనిని ప్రయత్నించాలనుకుంటున్నారా? <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">బ్రేవ్ యొక్క గోప్యతా పరిరక్షణల వల్ల చెడిపోయిన వ్యక్తిగత వెబ్‌సైట్‌లకు, మీరు షీల్డ్స్‌ను డౌన్‌గా సెట్ చేయవచ్చు.</translation>
+<translation id="1836572675775891780">యాడ్ బ్లాక్ మాత్రమే మోడ్‌ను ప్రారంభించండి</translation>
+<translation id="6623668214089604469">సైట్ ఇప్పుడు సరిగానే పనిచేస్తుందా?</translation>
+<translation id="8978860854770042258">ఈ సైట్ ఇంకా చెడిపోయి ఉంటే, దయచేసి నివేదిక సమర్పించాలని పరిగణించండి.</translation>
+<translation id="4677356505199464553">చక్కగా ఉంది</translation>
+<translation id="1992750560347846445">సైట్ ని నివేదించు</translation>
+<translation id="2887186586339544116">యాడ్ బ్లాక్ మాత్రమే మోడ్ ప్రారంభించబడింది</translation>
+<translation id="673665019618844072">మీరు ప్రస్తుతం యాడ్ బ్లాకింగ్ మాత్రమే మోడ్‌ను ఉపయోగిస్తున్నారు. ఈ మోడ్ కేవలం యాడ్ బ్లాకింగ్ రక్షణనే అందిస్తుంది. మీరు పూర్ణ షీల్డ్స్ మోడ్‌కు తిరిగి రావాలనుకుంటే, ఈ మోడ్‌ను సెట్టింగ్స్ నుండి అచేతనం చేయండి.</translation>
+<translation id="4820891023903368625">యాడ్స్ బ్లాక్ చేయబడ్డాయి <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ట్రాకర్లను, యాడ్లను మరియు మరిన్నింటిని బ్లాక్ చేసింది <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Shields ద్వారా రక్షించబడలేదు <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">అధునాతన నియంత్రణలు</translation>
@@ -2425,7 +2521,6 @@
 <translation id="8034285923190068220">ఫింగర్‌ప్రింటింగ్ అనుమతించు</translation>
 <translation id="7638541189782135885">HTTP కనెక్షన్లను అప్గ్రేడ్ చేయవద్దు</translation>
 <translation id="2570787596946026998">కేవలం HTTPS తో కనెక్ట్ అవ్వండి</translation>
-<translation id="1992750560347846445">సైట్ ని నివేదించు</translation>
 <translation id="2387532482048804818">Shields పై ఉన్నప్పుడు సైట్ సరిగా పనిచేయకపోతే మాకు తెలియజేయండి.</translation>
 <translation id="3795015906457257780">మీరు ఈ సైట్‌ను Brave యొక్క ప్రైవసీ పరిరక్షణలతో వీక్షిస్తున్నారు.</translation>
 <translation id="7194012750329511146">Brave Shields
@@ -2437,6 +2532,10 @@
 <translation id="1905384713982899903">బ్లాక్ చేయబడిన ఫింగర్ప్రింట్లు</translation>
 <translation id="314364527871618241">అనుమతించబడిన ఫింగర్ప్రింట్లు</translation>
 <translation id="2808175374672429053">బ్రేవ్ షీల్డ్స్ కోసం వైల్డ్‌కార్డ్స్ అనుమతించబడరు.</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {బ్రేవ్ షీల్డ్స్ <ph name="SITE_URL"/> పై 1 ట్రాకర్‌ను బ్లాక్ చేసింది}
+      other {బ్రేవ్ షీల్డ్స్ <ph name="SITE_URL"/> పై {BLOCKED_COUNT} ట్రాకర్లను బ్లాక్ చేసింది}
+    }</translation>
 <translation id="2540598191934725677">బ్రేవ్ షీల్డ్స్‌ను వీక్షించడానికి బ్రేవ్ ఐకాన్‌పై క్లిక్ చేయండి.</translation>
 <translation id="6294662480095808915">గోప్యతా. డిఫాల్ట్ ద్వారా.</translation>
 <translation id="4366423156486478559">మీరు క్లిక్ చేసే ప్రతి లింక్‌పై బ్రేవ్ పరిరక్షణ పొందండి. కేవలం బ్రేవ్‌ని డిఫాల్ట్‌గా సెట్ చేయండి మరియు బ్రౌజ్ చేయండి. గోప్యంగా.</translation>
@@ -2465,12 +2564,13 @@
 <translation id="6764845498618413165">మరింత తెలుసుకోండి.</translation>
 <translation id="7818938154803162778">సరే, సహాయం చేస్తాను</translation>
 <translation id="7207456302801184289">Braveకు స్వాగతం</translation>
-<translation id="6716580298071890302">ఇంకా ఎక్కువ  థీమ్ ఉపయోగించండి</translation>
+<translation id="293854220404217065">మిధ్నైట్ థీమ్</translation>
 <translation id="2422927186524098759">సైడ్బార్</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">వీడియో మార్గదర్శిని</translation>
 <translation id="8000020256436988724">వేధిక</translation>
 <translation id="6225572914528673855">చిరునామా ప‌ట్టిక</translation>
+<translation id="6821966107067356137">RSS ఫీడ్‌ను జోడించండి</translation>
 <translation id="8293206222192510085">బుక్‌మార్క్ చేర్చండి</translation>
 <translation id="7758460733045216901">ఇష్టాల పన‌లం</translation>
 <translation id="958268166261124668">Brave VPN: Connected</translation>
@@ -2479,6 +2579,7 @@
 <translation id="2325196879156848326">కనెక్షన్ విఫలమైంది</translation>
 <translation id="745054660363064771">సర్వర్‌కు కనెక్ట్ అవ్వలేకపోతున్నాము</translation>
 <translation id="3936826714240735937">మరొక సర్వర్ ఎంచుకోండి</translation>
+<translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> <ph name="REGION_NAME"/> సర్వర్‌కు కనెక్ట్ కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి లేదా మరో దేశాన్ని ఎంచుకోండి.</translation>
 <translation id="5753795690521538679">7-రోజుల ఉచిత ట్రయల్ ప్రారంభించండి</translation>
 <translation id="3357036723290257445">Brave VPN ని ఇప్పటికే కొనుగోలు చేశారా?</translation>
 <translation id="8652175077544655965">సెట్టింగ్స్‌ను మూసివేయి</translation>
@@ -2504,6 +2605,7 @@
 <translation id="6527596624419285047">అందుబాటులో ఉన్న ఉత్తమ సర్వర్ వాడండి</translation>
 <translation id="8463313539532697053">లోడ్ అవుతున్న సమయంలో ఒక క్షణం…</translation>
 <translation id="2542131205769293399">మీ కొనుగోలు స్థితిని తనిఖీ చేయడం సాధ్యం కాలేదు. ఇది నెట్‌వర్క్ సమస్య కావచ్చు. మళ్లీ ప్రయత్నించండి లేదా సపోర్ట్‌ను సంప్రదించండి.</translation>
+<translation id="4613076894734402086">చెల్లింపు పద్ధతి సవరించండి</translation>
 <translation id="427718751211990320">నమ్మకపూజ్యతా తేదీ గడువు ముగిసింది.</translation>
 <translation id="3323234188356372126">Brave VPN వెరిఫై చేసుకునేందుకు సమస్యలు ఎదుర్కొంటుంది. దయచేసి సపోర్ట్‌ను సంప్రదించండి లేదా తరువాత మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="8670619630771851260">నమ్మకపూజ్యాలను లోడ్ చేయడం సాధ్యం కాలేదు.</translation>

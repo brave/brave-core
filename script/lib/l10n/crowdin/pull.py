@@ -229,16 +229,16 @@ def check_plural_string_formatting(grd_string_content, translation_content):
                          r"(\s*(few)\s*{(.*)})?"
                          r"(\s*(many)\s*{(.*)})?"
                          r"(\s*other\s*{(.*)})?"
-                         r"\s*}\s*")
+                         r"\s*}\s*$")
     if pattern.match(grd_string_content) is not None:
         if pattern.match(translation_content) is None:
             error = ('Translation of plural string:\n'
                      '-----------\n'
-                     f"{grd_string_content.encode('utf-8')}\n"
+                     f"{grd_string_content}\n"
                      '-----------\n'
                      'does not match:\n'
                      '-----------\n'
-                     f"{translation_content.encode('utf-8')}\n"
+                     f"{translation_content}\n"
                      '-----------\n')
             raise ValueError(error)
     else:
@@ -247,7 +247,7 @@ def check_plural_string_formatting(grd_string_content, translation_content):
         if leading_pattern.match(grd_string_content) is not None:
             error = ('Uncaught plural pattern:\n'
                      '-----------\n'
-                     f"{grd_string_content.encode('utf-8')}\n"
+                     f"{grd_string_content}\n"
                      '-----------\n')
             raise ValueError(error)
 

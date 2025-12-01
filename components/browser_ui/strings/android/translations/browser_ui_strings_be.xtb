@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Дапамажыце нам палепшыць Brave – раскажыце, чаму вы дазволілі староннія файлы cookie. <ph name="BEGIN_LINK"/>Адправіць водгук<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Вы можаце запытаць паказ версій сайтаў для камп’ютараў</translation>
 <translation id="9183227624343766158">Выкарыстоўвайце Brave стандартна</translation>
+<translation id="113098737392899175">Ажыццяўляць навігацыю па старонках з дапамогай тэкставага курсора, калі клавіятура падключана</translation>
 <translation id="1178015372320901893">Ніжні аркуш "Мае хуткія каманды"</translation>
 <translation id="1178581264944972037">Прыпыніць</translation>
 <translation id="1181037720776840403">Выдаліць</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Працягнуць</translation>
 <translation id="904887679952026733">Калі Brave выкарыстоўвае цёмную тэму, прымяняць яе да сайтаў (калі гэта магчыма)</translation>
 <translation id="2390272837142897736">Павялічыць маштаб</translation>
+<translation id="2397689164757137845">Дазволена • Дакладнае</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> МБ</translation>
 <translation id="2403474027143565107">Дакладнае</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Дазволены <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> і яшчэ <ph name="NUM_MORE"/>}one{Дазволены <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> і яшчэ <ph name="NUM_MORE"/>}few{Дазволены <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> і яшчэ <ph name="NUM_MORE"/>}many{Дазволены <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> і яшчэ <ph name="NUM_MORE"/>}other{Дазволены <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> і яшчэ <ph name="NUM_MORE"/>}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Даведка і водгукі</translation>
 <translation id="2501278716633472235">Назад</translation>
 <translation id="2533138527374486328">Калі гэта налада ўключана, сайты могуць запытваць дазвол на падключэнне да прылад у вашай лакальнай сетцы. Калі выключана, сайты не могуць падключацца да прылад у лакальнай сетцы.</translation>
+<translation id="2536779053640817375">Дазволена гэтым разам • Дакладнае</translation>
 <translation id="2544997614631598250">Колер тэмы: цёмны</translation>
 <translation id="2546283357679194313">Файлы сookie і даныя сайтаў</translation>
 <translation id="2570922361219980984">Доступ да месцазнаходжання для гэтай прылады таксама выключаны. Уключыце яго ў <ph name="BEGIN_LINK"/>Наладах Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">Заблакіравана на некаторых сайтах</translation>
 <translation id="3132996321662585180">Абнаўляць штодзень</translation>
 <translation id="3143754809889689516">Прайграць з пачатку</translation>
+<translation id="3164169438034704658">Дакладнае месцазнаходжанне можна ўключыць у <ph name="BEGIN_LINK"/>наладах Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Дазвольце сайту выкарыстоўваць староннія файлы cookie</translation>
 <translation id="3167868116600277716">Стужка рэкамендацый</translation>
 <translation id="3198916472715691905">Аб’ём захаваных даных: <ph name="STORAGE_AMOUNT"/></translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Сягоння Brave зноў абмяжуе выкарыстанне файлаў cookie</translation>
 <translation id="4338831206024587507">Усе сайты дамена <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Не дазваляць сайтам адпраўляць апавяшчэнні</translation>
+<translation id="4341577178275615435">Каб уключыць або выключыць навігацыю клавішамі, выкарыстоўвайце клавішу F7.</translation>
 <translation id="4402755511846832236">Не даваць сайтам знаць, калі вы карыстаецеся гэтай прыладай</translation>
 <translation id="8382883799082236806">Ніжні аркуш "Колеры Brave" адкрыты на палову экрана</translation>
 <translation id="4412992751769744546">Дазволіць староннія файлы cookie</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">Прыпыніць відэа</translation>
 <translation id="5877248419911025165">Згортваць усе запыты</translation>
 <translation id="5878945009165002849">Блакіраваць запыты на ўваход ад сэрвісаў ідэнтыфікацыі</translation>
+<translation id="588258955323874662">Поўнаэкранны рэжым</translation>
 <translation id="5884085660368669834">Выбар у дачыненні да сайта</translation>
 <translation id="5887687176710214216">Апошняе наведванне: учора</translation>
 <translation id="5908617755156109052">Не дазваляць сайтам ствараць 3D-карту вашага асяроддзя або адсочваць становішча камеры</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">ОК</translation>
 <translation id="6980861169612950611">Выдаліць даныя сайтаў? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Спец. магчымасці</translation>
+<translation id="6991142177939282156">Дазволена • Выкарыстоўваецца прыблізнае месцазнаходжанне</translation>
 <translation id="6992289844737586249">Пытацца, перш чым дазволіць сайтам выкарыстоўваць мікрафон (рэкамендуецца)</translation>
 <translation id="7000754031042624318">Выключана ў наладах Android</translation>
 <translation id="8683151724374457021">Гэты сайт вызначае, што вам падабаецца, а затым на падставе гэтых звестак прапануе рэкламу іншым сайтам. Акрамя таго, ён выкарыстоўвае тэмы рэкламы з Brave, каб паказваць вам больш рэлевантныя аб’явы.</translation>
+<translation id="7036823721811529709">Слухаць у фонавым рэжыме</translation>
 <translation id="7044081119134178347">Гэтым разам доступ да камеры дазволены</translation>
 <translation id="7053983685419859001">Заблакіраваць</translation>
 <translation id="7055552182600664515">Каб прайграваць змесціва, абароненае аўтарскім правам, сайтам можа спатрэбіцца выкарыстаць сэрвіс для абароны змесціва. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">Вашы персанальныя даныя пры гэтым не раскрываюцца, а сайты не маюць доступу да вашай гісторыі прагляду сайтаў, хаця могуць дзяліцца невялікім аб’ёмам інфармацыі ў рамках праверкі</translation>
 <translation id="7409735910987429903">Сайты могуць паказваць усплывальныя вокны з рэкламай або ажыццяўляць перанакіраванне на вэб-сайты, якія вы можаце лічыць непажаданымі</translation>
 <translation id="7412160840120117304">Асноўны колер (шаснаццатковы код)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Маштаб}one{Маштаб: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}few{Маштаб: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}many{Маштаб: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{Маштаб: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Спачатку запытваць</translation>
 <translation id="7423538860840206698">Чытанне буфера абмену заблакіравана</translation>
 <translation id="7425915948813553151">Цёмная тэма для сайтаў</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">Выдаліць</translation>
 <translation id="8284326494547611709">Субцітры</translation>
 <translation id="8300705686683892304">Пад кіраваннем праграмы</translation>
+<translation id="8301363963630676147">Гэтым разам дазволена • Выкарыстоўваецца прыблізнае месцазнаходжанне</translation>
 <translation id="8315509175050791576">Ідзе абагульванне ўкладкі</translation>
 <translation id="8324158725704657629">Больш не пытацца</translation>
 <translation id="8362795839483915693">Вы можаце павялічваць або памяншаць маштаб на сайтах, якія наведваеце</translation>
