@@ -1099,3 +1099,12 @@
 -keep class org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarStatePredictor {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.SwipeRefreshHandler {
+    protected <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.BraveSwipeRefreshHandler {
+    <init>(...);
+    *** mIgnorePullToRefresh;
+}

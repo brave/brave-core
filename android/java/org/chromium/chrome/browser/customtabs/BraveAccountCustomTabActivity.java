@@ -27,7 +27,10 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.IntentUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveSwipeRefreshHandler;
 import org.chromium.chrome.browser.IntentHandler;
+import org.chromium.chrome.browser.SwipeRefreshHandler;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.util.ColorUtils;
 
@@ -38,6 +41,14 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
     @Override
     public void performPostInflationStartup() {
         super.performPostInflationStartup();
+
+        Tab tab = getActivityTab();
+        assert tab != null;
+        // Due to bytecode manipulation, SwipeRefreshHandler instances
+        // are actually BraveSwipeRefreshHandler at runtime.
+        BraveSwipeRefreshHandler handler = (BraveSwipeRefreshHandler) SwipeRefreshHandler.get(tab);
+        assert handler != null;
+        handler.setIgnorePullToRefresh(true);
 
         // Hide the toolbar container
         View toolbarContainer = findViewById(R.id.toolbar_container);
