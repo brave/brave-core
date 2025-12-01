@@ -1,0 +1,41 @@
+diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
+index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..98c6eb91d675873a794681ed6c5e6bea2cae021b 100644
+--- a/chrome/installer/linux/common/installer.py
++++ b/chrome/installer/linux/common/installer.py
+@@ -63,20 +63,22 @@ def normalize_channel(channel):
+     if channel == "stable":
+         return (
+             "stable",
+-            "https://chromereleases.googleblog.com/search/label/Stable%20updates",
++            "https://brave.com/latest/",
+         )
+     elif channel in ["beta", "testing"]:
+         return (
+             "beta",
+-            "https://chromereleases.googleblog.com/search/label/Beta%20updates",
++            "https://brave.com/latest/",
+         )
+     elif channel in ["dev", "unstable", "alpha"]:
+         return (
+-            "unstable",
+-            "https://chromereleases.googleblog.com/search/label/Dev%20updates",
++            "dev",
++            "https://brave.com/latest/",
+         )
+     elif channel == "canary":
+         return "canary", "N/A"
++    elif channel == "nightly":
++        return "nightly", "https://brave.com/latest/"
+     else:
+         print(
+             f"ERROR: '{channel}' is not a valid channel type.", file=sys.stderr)
+@@ -111,6 +113,9 @@ def gen_changelog(context, staging_dir, deb_changelog):
+     gzlog_dir = (
+         staging_dir /
+         f"usr/share/doc/{context['PACKAGE']}-{context['CHANNEL']}")
++    if context['CHANNEL'] == "stable":
++        gzlog_dir = (staging_dir / f"usr/share/doc/{context['PACKAGE']}")
++
+     gzlog_dir.mkdir(parents=True, exist_ok=True)
+     gzlog = gzlog_dir / "changelog.gz"
+ 
