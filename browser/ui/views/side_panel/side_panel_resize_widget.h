@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_
 
 #include <memory>
 
@@ -23,7 +23,7 @@ class Widget;
 
 // Transparent widget that includes resize area only on side panel.
 // Need widget to get proper event on the webview of side panel.
-// BraveSidePanel owns this widget.
+// Brave's SidePanel owns this widget.
 class SidePanelResizeWidget : public views::ViewObserver,
                               public views::WidgetDelegate {
  public:
@@ -48,4 +48,4 @@ class SidePanelResizeWidget : public views::ViewObserver,
       observations_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_
