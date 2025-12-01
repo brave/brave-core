@@ -11,8 +11,12 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 
 namespace brave_wallet {
+
+inline constexpr uint32_t kCardanoTxHashSize = 32u;
 
 // Wrapper class for Cardano transaction decoding functionality
 // This class provides a C++ interface to the Rust cardano_tx_decoder
@@ -27,8 +31,8 @@ class CardanoTxDecoder {
     SerializableTxInput& operator=(SerializableTxInput&&);
     ~SerializableTxInput();
 
-    std::array<uint8_t, 32u> tx_hash = {};
-    uint32_t index = 0;
+    std::array<uint8_t, kCardanoTxHashSize> tx_hash = {};
+    base::StrictNumeric<uint32_t> index = 0u;
   };
 
   struct SerializableTxOutput {
@@ -40,7 +44,7 @@ class CardanoTxDecoder {
     ~SerializableTxOutput();
 
     std::vector<uint8_t> address_bytes;
-    uint64_t amount = 0;
+    base::StrictNumeric<uint64_t> amount = 0u;
   };
 
   struct SerializableTxBody {
@@ -53,6 +57,8 @@ class CardanoTxDecoder {
 
     std::vector<SerializableTxInput> inputs;
     std::vector<SerializableTxOutput> outputs;
+    base::StrictNumeric<uint64_t> fee = 0u;
+    std::optional<base::StrictNumeric<uint64_t>> ttl;
   };
 
   struct SerializableVkeyWitness {
@@ -63,8 +69,8 @@ class CardanoTxDecoder {
     SerializableVkeyWitness(SerializableVkeyWitness&&);
     SerializableVkeyWitness& operator=(SerializableVkeyWitness&&);
 
-    std::array<uint8_t, 64u> signature_bytes;
-    std::array<uint8_t, 32u> public_key;
+    std::array<uint8_t, kEd25519SignatureSize> signature_bytes = {};
+    std::array<uint8_t, kEd25519PublicKeySize> public_key = {};
   };
 
   struct SerializableTxWitness {
@@ -87,6 +93,7 @@ class CardanoTxDecoder {
     SerializableTx& operator=(SerializableTx&&);
 
     SerializableTxBody tx_body;
+    SerializableTxWitness tx_witness;
   };
 
   struct DecodedTx {
@@ -102,6 +109,15 @@ class CardanoTxDecoder {
 
   CardanoTxDecoder();
   ~CardanoTxDecoder();
+
+  static void SetUseSetTagForTesting(bool enable);
+
+  static std::optional<std::vector<uint8_t>> EncodeTransaction(
+      const SerializableTx& tx);
+  static std::optional<std::vector<uint8_t>> EncodeTransactionOutput(
+      const SerializableTxOutput& output);
+  static std::optional<std::array<uint8_t, kCardanoTxHashSize>>
+  GetTransactionHash(const SerializableTx& tx);
 
   static std::optional<DecodedTx> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);

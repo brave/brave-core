@@ -114,9 +114,11 @@ TEST(CardanoTransaction, Value) {
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness1;
-  witness1.witness_bytes = {};
+  witness1.public_key.fill(2);
+  witness1.signature.fill(1);
   CardanoTransaction::TxWitness witness2;
-  witness2.witness_bytes = {1};
+  witness2.public_key.fill(4);
+  witness2.signature.fill(3);
   tx.SetWitnesses({witness1, witness2});
 
   tx.set_to(*CardanoAddress::FromString(kAddress1));

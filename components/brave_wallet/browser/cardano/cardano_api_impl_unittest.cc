@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/span_writer.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -1298,7 +1297,7 @@ TEST_F(CardanoApiImplTest, SignTx_Declined) {
   SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
 
   auto unsigned_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1345,9 +1344,10 @@ TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
 
   // Add an external witness.
   CardanoTransaction::TxWitness external_witness;
-  external_witness.witness_bytes.fill(1);
+  external_witness.public_key.fill(2);
+  external_witness.signature.fill(1);
 
-  auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+  auto tx_bytes = *CardanoTransactionSerializer().SerializeTransaction(tx);
 
   {
     auto sign_result =
@@ -1356,11 +1356,8 @@ TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
             mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
             tx_bytes);
 
-    CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-    span_writer.Write(sign_result->pubkey);
-    span_writer.Write(sign_result->signature);
-    tx.AddWitness(std::move(witness));
+    tx.AddWitness(CardanoTransaction::TxWitness(sign_result->pubkey,
+                                                sign_result->signature));
   }
 
   TestFuture<const std::optional<std::string>&,
@@ -1394,9 +1391,9 @@ TEST_F(CardanoApiImplTest, SignTx) {
   SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
 
   auto unsigned_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
-  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
+  auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1417,14 +1414,11 @@ TEST_F(CardanoApiImplTest, SignTx) {
 
   CardanoTransaction signed_tx = unsigned_tx;
   for (const auto& sign_result : sign_results) {
-    CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-    span_writer.Write(sign_result.pubkey);
-    span_writer.Write(sign_result.signature);
-    signed_tx.AddWitness(std::move(witness));
+    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
+                                                       sign_result.signature));
   }
   auto signed_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1495,13 +1489,14 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   CardanoTransaction unsigned_tx;
   SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
   CardanoTransaction::TxWitness external_witness;
-  external_witness.witness_bytes.fill(1);
+  external_witness.public_key.fill(2);
+  external_witness.signature.fill(1);
   unsigned_tx.AddWitness(std::move(external_witness));
 
   auto unsigned_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
-  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
+  auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1522,15 +1517,12 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
 
   CardanoTransaction signed_tx = unsigned_tx;
   for (const auto& sign_result : sign_results) {
-    CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-    span_writer.Write(sign_result.pubkey);
-    span_writer.Write(sign_result.signature);
-    signed_tx.AddWitness(std::move(witness));
+    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
+                                                       sign_result.signature));
   }
 
   auto signed_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1572,9 +1564,9 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   unsigned_tx.AddInput(std::move(input));
 
   auto unsigned_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
-  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
+  auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1595,15 +1587,12 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
 
   CardanoTransaction signed_tx = unsigned_tx;
   for (const auto& sign_result : sign_results) {
-    CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-    span_writer.Write(sign_result.pubkey);
-    span_writer.Write(sign_result.signature);
-    signed_tx.AddWitness(std::move(witness));
+    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
+                                                       sign_result.signature));
   }
 
   auto signed_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1629,23 +1618,23 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
   EXPECT_EQ(request->inputs.size(), 3u);
-  EXPECT_EQ(request->inputs[0]->address, addr1);
-  EXPECT_EQ(request->inputs[0]->value, 34451133u);
-  EXPECT_EQ(request->inputs[0]->outpoint_txid,
-            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[0]->outpoint_index, 0u);
-
-  EXPECT_EQ(request->inputs[1]->address, addr2);
+  EXPECT_EQ(request->inputs[1]->address, addr1);
   EXPECT_EQ(request->inputs[1]->value, 34451133u);
   EXPECT_EQ(request->inputs[1]->outpoint_txid,
             "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[1]->outpoint_index, 1u);
+  EXPECT_EQ(request->inputs[1]->outpoint_index, 0u);
 
-  EXPECT_EQ(request->inputs[2]->address, "");
-  EXPECT_EQ(request->inputs[2]->value, 0u);
+  EXPECT_EQ(request->inputs[2]->address, addr2);
+  EXPECT_EQ(request->inputs[2]->value, 34451133u);
   EXPECT_EQ(request->inputs[2]->outpoint_txid,
+            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+  EXPECT_EQ(request->inputs[2]->outpoint_index, 1u);
+
+  EXPECT_EQ(request->inputs[0]->address, "");
+  EXPECT_EQ(request->inputs[0]->value, 0u);
+  EXPECT_EQ(request->inputs[0]->outpoint_txid,
             "3737373737373737373737373737373737373737373737373737373737373737");
-  EXPECT_EQ(request->inputs[2]->outpoint_index, 0u);
+  EXPECT_EQ(request->inputs[0]->outpoint_index, 0u);
 
   EXPECT_EQ(request->outputs.size(), 3u);
   EXPECT_EQ(request->outputs[0]->address,

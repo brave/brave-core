@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/check_op.h"
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
@@ -209,8 +208,9 @@ CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
 
 CardanoTransaction::TxWitness::TxWitness() = default;
 CardanoTransaction::TxWitness::TxWitness(
-    std::array<uint8_t, kCardanoWitnessSize> witness_bytes)
-    : witness_bytes(witness_bytes) {}
+    std::array<uint8_t, kCardanoPubKeySize> public_key,
+    std::array<uint8_t, kCardanoSignatureSize> signature)
+    : public_key(public_key), signature(signature) {}
 CardanoTransaction::TxWitness::~TxWitness() = default;
 CardanoTransaction::TxWitness::TxWitness(
     const CardanoTransaction::TxWitness& other) = default;
@@ -224,7 +224,8 @@ CardanoTransaction::TxWitness& CardanoTransaction::TxWitness::operator=(
 base::Value::Dict CardanoTransaction::TxWitness::ToValue() const {
   base::Value::Dict dict;
 
-  dict.Set("witness_bytes", base::HexEncode(witness_bytes));
+  dict.Set("public_key", base::HexEncode(public_key));
+  dict.Set("signature", base::HexEncode(signature));
 
   return dict;
 }
@@ -234,9 +235,32 @@ std::optional<CardanoTransaction::TxWitness>
 CardanoTransaction::TxWitness::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxWitness result;
 
+  // Try to reading from legacy witness_bytes first.
+  std::array<uint8_t, kCardanoPubKeySize + kCardanoSignatureSize>
+      witness_bytes = {};
+  if (base::OptionalUnwrapTo(
+          ReadHexByteArray<kCardanoPubKeySize + kCardanoSignatureSize>(
+              value, "witness_bytes"),
+          witness_bytes)) {
+    base::span(result.public_key)
+        .copy_from_nonoverlapping(
+            base::span(witness_bytes).first<kCardanoPubKeySize>());
+    base::span(result.signature)
+        .copy_from_nonoverlapping(
+            base::span(witness_bytes).last<kCardanoSignatureSize>());
+
+    return result;
+  }
+
   if (!base::OptionalUnwrapTo(
-          ReadHexByteArray<kCardanoWitnessSize>(value, "witness_bytes"),
-          result.witness_bytes)) {
+          ReadHexByteArray<kCardanoPubKeySize>(value, "public_key"),
+          result.public_key)) {
+    return std::nullopt;
+  }
+
+  if (!base::OptionalUnwrapTo(
+          ReadHexByteArray<kCardanoSignatureSize>(value, "signature"),
+          result.signature)) {
     return std::nullopt;
   }
 
@@ -289,6 +313,16 @@ CardanoTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
                               result.amount)) {
     return std::nullopt;
   }
+
+  return result;
+}
+
+CardanoTxDecoder::SerializableTxOutput
+CardanoTransaction::TxOutput::ToSerializableTxOutput() const {
+  CardanoTxDecoder::SerializableTxOutput result;
+
+  result.address_bytes = address.ToCborBytes();
+  result.amount = amount;
 
   return result;
 }
@@ -438,6 +472,14 @@ void CardanoTransaction::ClearInputs() {
   inputs_.clear();
 }
 
+base::flat_set<CardanoAddress> CardanoTransaction::GetInputAddresses() const {
+  base::flat_set<CardanoAddress> input_addresses;
+  for (auto& input : inputs()) {
+    input_addresses.insert(input.utxo_address);
+  }
+  return input_addresses;
+}
+
 void CardanoTransaction::SetWitnesses(std::vector<TxWitness> witnesses) {
   witnesses_ = std::move(witnesses);
 }
@@ -507,6 +549,31 @@ void CardanoTransaction::ArrangeTransactionForTesting() {
             [](const auto& output1, const auto& output2) {
               return output1.type < output2.type;
             });
+}
+
+std::optional<CardanoTxDecoder::SerializableTx>
+CardanoTransaction::ToSerializableTx() const {
+  CardanoTxDecoder::SerializableTx result;
+  for (auto& input : inputs_) {
+    result.tx_body.inputs.emplace_back();
+    result.tx_body.inputs.back().tx_hash = input.utxo_outpoint.txid;
+    result.tx_body.inputs.back().index = input.utxo_outpoint.index;
+  }
+  for (auto& output : outputs_) {
+    result.tx_body.outputs.emplace_back(output.ToSerializableTxOutput());
+  }
+
+  result.tx_body.fee = fee_;
+  result.tx_body.ttl = invalid_after_;
+
+  for (auto& witness : witnesses_) {
+    result.tx_witness.vkey_witness_set.emplace_back();
+    result.tx_witness.vkey_witness_set.back().public_key = witness.public_key;
+    result.tx_witness.vkey_witness_set.back().signature_bytes =
+        witness.signature;
+  }
+
+  return result;
 }
 
 }  // namespace brave_wallet

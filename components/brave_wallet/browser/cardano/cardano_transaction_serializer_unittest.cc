@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -19,6 +20,19 @@ namespace brave_wallet {
 
 namespace {
 
+class ScopedUseSetTagForTesting {
+ public:
+  explicit ScopedUseSetTagForTesting(bool value) : value_(value) {
+    CardanoTxDecoder::SetUseSetTagForTesting(value_);
+  }
+  ~ScopedUseSetTagForTesting() {
+    CardanoTxDecoder::SetUseSetTagForTesting(!value_);
+  }
+
+ private:
+  bool value_ = false;
+};
+
 cardano_rpc::EpochParameters GetReferenceEpochParameters() {
   cardano_rpc::EpochParameters epoch_parameters;
   epoch_parameters.min_fee_coefficient = 44;
@@ -27,7 +41,7 @@ cardano_rpc::EpochParameters GetReferenceEpochParameters() {
   return epoch_parameters;
 }
 
-CardanoTransaction GetReferenceTransaction() {
+CardanoTransaction GetReferenceTransactionNoTag() {
   // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
 
   CardanoTransaction tx;
@@ -58,8 +72,9 @@ CardanoTransaction GetReferenceTransaction() {
   tx.set_invalid_after(149770436);
 
   CardanoTransaction::TxWitness witness;
-  witness.witness_bytes = test::HexToArray<96>(
-      "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af"
+  witness.public_key = test::HexToArray<32>(
+      "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af");
+  witness.signature = test::HexToArray<64>(
       "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161"
       "b7b3609bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802");
 
@@ -68,27 +83,93 @@ CardanoTransaction GetReferenceTransaction() {
   return tx;
 }
 
-CardanoTransaction GetNullTransaction() {
-  CardanoTransaction null_tx;
-  null_tx.AddInput(CardanoTransaction::TxInput());
-  null_tx.AddOutput(CardanoTransaction::TxOutput());
-  null_tx.SetWitnesses({CardanoTransaction::TxWitness()});
-  return null_tx;
+CardanoTransaction GetReferenceTransactionWithTag() {
+  // https://adastat.net/transactions/0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16
+  CardanoTransaction tx;
+
+  CardanoTransaction::TxInput input1;
+  input1.utxo_outpoint.txid = test::HexToArray<32>(
+      "cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc50023075e80f");
+  input1.utxo_outpoint.index = 0;
+  input1.utxo_value = 1000000;
+  tx.AddInput(std::move(input1));
+
+  CardanoTransaction::TxInput input2;
+  input2.utxo_outpoint.txid = test::HexToArray<32>(
+      "cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc50023075e80f");
+  input2.utxo_outpoint.index = 1;
+  input2.utxo_value = 10369265056;
+  tx.AddInput(std::move(input2));
+
+  CardanoTransaction::TxOutput output1;
+  output1.address = *CardanoAddress::FromString(
+      "addr1qxazrc6avxgumuzzq7ynunf9avkl5k972d0nk0s653m2jfsmqlr2xhd2s6w6m3y3r3l"
+      "ruknyu39sa2js2nygaw03ffpsj554nm");
+  output1.amount = 10370089635;
+  tx.AddOutput(std::move(output1));
+
+  tx.set_fee(175421);
+  tx.set_invalid_after(1000000000);
+
+  CardanoTransaction::TxWitness witness1;
+  witness1.public_key = test::HexToArray<32>(
+      "b7e791e55b27e37718d213c16dba23d1b76f4a683cee4c96391602b44c5bd0e5");
+  witness1.signature = test::HexToArray<64>(
+      "4fe2234b679461fedc89dfc7581703ecede9f2cc4701be89cd4d35cb7dbae6c1"
+      "ab1062b6b49199ced59803224a8c974946675c41c718a1e4b41bee883a936606");
+
+  CardanoTransaction::TxWitness witness2;
+  witness2.public_key = test::HexToArray<32>(
+      "b7e791e55b27e37718d213c16dba23d1b76f4a683cee4c96391602b44c5bd0e5");
+  witness2.signature = test::HexToArray<64>(
+      "4fe2234b679461fedc89dfc7581703ecede9f2cc4701be89cd4d35cb7dbae6c1"
+      "ab1062b6b49199ced59803224a8c974946675c41c718a1e4b41bee883a936606");
+
+  tx.SetWitnesses({witness1, witness2});
+
+  return tx;
 }
 
 }  // namespace
 
-// https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
-TEST(CardanoTransactionSerializerTest, ReferenceTransaction) {
-  CardanoTransaction tx = GetReferenceTransaction();
+TEST(CardanoTransactionSerializerTest, ReferenceTransactions) {
+  // https://adastat.net/transactions/0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16
+  CardanoTransaction tx_with_tag = GetReferenceTransactionWithTag();
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
-      tx, GetReferenceEpochParameters()));
-
-  EXPECT_EQ(base::HexEncodeLower(CardanoTransactionSerializer().GetTxHash(tx)),
-            "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
+      tx_with_tag, GetReferenceEpochParameters()));
 
   EXPECT_EQ(base::HexEncodeLower(
-                CardanoTransactionSerializer().SerializeTransaction(tx)),
+                *CardanoTransactionSerializer::GetTxHash(tx_with_tag)),
+            "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
+
+  EXPECT_EQ(
+      base::HexEncodeLower(
+          *CardanoTransactionSerializer::SerializeTransaction(tx_with_tag)),
+      "84a400d9010282825820cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc"
+      "50023075e80f00825820cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc"
+      "50023075e80f01018182583901ba21e35d6191cdf04207893e4d25eb2dfa58be535f3b3e"
+      "1aa476a9261b07c6a35daa869dadc4911c7e3e5a64e44b0eaa5054c88eb9f14a431b0000"
+      "00026a1b02a3021a0002ad3d031a3b9aca00a100d9010282825820b7e791e55b27e37718"
+      "d213c16dba23d1b76f4a683cee4c96391602b44c5bd0e558404fe2234b679461fedc89df"
+      "c7581703ecede9f2cc4701be89cd4d35cb7dbae6c1ab1062b6b49199ced59803224a8c97"
+      "4946675c41c718a1e4b41bee883a936606825820b7e791e55b27e37718d213c16dba23d1"
+      "b76f4a683cee4c96391602b44c5bd0e558404fe2234b679461fedc89dfc7581703ecede9"
+      "f2cc4701be89cd4d35cb7dbae6c1ab1062b6b49199ced59803224a8c974946675c41c718"
+      "a1e4b41bee883a936606f5f6");
+
+  ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
+
+  // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
+  CardanoTransaction tx_no_tag = GetReferenceTransactionNoTag();
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      tx_no_tag, GetReferenceEpochParameters()));
+
+  EXPECT_EQ(
+      base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(tx_no_tag)),
+      "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
+
+  EXPECT_EQ(base::HexEncodeLower(
+                *CardanoTransactionSerializer::SerializeTransaction(tx_no_tag)),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
             "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -98,54 +179,18 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransaction) {
             "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
             "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
             "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
-
-  tx.SetWitnesses({});
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTransactionSerializer({.use_dummy_witness_set = true})
-                    .SerializeTransaction(tx)),
-            "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
-            "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
-            "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
-            "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
-            "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
-            "c21d1a017286c0021a0002917d031a08ed50c4a100818258200000000000000000"
-            "000000000000000000000000000000000000000000000000584000000000000000"
-            "000000000000000000000000000000000000000000000000000000000000000000"
-            "000000000000000000000000000000000000000000000000f5f6");
-}
-
-TEST(CardanoTransactionSerializerTest, Options) {
-  EXPECT_EQ(
-      base::HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
-          GetReferenceTransaction())),
-      "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
-      "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
-      "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
-      "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
-      "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
-      "c21d1a017286c0021a0002917d031a08ed50c4a10081825820e68ca46554098776"
-      "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
-      "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
-      "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
-
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTransactionSerializer({.use_dummy_witness_set = true})
-                    .SerializeTransaction(GetReferenceTransaction())),
-            "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
-            "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
-            "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
-            "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
-            "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
-            "c21d1a017286c0021a0002917d031a08ed50c4a100818258200000000000000000"
-            "000000000000000000000000000000000000000000000000584000000000000000"
-            "000000000000000000000000000000000000000000000000000000000000000000"
-            "000000000000000000000000000000000000000000000000f5f6");
 }
 
 TEST(CardanoTransactionSerializerTest, SerializeTransaction) {
+  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
+                GetReferenceTransactionWithTag())),
+            "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
+
+  ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
+
   EXPECT_EQ(
-      base::HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
-          GetReferenceTransaction())),
+      base::HexEncodeLower(*CardanoTransactionSerializer::SerializeTransaction(
+          GetReferenceTransactionNoTag())),
       "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
       "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
       "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -155,46 +200,31 @@ TEST(CardanoTransactionSerializerTest, SerializeTransaction) {
       "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
       "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
       "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
-
-  EXPECT_EQ(
-      base::HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
-          GetNullTransaction())),
-      "84a400818258200000000000000000000000000000000000000000000000000000"
-      "00000000000000018182400002000300a100818258200000000000000000000000"
-      "000000000000000000000000000000000000000000584000000000000000000000"
-      "000000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000f5f6");
-}
-
-TEST(CardanoTransactionSerializerTest, CalcTransactionSize) {
-  EXPECT_EQ(CardanoTransactionSerializer().CalcTransactionSize(
-                GetReferenceTransaction()),
-            290u);
-
-  EXPECT_EQ(
-      CardanoTransactionSerializer().CalcTransactionSize(GetNullTransaction()),
-      155u);
 }
 
 TEST(CardanoTransactionSerializerTest, GetTxHash) {
-  EXPECT_EQ(base::HexEncodeLower(CardanoTransactionSerializer().GetTxHash(
-                GetReferenceTransaction())),
-            "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
+  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
+                GetReferenceTransactionWithTag())),
+            "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
 
-  EXPECT_EQ(base::HexEncodeLower(
-                CardanoTransactionSerializer().GetTxHash(GetNullTransaction())),
-            "b2ea07342a0c25200d1078cf0ea9b74942d1fb6284f812373182f0eb0270f5e6");
+  ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
+
+  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
+                GetReferenceTransactionNoTag())),
+            "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 }
 
 TEST(CardanoTransactionSerializerTest, CalcMinTransactionFee) {
   cardano_rpc::EpochParameters epoch_parameters = GetReferenceEpochParameters();
 
-  EXPECT_EQ(CardanoTransactionSerializer().CalcMinTransactionFee(
-                GetReferenceTransaction(), epoch_parameters),
+  EXPECT_EQ(*CardanoTransactionSerializer::CalcMinTransactionFee(
+                GetReferenceTransactionWithTag(), epoch_parameters),
+            171749u);
+
+  ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
+  EXPECT_EQ(*CardanoTransactionSerializer::CalcMinTransactionFee(
+                GetReferenceTransactionNoTag(), epoch_parameters),
             168141u);
-  EXPECT_EQ(CardanoTransactionSerializer().CalcMinTransactionFee(
-                GetNullTransaction(), epoch_parameters),
-            162201u);
 }
 
 TEST(CardanoTransactionSerializerTest, CalcMinAdaRequired) {
@@ -306,7 +336,7 @@ TEST(CardanoTransactionSerializerTest, ValidateAmounts) {
 
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(valid_tx,
                                                             epoch_parameters));
-  // Changing inputs, outpus or fee would fail validation.
+  // Changing inputs, outputs or fee would fail validation.
   {
     CardanoTransaction tx = valid_tx;
     tx.inputs_[0].utxo_value++;
@@ -375,19 +405,19 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
   // Some inputs, no change.
   {
     auto tx_no_change = base_tx;
-    tx_no_change.TargetOutput()->amount = 6000000 - 177161u;
+    tx_no_change.TargetOutput()->amount = 6000000 - 168537u;
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_no_change, epoch_parameters);
 
-    EXPECT_EQ(found_tx->fee(), 177161u);
+    EXPECT_EQ(found_tx->fee(), 168537u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000 - 177161u);
+    EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000 - 168537u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
 
     // Slightly adjust output - doesn't work as inputs outputs and fee don't
     // match and we dont's have change.
-    tx_no_change.TargetOutput()->amount = 6000000u - 177161u - 1u;
+    tx_no_change.TargetOutput()->amount = 6000000u - 168537u - 1u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_no_change, epoch_parameters));
@@ -406,10 +436,10 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters);
 
-    EXPECT_EQ(found_tx->fee(), 180021u);
+    EXPECT_EQ(found_tx->fee(), 171397u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u);
-    EXPECT_EQ(found_tx->ChangeOutput()->amount, 4819979u);
+    EXPECT_EQ(found_tx->ChangeOutput()->amount, 6000000u - 1000000u - 171397u);
 
     // Slightly adjust output - still works.
     tx_with_change.TargetOutput()->amount = 1000000u + 123u;
@@ -417,10 +447,11 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters);
 
-    EXPECT_EQ(found_tx->fee(), 180021u);
+    EXPECT_EQ(found_tx->fee(), 171397u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u + 123u);
-    EXPECT_EQ(found_tx->ChangeOutput()->amount, 4819979u - 123u);
+    EXPECT_EQ(found_tx->ChangeOutput()->amount,
+              6000000u - (1000000u + 123u) - 171397u);
 
     // Adjust output so it is larger than inputs we have - failure.
     tx_with_change.TargetOutput()->amount = 10000000u;
@@ -428,7 +459,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters));
 
-    // Adjust output so it is not possible to produce change large ehough.
+    // Adjust output so it is not possible to produce change large enough.
     tx_with_change.TargetOutput()->amount = 5500000u;
 
     EXPECT_FALSE(CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
@@ -442,9 +473,9 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_max_send, epoch_parameters);
 
-    EXPECT_EQ(found_tx->fee(), 177161u);
+    EXPECT_EQ(found_tx->fee(), 168537u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
-    EXPECT_EQ(found_tx->TargetOutput()->amount, 5822839u);
+    EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000u - 168537u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
 
     // Single input is not enough to cover fee.

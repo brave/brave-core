@@ -11,6 +11,7 @@
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.rs.h"
 
 namespace brave_wallet {
@@ -20,8 +21,25 @@ namespace {
 // https://cips.cardano.org/cip/CIP-0009#updatable-protocol-parameters
 constexpr size_t kMaxCardanoTransactionSize = 16 * 1024;  // 16384
 
+rust::Vec<uint8_t> ToRust(base::span<const uint8_t> data) {
+  rust::Vec<uint8_t> vec;
+  vec.reserve(data.size());
+  std::ranges::copy(data, std::back_inserter(vec));
+  return vec;
+}
+
 std::vector<uint8_t> FromRust(const rust::Vec<uint8_t>& vec) {
   return base::ToVector(vec);
+}
+
+CxxSerializableTxInput ToRust(
+    const CardanoTxDecoder::SerializableTxInput& input) {
+  CxxSerializableTxInput result;
+
+  result.tx_hash = input.tx_hash;
+  result.index = input.index;
+
+  return result;
 }
 
 CardanoTxDecoder::SerializableTxInput FromRust(
@@ -34,12 +52,40 @@ CardanoTxDecoder::SerializableTxInput FromRust(
   return result;
 }
 
+CxxSerializableTxOutput ToRust(
+    const CardanoTxDecoder::SerializableTxOutput& output) {
+  CxxSerializableTxOutput result;
+  result.addr = ToRust(output.address_bytes);
+  result.amount = output.amount;
+  return result;
+}
+
 CardanoTxDecoder::SerializableTxOutput FromRust(
     const CxxSerializableTxOutput& output) {
   CardanoTxDecoder::SerializableTxOutput result;
 
   result.address_bytes = FromRust(output.addr);
   result.amount = output.amount;
+
+  return result;
+}
+
+CxxSerializableTxBody ToRust(const CardanoTxDecoder::SerializableTxBody& body) {
+  CxxSerializableTxBody result;
+
+  result.inputs.reserve(body.inputs.size());
+  for (const auto& input : body.inputs) {
+    result.inputs.push_back(ToRust(input));
+  }
+
+  result.outputs.reserve(body.outputs.size());
+  for (const auto& output : body.outputs) {
+    result.outputs.push_back(ToRust(output));
+  }
+
+  result.fee = body.fee;
+  result.ttl = body.ttl.value_or(0u);
+  result.has_ttl = body.ttl.has_value();
 
   return result;
 }
@@ -58,13 +104,10 @@ CardanoTxDecoder::SerializableTxBody FromRust(
     result.outputs.push_back(FromRust(output));
   }
 
-  return result;
-}
-
-CardanoTxDecoder::SerializableTx FromRust(const CxxSerializableTx& tx) {
-  CardanoTxDecoder::SerializableTx result;
-  result.tx_body = FromRust(tx.body);
-
+  result.fee = body.fee;
+  result.ttl = body.has_ttl
+                   ? std::make_optional(base::StrictNumeric<uint64_t>(body.ttl))
+                   : std::nullopt;
   return result;
 }
 
@@ -76,6 +119,14 @@ CxxSerializableVkeyWitness ToRust(
   return result;
 }
 
+CardanoTxDecoder::SerializableVkeyWitness FromRust(
+    const CxxSerializableVkeyWitness& from) {
+  CardanoTxDecoder::SerializableVkeyWitness result;
+  result.public_key = from.pubkey;
+  result.signature_bytes = from.signature;
+  return result;
+}
+
 CxxSerializableTxWitness ToRust(
     const CardanoTxDecoder::SerializableTxWitness& from) {
   CxxSerializableTxWitness result;
@@ -84,6 +135,33 @@ CxxSerializableTxWitness ToRust(
   for (auto& item : from.vkey_witness_set) {
     result.vkey_witness_set.push_back(ToRust(item));
   }
+
+  return result;
+}
+
+CardanoTxDecoder::SerializableTxWitness FromRust(
+    const CxxSerializableTxWitness& from) {
+  CardanoTxDecoder::SerializableTxWitness result;
+
+  result.vkey_witness_set.reserve(from.vkey_witness_set.size());
+  for (const auto& item : from.vkey_witness_set) {
+    result.vkey_witness_set.push_back(FromRust(item));
+  }
+
+  return result;
+}
+
+CxxSerializableTx ToRust(const CardanoTxDecoder::SerializableTx& tx) {
+  CxxSerializableTx result;
+  result.body = ToRust(tx.tx_body);
+  result.witness = ToRust(tx.tx_witness);
+  return result;
+}
+
+CardanoTxDecoder::SerializableTx FromRust(const CxxSerializableTx& tx) {
+  CardanoTxDecoder::SerializableTx result;
+  result.tx_body = FromRust(tx.body);
+  result.tx_witness = FromRust(tx.witness);
 
   return result;
 }
@@ -171,6 +249,39 @@ CardanoTxDecoder::DecodedTx::DecodedTx(DecodedTx&&) = default;
 
 CardanoTxDecoder::CardanoTxDecoder() = default;
 CardanoTxDecoder::~CardanoTxDecoder() = default;
+
+// static
+void CardanoTxDecoder::SetUseSetTagForTesting(bool enable) {
+  use_set_tag_for_testing(enable);
+}
+
+// static
+std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransaction(
+    const SerializableTx& tx) {
+  auto result = encode_cardano_transaction(ToRust(tx));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+
+  return base::ToVector(result->unwrap()->bytes());
+}
+
+// static
+std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransactionOutput(
+    const SerializableTxOutput& output) {
+  auto result = encode_cardano_transaction_output(ToRust(output));
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+
+  return base::ToVector(result->unwrap()->bytes());
+}
+
+// static
+std::optional<std::array<uint8_t, kCardanoTxHashSize>>
+CardanoTxDecoder::GetTransactionHash(const SerializableTx& tx) {
+  return get_cardano_transaction_hash(ToRust(tx));
+}
 
 // static
 std::optional<CardanoTxDecoder::DecodedTx> CardanoTxDecoder::DecodeTransaction(
