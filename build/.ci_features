@@ -2,3 +2,4 @@
 # conditionally enable them on CI. Use lower_snake_case naming.
 
 generate_about_credits
+pnpm

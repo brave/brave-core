@@ -6,9 +6,9 @@ import sys
 from lib.util import execute_stdout, scoped_cwd
 
 
-NPM = 'npm'
+PNPM = 'pnpm'
 if sys.platform in ['win32', 'cygwin']:
-    NPM += '.cmd'
+    PNPM += '.cmd'
 
 
 def main():
@@ -34,7 +34,7 @@ def generate_tsconfig(root_gen_dir, env=None):
     if env is None:
         env = os.environ.copy()
 
-    args = [NPM, 'run', 'web-ui-gen-tsconfig']
+    args = [PNPM, 'web-ui-gen-tsconfig']
 
     env["ROOT_GEN_DIR"] = root_gen_dir
 
