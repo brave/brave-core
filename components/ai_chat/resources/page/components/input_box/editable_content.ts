@@ -12,6 +12,11 @@ export type ContentNode =
       id: string
       text: string
     }
+  | {
+      type: 'attachment'
+      id: string
+      text: string
+    }
 
 // Content of the component should be an array which can mix strings and block types.
 export type Content = ContentNode[]
@@ -23,7 +28,14 @@ export type Content = ContentNode[]
  * @returns A stringified version of the content
  */
 export const stringifyContent = (content: Content): string => {
-  return content.map((c) => (typeof c === 'string' ? c : c.text)).join('')
+  return content
+    .map((c) => {
+      if (typeof c === 'string') return c
+      if (c.type === 'skill') return c.text
+      if (c.type === 'attachment') return `[mention(${c.text})]`
+      throw new Error('Unknown content type: ' + JSON.stringify(c))
+    })
+    .join('')
 }
 
 /**
@@ -55,7 +67,7 @@ export const createContentFromDOMNodes = (editable: HTMLElement): Content => {
     }
   }
 
-  return content
+  return content.filter((c) => typeof c === 'string' || 'type' in c)
 }
 
 const createDOMNodeRepresentation = (node: ContentNode) => {
@@ -65,7 +77,7 @@ const createDOMNodeRepresentation = (node: ContentNode) => {
 
   // Ideally we'd use a leo-label here, but shadowRoot does not play nice with
   // contenteditable.
-  if (node.type === 'skill') {
+  if (node.type === 'skill' || node.type === 'attachment') {
     const el = document.createElement('span')
     el.contentEditable = 'false'
     el.dataset.text = node.text
@@ -161,6 +173,11 @@ class EditorAPI {
     selection.addRange(range)
 
     return this
+  }
+
+  ifHasSelection() {
+    const selection = window.getSelection()
+    return !selection?.isCollapsed ? this : undefined
   }
 
   replaceSelectedRange(contentNode: ContentNode) {

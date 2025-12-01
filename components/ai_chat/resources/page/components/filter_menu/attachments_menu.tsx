@@ -51,21 +51,19 @@ export default function TabsMenu() {
 
   const setIsOpen = React.useCallback(
     (isOpen: boolean) => {
-      if (!isOpen) {
-        const editor = document.querySelector<HTMLElement>('[data-editor]')
-        if (!editor) return
+      if (isOpen) return
 
-        makeEdit(editor).selectRangeToTriggerChar('@').replaceSelectedRange('')
+      const editor = document.querySelector<HTMLElement>('[data-editor]')
+      if (!editor) return
 
-        editor?.focus()
-      }
+      // If we have a trigger character, but the menu is closed make sure we remove it.
+      makeEdit(editor).selectRangeToTriggerChar('@').ifHasSelection()?.replaceSelectedRange('');
     },
-    [conversation.setInputText],
+    [],
   )
 
   const selectAttachment = React.useCallback(
     (attachment: Attachment) => {
-      setIsOpen(false)
       if ('contentId' in attachment) {
         aiChat.uiHandler?.associateTab(
           attachment,
@@ -78,7 +76,20 @@ export default function TabsMenu() {
           conversation.conversationUuid!,
         )
       }
-      document.querySelector('textarea')?.focus()
+
+      const editor = document.querySelector<HTMLElement>('[data-editor]')
+      if (editor) {
+        makeEdit(editor)
+          .selectRangeToTriggerChar('@')
+          .ifHasSelection()
+          ?.replaceSelectedRange({
+            id: attachment.id.toString(),
+            text: attachment.title,
+            type: 'attachment',
+          });
+      }
+
+      setIsOpen(false)
     },
     [aiChat, conversation.conversationUuid, setIsOpen],
   )

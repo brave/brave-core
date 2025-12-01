@@ -596,7 +596,7 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
   })
 
   test('should highlight skill shortcuts in text', () => {
-    const { container } = render(
+    render(
       <MockContext
         conversationHistory={[
           createHumanTurn({
@@ -609,11 +609,9 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
         <ConversationEntries />
       </MockContext>,
     )
-    expect(container.querySelector('.skillLabel')).toBeInTheDocument()
-    expect(container.querySelector('.skillLabel')).toHaveTextContent(
-      '/shortcut',
-    )
-    expect(container.querySelector('.skillLabel')).not.toHaveTextContent(
+    expect(document.querySelector('.richLabel')).toBeInTheDocument()
+    expect(document.querySelector('.richLabel')).toHaveTextContent('/shortcut')
+    expect(document.querySelector('.richLabel')).not.toHaveTextContent(
       'and additional text',
     )
   })
