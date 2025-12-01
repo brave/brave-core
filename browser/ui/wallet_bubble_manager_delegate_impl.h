@@ -6,13 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_WALLET_BUBBLE_MANAGER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_UI_WALLET_BUBBLE_MANAGER_DELEGATE_IMPL_H_
 
-#include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
-
 #include <memory>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -32,7 +30,6 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   void ShowBubble() override;
   void CloseBubble() override;
   bool IsShowingBubble() override;
-  void CloseOnDeactivate(bool close) override;
   bool IsBubbleClosedForTesting() override;
   content::WebContents* GetWebContentsForTesting() override;
   const std::vector<int32_t>& GetPopupIdsForTesting() override;

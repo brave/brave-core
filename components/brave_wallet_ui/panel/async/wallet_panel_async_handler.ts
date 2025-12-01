@@ -40,7 +40,6 @@ handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
   await store.dispatch(
     PanelActions.setHardwareWalletInteractionError(undefined),
   )
-  apiProxy.panelHandler.setCloseOnDeactivate(true)
   apiProxy.panelHandler.showUI()
 
   // persist navigation state
@@ -91,13 +90,6 @@ handler.on(
     store.dispatch(PanelActions.navigateTo('connectWithSite'))
     const apiProxy = getWalletPanelApiProxy()
     apiProxy.panelHandler.showUI()
-  },
-)
-
-handler.on(
-  PanelActions.setCloseOnDeactivate.type,
-  async (store: Store, payload: boolean) => {
-    getWalletPanelApiProxy().panelHandler.setCloseOnDeactivate(payload)
   },
 )
 

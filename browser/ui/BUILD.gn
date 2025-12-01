@@ -1291,8 +1291,6 @@ source_set("ui") {
         "views/toolbar/wallet_button.h",
         "views/toolbar/wallet_button_notification_source.cc",
         "views/toolbar/wallet_button_notification_source.h",
-        "views/wallet_bubble_focus_observer.cc",
-        "views/wallet_bubble_focus_observer.h",
         "wallet_bubble_manager_delegate_impl.cc",
         "wallet_bubble_manager_delegate_impl.h",
         "webui/brave_wallet/ledger/ledger_ui.cc",
