@@ -23,6 +23,10 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
     /** Call from {@link TabCollectionTabModelImpl} will be redirected here via bytecode. */
     @SuppressWarnings("UnusedMethod")
     protected boolean shouldGroupWithParent(Tab tab, @Nullable Tab parentTab) {
+        // We can't group with a parent if it's null.
+        if (parentTab == null) {
+            return false;
+        }
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(
@@ -34,9 +38,6 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
                                                 true))
                 && isTabModelRestored()) {
             return true;
-        }
-        if (parentTab == null) {
-            return false;
         }
         // Otherwise just call parent.
         @Nullable Boolean shouldGroupWithParent =
