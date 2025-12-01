@@ -5,12 +5,9 @@
 
 package org.chromium.chrome.browser.ui.appmenu;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.view.View;
 
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 
 /*
  * This is dummy super class for BraveAppMenu.
@@ -21,12 +18,6 @@ class BraveAppMenuDummySuper extends AppMenu {
     BraveAppMenuDummySuper(AppMenuHandlerImpl handler, Resources res) {
         super(handler, res);
         assert false : "This class usage should be removed in the bytecode!";
-    }
-
-    @Nullable
-    public View createAppMenuContentView(Context context, boolean addTopPaddingBeforeFirstRow) {
-        assert false : "This class usage should be removed in the bytecode!";
-        return null;
     }
 
     public void runMenuItemEnterAnimations() {

@@ -22,7 +22,5 @@ public class BraveAppMenuClassAdapter extends BraveClassVisitor {
         changeMethodOwner(sAppMenuClassName, "getPopupPosition", sBraveAppMenuClassName);
 
         makePublicMethod(sAppMenuClassName, "runMenuItemEnterAnimations");
-
-        makePublicMethod(sAppMenuClassName, "createAppMenuContentView");
     }
 }
