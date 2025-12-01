@@ -46,6 +46,15 @@ void BraveBrowserTabStripController::SetCustomTitleForTab(
       ->SetCustomTitleForTab(index, title);
 }
 
+bool BraveBrowserTabStripController::IsCommandEnabledForTab(
+    TabStripModel::ContextMenuCommand command_id,
+    const Tab* tab) const {
+  const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
+  return model_index.has_value() ? model_->IsContextMenuCommandEnabled(
+                                       model_index.value(), command_id)
+                                 : false;
+}
+
 void BraveBrowserTabStripController::ShowContextMenuForTab(
     Tab* tab,
     const gfx::Point& p,
@@ -60,15 +69,10 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
   context_menu_contents_->RunMenuAt(p, source_type);
 }
 
-void BraveBrowserTabStripController::ExecuteCommandForTab(
+void BraveBrowserTabStripController::ExecuteContextMenuCommand(
+    int index,
     TabStripModel::ContextMenuCommand command_id,
-    const Tab* tab) {
-  const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
-  if (!model_index.has_value()) {
-    BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
-    return;
-  }
-
+    int event_flags) {
   // This tab close customization targets only for split |tab|.
   // When select close tab from context menu, we want to close
   // only that split tab instead of both tabs in split.
@@ -77,9 +81,9 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
   // behavior, apply strictly in some specific situations.
   // Follow upstream behavior in all other cases.
   // We can add other specific situations when user want to.
-  const auto split_id = model_->GetSplitForTab(*model_index);
+  const auto split_id = model_->GetSplitForTab(index);
   if (command_id == TabStripModel::CommandCloseTab && split_id.has_value()) {
-    auto* tab_interface = model_->GetTabAtIndex(*model_index);
+    auto* tab_interface = model_->GetTabAtIndex(index);
     // If |tab| is split and selection size is 1, it means split tab that
     // contains |tab| is inactive and the active tab is normal. Close |tab|.
     if (model_->selection_model().size() == 1) {
@@ -97,5 +101,6 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
     }
   }
 
-  BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
+  BrowserTabStripController::ExecuteContextMenuCommand(index, command_id,
+                                                       event_flags);
 }
