@@ -111,7 +111,6 @@
     public <init>(...);
     *** getPopupPosition(...);
     *** runMenuItemEnterAnimations(...);
-    *** createAppMenuContentView(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {

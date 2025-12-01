@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.ui.appmenu;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.view.View;
@@ -16,7 +15,6 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.SysUtils;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
 
 @NullMarked
@@ -31,27 +29,6 @@ class BraveAppMenu extends BraveAppMenuDummySuper {
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
                 (int) (BOTTOM_MENU_VERTICAL_OFFSET_DP * scale + 0.5f);
-    }
-
-    @Nullable
-    @Override
-    public View createAppMenuContentView(Context context, boolean addTopPaddingBeforeFirstRow) {
-        return maybeRemovePaddingFromBottom(
-                super.createAppMenuContentView(context, addTopPaddingBeforeFirstRow));
-    }
-
-    @Nullable
-    private View maybeRemovePaddingFromBottom(@Nullable View contentView) {
-        if (!isMenuFromBottom() || contentView == null) return contentView;
-
-        // Remove the padding from the bottom of the content view
-        contentView.setPadding(
-                contentView.getPaddingLeft(),
-                contentView.getPaddingTop(),
-                contentView.getPaddingRight(),
-                0);
-
-        return contentView;
     }
 
     @SuppressLint("VisibleForTests")

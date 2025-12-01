@@ -1041,14 +1041,6 @@ public class BytecodeTest {
                         Profile.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/ui/appmenu/AppMenu",
-                        "createAppMenuContentView",
-                        MethodModifier.REGULAR,
-                        View.class,
-                        Context.class,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
                         "isValidSegment",
                         MethodModifier.REGULAR,
