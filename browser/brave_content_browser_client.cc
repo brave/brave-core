@@ -199,6 +199,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
@@ -1239,6 +1240,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
+  SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
