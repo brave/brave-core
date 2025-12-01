@@ -6,13 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
   <title>New Tab Takeover</title>
+  <if expr="is_ios">
+    <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
+    <script src="chrome://resources/js/ios/web_ui.js"></script>
+    <script src="chrome://resources/js/ios/mojo_api.js"></script>
+  </if>
   <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
   <script src="/strings.js"></script>
-  <script type="module" src="new_tab_takeover.bundle.js"></script>
+  <script type="module" src="/new_tab_takeover.bundle.js"></script>
 </head>
 
-<body>
-  <div id="root"></div>
+<body style="background-color: black;">
+  <div id="root" style="background-color: black;"></div>
 </body>
 
 </html>

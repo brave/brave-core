@@ -20,6 +20,7 @@ inline constexpr char kAdblockJS[] = "brave_adblock.js";
 inline constexpr char kSkusInternalsHost[] = "skus-internals";
 inline constexpr char kAdsInternalsHost[] = "ads-internals";
 inline constexpr char kNewTabTakeoverHost[] = "new-tab-takeover";
+inline constexpr char kNewTabTakeoverPageHost[] = "new-tab-takeover-page";
 inline constexpr char kWebcompatReporterHost[] = "webcompat";
 inline constexpr char kRewardsPageHost[] = "rewards";
 inline constexpr char kRewardsPageURL[] = "chrome://rewards/";
@@ -102,6 +103,9 @@ inline constexpr char kBraveUINewTabURL[] = "chrome://newtab/";
 
 inline constexpr char kBraveUINewTabTakeoverURL[] =
     "chrome://new-tab-takeover/";
+
+inline constexpr char kBraveUINewTabTakeoverPageURL[] =
+    "chrome://new-tab-takeover-page/";
 
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host

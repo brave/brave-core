@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVKit
+import BraveCore
 import DesignSystem
 import SnapKit
 import UIKit
@@ -18,9 +19,31 @@ class NewTabPageBackgroundView: UIView {
 
   let playerLayer = AVPlayerLayer()
 
+  //var webUIController: ChromeWebUIController?
+
   func updateImageXOffset(by x: CGFloat) {
     bounds = .init(x: -x, y: 0, width: bounds.width, height: bounds.height)
   }
+
+//   func setupRichNewTabTakeoverLayer(
+//     braveProileController: BraveProfileController,
+//     richNewTabTakeoverURL: URL
+//   ) {
+//     webUIController = ChromeWebUIController(
+//       braveCore: braveProileController,
+//       isPrivateBrowsing: false
+//     ).then {
+// //      $0.webView.load(URLRequest(url: URL(
+// //        string:
+// //          "chrome://new-tab-takeover-page"
+// //      )!))
+//       $0.webView.load(URLRequest(url: richNewTabTakeoverURL))
+//       addSubview($0.view)
+//       $0.view.snp.makeConstraints {
+//         $0.edges.equalToSuperview()
+//       }
+//     }
+//   }
 
   func setupPlayerLayer(_ backgroundVideoPath: URL, player: AVPlayer?) {
     playerLayer.player = player

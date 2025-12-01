@@ -117,6 +117,7 @@ class NewTabPageViewController: UIViewController {
   private let layout = NewTabPageFlowLayout()
   private let collectionView: NewTabCollectionView
   private weak var browserTab: (any TabState)?
+  private let braveCore: BraveCoreMain
   private let rewards: BraveRewards
 
   private var background: NewTabPageBackground
@@ -124,6 +125,7 @@ class NewTabPageViewController: UIViewController {
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
   private var videoAdPlayer: NewTabPageVideoAdPlayer?
   private var videoButtonsView = NewTabPageVideoAdButtonsView()
+  private let richNewTabTakeoverBackgroundView = RichNewTabTakeoverBackgroundView()
 
   var onboardingYouTubeFavoriteInfo: (favorite: Favorite, cell: UIView)? {
     // Get the cell for the youtube from the favs section
@@ -169,12 +171,14 @@ class NewTabPageViewController: UIViewController {
   init(
     tab: some TabState,
     profilePrefs: any PrefService,
+    braveCore: BraveCoreMain,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.browserTab = tab
+    self.braveCore = braveCore
     self.profilePrefs = profilePrefs
     self.rewards = rewards
     self.feedDataSource = feedDataSource
@@ -328,13 +332,21 @@ class NewTabPageViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.addSubview(backgroundView)
-    view.insertSubview(gradientView, aboveSubview: backgroundView)
+    let isRichNewTabTakeoverBackground = background.richNewTabTakeoverURL != nil
+    if !isRichNewTabTakeoverBackground {
+      view.addSubview(backgroundView)
+      view.insertSubview(gradientView, aboveSubview: backgroundView)
+    }
+
     view.addSubview(videoButtonsView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
 
-    collectionView.backgroundView = backgroundButtonsView
+    if isRichNewTabTakeoverBackground {
+      collectionView.backgroundView = richNewTabTakeoverBackgroundView
+    } else {
+      collectionView.backgroundView = backgroundButtonsView
+    }
 
     feedOverlayView.headerView.settingsButton.addTarget(
       self,
@@ -362,9 +374,17 @@ class NewTabPageViewController: UIViewController {
 
     setupBackgroundImage()
     setupBackgroundVideoIfNeeded(shouldCreatePlayer: true)
-    backgroundView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    setupRichNewTabTakeoverIfNeeded()
+
+    if !isRichNewTabTakeoverBackground {
+      backgroundView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      gradientView.snp.makeConstraints {
+        $0.edges.equalTo(backgroundView)
+      }
     }
+
     videoButtonsView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -373,10 +393,6 @@ class NewTabPageViewController: UIViewController {
     }
     feedOverlayView.snp.makeConstraints {
       $0.edges.equalToSuperview()
-    }
-
-    gradientView.snp.makeConstraints {
-      $0.edges.equalTo(backgroundView)
     }
 
     sections.enumerated().forEach { (index, provider) in
@@ -451,9 +467,13 @@ class NewTabPageViewController: UIViewController {
     if parent == nil {
       videoAdPlayer?.cancelPlayIfNeeded()
       videoAdPlayer?.resetPlayer()
+
+      richNewTabTakeoverBackgroundView.resetRichNewTabTakeoverLayer()
     } else {
       videoAdPlayer?.createPlayer()
       videoAdPlayer?.seekToStopFrame()
+
+      setupRichNewTabTakeoverIfNeeded()
     }
     backgroundView.playerLayer.player = videoAdPlayer?.player
   }
@@ -478,7 +498,7 @@ class NewTabPageViewController: UIViewController {
         return
       }
       switch background {
-      case .image:
+      case .image, .richNewTabTakeover:
         hideNotification()
       case .sponsoredMedia:
         // Current background is still a sponsored image so it can stay
@@ -515,6 +535,18 @@ class NewTabPageViewController: UIViewController {
         self?.collectionView.alpha = 1
         self?.videoAdPlayer?.seekToStopFrame()
       }
+    )
+  }
+
+  func setupRichNewTabTakeoverIfNeeded() {
+    guard let braveProfileController = braveCore.profileController,
+      let richNewTabTakeoverURL = background.richNewTabTakeoverURL
+    else {
+      return
+    }
+    richNewTabTakeoverBackgroundView.setupRichNewTabTakeoverLayer(
+      braveProileController: braveProfileController,
+      richNewTabTakeoverURL: richNewTabTakeoverURL
     )
   }
 
@@ -622,6 +654,8 @@ class NewTabPageViewController: UIViewController {
         }
       case .sponsoredMedia(let background):
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
+      case .richNewTabTakeover:
+        backgroundButtonsView.activeButton = .none
       }
     } else {
       backgroundButtonsView.activeButton = .none
@@ -782,10 +816,12 @@ class NewTabPageViewController: UIViewController {
       // scroll to offset .zero to preserve padding above section
       collectionView.setContentOffset(.zero, animated: true)
       backgroundButtonsView.setNeedsLayout()
+      richNewTabTakeoverBackgroundView.setNeedsLayout()
       collectionView.verticalScrollIndicatorInsets = .zero
       UIView.animate(withDuration: 0.25) {
         self.feedOverlayView.headerView.alpha = 0.0
         self.backgroundButtonsView.alpha = 1.0
+        // TODO(aseren): Maybe enable richNewTabTakeoverBackgroundView interaction if disabled before
       }
     case .optInCardAction(.learnMoreButtonTapped):
       delegate?.navigateToInput(
@@ -1060,6 +1096,8 @@ class NewTabPageViewController: UIViewController {
       presentImageCredit(sender)
     case .sponsoredMedia(let background):
       tappedSponsorButton(background.logo)
+    case .richNewTabTakeover:
+      return
     }
   }
 
@@ -1137,6 +1175,7 @@ extension NewTabPageViewController: PreferencesObserver {
       collectionView.verticalScrollIndicatorInsets = .zero
       feedOverlayView.headerView.alpha = 0.0
       backgroundButtonsView.alpha = 1.0
+      // TODO(aseren): Maybe enable richNewTabTakeoverBackgroundView interaction if disabled before
     }
     preventReloadOnBraveNewsEnabledChange = false
   }
@@ -1158,6 +1197,8 @@ extension NewTabPageViewController {
       // Hide the buttons as Brave News feeds appear
       backgroundButtonsView.alpha =
         1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
+      // TODO(aseren): Maybe disable interaction with richNewTabTakeoverBackgroundView
+
       // Show the header as Brave News feeds appear
       // Offset of where Brave News starts
       let todayStart =
