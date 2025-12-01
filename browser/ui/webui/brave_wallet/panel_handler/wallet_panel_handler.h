@@ -25,8 +25,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
       TopChromeWebUIController* webui_controller,
-      content::WebContents* active_web_contents,
-      PanelCloseOnDeactivationCallback close_on_deactivation);
+      content::WebContents* active_web_contents);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
   WalletPanelHandler& operator=(const WalletPanelHandler&) = delete;
@@ -35,7 +34,6 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
-  void SetCloseOnDeactivate(bool close) override;
   void ConnectToSite(
       const std::vector<std::string>& accounts,
       brave_wallet::mojom::PermissionLifetimeOption option) override;
@@ -51,7 +49,6 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   const raw_ptr<TopChromeWebUIController> webui_controller_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
-  const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_

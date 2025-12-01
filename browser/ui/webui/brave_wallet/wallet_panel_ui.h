@@ -96,7 +96,6 @@ class WalletPanelUI : public TopChromeWebUIController,
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
 
-  base::RepeatingCallback<void(bool)> deactivation_callback_;
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
 
