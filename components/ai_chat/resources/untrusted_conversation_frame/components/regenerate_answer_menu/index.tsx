@@ -24,6 +24,7 @@ interface Props {
   leoModels: Mojom.Model[]
   turnModelKey: string
   turnNEARVerified?: boolean
+  isPremiumUser?: boolean
 }
 
 export function RegenerateAnswerMenu(props: Props) {
@@ -35,6 +36,7 @@ export function RegenerateAnswerMenu(props: Props) {
     leoModels,
     turnModelKey,
     turnNEARVerified,
+    isPremiumUser,
   } = props
 
   const modelDisplayName =
@@ -93,6 +95,7 @@ export function RegenerateAnswerMenu(props: Props) {
           model={model}
           isCurrent={model.key === turnModelKey}
           onClick={() => handleRegenerate(model.key)}
+          showPremiumLabel={!isPremiumUser}
         />
       ))}
       <div className={styles.footerGap} />

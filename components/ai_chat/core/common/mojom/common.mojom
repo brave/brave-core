@@ -388,4 +388,6 @@ struct ConversationEntriesState {
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
   ConversationCapability conversation_capability;
+  // Whether a user is a premium user or not
+  bool is_premium_user;
 };

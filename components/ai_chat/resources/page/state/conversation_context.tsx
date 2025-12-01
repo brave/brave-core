@@ -67,6 +67,7 @@ export type ConversationContext = SendFeedbackState
     isDragActive: boolean
     isDragOver: boolean
     unassociatedTabs: Mojom.TabData[]
+    showPremiumSuggestionForRegenerate: boolean
     clearDragState: () => void
     setCurrentModel: (model: Mojom.Model) => void
     switchToBasicModel: () => void
@@ -132,6 +133,7 @@ export const defaultContext: ConversationContext = {
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
   generatedUrlToBeOpened: undefined,
+  showPremiumSuggestionForRegenerate: false,
   isDragActive: false,
   isDragOver: false,
   unassociatedTabs: [],
@@ -611,6 +613,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
+    if (context.showPremiumSuggestionForRegenerate) {
+      setPartialContext({
+        showPremiumSuggestionForRegenerate: false,
+      })
+      return
+    }
     // Select the first non-premium model
     const nonPremium = context.allModels.find(
       (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM,
@@ -791,6 +799,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     const listenerId =
       getAPI().conversationEntriesFrameObserver.userRequestedOpenGeneratedUrl.addListener(
         handleSetOpeningExternalLinkURL,
+      )
+
+    return () => {
+      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
+    }
+  }, [])
+
+  // Listen for showPremiumSuggestionForRegenerate requests from the child frame
+  React.useEffect(() => {
+    const listener = (isVisible: boolean) => {
+      setPartialContext({
+        showPremiumSuggestionForRegenerate: isVisible,
+      })
+    }
+    const listenerId =
+      getAPI().conversationEntriesFrameObserver.showPremiumSuggestionForRegenerate.addListener(
+        listener,
       )
 
     return () => {
