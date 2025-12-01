@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/webui/searchbox/searchbox_omnibox_client.h"
+#include "chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.h"
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/omnibox/browser/autocomplete_input.h"
@@ -39,6 +39,6 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
                           match.keyword)),                               \
           CALLBACK)
 
-#include <chrome/browser/ui/webui/searchbox/searchbox_omnibox_client.cc>
+#include <chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc>
 
 #undef OpenURL
