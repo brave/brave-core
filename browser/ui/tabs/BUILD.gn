@@ -73,6 +73,7 @@ source_set("tab_model") {
     "//brave/components/vector_icons",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/tabs:tab_model",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//ui/base",
   ]
 }

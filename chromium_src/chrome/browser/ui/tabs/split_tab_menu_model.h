@@ -23,8 +23,11 @@
   }                                 \
   virtual const gfx::VectorIcon& GetReversePositionIcon(__VA_ARGS__)
 
+#define kExitSplit kExitSplit, kToggleLinkState
+
 #include <chrome/browser/ui/tabs/split_tab_menu_model.h>  // IWYU pragma: export
 
+#undef kExitSplit
 #undef GetReversePositionIcon
 #undef CloseTabAtIndex
 
