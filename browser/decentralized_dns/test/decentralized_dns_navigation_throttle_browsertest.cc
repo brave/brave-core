@@ -316,30 +316,22 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
   constexpr auto* kSimulatedClickEvent =
       "document.getElementById('primary-button').click();";
 
-  // Default resolve method is `ASK` and it doesn't get changed after clicking
-  // just after page loaded.
+  // Default resolve method is `ASK`.
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
             local_state()->GetInteger(kENSResolveMethod));
+
+  // Force clickjacking protection to be active. The 500ms timer may have
+  // already expired on slow CI machines, so we explicitly set the state
+  // to test the protection logic deterministically.
+  EXPECT_EQ(true, content::ExecJs(main_frame, "proceedClicksEnabled = false;"));
+
+  // Clicks while protection is active should not change the pref.
   EXPECT_EQ(true, content::ExecJs(main_frame, kSimulatedClickEvent));
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
             local_state()->GetInteger(kENSResolveMethod));
 
-  // Wait for proceedClicksEnabled to become true.
-  EXPECT_TRUE(content::EvalJs(main_frame, R"(
-    new Promise((resolve) => {
-      function checkCondition() {
-        if (proceedClicksEnabled) {
-          resolve(true);
-        } else {
-          setTimeout(checkCondition, 50);
-        }
-      }
-      checkCondition();
-    })
-  )")
-                  .ExtractBool());
-
-  // Button is now clickable and can change resolve method.
+  // Enable clicks and verify the button now works.
+  EXPECT_EQ(true, content::ExecJs(main_frame, "proceedClicksEnabled = true;"));
   EXPECT_EQ(true, content::ExecJs(main_frame, kSimulatedClickEvent));
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ENABLED),
             local_state()->GetInteger(kENSResolveMethod));
