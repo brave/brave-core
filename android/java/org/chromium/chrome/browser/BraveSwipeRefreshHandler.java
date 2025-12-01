@@ -12,10 +12,14 @@ import org.chromium.ui.base.BackGestureEventSwipeEdge;
 
 @NullMarked
 public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
-    public boolean mIgnorePullToRefresh;
+    private boolean mIgnorePullToRefresh;
 
     BraveSwipeRefreshHandler(Tab tab, SwipeRefreshLayoutCreator swipeRefreshLayoutCreator) {
         super(tab, swipeRefreshLayoutCreator);
+    }
+
+    public void setIgnorePullToRefresh(boolean ignorePullToRefresh) {
+        mIgnorePullToRefresh = ignorePullToRefresh;
     }
 
     @Override

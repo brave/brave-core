@@ -92,7 +92,7 @@ public class BraveSwipeRefreshHandlerTest {
     @SmallTest
     public void testPullToRefreshIgnored() {
         BraveSwipeRefreshHandler braveHandler = createBraveHandler();
-        braveHandler.mIgnorePullToRefresh = true;
+        braveHandler.setIgnorePullToRefresh(true);
         triggerRefresh(braveHandler);
 
         // SwipeRefreshLayout is initialized in a lazy way during swipe itself
@@ -117,7 +117,7 @@ public class BraveSwipeRefreshHandlerTest {
     public void testSetIgnorePullToRefresh() {
         BraveSwipeRefreshHandler braveHandler = createBraveHandler();
 
-        braveHandler.mIgnorePullToRefresh = false;
+        braveHandler.setIgnorePullToRefresh(false);
         triggerRefresh(braveHandler);
 
         assertNotNull(mSwipeRefreshLayout);
@@ -125,7 +125,7 @@ public class BraveSwipeRefreshHandlerTest {
 
         clearInvocations(mSwipeRefreshLayout);
 
-        braveHandler.mIgnorePullToRefresh = true;
+        braveHandler.setIgnorePullToRefresh(true);
         triggerRefresh(braveHandler);
         Mockito.verify(mSwipeRefreshLayout, Mockito.never()).start();
     }
