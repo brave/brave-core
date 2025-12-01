@@ -457,6 +457,12 @@
   <message name="IDS_IDC_ADD_NEW_TAB_TO_GROUP">
     Add new tab to group
   </message>
+  <message name="IDS_IDC_SPLIT_VIEW_LINK" desc="Text for the link between split view tabs">
+    Link
+  </message>
+  <message name="IDS_IDC_SPLIT_VIEW_UNLINK" desc="Text for the link between split view tabs">
+    Unlink
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
