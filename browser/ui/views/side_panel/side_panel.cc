@@ -257,6 +257,13 @@ void SidePanel::RemoveHeaderView() {}
 
 void SidePanel::SetOutlineVisibility(bool visible) {}
 
+void SidePanel::ResetSidePanelAnimationContent() {}
+
+gfx::Rect SidePanel::GetContentAnimationBounds(
+    const gfx::Rect& side_panel_final_bounds) {
+  return {};
+}
+
 void SidePanel::OnChildViewAdded(View* observed_view, View* child) {
   if (observed_view != this) {
     return;
