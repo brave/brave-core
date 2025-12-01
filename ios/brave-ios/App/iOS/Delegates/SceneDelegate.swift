@@ -32,6 +32,7 @@ extension Logger {
 }
 
 /// State that must be associated with a profile-specific data
+@MainActor
 struct ProfileState {
   var rewards: Brave.BraveRewards
   var migrations: BraveProfileMigrations
