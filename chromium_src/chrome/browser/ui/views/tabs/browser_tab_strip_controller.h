@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_BROWSER_TAB_STRIP_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_BROWSER_TAB_STRIP_CONTROLLER_H_
 
-#define ExecuteCommandForTab(...)            \
-  virtual ExecuteCommandForTab(__VA_ARGS__); \
+#define ExecuteContextMenuCommand(...)            \
+  virtual ExecuteContextMenuCommand(__VA_ARGS__); \
   friend class BraveBrowserTabStripController
 
 #include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.h>  // IWYU pragma: export
 
-#undef ExecuteCommandForTab
+#undef ExecuteContextMenuCommand
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_BROWSER_TAB_STRIP_CONTROLLER_H_
