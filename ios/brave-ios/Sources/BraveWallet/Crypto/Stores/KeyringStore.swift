@@ -718,6 +718,17 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func retrievePasswordFromKeychain() -> String? {
     keychain.getPasswordFromKeychain(key: Self.passwordKeychainKey)
   }
+
+  @MainActor
+  public func webUIValidation() async -> Bool {
+    guard FeatureList.kBraveWalletWebUIIOS?.enabled == true
+    else { return false }
+
+    let isWalletCreated = await keyringService.isWalletCreated()
+    let isWalletLocked = await keyringService.isLocked()
+
+    return isWalletCreated && !isWalletLocked
+  }
 }
 
 extension KeyringStore: PreferencesObserver {
