@@ -5,7 +5,7 @@
 
 import { color, effect, font } from '@brave/leo/tokens/css/variables'
 
-import { scoped } from '../../lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
   h4 {

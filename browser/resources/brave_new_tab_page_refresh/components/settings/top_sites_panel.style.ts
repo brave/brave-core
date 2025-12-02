@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { scoped } from '../../lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 
 import favoritesActive from '../../assets/favorites_active.svg'
 import favoritesActiveDark from '../../assets/favorites_active_dark.svg'

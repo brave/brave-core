@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { scoped } from '../lib/scoped_css'
+import { scoped } from '$web-common/scoped_css'
 import { AppModelContext } from '../lib/app_model_context'
 import { createModel } from './storybook_model'
 import { App } from '../components/app'
