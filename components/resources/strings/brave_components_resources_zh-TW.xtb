@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">電子報彈出式視窗</translation>
 <translation id="6136090320163235283">社交小工具</translation>
 <translation id="6657720240983439091">聊天小工具</translation>
+<translation id="3597441883564676263">不支援瀏覽器</translation>
 <translation id="7138678301420049075">其他</translation>
 <translation id="4046860372562593546">管理 Brave 廣告</translation>
 <translation id="5136973036012418831">管理你看到的 Brave 廣告類型和頻率。</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">已編輯</translation>
 <translation id="5604254791550001355">編輯提示</translation>
 <translation id="8115786586976830777">複製提示</translation>
+<translation id="3666616415490815310">儲存為技能</translation>
+<translation id="6574544364990812112">我的技能</translation>
+<translation id="6696824203401957025">新技能</translation>
+<translation id="6410279677882692627">技能將出現在您的 [/] 工具中，只要輸入您在下方設定的「/名稱」即可存取。</translation>
+<translation id="1344606707744657196">提示模型</translation>
+<translation id="8458341576712814616">捷徑</translation>
+<translation id="1326559827339317236">在此輸入您的捷徑</translation>
+<translation id="5032574515228824816">提示</translation>
+<translation id="2573797314568446575">在此輸入您的提示</translation>
+<translation id="900733896273558337">編輯技能</translation>
+<translation id="7662963028545588801">刪除技能</translation>
+<translation id="4209790625997566418">您確定要刪除此技能嗎？此操作無法撤銷。</translation>
+<translation id="7161540406494327389">需要捷徑</translation>
+<translation id="3722223049736774445">捷徑只能包含字母、數字、下划線和連字號</translation>
+<translation id="6997214168632888867">捷徑必須少於 64 個字元</translation>
+<translation id="2806891468525657116">捷徑已存在</translation>
+<translation id="5497501845974700950">需要提示</translation>
+<translation id="5642369858603376334">提示必須在 5000 字元或以下</translation>
 <translation id="1406205536570262057">編輯回答</translation>
 <translation id="3386725253392845084">重試相同模型</translation>
 <translation id="2461822463642141190">當前</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> 更多…</translation>
 <translation id="8103700533980268469">關閉本通知</translation>
 <translation id="3417835166382867856">搜尋標籤頁</translation>
+<translation id="3828029223314399057">搜尋書籤</translation>
+<translation id="381480092025168632">搜尋瀏覽器記錄</translation>
 <translation id="7311244614769792472">未找到結果。</translation>
 <translation id="3112448569149476523">請嘗試其他搜尋</translation>
 <translation id="1352836459737874921">附加其他分頁的內容</translation>
+<translation id="7173836072258346701">從書籤附加內容</translation>
+<translation id="163680814308917875">附加瀏覽器歷程記錄中的內容</translation>
 <translation id="7039179822221107025">從您的瀏覽器分頁傳送頁面內容，為 Leo 提供更多對話內容.</translation>
+<translation id="1602382615168212961">從書籤中的標籤傳送頁面內容，讓利奧為對話提供更多內容。</translation>
+<translation id="4808122506413075135">傳送瀏覽歷史中的頁面內容，為 Leo 提供更多對話內容。</translation>
 <translation id="220541218939267992">頁面內容將連同您的訊息一併傳送給 Leo。</translation>
-<translation id="1446346932629101482">為上下文添加標籤內容。這些內容會和您的訊息一起傳送給 Leo。</translation>
-<translation id="7193316103691252734">沒有匹配的標籤</translation>
+<translation id="8164365899016970783">為上下文添加標籤和書籤內容。這些內容會和您的訊息一起傳送給 Leo。</translation>
+<translation id="6237410387937453423">沒有匹配的附件</translation>
+<translation id="8076492880354921740">分頁</translation>
 <translation id="2315654674554095762">現在，Leo 會記住您的對話，以便您可以重新返回。它們會加密儲存於您的裝置中，您可以隨時刪除它們。</translation>
 <translation id="7821251979960635244">開始對話後，您的對話紀錄就會出現在這裡。</translation>
 <translation id="887511360213807449">紀錄已停用</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">螢幕截圖</translation>
 <translation id="7949596341600215809">完整頁面截圖</translation>
 <translation id="6332876390231524389">目前的標籤頁內容</translation>
-<translation id="7742969455167760092">開啟分頁...</translation>
+<translation id="6397861830483632092">開啟標籤…</translation>
+<translation id="802080272588201037">書籤…</translation>
+<translation id="2716127283451902393">歷史…</translation>
 <translation id="49269513399674318">使用麥克風</translation>
 <translation id="3895031624234442305">自訂模型</translation>
 <translation id="4572010449071015143">開啟新對話</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">管理所有</translation>
 <translation id="8410199626695516952">好吧，我不會記得這件事的</translation>
 <translation id="8419849467765474535">儲存記憶體失敗。請重試。</translation>
+<translation id="5517580030864973329">將網頁導覽到新地址</translation>
+<translation id="8832457834975923266">導覽網頁至 <ph name="URL"/></translation>
+<translation id="5095252080770652994">進展</translation>
+<translation id="8332385567036775056">步驟</translation>
+<translation id="4521931942079977149">按一下頁面</translation>
+<translation id="7732267913911704962">在頁面上拖放</translation>
+<translation id="7703800915509570212">返回導航</translation>
+<translation id="4875586490950981498">向前航行</translation>
+<translation id="738881387603843066">移動滑鼠</translation>
+<translation id="4850669014075537160">捲動</translation>
+<translation id="1265072406500460724">從下拉式選單中選取</translation>
+<translation id="7573920298077917439">輸入文字</translation>
+<translation id="4089034800311309656">等待頁面</translation>
+<translation id="4798146464408730445">未找到任何技能。按一下「新增」按鈕，建立新的技能。</translation>
+<translation id="271033894570825754">新款</translation>
+<translation id="8266605059880650542">記下一些頁面的資訊，以備日後參考</translation>
 <translation id="3486480638399578250">保持您的個人電子郵件地址私密</translation>
 <translation id="7765422154906712751">建立唯一且隨機的地址，這些地址會轉發到您的 Brave 帳戶電子郵件，並可以隨時刪除。防止實際電子郵件地址被揭露或被廣告商使用。</translation>
 <translation id="5222676887888702881">登出</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">未從 Brave 帳戶服務收到驗證碼</translation>
 <translation id="3179527991526213624">Brave 帳戶服務沒有回應</translation>
 <translation id="7911439408853154309">電子郵件驗證失敗</translation>
+<translation id="2595463802839066496">電子郵件別名服務沒有回應</translation>
+<translation id="367191282389216837">來自電子郵件別名服務的無效回應</translation>
+<translation id="7203490731644771170">電子郵件別名服務錯誤： <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">錯誤：別名不可用</translation>
 <translation id="8370801182970639038">自動 (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">啟用搜尋引擎</translation>
 <translation id="8285901519864208412">隱藏獎勵卡</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
 <translation id="8443488493738411048">針對此網站<ph name="STATUS_BEFORE"/>已開啟盾牌<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">針對此網站<ph name="STATUS_BEFORE"/>已關閉盾牌<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">如果此網站看起來不太正常，請嘗試停用盾牌。
- <ph name="NOTE_BEFORE"/>注意：這可能會削弱 Brave 的隱私保護。<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">如果此網站似乎已損壞，請嘗試 Shields down。</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>注意：這可能會降低 Brave 的隱私保護。<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">您是否在使用本網站時遇到問題？</translation>
+<translation id="9176447766421988172">我們正在嘗試一項實驗，以增加網站的相容性，我們只保留啟用廣告封鎖。警告：會移除所有隱私權保護。您想試試看嗎？ <ph name="LINK_BEFORE"/>了解更多資訊<ph name="LINK_AFTER"/>。</translation>
+<translation id="5372101283158221516">請注意，對於被 Brave 隱私權保護破壞的個別網站，您可以將 Shields 設定為 DOWN。</translation>
+<translation id="1836572675775891780">啟用「僅限廣告封鎖」模式</translation>
+<translation id="6623668214089604469">網站現在運作正常嗎？</translation>
+<translation id="8978860854770042258">如果此網站仍然故障，請考慮提交報告。</translation>
+<translation id="4677356505199464553">看起來不錯</translation>
+<translation id="1992750560347846445">回報網站狀況</translation>
+<translation id="2887186586339544116">啟用「僅限廣告封鎖」模式</translation>
+<translation id="673665019618844072">您目前正在使用「僅限廣告封鎖」模式。此模式僅提供廣告封鎖保護。如果您希望返回完整的 Shields 模式，請從設定中停用此模式。</translation>
+<translation id="4820891023903368625">廣告已封鎖 <ph name="LINK_BEFORE"/>瞭解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">未受 Brave Shields 保護 <ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">進階控制</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">允許指紋識別</translation>
 <translation id="7638541189782135885">請勿升級 HTTP 連線</translation>
 <translation id="2570787596946026998">僅限透過 HTTPS 連線</translation>
-<translation id="1992750560347846445">回報網站狀況</translation>
 <translation id="2387532482048804818">告訴我們網站是否在啟用 Shields 後就無法正常運作。</translation>
 <translation id="3795015906457257780">目前您是在缺少 Brave 隱私防護的情況下檢視這個網站。</translation>
 <translation id="7194012750329511146">Brave Shields

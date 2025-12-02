@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Bülten açılır penceresi</translation>
 <translation id="6136090320163235283">Sosyal widget</translation>
 <translation id="6657720240983439091">Sohbet widget'ı</translation>
+<translation id="3597441883564676263">Tarayıcı desteklenmiyor</translation>
 <translation id="7138678301420049075">Diğer</translation>
 <translation id="4046860372562593546">Brave Reklamlarını Yönet</translation>
 <translation id="5136973036012418831">Ne çeşit Brave Reklamlarını hangi sıklıkla göreceğinizi kontrol edin.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Düzenlendi</translation>
 <translation id="5604254791550001355">Komutu düzenle</translation>
 <translation id="8115786586976830777">Komutu kopyala</translation>
+<translation id="3666616415490815310">Beceri olarak kaydet</translation>
+<translation id="6574544364990812112">Becerilerim</translation>
+<translation id="6696824203401957025">Yeni beceri</translation>
+<translation id="6410279677882692627">Beceriler [/] araçlarınızda görünecek ve sadece aşağıda ayarladığınız "/name" yazarak erişilebilecektir.</translation>
+<translation id="1344606707744657196">İstem için model</translation>
+<translation id="8458341576712814616">Kısayol</translation>
+<translation id="1326559827339317236">Kısayolunuzu buraya girin</translation>
+<translation id="5032574515228824816">İstem</translation>
+<translation id="2573797314568446575">İsteğinizi buraya girin</translation>
+<translation id="900733896273558337">Beceri düzenleme</translation>
+<translation id="7662963028545588801">Beceri silme</translation>
+<translation id="4209790625997566418">Bu beceriyi silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.</translation>
+<translation id="7161540406494327389">Kısayol gereklidir</translation>
+<translation id="3722223049736774445">Kısayol yalnızca harf, rakam, alt çizgi ve kısa çizgi içerebilir</translation>
+<translation id="6997214168632888867">Kısayol 64 karakter veya daha az olmalıdır</translation>
+<translation id="2806891468525657116">Kısayol zaten var</translation>
+<translation id="5497501845974700950">İstemi gereklidir</translation>
+<translation id="5642369858603376334">İstem 5000 karakter veya daha az olmalıdır</translation>
 <translation id="1406205536570262057">Cevabı düzenle</translation>
 <translation id="3386725253392845084">Aynı modeli yeniden deneyin</translation>
 <translation id="2461822463642141190">Güncel</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> daha fazla…</translation>
 <translation id="8103700533980268469">Bu bildirimi kapatın</translation>
 <translation id="3417835166382867856">Sekmelerde Ara</translation>
+<translation id="3828029223314399057">Yer imlerini ara</translation>
+<translation id="381480092025168632">Tarayıcı geçmişinde arama</translation>
 <translation id="7311244614769792472">Sonuç bulunamadı</translation>
 <translation id="3112448569149476523">Lütfen farklı bir arama deneyin</translation>
 <translation id="1352836459737874921">Diğer sekmelerden içerik ekle</translation>
+<translation id="7173836072258346701">Yer imlerinden içerik ekleme</translation>
+<translation id="163680814308917875">Tarayıcı geçmişinden içerik ekleme</translation>
 <translation id="7039179822221107025">Leo'ya konuşma için daha fazla bağlam sağlamak isterseniz tarayıcı sekmelerinizden içerik gönderin.</translation>
+<translation id="1602382615168212961">Leo'ya konuşma için daha fazla bağlam sağlamak için yer işaretlerinizdeki sekmelerden sayfa içeriği gönderin.</translation>
+<translation id="4808122506413075135">Leo'ya konuşma için daha fazla bağlam sağlamak için tarayıcı geçmişinizden sayfa içeriği gönderin.</translation>
 <translation id="220541218939267992">Sayfa içeriği, mesajlarınızla birlikte Leo'ya gönderilecektir.</translation>
-<translation id="1446346932629101482">Bağlam için sekme içerikleri ekleyin. İçerikler mesajlarınızla birlikte Leo'ya gönderilecektir.</translation>
-<translation id="7193316103691252734">Eşleşen sekme yok</translation>
+<translation id="8164365899016970783">Bağlam için sekme ve yer imi içerikleri ekleyin. İçerikler mesajlarınızla birlikte Leo'ya gönderilecektir.</translation>
+<translation id="6237410387937453423">Eşleşen eklenti yok</translation>
+<translation id="8076492880354921740">Sekmeler</translation>
 <translation id="2315654674554095762">Leo artık konuşmalarınızı hatırlayacak, böylece onlara geri dönebileceksiniz. Konuşmalar cihazınızda şifrelenmiş olarak saklanır ve istediğiniz zaman silebilirsiniz.</translation>
 <translation id="7821251979960635244">Bir konuşma başlattığınızda konuşma geçmişiniz burada görünecektir.</translation>
 <translation id="887511360213807449">Geçmiş devre dışı</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Ekran görüntüsü</translation>
 <translation id="7949596341600215809">Tam sayfa ekran görüntüsü</translation>
 <translation id="6332876390231524389">Mevcut sekme içerikleri</translation>
-<translation id="7742969455167760092">Sekmeleri aç...</translation>
+<translation id="6397861830483632092">Açık sekmeler…</translation>
+<translation id="802080272588201037">Yer İmleri…</translation>
+<translation id="2716127283451902393">Tarih…</translation>
 <translation id="49269513399674318">Mikrofonu kullan</translation>
 <translation id="3895031624234442305">Özel modeller</translation>
 <translation id="4572010449071015143">Yeni konuşma başlat</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Tümünü yönet</translation>
 <translation id="8410199626695516952">Tamam, bunu hatırlamayacağım</translation>
 <translation id="8419849467765474535">Bellek kaydedilemedi. Lütfen tekrar deneyin.</translation>
+<translation id="5517580030864973329">Web sayfasında yeni bir adrese gitme</translation>
+<translation id="8832457834975923266">Web sayfasını <ph name="URL"/>adresine yönlendirdi</translation>
+<translation id="5095252080770652994">İlerleme</translation>
+<translation id="8332385567036775056">Adımlar</translation>
+<translation id="4521931942079977149">Sayfaya tıklama</translation>
+<translation id="7732267913911704962">Sayfa üzerinde sürükleme ve bırakma</translation>
+<translation id="7703800915509570212">Geri gezinme</translation>
+<translation id="4875586490950981498">İleriye doğru seyir</translation>
+<translation id="738881387603843066">Fareyi hareket ettirme</translation>
+<translation id="4850669014075537160">Kaydırma</translation>
+<translation id="1265072406500460724">Açılır menüden seçim yapma</translation>
+<translation id="7573920298077917439">Metin yazma</translation>
+<translation id="4089034800311309656">Sayfayı bekliyorum</translation>
+<translation id="4798146464408730445">Hiçbir beceri bulunamadı. "Yeni" düğmesine tıklayarak yeni bir tane oluşturun.</translation>
+<translation id="271033894570825754">Yeni</translation>
+<translation id="8266605059880650542">Sayfa hakkında daha sonra kullanmak üzere bazı bilgileri not etme</translation>
 <translation id="3486480638399578250">Kişisel e-posta adresinizi gizli tutun</translation>
 <translation id="7765422154906712751">Brave hesap e-postanıza yönlendirilen ve istediğiniz zaman silinebilen benzersiz, rastgele adresler oluşturun. Gerçek e-posta adresinizin ifşa edilmesini veya reklamcılar tarafından kullanılmasını önleyin.</translation>
 <translation id="5222676887888702881">Oturumu kapat</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Brave Hesapları hizmetinden doğrulama tokeni gelmedi</translation>
 <translation id="3179527991526213624">Brave Hesapları hizmeti yanıt vermedi</translation>
 <translation id="7911439408853154309">E-posta doğrulaması başarısız oldu</translation>
+<translation id="2595463802839066496">E-posta Takma Adları hizmetinden yanıt yok</translation>
+<translation id="367191282389216837">E-posta Takma Adları hizmetinden geçersiz yanıt</translation>
+<translation id="7203490731644771170">E-posta Takma Adları hizmet hatası: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Hata oluştu: Takma ad mevcut değil</translation>
 <translation id="8370801182970639038">Otomatik (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Etkinleştirilmiş arama motorları</translation>
 <translation id="8285901519864208412">Ödüller kartını gizle</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
 <translation id="8443488493738411048">Bu site için <ph name="STATUS_BEFORE"/>Kalkanlar AÇIK<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">Bu site için <ph name="STATUS_BEFORE"/>Kalkanlar KAPALI<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">Bu site düzgün görüntülenmiyorsa, Kalkanlar'ı kapatmayı deneyin.
-  <ph name="NOTE_BEFORE"/>Not: Bu, Brave'in gizlilik korumalarını azaltabilir.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Bu site bozuk görünüyorsa, Shields'i kapatmayı deneyin.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Bu siteyle ilgili sorunlar mı yaşıyorsunuz?</translation>
+<translation id="9176447766421988172">Web sitesi uyumluluğunu artırmak için yalnızca reklam engellemeyi etkin tuttuğumuz bir deneme yapıyoruz. Uyarı: tüm gizlilik korumalarını kaldırır. Denemek ister misiniz? <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Brave'in gizlilik korumaları tarafından ihlal edilen tek tek web siteleri için Kalkanları AŞAĞI olarak ayarlayabileceğinizi lütfen unutmayın.</translation>
+<translation id="1836572675775891780">Yalnızca Reklam Engelleme modunu etkinleştir</translation>
+<translation id="6623668214089604469">Site şimdi düzgün çalışıyor mu?</translation>
+<translation id="8978860854770042258">Bu site hala bozuksa lütfen bir rapor göndermeyi düşünün.</translation>
+<translation id="4677356505199464553">İyi görünüyor.</translation>
+<translation id="1992750560347846445">Web sitesini raporla</translation>
+<translation id="2887186586339544116">Yalnızca Reklam Engelleme modu etkin</translation>
+<translation id="673665019618844072">Şu anda Yalnızca Reklam Engelleme modunu kullanıyorsunuz. Bu mod yalnızca reklam engelleme koruması sunar. Tam Shields moduna dönmek isterseniz, ayarlardan bu modu devre dışı bırakın.</translation>
+<translation id="4820891023903368625">Reklamlar engellendi <ph name="LINK_BEFORE"/>Daha fazlasını öğrenin<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave Kalkanları tarafından korunmuyor <ph name="LINK_BEFORE"/> Daha fazla bilgi alın <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Parmak izine izin ver</translation>
 <translation id="7638541189782135885">HTTP bağlantılarını yükseltme</translation>
 <translation id="2570787596946026998">Sadece HTTPS ile bağlan</translation>
-<translation id="1992750560347846445">Web sitesini raporla</translation>
 <translation id="2387532482048804818">Kalkanlar açık durumdayken web sitesi düzgün çalışmıyorsa bunu bize bildirin.</translation>
 <translation id="3795015906457257780">Bu siteyi, Brave'in gizlilik korumaları olmaksızın görüntülüyorsunuz.</translation>
 <translation id="7194012750329511146">Brave Kalkanları

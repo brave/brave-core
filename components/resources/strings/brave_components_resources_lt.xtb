@@ -197,6 +197,7 @@
 <translation id="7279636930553631442">Naujienlaiškio iškylantysis langas</translation>
 <translation id="6136090320163235283">Socialinio tinklo valdiklis</translation>
 <translation id="6657720240983439091">Pokalbių valdiklis</translation>
+<translation id="3597441883564676263">Naršyklė nepalaikoma</translation>
 <translation id="7138678301420049075">Kita</translation>
 <translation id="4046860372562593546">Tvarkyti „Brave“ reklamas</translation>
 <translation id="5136973036012418831">Tvarkykite, kokias „Brave“ reklamas matote bei jų dažnumą.</translation>
@@ -2236,6 +2237,24 @@
 <translation id="7488762544858401571">Redaguota</translation>
 <translation id="5604254791550001355">Redaguoti raginimą</translation>
 <translation id="8115786586976830777">Kopijavimo užklausa</translation>
+<translation id="3666616415490815310">Išsaugoti kaip įgūdį</translation>
+<translation id="6574544364990812112">Mano įgūdžiai</translation>
+<translation id="6696824203401957025">Naujas įgūdis</translation>
+<translation id="6410279677882692627">Įgūdžiai bus rodomi jūsų [/] įrankiuose ir pasiekiami tiesiog įvedus toliau nustatytą "/name".</translation>
+<translation id="1344606707744657196">Skubos modelis</translation>
+<translation id="8458341576712814616">Trumpasis adresas</translation>
+<translation id="1326559827339317236">Čia įveskite savo trumpąjį klavišą</translation>
+<translation id="5032574515228824816">Paraginimas</translation>
+<translation id="2573797314568446575">Čia įveskite savo užklausą</translation>
+<translation id="900733896273558337">Redaguoti įgūdžius</translation>
+<translation id="7662963028545588801">Ištrinti įgūdžius</translation>
+<translation id="4209790625997566418">Ar tikrai norite ištrinti šį įgūdį? Šio veiksmo atšaukti negalima.</translation>
+<translation id="7161540406494327389">Reikalingas trumpinys</translation>
+<translation id="3722223049736774445">Greitieji klavišai gali būti sudaryti tik iš raidžių, skaičių, pabraukimo ir brūkšnelio.</translation>
+<translation id="6997214168632888867">Spartusis klavišas turi būti ne ilgesnis kaip 64 simboliai</translation>
+<translation id="2806891468525657116">Trumpasis kelias jau egzistuoja</translation>
+<translation id="5497501845974700950">Reikalingas raginimas</translation>
+<translation id="5642369858603376334">Užduotis turi būti ne ilgesnė kaip 5000 simbolių</translation>
 <translation id="1406205536570262057">Redaguoti atsakymą</translation>
 <translation id="3386725253392845084">Pakartoti tą patį modelį</translation>
 <translation id="2461822463642141190">Dabartinis</translation>
@@ -2273,13 +2292,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> daugiau…</translation>
 <translation id="8103700533980268469">Uždaryti šį pranešimą</translation>
 <translation id="3417835166382867856">Paieškos skirtukai</translation>
+<translation id="3828029223314399057">Paieškos žymės</translation>
+<translation id="381480092025168632">Paieškos naršyklės istorija</translation>
 <translation id="7311244614769792472">Rezultatų nerasta</translation>
 <translation id="3112448569149476523">Pabandykite kitą paiešką</translation>
 <translation id="1352836459737874921">Pridėti turinį iš kitų kortelių</translation>
+<translation id="7173836072258346701">Pridėti turinį iš žymių</translation>
+<translation id="163680814308917875">Pridėti turinį iš naršyklės istorijos</translation>
 <translation id="7039179822221107025">Pateikti turinį iš puslapių savo naršyklės kortelėse, kad suteiktumėte „Leo“ daugiau konteksto pokalbiui.</translation>
+<translation id="1602382615168212961">Siųskite puslapio turinį iš skirtukų savo žymėse, kad "Leo" suteiktų daugiau konteksto pokalbiui.</translation>
+<translation id="4808122506413075135">Siųskite puslapio turinį iš naršyklės istorijos, kad "Leo" suteiktų daugiau konteksto pokalbiui.</translation>
 <translation id="220541218939267992">Puslapio turinys bus išsiųstas Leo kartu su jūsų žinutėmis.</translation>
-<translation id="1446346932629101482">Pridėkite kortelių turinį, kad pateiktumėte kontekstą. Šis turinys bus išsiųstas „Leo“ kartu su jūsų žinutėmis.</translation>
-<translation id="7193316103691252734">Nėra atitinkančių kortelių</translation>
+<translation id="8164365899016970783">Pridėkite skirtukų ir žymeklių turinį kontekstui. Turinys bus išsiųstas į "Leo" kartu su jūsų žinutėmis.</translation>
+<translation id="6237410387937453423">Nėra tinkamų priedų</translation>
+<translation id="8076492880354921740">Skirtukai</translation>
 <translation id="2315654674554095762">Nuo šiol „Leo“ įsimins jūsų pokalbius, kad galėtumėte prie jų grįžti. Užšifruoti pokalbiai saugomi jūsų įrenginyje, ir bet kada galite juos ištrinti.</translation>
 <translation id="7821251979960635244">Jūsų pokalbių istorija bus rodoma čia, kai pradėsite pokalbį.</translation>
 <translation id="887511360213807449">Istorija išjungta</translation>
@@ -2338,7 +2364,9 @@
 <translation id="4250229828105606438">Ekrano kopija</translation>
 <translation id="7949596341600215809">Viso puslapio ekrano kopija</translation>
 <translation id="6332876390231524389">Dabartinis kortelės turinys</translation>
-<translation id="7742969455167760092">Atidaryti korteles...</translation>
+<translation id="6397861830483632092">Atidaryti skirtukai…</translation>
+<translation id="802080272588201037">Žymos…</translation>
+<translation id="2716127283451902393">Istorija…</translation>
 <translation id="49269513399674318">Naudoti mikrofoną</translation>
 <translation id="3895031624234442305">Tinkinami modeliai</translation>
 <translation id="4572010449071015143">Pradėti naują pokalbį</translation>
@@ -2350,6 +2378,22 @@
 <translation id="2593275000606533518">Tvarkyti viską</translation>
 <translation id="8410199626695516952">Gerai, aš to neprisiminsiu</translation>
 <translation id="8419849467765474535">Nepavyko išsaugoti atminties. Bandykite dar kartą.</translation>
+<translation id="5517580030864973329">Svetainės puslapio perkėlimas į naują adresą</translation>
+<translation id="8832457834975923266">Perkelta į tinklalapį <ph name="URL"/></translation>
+<translation id="5095252080770652994">Pažanga</translation>
+<translation id="8332385567036775056">Žingsniai</translation>
+<translation id="4521931942079977149">Paspaudus ant puslapio</translation>
+<translation id="7732267913911704962">Vilkimas ir nuleidimas puslapyje</translation>
+<translation id="7703800915509570212">Grįžimas atgal</translation>
+<translation id="4875586490950981498">Judėjimas pirmyn</translation>
+<translation id="738881387603843066">Pelės perkėlimas</translation>
+<translation id="4850669014075537160">Slinkimas</translation>
+<translation id="1265072406500460724">Pasirinkimas iš išskleidžiamojo sąrašo</translation>
+<translation id="7573920298077917439">Teksto rinkimas</translation>
+<translation id="4089034800311309656">Puslapio laukimas</translation>
+<translation id="4798146464408730445">Įgūdžių nerasta. Sukurkite naują, paspaudę mygtuką "Naujas".</translation>
+<translation id="271033894570825754">Naujas</translation>
+<translation id="8266605059880650542">Užsirašyti tam tikrą informaciją apie puslapį, kuri bus pateikta vėliau</translation>
 <translation id="3486480638399578250">Laikykite savo asmeninį el. pašto adresą privatų</translation>
 <translation id="7765422154906712751">Sukurkite unikalius, atsitiktinius adresus, kuriais laiškai būtų persiunčiami į jūsų „Brave“ paskyros el. paštą ir kuriuos bet kada galėsite ištrinti. Neleiskite, kad jūsų tikrasis el. pašto adresas būtų atskleistas arba naudojamas reklamuotojų.</translation>
 <translation id="5222676887888702881">Atsijungti</translation>
@@ -2395,6 +2439,10 @@
 <translation id="7508412964869396375">Iš „Brave Accounts“ tarnybos patvirtinimo prieigos raktas negautas</translation>
 <translation id="3179527991526213624">Jokio atsakymo iš „Brave Accounts“ tarnybos</translation>
 <translation id="7911439408853154309">El. paštas nepatvirtintas</translation>
+<translation id="2595463802839066496">Jokio atsakymo iš "Email Aliases" paslaugos</translation>
+<translation id="367191282389216837">Neteisingas el. pašto aliuzijų paslaugos atsakymas</translation>
+<translation id="7203490731644771170">El. pašto slapyvardžių paslaugos klaida: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Klaida: Pseudonimas nepasiekiamas</translation>
 <translation id="8370801182970639038">Automatinis (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Įjungtos paieškos sistemos</translation>
 <translation id="8285901519864208412">Slėpti „Rewards“ kortelę</translation>
@@ -2440,8 +2488,19 @@
 <translation id="8458987127502506209">Įgalinti „Brave“ skydus</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Skydai yra ĮJUNGTI<ph name="STATUS_AFTER"/> šiai svetainei</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Skydai yra IŠJUNGTI<ph name="STATUS_AFTER"/> šiai svetainei</translation>
-<translation id="5623354834493649144">Jei svetainė veikia netinkamai, pabandykite išjungti skydus.
-   <ph name="NOTE_BEFORE"/>Pastaba: tai gali sumažinti „Brave“ privatumo apsaugos funkcijas.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Jei atrodo, kad ši svetainė neveikia, pabandykite nuleisti skydus.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Pastaba: tai gali sumažinti "Brave" privatumo apsaugą.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Ar susiduriate su šios svetainės problemomis?</translation>
+<translation id="9176447766421988172">Siekdami padidinti svetainių suderinamumą bandome eksperimentą, kurio metu įjungiame tik skelbimų blokavimą. Įspėjimas: pašalinamos visos privatumo apsaugos priemonės. Ar norite tai išbandyti? <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Atkreipkite dėmesį, kad atskiroms svetainėms, kurioms neveikia "Brave" privatumo apsauga, galite nustatyti skydus į NUSTATYTI.</translation>
+<translation id="1836572675775891780">Įjungti tik skelbimų blokavimo režimą</translation>
+<translation id="6623668214089604469">Ar svetainė dabar veikia teisingai?</translation>
+<translation id="8978860854770042258">Apsvarstykite galimybę pateikti pranešimą, jei ši svetainė vis dar neveikia.</translation>
+<translation id="4677356505199464553">Atrodo gerai</translation>
+<translation id="1992750560347846445">Pranešti apie svetainę</translation>
+<translation id="2887186586339544116">Įjungtas tik skelbimų blokavimo režimas</translation>
+<translation id="673665019618844072">Šiuo metu naudojate tik skelbimų blokavimo režimą. Šis režimas užtikrina tik skelbimų blokavimo apsaugą. Jei norite grįžti prie visiško "Shields" režimo, išjunkite šį režimą nustatymuose.</translation>
+<translation id="4820891023903368625">Užblokuoti skelbimai <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Sekikliai, reklamos ir kt. užblokuoti <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Neapsaugota „Brave“ skydais <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
@@ -2475,7 +2534,6 @@
 <translation id="8034285923190068220">Leisti kontrolinius kodus</translation>
 <translation id="7638541189782135885">Neatnaujinkite HTTP jungčių</translation>
 <translation id="2570787596946026998">Prisijunkite naudodami tik HTTPS</translation>
-<translation id="1992750560347846445">Pranešti apie svetainę</translation>
 <translation id="2387532482048804818">Praneškite mums, jei įjungus skydus svetainė neveikė tinkamai.</translation>
 <translation id="3795015906457257780">Šią svetainę peržiūrite be „Brave“ privatumo apsaugos.</translation>
 <translation id="7194012750329511146">„Brave“ skydai

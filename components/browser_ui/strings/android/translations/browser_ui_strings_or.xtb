@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକୁ ଆପଣ କାହିଁକି ଅନୁମତି ଦେଇଛନ୍ତି ତାହା କହି Braveକୁ ଉନ୍ନତ କରିବାରେ ଆମକୁ ସାହାଯ୍ୟ କରନ୍ତୁ। <ph name="BEGIN_LINK"/>ମତାମତ ପଠାନ୍ତୁ<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">ଆପଣ ସାଇଟଗୁଡ଼ିକର ଡେସ୍କଟପ ଭର୍ସନକୁ ଦେଖିବା ପାଇଁ ପଚାରିପାରିବେ</translation>
 <translation id="9183227624343766158">Braveକୁ ଡିଫଲ୍ଟ ଭାବେ ବ୍ୟବହାର କରନ୍ତୁ</translation>
+<translation id="113098737392899175">ଏକ କୀବୋର୍ଡ ଆଟାଚ ଥିବା ସମୟରେ ଏକ ଟେକ୍ସଟ କର୍ସର ସାହାଯ୍ୟରେ ପୃଷ୍ଠାଗୁଡ଼ିକୁ ନାଭିଗେଟ କରନ୍ତୁ</translation>
 <translation id="1178015372320901893">ମୋ ସର୍ଟକଟ ବଟମ ସିଟ</translation>
 <translation id="1178581264944972037">ବିରତି</translation>
 <translation id="1181037720776840403">କାଢ଼ି ଦିଅନ୍ତୁ</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">ଜାରି ରଖନ୍ତୁ</translation>
 <translation id="904887679952026733">ଯେତେବେଳେ ସମ୍ଭବ, Brave ଗାଢ଼ା ଥିମ ବ୍ୟବହାର କରିବା ସମୟରେ ସାଇଟଗୁଡ଼ିକରେ ଗାଢ଼ା ଥିମ ଲାଗୁ କରନ୍ତୁ</translation>
 <translation id="2390272837142897736">ଜୁମ ବଢ଼ାନ୍ତୁ</translation>
+<translation id="2397689164757137845">ଅନୁମତି ଦିଆଯାଇଛି • ସଠିକ</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">ସଠିକ</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, ଏବଂ ଅଧିକ <ph name="NUM_MORE"/>ଟିକୁ ଅନୁମତି ଦିଆଯାଇଛି}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, ଏବଂ ଅଧିକ <ph name="NUM_MORE"/>ଟିକୁ ଅନୁମତି ଦିଆଯାଇଛି}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">ସାହାଯ୍ୟ ଓ ମତାମତ</translation>
 <translation id="2501278716633472235">ଫେରନ୍ତୁ</translation>
 <translation id="2533138527374486328">ଚାଲୁ ଥିବା ସମୟରେ, ଆପଣଙ୍କ ସ୍ଥାନୀୟ ନେଟୱାର୍କରେ ଯେ କୌଣସି ଡିଭାଇସ ସହ କନେକ୍ଟ କରିବାକୁ ସାଇଟଗୁଡ଼ିକ ପଚାରିପାରିବ। ଚାଲୁ ଥିବା ସମୟରେ, ସାଇଟଗୁଡ଼ିକ ଆପଣଙ୍କ ସ୍ଥାନୀୟ ନେଟୱାର୍କରେ ଡିଭାଇସଗୁଡ଼ିକ ସହ କନେକ୍ଟ କରିପାରିବ ନାହିଁ।</translation>
+<translation id="2536779053640817375">ଏହି ଥର ଅନୁମତି ଦିଆଯାଇଛି • ସଠିକ</translation>
 <translation id="2544997614631598250">ଥିମ ରଙ୍ଗ ଗାଢ଼ା</translation>
 <translation id="2546283357679194313">କୁକିସ୍ ଏବଂ ସାଇଟ୍ ଡାଟା</translation>
 <translation id="2570922361219980984">ଏହି ଡିଭାଇସ୍‌ ପାଇଁ ଲୋକେସନ୍‌ ଆକ୍ସେସ୍‌ ମଧ୍ୟ ବନ୍ଦ ଅଛି। ଏହାକୁ <ph name="BEGIN_LINK"/>Android ସେଟିଂସ୍‌<ph name="END_LINK"/>ରେ ଚାଲୁ କରନ୍ତୁ।</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">କିଛି ସାଇଟ୍‍ଗୁଡ଼ିକରେ ଅବରୋଧ କରାଯାଇଛି</translation>
 <translation id="3132996321662585180">ଦୈନିକ ରିଫ୍ରେସ୍ କରନ୍ତୁ</translation>
 <translation id="3143754809889689516">ଆରମ୍ଭରୁ ଚଲାନ୍ତୁ</translation>
+<translation id="3164169438034704658">ଆପଣ <ph name="BEGIN_LINK"/>Android ସେଟିଂସ<ph name="END_LINK"/>ରେ ସଠିକ ଲୋକେସନ ଚାଲୁ କରିପାରିବେ।</translation>
 <translation id="3165022941318558018">ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିବା ପାଇଁ ଏକ ସାଇଟକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="3167868116600277716">Discover ଫିଡ</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> ଷ୍ଟୋର୍ ହୋ‍ଇଥିବା ଡାଟା</translation>
@@ -310,6 +314,7 @@
 <translation id="8601682686806697614">Brave ଆଜି ପୁଣି କୁକୀଗୁଡ଼ିକୁ ସୀମିତ କରିବ</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> ଅଧୀନରେ ଥିବା ସମସ୍ତ ସାଇଟ</translation>
 <translation id="4340799661701629185">ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକୁ ପଠାଇବା ପାଇଁ ସାଇଟଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ ନାହିଁ</translation>
+<translation id="4341577178275615435">କ୍ୟାରେଟ୍ ବ୍ରାଉଜିଂ ଚାଲୁ କିମ୍ବା ବନ୍ଦ କରିବାକୁ, F7 ସର୍ଟକଟ୍ କୀ ବ୍ୟବହାର କରନ୍ତୁ</translation>
 <translation id="4402755511846832236">ଆପଣ କେତେବେଳେ ସକ୍ରିୟ ଭାବେ ଏହି ଡିଭାଇସକୁ ବ୍ୟବହାର କରୁଛନ୍ତି ତାହା ଜାଣିବାରୁ ସାଇଟଗୁଡ଼ିକୁ ବ୍ଲକ୍ କରନ୍ତୁ</translation>
 <translation id="8382883799082236806">Brave ରଙ୍ଗର ବଟମ ସିଟକୁ ଅଧା ଖୋଲାଯାଇଛି</translation>
 <translation id="4412992751769744546">ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
@@ -440,6 +445,7 @@
 <translation id="5876056640971328065">ଭିଡିଓ ବିରତ କରନ୍ତୁ</translation>
 <translation id="5877248419911025165">ସମସ୍ତ ଅନୁରୋଧକୁ ସଙ୍କୁଚିତ କରନ୍ତୁ</translation>
 <translation id="5878945009165002849">ପରିଚୟ ପ୍ରଦାନ କରୁଥିବା ସେବାଗୁଡ଼ିକରୁ ସାଇନ-ଇନ ପ୍ରମ୍ପ୍ଟଗୁଡ଼ିକୁ ବ୍ଲକ କରନ୍ତୁ</translation>
+<translation id="588258955323874662">ପୂର୍ଣ୍ଣସ୍କ୍ରିନ</translation>
 <translation id="5884085660368669834">ସାଇଟ ପସନ୍ଦଗୁଡ଼ିକ</translation>
 <translation id="5887687176710214216">ଗତକାଲି ଶେଷଥର ଭିଜିଟ କରାଯାଇଛି</translation>
 <translation id="5908617755156109052">ଆପଣଙ୍କ ପରିପାର୍ଶ୍ୱର ଏକ 3D ମେପ ତିଆରି କରିବା କିମ୍ବା କେମେରା ସ୍ଥିତି ଟ୍ରାକ କରିବାକୁ ସାଇଟଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ ନାହିଁ</translation>
@@ -535,9 +541,11 @@
 <translation id="6965382102122355670">ଓକେ ବଟନ୍</translation>
 <translation id="6980861169612950611">ସାଇଟ ଡାଟା ଡିଲିଟ କରିବେ? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ଆକ୍ସେସିବିଲିଟୀ</translation>
+<translation id="6991142177939282156">ଅନୁମତି ଦିଆଯାଇଛି • ଆନୁମାନିକକୁ ବ୍ୟବହାର କରାଯାଉଛି</translation>
 <translation id="6992289844737586249">ଆପଣଙ୍କର ମାଇକ୍ରୋଫୋନ୍‍ ବ୍ୟବହାର କରିବାକୁ ସାଇଟ୍‌ଗୁଡ଼ିକୁ ଅନୁମତି ଦେବା ପୂର୍ବରୁ, ପ୍ରଥମେ ପଚାରନ୍ତୁ(ସୁପାରିଶ୍‌ କରାଯାଇଛି)</translation>
 <translation id="7000754031042624318">Android ସେଟିଂସରେ ବନ୍ଦ କରାଯାଇଛି</translation>
 <translation id="8683151724374457021">ଆପଣ ପସନ୍ଦ କରୁଥିବା ଜିନିଷଗୁଡ଼ିକୁ ଏହି ସାଇଟ ନିର୍ଦ୍ଧାରଣ କରେ ଏବଂ ତା'ପରେ ଅନ୍ୟ ସାଇଟଗୁଡ଼ିକୁ ବିଜ୍ଞାପନର ପରାମର୍ଶ ଦିଏ। ଆପଣଙ୍କୁ ଅଧିକ ପ୍ରାସଙ୍ଗିକ ବିଜ୍ଞାପନଗୁଡ଼ିକ ଦେଖାଇବା ପାଇଁ ମଧ୍ୟ ଏହି ସାଇଟ Braveରୁ ଆପଣଙ୍କ ବିଜ୍ଞାପନ ବିଷୟଗୁଡ଼ିକ ପାଇଥାଏ।</translation>
+<translation id="7036823721811529709">ବେକଗ୍ରାଉଣ୍ଡରେ ଶୁଣନ୍ତୁ</translation>
 <translation id="7044081119134178347">ଏହି ଥର କେମେରାକୁ ଅନୁମତି ଦିଆଯାଇଛି</translation>
 <translation id="7053983685419859001">ଅବରୋଧ କରନ୍ତୁ</translation>
 <translation id="7055552182600664515">କପିରାଇଟ ଦ୍ୱାରା ସୁରକ୍ଷିତ ବିଷୟବସ୍ତୁକୁ ପ୍ଲେ କରିବା ପାଇଁ, ସାଇଟଗୁଡ଼ିକୁ ଏକ ବିଷୟବସ୍ତୁ ସୁରକ୍ଷିତ ସେବା ବ୍ୟବହାର କରିବା ଆବଶ୍ୟକ ହୋଇପାରେ। <ph name="BEGIN_LINK"/>ଅଧିକ ଜାଣନ୍ତୁ<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@
 <translation id="7406113532070524618">ଏହି ସେଟିଂ ଆପଣଙ୍କୁ ଚିହ୍ନଟ ନକରି କିମ୍ବା ଆପଣଙ୍କ ବ୍ରାଉଜିଂ ଇତିହାସ ଦେଖିବା ପାଇଁ ସାଇଟଗୁଡ଼ିକୁ ଅନୁମତି ନ ଦେଇ କାର୍ଯ୍ୟ କରେ, ଯଦିଓ ସାଇଟଗୁଡ଼ିକ ଯାଞ୍ଚକରଣର ଏକ ଅଂଶ ଭାବରେ ସୂଚନାର କିଛି ଅଂଶ ସେୟାର କରିପାରିବ</translation>
 <translation id="7409735910987429903">ସାଇଟଗୁଡ଼ିକ ବିଜ୍ଞାପନ ଦେଖାଇବାକୁ ପପ୍-ଅପଗୁଡ଼ିକ ପଠାଇପାରେ କିମ୍ବା ଆପଣ ଭିଜିଟ୍ କରିବାକୁ ଚାହୁଁନଥିବା ୱେବସାଇଟଗୁଡ଼ିକୁ ଆପଣଙ୍କୁ ନେବାକୁ ରିଡାଇରେକ୍ଟଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିପାରେ</translation>
 <translation id="7412160840120117304">ପ୍ରାଥମିକ ରଙ୍ଗ ହେକ୍ସ</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{ଜୁମ କରନ୍ତୁ}other{ଜୁମ କରନ୍ତୁ: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">ପ୍ରଥମେ ପଚାରନ୍ତୁ</translation>
 <translation id="7423538860840206698">ପଢ଼ିବା କ୍ଲିପ୍‌ବୋର୍ଡରୁ ଅବରୋଧ କରାଯାଇଛି</translation>
 <translation id="7425915948813553151">ସାଇଟଗୁଡ଼ିକ ପାଇଁ ଗାଢ଼ା ଥିମ</translation>
@@ -643,6 +652,7 @@
 <translation id="8261506727792406068">ଡିଲିଟ</translation>
 <translation id="8284326494547611709">କ୍ୟାପସନ୍</translation>
 <translation id="8300705686683892304">ଆପ୍ ଦ୍ୱାରା ପରିଚାଳିତ</translation>
+<translation id="8301363963630676147">ଏହି ଥର ଅନୁମତି ଦିଆଯାଇଛି • ଆନୁମାନିକକୁ ବ୍ୟବହାର କରାଯାଉଛି</translation>
 <translation id="8315509175050791576">ଏକ ଟାବ ସେୟାର କରାଯାଉଛି</translation>
 <translation id="8324158725704657629">ପୁଣି ପଚାର ନାହିଁ</translation>
 <translation id="8362795839483915693">ଆପଣ ଭିଜିଟ କରୁଥିବା ସାଇଟଗୁଡ଼ିକରେ ଜୁମ ଇନ କିମ୍ବା ଆଉଟ କରିପାରିବେ</translation>

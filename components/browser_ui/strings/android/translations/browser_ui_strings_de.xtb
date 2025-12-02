@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Sag uns, warum du Drittanbieter-Cookies zugelassen hast, und hilf uns so, Brave zu verbessern. <ph name="BEGIN_LINK"/>Feedback geben<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kannst die Desktopversion von Websites anfordern</translation>
 <translation id="9183227624343766158">Standardmäßig Brave verwenden</translation>
+<translation id="113098737392899175">Auf den Seiten mithilfe eines Textcursors bewegen, wenn eine Tastatur angeschlossen ist</translation>
 <translation id="1178015372320901893">Ansicht „Meine Verknüpfungen“ am unteren Rand</translation>
 <translation id="1178581264944972037">Pause</translation>
 <translation id="1181037720776840403">Entfernen</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Weiter</translation>
 <translation id="904887679952026733">Sofern möglich, dunkles Design auf Websites anwenden, wenn Brave das dunkle Design verwendet</translation>
 <translation id="2390272837142897736">Heranzoomen</translation>
+<translation id="2397689164757137845">Gewährt • Genau</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Genau</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> und <ph name="NUM_MORE"/> weitere zugelassen}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> und <ph name="NUM_MORE"/> weitere zugelassen}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Hilfe &amp; Feedback</translation>
 <translation id="2501278716633472235">Zurück</translation>
 <translation id="2533138527374486328">Wenn diese Option aktiviert ist, können Websites anfragen, ob eine Verbindung mit einem beliebigen Gerät in deinem lokalen Netzwerk hergestellt werden darf. Ist sie deaktiviert, können Websites keine Verbindung zu Geräten in deinem lokalen Netzwerk herstellen.</translation>
+<translation id="2536779053640817375">Einmalig gewährt • Genau</translation>
 <translation id="2544997614631598250">Designfarbe dunkel</translation>
 <translation id="2546283357679194313">Cookies und Websitedaten</translation>
 <translation id="2570922361219980984">Der Standortzugriff ist für dieses Gerät ebenfalls deaktiviert. Du kannst ihn in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
@@ -199,6 +202,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="3123473560110926937">Auf einigen Websites blockiert</translation>
 <translation id="3132996321662585180">Täglich aktualisieren</translation>
 <translation id="3143754809889689516">Von vorne abspielen</translation>
+<translation id="3164169438034704658">Du kannst die genaue Standortbestimmung in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="3165022941318558018">Einer Website erlauben, Drittanbieter-Cookies zu verwenden</translation>
 <translation id="3167868116600277716">Discover-Feed</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> gespeicherte Daten</translation>
@@ -308,6 +312,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8601682686806697614">Brave schränkt heute wieder Cookies ein</translation>
 <translation id="4338831206024587507">Alle Websites unter <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Websites dürfen keine Benachrichtigungen senden</translation>
+<translation id="4341577178275615435">Mit dem Tastaturkürzel F7 kann die Tastaturnavigation aktiviert oder deaktiviert werden</translation>
 <translation id="4402755511846832236">Websites daran hindern, Informationen zu deiner aktiven Nutzung dieses Geräts abzurufen</translation>
 <translation id="8382883799082236806">Die Ansicht am unteren Rand zu Brave-Farben ist halb geöffnet</translation>
 <translation id="4412992751769744546">Drittanbieter-Cookies zulassen</translation>
@@ -436,6 +441,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="5876056640971328065">Video anhalten</translation>
 <translation id="5877248419911025165">Alle Anfragen minimieren</translation>
 <translation id="5878945009165002849">Aufforderungen zur Anmeldung von Identitätsdiensten blockieren</translation>
+<translation id="588258955323874662">Vollbild</translation>
 <translation id="5884085660368669834">Websiteeinstellung</translation>
 <translation id="5887687176710214216">Gestern zuletzt besucht</translation>
 <translation id="5908617755156109052">Websites dürfen weder eine 3D-Karte meiner Umgebung erstellen noch die Kameraposition erfassen</translation>
@@ -531,9 +537,11 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Websitedaten löschen? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Bedienungshilfen</translation>
+<translation id="6991142177939282156">Zulässig • Ungefähr</translation>
 <translation id="6992289844737586249">Nachfragen, bevor Websites auf mein Mikrofon zugreifen dürfen (empfohlen)</translation>
 <translation id="7000754031042624318">In den Android-Einstellungen deaktiviert</translation>
 <translation id="8683151724374457021">Diese Website erhebt Informationen dazu, was dir gefällt, und schlägt dann anderen Websites Werbung vor. Außerdem ruft sie deine Anzeigenthemen von Brave ab, damit sie dir relevantere Werbung anzeigen kann.</translation>
+<translation id="7036823721811529709">Im Hintergrund abspielen</translation>
 <translation id="7044081119134178347">Kameraberechtigung einmal gewährt</translation>
 <translation id="7053983685419859001">Blockieren</translation>
 <translation id="7055552182600664515">Zum Wiedergeben urheberrechtlich geschützter Inhalte müssen Websites eventuell einen Dienst für den Schutz von Inhalten verwenden. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="7406113532070524618">Diese Einstellung funktioniert, ohne dass dabei deine Identität preisgegeben oder Websites erlaubt wird, deinen Browserverlauf einzusehen; allerdings können Websites bei der Überprüfung eine kleine Datenmenge weitergeben</translation>
 <translation id="7409735910987429903">Websites senden möglicherweise Pop-ups zum Anzeigen von Werbung oder bringen dich mithilfe von Weiterleitungen zu Websites, die du möglicherweise gar nicht besuchen möchtest</translation>
 <translation id="7412160840120117304">Primäre Farbe (Hex-Code)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Zoom}other{Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER"/> %%}}</translation>
 <translation id="7423098979219808738">Zuerst fragen</translation>
 <translation id="7423538860840206698">Es dürfen keine Dateien aus der Zwischenablage abgerufen werden</translation>
 <translation id="7425915948813553151">Dunkles Design für Websites</translation>
@@ -639,6 +648,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8261506727792406068">Löschen</translation>
 <translation id="8284326494547611709">Untertitel</translation>
 <translation id="8300705686683892304">Von App verwaltet</translation>
+<translation id="8301363963630676147">Einmal gewährt • Ungefähr</translation>
 <translation id="8315509175050791576">Tab wird geteilt</translation>
 <translation id="8324158725704657629">Nicht mehr fragen</translation>
 <translation id="8362795839483915693">Du kannst Websites, die du besuchst, heranzoomen und wieder herauszoomen</translation>

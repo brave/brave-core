@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">نشرة إخبارية منبثقة</translation>
 <translation id="6136090320163235283">عنصر التواصل الاجتماعي</translation>
 <translation id="6657720240983439091">عنصر الدردشة</translation>
+<translation id="3597441883564676263">المتصفح غير مدعوم</translation>
 <translation id="7138678301420049075">غير ذلك</translation>
 <translation id="4046860372562593546">إدارة Brave Ads</translation>
 <translation id="5136973036012418831">تحكم في أنواع Brave Ads التي تراها وعدد مرات مشاهدتها.</translation>
@@ -2234,6 +2235,24 @@
 <translation id="7488762544858401571">مُحرّر</translation>
 <translation id="5604254791550001355">تعديل الطلب</translation>
 <translation id="8115786586976830777">نسخ الطلب</translation>
+<translation id="3666616415490815310">الحفظ كمهارة</translation>
+<translation id="6574544364990812112">مهاراتي</translation>
+<translation id="6696824203401957025">مهارة جديدة</translation>
+<translation id="6410279677882692627">ستظهر المهارات في أدواتك [/] ويمكن الوصول إليها بمجرد كتابة "/الاسم" الذي قمت بإعداده أدناه.</translation>
+<translation id="1344606707744657196">نموذج للمطالبة</translation>
+<translation id="8458341576712814616">اختصار</translation>
+<translation id="1326559827339317236">أدخل الاختصار الخاص بك هنا</translation>
+<translation id="5032574515228824816">موجه</translation>
+<translation id="2573797314568446575">أدخل مطالبتك هنا</translation>
+<translation id="900733896273558337">تحرير المهارة</translation>
+<translation id="7662963028545588801">حذف المهارة</translation>
+<translation id="4209790625997566418">هل أنت متأكد من رغبتك في حذف هذه المهارة؟ لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="7161540406494327389">الاختصار مطلوب</translation>
+<translation id="3722223049736774445">لا يمكن أن يحتوي الاختصار إلا على أحرف وأرقام وشرطة سفلية وواصلات</translation>
+<translation id="6997214168632888867">يجب أن يتكون الاختصار من 64 حرفاً أو أقل</translation>
+<translation id="2806891468525657116">الاختصار موجود بالفعل</translation>
+<translation id="5497501845974700950">الموجه مطلوب</translation>
+<translation id="5642369858603376334">يجب أن يتكون الموجه من 5000 حرف أو أقل</translation>
 <translation id="1406205536570262057">تعديل الإجابة</translation>
 <translation id="3386725253392845084">إعادة استخدام نفس النموذج</translation>
 <translation id="2461822463642141190">الحالي</translation>
@@ -2271,13 +2290,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> المزيد…</translation>
 <translation id="8103700533980268469">إغلاق هذا الإشعار</translation>
 <translation id="3417835166382867856">علامات تبويب البحث</translation>
+<translation id="3828029223314399057">البحث في الإشارات المرجعية</translation>
+<translation id="381480092025168632">البحث في سجل المتصفح</translation>
 <translation id="7311244614769792472">لم يتم العثور على نتائج</translation>
 <translation id="3112448569149476523">يرجى تجربة بحث مختلف</translation>
 <translation id="1352836459737874921">إرفاق محتوى من علامات تبويب أخرى</translation>
+<translation id="7173836072258346701">إرفاق محتوى من الإشارات المرجعية</translation>
+<translation id="163680814308917875">إرفاق محتوى من سجل المتصفح</translation>
 <translation id="7039179822221107025">إرسال محتوى الصفحة من علامات تبويب المتصفح لإعطاء Leo المزيد من السياق للمحادثة.</translation>
+<translation id="1602382615168212961">أرسل محتوى الصفحة من علامات التبويب في إشاراتك المرجعية لإعطاء ليو المزيد من السياق للمحادثة.</translation>
+<translation id="4808122506413075135">إرسال محتوى الصفحة من سجل المتصفح الخاص بك لإعطاء ليو المزيد من السياق للمحادثة.</translation>
 <translation id="220541218939267992">سيتم إرسال محتوى الصفحة إلى ليو مع رسائلك.</translation>
-<translation id="1446346932629101482">إضافة محتوايت علامة التبويب للسياق. سيتم إرسال المحتويات إلى Leo إلى جانب رسائلك.</translation>
-<translation id="7193316103691252734">لا توجد علامات تبويب مطابقة</translation>
+<translation id="8164365899016970783">أضف علامة تبويب ومحتويات الإشارة المرجعية للسياق. سيتم إرسال المحتويات إلى ليو مع رسائلك.</translation>
+<translation id="6237410387937453423">لا توجد مرفقات مطابقة</translation>
+<translation id="8076492880354921740">علامات التبويب</translation>
 <translation id="2315654674554095762">سيتذكر Leo الآن محادثاتك حتى تتمكن من العودة إليها. يتم تخزينها مشفرة على جهازك، ويمكنك حذفها في أي وقت.</translation>
 <translation id="7821251979960635244">سيظهر سجل المحادثة الخاص بك هنا بمجرد بدء محادثة.</translation>
 <translation id="887511360213807449">تم تعطيل السجل</translation>
@@ -2336,7 +2362,9 @@
 <translation id="4250229828105606438">لقطة شاشة</translation>
 <translation id="7949596341600215809">لقطة كاملة للشاشة</translation>
 <translation id="6332876390231524389">محتويات علامة التبويب الحالية</translation>
-<translation id="7742969455167760092">علامات التبويب المفتوحة...</translation>
+<translation id="6397861830483632092">فتح علامات التبويب…</translation>
+<translation id="802080272588201037">الإشارات المرجعية…</translation>
+<translation id="2716127283451902393">التاريخ…</translation>
 <translation id="49269513399674318">استخدام الميكروفون</translation>
 <translation id="3895031624234442305">نماذج مخصصة</translation>
 <translation id="4572010449071015143">بدء محادثة جديدة</translation>
@@ -2348,6 +2376,22 @@
 <translation id="2593275000606533518">إدارة الكل</translation>
 <translation id="8410199626695516952">حسناً، لن أتذكر ذلك</translation>
 <translation id="8419849467765474535">فشل حفظ الذاكرة. يرجى المحاولة مرة أخرى.</translation>
+<translation id="5517580030864973329">التنقل في صفحة الويب إلى عنوان جديد</translation>
+<translation id="8832457834975923266">انتقل إلى صفحة الويب إلى <ph name="URL"/></translation>
+<translation id="5095252080770652994">التقدم المحرز</translation>
+<translation id="8332385567036775056">الخطوات</translation>
+<translation id="4521931942079977149">النقر على الصفحة</translation>
+<translation id="7732267913911704962">السحب والإفلات على الصفحة</translation>
+<translation id="7703800915509570212">التنقل إلى الوراء</translation>
+<translation id="4875586490950981498">الإبحار إلى الأمام</translation>
+<translation id="738881387603843066">تحريك الفأرة</translation>
+<translation id="4850669014075537160">التمرير</translation>
+<translation id="1265072406500460724">التحديد من قائمة منسدلة</translation>
+<translation id="7573920298077917439">كتابة نص مكتوب</translation>
+<translation id="4089034800311309656">في انتظار الصفحة</translation>
+<translation id="4798146464408730445">لم يتم العثور على مهارات. قم بإنشاء واحدة جديدة بالنقر فوق الزر "جديد".</translation>
+<translation id="271033894570825754">جديد</translation>
+<translation id="8266605059880650542">تدوين بعض المعلومات عن الصفحة في وقت لاحق</translation>
 <translation id="3486480638399578250">حافظ على خصوصية عنوان بريدك الإلكتروني الشخصي</translation>
 <translation id="7765422154906712751">أنشئ عناوين فريدة وعشوائية يتم توجيهها إلى عنوان بريدك الإلكتروني في حساب Brave ويمكن حذفها في أي وقت. احمِ عنوان بريدك الإلكتروني الفعلي ضد الكشف أو استخدام المعلنين له.</translation>
 <translation id="5222676887888702881">تسجيل الخروج</translation>
@@ -2393,6 +2437,10 @@
 <translation id="7508412964869396375">لم يتم استلام أي رمز تحقق من خدمة Brave Accounts</translation>
 <translation id="3179527991526213624">لا يوجد رد من خدمة Brave Accounts</translation>
 <translation id="7911439408853154309">فشل التحقق من البريد الإلكتروني</translation>
+<translation id="2595463802839066496">لا يوجد رد من خدمة الأسماء المستعارة للبريد الإلكتروني</translation>
+<translation id="367191282389216837">استجابة غير صالحة من خدمة الأسماء المستعارة للبريد الإلكتروني</translation>
+<translation id="7203490731644771170">خطأ في خدمة الأسماء المستعارة للبريد الإلكتروني: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">خطأ: الاسم المستعار غير متوفر</translation>
 <translation id="8370801182970639038">تلقائي (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">محركات البحث الممكّنة</translation>
 <translation id="8285901519864208412">إخفاء بطاقة المكافآت</translation>
@@ -2438,7 +2486,19 @@
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
 <translation id="8443488493738411048">دروع <ph name="STATUS_BEFORE"/> مفعلة<ph name="STATUS_AFTER"/> لهذا الموقع</translation>
 <translation id="2458631245058451506">دروع <ph name="STATUS_BEFORE"/>غير مفعلة<ph name="STATUS_AFTER"/> لهذا الموقع</translation>
-<translation id="5623354834493649144">إذا كان الموقع يبدو معطلاً، جرب تعطيل الدروع.   <ph name="NOTE_BEFORE"/>ملاحظة: قد يؤدي هذا إلى التقليل من حماية الخصوصية.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">إذا كان هذا الموقع يبدو معطلاً، جرب شيلدز داونز.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ملاحظة: قد يقلل هذا من حماية خصوصية Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">هل تواجه مشاكل في هذا الموقع؟</translation>
+<translation id="9176447766421988172">نحن نجرب تجربة لزيادة توافق الموقع الإلكتروني، حيث نبقي على تمكين حظر الإعلانات فقط. تحذير: يزيل جميع وسائل حماية الخصوصية. هل ترغب في تجربتها؟ <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">يُرجى ملاحظة أنه بالنسبة لمواقع الويب الفردية التي تعطلها حماية الخصوصية في Brave، يمكنك ضبط الدروع على "أسفل".</translation>
+<translation id="1836572675775891780">تمكين وضع حظر الإعلانات فقط</translation>
+<translation id="6623668214089604469">هل يعمل الموقع بشكل صحيح الآن؟</translation>
+<translation id="8978860854770042258">يرجى النظر في إرسال تقرير إذا كان هذا الموقع لا يزال معطلاً.</translation>
+<translation id="4677356505199464553">تبدو جيدة</translation>
+<translation id="1992750560347846445">موقع الإبلاغ</translation>
+<translation id="2887186586339544116">تم تمكين وضع حظر الإعلانات فقط</translation>
+<translation id="673665019618844072">أنت تستخدم حاليًا وضع حظر الإعلانات فقط. يوفر هذا الوضع حماية حظر الإعلانات فقط. إذا كنت ترغب في العودة إلى وضع الدروع الكامل، فعليك تعطيل هذا الوضع من الإعدادات.</translation>
+<translation id="4820891023903368625">الإعلانات المحظورة <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">غير محمي بواسطة Brave Shields <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
@@ -2472,7 +2532,6 @@
 <translation id="8034285923190068220">السماح بالبصمة</translation>
 <translation id="7638541189782135885">عدم ترقية اتصالات HTTP</translation>
 <translation id="2570787596946026998">تواصل فقط مع HTTPS</translation>
-<translation id="1992750560347846445">موقع الإبلاغ</translation>
 <translation id="2387532482048804818">أخبرنا إذا كان الموقع لا يعمل بشكل صحيح مع Shields up</translation>
 <translation id="3795015906457257780">أنت تطلع على هذا الموقع بدون حمايات الخصوصية لـ Brave.</translation>
 <translation id="7194012750329511146">تم حظر دروع حماية Brave

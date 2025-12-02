@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Изскачащ прозорец за бюлетин</translation>
 <translation id="6136090320163235283">Социален уиджет</translation>
 <translation id="6657720240983439091">Уиджет за чат</translation>
+<translation id="3597441883564676263">Браузърът не се поддържа</translation>
 <translation id="7138678301420049075">Друго</translation>
 <translation id="4046860372562593546">Управление на рекламите в Brave</translation>
 <translation id="5136973036012418831">Управление на видовете реклами, които виждате в Brave, и колко често.</translation>
@@ -2233,6 +2234,24 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7488762544858401571">Редактиранo</translation>
 <translation id="5604254791550001355">Редактирай поканата</translation>
 <translation id="8115786586976830777">Копирай поканата</translation>
+<translation id="3666616415490815310">Запазване като умение</translation>
+<translation id="6574544364990812112">Моите умения</translation>
+<translation id="6696824203401957025">Ново умение</translation>
+<translation id="6410279677882692627">Уменията ще се появят в инструментите ви [/] и ще са достъпни само с въвеждане на зададеното по-долу "/име".</translation>
+<translation id="1344606707744657196">Модел за бърза реакция</translation>
+<translation id="8458341576712814616">Пряк път</translation>
+<translation id="1326559827339317236">Въведете своя пряк път тук</translation>
+<translation id="5032574515228824816">Подсказка</translation>
+<translation id="2573797314568446575">Въведете вашето запитване тук</translation>
+<translation id="900733896273558337">Редактиране на уменията</translation>
+<translation id="7662963028545588801">Изтриване на умението</translation>
+<translation id="4209790625997566418">Сигурни ли сте, че искате да изтриете това умение? Това действие не може да бъде отменено.</translation>
+<translation id="7161540406494327389">Изисква се пряк път</translation>
+<translation id="3722223049736774445">Краткият път може да съдържа само букви, цифри, долна черта и тире.</translation>
+<translation id="6997214168632888867">Краткият път трябва да бъде 64 знака или по-малко</translation>
+<translation id="2806891468525657116">Прекият път вече съществува</translation>
+<translation id="5497501845974700950">Изисква се подкана</translation>
+<translation id="5642369858603376334">Запитването трябва да е с дължина 5000 знака или по-малко</translation>
 <translation id="1406205536570262057">Редактиране на отговора</translation>
 <translation id="3386725253392845084">Опитай отново със същия модел</translation>
 <translation id="2461822463642141190">Текущ</translation>
@@ -2270,13 +2289,20 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7307396647043599949">Още <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Затваряне на това известие</translation>
 <translation id="3417835166382867856">Раздели за търсене</translation>
+<translation id="3828029223314399057">Търсене в отметките</translation>
+<translation id="381480092025168632">Търсене в историята на браузъра</translation>
 <translation id="7311244614769792472">Няма намерени резултати</translation>
 <translation id="3112448569149476523">Опитайте с друго търсене</translation>
 <translation id="1352836459737874921">Прикачи съдържание от други раздели</translation>
+<translation id="7173836072258346701">Прикрепване на съдържание от отметки</translation>
+<translation id="163680814308917875">Прикрепване на съдържание от историята на браузъра</translation>
 <translation id="7039179822221107025">Изпрати съдържание от страници от разделите на браузъра си, за да дадеш на Лио повече контекст за разговора.</translation>
+<translation id="1602382615168212961">Изпращайте съдържание на страници от разделите в отметките си, за да дадете на Лео повече контекст за разговора.</translation>
+<translation id="4808122506413075135">Изпратете съдържание на страница от историята на браузъра си, за да дадете на Лео повече информация за разговора.</translation>
 <translation id="220541218939267992">Съдържанието на страницата ще бъде изпратено до Leo заедно с вашите съобщения.</translation>
-<translation id="1446346932629101482">Добавяне на съдържание на раздела за контекст. Съдържанието ще бъде изпратено на Лио заедно със съобщенията ти.</translation>
-<translation id="7193316103691252734">Няма отговарящи раздели</translation>
+<translation id="8164365899016970783">Добавяне на съдържание на раздели и отметки за контекст. Съдържанието ще бъде изпратено на Leo заедно с вашите съобщения.</translation>
+<translation id="6237410387937453423">Няма съответстващи прикачени файлове</translation>
+<translation id="8076492880354921740">Раздели</translation>
 <translation id="2315654674554095762">Leo вече ще помни разговорите ви, за да можете да се връщате към тях. Те се съхраняват криптирано на вашето устройство и можете да ги изтриете по всяко време.</translation>
 <translation id="7821251979960635244">Историята на разговорите ви ще се появи тук, след като започнете разговор.</translation>
 <translation id="887511360213807449">Историята е деактивирана</translation>
@@ -2335,7 +2361,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4250229828105606438">Снимка на екрана</translation>
 <translation id="7949596341600215809">Скрийншот на цялата страница</translation>
 <translation id="6332876390231524389">Съдържание на текущия раздел</translation>
-<translation id="7742969455167760092">Отворени раздели...</translation>
+<translation id="6397861830483632092">Отворени раздели…</translation>
+<translation id="802080272588201037">Отметки…</translation>
+<translation id="2716127283451902393">История…</translation>
 <translation id="49269513399674318">Използване на микрофон</translation>
 <translation id="3895031624234442305">Персонализирани модели</translation>
 <translation id="4572010449071015143">Начало на нов разговор</translation>
@@ -2347,6 +2375,22 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2593275000606533518">Управление на всички</translation>
 <translation id="8410199626695516952">Добре, няма да запаметявам това</translation>
 <translation id="8419849467765474535">Неуспешно запазване в паметта. Моля, опитай отново.</translation>
+<translation id="5517580030864973329">Преминаване от уеб страницата към нов адрес</translation>
+<translation id="8832457834975923266">Преминаване към уеб страницата <ph name="URL"/></translation>
+<translation id="5095252080770652994">Прогрес</translation>
+<translation id="8332385567036775056">Стъпки</translation>
+<translation id="4521931942079977149">Кликване върху страницата</translation>
+<translation id="7732267913911704962">Плъзгане и пускане на страницата</translation>
+<translation id="7703800915509570212">Навигация назад</translation>
+<translation id="4875586490950981498">Навигация напред</translation>
+<translation id="738881387603843066">Преместване на мишката</translation>
+<translation id="4850669014075537160">Превъртане</translation>
+<translation id="1265072406500460724">Избиране от падащо меню</translation>
+<translation id="7573920298077917439">Въвеждане на текст</translation>
+<translation id="4089034800311309656">В очакване на страницата</translation>
+<translation id="4798146464408730445">Не са намерени никакви умения. Създайте ново, като кликнете върху бутона "Ново".</translation>
+<translation id="271033894570825754">Нов</translation>
+<translation id="8266605059880650542">Записване на информация за страницата за по-късно</translation>
 <translation id="3486480638399578250">Пази личния си имейл адрес в тайна</translation>
 <translation id="7765422154906712751">Създава уникални, произволни адреси, които препращат към имейл адреса за твоя акаунт в Brave и могат да бъдат изтрити по всяко време. Така скрива истинския ти имейл адрес, за да не се разкрива или използва от рекламодатели.</translation>
 <translation id="5222676887888702881">Изход</translation>
@@ -2392,6 +2436,10 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7508412964869396375">Не е получен токън за проверка от услугата Brave Акаунти</translation>
 <translation id="3179527991526213624">Няма отговор от услугата Brave Акаунти</translation>
 <translation id="7911439408853154309">Неуспешна проверка на имейл</translation>
+<translation id="2595463802839066496">Няма отговор от услугата Email Aliases</translation>
+<translation id="367191282389216837">Невалиден отговор от услугата Email Aliases</translation>
+<translation id="7203490731644771170">Грешка в услугата Email Aliases: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Грешка: Псевдонимът не е наличен</translation>
 <translation id="8370801182970639038">Автоматично (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Активирани търсачки</translation>
 <translation id="8285901519864208412">Скриване на карта с Награди</translation>
@@ -2437,8 +2485,19 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Щитовете са ВДИГНАТИ<ph name="STATUS_AFTER"/> за този сайт</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Щитовете са СВАЛЕНИ<ph name="STATUS_AFTER"/> за този сайт</translation>
-<translation id="5623354834493649144">Ако този сайт изглежда повреден, пробвайте с деактивирани Защити.
-   <ph name="NOTE_BEFORE"/>Забележка: това може да намали защитите за поверителността на Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Ако сайтът изглежда повреден, опитайте да свалите щитовете.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Забележка: това може да намали защитата на личните данни на Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Имате проблеми с този сайт?</translation>
+<translation id="9176447766421988172">Изпробваме експеримент за подобряване на съвместимостта на уебсайта, при който запазваме активирано само блокирането на реклами. Предупреждение: премахва всички защити за поверителност. Искате ли да го изпробвате? <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Моля, обърнете внимание, че за отделни уебсайтове, които не са защитени от защитата за поверителност на Brave, можете да настроите Щитовете на ОТПАДНАТ.</translation>
+<translation id="1836572675775891780">Активиране на режим само за рекламен блок</translation>
+<translation id="6623668214089604469">Работи ли вече сайтът правилно?</translation>
+<translation id="8978860854770042258">Моля, помислете дали да не подадете сигнал, ако сайтът все още не работи.</translation>
+<translation id="4677356505199464553">Изглежда добре</translation>
+<translation id="1992750560347846445">Подаване на сигнал за сайта</translation>
+<translation id="2887186586339544116">Разрешен режим само за рекламен блок</translation>
+<translation id="673665019618844072">В момента използвате режим Само блокиране на реклами. Този режим предлага само защита от блокиране на реклами. Ако желаете да се върнете към пълния режим на щитовете, деактивирайте този режим от настройките.</translation>
+<translation id="4820891023903368625">Блокирани реклами <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Проследяващите елементи, рекламите и други елементи са блокирани<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Не е защитено от щитовете на Brave <ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Разширени контроли</translation>
@@ -2472,7 +2531,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8034285923190068220">Позволяване на пръстови отпечатъци</translation>
 <translation id="7638541189782135885">Не надграждайте HTTP връзките</translation>
 <translation id="2570787596946026998">Свързване само с HTTP</translation>
-<translation id="1992750560347846445">Подаване на сигнал за сайта</translation>
 <translation id="2387532482048804818">Кажете ни, ако сайтът не работи правилно с вдигнати щитове.</translation>
 <translation id="3795015906457257780">Вие разглеждате този сайт без защитите за поверителност на Brave.</translation>
 <translation id="7194012750329511146">Блокирани са

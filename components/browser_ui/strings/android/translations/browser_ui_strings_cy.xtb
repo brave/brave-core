@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Helpwch ni i wella Brave trwy ddweud wrthym pam eich bod wedi caniatáu cwcis trydydd parti. <ph name="BEGIN_LINK"/>Anfon adborth<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Gallwch ofyn am weld y fersiwn bwrdd gwaith o wefannau</translation>
 <translation id="9183227624343766158">Defnyddiwch Brave yn Ddiofyn</translation>
+<translation id="113098737392899175">Llywio tudalennau gyda chyrchwr testun pan fydd bysellfwrdd wedi'i atodi</translation>
 <translation id="1178015372320901893">Dalen waelod fy llwybrau byr</translation>
 <translation id="1178581264944972037">Seibio</translation>
 <translation id="1181037720776840403">Dileu</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Parhau</translation>
 <translation id="904887679952026733">Os yw'n bosib, defnyddio'r thema dywyll ar wefannau pan fydd Brave yn defnyddio'r thema dywyll</translation>
 <translation id="2390272837142897736">Chwyddo</translation>
+<translation id="2397689164757137845">Caniateir • Union</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Cywir</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, ac <ph name="NUM_MORE"/> arall}zero{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, a <ph name="NUM_MORE"/> arall}two{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, a <ph name="NUM_MORE"/> arall}few{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, a <ph name="NUM_MORE"/> arall}many{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, a <ph name="NUM_MORE"/> arall}other{Caniateir <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, a <ph name="NUM_MORE"/> arall}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Help ac adborth</translation>
 <translation id="2501278716633472235">Mynd yn ôl</translation>
 <translation id="2533138527374486328">Pan fydd ymlaen, gall gwefannau ofyn am gysylltu ag unrhyw ddyfais ar eich rhwydwaith lleol. Pan fydd wedi'i ddiffodd, ni all gwefannau gysylltu â dyfeisiau ar eich rhwydwaith lleol.</translation>
+<translation id="2536779053640817375">Caniateir y tro hwn • Union</translation>
 <translation id="2544997614631598250">Thema lliw tywyll</translation>
 <translation id="2546283357679194313">Cwcis a data gwefan</translation>
 <translation id="2570922361219980984">Mae mynediad lleoliad hefyd wedi'i ddiffodd ar gyfer y ddyfais hon. Trowch ef ymlaen yn <ph name="BEGIN_LINK"/>Gosodiadau Android<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="3123473560110926937">Wedi'u rhwystro ar rai gwefannau</translation>
 <translation id="3132996321662585180">Adnewyddu'n ddyddiol</translation>
 <translation id="3143754809889689516">Chwarae o'r dechrau</translation>
+<translation id="3164169438034704658">Gallwch droi union leoliad ymlaen yn y <ph name="BEGIN_LINK"/>Gosodiadau Android<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Caniatáu i wefan ddefnyddio cwcis trydydd parti</translation>
 <translation id="3167868116600277716">Ffrwd darganfod</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> data a storiwyd</translation>
@@ -310,6 +314,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="8601682686806697614">Bydd Brave yn cyfyngu ar gwcis eto heddiw</translation>
 <translation id="4338831206024587507">Pob gwefan o dan <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Peidio â chaniatáu i wefannau anfon hysbysiadau</translation>
+<translation id="4341577178275615435">I droi pori caret ymlaen neu ei ddiffodd, defnyddiwch y llwybr byr F7</translation>
 <translation id="4402755511846832236">Rhwystro gwefannau rhag gwybod pan fyddwch wrthi'n defnyddio'r ddyfais hon</translation>
 <translation id="8382883799082236806">Dalen waelod lliwiau Brave wedi'i hagor ar hanner uchder</translation>
 <translation id="4412992751769744546">Caniatáu cwcis trydydd parti</translation>
@@ -440,6 +445,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="5876056640971328065">Seibio'r fideo</translation>
 <translation id="5877248419911025165">Crebachu'r holl geisiadau</translation>
 <translation id="5878945009165002849">Rhwystro anogwyr mewngofnodi o wasanaethau hunaniaeth</translation>
+<translation id="588258955323874662">Sgrîn lawn</translation>
 <translation id="5884085660368669834">Dewis penodol ar gyfer gwefan</translation>
 <translation id="5887687176710214216">Ymwelwyd ddiwethaf ddoe</translation>
 <translation id="5908617755156109052">Peidiwch â chaniatáu i wefannau greu map 3D o'ch amgylchoedd neu olrhain lleoliad camera</translation>
@@ -535,9 +541,11 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="6965382102122355670">Iawn</translation>
 <translation id="6980861169612950611">Dileu data gwefan? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Hygyrchedd</translation>
+<translation id="6991142177939282156">Caniateir • Defnyddio lleoliad bras</translation>
 <translation id="6992289844737586249">Gofyn yn gyntaf cyn caniatáu i wefannau ddefnyddio'ch meicroffon (argymhellir)</translation>
 <translation id="7000754031042624318">Wedi'i ddiffodd yn Gosodiadau Android</translation>
 <translation id="8683151724374457021">Mae'r wefan hon yn penderfynu pethau rydych yn eu hoffi ac yn cynnig hysbysebion i wefannau eraill. Mae'r wefan hon hefyd yn cael eich pynciau hysbysebion o Brave i ddangos hysbysebion mwy perthnasol i chi.</translation>
+<translation id="7036823721811529709">Gwrando yn y cefndir</translation>
 <translation id="7044081119134178347">Caniateir y camera y tro hwn</translation>
 <translation id="7053983685419859001">Rhwystro</translation>
 <translation id="7055552182600664515">I chwarae cynnwys sydd wedi'i warchod gan hawlfraint, efallai y bydd angen i wefannau ddefnyddio gwasanaeth diogelu cynnwys. <ph name="BEGIN_LINK"/>Dysgu rhagor<ph name="END_LINK"/></translation>
@@ -567,6 +575,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="7406113532070524618">Mae'r gosodiad hwn yn gweithio heb eich adnabod na chaniatáu i wefannau weld eich hanes pori, er y gall gwefannau rannu ychydig i wybodaeth fel rhan o'r dilysiad</translation>
 <translation id="7409735910987429903">Mae'n bosib y bydd gwefannau yn anfon ffenestri naid i ddangos hysbysebion, neu'n defnyddio ailgyfeiriadau i'ch arwain at wefannau y mae'n bosib nad ydych am ymweld â nhw</translation>
 <translation id="7412160840120117304">Hecs Lliw Cynradd</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Chwyddo}zero{Chwyddo: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}two{Chwyddo: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}few{Chwyddo: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}many{Chwyddo: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{Chwyddo: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Gofyn yn gyntaf</translation>
 <translation id="7423538860840206698">Wedi'i rwystro rhag darllen y clipfwrdd</translation>
 <translation id="7425915948813553151">Thema dywyll ar gyfer gwefannau</translation>
@@ -643,6 +652,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:
 <translation id="8261506727792406068">Dileu</translation>
 <translation id="8284326494547611709">Capsiynau</translation>
 <translation id="8300705686683892304">Wedi'u rheoli gan ap</translation>
+<translation id="8301363963630676147">Caniateir y tro hwn • Gan ddefnyddio lleoliad bras</translation>
 <translation id="8315509175050791576">Wrthi'n rhannu tab</translation>
 <translation id="8324158725704657629">Peidio â gofyn eto</translation>
 <translation id="8362795839483915693">Gallwch chwyddo neu bellhau ar wefannau rydych yn ymweld â nhw</translation>

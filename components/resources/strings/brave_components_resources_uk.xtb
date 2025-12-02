@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Спливаюче вікно розсилки</translation>
 <translation id="6136090320163235283">Соціальний віджет</translation>
 <translation id="6657720240983439091">Віджет чату</translation>
+<translation id="3597441883564676263">Браузер не підтримується</translation>
 <translation id="7138678301420049075">Інше</translation>
 <translation id="4046860372562593546">Керування рекламою Brave</translation>
 <translation id="5136973036012418831">Вибирайте, які типи реклами Brave ви бачитимете та як часто.</translation>
@@ -2237,6 +2238,24 @@
 <translation id="7488762544858401571">Відредаговано</translation>
 <translation id="5604254791550001355">Редагувати запит</translation>
 <translation id="8115786586976830777">Копіювати запит</translation>
+<translation id="3666616415490815310">Зберегти як навичку</translation>
+<translation id="6574544364990812112">Мої вміння</translation>
+<translation id="6696824203401957025">Нове вміння</translation>
+<translation id="6410279677882692627">Навички з'являться у ваших [/] інструментах і будуть доступні, якщо ви просто введете "/name", який ви встановили нижче.</translation>
+<translation id="1344606707744657196">Модель для підказки</translation>
+<translation id="8458341576712814616">Ярлик швидкого доступу</translation>
+<translation id="1326559827339317236">Введіть свій ярлик тут</translation>
+<translation id="5032574515228824816">Швидко</translation>
+<translation id="2573797314568446575">Введіть свій запит тут</translation>
+<translation id="900733896273558337">Навичка редагування</translation>
+<translation id="7662963028545588801">Видалити вміння</translation>
+<translation id="4209790625997566418">Ви впевнені, що хочете видалити це вміння? Ця дія не може бути скасована.</translation>
+<translation id="7161540406494327389">Потрібен ярлик</translation>
+<translation id="3722223049736774445">Ярлик може містити лише літери, цифри, символи підкреслення та дефіс</translation>
+<translation id="6997214168632888867">Шорткод повинен мати довжину не більше 64 символів</translation>
+<translation id="2806891468525657116">Ярлик вже існує</translation>
+<translation id="5497501845974700950">Потрібна швидка відповідь</translation>
+<translation id="5642369858603376334">Відповідь повинна містити не більше 5000 символів</translation>
 <translation id="1406205536570262057">Редагувати відповідь</translation>
 <translation id="3386725253392845084">Спробувати ту ж модель</translation>
 <translation id="2461822463642141190">Поточна</translation>
@@ -2275,13 +2294,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> більше…</translation>
 <translation id="8103700533980268469">Закрити це повідомлення</translation>
 <translation id="3417835166382867856">Пошук у вкладках</translation>
+<translation id="3828029223314399057">Пошукові закладки</translation>
+<translation id="381480092025168632">Історія пошуку в браузері</translation>
 <translation id="7311244614769792472">Немає результатів</translation>
 <translation id="3112448569149476523">Спробуйте інший запит</translation>
 <translation id="1352836459737874921">Додати вміст з інших вкладок</translation>
+<translation id="7173836072258346701">Прикріплювати вміст із закладок</translation>
+<translation id="163680814308917875">Прикріпити вміст з історії браузера</translation>
 <translation id="7039179822221107025">Надішліть вміст вкладок браузера, щоб дати Leo більше контексту для розмови.</translation>
+<translation id="1602382615168212961">Надсилайте вміст сторінок з вкладок у ваших закладках, щоб дати Лео більше контексту для розмови.</translation>
+<translation id="4808122506413075135">Надсилайте вміст сторінок з історії браузера, щоб надати Лео більше контексту для розмови.</translation>
 <translation id="220541218939267992">Вміст сторінки буде надіслано Лео разом із вашими повідомленнями.</translation>
-<translation id="1446346932629101482">Додайте вміст вкладки для контексту. Вміст буде надіслано Leo разом з вашими повідомленнями.</translation>
-<translation id="7193316103691252734">Немає однакових вкладок</translation>
+<translation id="8164365899016970783">Додайте вміст вкладок і закладок для контексту. Вміст буде надіслано Лео разом з вашими повідомленнями.</translation>
+<translation id="6237410387937453423">Немає відповідних насадок</translation>
+<translation id="8076492880354921740">Вкладки</translation>
 <translation id="2315654674554095762">Leo тепер зберігатиме історію ваших бесід, щоб ви могли їх переглядати. Всі дані зашифровані та залишаються тільки на вашому пристрої – ви можете їх видалити у будь-який час.</translation>
 <translation id="7821251979960635244">Історія ваших чатів з’явиться тут, коли ви почнете діалог.</translation>
 <translation id="887511360213807449">Історія вимкнена</translation>
@@ -2340,7 +2366,9 @@
 <translation id="4250229828105606438">Скріншот</translation>
 <translation id="7949596341600215809">Скріншот всієї сторінки</translation>
 <translation id="6332876390231524389">Вміст поточної закладки</translation>
-<translation id="7742969455167760092">Відкриті вкладки...</translation>
+<translation id="6397861830483632092">Відкрийте вкладки…</translation>
+<translation id="802080272588201037">Закладки…</translation>
+<translation id="2716127283451902393">Історія…</translation>
 <translation id="49269513399674318">Використовувати мікрофон</translation>
 <translation id="3895031624234442305">Користувацькі моделі</translation>
 <translation id="4572010449071015143">Почати розмову</translation>
@@ -2352,6 +2380,22 @@
 <translation id="2593275000606533518">Керувати всім</translation>
 <translation id="8410199626695516952">Гаразд, я не пам'ятатиму цього</translation>
 <translation id="8419849467765474535">Не вдалося зберегти пам'ять. Спробуйте ще раз.</translation>
+<translation id="5517580030864973329">Перехід на веб-сторінку за новою адресою</translation>
+<translation id="8832457834975923266">Перейшли на веб-сторінку <ph name="URL"/></translation>
+<translation id="5095252080770652994">Прогрес</translation>
+<translation id="8332385567036775056">Сходинки</translation>
+<translation id="4521931942079977149">Перейшовши на сторінку</translation>
+<translation id="7732267913911704962">Перетягування на сторінці</translation>
+<translation id="7703800915509570212">Повернутися назад</translation>
+<translation id="4875586490950981498">Навігація вперед</translation>
+<translation id="738881387603843066">Переміщення миші</translation>
+<translation id="4850669014075537160">Прокрутка</translation>
+<translation id="1265072406500460724">Вибір зі спадного списку</translation>
+<translation id="7573920298077917439">Введення тексту</translation>
+<translation id="4089034800311309656">Очікування сторінки</translation>
+<translation id="4798146464408730445">Навичок не знайдено. Створіть новий, натиснувши кнопку "Новий".</translation>
+<translation id="271033894570825754">Новий</translation>
+<translation id="8266605059880650542">Занотовуємо деяку інформацію про сторінку для подальшого використання</translation>
 <translation id="3486480638399578250">Не розкривайте свій справжній email</translation>
 <translation id="7765422154906712751">Створюйте унікальні випадкові адреси, які переадресовують на вашу пошту Brave і можуть бути видалені в будь-який час. Захистіть свій реальний email від розкриття або використання рекламодавцями.</translation>
 <translation id="5222676887888702881">Вийти</translation>
@@ -2397,6 +2441,10 @@
 <translation id="7508412964869396375">Не отримано токен верифікації від сервісу Brave Accounts</translation>
 <translation id="3179527991526213624">Немає відповіді від сервісу Brave Accounts</translation>
 <translation id="7911439408853154309">Не вдалося верифікувати електронну пошту</translation>
+<translation id="2595463802839066496">Немає відповіді від служби Email Aliases</translation>
+<translation id="367191282389216837">Неправильна відповідь від сервісу "Псевдоніми електронної пошти</translation>
+<translation id="7203490731644771170">Помилка служби Email Aliases: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Помилка: Псевдонім не доступний</translation>
 <translation id="8370801182970639038">Автоматично (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Увімкнені пошукові системи</translation>
 <translation id="8285901519864208412">Сховати картку Нагороди</translation>
@@ -2442,8 +2490,19 @@
 <translation id="8458987127502506209">Увімкнути щити Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Щити увімкнено<ph name="STATUS_AFTER"/> для цього сайту</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Щити вимкнено<ph name="STATUS_AFTER"/> для цього сайту</translation>
-<translation id="5623354834493649144">Якщо цей сайт недоступний, спробуйте вимкнути Shields.
- <ph name="NOTE_BEFORE"/>Примітка: це може послабити захист конфіденційності Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Якщо цей сайт здається непрацюючим, спробуйте опустити Щити.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Примітка: це може послабити захист конфіденційності Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">У вас виникли проблеми з цим сайтом?</translation>
+<translation id="9176447766421988172">Ми проводимо експеримент, щоб підвищити сумісність веб-сайтів, в якому увімкнено лише блокування реклами. Попередження: видаляє всі засоби захисту конфіденційності. Хочете спробувати? <ph name="LINK_BEFORE"/>Дізнайтеся більше<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Зверніть увагу, що для окремих веб-сайтів, які порушують захист конфіденційності Brave, ви можете встановити Щити в положення ВНИЗ.</translation>
+<translation id="1836572675775891780">Увімкнути режим "Тільки блокування реклами</translation>
+<translation id="6623668214089604469">Чи працює сайт зараз коректно?</translation>
+<translation id="8978860854770042258">Будь ласка, розгляньте можливість подати звіт, якщо цей сайт все ще не працює.</translation>
+<translation id="4677356505199464553">Виглядає непогано.</translation>
+<translation id="1992750560347846445">Повідомити про сайт</translation>
+<translation id="2887186586339544116">Увімкнено режим "Тільки рекламний блок</translation>
+<translation id="673665019618844072">Наразі ви використовуєте режим "Тільки блокування реклами". Цей режим пропонує лише захист від блокування реклами. Якщо ви хочете повернутися до повного режиму екранів, вимкніть цей режим у налаштуваннях.</translation>
+<translation id="4820891023903368625">Реклама заблокована <ph name="LINK_BEFORE"/>Дізнайтеся більше<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Заблоковано стеження, рекламу тощо. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Не захищено щитами Brave <ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Розширені налаштування</translation>
@@ -2477,7 +2536,6 @@
 <translation id="8034285923190068220">Дозволити розпізнавання відбитку пальця</translation>
 <translation id="7638541189782135885">Не оновлювати HTTP-з’‎єднання</translation>
 <translation id="2570787596946026998">Підключатися лише за допомогою HTTPS</translation>
-<translation id="1992750560347846445">Повідомити про сайт</translation>
 <translation id="2387532482048804818">Повідомте нам, якщо сайт не працював належним чином із увімкненими щитами.</translation>
 <translation id="3795015906457257780">Ви переглядаєте цей сайт без захисту приватності Brave.</translation>
 <translation id="7194012750329511146">Щити Brave

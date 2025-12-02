@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Hírlevél felugró ablak</translation>
 <translation id="6136090320163235283">Közösségi widget</translation>
 <translation id="6657720240983439091">Chat widget</translation>
+<translation id="3597441883564676263">Nem támogatott böngésző</translation>
 <translation id="7138678301420049075">Egyéb</translation>
 <translation id="4046860372562593546">Brave hirdetések kezelése</translation>
 <translation id="5136973036012418831">Határozza meg, milyen típusú Brave hirdetéseket lásson, és milyen gyakran.</translation>
@@ -2227,6 +2228,24 @@
 <translation id="7488762544858401571">Szerkesztve</translation>
 <translation id="5604254791550001355">Kérdés szerkesztése</translation>
 <translation id="8115786586976830777">Kérdés másolása</translation>
+<translation id="3666616415490815310">Képességként mentés</translation>
+<translation id="6574544364990812112">Képességeim</translation>
+<translation id="6696824203401957025">Új készség</translation>
+<translation id="6410279677882692627">A készségek a [/] eszközökben jelennek meg, és az alább beállított "/név" beírásával érhetők el.</translation>
+<translation id="1344606707744657196">Modell a prompthoz</translation>
+<translation id="8458341576712814616">Parancsikon</translation>
+<translation id="1326559827339317236">Írja be a parancsikonját ide</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Írja be a kérését ide</translation>
+<translation id="900733896273558337">Képesség szerkesztése</translation>
+<translation id="7662963028545588801">Képesség törlése</translation>
+<translation id="4209790625997566418">Biztos, hogy törölni akarod ezt a képességet? Ezt a műveletet nem lehet visszacsinálni.</translation>
+<translation id="7161540406494327389">Shortcut szükséges</translation>
+<translation id="3722223049736774445">A rövidítés csak betűket, számokat, aláhúzást és kötőjelet tartalmazhat.</translation>
+<translation id="6997214168632888867">A rövidítésnek legfeljebb 64 karakterből kell állnia</translation>
+<translation id="2806891468525657116">A parancsikon már létezik</translation>
+<translation id="5497501845974700950">Prompt szükséges</translation>
+<translation id="5642369858603376334">A felszólításnak legfeljebb 5000 karakterből kell állnia</translation>
 <translation id="1406205536570262057">Válasz szerkesztése</translation>
 <translation id="3386725253392845084">Ugyanaz a modell újrapróbálása</translation>
 <translation id="2461822463642141190">Jelenlegi</translation>
@@ -2264,13 +2283,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> és sok minden más…</translation>
 <translation id="8103700533980268469">Üzenet bezárása</translation>
 <translation id="3417835166382867856">Lapok közötti keresés</translation>
+<translation id="3828029223314399057">Keresés könyvjelzők</translation>
+<translation id="381480092025168632">Keresés a böngésző előzményeiben</translation>
 <translation id="7311244614769792472">Nincs találat</translation>
 <translation id="3112448569149476523">Kérjük, próbáljon ki egy másik keresést</translation>
 <translation id="1352836459737874921">Tartalom hozzáadása a többi lapról</translation>
+<translation id="7173836072258346701">Tartalom csatolása könyvjelzőkből</translation>
+<translation id="163680814308917875">Tartalom csatolása a böngésző előzményeiből</translation>
 <translation id="7039179822221107025">Ossza meg a lap tartalmát, hogy Leo pontosabban tudjon segíteni.</translation>
+<translation id="1602382615168212961">Küldjön oldaltartalmat a könyvjelzőiben lévő lapokról, hogy Leónak több kontextust adjon a beszélgetéshez.</translation>
+<translation id="4808122506413075135">Küldjön oldaltartalmat a böngésző előzményeiből, hogy Leónak több kontextust adjon a beszélgetéshez.</translation>
 <translation id="220541218939267992">Az oldal tartalma Leóhoz kerül az üzenetekkel együtt.</translation>
-<translation id="1446346932629101482">A lap tartalmát is megoszthatja kontextusként. Ez az üzeneteivel együtt továbbításra kerül a Leóhoz.</translation>
-<translation id="7193316103691252734">Nincs egyező lap</translation>
+<translation id="8164365899016970783">Függelék és könyvjelző tartalmának hozzáadása a kontextushoz. A tartalmakat az üzenetekkel együtt elküldi Leónak.</translation>
+<translation id="6237410387937453423">Nincsenek megfelelő mellékletek</translation>
+<translation id="8076492880354921740">Lapok</translation>
 <translation id="2315654674554095762">A Leo mostantól emlékezni fog a beszélgetéseire, hogy visszatérhessen hozzájuk. A beszélgetések titkosítva tárolódnak a készülékén, és bármikor törölheti őket.</translation>
 <translation id="7821251979960635244">A beszélgetés előzményei itt jelennek meg, amint elkezd egy beszélgetést.</translation>
 <translation id="887511360213807449">Előzmények letiltása</translation>
@@ -2329,7 +2355,9 @@
 <translation id="4250229828105606438">Képernyőkép</translation>
 <translation id="7949596341600215809">Teljes oldalas képernyőkép</translation>
 <translation id="6332876390231524389">Aktuális lap tartalma</translation>
-<translation id="7742969455167760092">Aktív böngészőlapok...</translation>
+<translation id="6397861830483632092">Megnyílt lapok…</translation>
+<translation id="802080272588201037">Könyvjelzők…</translation>
+<translation id="2716127283451902393">Történelem…</translation>
 <translation id="49269513399674318">Mikrofon használata</translation>
 <translation id="3895031624234442305">Egyedi modellek</translation>
 <translation id="4572010449071015143">Új beszélgetés indítása</translation>
@@ -2341,6 +2369,22 @@
 <translation id="2593275000606533518">Összes kezelése</translation>
 <translation id="8410199626695516952">Oké, erre nem fogok emlékezni</translation>
 <translation id="8419849467765474535">A memória mentése sikertelen. Próbálja meg újra.</translation>
+<translation id="5517580030864973329">Navigálás a weboldalon egy új címre</translation>
+<translation id="8832457834975923266">Navigált a weboldalra <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progress</translation>
+<translation id="8332385567036775056">Lépések</translation>
+<translation id="4521931942079977149">Kattintás az oldalra</translation>
+<translation id="7732267913911704962">Húzás és ejtés az oldalon</translation>
+<translation id="7703800915509570212">Navigálás vissza</translation>
+<translation id="4875586490950981498">Navigálás előre</translation>
+<translation id="738881387603843066">Az egér mozgatása</translation>
+<translation id="4850669014075537160">Görgetés</translation>
+<translation id="1265072406500460724">Kiválasztás egy legördülő listából</translation>
+<translation id="7573920298077917439">Szöveg beírása</translation>
+<translation id="4089034800311309656">Várva az oldalra</translation>
+<translation id="4798146464408730445">Nem találtak készségeket. Hozzon létre egy újat az "Új" gombra kattintva.</translation>
+<translation id="271033894570825754">Új</translation>
+<translation id="8266605059880650542">Néhány információ feljegyzése a későbbiekre az oldalról</translation>
 <translation id="3486480638399578250">Tartsd privátan a személyes e-mail címedet</translation>
 <translation id="7765422154906712751">Hozz létre egyedi, véletlenszerű címeket, amelyek továbbítják a Brave fiókod emailjére, és bármikor törölhetők. Ne fedje fel a valódi e-mail címét a hirdetők számára.</translation>
 <translation id="5222676887888702881">Kijelentkezés</translation>
@@ -2386,6 +2430,10 @@
 <translation id="7508412964869396375">A Brave-fiók szolgáltatás nem küldött ellenőrző tokent</translation>
 <translation id="3179527991526213624">A Brave-fiók szolgáltatás nem válaszol</translation>
 <translation id="7911439408853154309">Az e-mail ellenőrzés sikertelen</translation>
+<translation id="2595463802839066496">Nincs válasz az Email Alias szolgáltatásból</translation>
+<translation id="367191282389216837">Érvénytelen válasz az Email Aliases szolgáltatástól</translation>
+<translation id="7203490731644771170">Email Aliases szolgáltatás hiba: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Hiba: Alias nem elérhető</translation>
 <translation id="8370801182970639038">Automatikus (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Keresőmotorok aktiválva</translation>
 <translation id="8285901519864208412">Jutalmak kártya elrejtése</translation>
@@ -2431,8 +2479,19 @@
 <translation id="8458987127502506209">Brave pajzsok engedélyezése</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>A Shields aktív<ph name="STATUS_AFTER"/> ezen az oldalon</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>A Shields inaktív<ph name="STATUS_AFTER"/> ezen az oldalon</translation>
-<translation id="5623354834493649144">Ha az oldal nem működik megfelelően, próbálja meg kikapcsolni a védelmet.
-   <ph name="NOTE_BEFORE"/>Figyelem: ezzel csökkenhet a Brave adatvédelme..<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Ha ez az oldal töröttnek tűnik, próbálja meg a Shields down-t.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Megjegyzés: ez csökkentheti a Brave adatvédelmi védelmét.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Problémái vannak ezzel az oldallal?</translation>
+<translation id="9176447766421988172">Kipróbálunk egy kísérletet a weboldal kompatibilitásának növelése érdekében, ahol csak a reklámblokkolást tartjuk engedélyezve. Figyelmeztetés: eltávolít minden adatvédelmi védelmet. Szeretné kipróbálni? <ph name="LINK_BEFORE"/>További információk<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Felhívjuk figyelmét, hogy a Brave adatvédelmi védelme által megzavart egyes weboldalak esetében a Pajzsok leállítását lefelé állíthatja.</translation>
+<translation id="1836572675775891780">Csak reklámblokkolás mód engedélyezése</translation>
+<translation id="6623668214089604469">Most már megfelelően működik az oldal?</translation>
+<translation id="8978860854770042258">Kérjük, fontolja meg egy jelentés elküldését, ha ez az oldal még mindig nem működik.</translation>
+<translation id="4677356505199464553">Jól néz ki</translation>
+<translation id="1992750560347846445">Webhely bejelentése kifogásolhatóként</translation>
+<translation id="2887186586339544116">Csak reklámblokkolás mód engedélyezve</translation>
+<translation id="673665019618844072">Ön jelenleg a Csak reklámblokkolás módot használja. Ez az üzemmód csak reklámblokkoló védelmet nyújt. Ha vissza szeretne térni a teljes Pajzs módhoz, tiltsa le ezt a módot a beállítások között.</translation>
+<translation id="4820891023903368625">Hirdetések blokkolva <ph name="LINK_BEFORE"/>További információk<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Nyomkövetők, hirdetések és még több blokkolva <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nincs felállítva a Brave pajzsok általi védelem<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
@@ -2466,7 +2525,6 @@
 <translation id="8034285923190068220">Ujjlenyomat-leolvasás engedélyezése</translation>
 <translation id="7638541189782135885">Ne frissítse a HTTP-kapcsolatokat</translation>
 <translation id="2570787596946026998">Csak HTTPS-en keresztül kapcsolódjon</translation>
-<translation id="1992750560347846445">Webhely bejelentése kifogásolhatóként</translation>
 <translation id="2387532482048804818">Értesítsen minket, ha a webhely nem működött megfelelően engedélyezett pajzsokkal.</translation>
 <translation id="3795015906457257780">Ezt a webhelyet a Brave adatvédelme nélkül tekinti meg.</translation>
 <translation id="7194012750329511146">Brave pajzsok
