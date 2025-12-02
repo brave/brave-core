@@ -19,7 +19,7 @@ action("sign_app_convert_aab_to_apk") {
 
   deps = [ ":sign_app" ]
 
-  target_aab_path = "$root_out_dir/apks/MonochromePublic64.aab"
+  target_aab_path = "$root_out_dir/apks/ChromePublic.aab"
   output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
   output_path = "$root_out_dir/apks/"
   bundletool =
@@ -51,30 +51,12 @@ action("sign_app") {
     "//brave:create_symbols_dist",
   ]
 
-  if (target_cpu == "arm64" || target_cpu == "x64") {
-    if (target_android_output_format == "aab") {
-      target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.aab"
-    } else {
-      if (defined(android_app_secondary_abi)) {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
-      } else {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.apk"
-      }
-    }
+  if (target_android_output_format == "aab") {
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.aab"
+  } else if (target_cpu == "arm" || target_cpu == "x86") {
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
   } else {
-    if (target_android_base == "mono") {
-      if (target_android_output_format == "aab") {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.aab"
-      } else {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
-      }
-    } else {
-      if (target_android_output_format == "aab") {
-        target_sign_app_path = "$root_out_dir/apks/ChromeModernPublic.aab"
-      } else {
-        target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
-      }
-    }
+    target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.apk"
   }
 
   outputs = [ "$brave_android_output-sign-result" ]
@@ -103,37 +85,64 @@ action("sign_app") {
   }
 }
 
+# Some configurations need mapping file name adjustment to match
+# previous filename on CI.
+needs_mapping_rename =
+    enable_proguard_obfuscation && !is_java_debug && !is_debug
+
+if (needs_mapping_rename) {
+  copy("brave_mappings") {
+    visibility = [ ":*" ]
+    deps = []
+    sources = []
+    outputs = []
+
+    if (target_android_output_format == "aab") {
+      deps += [ "//chrome/android:chrome_public_bundle__dex__r8" ]
+      if (target_cpu == "arm64" || target_cpu == "x64") {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic64.aab.mapping" ]
+      } else {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic.aab.mapping" ]
+      }
+    } else {
+      if (target_cpu == "arm" || target_cpu == "x86") {
+        deps += [ "//chrome/android:chrome_public_apk__final_dex__r8" ]
+        sources += [ "$root_out_dir/apks/ChromePublic.apk.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
+      } else {
+        # apk arm64 or x64
+        deps += [ "//chrome/android:monochrome_64_public_apk__final_dex__r8" ]
+        sources += [ "$root_out_dir/apks/MonochromePublic64.apk.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
+      }
+    }
+  }
+}
+
 copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  if (target_cpu == "arm64" || target_cpu == "x64") {
-    if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:monochrome_64_public_bundle" ]
-      sources += [ "$root_out_dir/apks/MonochromePublic64.aab" ]
-    } else {
-      if (defined(android_app_secondary_abi)) {
-        deps += [ "//chrome/android:monochrome_64_32_public_apk" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
-      } else {
-        deps += [ "//chrome/android:monochrome_64_public_apk" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
-      }
-    }
+
+  if (needs_mapping_rename) {
+    deps += [ ":brave_mappings" ]
+  }
+
+  if (target_android_output_format == "aab") {
+    deps += [ "//chrome/android:chrome_public_bundle" ]
+    sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
   } else {
-    if (target_android_base == "mono") {
-      if (target_android_output_format == "aab") {
-        deps += [ "//chrome/android:monochrome_public_bundle" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic.aab" ]
-      } else {
-        deps += [ "//chrome/android:monochrome_public_apk" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
-      }
+    if (target_cpu == "arm64" || target_cpu == "x64") {
+      deps += [ "//chrome/android:monochrome_64_public_apk" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
     } else {
       deps += [ "//chrome/android:chrome_public_apk" ]
       sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
     }
   }
+
   outputs = [ brave_android_output ]
 }
 

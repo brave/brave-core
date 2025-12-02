@@ -57,9 +57,11 @@ program
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
+  // TODO(https://github.com/brave/brave-browser/issues/51200)
+  // Cleanup target_android_base once cr144 reaches stable channel
   .option(
     '--target_android_base <target_android_base>',
-    'target Android OS apk (classic, modern, mono)',
+    'Deprecated. Target Android OS apk (classic, modern, mono)',
     'classic',
   )
   .option(
@@ -197,9 +199,11 @@ program
     '--target <target>',
     'Comma-separated list of targets to build, instead of the default browser target',
   )
+  // TODO(https://github.com/brave/brave-browser/issues/51200)
+  // Cleanup target_android_base once cr144 reaches stable channel
   .option(
     '--target_android_base <target_android_base>',
-    'target Android SDK level for apk or aab (classic, modern, mono)',
+    'Deprecated. Target Android SDK level for apk or aab (classic, modern, mono)',
     'classic',
   )
   .option(
