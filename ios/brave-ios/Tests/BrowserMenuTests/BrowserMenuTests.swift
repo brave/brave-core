@@ -319,14 +319,16 @@ class BrowserMenuTests: XCTestCase {
           countryCode: "CA",
           displayName: "ca-east",
           smartProxySupported: false
-        )
+        ),
+        isSmartProxyRoutingEnabled: false
       )
     )
     await fulfillment(of: [e], timeout: 1)
     switch model.vpnStatus {
-    case .connected(let region):
+    case .connected(let region, let isSmartProxyEnabled):
       XCTAssertEqual(region.flag, "🇨🇦")
       XCTAssertEqual(region.displayName, "ca-east")
+      XCTAssertFalse(isSmartProxyEnabled)
     case .disconnected:
       XCTFail("VPN Region is wrong")
     }
