@@ -16,8 +16,6 @@ const wchar_t kCompanyPathName[] = L"BraveSoftware";
 #if defined(OFFICIAL_BUILD)
 const wchar_t kProductPathName[] = L"Brave-Browser";
 #else
-// If you change this, then you also need to change occurrences of this string
-// in mini_installer_constants.cc.
 const wchar_t kProductPathName[] = L"Brave-Browser-Development";
 #endif
 
