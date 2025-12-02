@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 #include <set>
 #include <string>
@@ -14,6 +15,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/browser/service/network_client.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -48,6 +51,10 @@ class AdsTabHelper final : public content::WebContentsObserver,
   ~AdsTabHelper() override;
 
   AdsService* ads_service() { return ads_service_; }
+
+  void SetSearchWidgetAsEntryPoint(bool is_search_widget_entry_point) {
+    is_search_widget_entry_point_ = is_search_widget_entry_point;
+  }
 
   void SetAdsServiceForTesting(AdsService* ads_service);
 
@@ -112,6 +119,29 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
+
+  void MaybeReportSearchQueryMetric(
+      content::NavigationHandle* navigation_handle);
+  void ReportSearchQueryMetric(const std::string& payload);
+  void ReportSearchQueryMetricCallback(
+      mojom::UrlResponseInfoPtr mojom_url_response);
+  std::optional<std::string> MaybeBuildSearchQueryMetricPayload(
+      const GURL& url,
+      ui::PageTransition page_transition);
+  std::optional<std::string> Country() const;
+  std::string CreatedAt() const;
+  std::optional<std::string> DefaultSearchEngine() const;
+  std::string EntryPoint(ui::PageTransition page_transition);
+  bool IsDefaultBrowser() const;
+  bool IsFirstQuery() const;
+  std::string Language() const;
+  std::string Platform() const;
+  std::optional<std::string> SearchEngine(const GURL& url) const;
+  std::string TransactionId() const;
+  void LogEntryPointForDebugging(ui::PageTransition page_transition) const;
+  bool is_search_widget_entry_point_ = false;
+  bool is_bookmark_entry_point_ = false;
+  std::unique_ptr<NetworkClient> network_client_;
 
   SessionID session_id_;
 

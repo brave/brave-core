@@ -14,7 +14,9 @@ namespace brave_ads {
 
 const std::vector<SearchEngineInfo>& GetSearchEngines() {
   static const base::NoDestructor<std::vector<SearchEngineInfo>> kSearchEngines(
-      {{"https://ask.com/", "https://ask.com/web", "q"},
+      {{"https://chatgpt.com/", "https://chatgpt.com/", "q"},
+       {"https://perplexity.ai/", "https://perplexity.ai/search", "q"},
+       {"https://ask.com/", "https://ask.com/web", "q"},
        {"https://developer.mozilla.org/(.*)/",
         "https://developer.mozilla.org/(.*)/search", "q"},
        {"https://duckduckgo.com/", "https://duckduckgo.com/", "q"},

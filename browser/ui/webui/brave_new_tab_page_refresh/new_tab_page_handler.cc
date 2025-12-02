@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
@@ -282,6 +283,12 @@ void NewTabPageHandler::ReportSearchEngineUsage(
 void NewTabPageHandler::ReportSearchResultUsage(
     int64_t engine_prepopulate_id,
     ReportSearchResultUsageCallback callback) {
+  auto* ads_tab_helper =
+      brave_ads::AdsTabHelper::FromWebContents(base::to_address(web_contents_));
+  if (ads_tab_helper) {
+    ads_tab_helper->SetSearchWidgetAsEntryPoint(true);
+  }
+
   new_tab_metrics_->ReportNTPSearchUsage(engine_prepopulate_id);
   std::move(callback).Run();
 }

@@ -7,23 +7,46 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/fixed_flat_set.h"
+#include "base/i18n/time_formatting.h"
+#include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
+#include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/shell_integration.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/default_search_manager.h"
+#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/search_engine_utils.h"
+#include "components/search_engines/template_url_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
+#include "components/variations/pref_names.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -31,6 +54,12 @@
 #endif
 
 namespace brave_ads {
+
+// TODO(tmancey): Persist this value across sessions. Currently, it is stored as
+// a global variable for proof-of-concept simplicity.
+static std::optional<base::Time> last_reported_search_query_metric_at;
+
+// TODO(tmancey): Add Griffin feature flag.
 
 namespace {
 
@@ -77,6 +106,22 @@ std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
                          id.frame_routing_id.frame_routing_id, id.player_id);
 }
 
+network::mojom::NetworkContext* GetNetworkContextForProfile(
+    content::BrowserContext* context) {
+  return context->GetDefaultStoragePartition()->GetNetworkContext();
+}
+
+constexpr auto kSupportedDefaultSearchEngines =
+    base::MakeFixedFlatSet<std::u16string>({u"Brave", u"Google", u"DuckDuckGo",
+                                            u"Qwant", u"Bing", u"Startpage",
+                                            u"Ecosia"});
+
+// TODO(tmancey): Remove KY, this was added temporarily for testing purposes
+// during development of the proof-of-concept.
+constexpr auto kSupportedCountries = base::MakeFixedFlatSet<std::string>(
+    {"BR", "CA", "CO", "DE", "ES", "FR", "GB", "IN", "IT", "JP", "KY", "MX",
+     "NL", "PH", "PL", "US"});
+
 }  // namespace
 
 AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
@@ -93,6 +138,15 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
   if (!ads_service_) {
     return;
   }
+
+  // TODO(tmancey): This should not be part of `AdsTabHelper` creation because
+  // these objects are destroyed when the user closes the tab. Included here
+  // only for proof-of-concept simplicity.
+  network_client_ = std::make_unique<NetworkClient>(
+      profile->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      base::BindRepeating(&GetNetworkContextForProfile,
+                          web_contents->GetBrowserContext()));
 
 #if !BUILDFLAG(IS_ANDROID)
   // See "background_helper_android.h" for Android.
@@ -384,6 +438,8 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidLoad();
 
+  MaybeReportSearchQueryMetric(navigation_handle);
+
   // Process same document navigations only when a document load is completed.
   // For navigations that lead to a document change, `ProcessNavigation` is
   // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
@@ -478,6 +534,349 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* /*browser*/) {
   MaybeSetBrowserIsNoLongerActive();
 }
 #endif
+
+std::optional<std::string> AdsTabHelper::MaybeBuildSearchQueryMetricPayload(
+    const GURL& url,
+    ui::PageTransition page_transition) {
+  std::optional<std::string> default_search_engine = DefaultSearchEngine();
+  if (!default_search_engine) {
+    LOG(INFO) << "[METRIC][DEBUG]: Unsupported default search engine";
+    return std::nullopt;
+  }
+
+  std::optional<std::string> search_engine = SearchEngine(url);
+  if (!search_engine) {
+    LOG(INFO) << "[METRIC][DEBUG]: Unsupported search engine";
+    return std::nullopt;
+  }
+
+  std::optional<std::string> country = Country();
+  if (!country) {
+    LOG(INFO) << "[METRIC][DEBUG]: Unsupported country";
+    return std::nullopt;
+  }
+
+  auto dict = base::Value::Dict()
+                  .Set("country", *country)
+                  .Set("createdAt", CreatedAt())
+                  .Set("defaultSearchEngine", *default_search_engine)
+                  .Set("entryPoint", EntryPoint(page_transition))
+                  .Set("isDefaultBrowser", IsDefaultBrowser())
+                  .Set("isFirstQuery", IsFirstQuery())
+                  .Set("language", Language())
+                  .Set("platform", Platform())
+                  .Set("searchEngine", *search_engine)
+                  .Set("transactionId", TransactionId())
+                  .Set("type", "query");
+  LOG(INFO) << "[METRIC][DEBUG]:\n" << dict;
+
+  std::string json;
+  CHECK(base::JSONWriter::Write(dict, &json));
+  return json;
+}
+
+void AdsTabHelper::MaybeReportSearchQueryMetric(
+    content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
+
+  if (!navigation_handle->HasUserGesture()) {
+    // Only report search query metrics for navigations with a user gesture.
+    return;
+  }
+
+  const GURL& url = navigation_handle->GetURL();
+
+  const ui::PageTransition page_transition =
+      navigation_handle->GetPageTransition();
+
+  if (url.host() != "search.brave.com") {
+    // If the user navigates away from `search.brave.com`, reset the search
+    // widget entry point.
+    is_search_widget_entry_point_ = false;
+  }
+
+  if (IsSearchEngine(url) &&
+      ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
+    is_bookmark_entry_point_ = true;
+  }
+
+  if (!IsSearchEngineResultsPage(url)) {
+    LOG(INFO) << "[METRIC][DEBUG]: Not a search engine results page";
+    return;
+  }
+
+  LogEntryPointForDebugging(page_transition);
+
+  if (std::optional<std::string> payload =
+          MaybeBuildSearchQueryMetricPayload(url, page_transition)) {
+    ReportSearchQueryMetric(*payload);
+  }
+
+  is_search_widget_entry_point_ = false;
+
+  is_bookmark_entry_point_ = false;
+}
+
+void AdsTabHelper::ReportSearchQueryMetric(const std::string& payload) {
+  last_reported_search_query_metric_at = base::Time::Now();
+
+  mojom::UrlRequestInfoPtr mojom_url_request = mojom::UrlRequestInfo::New();
+  mojom_url_request->url =
+      GURL("https://ohttp.metrics.bravesoftware.com/v1/ohttp/gateway");
+  mojom_url_request->headers = {"accept: application/json"};
+  mojom_url_request->content = payload;
+  mojom_url_request->content_type = "application/json";
+  mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
+  // TODO(tmancey): After https://github.com/brave/brave-browser/issues/50085
+  // merges, uncomment `use_ohttp = true` and add OHTTP key config, and relay
+  // URL endpoint support for metrics.
+  // mojom_url_request->use_ohttp = true;
+
+  LOG(INFO) << UrlRequestToString(mojom_url_request);
+
+  network_client_->SendRequest(
+      std::move(mojom_url_request),
+      base::BindOnce(&AdsTabHelper::ReportSearchQueryMetricCallback,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void AdsTabHelper::ReportSearchQueryMetricCallback(
+    mojom::UrlResponseInfoPtr mojom_url_response) {
+  CHECK(mojom_url_response);
+
+  LOG(INFO) << UrlResponseToString(*mojom_url_response);
+
+  if (mojom_url_response->code < 200 || mojom_url_response->code > 399) {
+    LOG(INFO) << "[METRIC] Failed to report search query metric";
+    return;
+  }
+
+  LOG(INFO) << "[METRIC] Successfully reported search query metric";
+}
+
+std::optional<std::string> AdsTabHelper::Country() const {
+  std::string country =
+      base::ToUpperASCII(g_browser_process->local_state()->GetString(
+          variations::prefs::kVariationsCountry));
+  if (!kSupportedCountries.contains(country)) {
+    // Unsupported country.
+    return std::nullopt;
+  }
+
+  return country;
+}
+
+std::string AdsTabHelper::CreatedAt() const {
+  return base::TimeFormatAsIso8601(base::Time::Now());
+}
+
+std::optional<std::string> AdsTabHelper::DefaultSearchEngine() const {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  TemplateURLService* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  const TemplateURL* template_url =
+      template_url_service->GetDefaultSearchProvider();
+  if (!template_url) {
+    // No default search engine.
+    return std::nullopt;
+  }
+
+  const std::u16string& short_name = template_url->short_name();
+  if (!kSupportedDefaultSearchEngines.contains(short_name)) {
+    // Unsupported default search engine.
+    return std::nullopt;
+  }
+
+  return base::UTF16ToUTF8(short_name);
+}
+
+std::string AdsTabHelper::EntryPoint(ui::PageTransition page_transition) {
+  if (is_search_widget_entry_point_) {
+    return "NTP";
+  }
+
+  if (is_bookmark_entry_point_ ||
+      ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
+    return "Bookmark";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_GENERATED)) {
+    return "Omnibox Search";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_KEYWORD)) {
+    return "Shortcut";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_FORM_SUBMIT)) {
+    return "Direct";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition, ui::PAGE_TRANSITION_LINK)) {
+    return "Top Site";
+  }
+
+  // TODO(tmancey): Add support for mobile quick search entry point.
+
+  // TODO(tmancey): Add support for omnibox history entry point.
+
+  // TODO(tmancey): Should we return "Other" for an unrecognized entry point?
+  return "Other";
+}
+
+bool AdsTabHelper::IsDefaultBrowser() const {
+  shell_integration::DefaultWebClientState state =
+      shell_integration::GetDefaultBrowser();
+  return state == shell_integration::IS_DEFAULT ||
+         state == shell_integration::OTHER_MODE_IS_DEFAULT;
+}
+
+bool AdsTabHelper::IsFirstQuery() const {
+  if (!last_reported_search_query_metric_at) {
+    // First search query ever.
+    return true;
+  }
+
+  base::Time::Exploded now_exploded;
+  base::Time::Now().LocalExplode(&now_exploded);
+
+  base::Time::Exploded last_reported_at_exploded;
+  last_reported_search_query_metric_at->LocalExplode(
+      &last_reported_at_exploded);
+
+  return now_exploded.year != last_reported_at_exploded.year ||
+         now_exploded.month != last_reported_at_exploded.month ||
+         now_exploded.day_of_month != last_reported_at_exploded.day_of_month;
+}
+
+std::string AdsTabHelper::Language() const {
+  return g_browser_process->GetApplicationLocale();
+}
+
+std::string AdsTabHelper::Platform() const {
+#if BUILDFLAG(IS_MAC)
+  return "macOS";
+#elif BUILDFLAG(IS_WIN)
+  return "Windows";
+#elif BUILDFLAG(IS_LINUX)
+  return "Linux";
+#elif BUILDFLAG(IS_ANDROID)
+  return "Android";
+#elif BUILDFLAG(IS_IOS)
+  return "iOS";
+#else
+  return "Unknown";
+#endif
+}
+
+std::optional<std::string> AdsTabHelper::SearchEngine(const GURL& url) const {
+  if (!url.is_valid()) {
+    // Invalid URL.
+    return std::nullopt;
+  }
+
+  switch (search_engine_utils::GetEngineType(url)) {
+    case SEARCH_ENGINE_BRAVE:
+      return "Brave";
+    case SEARCH_ENGINE_GOOGLE:
+      return "Google";
+    case SEARCH_ENGINE_BING:
+      return "Bing";
+    case SEARCH_ENGINE_DUCKDUCKGO:
+      return "DuckDuckGo";
+    default:
+      break;
+  }
+
+  if (url.host() == "yahoo.co.jp") {
+    return "Yahoo JP";
+  }
+
+  if (url.host() == "chatgpt.com") {
+    return "ChatGPT";
+  }
+
+  if (url.host() == "perplexity.ai") {
+    return "Perplexity";
+  }
+
+  // Unsupported search engine.
+  return std::nullopt;
+}
+
+std::string AdsTabHelper::TransactionId() const {
+  return base::Uuid::GenerateRandomV4().AsLowercaseString();
+}
+
+void AdsTabHelper::LogEntryPointForDebugging(
+    ui::PageTransition page_transition) const {
+  LOG(INFO) << "[METRIC][DEBUG] Entry point for debugging:";
+
+  if (ui::PageTransitionCoreTypeIs(page_transition, ui::PAGE_TRANSITION_LINK)) {
+    LOG(INFO) << "  PAGE_TRANSITION_LINK";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_TYPED)) {
+    LOG(INFO) << "  PAGE_TRANSITION_TYPED";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_AUTO_BOOKMARK)) {
+    LOG(INFO) << "  PAGE_TRANSITION_AUTO_BOOKMARK";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_AUTO_SUBFRAME)) {
+    LOG(INFO) << "  PAGE_TRANSITION_AUTO_SUBFRAME";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_MANUAL_SUBFRAME)) {
+    LOG(INFO) << "  PAGE_TRANSITION_MANUAL_SUBFRAME";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_GENERATED)) {
+    LOG(INFO) << "  PAGE_TRANSITION_GENERATED";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_AUTO_TOPLEVEL)) {
+    LOG(INFO) << "  PAGE_TRANSITION_AUTO_TOPLEVEL";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_FORM_SUBMIT)) {
+    LOG(INFO) << "  PAGE_TRANSITION_FORM_SUBMIT";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_RELOAD)) {
+    LOG(INFO) << "  PAGE_TRANSITION_RELOAD";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_KEYWORD)) {
+    LOG(INFO) << "  PAGE_TRANSITION_KEYWORD";
+  }
+
+  if (ui::PageTransitionCoreTypeIs(page_transition,
+                                   ui::PAGE_TRANSITION_KEYWORD_GENERATED)) {
+    LOG(INFO) << "  PAGE_TRANSITION_KEYWORD_GENERATED";
+  }
+
+  if ((ui::PageTransitionGetQualifier(page_transition) &
+       ui::PAGE_TRANSITION_FROM_ADDRESS_BAR) != 0) {
+    LOG(INFO) << "  PAGE_TRANSITION_FROM_ADDRESS_BAR";
+  }
+}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper);
 
