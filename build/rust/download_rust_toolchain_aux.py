@@ -68,7 +68,7 @@ def main():
     with tempfile.TemporaryDirectory(dir=RUST_TOOLCHAIN) as temp_dir:
         try:
             deps.DownloadAndUnpack(
-                f'{deps_config.DEPS_PACKAGES_URL}/rust-toolchain-aux/{build_rust_toolchain_aux.package_name()}',
+                f'{deps_config.DEPS_PACKAGES_URL}/rust-toolchain-aux-temp/{build_rust_toolchain_aux.package_name()}',
                 temp_dir)
             install_package(temp_dir)
             save_package_name()
