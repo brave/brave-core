@@ -100,6 +100,7 @@ export function ConfirmSendTransaction() {
     isConfirmButtonDisabled,
     isAccountSyncing,
     isShieldingFunds,
+    isUnshieldingFunds,
     insufficientFundsForGasError,
     insufficientFundsError,
   } = usePendingTransactions()
@@ -170,7 +171,9 @@ export function ConfirmSendTransaction() {
           title={
             isShieldingFunds
               ? getLocale('braveWalletConfirmShield')
-              : getLocale('braveWalletConfirmSend')
+              : isUnshieldingFunds
+                ? getLocale('braveWalletConfirmUnshield')
+                : getLocale('braveWalletConfirmSend')
           }
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
@@ -324,6 +327,7 @@ export function ConfirmSendTransaction() {
           isConfirmButtonDisabled={isConfirmButtonDisabled}
           isAccountSyncing={isAccountSyncing}
           isShieldingFunds={isShieldingFunds}
+          isUnshieldingFunds={isUnshieldingFunds}
         />
       </StyledWrapper>
 
