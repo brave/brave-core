@@ -25,34 +25,32 @@ const ToolEventCodeExecution: ToolComponent = (props) => {
 
   const content: ToolUseContent = {
     toolLabel: props.content.toolLabel,
-    expandedContent: (
+    expandedContent: jsCode && (
       <div className={styles.codeExecutionTool}>
-        {jsCode && (
-          <div className={styles.codeExecutionContent}>
-            <div className={styles.codeSection}>
-              <div className={styles.sectionLabel}>
-                {getLocale(S.CHAT_UI_CODE_EXECUTION_CODE_LABEL)}
-              </div>
-              <CodeBlock.Block
-                code={jsCode}
-                lang='javascript'
-              />
+        <div className={styles.codeExecutionContent}>
+          <div className={styles.codeSection}>
+            <div className={styles.sectionLabel}>
+              {getLocale(S.CHAT_UI_CODE_EXECUTION_CODE_LABEL)}
             </div>
-            {output && (
-              <div className={styles.outputSection}>
-                <div className={styles.sectionLabel}>
-                  {getLocale(S.CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL)}
-                </div>
-                <div className={styles.outputContent}>
-                  <CodeBlock.Block
-                    code={output}
-                    lang='text'
-                  />
-                </div>
-              </div>
-            )}
+            <CodeBlock.Block
+              code={jsCode}
+              lang='javascript'
+            />
           </div>
-        )}
+          {output && (
+            <div className={styles.outputSection}>
+              <div className={styles.sectionLabel}>
+                {getLocale(S.CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL)}
+              </div>
+              <div className={styles.outputContent}>
+                <CodeBlock.Block
+                  code={output}
+                  lang='text'
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     ),
   }
