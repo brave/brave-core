@@ -26,6 +26,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   isGenerating: false,
   isToolExecuting: false,
   toolUseTaskState: Mojom.TaskState.kNone,
+  isPremiumUser: false,
   isLeoModel: true,
   allModels: [],
   currentModelKey: '',

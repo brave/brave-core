@@ -1947,6 +1947,7 @@ ConversationHandler::GetStateForConversationEntries() {
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
   entries_state->conversation_capability = conversation_capability_;
+  entries_state->is_premium_user = ai_chat_service_->IsPremiumStatus();
   return entries_state;
 }
 
