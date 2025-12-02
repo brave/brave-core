@@ -33,10 +33,16 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
-    tab.aiChatWebUIHelper = .init(tab: tab)
+    tab.aiChatWebUIHelper = .init(
+      tab: tab,
+      webDelegate: tab.leoTabHelper,
+      braveTalkJavascript: braveTalkJitsiCoordinator
+    )
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }
+    // Temporarily always assoicate the currently selected tab
+    tab.aiChatWebUIHelper?.associatedTab = tabManager.selectedTab
     tab.walletWebUIHelper = .init(
       tab: tab,
       showWalletBackUpHandler: { [weak self] in

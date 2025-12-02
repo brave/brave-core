@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,6 +30,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/ios/common.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
@@ -41,6 +43,7 @@
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
+#include "ios/web/public/web_state_observer.h"
 #include "net/base/apple/url_conversions.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/data_decoder/public/mojom/data_decoder_service.mojom.h"
@@ -109,6 +112,17 @@ void DecodeImageUsingServiceProcess(
 
 }  // namespace
 
+AIChatUIPageHandler::ChatContextObserver::ChatContextObserver(
+    web::WebState* web_state,
+    AIChatUIPageHandler& page_handler)
+    : web_state_(web_state), page_handler_(page_handler) {
+  web_state_->AddObserver(this);
+}
+
+AIChatUIPageHandler::ChatContextObserver::~ChatContextObserver() {
+  web_state_->RemoveObserver(this);
+}
+
 AIChatUIPageHandler::AIChatUIPageHandler(
     web::WebState* owner_web_state,
     web::WebState* chat_context_web_state,
@@ -123,10 +137,11 @@ AIChatUIPageHandler::AIChatUIPageHandler(
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
   if (!is_standalone) {
-    // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-    // non-standalone Leo AI
-    // Typically this would create a tab helper and associate it with the chat
-    // context WebState so we can create a new conversation on navigation
+    ai_chat_tab_helper_ = ai_chat::AIChatTabHelper::GetOrCreateForWebState(
+        chat_context_web_state);
+    associated_content_delegate_observation_.Observe(ai_chat_tab_helper_);
+    chat_context_observer_ =
+        std::make_unique<ChatContextObserver>(chat_context_web_state, *this);
   }
 }
 
@@ -290,9 +305,10 @@ void AIChatUIPageHandler::OnRequestArchive(
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
 
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
-  NOTIMPLEMENTED();
+  chat_ui_->OnNewDefaultConversation(
+      ai_chat_tab_helper_
+          ? std::make_optional(ai_chat_tab_helper_->content_id())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::CloseUI() {
@@ -303,22 +319,32 @@ void AIChatUIPageHandler::CloseUI() {
 
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                                     SetChatUICallback callback) {
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
   chat_ui_.Bind(std::move(chat_ui));
-  std::move(callback).Run(true);
-  chat_ui_->OnNewDefaultConversation(std::nullopt);
+  std::move(callback).Run(ai_chat_tab_helper_ == nullptr);
+
+  chat_ui_->OnNewDefaultConversation(
+      ai_chat_tab_helper_
+          ? std::make_optional(ai_chat_tab_helper_->content_id())
+          : std::nullopt);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   // For global panel, don't recall conversations by their associated tab
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI and call GetOrCreateConversationHandlerForContent if
-  // there is tab associated with this
+  if (!ai_chat_tab_helper_ || !conversations_are_content_associated_) {
+    ConversationHandler* conversation =
+        AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
+    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+    return;
+  }
+
   ConversationHandler* conversation =
-      AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
+      AIChatServiceFactory::GetForProfile(profile_)
+          ->GetOrCreateConversationHandlerForContent(
+              ai_chat_tab_helper_->content_id(),
+              ai_chat_tab_helper_->GetWeakPtr());
+
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
 
@@ -350,18 +376,33 @@ void AIChatUIPageHandler::NewConversation(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
   // For standalone or global panel, don't recall conversations by their
-  // associated tas.
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI and call CreateConversationHandlerForContent if there
-  // is tab associated with this
-  conversation =
-      AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
+  // associated tab.
+  if (ai_chat_tab_helper_ && conversations_are_content_associated_) {
+    conversation = AIChatServiceFactory::GetForProfile(profile_)
+                       ->CreateConversationHandlerForContent(
+                           ai_chat_tab_helper_->content_id(),
+                           ai_chat_tab_helper_->GetWeakPtr());
+  } else {
+    conversation =
+        AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
+  }
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
     mojo::PendingReceiver<mojom::ParentUIFrame> receiver) {
   chat_ui_->OnChildFrameBound(std::move(receiver));
+}
+
+void AIChatUIPageHandler::ChatContextObserver::WebStateDestroyed(
+    web::WebState* web_state) {
+  page_handler_->HandleWebStateDestroyed();
+}
+
+void AIChatUIPageHandler::HandleWebStateDestroyed() {
+  ai_chat_tab_helper_ = nullptr;
+  associated_content_delegate_observation_.Reset();
+  chat_context_observer_.reset();
 }
 
 }  // namespace ai_chat

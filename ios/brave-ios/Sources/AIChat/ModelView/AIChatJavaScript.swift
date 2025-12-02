@@ -6,7 +6,7 @@
 import Foundation
 import WebKit
 
-public protocol AIChatBraveTalkJavascript {
+public protocol AIChatBraveTalkJavascript: AnyObject {
   @MainActor
   func getTranscript() async -> String?
 }

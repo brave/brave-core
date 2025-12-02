@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
 @protocol WalletPageHandlerBridge;
+@protocol AIChatAssociatedContentPageFetcher;
 
 CWV_EXPORT
 @interface BraveNavigationAction : CWVNavigationAction
@@ -117,7 +118,9 @@ CWV_EXPORT
 CWV_EXPORT
 @interface BraveWebView (AIChatWebUI)
 /// A bridge for handling Leo AI WebUI page actions
-@property(nonatomic, weak, nullable) id<AIChatUIHandlerBridge> aiChatUIHandler;
+@property(nonatomic, weak, nullable)
+    id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
+        aiChatUIHandler;
 @end
 
 CWV_EXPORT

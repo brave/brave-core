@@ -23,6 +23,7 @@ source_set("web_view") {
   ]
   deps = [
     "//base",
+    "//brave/components/ai_chat/ios/browser",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/web_view/autofill",
     "//brave/ios/browser/api/web_view/passwords",
