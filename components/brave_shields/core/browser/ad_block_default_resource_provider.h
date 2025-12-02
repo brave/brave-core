@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DEFAULT_RESOURCE_PROVIDER_H_
 
-#include <string>
-
 #include "base/functional/callback.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
@@ -37,7 +35,7 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   base::FilePath GetResourcesPath();
 
   void LoadResources(
-      base::OnceCallback<void(const std::string& resources_json)>) override;
+      base::OnceCallback<void(AdblockResourceStorageBox)>) override;
 
  private:
   friend class ::AdBlockServiceTest;

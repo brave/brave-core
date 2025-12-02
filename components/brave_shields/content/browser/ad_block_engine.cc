@@ -162,12 +162,10 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
   }
 }
 
-void AdBlockEngine::UseResources(const std::string& resources) {
+void AdBlockEngine::UseResources(
+    const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  bool result = ad_block_client_->use_resources(resources);
-  if (!result) {
-    LOG(ERROR) << "AdBlockEngine::UseResources failed";
-  }
+  ad_block_client_->use_resource_storage(storage);
 }
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
@@ -244,23 +242,23 @@ base::Value::List AdBlockEngine::HiddenClassIdSelectors(
 
 void AdBlockEngine::Load(bool deserialize,
                          const DATFileDataBuffer& dat_buf,
-                         const std::string& resources_json) {
+                         const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (deserialize) {
-    OnDATLoaded(dat_buf, resources_json);
+    OnDATLoaded(dat_buf, storage);
   } else {
-    OnListSourceLoaded(dat_buf, resources_json);
+    OnListSourceLoaded(dat_buf, storage);
   }
 }
 
 void AdBlockEngine::Load(rust::Box<adblock::FilterSet> filter_set,
-                         const std::string& resources_json) {
-  OnFilterSetLoaded(std::move(filter_set), resources_json);
+                         const adblock::BraveCoreResourceStorage& storage) {
+  OnFilterSetLoaded(std::move(filter_set), storage);
 }
 
 void AdBlockEngine::UpdateAdBlockClient(
     rust::Box<adblock::Engine> ad_block_client,
-    const std::string& resources_json) {
+    const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   TRACE_EVENT("brave.adblock", "UpdateAdBlockClient");
@@ -268,7 +266,7 @@ void AdBlockEngine::UpdateAdBlockClient(
   if (regex_discard_policy_) {
     ad_block_client_->set_regex_discard_policy(*regex_discard_policy_);
   }
-  UseResources(resources_json);
+  UseResources(storage);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {
     test_observer_->OnEngineUpdated();
@@ -283,8 +281,9 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
   });
 }
 
-void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
-                                      const std::string& resources_json) {
+void AdBlockEngine::OnFilterSetLoaded(
+    rust::Box<adblock::FilterSet> filter_set,
+    const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   base::ElapsedTimer timer;
@@ -307,11 +306,12 @@ void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
             << result.error_message.c_str();
     return;
   }
-  UpdateAdBlockClient(std::move(result.value), resources_json);
+  UpdateAdBlockClient(std::move(result.value), storage);
 }
 
-void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
-                                       const std::string& resources_json) {
+void AdBlockEngine::OnListSourceLoaded(
+    const DATFileDataBuffer& filters,
+    const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   base::ElapsedTimer timer;
@@ -334,11 +334,12 @@ void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
                << result.error_message.c_str();
     return;
   }
-  UpdateAdBlockClient(std::move(result.value), resources_json);
+  UpdateAdBlockClient(std::move(result.value), storage);
 }
 
-void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
-                                const std::string& resources_json) {
+void AdBlockEngine::OnDATLoaded(
+    const DATFileDataBuffer& dat_buf,
+    const adblock::BraveCoreResourceStorage& storage) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // An empty buffer will not load successfully.
@@ -367,7 +368,7 @@ void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
     return;
   }
 
-  UpdateAdBlockClient(std::move(client), resources_json);
+  UpdateAdBlockClient(std::move(client), storage);
 }
 
 void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {

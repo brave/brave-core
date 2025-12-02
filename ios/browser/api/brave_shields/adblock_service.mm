@@ -30,8 +30,7 @@ namespace brave_shields {
 using OnFilterListUpdatedCallback =
     base::RepeatingCallback<void(bool is_default_engine)>;
 using OnFilterListCatalogLoadedCallback = base::RepeatingCallback<void()>;
-using OnResourceUpdatedCallback =
-    base::RepeatingCallback<void(const std::string& resources_json)>;
+using OnResourceUpdatedCallback = base::RepeatingCallback<void()>;
 
 /// This class listens to changes in the adblock filters provider and notifies
 class AdBlockServiceObserver : public AdBlockFiltersProvider::Observer {
@@ -79,7 +78,7 @@ class AdBlockResourceObserver : public AdBlockResourceProvider::Observer {
   explicit AdBlockResourceObserver(OnResourceUpdatedCallback callback);
 
   // AdBlockFilterListCatalogProvider::Observer
-  void OnResourcesLoaded(const std::string& resources_json) override;
+  void OnResourcesLoaded(AdblockResourceStorageBox) override;
 
  private:
   OnResourceUpdatedCallback callback_;
@@ -90,9 +89,10 @@ AdBlockResourceObserver::AdBlockResourceObserver(
     : callback_(callback) {}
 
 void AdBlockResourceObserver::OnResourcesLoaded(
-    const std::string& resources_json) {
-  callback_.Run(resources_json);
+    AdblockResourceStorageBox /*storage*/) {
+  callback_.Run();
 }
+
 }  // namespace brave_shields
 
 @interface AdblockService () {
@@ -155,12 +155,10 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   _catalogProvider->AddObserver(_catalogObserver.get());
 }
 
-- (void)registerResourcesChanges:(void (^)(NSString* resourcesJSON))callback {
+- (void)registerResourcesChanges:(void (^)())callback {
   _resourceObserver = std::make_unique<brave_shields::AdBlockResourceObserver>(
-      base::BindRepeating(^(const std::string& resources_json) {
-        const auto resourcesJSON = base::SysUTF8ToNSString(resources_json);
-        callback(resourcesJSON);
-      }));
+      base::BindRepeating(callback));
+
   _resourceProvider->AddObserver(_resourceObserver.get());
 }
 

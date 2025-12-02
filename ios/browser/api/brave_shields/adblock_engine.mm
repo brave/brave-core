@@ -216,7 +216,12 @@ class AdblockEngineBox final {
 }
 
 - (bool)useResources:(NSString*)resources {
-  return adblock_engine->use_resources(base::SysNSStringToUTF8(resources));
+  // TODO(https://github.com/brave/brave-browser/issues/51103):
+  // Reuse the once created storage for the both engines.
+  auto storage =
+      adblock::new_resource_storage(base::SysNSStringToUTF8(resources));
+  adblock_engine->use_resource_storage(*storage);
+  return true;
 }
 
 - (NSString*)cosmeticResourcesForURL:(NSString*)url {

@@ -28,9 +28,9 @@ void AdBlockResourceProvider::RemoveObserver(
 }
 
 void AdBlockResourceProvider::NotifyResourcesLoaded(
-    const std::string& resources_json) {
+    AdblockResourceStorageBox storage) {
   for (auto& observer : observers_) {
-    observer.OnResourcesLoaded(resources_json);
+    observer.OnResourcesLoaded(adblock::clone_resource_storage(*storage));
   }
 }
 

@@ -5,12 +5,13 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 
+#include "base/base64.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/json/json_reader.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -25,7 +26,7 @@ base::Value CreateResource(const std::string& name,
                            const std::string& content) {
   base::Value::Dict resource;
   resource.Set("name", name);
-  resource.Set("content", content);
+  resource.Set("content", base::Base64Encode(content));
   resource.SetByDottedPath("kind.mime", "application/javascript");
   return base::Value(std::move(resource));
 }
@@ -35,9 +36,10 @@ class TestResourceProvider : public AdBlockResourceProvider {
   TestResourceProvider() = default;
   ~TestResourceProvider() override = default;
 
-  void LoadResources(base::OnceCallback<void(const std::string& resources_json)>
-                         on_load) override {
-    std::move(on_load).Run(resources_json_);
+  void LoadResources(
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load) override {
+    auto storage = adblock::new_resource_storage(resources_json_);
+    std::move(on_load).Run(std::move(storage));
   }
 
   void SetResources(const std::string& resources_json) {
@@ -111,14 +113,11 @@ class AdBlockCustomResourceProviderTest : public ::testing::Test {
     return result.Take();
   }
 
-  base::Value LoadResources() {
-    base::test::TestFuture<const std::string&> result;
+  bool HasResource(const std::string& name) {
+    base::test::TestFuture<AdblockResourceStorageBox> result;
     custom_resource_provider()->LoadResources(result.GetCallback());
-    if (result.Get().empty()) {
-      return base::Value(base::ListValue());
-    }
-    return *base::JSONReader::Read(result.Take(),
-                                   base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+    auto storage = result.Take();
+    return adblock::has_resource_for_testing(*storage, name);
   }
 
  private:
@@ -264,29 +263,23 @@ TEST_F(AdBlockCustomResourceProviderTest, UpdateResource) {
 }
 
 TEST_F(AdBlockCustomResourceProviderTest, LoadResource) {
-  EXPECT_EQ(base::ListValue(), LoadResources());
+  EXPECT_FALSE(HasResource("default-1.js"));
 
   default_resource_provider()->SetResources(
       base::ListValue()
           .Append(CreateResource("default-1.js", "default-1"))
           .DebugString());
 
-  EXPECT_EQ(
-      base::ListValue().Append(CreateResource("default-1.js", "default-1")),
-      LoadResources());
+  EXPECT_TRUE(HasResource("default-1.js"));
 
   prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
   AddResource(CreateResource("user-1.js", "user-1"));
-  EXPECT_EQ(base::ListValue()
-                .Append(CreateResource("default-1.js", "default-1"))
-                .Append(CreateResource("user-1.js", "user-1")),
-            LoadResources());
+  EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_TRUE(HasResource("user-1.js"));
 
   prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, false);
-  EXPECT_EQ(base::ListValue()
-                .Append(CreateResource("default-1.js", "default-1"))
-                .Append(CreateResource("user-1.js", "user-1")),
-            LoadResources());
+  EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_TRUE(HasResource("user-1.js"));
 }
 
 }  // namespace brave_shields

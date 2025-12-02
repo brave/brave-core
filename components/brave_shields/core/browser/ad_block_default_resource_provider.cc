@@ -55,22 +55,31 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
     return;
   }
 
-  // Load the resources (as a string)
+  // Load the resources (as ResourceStorage)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      resources_path),
-      base::BindOnce(&AdBlockDefaultResourceProvider::NotifyResourcesLoaded,
-                     weak_factory_.GetWeakPtr()));
+      base::BindOnce(
+          [](base::WeakPtr<AdBlockDefaultResourceProvider> provider,
+             const std::string& resources_json) {
+            if (!provider) {
+              return;
+            }
+            auto storage = adblock::new_resource_storage(resources_json);
+            provider->NotifyResourcesLoaded(std::move(storage));
+          },
+          weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockDefaultResourceProvider::LoadResources(
-    base::OnceCallback<void(const std::string& resources_json)> cb) {
+    base::OnceCallback<void(AdblockResourceStorageBox)> cb) {
   base::FilePath resources_path = GetResourcesPath();
   if (resources_path.empty()) {
     // If the path is not ready yet, run the callback with empty resources to
     // avoid blocking filter data loads.
-    std::move(cb).Run("[]");
+    auto empty_storage = adblock::new_empty_resource_storage();
+    std::move(cb).Run(std::move(empty_storage));
     return;
   }
 
@@ -78,7 +87,13 @@ void AdBlockDefaultResourceProvider::LoadResources(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      resources_path),
-      std::move(cb));
+      base::BindOnce(
+          [](base::OnceCallback<void(AdblockResourceStorageBox)> cb,
+             const std::string& resources_json) {
+            auto storage = adblock::new_resource_storage(resources_json);
+            std::move(cb).Run(std::move(storage));
+          },
+          std::move(cb)));
 }
 
 }  // namespace brave_shields

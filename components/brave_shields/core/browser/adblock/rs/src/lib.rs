@@ -14,6 +14,7 @@ mod result;
 
 use engine::*;
 use filter_set::*;
+use resource_storage::*;
 
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = adblock)]
@@ -27,6 +28,19 @@ mod ffi {
             rules: &CxxVector<u8>,
             permission_mask: u8,
         ) -> FilterListMetadataResult;
+    }
+    extern "Rust" {
+        type BraveCoreResourceStorage;
+        fn new_resource_storage(resources_json: &CxxString) -> Box<BraveCoreResourceStorage>;
+        fn new_empty_resource_storage() -> Box<BraveCoreResourceStorage>;
+        fn clone_resource_storage(
+            storage: &BraveCoreResourceStorage,
+        ) -> Box<BraveCoreResourceStorage>;
+        fn extend_resource_storage(
+            storage: &BraveCoreResourceStorage,
+            additional_resources_json: &str,
+        ) -> Box<BraveCoreResourceStorage>;
+        fn has_resource_for_testing(storage: &BraveCoreResourceStorage, name: &CxxString) -> bool;
     }
     extern "Rust" {
         type Engine;
@@ -77,8 +91,8 @@ mod ffi {
         pub fn serialize(&self) -> Vec<u8>;
         /// Deserializes and loads a binary-serialized Engine.
         fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool;
-        /// Loads JSON-serialized resources into the engine resource set.
-        fn use_resources(&mut self, resources_json: &CxxString) -> bool;
+        /// Loads resources from a ResourceStorage instance into the engine.
+        fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage);
         /// Returns JSON-serialized cosmetic filter resources for a given url.
         fn url_cosmetic_resources(&self, url: &CxxString) -> String;
 
