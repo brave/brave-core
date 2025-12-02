@@ -75,7 +75,7 @@ extension BrowserViewController {
       if await walletStore.keyringStore.webUIValidation() == true {
         self.dismiss(animated: true) {
           self.tabManager.addTabAndSelect(
-            URLRequest(url: .brave.wallet),
+            URLRequest(url: .webUI.wallet.home),
             isPrivate: self.privateBrowsingManager.isPrivateBrowsing
           )
         }

@@ -343,7 +343,7 @@ public struct CryptoView: View {
           // wallet is unlocked from menu
           if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
             // need to open wallet webui
-            openWalletURLAction?(.brave.wallet)
+            openWalletURLAction?(.webUI.wallet.home)
           }
         } else if case .webUI(let action) = presentingContext {
           if action == .unlock {
