@@ -103,7 +103,6 @@ namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kClearBrowsingDataAndroidSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace android
