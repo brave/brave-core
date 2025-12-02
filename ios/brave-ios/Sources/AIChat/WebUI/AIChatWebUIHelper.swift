@@ -50,6 +50,11 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler {
 
   // MARK: - AIChatUIHandler
 
+  public func webViewForAssociatedContent() -> BraveWebView? {
+    // TODO: https://github.com/brave/brave-browser/issues/49451 Handle non-standalone mode
+    return nil
+  }
+
   public func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {
     guard let tab else {
       completion(nil)
