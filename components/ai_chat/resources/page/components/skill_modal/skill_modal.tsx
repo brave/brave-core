@@ -214,6 +214,11 @@ export default function SkillModal() {
                 model={model}
                 isCurrent={model.key === selectedModel}
                 showPremiumLabel={!aiChatContext.isPremiumUser}
+                isDisabled={
+                  !aiChatContext.isPremiumUser
+                  && model.options.leoModelOptions?.access
+                    === Mojom.ModelAccess.PREMIUM
+                }
               />
             ))}
           </Dropdown>

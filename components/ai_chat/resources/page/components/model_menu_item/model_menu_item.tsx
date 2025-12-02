@@ -18,12 +18,19 @@ interface ModelContentProps {
   isCurrent: boolean
   showDetails?: boolean
   showPremiumLabel?: boolean
+  isDisabled?: boolean
   onClickLearnMore?: () => void
 }
 
 const ModelContent = (props: ModelContentProps) => {
-  const { model, isCurrent, showDetails, showPremiumLabel, onClickLearnMore } =
-    props
+  const {
+    model,
+    isCurrent,
+    showDetails,
+    showPremiumLabel,
+    isDisabled,
+    onClickLearnMore,
+  } = props
 
   const isCustomModel = model.options.customModelOptions
   const isOllamaModel = !!(
@@ -91,6 +98,7 @@ const ModelContent = (props: ModelContentProps) => {
         className={classnames({
           [styles.modelIcon]: true,
           [styles.modelIconDetailed]: showDetails,
+          [styles.disabled]: isDisabled,
         })}
         data-key={model.key}
       >
@@ -98,7 +106,12 @@ const ModelContent = (props: ModelContentProps) => {
       </div>
       <div className={styles.column}>
         <div className={styles.nameAndLabel}>
-          <div className={styles.modelName}>
+          <div
+            className={classnames({
+              [styles.modelName]: true,
+              [styles.disabled]: isDisabled,
+            })}
+          >
             {model.displayName}
             {model.isNearModel && <NearIcon />}
           </div>
@@ -147,6 +160,7 @@ export function ModelMenuItem(props: MenuItemProps) {
     isCurrent,
     showDetails,
     showPremiumLabel,
+    isDisabled,
     onClick,
     onClickLearnMore,
   } = props
@@ -161,6 +175,7 @@ export function ModelMenuItem(props: MenuItemProps) {
         isCurrent={isCurrent}
         showPremiumLabel={showPremiumLabel}
         showDetails={showDetails}
+        isDisabled={isDisabled}
         onClickLearnMore={onClickLearnMore}
       />
     </leo-menu-item>
@@ -168,15 +183,23 @@ export function ModelMenuItem(props: MenuItemProps) {
 }
 
 export function ModelOption(props: ModelContentProps) {
-  const { model, isCurrent, showDetails, showPremiumLabel } = props
-  return (
-    <leo-option value={model.key}>
-      <ModelContent
-        model={model}
-        isCurrent={isCurrent}
-        showPremiumLabel={showPremiumLabel}
-        showDetails={showDetails}
-      />
-    </leo-option>
+  const { model, isCurrent, showDetails, showPremiumLabel, isDisabled } = props
+
+  const content = (
+    <ModelContent
+      model={model}
+      isCurrent={isCurrent}
+      showPremiumLabel={showPremiumLabel}
+      showDetails={showDetails}
+      isDisabled={isDisabled}
+    />
   )
+
+  // There is currently no way to disable a menu item in nala dropdowns,
+  // so we need to return as a div instead of a leo-option.
+  if (isDisabled) {
+    return <div className={styles.disabledOption}>{content}</div>
+  }
+
+  return <leo-option value={model.key}>{content}</leo-option>
 }
