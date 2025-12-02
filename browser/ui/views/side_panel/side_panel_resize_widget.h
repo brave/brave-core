@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_
 
 #include <memory>
 
@@ -13,8 +13,8 @@
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_delegate.h"
 
-class BraveSidePanel;
 class BraveBrowserView;
+class SidePanel;
 
 namespace views {
 class ResizeAreaDelegate;
@@ -23,11 +23,11 @@ class Widget;
 
 // Transparent widget that includes resize area only on side panel.
 // Need widget to get proper event on the webview of side panel.
-// BraveSidePanel owns this widget.
+// Brave's SidePanel owns this widget.
 class SidePanelResizeWidget : public views::ViewObserver,
                               public views::WidgetDelegate {
  public:
-  SidePanelResizeWidget(BraveSidePanel* panel,
+  SidePanelResizeWidget(SidePanel* panel,
                         BraveBrowserView* browser_view,
                         views::ResizeAreaDelegate* resize_area_delegate);
   ~SidePanelResizeWidget() override;
@@ -42,10 +42,10 @@ class SidePanelResizeWidget : public views::ViewObserver,
   void OnViewIsDeleting(views::View* observed_view) override;
 
  private:
-  raw_ptr<BraveSidePanel> panel_ = nullptr;
+  raw_ptr<SidePanel> panel_ = nullptr;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedMultiSourceObservation<views::View, views::ViewObserver>
       observations_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_RESIZE_WIDGET_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_RESIZE_WIDGET_H_

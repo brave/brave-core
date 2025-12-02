@@ -26,8 +26,8 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel.h"
-#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
+#include "brave/browser/ui/views/side_panel/side_panel.h"
+#include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
@@ -184,7 +184,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(GetSidebarContainerView()->operation_from_active_tab_change_);
   }
 
-  BraveSidePanel* GetSidePanel() const {
+  SidePanel* GetSidePanel() const {
     return GetSidebarContainerView()->side_panel_;
   }
 
@@ -648,16 +648,16 @@ class SidebarBrowserWithSplitViewTest
 
   // Use this when left split view is active.
   views::View* GetStartSplitContentsView() {
-      return browser_view()
-          ->GetBraveMultiContentsView()
-          ->GetActiveContentsContainerView();
+    return browser_view()
+        ->GetBraveMultiContentsView()
+        ->GetActiveContentsContainerView();
   }
 
   // Use this when left split view is active.
   views::View* GetEndSplitContentsView() {
-      return browser_view()
-          ->GetBraveMultiContentsView()
-          ->GetInactiveContentsContainerView();
+    return browser_view()
+        ->GetBraveMultiContentsView()
+        ->GetInactiveContentsContainerView();
   }
 
   BraveBrowserView* browser_view() {

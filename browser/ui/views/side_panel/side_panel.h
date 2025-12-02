@@ -1,10 +1,10 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_H_
 
 #include <memory>
 #include <optional>
@@ -31,10 +31,10 @@ class SidebarBrowserTest;
 // Replacement for chromium's SidePanel which defines a
 // unique inset and border style compared to Brave.
 // SidebarContainerView controls this panel's visibility.
-class BraveSidePanel : public views::View,
-                       public views::ViewObserver,
-                       public views::ResizeAreaDelegate {
-  METADATA_HEADER(BraveSidePanel, views::View)
+class SidePanel : public views::View,
+                  public views::ViewObserver,
+                  public views::ResizeAreaDelegate {
+  METADATA_HEADER(SidePanel, views::View)
  public:
   // Determines the side from which the side panel will appear.
   // LTR / RTL conversions are handled in
@@ -43,14 +43,14 @@ class BraveSidePanel : public views::View,
   enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit BraveSidePanel(
+  explicit SidePanel(
       BrowserView* browser_view,
       SidePanelEntry::PanelType type,
       bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
-  BraveSidePanel(const BraveSidePanel&) = delete;
-  BraveSidePanel& operator=(const BraveSidePanel&) = delete;
-  ~BraveSidePanel() override;
+  SidePanel(const SidePanel&) = delete;
+  SidePanel& operator=(const SidePanel&) = delete;
+  ~SidePanel() override;
 
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
@@ -136,8 +136,4 @@ class BraveSidePanel : public views::View,
   State state_ = State::kClosed;
 };
 
-// Alias to the original `SidePanel` to the benefit of upstream code, as
-// `BraveSidePanel` is a complete replacement of the upstream class.
-using SidePanel = BraveSidePanel;
-
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_H_
