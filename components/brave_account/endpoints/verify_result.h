@@ -7,22 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESULT_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoints/error.h"
-#include "brave/components/brave_account/endpoints/verify_result_request.h"
-#include "brave/components/brave_account/endpoints/verify_result_response.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/verify_result_bodies.h"
 
 namespace brave_account::endpoints {
 
 using VerifyResult = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/verify/result",
-    endpoint_client::POST<VerifyResultRequest>,
-    endpoint_client::Response<VerifyResultResponse, Error>>;
-
-static_assert(endpoint_client::IsEndpoint<VerifyResult>);
+    endpoint_client::POST<VerifyResultRequestBody>,
+    endpoint_client::Response<VerifyResultSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 

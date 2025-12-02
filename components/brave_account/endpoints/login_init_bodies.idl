@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/accounts/password/init request.
+// Schema for the /v2/auth/login/init request and response.
 namespace endpoints {
-  dictionary PasswordInitRequest {
-    DOMString blindedMessage;
-    DOMString newAccountEmail;
-    boolean serializeResponse;
+  dictionary LoginInitRequestBody {
+    DOMString email;
+    DOMString serializedKE1;
+  };
+
+  dictionary LoginInitSuccessBody {
+    DOMString loginToken;
+    DOMString serializedKE2;
   };
 };

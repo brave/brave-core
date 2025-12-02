@@ -7,22 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_PASSWORD_INIT_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoints/error.h"
-#include "brave/components/brave_account/endpoints/password_init_request.h"
-#include "brave/components/brave_account/endpoints/password_init_response.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/password_init_bodies.h"
 
 namespace brave_account::endpoints {
 
 using PasswordInit = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/accounts/password/init",
-    endpoint_client::POST<PasswordInitRequest>,
-    endpoint_client::Response<PasswordInitResponse, Error>>;
-
-static_assert(endpoint_client::IsEndpoint<PasswordInit>);
+    endpoint_client::POST<PasswordInitRequestBody>,
+    endpoint_client::Response<PasswordInitSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 

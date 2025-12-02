@@ -18,7 +18,7 @@
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoints/error.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -28,7 +28,7 @@
 
 namespace brave_account::endpoints {
 
-inline bool operator==(const Error& lhs, const Error& rhs) {
+inline bool operator==(const ErrorBody& lhs, const ErrorBody& rhs) {
   return lhs.code == rhs.code;
 }
 

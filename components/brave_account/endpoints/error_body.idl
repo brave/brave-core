@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/accounts/password/finalize response.
+// Schema for the /v2/accounts/* errors.
 namespace endpoints {
-  dictionary PasswordFinalizeResponse {};
+  dictionary ErrorBody {
+    // either long, or null, but must always be present
+    any code;
+  };
 };
