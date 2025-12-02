@@ -71,7 +71,7 @@ class BraveBrowser : public Browser {
   bool ShouldAskForBrowserClosingBeforeHandlers();
 
   // Allows ignoring onbeforeunload handlers when closing selected tabs.
-  void SetIgnoreBeforeUnloadHandlers(
+  void SetTabsToIgnoreBeforeUnloadHandlers(
       const base::flat_set<tabs::TabHandle>& for_contents);
 
   BraveBrowserWindow* brave_window();

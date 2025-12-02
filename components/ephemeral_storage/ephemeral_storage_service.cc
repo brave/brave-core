@@ -282,7 +282,8 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
   }
 
   const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
-  delegate_->PrepareTabsForStorageCleanup(std::move(ephemeral_domain));
+  delegate_->PrepareTabsForFirstPartyStorageCleanup(
+      std::move(ephemeral_domain));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

@@ -50,8 +50,8 @@
 
 namespace {
 
-bool PrepareTabToClose(tabs::TabHandle tab_handle,
-                       const std::string& etldplusone) {
+bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
+                                           const std::string& etldplusone) {
   if (tab_handle == tabs::TabHandle::Null()) {
     return false;
   }
@@ -202,8 +202,9 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 }
 #endif
 
-void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
-    const std::string& ephemeral_domain) {
+void BraveEphemeralStorageServiceDelegate::
+    PrepareTabsForFirstPartyStorageCleanup(
+        const std::string& ephemeral_domain) {
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
@@ -223,12 +224,13 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
 
     base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
-      if (!tab || !PrepareTabToClose(tab->GetHandle(), ephemeral_domain)) {
+      if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
+                                                         ephemeral_domain)) {
         continue;
       }
       tab_handlers.emplace(tab->GetHandle());
     }
-    brave_browser->SetIgnoreBeforeUnloadHandlers(std::move(tab_handlers));
+    brave_browser->SetTabsToIgnoreBeforeUnloadHandlers(tab_handlers);
 
     for (auto tab_handle : tab_handlers) {
       if (tab_handle == tabs::TabHandle::Null() || !tab_handle.Get()) {

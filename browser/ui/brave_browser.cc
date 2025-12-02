@@ -371,7 +371,7 @@ BraveBrowserWindow* BraveBrowser::brave_window() {
   return static_cast<BraveBrowserWindow*>(window_.get());
 }
 
-void BraveBrowser::SetIgnoreBeforeUnloadHandlers(
+void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(
     const base::flat_set<tabs::TabHandle>& for_contents) {
   tabs_closing_with_onbeforeunload_ignore_ = for_contents;
 }

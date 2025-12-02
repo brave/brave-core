@@ -26,7 +26,7 @@ class EphemeralStorageServiceDelegate {
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
-  virtual void PrepareTabsForStorageCleanup(
+  virtual void PrepareTabsForFirstPartyStorageCleanup(
       const std::string& ephemeral_domain) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const GURL& url) const = 0;
