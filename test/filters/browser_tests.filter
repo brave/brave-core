@@ -23,7 +23,7 @@
 -ProductSpecificationsEntryPointControllerBrowserTest.TriggerEntryPointWithNavigation*
 -ProductSpecificationsEntryPointControllerWithServerClusteringBrowserTest.TriggerEntryPointWithNavigation_ServerClustering
 
-# These tests fail because we override BraveSidePanel::UpdateWidthOnEntryChanged
+# These tests fail because we override SidePanel::UpdateWidthOnEntryChanged
 # to do nothing.
 -SidePanelCoordinatorTest.ChangeSidePanelWidth
 -SidePanelCoordinatorTest.ChangeSidePanelWidthMaxMin
@@ -41,7 +41,7 @@
 -SidePanelCoordinatorTest.SidePanelWidthPreference
 -SidePanelCoordinatorWithSideBySideTest.ChangeSidePanelWidthMaxMin
 
-# This test fails because BraveSidePanel doesn't set State::kClosing
+# This test fails because our SidePanel doesn't set State::kClosing
 -SidePanelCoordinatorTest.OpenWhileClosing
 
 # These crash due to what looks like an upstream bug of
