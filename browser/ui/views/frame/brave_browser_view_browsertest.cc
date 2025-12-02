@@ -11,8 +11,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/common/pref_names.h"
 #include "build/build_config.h"
@@ -220,6 +223,28 @@ class BraveBrowserViewWithRoundedCornersTest
                         split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 
+  BrowserFrameView* browser_non_client_frame_view() {
+    return browser_view()->browser_widget()->GetFrameView();
+  }
+
+  void ToggleVerticalTabStrip() {
+    brave::ToggleVerticalTabStrip(browser());
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
+  }
+
+  void SetHideCompletelyWhenCollapsed(bool hide) {
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, hide);
+  }
+
+  BraveVerticalTabStripRegionView* vertical_tab_strip_region() {
+    auto* widget_delegate_view =
+        BraveBrowserView::From(browser_view())
+            ->vertical_tab_strip_widget_delegate_view();
+
+    return widget_delegate_view->vertical_tab_strip_region_view();
+  }
+
   bool IsRoundedCornersEnabled() const { return GetParam(); }
 };
 
@@ -398,6 +423,44 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                           ->GetActiveContentsContainerView()
                                           ->contents_view()
                                           ->GetBackgroundRadii());
+  }
+
+  // Test with vertical tab.
+  ToggleVerticalTabStrip();
+  if (IsRoundedCornersEnabled()) {
+    auto contents_view_radii = browser_view()
+                                   ->GetActiveContentsContainerView()
+                                   ->contents_view()
+                                   ->GetBackgroundRadii();
+
+    // use border radius as it has left side ui.
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.lower_left());
+
+    // use window corner border radius as vetical tab is hidden.
+    SetHideCompletelyWhenCollapsed(true);
+
+    auto* region_view = vertical_tab_strip_region();
+    contents_view_radii = browser_view()
+                              ->GetActiveContentsContainerView()
+                              ->contents_view()
+                              ->GetBackgroundRadii();
+
+    // still use border radius as it's expanded state.
+    EXPECT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+              region_view->state());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.lower_left());
+
+    region_view->ToggleState();
+    contents_view_radii = browser_view()
+                              ->GetActiveContentsContainerView()
+                              ->contents_view()
+                              ->GetBackgroundRadii();
+
+    // use border radius at window as it's collapsed state.
+    EXPECT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
+              region_view->state());
+    EXPECT_EQ(rounded_corners_border_radius_at_window_corner,
+              contents_view_radii.lower_left());
   }
 }
 
