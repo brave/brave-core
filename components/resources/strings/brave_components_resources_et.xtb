@@ -196,6 +196,7 @@
 <translation id="7279636930553631442">Uudiskirja hüpikaken</translation>
 <translation id="6136090320163235283">Sotsiaalmeedia vidin</translation>
 <translation id="6657720240983439091">Vestluse vidin</translation>
+<translation id="3597441883564676263">Brauser ei toeta</translation>
 <translation id="7138678301420049075">Muu</translation>
 <translation id="4046860372562593546">Brave'i reklaamide haldamine</translation>
 <translation id="5136973036012418831">Seadistage, milliseid Brave'i reklaame näete ja kui tihti neid näete.</translation>
@@ -2233,6 +2234,24 @@
 <translation id="7488762544858401571">Muudetud</translation>
 <translation id="5604254791550001355">Muuda käsklust</translation>
 <translation id="8115786586976830777">Kopeeri käsklus</translation>
+<translation id="3666616415490815310">Salvesta kui oskus</translation>
+<translation id="6574544364990812112">Minu oskused</translation>
+<translation id="6696824203401957025">Uus oskus</translation>
+<translation id="6410279677882692627">Oskused ilmuvad teie [/] tööriistadesse ja neile pääseb ligi, kui sisestate lihtsalt allpool määratud "/nimi".</translation>
+<translation id="1344606707744657196">Mudel kiireks reageerimiseks</translation>
+<translation id="8458341576712814616">Otsetee</translation>
+<translation id="1326559827339317236">Sisestage oma otsetee siia</translation>
+<translation id="5032574515228824816">Prompt</translation>
+<translation id="2573797314568446575">Sisestage oma soovitus siia</translation>
+<translation id="900733896273558337">Oskuse muutmine</translation>
+<translation id="7662963028545588801">Kustuta oskus</translation>
+<translation id="4209790625997566418">Kas olete kindel, et soovite selle oskuse kustutada? Seda tegevust ei saa tagasi võtta.</translation>
+<translation id="7161540406494327389">Vajalik on otsetee</translation>
+<translation id="3722223049736774445">Lühendused võivad sisaldada ainult tähti, numbreid, alatähti ja sidekriipsu.</translation>
+<translation id="6997214168632888867">Lühikombinatsioon peab olema kuni 64 tähemärki</translation>
+<translation id="2806891468525657116">Otsetee on juba olemas</translation>
+<translation id="5497501845974700950">Prompt on nõutav</translation>
+<translation id="5642369858603376334">Ülesanne peab olema kuni 5000 tähemärki</translation>
 <translation id="1406205536570262057">Muuda vastust</translation>
 <translation id="3386725253392845084">Proovi uuesti sama mudeliga</translation>
 <translation id="2461822463642141190">Praegune</translation>
@@ -2270,13 +2289,20 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> rohkem…</translation>
 <translation id="8103700533980268469">Sulge see teade</translation>
 <translation id="3417835166382867856">Otsingu vahekaardid</translation>
+<translation id="3828029223314399057">Otsi järjehoidjaid</translation>
+<translation id="381480092025168632">Otsi brauseri ajalugu</translation>
 <translation id="7311244614769792472">Tulemusi ei leitud</translation>
 <translation id="3112448569149476523">Proovige muud otsingut</translation>
 <translation id="1352836459737874921">Lisa sisu teistelt vahelehtedelt</translation>
+<translation id="7173836072258346701">Sisu lisamine järjehoidjatest</translation>
+<translation id="163680814308917875">Lisa sisu brauseri ajaloost</translation>
 <translation id="7039179822221107025">Saatke lehe sisu oma brauseri vahelehtedelt, et anda Leole vestluseks rohkem konteksti.</translation>
+<translation id="1602382615168212961">Saatke lehekülje sisu oma järjehoidjate vahekaartidelt, et anda Leole rohkem konteksti vestluseks.</translation>
+<translation id="4808122506413075135">Saatke lehe sisu oma brauseri ajaloost, et anda Leole rohkem konteksti vestluse jaoks.</translation>
 <translation id="220541218939267992">Lehe sisu saadetakse Leonile koos teie sõnumitega.</translation>
-<translation id="1446346932629101482">Lisage konteksti loomiseks vahekaardi sisu. Sisu saadetakse koos teie sõnumitega Leole.</translation>
-<translation id="7193316103691252734">Vastavaid vahekaarte ei leitud</translation>
+<translation id="8164365899016970783">Lisage vahekaart ja järjehoidja sisu konteksti jaoks. Sisu saadetakse Leole koos teie sõnumitega.</translation>
+<translation id="6237410387937453423">Puuduvad sobivad manused</translation>
+<translation id="8076492880354921740">Vahelehed</translation>
 <translation id="2315654674554095762">Leo mäletab nüüd teie vestlusi, nii et saate nende juurde tagasi pöörduda. Need salvestatakse teie seadmesse krüpteeritult ja te saate need igal ajal kustutada.</translation>
 <translation id="7821251979960635244">Teie vestlusajalugu ilmub siia, kui alustate vestlust.</translation>
 <translation id="887511360213807449">Ajalugu on välja lülitatud</translation>
@@ -2335,7 +2361,9 @@
 <translation id="4250229828105606438">Ekraanipilt</translation>
 <translation id="7949596341600215809">Täisekraani kuvatõmmis</translation>
 <translation id="6332876390231524389">Praeguse vahekaardi sisu</translation>
-<translation id="7742969455167760092">Avatud vahelehed...</translation>
+<translation id="6397861830483632092">Avatud vahekaardid…</translation>
+<translation id="802080272588201037">Järjehoidjad…</translation>
+<translation id="2716127283451902393">Ajalugu…</translation>
 <translation id="49269513399674318">Kasutage mikrofoni</translation>
 <translation id="3895031624234442305">Kohandatud mudelid</translation>
 <translation id="4572010449071015143">Alusta uut vestlust</translation>
@@ -2347,6 +2375,22 @@
 <translation id="2593275000606533518">Halda kõiki</translation>
 <translation id="8410199626695516952">Olgu, ma ei pea seda meeles</translation>
 <translation id="8419849467765474535">Mälu salvestamine ebaõnnestus. Palun proovige uuesti.</translation>
+<translation id="5517580030864973329">Veebilehel navigeerimine uuele aadressile</translation>
+<translation id="8832457834975923266">Navigeeritud veebilehele <ph name="URL"/></translation>
+<translation id="5095252080770652994">Progress</translation>
+<translation id="8332385567036775056">Sammud</translation>
+<translation id="4521931942079977149">Lehel klõpsates</translation>
+<translation id="7732267913911704962">Lohistamine ja lehele toppimine</translation>
+<translation id="7703800915509570212">Navigeerimine tagasi</translation>
+<translation id="4875586490950981498">Edasi liikumine</translation>
+<translation id="738881387603843066">Hiire liigutamine</translation>
+<translation id="4850669014075537160">Kerimine</translation>
+<translation id="1265072406500460724">Valimine rippmenüüst</translation>
+<translation id="7573920298077917439">Teksti sisestamine</translation>
+<translation id="4089034800311309656">Lehekülje ootamine</translation>
+<translation id="4798146464408730445">Oskusi ei leitud. Looge uus, klõpsates nupule "Uus".</translation>
+<translation id="271033894570825754">Uus</translation>
+<translation id="8266605059880650542">Märkides üles mõned andmed hilisemaks lehe kohta</translation>
 <translation id="3486480638399578250">Hoidke oma isiklik e-posti aadress privaatne</translation>
 <translation id="7765422154906712751">Looge unikaalseid, juhuslikke aadresse, mis suunatakse edasi teie Brave konto e-posti aadressile ja mida saab igal ajal kustutada. Hoidke oma tegelik e-posti aadress reklaamijate eest kaitstud.</translation>
 <translation id="5222676887888702881">Logi välja</translation>
@@ -2392,6 +2436,10 @@
 <translation id="7508412964869396375">Teenusest Brave Accounts ei ole saadud kontrolltokeneid</translation>
 <translation id="3179527991526213624">Teenus Brave Accounts ei vasta</translation>
 <translation id="7911439408853154309">E-posti kinnitamine ebaõnnestus</translation>
+<translation id="2595463802839066496">Email Aliase teenus ei reageeri</translation>
+<translation id="367191282389216837">Email Aliase'i teenuse kehtetu vastus</translation>
+<translation id="7203490731644771170">Email Aliases teenuse viga: <ph name="ERROR"/></translation>
+<translation id="8767862600155091621">Viga: Alias ei ole saadaval</translation>
 <translation id="8370801182970639038">Automatic (<ph name="LOCALE"/>)</translation>
 <translation id="8343473178272604223">Lubatud otsingumootorid</translation>
 <translation id="8285901519864208412">Peida preemiate kaart</translation>
@@ -2437,8 +2485,19 @@
 <translation id="8458987127502506209">Luba Brave'i kaitsed</translation>
 <translation id="8443488493738411048">Selle saidi jaoks on <ph name="STATUS_BEFORE"/>kaitse PEAL<ph name="STATUS_AFTER"/></translation>
 <translation id="2458631245058451506">Selle saidi jaoks on <ph name="STATUS_BEFORE"/>kaitse MAAS<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">Kui see sait näib olevat katki, proovige Kaitse maas.
-   <ph name="NOTE_BEFORE"/>Märkus: see võib vähendada Brave'i privaatsuskaitset.<ph name="NOTE_AFTER"/></translation>
+<translation id="4724752924364329714">Kui see sait näib olevat katki, proovige Shields down.</translation>
+<translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Märkus: see võib vähendada Brave'i privaatsuskaitset.<ph name="NOTE_AFTER"/></translation>
+<translation id="3620004479054499575">Kas teil on selle saidiga probleeme?</translation>
+<translation id="9176447766421988172">Me katsetame veebilehe ühilduvuse suurendamiseks eksperimenti, kus me jätame ainult reklaami blokeerimise sisse lülitatud. Hoiatus: eemaldab kõik privaatsuskaitsed. Kas soovite seda proovida? <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/>.</translation>
+<translation id="5372101283158221516">Pange tähele, et üksikute veebisaitide puhul, mida Brave'i privaatsuskaitsed rikuvad, saate määrata kaitse alla.</translation>
+<translation id="1836572675775891780">Ainult reklaamblokeerimise režiimi lubamine</translation>
+<translation id="6623668214089604469">Kas sait töötab nüüd õigesti?</translation>
+<translation id="8978860854770042258">Palun kaaluge aruande esitamist, kui see sait on endiselt katki.</translation>
+<translation id="4677356505199464553">Paistab hea</translation>
+<translation id="1992750560347846445">Veebisaidist teatamine</translation>
+<translation id="2887186586339544116">Ainult reklaamiblokeerimise režiim on lubatud</translation>
+<translation id="673665019618844072">Praegu kasutate ainult reklaamide blokeerimise režiimi. See režiim pakub ainult reklaamide blokeerimise kaitset. Kui soovite naasta täieliku Shields-režiimi juurde, lülitage see režiim seadetest välja.</translation>
+<translation id="4820891023903368625">Reklaamid blokeeritud <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Blokeeritakse jälgijad, reklaamid ja muu <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Ei ole Brave'i kaitsetega kaitstud <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Täiustatud kontroll</translation>
@@ -2472,7 +2531,6 @@
 <translation id="8034285923190068220">Luba sõrmejäljelugemine</translation>
 <translation id="7638541189782135885">Ärge uuendage HTTP-ühendusi</translation>
 <translation id="2570787596946026998">Ühendage ainult HTTPS-iga</translation>
-<translation id="1992750560347846445">Veebisaidist teatamine</translation>
 <translation id="2387532482048804818">Rääkige meile, kui veebisait ei tööta kaitse kasutamisel õigesti.</translation>
 <translation id="3795015906457257780">Vaatate seda saiti ilma Brave'i privaatsuskaitseteta.</translation>
 <translation id="7194012750329511146">Brave'i Kaitsed

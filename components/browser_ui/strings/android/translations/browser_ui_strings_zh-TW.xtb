@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">請說明你允許使用第三方 Cookie 的原因，協助我們改善 Brave。<ph name="BEGIN_LINK"/>提供意見<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">你可以要求查看電腦版網站</translation>
 <translation id="9183227624343766158">使用 Brave 做為預設瀏覽器</translation>
+<translation id="113098737392899175">接上鍵盤時，使用文字游標瀏覽頁面</translation>
 <translation id="1178015372320901893">「我的捷徑」底部功能表</translation>
 <translation id="1178581264944972037">暫停</translation>
 <translation id="1181037720776840403">移除</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">繼續</translation>
 <translation id="904887679952026733">當 Brave 採用深色主題時，盡可能對網站套用深色主題</translation>
 <translation id="2390272837142897736">放大</translation>
+<translation id="2397689164757137845">允許 • 精確位置</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">精確</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{已允許「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}other{已允許「<ph name="PERMISSION_1"/>」、「<ph name="PERMISSION_2"/>」和另外 <ph name="NUM_MORE"/> 項權限}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">說明與意見回饋</translation>
 <translation id="2501278716633472235">返回</translation>
 <translation id="2533138527374486328">如果開啟，網站可以要求連線到區域網路上的裝置；如果關閉，網站將無法連線到區域網路上的任何裝置。</translation>
+<translation id="2536779053640817375">這次允許 • 精確位置</translation>
 <translation id="2544997614631598250">主題顏色：深色</translation>
 <translation id="2546283357679194313">Cookie 和網站資料</translation>
 <translation id="2570922361219980984">此外，這部裝置的位置資訊存取權已關閉。請在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中予以開啟。</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">在某些網站上設定封鎖</translation>
 <translation id="3132996321662585180">每天更新</translation>
 <translation id="3143754809889689516">從頭播放</translation>
+<translation id="3164169438034704658">你可以前往 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>啟用精確位置。</translation>
 <translation id="3165022941318558018">允許網站使用第三方 Cookie</translation>
 <translation id="3167868116600277716">「探索」動態消息</translation>
 <translation id="3198916472715691905">儲存了 <ph name="STORAGE_AMOUNT"/> 的資料</translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">Brave 將於今天再次限制 Cookie</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> 底下的所有網站</translation>
 <translation id="4340799661701629185">禁止網站傳送通知</translation>
+<translation id="4341577178275615435">如要開啟或關閉鍵盤瀏覽功能，請使用快速鍵 F7</translation>
 <translation id="4402755511846832236">禁止網站取得這部裝置的使用狀態</translation>
 <translation id="8382883799082236806">Brave 顏色底部功能表已開啟，並顯示在畫面下半部</translation>
 <translation id="4412992751769744546">允許第三方 Cookie</translation>
@@ -323,7 +328,7 @@
 <translation id="4479647676395637221">允許網站使用你的攝影機前，必須先詢問你 (建議)</translation>
 <translation id="4505788138578415521">已展開網址</translation>
 <translation id="4534723447064627427">如要允許 <ph name="APP_NAME"/> 存取裝置的麥克風，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟麥克風。</translation>
-<translation id="4566417217121906555">將麥克風設為靜音</translation>
+<translation id="4566417217121906555">關閉麥克風</translation>
 <translation id="4570913071927164677">詳細資料</translation>
 <translation id="4578289292431526768">開始設定</translation>
 <translation id="461356340001513807">讓你透過身分識別服務，使用自己的帳戶登入網站</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">暫停影片</translation>
 <translation id="5877248419911025165">收合所有要求</translation>
 <translation id="5878945009165002849">封鎖身分識別服務的登入提示</translation>
+<translation id="588258955323874662">全螢幕</translation>
 <translation id="5884085660368669834">網站偏好設定</translation>
 <translation id="5887687176710214216">上次造訪日期：昨天</translation>
 <translation id="5908617755156109052">不允許網站建立你周遭環境的 3D 地圖或追蹤攝影機位置</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">確定</translation>
 <translation id="6980861169612950611">要刪除網站資料嗎？<ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">無障礙設定</translation>
+<translation id="6991142177939282156">允許 • 使用概略位置</translation>
 <translation id="6992289844737586249">允許網站使用你的麥克風前，必須先詢問你 (建議)</translation>
 <translation id="7000754031042624318">已在 Android 設定中關閉</translation>
 <translation id="8683151724374457021">這個網站會判斷你喜歡的內容，然後向其他網站建議廣告。這個網站也會從 Brave 取得你的廣告主題，為你顯示更貼近需求的廣告。</translation>
+<translation id="7036823721811529709">音樂可在背景播放</translation>
 <translation id="7044081119134178347">這次允許使用相機</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="7055552182600664515">網站可能需要使用內容保護服務，才能播放受著作權保護的內容。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">你不必提供身分識別資訊或授權讓網站查看瀏覽記錄，這項設定也能完成驗證。不過，網站在驗證時，可能會分享少量資訊</translation>
 <translation id="7409735910987429903">網站可能會傳送彈出式視窗以顯示廣告，或是透過重新導向將你帶往不想造訪的網站</translation>
 <translation id="7412160840120117304">主要顏色 (十六進位)</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{縮放}other{縮放：<ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">先詢問我</translation>
 <translation id="7423538860840206698">禁止讀取剪貼簿</translation>
 <translation id="7425915948813553151">網站的深色主題</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">刪除</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8300705686683892304">由應用程式管理</translation>
+<translation id="8301363963630676147">這次允許 • 使用概略位置</translation>
 <translation id="8315509175050791576">正在分享分頁</translation>
 <translation id="8324158725704657629">不要再詢問</translation>
 <translation id="8362795839483915693">你可以在瀏覽時縮放網站內容</translation>
@@ -661,7 +671,7 @@
 <translation id="8487700953926739672">可離線使用</translation>
 <translation id="848952951823693243">一律要求行動版網站</translation>
 <translation id="8492822722330266509">網頁可以傳送彈出式視窗和使用重新導向</translation>
-<translation id="8499083585497694743">將麥克風取消靜音</translation>
+<translation id="8499083585497694743">開啟麥克風</translation>
 <translation id="8514955299594277296">不允許網站在裝置上儲存資料 (不建議)</translation>
 <translation id="851751545965956758">禁止網站連線至裝置</translation>
 <translation id="8525306231823319788">全螢幕</translation>

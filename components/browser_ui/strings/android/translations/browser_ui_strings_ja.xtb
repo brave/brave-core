@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Brave の改善に役立てるため、サードパーティ Cookie を許可した理由をお聞かせください。<ph name="BEGIN_LINK"/>フィードバックを送信<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">サイトの PC 版を表示するようリクエストできます</translation>
 <translation id="9183227624343766158">Brave をデフォルトに設定する</translation>
+<translation id="113098737392899175">キーボードが接続されているときにテキスト カーソルを使ってページ間を移動する</translation>
 <translation id="1178015372320901893">カスタム ショートカットのボトムシート</translation>
 <translation id="1178581264944972037">一時停止</translation>
 <translation id="1181037720776840403">削除</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">続行</translation>
 <translation id="904887679952026733">可能であれば、Brave がダークモードを使用している場合にダークモードをサイトに適用します</translation>
 <translation id="2390272837142897736">拡大</translation>
+<translation id="2397689164757137845">許可 • 正確</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">正確</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限が許可されています}other{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限が許可されています}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">ヘルプとフィードバック</translation>
 <translation id="2501278716633472235">戻る</translation>
 <translation id="2533138527374486328">オンにすると、サイトはローカル ネットワーク上のデバイスへの接続を要求できます。オフにすると、サイトはローカル ネットワーク上のデバイスに接続できません。</translation>
+<translation id="2536779053640817375">一時的に許可 • 正確</translation>
 <translation id="2544997614631598250">テーマカラー ダーク</translation>
 <translation id="2546283357679194313">Cookie とサイトデータ</translation>
 <translation id="2570922361219980984">位置情報へのアクセスがデバイスでもオフになっています。<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でオンにしてください。</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">一部のサイトでブロックされています</translation>
 <translation id="3132996321662585180">毎日更新する</translation>
 <translation id="3143754809889689516">最初から再生</translation>
+<translation id="3164169438034704658">正確な位置情報は、[<ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>] でオンにできます。</translation>
 <translation id="3165022941318558018">サイトにサードパーティ Cookie の使用を許可する</translation>
 <translation id="3167868116600277716">Discover フィード</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> の保存データ</translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">今日、Brave で Cookie を再び制限します</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> のすべてのサイト</translation>
 <translation id="4340799661701629185">サイトに通知の送信を許可しない</translation>
+<translation id="4341577178275615435">カーソル ブラウジングをオンまたはオフにするには、F7 ショートカット キーを使用します</translation>
 <translation id="4402755511846832236">サイトによるこのデバイスのアクティブ状態の検出をブロックする</translation>
 <translation id="8382883799082236806">Brave の色のボトムシートが画面の下半分に表示されています</translation>
 <translation id="4412992751769744546">サードパーティの Cookie を許可する</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">動画を一時停止</translation>
 <translation id="5877248419911025165">すべてのリクエストを閉じる</translation>
 <translation id="5878945009165002849">ID サービスからのログイン メッセージをブロックする</translation>
+<translation id="588258955323874662">全画面表示</translation>
 <translation id="5884085660368669834">サイトの設定</translation>
 <translation id="5887687176710214216">最終アクセス日: 昨日</translation>
 <translation id="5908617755156109052">サイトに周囲の 3D マップの作成またはカメラ位置の追跡を許可しない</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">次のサイトデータを削除しますか？<ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">ユーザー補助機能</translation>
+<translation id="6991142177939282156">許可 • おおよその位置情報を使用</translation>
 <translation id="6992289844737586249">サイトにマイクの使用を許可する前に確認する（推奨）</translation>
 <translation id="7000754031042624318">Android の設定で無効</translation>
 <translation id="8683151724374457021">このサイトでは、ユーザーの好みを判断して他のサイトに広告を提案します。また、より関連性の高い広告を表示するために Brave から広告のトピックを取得します。</translation>
+<translation id="7036823721811529709">バックグラウンドで音楽を再生</translation>
 <translation id="7044081119134178347">一時的にカメラを許可しました</translation>
 <translation id="7053983685419859001">ブロック</translation>
 <translation id="7055552182600664515">著作権で保護されたコンテンツを再生するため、サイトでコンテンツ保護サービスの使用を求める場合があります。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">この設定では、ユーザーを特定したり、ユーザーの閲覧履歴の参照をサイトに許可したりすることはありませんが、確認に必要な少量の情報を共有することがあります</translation>
 <translation id="7409735910987429903">ポップアップを送信して広告を表示したり、リダイレクトを使ってユーザーがアクセスするつもりのないウェブサイトを表示したりするサイトもあります</translation>
 <translation id="7412160840120117304">メインの色（16 進数）</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{ズーム}other{ズーム: <ph name="ZOOM_PERCENTAGE_NUMBER"/> %%}}</translation>
 <translation id="7423098979219808738">最初に確認する</translation>
 <translation id="7423538860840206698">クリップボードの読み取りがブロックされています</translation>
 <translation id="7425915948813553151">サイトのダークモード</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">削除</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8300705686683892304">アプリによる管理</translation>
+<translation id="8301363963630676147">一時的に許可 • おおよその位置情報を使用</translation>
 <translation id="8315509175050791576">タブを共有しています</translation>
 <translation id="8324158725704657629">次回から表示しない</translation>
 <translation id="8362795839483915693">アクセスしたサイトを拡大、縮小できます</translation>
@@ -733,5 +743,5 @@
 <translation id="3110967157686007724">プライベートタブ</translation>
 <translation id="8623552597614912461">このサイトはプライベートモード外のアプリと情報を共有しようとしています。</translation>
 <translation id="8157212814767579028">プライベートモードを終了しますか？</translation>
-<translation id="1593610935874634135">企業は、Cookieを使用できるサイトのグループを定義し、グループ内であなたの活動を共有することができます。プライベートの場合、この機能はオフになっています。</translation>
+<translation id="1593610935874634135">企業はCookiesを使用できるサイトグループを明確にし、そのグループ内であなたの活動を共有することができます。プライベートモードでは、この機能はオフになっています。</translation>
 </translationbundle>

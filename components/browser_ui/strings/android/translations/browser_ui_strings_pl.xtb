@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">Pomóż nam ulepszyć Brave, informując nas, dlaczego zezwalasz na pliki cookie innych firm. <ph name="BEGIN_LINK"/>Prześlij opinię<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Możesz poprosić o wyświetlenie witryn w wersji na komputer</translation>
 <translation id="9183227624343766158">Domyślne korzystanie z Brave</translation>
+<translation id="113098737392899175">Gdy klawiatura jest podłączona, poruszaj się po stronach przy użyciu kursora tekstowego</translation>
 <translation id="1178015372320901893">Plansza dolna Moje skróty</translation>
 <translation id="1178581264944972037">Wstrzymaj</translation>
 <translation id="1181037720776840403">Usuń</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">Dalej</translation>
 <translation id="904887679952026733">Stosuj ciemny motyw witryn w przypadkach, w których stosuje go Brave, tam, gdzie to możliwe</translation>
 <translation id="2390272837142897736">Zwiększ powiększenie</translation>
+<translation id="2397689164757137845">Dozwolona • Dokładna</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
 <translation id="2403474027143565107">Dokładna</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Dozwolone: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}few{Dozwolone: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}many{Dozwolone: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}other{Dozwolone: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i jeszcze <ph name="NUM_MORE"/>}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">Pomoc i opinie</translation>
 <translation id="2501278716633472235">Wróć</translation>
 <translation id="2533138527374486328">Gdy ta opcja jest włączona, strony mogą prosić o zgodę na połączenie z dowolnym urządzeniem w Twojej sieci lokalnej. Gdy jest wyłączona, strony nie mogą łączyć się z urządzeniami w sieci lokalnej.</translation>
+<translation id="2536779053640817375">Dozwolona jednorazowo • Dokładna</translation>
 <translation id="2544997614631598250">Kolor motywu: ciemny</translation>
 <translation id="2546283357679194313">Pliki cookie i dane witryn</translation>
 <translation id="2570922361219980984">Dostęp do lokalizacji jest wyłączony też na tym urządzeniu. Włącz go w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
@@ -199,6 +202,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3123473560110926937">Blokowane na niektórych stronach</translation>
 <translation id="3132996321662585180">Odświeżaj codziennie</translation>
 <translation id="3143754809889689516">Odtwórz od początku</translation>
+<translation id="3164169438034704658">Dokładną lokalizację możesz włączyć w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="3165022941318558018">Zezwól witrynie na używanie plików cookie innych firm</translation>
 <translation id="3167868116600277716">Karty Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> zapisanych danych</translation>
@@ -308,6 +312,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="8601682686806697614">Brave ponownie ograniczy pliki cookie dzisiaj</translation>
 <translation id="4338831206024587507">Wszystkie witryny w domenie <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Nie zezwalaj witrynom na wysyłanie powiadomień</translation>
+<translation id="4341577178275615435">Aby włączyć lub wyłączyć przeglądanie przy użyciu kursora, użyj skrótu F7</translation>
 <translation id="4402755511846832236">Nie pozwalaj stronom sprawdzać, czy aktualnie używasz urządzenia</translation>
 <translation id="8382883799082236806">Plansza dolna Kolory Brave otwarta do połowy wysokości</translation>
 <translation id="4412992751769744546">Zezwalaj na pliki cookie innych firm</translation>
@@ -436,6 +441,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="5876056640971328065">Wstrzymaj film</translation>
 <translation id="5877248419911025165">Zwiń wszystkie żądania</translation>
 <translation id="5878945009165002849">Blokuj prośby o zalogowanie się pochodzące od usług tożsamości</translation>
+<translation id="588258955323874662">Pełny ekran</translation>
 <translation id="5884085660368669834">Ustawienie witryny</translation>
 <translation id="5887687176710214216">Ostatnio używana wczoraj</translation>
 <translation id="5908617755156109052">Nie zezwalaj stronom na tworzenie mapy 3D otoczenia ani na śledzenie pozycji kamery</translation>
@@ -531,9 +537,11 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980861169612950611">Usunąć dane witryny? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Ułatwienia dostępu</translation>
+<translation id="6991142177939282156">Dozwolona • Używana jest przybliżona lokalizacja</translation>
 <translation id="6992289844737586249">Pytaj, zanim zezwolisz stronom na korzystanie z mikrofonu (zalecane)</translation>
 <translation id="7000754031042624318">Wyłączone w ustawieniach Androida</translation>
 <translation id="8683151724374457021">Witryna określa Twoje zainteresowania, a potem sugeruje reklamy innym witrynom. Witryna wykorzystuje też gromadzone przez Brave informacje o interesujących Cię tematach, aby wyświetlać trafniejsze reklamy.</translation>
+<translation id="7036823721811529709">Słuchaj w tle</translation>
 <translation id="7044081119134178347">Przyznano jednorazowy dostęp do aparatu</translation>
 <translation id="7053983685419859001">Blokuj</translation>
 <translation id="7055552182600664515">W przypadku odtwarzania treści chronionych prawem autorskim może być wymagane, aby strony korzystały z usługi ochrony treści. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7406113532070524618">To ustawienie działa bez ujawniania Twojej tożsamości i udzielania witrynom dostępu do Twojej historii przeglądania, chociaż witryny mogą w ramach weryfikacji udostępniać niewielką ilość informacji.</translation>
 <translation id="7409735910987429903">Strony mogą wysyłać wyskakujące okienka, by wyświetlać reklamy, albo używać przekierowań, by otwierać strony, których możesz nie chcieć odwiedzać</translation>
 <translation id="7412160840120117304">Szesnastkowy kod koloru podstawowego</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{Powiększenie}few{Powiększenie: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}many{Powiększenie: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}other{Powiększenie: <ph name="ZOOM_PERCENTAGE_NUMBER"/>%%}}</translation>
 <translation id="7423098979219808738">Najpierw zapytaj</translation>
 <translation id="7423538860840206698">Zablokowano odczytywanie schowka</translation>
 <translation id="7425915948813553151">Ciemny motyw witryn</translation>
@@ -639,6 +648,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="8261506727792406068">Usuń</translation>
 <translation id="8284326494547611709">Napisy</translation>
 <translation id="8300705686683892304">Zarządzane przez aplikację</translation>
+<translation id="8301363963630676147">Przyznano jednorazowo • Używana jest przybliżona lokalizacja</translation>
 <translation id="8315509175050791576">Udostępniam kartę</translation>
 <translation id="8324158725704657629">Nie pytaj ponownie</translation>
 <translation id="8362795839483915693">Możesz powiększać lub pomniejszać odwiedzane witryny</translation>

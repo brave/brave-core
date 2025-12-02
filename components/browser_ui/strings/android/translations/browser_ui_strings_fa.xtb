@@ -7,6 +7,7 @@
 <translation id="1882093842020941518">‏با گفتن دلیل مجاز کردن کوکی‌های طرف سوم، به ما در بهبود Brave کمک کنید. <ph name="BEGIN_LINK"/>ارسال بازخورد<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">می‌توانید درخواست کنید نسخه رایانه سایت‌ها را ببینید</translation>
 <translation id="9183227624343766158">‏استفاده از Brave به‌طور پیش‌فرض</translation>
+<translation id="113098737392899175">پیمایش کردن صفحه‌ها با مکان‌نمای نوشتار هنگام اتصال صفحه‌کلید</translation>
 <translation id="1178015372320901893">برگ زیرین میان‌برهای من</translation>
 <translation id="1178581264944972037">مکث</translation>
 <translation id="1181037720776840403">برداشتن</translation>
@@ -120,6 +121,7 @@
 <translation id="2359808026110333948">ادامه</translation>
 <translation id="904887679952026733">‏استفاده از زمینه تاریک برای سایت‌ها وقتی Brave از زمینه تاریک استفاده می‌کند (هرگاه ممکن باشد)</translation>
 <translation id="2390272837142897736">افزایش بزرگ‌نمایی</translation>
+<translation id="2397689164757137845">مجاز است • دقیق</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> مگابایت</translation>
 <translation id="2403474027143565107">دقیق</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مجاز هستند}one{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مجاز هستند}other{<ph name="PERMISSION_1"/>، <ph name="PERMISSION_2"/>، و <ph name="NUM_MORE"/> اجازه دیگر مجاز هستند}}</translation>
@@ -139,6 +141,7 @@
 <translation id="2498359688066513246">راهنمایی و بازخورد</translation>
 <translation id="2501278716633472235">بازگشت</translation>
 <translation id="2533138527374486328">وقتی روشن باشد، سایت‌ها می‌توانند درخواست دهند به دستگاه‌های موجود در شبکه محلی شما متصل شوند. وقتی خاموش باشد، سایت‌ها نمی‌توانند به دستگاه‌های موجود در شبکه محلی شما متصل شوند.</translation>
+<translation id="2536779053640817375">این بار مجاز است • دقیق</translation>
 <translation id="2544997614631598250">رنگ زمینه تیره</translation>
 <translation id="2546283357679194313">کوکی‌ها و داده‌های سایت</translation>
 <translation id="2570922361219980984">‏دسترسی به مکان برای این دستگاه نیز خاموش است. آن را در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> روشن کنید.</translation>
@@ -199,6 +202,7 @@
 <translation id="3123473560110926937">در برخی سایت‌ها مسدود می‌شود</translation>
 <translation id="3132996321662585180">بازآوری روزانه</translation>
 <translation id="3143754809889689516">پخش از ابتدا</translation>
+<translation id="3164169438034704658">‏می‌توانید مکان دقیق را در <ph name="BEGIN_LINK"/>تنظیمات Android<ph name="END_LINK"/> روشن کنید.</translation>
 <translation id="3165022941318558018">اجازه دادن به سایتی به‌خصوص برای استفاده از کوکی‌های طرف سوم</translation>
 <translation id="3167868116600277716">فید «یافته‌ها»</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> داده‌های ذخیره شده</translation>
@@ -308,6 +312,7 @@
 <translation id="8601682686806697614">‏‫Brave کوکی‌ها را امروز دوباره محدود خواهد کرد</translation>
 <translation id="4338831206024587507">همه سایت‌های تحت <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">به سایت‌ها اجازه داده نشود اعلان ارسال کنند</translation>
+<translation id="4341577178275615435">‏برای روشن یا خاموش کردن مرور با نشانگر نوشتار، از میان‌بر F7 استفاده کنید</translation>
 <translation id="4402755511846832236">از اینکه سایت‌ها بدانند چه زمانی به‌صورت فعال از این دستگاه استفاده می‌کنید جلوگیری می‌شود</translation>
 <translation id="8382883799082236806">‏برگ زیرین رنگ‌های Brave به‌صورت نیمه باز شده است</translation>
 <translation id="4412992751769744546">اجازه دادن به کوکی‌های طرف سوم</translation>
@@ -436,6 +441,7 @@
 <translation id="5876056640971328065">مکث ویدیو</translation>
 <translation id="5877248419911025165">جمع کردن همه درخواست‌ها</translation>
 <translation id="5878945009165002849">مسدود کردن پیام‌واره‌های ورود به سیستم سرویس‌های تعیین هویت</translation>
+<translation id="588258955323874662">تمام صفحه</translation>
 <translation id="5884085660368669834">اولویت سایت</translation>
 <translation id="5887687176710214216">آخرین بازدید: دیروز</translation>
 <translation id="5908617755156109052">به سایت‌ها برای ایجاد نقشه سه‌بعدی از محیط اطرافتان یا ردیابی موقعیت دوربین اجازه داده نشود</translation>
@@ -531,9 +537,11 @@
 <translation id="6965382102122355670">تأیید</translation>
 <translation id="6980861169612950611">داده‌های سایت حذف شود؟ <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">دسترس‌پذیری</translation>
+<translation id="6991142177939282156">مجاز است • از مکان تقریبی استفاده می‌شود</translation>
 <translation id="6992289844737586249">قبل از اجازه به سایت‌ها برای استفاده از میکروفون ابتدا سؤال شود (توصیه می‌شود)</translation>
 <translation id="7000754031042624318">‏در تنظیمات Android غیرفعال شده است</translation>
 <translation id="8683151724374457021">‏این سایت چیزهایی را که می‌پسندید شناسایی می‌کند و سپس به سایت‌های دیگر آگهی پیشنهاد می‌دهد. این سایت همچنین موضوع‌های آگهی شما را از Brave دریافت می‌کند تا آگهی‌های مرتبط‌تری به شما نشان دهد.</translation>
+<translation id="7036823721811529709">گوش دادن در پس‌زمینه</translation>
 <translation id="7044081119134178347">دوربین این بار مجاز شد</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="7055552182600664515">برای پخش محتوایی که با حق نشر محافظت می‌شود، ممکن است لازم باشد سایت‌ها از سرویس محافظت محتوا استفاده کنند. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
@@ -563,6 +571,7 @@
 <translation id="7406113532070524618">این تنظیم بدون شناسایی شما یا اجازه دادن به سایت‌ها برای دیدن سابقه مرورتان کار می‌کند، هرچند سایت‌ها می‌توانند مقدار کمی اطلاعات را به‌عنوان بخشی از درستی‌سنجی هم‌رسانی کنند</translation>
 <translation id="7409735910987429903">سایت‌ها شاید برای نمایش آگهی از بالاپر استفاده کنند، یا بااستفاده از هدایت‌ها شما را به وب‌سایت‌هایی هدایت کنند که شاید نخواهید بازدید کنید</translation>
 <translation id="7412160840120117304">رنگ اصلی در مبنای شانزده</translation>
+<translation id="7412223528111026033">{ZOOM_PERCENTAGE,plural, =1{بزرگ‌نمایی}one{بزرگ‌نمایی: <ph name="ZOOM_PERCENTAGE_NUMBER"/>‪%%}other{بزرگ‌نمایی: <ph name="ZOOM_PERCENTAGE_NUMBER"/>‪%%}}</translation>
 <translation id="7423098979219808738">ابتدا سؤال شود</translation>
 <translation id="7423538860840206698">خواندن محتوای بریده‌دان مسدود شد</translation>
 <translation id="7425915948813553151">زمینه تاریک برای سایت‌ها</translation>
@@ -639,6 +648,7 @@
 <translation id="8261506727792406068">حذف</translation>
 <translation id="8284326494547611709">زیرنویس‌ها</translation>
 <translation id="8300705686683892304">مدیریت‌شده توسط برنامه</translation>
+<translation id="8301363963630676147">این بار مجاز شد • از مکان تقریبی استفاده می‌شود</translation>
 <translation id="8315509175050791576">هم‌رسانی کردن زبانه</translation>
 <translation id="8324158725704657629">دوباره سؤال نشود</translation>
 <translation id="8362795839483915693">می‌توانید در سایت‌هایی که بازدید می‌کنید زوم‌پیش یا زوم‌پس کنید</translation>
