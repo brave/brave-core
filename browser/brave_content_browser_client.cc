@@ -69,8 +69,6 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/commands/common/commands.mojom.h"
-#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -216,6 +214,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -638,6 +638,19 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif
 
   // BraveSettingsUI interfaces
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    registry.ForWebUI<BraveSettingsUI>()
+        .Add<containers::mojom::ContainersSettingsHandler>();
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  registry.ForWebUI<BraveSettingsUI>()
+      .Add<ai_chat::mojom::AIChatSettingsHelper>()
+      .Add<ai_chat::mojom::CustomizationSettingsHandler>()
+      .Add<ai_chat::mojom::OllamaService>();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<commands::mojom::CommandsService>();
@@ -646,19 +659,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<BraveSettingsUI>()
         .Add<email_aliases::mojom::EmailAliasesService>();
   }
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  registry.ForWebUI<BraveSettingsUI>()
-      .Add<ai_chat::mojom::AIChatSettingsHelper>()
-      .Add<ai_chat::mojom::CustomizationSettingsHandler>()
-      .Add<ai_chat::mojom::OllamaService>();
-#endif
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    registry.ForWebUI<BraveSettingsUI>()
-        .Add<containers::mojom::ContainersSettingsHandler>();
-  }
-#endif
-#if !BUILDFLAG(IS_ANDROID)
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<brave_account::mojom::Authentication>()
@@ -666,7 +666,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
   registry.ForWebUI<BraveSettingsUI>()
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
