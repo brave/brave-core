@@ -252,7 +252,8 @@ void BraveEphemeralStorageServiceDelegate::
         continue;
       }
 
-      if (!PrepareTabToClose(tab->GetHandle(), ephemeral_domain)) {
+      if (!PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
+                                                 ephemeral_domain)) {
         continue;
       }
       tabs_to_close.emplace_back(tab->GetHandle());
