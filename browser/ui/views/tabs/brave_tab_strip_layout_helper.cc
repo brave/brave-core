@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 
+#include <algorithm>
 #include <limits>
 #include <optional>
 
@@ -25,50 +26,6 @@
 namespace tabs {
 
 namespace {
-
-void CalculatePinnedTabsBoundsInGrid(
-    const std::vector<TabWidthConstraints>& tabs,
-    std::optional<int> width,
-    bool is_floating_mode,
-    std::vector<gfx::Rect>* result) {
-  DCHECK(tabs.size());
-  DCHECK(result);
-
-  if (is_floating_mode) {
-    // In floating mode, we should lay out pinned tabs vertically so that tabs
-    // underneath the mouse cursor wouldn't move.
-    return;
-  }
-
-  auto* tab_style = TabStyle::Get();
-
-  gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
-                 /* y= */ kMarginForVerticalTabContainers,
-                 /* width= */ kVerticalTabMinWidth,
-                 /* height= */ kVerticalTabHeight);
-  for (const auto& tab : tabs) {
-    if (tab.state().pinned() != TabPinned::kPinned) {
-      break;
-    }
-
-    result->push_back(rect);
-
-    if (tab.state().open() != TabOpen::kOpen) {
-      continue;
-    }
-
-    // Update rect for the next pinned tabs. If overflowed, break into new line.
-    if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing +
-            kMarginForVerticalTabContainers <
-        width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
-      rect.set_x(rect.right() + kVerticalTabsSpacing);
-    } else {
-      // New line
-      rect.set_x(kMarginForVerticalTabContainers);
-      rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
-    }
-  }
-}
 
 void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
                              std::optional<int> width,
@@ -118,6 +75,98 @@ int GetTabCornerRadius(const Tab& tab) {
   }
 
   return tabs::kTabBorderRadius;
+}
+
+void CalculatePinnedTabsBoundsInGrid(
+    const std::vector<TabWidthConstraints>& tabs,
+    std::optional<int> width,
+    bool is_floating_mode,
+    std::vector<gfx::Rect>* result) {
+  DCHECK(tabs.size());
+  DCHECK(result);
+
+  if (is_floating_mode) {
+    // In floating mode, we should lay out pinned tabs vertically so that tabs
+    // underneath the mouse cursor wouldn't move.
+    return;
+  }
+
+  const int pinned_tab_count =
+      std::ranges::count_if(tabs, [](const TabWidthConstraints& tab) {
+        return tab.state().pinned() == TabPinned::kPinned;
+      });
+  if (!pinned_tab_count) {
+    // No pinned tabs to lay out in grid.
+    return;
+  }
+
+  // We need to lay out pinned tabs in a grid while filling the available width.
+  // This will be done with base width and distributing extra widths to the
+  // first few tabs by 1 pixels.
+  auto base_pinned_tab_width = kVerticalTabMinWidth;
+  std::vector<int> extra_widths;
+  int tabs_in_one_row = 1;
+
+  if (width.has_value()) {
+    auto available_width = width.value() - 2 * kMarginForVerticalTabContainers;
+    // 1. Check if how many pinned tabs can fit in one row.
+    tabs_in_one_row = (available_width + kVerticalTabsSpacing) /
+                      (kVerticalTabMinWidth + kVerticalTabsSpacing);
+    tabs_in_one_row = std::min(pinned_tab_count, std::max(1, tabs_in_one_row));
+
+    // 2. Calculate pinned tabs width so that they fit in one row.
+    base_pinned_tab_width =
+        (available_width + kVerticalTabsSpacing) / tabs_in_one_row -
+        kVerticalTabsSpacing;
+
+    // 3. Distribute extra widths to the first few pinned tabs.
+    extra_widths.resize(tabs_in_one_row, 0);
+    int total_extra_width =
+        available_width + kVerticalTabsSpacing -
+        (base_pinned_tab_width + kVerticalTabsSpacing) * tabs_in_one_row;
+    CHECK_GE(total_extra_width, 0);
+    for (int i = 0; i < total_extra_width; i++) {
+      extra_widths[i]++;
+    }
+  }
+
+  auto* tab_style = TabStyle::Get();
+
+  gfx::Rect rect(/* x= */ kMarginForVerticalTabContainers,
+                 /* y= */ kMarginForVerticalTabContainers,
+                 /* width= */ base_pinned_tab_width +
+                     (extra_widths.empty() ? 0 : extra_widths[0]),
+                 /* height= */ kVerticalTabHeight);
+  int i = 0;
+  for (const auto& tab : tabs) {
+    if (tab.state().pinned() != TabPinned::kPinned) {
+      break;
+    }
+
+    result->push_back(rect);
+
+    if (tab.state().open() != TabOpen::kOpen) {
+      // Tabs being closed should not take space, so skip updating rect.
+      continue;
+    }
+
+    i++;
+    const auto tab_width =
+        base_pinned_tab_width +
+        (extra_widths.empty() ? 0 : extra_widths[i % tabs_in_one_row]);
+    rect.set_width(tab_width);
+
+    // Update rect for the next pinned tabs. If overflowed, break into new line.
+    if (rect.right() + kVerticalTabMinWidth + kVerticalTabsSpacing +
+            kMarginForVerticalTabContainers <
+        width.value_or(tab_style->GetStandardWidth(/*is_split*/ true))) {
+      rect.set_x(rect.right() + kVerticalTabsSpacing);
+    } else {
+      // New line
+      rect.set_x(kMarginForVerticalTabContainers);
+      rect.set_y(result->back().bottom() + kVerticalTabsSpacing);
+    }
+  }
 }
 
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(

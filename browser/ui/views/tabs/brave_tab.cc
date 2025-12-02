@@ -190,24 +190,40 @@ std::optional<SkColor> BraveTab::GetGroupColor() const {
 
 void BraveTab::UpdateIconVisibility() {
   Tab::UpdateIconVisibility();
-  if (IsAtMinWidthForVerticalTabStrip()) {
-    if (data().pinned) {
+  if (!tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    return;
+  }
+
+  const auto is_at_min_width = IsAtMinWidthForVerticalTabStrip();
+
+  if (data().pinned) {
+    if (is_at_min_width) {
+      // When pinned vertical tab is at min width, we show only icon.
       center_icon_ = true;
       showing_icon_ = !showing_alert_indicator_;
       showing_close_button_ = false;
-    } else {
-      center_icon_ = true;
-
-      const bool is_active = IsActive();
-      const bool can_enter_floating_mode =
-          tabs::utils::IsFloatingVerticalTabsEnabled(
-              controller()->GetBrowser());
-      // When floating mode enabled, we don't show close button as the tab strip
-      // will be expanded as soon as mouse hovers onto the tab.
-      showing_close_button_ =
-          !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
-      showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
     }
+
+    // When we show only icon for pinned vertical tab, we want to keep it
+    // centered all the time.
+    if ((showing_icon_ || showing_alert_indicator_) &&
+        !ShouldRenderAsNormalTab()) {
+      center_icon_ = true;
+    }
+    return;
+  }
+
+  if (is_at_min_width) {
+    center_icon_ = true;
+
+    const bool is_active = IsActive();
+    const bool can_enter_floating_mode =
+        tabs::utils::IsFloatingVerticalTabsEnabled(controller()->GetBrowser());
+    // When floating mode enabled, we don't show close button as the tab strip
+    // will be expanded as soon as mouse hovers onto the tab.
+    showing_close_button_ =
+        !showing_alert_indicator_ && !can_enter_floating_mode && is_active;
+    showing_icon_ = !showing_alert_indicator_ && !showing_close_button_;
   }
 }
 
@@ -256,6 +272,13 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
 bool BraveTab::ShouldRenderAsNormalTab() const {
   if (IsAtMinWidthForVerticalTabStrip()) {
     // Returns false to hide title
+    return false;
+  }
+
+  if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+      data().pinned && !controller_->IsVerticalTabsFloating()) {
+    // In cased of pinned vertical tabs, we never render as normal tab, i.e.
+    // always show only icon.
     return false;
   }
 

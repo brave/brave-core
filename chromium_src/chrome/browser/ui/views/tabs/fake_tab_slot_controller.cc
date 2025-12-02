@@ -12,3 +12,7 @@ const Browser* FakeTabSlotController::GetBrowser() const {
 bool FakeTabSlotController::ShouldAlwaysHideCloseButton() const {
   return should_always_hide_close_button_;
 }
+
+bool FakeTabSlotController::IsVerticalTabsFloating() const {
+  return false;
+}
