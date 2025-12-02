@@ -123,7 +123,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
 
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,
-      std::optional<optimization_guide::AIPageContentResult> content) {
+      optimization_guide::AIPageContentResultOrError content) {
     tool_provider_->ReceivedAnnotatedPageContent(std::move(callback),
                                                  std::move(content));
   }
@@ -217,7 +217,8 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   ASSERT_TRUE(tab_handle_future.Wait());
 
   base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
-  ReceivedAnnotatedPageContent(result_future.GetCallback(), std::nullopt);
+  ReceivedAnnotatedPageContent(result_future.GetCallback(),
+                               base::unexpected("Uninitialized"));
   auto result = result_future.Take();
   EXPECT_THAT(result, ContentBlockText(
                           testing::HasSubstr("could not get page content")));
@@ -235,7 +236,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> result_future;
   optimization_guide::AIPageContentResult page_content;
   ReceivedAnnotatedPageContent(result_future.GetCallback(),
-                               std::move(page_content));
+                               base::ok(std::move(page_content)));
   auto result = result_future.Take();
 
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("No root node")));
