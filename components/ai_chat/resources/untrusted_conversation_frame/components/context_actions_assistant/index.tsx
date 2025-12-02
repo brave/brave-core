@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
+import * as Mojom from '../../../common/mojom'
 import classnames from '$web-common/classnames'
 import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
@@ -43,15 +44,39 @@ export default function ContextActionsAssistant(
     )
   }
 
-  function handleRegenerateAnswer(selectedModelKey: string) {
-    if (!props.turnUuid) {
-      return
-    }
-    conversationContext.conversationHandler?.regenerateAnswer(
-      props.turnUuid,
-      selectedModelKey,
-    )
-  }
+  const handleRegenerateAnswer = React.useCallback(
+    (selectedModelKey: string) => {
+      if (!props.turnUuid) {
+        return
+      }
+      const modelToBeUsed = conversationContext.allModels.find(
+        (model) => model.key === selectedModelKey,
+      )
+      // If the user is a non-premium user and the model is premium, we need to
+      // show the premium suggestion.
+      if (
+        !conversationContext.isPremiumUser
+        && modelToBeUsed?.options.leoModelOptions?.access
+          === Mojom.ModelAccess.PREMIUM
+      ) {
+        conversationContext.parentUiFrame?.showPremiumSuggestionForRegenerate(
+          true,
+        )
+        return
+      }
+
+      // Reset the premium suggestion if the user regenerates with a
+      // non-premium model.
+      conversationContext.parentUiFrame?.showPremiumSuggestionForRegenerate(
+        false,
+      )
+      conversationContext.conversationHandler?.regenerateAnswer(
+        props.turnUuid,
+        selectedModelKey,
+      )
+    },
+    [conversationContext, props.turnUuid],
+  )
 
   const leoModels = conversationContext.allModels.filter(
     (model) =>
@@ -121,6 +146,7 @@ export default function ContextActionsAssistant(
           onRegenerate={handleRegenerateAnswer}
           leoModels={leoModels}
           turnModelKey={props.turnModelKey}
+          isPremiumUser={conversationContext.isPremiumUser}
         />
       )}
     </div>
