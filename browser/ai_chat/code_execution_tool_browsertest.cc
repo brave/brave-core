@@ -153,4 +153,23 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   EXPECT_EQ(output, "Error: Time limit exceeded");
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, InvalidReturnType) {
+  std::string script = "return 42";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Error: Invalid return type or syntax error");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
+  std::string script = R"(
+    let x = 'unclosed string;
+    return x;
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Error: Invalid return type or syntax error");
+}
+
 }  // namespace ai_chat

@@ -63,31 +63,41 @@ class CodeExecutionTool : public Tool {
   void SetExecutionTimeLimitForTesting(base::TimeDelta time_limit);
 
  private:
-  struct CodeExecutionRequest {
-    CodeExecutionRequest(std::unique_ptr<content::WebContents> web_contents,
-                         std::string wrapped_js,
-                         UseToolCallback callback);
-    ~CodeExecutionRequest();
+  class CodeExecutionRequest : public content::WebContentsObserver {
+   public:
+    using ResolveCallback = base::OnceCallback<void(std::string)>;
 
-    std::unique_ptr<content::WebContents> web_contents;
-    std::string wrapped_js;
-    std::unique_ptr<CodeSandboxWebContentsObserver> observer;
-    mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector;
-    base::OneShotTimer timeout_timer;
-    UseToolCallback callback;
+    CodeExecutionRequest(Profile* profile,
+                         const std::string& script,
+                         base::TimeDelta execution_time_limit);
+    ~CodeExecutionRequest() override;
+
+    void DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                       const GURL& validated_url) override;
+
+    void SetResolveCallback(ResolveCallback callback) {
+      resolve_callback_ = std::move(callback);
+    }
+
+   private:
+    void HandleResult(base::Value result);
+    void HandleTimeout();
+
+    std::unique_ptr<content::WebContents> web_contents_;
+    std::string wrapped_js_;
+    mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
+    base::OneShotTimer timeout_timer_;
+    ResolveCallback resolve_callback_;
+    base::WeakPtrFactory<CodeExecutionRequest> weak_ptr_factory_{this};
   };
 
-  void OnPageLoadComplete(std::list<CodeExecutionRequest>::iterator request_it,
-                          content::RenderFrameHost* render_frame_host);
-  void HandleResult(std::list<CodeExecutionRequest>::iterator request_it,
-                    base::Value result);
   void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
+                      UseToolCallback callback,
                       std::string output);
 
   raw_ptr<Profile> profile_;
   std::list<CodeExecutionRequest> requests_;
-  std::optional<base::TimeDelta> execution_time_limit_for_testing_;
-  base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};
+  base::TimeDelta execution_time_limit_;
 };
 
 }  // namespace ai_chat
