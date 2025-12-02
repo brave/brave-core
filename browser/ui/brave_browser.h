@@ -72,7 +72,7 @@ class BraveBrowser : public Browser {
 
   // Allows ignoring onbeforeunload handlers when closing selected tabs.
   void SetIgnoreBeforeUnloadHandlers(
-      const base::flat_set<content::WebContents*>& for_contents);
+      const base::flat_set<tabs::TabHandle>& for_contents);
 
   BraveBrowserWindow* brave_window();
 
@@ -104,8 +104,7 @@ class BraveBrowser : public Browser {
   bool ignore_enable_closing_last_tab_pref_ = false;
 
   // WebContents for which onbeforeunload handlers should be ignored.
-  base::flat_set<content::WebContents*>
-      tabs_closing_with_onbeforeunload_ignore_;
+  base::flat_set<tabs::TabHandle> tabs_closing_with_onbeforeunload_ignore_;
 
   base::WeakPtrFactory<BraveBrowser> weak_ptr_factory_{this};
 };

@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -239,7 +240,8 @@ void BraveBrowser::OnTabStripModelChanged(
   if (!tabs_closing_with_onbeforeunload_ignore_.empty() &&
       change.type() == TabStripModelChange::Type::kRemoved) {
     for (auto& removed_tab : change.GetRemove()->contents) {
-      tabs_closing_with_onbeforeunload_ignore_.erase(removed_tab.contents);
+      tabs_closing_with_onbeforeunload_ignore_.erase(
+          removed_tab.tab->GetHandle());
     }
   }
 }
@@ -370,12 +372,14 @@ BraveBrowserWindow* BraveBrowser::brave_window() {
 }
 
 void BraveBrowser::SetIgnoreBeforeUnloadHandlers(
-    const base::flat_set<content::WebContents*>& for_contents) {
+    const base::flat_set<tabs::TabHandle>& for_contents) {
   tabs_closing_with_onbeforeunload_ignore_ = for_contents;
 }
 
 bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
-  if (tabs_closing_with_onbeforeunload_ignore_.contains(source)) {
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
+  if (tab &&
+      tabs_closing_with_onbeforeunload_ignore_.contains(tab->GetHandle())) {
     return true;
   }
 

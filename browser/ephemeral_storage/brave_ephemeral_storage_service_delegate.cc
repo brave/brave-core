@@ -50,11 +50,16 @@
 
 namespace {
 
-bool PrepareTabToClose(tabs::TabInterface* tab,
+bool PrepareTabToClose(tabs::TabHandle tab_handle,
                        const std::string& etldplusone) {
+  if (tab_handle == tabs::TabHandle::Null()) {
+    return false;
+  }
+  auto* tab = tab_handle.Get();
   if (!tab) {
     return false;
   }
+
   content::WebContents* contents = tab->GetContents();
   if (!contents) {
     return false;
@@ -216,28 +221,28 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
       continue;
     }
 
-    base::flat_set<content::WebContents*> tabs;
+    base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
-      if (!tab || !PrepareTabToClose(tab, ephemeral_domain)) {
+      if (!tab || !PrepareTabToClose(tab->GetHandle(), ephemeral_domain)) {
         continue;
       }
-      tabs.emplace(tab->GetContents());
+      tab_handlers.emplace(tab->GetHandle());
     }
-    brave_browser->SetIgnoreBeforeUnloadHandlers(std::move(tabs));
+    brave_browser->SetIgnoreBeforeUnloadHandlers(std::move(tab_handlers));
 
-    for (auto* tab : tabs) {
-      if (!tab) {
+    for (auto tab_handle : tab_handlers) {
+      if (tab_handle == tabs::TabHandle::Null() || !tab_handle.Get()) {
         continue;
       }
 
       // initiate the closing of the tab
-      tab->Close();
+      tab_handle.Get()->Close();
     }
   }
 #else
   for (TabModel* model : TabModelList::models()) {
     const size_t tab_count = model->GetTabCount();
-    std::vector<tabs::TabInterface*> tabs_to_close;
+    std::vector<tabs::TabHandle> tabs_to_close;
     for (size_t index = 0; index < tab_count; index++) {
       auto* tab = model->GetTabAt(index);
       // Do not process tabs from other profiles.
@@ -245,13 +250,13 @@ void BraveEphemeralStorageServiceDelegate::PrepareTabsForStorageCleanup(
         continue;
       }
 
-      if (!PrepareTabToClose(tab, ephemeral_domain)) {
+      if (!PrepareTabToClose(tab->GetHandle(), ephemeral_domain)) {
         continue;
       }
-      tabs_to_close.emplace_back(tab);
+      tabs_to_close.emplace_back(tab->GetHandle());
     }
-    for (auto* tab : tabs_to_close) {
-      tab->GetContents()->Close();
+    for (auto tab_handle : tabs_to_close) {
+      tab_handle.Get()->Close();
     }
   }
 #endif
