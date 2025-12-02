@@ -332,6 +332,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_news_internals",
+    "//brave/browser/ui/webui/brave_welcome_page",
     "//brave/browser/user_education:features",
     "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/regional_capabilities",

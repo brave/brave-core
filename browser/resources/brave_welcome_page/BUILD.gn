@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("resources") {
+  entry_points = [ [
+        "brave_welcome_page",
+        rebase_path("brave_welcome_page.tsx"),
+      ] ]
+  resource_name = "brave_welcome_page"
+  imports_from = [
+    "//brave/browser/resources/brave_welcome_page/",
+    "//brave/components/web-components/",
+  ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_welcome_page"
+  output_dir = "$root_gen_dir/brave/browser/resources/brave_welcome_page"
+  deps = [ ":resources" ]
+}
