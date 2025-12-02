@@ -1465,7 +1465,9 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.app",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.rate",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.referrer",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.settings",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabbed_mode",

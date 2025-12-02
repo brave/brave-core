@@ -16,14 +16,15 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.Task;
 
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
@@ -84,7 +85,9 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        mReviewManager = ReviewManagerFactory.create(mContext);
+        if (mReviewManager == null) {
+            mReviewManager = ReviewManagerFactory.create(mContext);
+        }
         try {
             requestReviewFlow();
         } catch (NullPointerException e) {
@@ -96,6 +99,17 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         clickRateNowButton(view);
         clickNotNowButton(view);
         dialog.setContentView(view);
+    }
+
+    /**
+     * Sets the ReviewManager for testing purposes. This allows injecting FakeReviewManager in
+     * tests.
+     *
+     * @param reviewManager The ReviewManager instance to use (can be FakeReviewManager for tests)
+     */
+    @VisibleForTesting
+    void setReviewManagerForTesting(ReviewManager reviewManager) {
+        mReviewManager = reviewManager;
     }
 
     private void clickRateNowButton(View view) {

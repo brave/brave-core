@@ -47,6 +47,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistUtils;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -55,7 +56,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
 import org.jni_zero.JNINamespace;
@@ -300,9 +300,6 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
     public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
 
-    private static final boolean ENABLE_IN_APP_UPDATE =
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
-
     /** Settings for sending local notification reminders. */
     public static final String CHANNEL_ID = "com.brave.browser";
 
@@ -413,19 +410,17 @@ public abstract class BraveActivity extends ChromeActivity
 
         executeInitSafeBrowsing(0);
 
-        if (ENABLE_IN_APP_UPDATE) {
-            if (mAppUpdateManager == null) {
-                mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
-            }
-            mAppUpdateManager
-                    .getAppUpdateInfo()
-                    .addOnSuccessListener(
-                            appUpdateInfo -> {
-                                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                                    completeUpdateSnackbar();
-                                }
-                            });
+        if (mAppUpdateManager == null) {
+            mAppUpdateManager = AppUpdateManagerFactory.create(BraveActivity.this);
         }
+        mAppUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                                completeUpdateSnackbar();
+                            }
+                        });
         // Executes Leo voice prompt if it was triggered from quick search app widget
         maybeExecuteLeoVoicePrompt();
     }
@@ -564,7 +559,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         BraveSafeBrowsingApiHandler.getInstance().shutdownSafeBrowsing();
-        if (ENABLE_IN_APP_UPDATE && mAppUpdateManager != null) {
+        if (mAppUpdateManager != null) {
             mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
         super.onDestroyInternal();
@@ -1390,9 +1385,7 @@ public abstract class BraveActivity extends ChromeActivity
             calendar.add(Calendar.DATE, DAYS_7);
             BraveRewardsHelper.setRewardsOnboardingIconTiming(calendar.getTimeInMillis());
 
-            if (ENABLE_IN_APP_UPDATE) {
-                setInAppUpdateTiming();
-            }
+            setInAppUpdateTiming();
         }
 
         // Check multiwindow toggle for upgrade case
@@ -1406,10 +1399,9 @@ public abstract class BraveActivity extends ChromeActivity
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
         }
 
-        if (ENABLE_IN_APP_UPDATE
-                && System.currentTimeMillis()
-                        > ChromeSharedPreferences.getInstance()
-                                .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
+        if (System.currentTimeMillis()
+                > ChromeSharedPreferences.getInstance()
+                        .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
 
