@@ -7,6 +7,8 @@ source_set("split_view") {
   sources = [
     "split_view_link_navigation_throttle.cc",
     "split_view_link_navigation_throttle.h",
+    "split_view_link_redirect_utils.cc",
+    "split_view_link_redirect_utils.h",
   ]
 
   deps = [
@@ -14,5 +16,6 @@ source_set("split_view") {
     "//components/tabs:public",
     "//content/public/browser",
     "//ui/base",
+    "//url",
   ]
 }
