@@ -36,7 +36,12 @@ transpile_web_ui("ai_chat_ui") {
 }
 
 preprocess_if_expr("preprocess_html") {
-  visibility = [ ":resources_grit" ]
+  visibility = [
+    ":resources_grit",
+
+    # Also used by brave_components_resources.grd via ai_chat_ui_resources.grdp
+    "//brave/components/resources:static_resources_grit",
+  ]
   in_folder = "."
   in_files = [
     "page/ai_chat_ui.html",

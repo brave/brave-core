@@ -29,7 +29,12 @@ transpile_web_ui("brave_wallet_page_ui") {
 }
 
 preprocess_if_expr("preprocess_html") {
-  visibility = [ ":brave_wallet_page_generated_grit" ]
+  visibility = [
+    ":brave_wallet_page_generated_grit",
+
+    # Also used by brave_components_resources.grd
+    "//brave/components/resources:static_resources_grit",
+  ]
   in_folder = "."
   in_files = [ "wallet_page.html" ]
   out_folder = "$target_gen_dir/preprocessed"
