@@ -70,8 +70,7 @@ class FindArchiveToPatchTest : public testing::Test {
 
     // Prepare to update the product in the temp dir.
     installer_state_ = std::make_unique<installer::InstallerState>(
-        kSystemInstall_ ? installer::InstallerState::SYSTEM_LEVEL
-                        : installer::InstallerState::USER_LEVEL);
+        installer::InstallerState::USER_LEVEL);
     installer_state_->set_target_path_for_testing(test_dir_.GetPath());
 
     // Create archives in the two version dirs.
@@ -101,7 +100,7 @@ class FindArchiveToPatchTest : public testing::Test {
 
   void InstallProduct() {
     FakeProductState* product = FakeProductState::FromProductState(
-        original_state_->GetNonVersionedProductState(kSystemInstall_));
+        original_state_->GetNonVersionedProductState(false));
 
     product->set_version(product_version_);
     base::CommandLine uninstall_command(
@@ -115,11 +114,10 @@ class FindArchiveToPatchTest : public testing::Test {
 
   void UninstallProduct() {
     FakeProductState::FromProductState(
-        original_state_->GetNonVersionedProductState(kSystemInstall_))
+        original_state_->GetNonVersionedProductState(false))
         ->set_version(base::Version());
   }
 
-  static const bool kSystemInstall_;
   base::ScopedTempDir test_dir_;
   base::Version product_version_;
   base::Version max_version_;
@@ -129,8 +127,6 @@ class FindArchiveToPatchTest : public testing::Test {
  private:
   registry_util::RegistryOverrideManager registry_override_manager_;
 };
-
-const bool FindArchiveToPatchTest::kSystemInstall_ = false;
 
 }  // namespace
 
