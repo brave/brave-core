@@ -138,6 +138,7 @@ export const ConfirmTransactionPanel = ({
     isSolanaDappTransaction,
     isAccountSyncing,
     isShieldingFunds,
+    isUnshieldingFunds,
   } = usePendingTransactions()
 
   // queries
@@ -456,6 +457,7 @@ export const ConfirmTransactionPanel = ({
             setIsWarningCollapsed={setIsWarningCollapsed}
             isAccountSyncing={isAccountSyncing}
             isShieldingFunds={isShieldingFunds}
+            isUnshieldingFunds={isUnshieldingFunds}
           />
         </Column>
         {showSimulationNotSupportedMessage && (

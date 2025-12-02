@@ -2228,6 +2228,8 @@ enum ZCashTxType {
   kOrchardToTransparent = 4,
   // Internal transfer to the account's shielded address
   kShielding = 5,
+  // Internal transfer to the account's transparent address
+  kUnshielding = 6,
 };
 
 enum ZCashAddressError {
@@ -2238,6 +2240,7 @@ enum ZCashAddressError {
   kInvalidUnifiedAddressMissingOrchardPart = 4,
   kInvalidAddressNetworkMismatch = 5,
   kNotZCashAccount,
+  kInvalidSenderType,
 };
 
 struct ZCashOrchardNoteInfo {
