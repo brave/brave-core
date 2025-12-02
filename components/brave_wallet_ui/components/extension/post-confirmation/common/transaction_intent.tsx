@@ -105,6 +105,9 @@ export const TransactionIntent = (props: Props) => {
 
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+  const isUnshieldingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kUnshielding
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
@@ -305,8 +308,14 @@ export const TransactionIntent = (props: Props) => {
     if (transactionConfirmed && isShieldingFunds) {
       return 'braveWalletAmountHasBeenShielded'
     }
+    if (transactionConfirmed && isUnshieldingFunds) {
+      return 'braveWalletAmountHasBeenUnshielded'
+    }
     if (isShieldingFunds) {
       return 'braveWalletShieldingAmount'
+    }
+    if (isUnshieldingFunds) {
+      return 'braveWalletUnshieldingAmount'
     }
     if (transactionConfirmed) {
       return 'braveWalletAmountSentToAccount'

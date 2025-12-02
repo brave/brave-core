@@ -654,6 +654,7 @@ provideStrings({
   braveWalletConfirmBridge: 'Confirm bridge',
   braveWalletConfirmSend: 'Confirm send',
   braveWalletConfirmShield: 'Confirm shield',
+  braveWalletConfirmUnshield: 'Confirm unshield',
   braveWalletSpend: 'Spend',
 
   // Buy
@@ -1296,6 +1297,7 @@ provideStrings({
     'There was an error attempting to $1 on $2',
   braveWalletShieldingAmount: 'Shielding $1',
   braveWalletAmountHasBeenShielded: '$1 has been shielded',
+  braveWalletAmountHasBeenUnshielded: '$1 has been unshielded',
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
   braveWalletTransactionSignedTitle: 'Transaction signed',
@@ -1610,13 +1612,18 @@ provideStrings({
   braveWalletAccountIsSyncing: 'Account is syncing',
   braveWalletSyncing: 'Syncing',
   braveWalletReviewShield: 'Review shield',
+  braveWalletReviewUnshield: 'Review unshield',
   braveWalletShielding: 'Shielding',
+  braveWalletUnshielding: 'Unshielding',
   braveWalletShieldZEC: 'Shield ZEC',
+  braveWalletUnshieldZEC: 'Unshield ZEC',
   braveWalletShieldFunds: 'Shield funds',
   braveWalletShieldingFundsAlertDescription:
     'You are sending funds from your transparent account to your shielded'
     + 'account.',
-
+  braveWalletUnshieldingFundsAlertDescription:
+    'You are sending funds from your shielded account to your transparent'
+    + 'account.',
   // Page Not Found
   braveWalletPageNotFoundTitle:
     'We can’t find the page you’re looking for right now.',

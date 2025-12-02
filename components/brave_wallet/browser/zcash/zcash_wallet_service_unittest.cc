@@ -1483,6 +1483,86 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
   }
 }
 
+TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
+
+  // Feature disabled.
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "false"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback,
+                Run(Eq(mojom::ZCashTxType::kUnknown),
+                    Eq(mojom::ZCashAddressError::kInvalidSenderType)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), true,
+        account_info->next_transparent_receive_address->address_string,
+        callback.Get());
+  }
+
+  // Acc 1 -> acc 1.
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kUnshielding),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), true,
+        account_info->next_transparent_receive_address->address_string,
+        callback.Get());
+  }
+
+  // Acc 2 -> acc 1.
+  {
+    auto account_2 =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id_2 = account_2->account_id.Clone();
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kUnshielding),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), true,
+        account_info->next_transparent_receive_address->address_string,
+        callback.Get());
+  }
+
+  // Acc 2 -> transparent addr.
+  {
+    auto account_2 =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id_2 = account_2->account_id.Clone();
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kOrchardToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), true, "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT",
+        callback.Get());
+  }
+}
+
 TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);

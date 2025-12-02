@@ -570,6 +570,9 @@ export const usePendingTransactions = () => {
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+  const isUnshieldingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kUnshielding
 
   const transactionTitle = React.useMemo(
     (): string =>
@@ -741,6 +744,7 @@ export const usePendingTransactions = () => {
     isCardanoTransaction: isCardanoTransaction(transactionInfo),
     isAccountSyncing,
     isShieldingFunds,
+    isUnshieldingFunds,
     canEditNetworkFee,
   }
 }
