@@ -51,9 +51,13 @@
 }
 
 .tabMenuItem {
+  --leo-icon-color: var(--leo-color-icon-secondary);
+  --leo-icon-size: 20px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   gap: var(--leo-spacing-m);
 
   & > img {
@@ -63,12 +67,8 @@
 }
 
 .tabItemInfo {
-  display: flex;
-  flex-direction: column;
+  flex-grow: 1;
   padding-inline: var(--leo-spacing-m);
-}
-
-.tabItemTitle {
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
 }
