@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultVpnState } from '../state/vpn_state'
-import { createVpnHandler } from '../state/vpn_handler'
+import { createVpnActions } from '../state/vpn_actions'
 import { createStateProvider } from '../lib/state_provider'
 
 export const VpnProvider = createStateProvider(
   defaultVpnState(),
-  createVpnHandler,
+  createVpnActions,
 )
 
 export const useVpnState = VpnProvider.useState

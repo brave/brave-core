@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultTopSitesState } from '../state/top_sites_state'
-import { createTopSitesHandler } from '../state/top_sites_handler'
+import { createTopSitesActions } from '../state/top_sites_actions'
 import { createStateProvider } from '../lib/state_provider'
 
 export const TopSitesProvider = createStateProvider(
   defaultTopSitesState(),
-  createTopSitesHandler,
+  createTopSitesActions,
 )
 
 export const useTopSitesState = TopSitesProvider.useState

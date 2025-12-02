@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultRewardsState } from '../state/rewards_state'
-import { createRewardsHandler } from '../state/rewards_handler'
+import { createRewardsActions } from '../state/rewards_actions'
 import { createStateProvider } from '../lib/state_provider'
 
 export const RewardsProvider = createStateProvider(
   defaultRewardsState(),
-  createRewardsHandler,
+  createRewardsActions,
 )
 
 export const useRewardsState = RewardsProvider.useState

@@ -15,12 +15,12 @@ import { TopSitesProvider } from '../context/top_sites_context'
 import { VpnProvider } from '../context/vpn_context'
 import { RewardsProvider } from '../context/rewards_context'
 
-import { createNewTabHandler } from './new_tab_handler'
-import { createBackgroundHandler } from './background_handler'
-import { createRewardsHandler } from './rewards_handler'
-import { createSearchHandler } from './search_handler'
-import { createTopSitesHandler } from './top_sites_handler'
-import { createVpnHandler } from './vpn_handler'
+import { createNewTabActions } from './new_tab_actions'
+import { createBackgroundActions } from './background_actions'
+import { createRewardsActions } from './rewards_actions'
+import { createSearchActions } from './search_actions'
+import { createTopSitesActions } from './top_sites_actions'
+import { createVpnActions } from './vpn_actions'
 
 import { StorybookArgs } from './storybook_args'
 
@@ -28,14 +28,14 @@ import { App } from '../components/app'
 
 function StorybookApp(props: StorybookArgs) {
   return (
-    <NewTabProvider createHandler={createNewTabHandler}>
+    <NewTabProvider createActions={createNewTabActions}>
       <BackgroundProvider
-        createHandler={(s) => createBackgroundHandler(s, props)}
+        createActions={(s) => createBackgroundActions(s, props)}
       >
-        <SearchProvider createHandler={createSearchHandler}>
-          <TopSitesProvider createHandler={createTopSitesHandler}>
-            <VpnProvider createHandler={createVpnHandler}>
-              <RewardsProvider createHandler={createRewardsHandler}>
+        <SearchProvider createActions={createSearchActions}>
+          <TopSitesProvider createActions={createTopSitesActions}>
+            <VpnProvider createActions={createVpnActions}>
+              <RewardsProvider createActions={createRewardsActions}>
                 <div style={{ position: 'absolute', inset: 0 }}>
                   <App />
                 </div>

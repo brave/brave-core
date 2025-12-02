@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 
 import {
   BackgroundState,
@@ -55,8 +55,8 @@ const sponsoredBackgrounds = {
   none: null,
 }
 
-export function createBackgroundHandler(
-  store: Store<BackgroundState>,
+export function createBackgroundActions(
+  store: StateStore<BackgroundState>,
   args: StorybookArgs,
 ): BackgroundActions {
   store.update({

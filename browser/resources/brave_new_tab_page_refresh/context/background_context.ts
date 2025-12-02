@@ -9,12 +9,12 @@ import {
   defaultBackgroundState,
   getCurrentBackground,
 } from '../state/background_state'
-import { createBackgroundHandler } from '../state/background_handler'
+import { createBackgroundActions } from '../state/background_actions'
 import { createStateProvider } from '../lib/state_provider'
 
 export const BackgroundProvider = createStateProvider(
   defaultBackgroundState(),
-  createBackgroundHandler,
+  createBackgroundActions,
 )
 
 export const useBackgroundState = BackgroundProvider.useState

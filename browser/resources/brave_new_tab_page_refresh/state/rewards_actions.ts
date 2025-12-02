@@ -7,7 +7,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import { RewardsPageProxy } from '../../../../components/brave_rewards/resources/rewards_page/webui/rewards_page_proxy'
 import { externalWalletFromExtensionData } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import { debounce } from '$web-common/debounce'
 import {
   RewardsState,
@@ -15,8 +15,8 @@ import {
   defaultRewardsActions,
 } from './rewards_state'
 
-export function createRewardsHandler(
-  store: Store<RewardsState>,
+export function createRewardsActions(
+  store: StateStore<RewardsState>,
 ): RewardsActions {
   if (!loadTimeData.getBoolean('rewardsFeatureEnabled')) {
     store.update({ initialized: true })
