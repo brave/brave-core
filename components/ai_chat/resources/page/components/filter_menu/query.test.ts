@@ -3,32 +3,48 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { FuzzyFinder } from './fuzzy_finder'
 import { extractQuery, matches } from './query'
 
 describe('query', () => {
   describe('matches', () => {
     it('should return true if the query is a substring of the text', () => {
-      expect(matches('hello', 'hello world')).toBe(0)
+      expect(matches(new FuzzyFinder('hello'), 'hello world')).toEqual({
+        ranges: [{ end: 5, start: 0 }],
+        score: 0.99,
+      })
     })
 
     it('should return false if the query is not a substring of the text', () => {
-      expect(matches('bye', 'hello world')).toBe(-1)
+      expect(matches(new FuzzyFinder('bye'), 'hello world')).toBe(undefined)
     })
 
-    it('should return true if the query substring of the text case insensitive', () => {
-      expect(matches('HELLO', 'HeLlO world')).toBe(0)
+    it('should match if the query substring of the text case insensitive', () => {
+      expect(matches(new FuzzyFinder('HELLO'), 'HeLlO world')).toEqual({
+        ranges: [{ end: 5, start: 0 }],
+        score: 0.99,
+      })
     })
 
     it('should match ignoring whitespace', () => {
-      expect(matches('HELLO', 'He LlO   world')).toBe(0)
+      expect(matches(new FuzzyFinder('HELLO'), 'He LlO   world')).toEqual({
+        ranges: [
+          { end: 2, start: 0 },
+          { end: 6, start: 3 },
+        ],
+        score: 0.86650390625,
+      })
     })
 
     it('empty string should match anything', () => {
-      expect(matches('', 'He LlO   world')).toBe(0)
+      expect(matches(new FuzzyFinder(''), 'He LlO   world')).toEqual({
+        ranges: [],
+        score: 0,
+      })
     })
 
     it('empty strings should match', () => {
-      expect(matches('', '')).toBe(0)
+      expect(matches(new FuzzyFinder(''), '')).toEqual({ ranges: [], score: 0 })
     })
   })
 
