@@ -106,22 +106,22 @@ void SavePromoCode(installer::InstallStatus install_status) {
   SavePromoCode(install_status); \
   DoLegacyCleanups
 
-// The macros BRAVE_HANDLE_NON_INSTALL_CMD_LINE_OPTIONS, UpdateInstallStatus and
-// BRAVE_UPDATE_INSTALL_STATUS contain code that used to be upstream and had to
-// be restored in Brave to support delta updates on Windows until we are on
-// Omaha 4. See github.com/brave/brave-core/pull/31937.
-#define BRAVE_HANDLE_NON_INSTALL_CMD_LINE_OPTIONS                         \
+// The macros BRAVE_SETUP_MAIN, UpdateInstallStatus and BRAVE_INSTALL_PRODUCTS
+// contain code that used to be upstream and had to be restored in Brave to
+// support delta updates on Windows until we are on Omaha 4. See
+// github.com/brave/brave-core/pull/31937.
+#define BRAVE_SETUP_MAIN                                                  \
   if (BraveHandleNonInstallCmdLineOptions(modify_params, cmd_line, prefs, \
                                           &exit_code)) {                  \
     return exit_code;                                                     \
   }
-#define BRAVE_UPDATE_INSTALL_STATUS UpdateInstallStatus();
+#define BRAVE_INSTALL_PRODUCTS UpdateInstallStatus();
 #define UpdateInstallStatus() \
   UpdateInstallStatus(installer_state->archive_type, install_status)
 
 #include <chrome/installer/setup/setup_main.cc>
 
 #undef UpdateInstallStatus
-#undef BRAVE_UPDATE_INSTALL_STATUS
-#undef BRAVE_HANDLE_NON_INSTALL_CMD_LINE_OPTIONS
+#undef BRAVE_INSTALL_PRODUCTS
+#undef BRAVE_SETUP_MAIN
 #undef DoLegacyCleanups
