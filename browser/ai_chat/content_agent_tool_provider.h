@@ -63,7 +63,8 @@ class ContentAgentToolProvider : public ToolProvider,
   friend class ContentAgentToolProviderTest;
   friend class ContentAgentToolProviderBrowserTest;
 
-  void OnActorTaskStateChanged(const actor::ActorTask& task);
+  void OnActorTaskStateChanged(actor::TaskId task_id,
+                               actor::ActorTask::State task_state);
 
   void CreateTools();
 
