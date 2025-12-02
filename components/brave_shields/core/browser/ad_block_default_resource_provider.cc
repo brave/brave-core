@@ -78,7 +78,7 @@ void AdBlockDefaultResourceProvider::LoadResources(
   if (resources_path.empty()) {
     // If the path is not ready yet, run the callback with empty resources to
     // avoid blocking filter data loads.
-    auto empty_storage = adblock::new_resource_storage(std::string("[]"));
+    auto empty_storage = adblock::new_empty_resource_storage();
     std::move(cb).Run(std::move(empty_storage));
     return;
   }

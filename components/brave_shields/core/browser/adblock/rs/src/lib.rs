@@ -32,6 +32,7 @@ mod ffi {
     extern "Rust" {
         type BraveCoreResourceStorage;
         fn new_resource_storage(resources_json: &CxxString) -> Box<BraveCoreResourceStorage>;
+        fn new_empty_resource_storage() -> Box<BraveCoreResourceStorage>;
         fn clone_resource_storage(
             storage: &BraveCoreResourceStorage,
         ) -> Box<BraveCoreResourceStorage>;

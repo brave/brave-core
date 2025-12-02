@@ -21,20 +21,18 @@ impl ResourceStorageBackend for BraveCoreResourceStorage {
 
 /// Creates a new ResourceStorage from JSON string.
 pub fn new_resource_storage(resources_json: &CxxString) -> Box<BraveCoreResourceStorage> {
-    let json_str = resources_json.to_str().unwrap_or("[]");
-    Box::new(match serde_json::from_str::<Vec<Resource>>(json_str) {
-        Ok(resources) => {
-            let in_memory_storage = InMemoryResourceStorage::from_resources(resources);
-            let shared_storage = Arc::new(in_memory_storage);
-            BraveCoreResourceStorage { shared_storage }
-        }
-        Err(_) => {
-            // If parsing fails, create empty storage
-            let in_memory_storage = InMemoryResourceStorage::from_resources(vec![]);
-            let shared_storage = Arc::new(in_memory_storage);
-            BraveCoreResourceStorage { shared_storage }
-        }
-    })
+    let resources = serde_json::from_str::<Vec<Resource>>(resources_json.to_str().unwrap_or("[]"))
+        .unwrap_or_default();
+    let in_memory_storage = InMemoryResourceStorage::from_resources(resources);
+    let shared_storage = Arc::new(in_memory_storage);
+    Box::new(BraveCoreResourceStorage { shared_storage })
+}
+
+/// Creates a new empty ResourceStorage.
+pub fn new_empty_resource_storage() -> Box<BraveCoreResourceStorage> {
+    let in_memory_storage = InMemoryResourceStorage::from_resources(vec![]);
+    let shared_storage = Arc::new(in_memory_storage);
+    Box::new(BraveCoreResourceStorage { shared_storage })
 }
 
 /// Clones a BraveCoreResourceStorage.
