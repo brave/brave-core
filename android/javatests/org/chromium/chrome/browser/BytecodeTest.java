@@ -1408,7 +1408,8 @@ public class BytecodeTest {
                         TopControlsStacker.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        PageZoomManager.class));
+                        PageZoomManager.class,
+                        SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1690,7 +1691,9 @@ public class BytecodeTest {
                         boolean.class,
                         PageZoomManager.class,
                         Function.class,
-                        MultiInstanceManager.class));
+                        MultiInstanceManager.class,
+                        SnackbarManager.class,
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
