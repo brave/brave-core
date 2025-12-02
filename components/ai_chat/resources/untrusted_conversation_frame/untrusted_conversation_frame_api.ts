@@ -24,6 +24,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
 export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   conversationHistory: [],
   isGenerating: false,
+  isPremiumUser: false,
   isLeoModel: true,
   allModels: [],
   currentModelKey: '',
