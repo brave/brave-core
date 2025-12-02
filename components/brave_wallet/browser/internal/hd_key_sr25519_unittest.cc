@@ -300,4 +300,31 @@ TEST(HDKeySr25519, PolkadotSDKTestVector2) {
   EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kExpectedPubKey);
 }
 
+TEST(HDKeySr25519, DeterministicSignatures) {
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+
+  auto message = base::byte_span_from_cstring("hello, world!");
+
+  auto sig1 = keypair.SignMessage(message);
+  auto sig2 = keypair.SignMessage(message);
+
+  EXPECT_NE(base::HexEncodeLower(sig1), base::HexEncodeLower(sig2));
+  EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
+  EXPECT_TRUE(keypair.VerifyMessage(sig2, message));
+
+  keypair.UseMockRngForTesting();
+
+  sig1 = keypair.SignMessage(message);
+  sig2 = keypair.SignMessage(message);
+
+  const char expected_sig[] =
+      R"(a6c93252dc4bfbd9c63299eb59d5b0999fcec35ba41d54470d9728e9174a1a235bce6f0b98d52ec61e8cefd995f698d1151ac13c331e281c77121790997f2286)";
+
+  EXPECT_EQ(base::HexEncodeLower(sig1), expected_sig);
+  EXPECT_EQ(base::HexEncodeLower(sig2), expected_sig);
+
+  EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
+  EXPECT_TRUE(keypair.VerifyMessage(sig2, message));
+}
+
 }  // namespace brave_wallet

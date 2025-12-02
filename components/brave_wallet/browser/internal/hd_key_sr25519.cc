@@ -67,4 +67,8 @@ HDKeySr25519 HDKeySr25519::DeriveHard(
       keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
 
+void HDKeySr25519::UseMockRngForTesting() {
+  keypair_->use_mock_rng_for_testing();  // IN-TEST
+}
+
 }  // namespace brave_wallet

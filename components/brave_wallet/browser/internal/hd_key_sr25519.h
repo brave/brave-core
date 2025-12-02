@@ -64,6 +64,11 @@ class HDKeySr25519 {
   // coded result is: { 20, 'A', 'l', 'i', 'c', 'e' }
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction) const;
 
+  // Update the keypair to use a mock RNG when deriving Shcnorr signatures. This
+  // is intended only for testing purposes and would be disastrous for
+  // production environments.
+  void UseMockRngForTesting();
+
  private:
   explicit HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair);
 
