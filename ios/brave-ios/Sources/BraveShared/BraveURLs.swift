@@ -103,7 +103,6 @@ extension URL {
       string:
         "https://support.brave.app/hc/en-us/articles/36550092449165"
     )!
-    public static let wallet = URL(string: "brave://wallet")!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
@@ -116,6 +115,16 @@ extension URL {
   }
   public enum WebUI {
     public static let aiChat = URL(string: "brave://leo-ai")!
+
+    public enum Wallet {
+      public static let home = URL(string: "brave://wallet")!
+      public static let buy = URL(string: "brave://wallet/crypto/fund-wallet")!
+      public static let send = URL(string: "brave://wallet/send")!
+      public static let swap = URL(string: "brave://wallet/swap")!
+      public static let deposit = URL(string: "brave://wallet/crypto/deposit-funds")!
+      public static let activity = URL(string: "brave://wallet/crypto/portfolio/activity")!
+    }
+    public static let wallet = Wallet.self
   }
   public static let brave = Brave.self
   public static let apple = Apple.self
