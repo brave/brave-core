@@ -86,6 +86,26 @@ export const style = scoped.css`
     padding-bottom: 4px;
   }
 
+  &.reset-external-wallet {
+    .title {
+      --leo-icon-color: ${color.systemfeedback.warningIcon};
+      --leo-icon-size: 16px;
+    }
+
+    .text {
+      color: #fff;
+    }
+
+    .header {
+      font: ${font.default.semibold};
+    }
+
+    p {
+      font: ${font.xSmall.regular};
+      opacity: 0.6;
+    }
+  }
+
   &.login {
     --leo-icon-size: 40px;
     --provider-icon-color: currentcolor;

@@ -18,7 +18,10 @@ import { usePersistedJSON } from '$web-common/usePersistedState'
 import { WidgetMenu } from './widget_menu'
 import { Link, openLink } from '../common/link'
 import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
-import { getExternalWalletProviderName } from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
+import {
+  getExternalWalletProviderName,
+  shouldResetExternalWallet,
+} from '../../../../../components/brave_rewards/resources/shared/lib/external_wallet'
 import { getProviderPayoutStatus } from '../../../../../components/brave_rewards/resources/shared/lib/provider_payout_status'
 import { formatString } from '$web-common/formatString'
 
@@ -122,6 +125,44 @@ export function RewardsWidget() {
               onClick={() => openLink(urls.connectURL)}
             >
               {getString(S.NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL)}
+            </Button>
+          </div>
+        </div>
+      </RewardsWidgetContainer>
+    )
+  }
+
+  function renderResetExternalWallet() {
+    if (!externalWallet) {
+      return null
+    }
+    const provider = getExternalWalletProviderName(externalWallet.provider)
+    return (
+      <RewardsWidgetContainer className='reset-external-wallet'>
+        <div className='title'>
+          <Icon name='warning-triangle-filled' />
+          {getString(S.NEW_TAB_REWARDS_WIDGET_TITLE)}
+        </div>
+        <div className='content'>
+          <div className='text'>
+            <div className='header'>
+              {formatString(getString(S.REWARDS_RESET_EXTERNAL_WALLET_TITLE), [
+                provider,
+              ])}
+            </div>
+            <p>
+              {formatString(getString(S.REWARDS_RESET_EXTERNAL_WALLET_TEXT), {
+                $1: provider,
+                $2: (content) => null,
+              })}
+            </p>
+          </div>
+          <div className='actions'>
+            <Button
+              size='small'
+              onClick={() => openLink(urls.switchAccountURL)}
+            >
+              {getString(S.REWARDS_MORE_BUTTON_LABEL)}
             </Button>
           </div>
         </div>
@@ -266,6 +307,10 @@ export function RewardsWidget() {
 
   if (!externalWallet) {
     return renderUnconnected()
+  }
+
+  if (shouldResetExternalWallet(externalWallet.provider)) {
+    return renderResetExternalWallet()
   }
 
   if (!externalWallet.authenticated) {
