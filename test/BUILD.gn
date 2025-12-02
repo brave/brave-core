@@ -529,6 +529,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_ads:unit_tests",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/page_info:unit_tests",
       "//brave/components/sidebar/browser:unit_tests",
     ]
   }
