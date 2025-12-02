@@ -91,6 +91,7 @@ class BraveShieldsTabHelper
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
                            bool enabled);
   base::flat_map<ContentSettingsType, bool> GetWebcompatSettings();
+  bool GetAllowElementBlockerInPrivateModeEnabled();
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);

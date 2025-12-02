@@ -316,5 +316,19 @@ jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
+jboolean
+JNI_BraveShieldsContentSettings_GetAllowElementBlockerInPrivateModeEnabled(
+    JNIEnv* env) {
+  return brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state());
+}
+
+void JNI_BraveShieldsContentSettings_SetAllowElementBlockerInPrivateModeEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  brave_shields::SetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state(), enabled);
+}
+
 }  // namespace android
 }  // namespace chrome

@@ -151,6 +151,14 @@
       sub-label="$i18n{braveShieldsSaveContactInfoSublabel}"
       on-settings-boolean-control-change="onSaveContactInfoToggle_">
   </settings-toggle-button>
+  <settings-toggle-button id="allowElementBlockerInPrivateModeToggle"
+      hidden="[[!isBlockElementFeatureEnabled_]]"
+      class="cr-row"
+      pref="[[isAllowElementBlockerInPrivateModeEnabled_]]"
+      label="$i18n{allowElementBlockerInPrivateModeLabel}"
+      sub-label="$i18n{allowElementBlockerInPrivateModeSubLabel}"
+      on-settings-boolean-control-change="onAllowElementBlockerInPrivateModeToggle_">
+  </settings-toggle-button>
   <cr-link-row
     id="contentFiltersRow"
     class="hr"

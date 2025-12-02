@@ -48,6 +48,8 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_TRACKING_PROTECTIONS =
             "incognito_tracking_protections";
     private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
+    private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
+            "allow_elements_blocking_on_private_tabs";
 
     private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 29;
 
@@ -83,6 +85,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_SURVEY_PANELIST);
         checkPreferenceExists(PREF_SURVEY_PANELIST_LEARN_MORE);
+        checkPreferenceExists(PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
 
         checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
         checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);

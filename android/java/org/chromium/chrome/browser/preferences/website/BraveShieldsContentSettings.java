@@ -28,6 +28,8 @@ public class BraveShieldsContentSettings {
     public static final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
     public static final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
             "forgetFirstPartyStorage";
+    public static final String RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE =
+            "allowElementBlockerInPrivate";
 
     public static final String BLOCK_RESOURCE = "block";
     public static final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
@@ -105,10 +107,14 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
             BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
-            BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setNoScriptControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
-            BraveShieldsContentSettingsJni.get().setForgetFirstPartyStorageEnabled(
-                    value, host, profile);
+            BraveShieldsContentSettingsJni.get()
+                    .setForgetFirstPartyStorageEnabled(value, host, profile);
+        } else if (resourceIndentifier.equals(
+                RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE)) {
+            BraveShieldsContentSettingsJni.get().setAllowElementBlockerInPrivateModeEnabled(value);
         }
     }
 
@@ -139,8 +145,12 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE)) {
-            return BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled(
-                    host, profile);
+            return BraveShieldsContentSettingsJni.get()
+                    .getForgetFirstPartyStorageEnabled(host, profile);
+        } else if (resourceIndentifier.equals(
+                RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE)) {
+            return BraveShieldsContentSettingsJni.get()
+                    .getAllowElementBlockerInPrivateModeEnabled();
         }
 
         return !settings.equals(ALLOW_RESOURCE);
@@ -218,6 +228,22 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE,
                 value,
                 false);
+    }
+
+    public static void setAllowElementBlockerInPrivateModeEnabledPref(boolean value) {
+        setShields(
+                null,
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE,
+                value,
+                false);
+    }
+
+    public static boolean getAllowElementBlockerInPrivateModeEnabledPref() {
+        return getShields(
+                null,
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE);
     }
 
     public static boolean getJavascriptPref() {
@@ -302,5 +328,9 @@ public class BraveShieldsContentSettings {
         void resetCosmeticFilter(String url);
 
         boolean areAnyBlockedElementsPresent(String url);
+
+        boolean getAllowElementBlockerInPrivateModeEnabled();
+
+        void setAllowElementBlockerInPrivateModeEnabled(boolean enabled);
     }
 }
