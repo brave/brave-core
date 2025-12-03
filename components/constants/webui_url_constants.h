@@ -91,9 +91,6 @@ inline constexpr char kBraveGettingStartedURL[] = "chrome://getting-started/";
 inline constexpr char kBraveGettingStartedHost[] = "getting-started";
 inline constexpr char kRewriterUIURL[] = "chrome://rewriter/";
 inline constexpr char kRewriterUIHost[] = "rewriter";
-inline constexpr char kEmailAliasesPanelURL[] =
-    "chrome://email-aliases.top-chrome/";
-inline constexpr char kEmailAliasesPanelHost[] = "email-aliases.top-chrome";
 
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";

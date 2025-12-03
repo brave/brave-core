@@ -26,7 +26,10 @@ constexpr webui::ResourcePath kEmailAliasesPanelResources[] = {
     {"email_aliases_panel.bundle.js",
      IDR_EMAIL_ALIASES_EMAIL_ALIASES_PANEL_BUNDLE_JS},
 };
-}
+
+inline constexpr char kEmailAliasesPanelHost[] = "email-aliases.panel";
+
+}  // namespace
 
 EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui) {
