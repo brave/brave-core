@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index d122aff8937035b74b4ff6f681e19ac136ff8d7f..106e3eea81d5435d2021e794eeff01c7d5184301 100644
+index 5860850fa981a75d796fcef62dfa03093d13b7f8..8096de8f94b769592fe65bb2baed9c75efe7f2e2 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -132,6 +132,7 @@ source_set("configs") {
-   if (enable_session_service) {
-     deps += [ "//chrome/browser/ui/webui/tab_strip_internals" ]
+@@ -136,6 +136,7 @@ source_set("configs") {
+   if (is_mac) {
+     deps += [ "//chrome/browser/ui/webui/unexportable_keys_internals" ]
    }
 +  import("//brave/browser/ui/webui/sources.gni") deps += brave_browser_ui_webui_configs_deps
  }

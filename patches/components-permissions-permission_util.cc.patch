@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 766ad28c66348f79164d8690faffb936bf659884..6cf8ea22dc7beaa501fed427b14464a01873c575 100644
+index c02c2a570208165b1e7bdd9d44864b3ecac9cfa4..63350fa704da20ffc4df7e1caf243f97c3027c85 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -115,6 +115,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
@@ -18,8 +18,8 @@ index 766ad28c66348f79164d8690faffb936bf659884..6cf8ea22dc7beaa501fed427b14464a0
    }
  }
  
-@@ -540,6 +542,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
-       return ContentSettingsType::LOCAL_NETWORK_ACCESS;
+@@ -550,6 +552,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+       return ContentSettingsType::LOOPBACK_NETWORK;
      case PermissionType::NUM:
        break;
 +    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
