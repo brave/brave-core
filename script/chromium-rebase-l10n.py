@@ -16,7 +16,8 @@ import argparse
 import os.path
 import sys
 import glob
-from lib.l10n.grd_utils import (braveify_grd_in_place, braveify_grd_tree,
+from lib.l10n.grd_utils import (BRANDS, braveify_grd_in_place,
+                                braveify_grd_tree, get_brand_from_grd_name,
                                 INSTALLER_STRINGS,
                                 GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
@@ -111,10 +112,9 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
 
 def add_installer_strings_xtb_translations_for_messages(message_ids):
     installer_xtb_files = glob.glob(
-        os.path.join(
-            BRAVE_SOURCE_ROOT,
-            'chromium_src/chrome/installer/setup/resources/setup_resources_*.xtb'
-        ))
+        os.path.join(BRAVE_SOURCE_ROOT,
+                     'chromium_src/chrome/installer/setup/resources',
+                     'setup_resources_*.xtb'))
     for installer_xtb_path in installer_xtb_files:
         installer_xtb_xml_tree = etree.parse(installer_xtb_path)
         lang = os.path.basename(installer_xtb_path).replace(
@@ -174,11 +174,12 @@ def parse_args():
 def generate_overrides_and_replace_strings(source_string_path):
     # pylint: disable=too-many-locals
     # Read the clean GRD and apply only branding replacements (e.g. Chrome ->
-    # Brave).
+    # Brave). Auto-detect the brand from the filename (e.g. brave_origin).
+    brand = get_brand_from_grd_name(source_string_path)
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
-    braveify_grd_tree(original_xml_tree_with_branding_fixes, True)
+    braveify_grd_tree(original_xml_tree_with_branding_fixes, True, brand)
     # Apply all replacements the the clean GRD.
-    braveify_grd_in_place(source_string_path)
+    braveify_grd_in_place(source_string_path, brand)
     # This tree has all replacements whereas the
     # original_xml_tree_with_branding_fixes only has branding replacements. We
     # don't need to write branding-only replacements to the _override file
@@ -208,10 +209,12 @@ def generate_overrides_and_replace_strings(source_string_path):
     parts = modified_xml_tree.xpath('//part')
     for part in parts:
         override_file = get_override_file_path(part.attrib['file'])
-        # Check for the special case of brave_stings.grd:
-        if (os.path.basename(source_string_path) == 'brave_strings.grd'
-                and override_file == 'settings_chromium_strings_override.grdp'):
-            override_file = 'settings_brave_strings_override.grdp'
+        # Check for the special case of brand strings files:
+        brand = get_brand_from_grd_name(source_string_path)
+        if (brand and os.path.basename(source_string_path)
+                == f'{brand}_strings.grd' and override_file
+                == 'settings_chromium_strings_override.grdp'):
+            override_file = f'settings_{brand}_strings_override.grdp'
 
         if os.path.exists(os.path.join(os.path.dirname(source_string_path),
                                        override_file)):
@@ -229,14 +232,16 @@ def generate_overrides_and_replace_strings(source_string_path):
     modified_messages = modified_xml_tree.xpath('//message')
     modified_parts = modified_xml_tree.xpath('//part')
     if len(modified_messages) > 0 or len(modified_parts) > 0:
-        # Fix output filenames to generate "brave" files instead of "chromium".
-        if os.path.basename(source_string_path) == 'brave_strings.grd':
+        # Fix output filenames to generate brand files instead of "chromium".
+        brand = get_brand_from_grd_name(source_string_path)
+        if brand and os.path.basename(
+                source_string_path) == f'{brand}_strings.grd':
             for xtb_filename in modified_xml_tree.xpath(
                     "//file[re:test(@path, '.*\\.xtb')]",
                     namespaces={"re": "http://exslt.org/regular-expressions"}):
                 xtb_filename.attrib['path'] = \
                     xtb_filename.attrib['path'].replace('chromium_strings',
-                                                        'brave_strings')
+                                                        f'{brand}_strings')
         print(f'Writing override {override_string_path}')
         write_xml_file_from_tree(override_string_path, modified_xml_tree)
 
@@ -286,22 +291,26 @@ def main():
     # is_translateable_string function in brave/script/lib/l10n/grd_utils.py.
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
-    if basename == 'brave_strings':
+    brand = get_brand_from_grd_name(source_string_path)
+    # Check if this is a brand strings file (brave_strings.grd, etc.)
+    if brand and basename == f'{brand}_strings':
         if not migrate_google_chrome_strings(
                 xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
             return 1
         if not add_installer_strings(xml_tree, INSTALLER_STRINGS):
             return 1
+        # Use brand-specific product name for these strings
+        product_name = 'Brave Origin' if brand == 'brave_origin' else 'Brave'
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
-        elem1.text = 'Brave Nightly'
+        elem1.text = f'{product_name} Nightly'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath('//message[@name="IDS_SHORTCUT_NAME_BETA"]')[0]
-        elem1.text = 'Brave Beta'
+        elem1.text = f'{product_name} Beta'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath('//message[@name="IDS_SHORTCUT_NAME_DEV"]')[0]
-        elem1.text = 'Brave Dev'
+        elem1.text = f'{product_name} Dev'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         for cr_channel, br_channel in (('BETA', 'Beta'), ('DEV', 'Dev'),
@@ -309,7 +318,7 @@ def main():
             elem1 = xml_tree.xpath(
                 f'//message[@name="IDS_APP_SHORTCUTS_SUBDIR_NAME_{cr_channel}"]'
             )[0]
-            elem1.text = f'Brave {br_channel} Apps'
+            elem1.text = f'{product_name} {br_channel} Apps'
             elem1.attrib.pop('desc')
             try:
                 elem1.attrib.pop('translateable')
@@ -318,17 +327,17 @@ def main():
                 pass
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_NAME_BETA"]')[0]
-        elem1.text = 'Brave Beta (mDNS-In)'
+        elem1.text = f'{product_name} Beta (mDNS-In)'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_NAME_CANARY"]')[0]
-        elem1.text = 'Brave Nightly (mDNS-In)'
+        elem1.text = f'{product_name} Nightly (mDNS-In)'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_NAME_DEV"]')[0]
-        elem1.text = 'Brave Dev (mDNS-In)'
+        elem1.text = f'{product_name} Dev (mDNS-In)'
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
@@ -336,22 +345,25 @@ def main():
         elem1.attrib.pop('desc')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA"]')[0]
-        elem1.text = 'Inbound rule for Brave Beta to allow mDNS traffic.'
+        elem1.text = (f'Inbound rule for {product_name} Beta to allow '
+                      'mDNS traffic.')
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY"]')[0]
-        elem1.text = 'Inbound rule for Brave Nightly to allow mDNS traffic.'
+        elem1.text = (f'Inbound rule for {product_name} Nightly to allow '
+                      'mDNS traffic.')
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV"]')[0]
-        elem1.text = 'Inbound rule for Brave Dev to allow mDNS traffic.'
+        elem1.text = (f'Inbound rule for {product_name} Dev to allow '
+                      'mDNS traffic.')
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
             '//part[@file="settings_chromium_strings.grdp"]')[0]
-        elem1.set('file', 'settings_brave_strings.grdp')
+        elem1.set('file', f'settings_{brand}_strings.grdp')
         elem1 = xml_tree.xpath(
             '//message[@name="IDS_INSTALL_OS_NOT_SUPPORTED"]')[0]
         elem1.text = elem1.text.replace('Windows 7', 'Windows 10')
@@ -365,19 +377,22 @@ def main():
         comment = etree.Comment(comment_text)
         grit_root.addprevious(comment)
 
-    # Fix output filenames to generate "brave" files instead of "chromium".
-    if basename in ('brave_strings', 'components_brave_strings'):
+    # Fix output filenames to generate brand files instead of "chromium".
+    if brand and basename in (f'{brand}_strings',
+                              f'components_{brand}_strings'):
         for pak_filename in xml_tree.xpath(
                 "//output[re:test(@filename, '.*\\.(pak|xml)')]",
                 namespaces={"re": "http://exslt.org/regular-expressions"}):
             pak_filename.attrib['filename'] = pak_filename.attrib[
-                'filename'].replace('chromium_strings', 'brave_strings')
-    if basename in ('brave_strings'):
+                'filename'].replace('chromium_strings', f'{brand}_strings')
+    if brand and basename == f'{brand}_strings':
+        # For XTB files, brave_origin shares translations with brave
+        xtb_brand = 'brave' if brand == 'brave_origin' else brand
         for xtb_filename in xml_tree.xpath(
                 "//file[re:test(@path, '.*\\.xtb')]",
                 namespaces={"re": "http://exslt.org/regular-expressions"}):
             xtb_filename.attrib['path'] = xtb_filename.attrib['path'].replace(
-                'chromium_strings', 'brave_strings')
+                'chromium_strings', f'{xtb_brand}_strings')
 
     # Insert additional languages we support into locale_settings_*.grd files.
     if basename in ('locale_settings_linux', 'locale_settings_mac',
