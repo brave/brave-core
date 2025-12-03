@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/metadata/permissions/histograms.xml b/tools/metrics/histograms/metadata/permissions/histograms.xml
-index 5bf514e5c9baddf49ca8a23dc38226b9bc28a7b0..8c1b038a59655e4f3b33e8a4ab5da97b9fa89b26 100644
+index f276d99e94593c5a1eed7c39ca497bb64a3b49d6..6d004a80adcd49d2a26f826cc2d5f7951a51ff2b 100644
 --- a/tools/metrics/histograms/metadata/permissions/histograms.xml
 +++ b/tools/metrics/histograms/metadata/permissions/histograms.xml
-@@ -51,6 +51,7 @@ chromium-metrics-reviews@google.com.
+@@ -53,6 +53,7 @@ chromium-metrics-reviews@google.com.
    <variant name="PointerLock"/>
    <variant name="ProtectedMedia"/>
    <variant name="Quota"/>
@@ -10,11 +10,11 @@ index 5bf514e5c9baddf49ca8a23dc38226b9bc28a7b0..8c1b038a59655e4f3b33e8a4ab5da97b
    <variant name="RegisterProtocolHandler"/>
    <variant name="SecurityKeyAttestation"/>
    <variant name="StorageAccess"/>
-@@ -127,6 +128,7 @@ chromium-metrics-reviews@google.com.
+@@ -152,6 +153,7 @@ chromium-metrics-reviews@google.com.
+   <variant name=".PointerLock" summary="Pointer lock permission"/>
    <variant name=".ProtectedMedia" summary="Protected media permission"/>
-   <variant name=".PushMessaging" summary="Push messaging permission"/>
    <variant name=".Quota" summary="Quota permission"/>
 +  <variant name=".Widevine" summary="Widevine permission"/>
    <variant name=".RegisterProtocolHandler"
        summary="registerProtocolHandler permission"/>
-   <variant name=".SecurityKeyAttestation" summary="Security Key attestation"/>
+   <variant name=".SmartCard" summary="Smart card connection permission"/>

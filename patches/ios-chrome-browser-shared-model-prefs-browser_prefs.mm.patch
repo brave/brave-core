@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 661a6389686a4edfbaa06c9b4b940a6c4606475c..32554ef95f549693e11e1302d62e4b070102d4f5 100644
+index f53df3a733192f01d0edb7692680892921800480..b74c2d41c6e266a2a3a1bdd5e06e43c18561eb18 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -698,6 +698,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -647,6 +647,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   // Deprecated 09/2025.
-   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
+   // Deprecated 01/2026.
+   registry->RegisterListPref(kMagicStackSafetyCheckNotificationsShown);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1174,6 +1175,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Deprecated 11/2025.
-   registry->RegisterListPref(kReaderModeRecentlyUsedTimestampsPref);
+@@ -1118,6 +1119,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Deprecated 12/2025.
+   registry->RegisterStringPref(kAutofillStatesDataDir, std::string());
+   registry->RegisterBooleanPref(prefs::kIosMiniMapShowNativeMap, true);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
