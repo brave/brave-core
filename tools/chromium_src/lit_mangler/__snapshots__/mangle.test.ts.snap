@@ -494,7 +494,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <div class=\\"subtitle\\" .innerHTML=\\"\${this.getSubtitle_()}\\"></div>
    </div>
    <div id=\\"profilesWrapper\\" ?hidden=\\"\${(this.shouldHideProfilesWrapper_())}\\">
-@@ -28,39 +27,24 @@
+@@ -28,46 +27,27 @@
              @toggle-drag=\\"\${this.toggleDrag_}\\"
              @disable-all-picker-buttons=\\"\${this.disableAllPickerButtons_}\\">
          </profile-card>
@@ -523,6 +523,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +
  </div>
  <div class=\\"footer\\">
+-  <cr-button id=\\"openAllProfilesButton\\"
+-      class=\\"action-button\\"
+-      @click=\\"\${this.onOpenAllProfilesClick_}\\"
+-      ?hidden=\\"\${!this.shouldShowOpenAllProfilesButton_}\\"
+-      ?disabled=\\"\${this.pickerButtonsDisabled_}\\">
++  <cr-button id=\\"openAllProfilesButton\\" class=\\"action-button\\" @click=\\"\${this.onOpenAllProfilesClick_}\\" ?hidden=\\"\${!this.shouldShowOpenAllProfilesButton_}\\" ?disabled=\\"\${this.pickerButtonsDisabled_}\\">
+     $i18n{openAllProfilesButtonText}
+   </cr-button>
 -  <cr-button id=\\"browseAsGuestButton\\"
 -      @click=\\"\${this.onLaunchGuestProfileClick_}\\"
 -      ?hidden=\\"\${!this.guestModeEnabled_}\\"
@@ -539,7 +547,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </cr-checkbox>
  </div>
  
-@@ -70,15 +54,12 @@
+@@ -77,15 +57,12 @@
    <div slot=\\"body\\" id=\\"dialog-body\\" class=\\"warning-message\\">
      \${this.forceSigninErrorDialogBody_}
    </div>
