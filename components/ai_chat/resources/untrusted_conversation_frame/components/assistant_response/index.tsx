@@ -108,13 +108,26 @@ function AssistantEvent(
       /(\w|\S)\[(\d+)\]/g,
       '$1 [$2]',
     )
-
     const fullText = `${numberedLinks}${removeReasoning(completion)}`
+    const [renderIndex, setRenderIndex] = React.useState(isEntryInProgress ? 0 : fullText.length)
+    const renderedText = fullText.slice(0, renderIndex)
+
+    React.useEffect(() => {
+      if (renderIndex >= fullText.length) {
+        return
+      }
+
+      const timeout = setTimeout(() => {
+        setRenderIndex(r => r + 1)
+      }, 1)
+
+      return () => clearTimeout(timeout)
+    }, [renderIndex, fullText])
 
     return (
       <MarkdownRenderer
         shouldShowTextCursor={isEntryInProgress}
-        text={fullText}
+        text={renderedText}
         allowedLinks={allowedLinks}
         disableLinkRestrictions={!isLeoModel}
       />
