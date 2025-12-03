@@ -183,7 +183,7 @@
       <ph name="CITY">$1<ex>Mountain View</ex></ph>, <ph name="COUNTRY">$2<ex>US</ex></ph>
     </message>
     <message name="IDS_PAGE_INFO_SECURITY_TAB_SECURE_IDENTITY_EV_VERIFIED" desc="Describes the legal entity that the current page's HTTPS certificate was issued to. Shown in the certificate area in the Page Info bubble when a HTTPS site with a valid EV certificate is loaded.">
-      Issued to: <ph name="ORGANIZATION">$1<ex>Brave LLC</ex></ph> [<ph name="JURISDICTION">$2<ex>US</ex></ph>]
+      Issued to: <ph name="ORGANIZATION">$1<ex>Brave Software Inc</ex></ph> [<ph name="JURISDICTION">$2<ex>US</ex></ph>]
     </message>
 
     <!-- Certificate Viewer link -->
