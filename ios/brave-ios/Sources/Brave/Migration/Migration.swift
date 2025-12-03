@@ -61,18 +61,18 @@ public class BraveProfileMigrations {
 
   @MainActor public func migrateShieldsToContentSettings() {
     guard FeatureList.kBraveShieldsContentSettings.enabled,
-      !Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value
+      !Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value,
+      let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
+        profile: profileController.profile
+      )
     else {
       return
     }
     defer { Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
     let domainsToMigrate = Domain.allDomainsWithExlicitShieldSettings()
-    let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
-      profile: profileController.profile
-    )
     // migrate global / default settings first, then site-specific
-    braveShieldsSettings?.migrateGlobalSettings()
-    braveShieldsSettings?.migrateShieldsToContentSettings(for: domainsToMigrate)
+    braveShieldsSettings.migrateGlobalSettings()
+    braveShieldsSettings.migrateShieldsToContentSettings(for: domainsToMigrate)
   }
 
   /// Migrate sync passwords default value to enabled.

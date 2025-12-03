@@ -33,9 +33,8 @@ extension BraveShieldsSettings {
       guard let urlString = domain.url, let url = URL(string: urlString) else { return "" }
       return hostPatternFromURL(url)
     }
-    for (host, domains) in groupedByHost {
-      // if no url, host will be an empty string. Shouldn't occur so we can ignore.
-      guard !host.isEmpty else { continue }
+    // if no url, host will be an empty string. Shouldn't occur so we can ignore.
+    for (host, domains) in groupedByHost where !host.isEmpty {
 
       // priority for migrations:
       // 1) secure domain with setting explicitly enabled/disabled by user
@@ -113,9 +112,8 @@ extension BraveShieldsSettings {
       guard let urlString = domain.url, let url = URL(string: urlString) else { return "" }
       return domainPatternFromURL(url)
     }
-    for (domain, domains) in groupedByDomain {
-      // if no url, domain will be an empty string. Shouldn't occur so we can ignore.
-      guard !domain.isEmpty else { continue }
+    // if no url, domain will be an empty string. Shouldn't occur so we can ignore.
+    for (domain, domains) in groupedByDomain where !domain.isEmpty {
 
       let domainsWithExplicitShredLevel = domains.filter { $0.shield_shredLevel != nil }
       let shredLevelDomainToMigrate = domainsWithExplicitShredLevel.sortedForMigration().first
@@ -142,8 +140,8 @@ extension BraveShieldsSettings {
 extension Array where Element == Domain {
   fileprivate func sortedForMigration() -> [Domain] {
     sorted(by: { lhs, rhs in
-      let isLHSHttps = lhs.url?.hasPrefix("https://") == true
-      let isRHSHttps = rhs.url?.hasPrefix("https://") == true
+      let isLHSHttps = lhs.url?.caseInsensitiveHasPrefix("https://") == true
+      let isRHSHttps = rhs.url?.caseInsensitiveHasPrefix("https://") == true
       // prioritize https
       if isLHSHttps && !isRHSHttps {
         return true
@@ -153,5 +151,11 @@ extension Array where Element == Domain {
       // otherwise alphabetical sort
       return lhs.url?.localizedCaseInsensitiveCompare(rhs.url ?? "") == .orderedAscending
     })
+  }
+}
+
+extension String {
+  fileprivate func caseInsensitiveHasPrefix(_ prefix: String) -> Bool {
+    range(of: prefix, options: [.anchored, .caseInsensitive]) != nil
   }
 }
