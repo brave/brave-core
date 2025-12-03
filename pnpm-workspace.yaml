@@ -1,0 +1,8 @@
+# pnpm workspace configuration
+
+# Use hoisted node_modules structure for compatibility with webpack and
+# packages that rely on hoisting
+nodeLinker: hoisted
+
+packages:
+  - '.'
