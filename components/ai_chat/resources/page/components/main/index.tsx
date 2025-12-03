@@ -451,6 +451,7 @@ function Main() {
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
           categories={categoriesWithSkills}
+          isMobile={aiChatContext.isMobile}
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
           handleNewSkillClick={handleNewSkillClick}
