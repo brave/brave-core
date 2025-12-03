@@ -1,0 +1,10 @@
+COMPANY_FULLNAME=Brave Software, Inc.
+COMPANY_SHORTNAME=Brave Software
+PRODUCT_FULLNAME=Brave Origin Nightly
+PRODUCT_SHORTNAME=Brave Origin Nightly
+PRODUCT_INSTALLER_FULLNAME=Brave Origin Installer
+PRODUCT_INSTALLER_SHORTNAME=Brave Origin Installer
+COPYRIGHT=Copyright 2016 The Brave Authors. All rights reserved.
+MAC_BUNDLE_ID=com.brave.Browser.origin.nightly
+MAC_CREATOR_CODE=Cr24
+MAC_TEAM_ID=KL8N8XSYF4

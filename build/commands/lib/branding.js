@@ -123,6 +123,10 @@ exports.update = () => {
     path.join(chromeAppDir, 'theme', 'brave'),
   ])
   fileMap.add([
+    path.join(braveAppDir, 'theme', 'brave_origin'),
+    path.join(chromeAppDir, 'theme', 'brave_origin'),
+  ])
+  fileMap.add([
     path.join(braveAppDir, 'theme', 'default_100_percent', 'brave'),
     path.join(chromeAppDir, 'theme', 'default_100_percent', 'brave'),
   ])
@@ -224,6 +228,9 @@ exports.update = () => {
   ])
 
   // Copy to make our ${branding_path_product}_behaviors.cc
+  // The same source file is copied to both destinations since brave_origin
+  // uses the same installer behaviors as brave. We need both files because
+  // chrome/installer/setup/BUILD.gn uses ${branding_path_product}_behaviors.cc.
   fileMap.add([
     path.join(
       config.braveCoreDir,
@@ -239,6 +246,23 @@ exports.update = () => {
       'installer',
       'setup',
       'brave_behaviors.cc',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'chromium_src',
+      'chrome',
+      'installer',
+      'setup',
+      'brave_behaviors.cc',
+    ),
+    path.join(
+      config.srcDir,
+      'chrome',
+      'installer',
+      'setup',
+      'brave_origin_behaviors.cc',
     ),
   ])
   // Replace webui CSS to use our fonts.
@@ -354,6 +378,55 @@ exports.update = () => {
     )
     const brandingDest = path.join(chromeAppDir, 'theme', 'brave', 'BRANDING')
     explicitSourceFiles[brandingDest] = brandingSource
+
+    // Also handle brave_origin branding
+    const iconSourceOrigin = path.join(
+      braveAppDir,
+      'theme',
+      'brave_origin',
+      'mac',
+      config.channel,
+      'app.icns',
+    )
+    const iconDestOrigin = path.join(
+      chromeAppDir,
+      'theme',
+      'brave_origin',
+      'mac',
+      'app.icns',
+    )
+    explicitSourceFiles[iconDestOrigin] = iconSourceOrigin
+
+    const assetCatalogSourceOrigin = path.join(
+      braveAppDir,
+      'theme',
+      'brave_origin',
+      'mac',
+      config.channel,
+      'Assets.car',
+    )
+    const assetCatalogDestOrigin = path.join(
+      chromeAppDir,
+      'theme',
+      'brave_origin',
+      'mac',
+      'Assets.car',
+    )
+    explicitSourceFiles[assetCatalogDestOrigin] = assetCatalogSourceOrigin
+
+    const brandingSourceOrigin = path.join(
+      braveAppDir,
+      'theme',
+      'brave_origin',
+      brandingFileName,
+    )
+    const brandingDestOrigin = path.join(
+      chromeAppDir,
+      'theme',
+      'brave_origin',
+      'BRANDING',
+    )
+    explicitSourceFiles[brandingDestOrigin] = brandingSourceOrigin
   }
 
   for (const [source, output] of fileMap) {

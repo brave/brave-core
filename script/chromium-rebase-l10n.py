@@ -16,9 +16,9 @@ import argparse
 import os.path
 import sys
 import glob
-from lib.l10n.grd_utils import (BRANDS, braveify_grd_in_place,
-                                braveify_grd_tree, get_brand_from_grd_name,
-                                INSTALLER_STRINGS,
+from lib.l10n.grd_utils import (BRANDS, add_installer_strings,
+                                braveify_grd_in_place, braveify_grd_tree,
+                                get_brand_from_grd_name, INSTALLER_STRINGS,
                                 GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
                                 write_xml_file_from_tree)
@@ -112,9 +112,9 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
 
 def add_installer_strings_xtb_translations_for_messages(message_ids):
     installer_xtb_files = glob.glob(
-        os.path.join(
-            BRAVE_SOURCE_ROOT, 'chromium_src/chrome/installer/setup/resources',
-            'setup_resources_*.xtb'))
+        os.path.join(BRAVE_SOURCE_ROOT,
+                     'chromium_src/chrome/installer/setup/resources',
+                     'setup_resources_*.xtb'))
     for installer_xtb_path in installer_xtb_files:
         installer_xtb_xml_tree = etree.parse(installer_xtb_path)
         lang = os.path.basename(installer_xtb_path).replace(
@@ -297,13 +297,10 @@ def main():
         if not migrate_google_chrome_strings(
                 xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
             return 1
-<<<<<<< HEAD
         if not add_installer_strings(xml_tree, INSTALLER_STRINGS):
             return 1
-=======
         # Use brand-specific product name for these strings
         product_name = 'Brave Origin' if brand == 'brave_origin' else 'Brave'
->>>>>>> 2ed73acad82 (Brave Origin l10n script support)
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = f'{product_name} Nightly'
         elem1.attrib.pop('desc')
