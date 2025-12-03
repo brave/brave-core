@@ -11,7 +11,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
-import android.os.Build;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -21,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,12 +33,10 @@ import com.android.installreferrer.api.ReferrerDetails;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
-import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -62,11 +58,20 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
 import java.util.Locale;
 
 /**
- * Activity that handles the first run onboarding experience for new Brave browser installations.
- * Extends FirstRunActivityBase to provide onboarding flows for: - Setting Brave as default browser
- * - Configuring privacy and analytics preferences (P3A and crash reporting) - Accepting terms of
- * service The activity guides users through a series of steps using animations and clear UI
- * elements to explain Brave's key features and privacy-focused approach.
+ * Activity responsible for handling the first-run onboarding experience for new Brave browser
+ * installations.
+ *
+ * <p>This activity extends {@link FirstRunActivityBase} and guides users through a series of
+ * onboarding steps:
+ *
+ * <ul>
+ *   <li>Setting Brave as the default browser</li>
+ *   <li>Configuring privacy and analytics preferences (P3A and crash reporting)</li>
+ *   <li>Accepting the Terms of Service</li>
+ * </ul>
+ *
+ * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
+ * and privacy-focused approach.
  */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private static final String P3A_URL =
@@ -164,7 +169,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                                         true);
                                     }
                                 } catch (RemoteException e) {
-                                    Log.e(TAG, "Could not get referral: " + e.getMessage());
+                                    Log.e(TAG, "Could not get referral", e);
                                 }
                                 // Connection established.
                                 break;
@@ -238,12 +243,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (isWDPSettingAvailable()
-                                && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
-                            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
-                                    .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
-                            nextOnboardingStep();
                         } else {
+                            if (isWDPSettingAvailable()
+                                    && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
+                                UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+                                        .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
+                            }
                             nextOnboardingStep();
                         }
                     });
@@ -287,24 +292,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         mCurrentStep++;
-        String variant = DayZeroHelper.getDayZeroVariant();
-        switch (variant) {
-            case "b":
-                handleOnboardingStepForVariantB(mCurrentStep);
-                break;
-            case "c":
-                handleOnboardingStepForVariantC(mCurrentStep);
-                break;
-            case "d":
-                handleOnboardingStepForVariantD(mCurrentStep);
-                break;
-            default:
-                handleOnboardingStepForVariantA(mCurrentStep);
-                break;
-        }
+
+        // Uncomment next line to extract day zero variant
+        // for new onboarding flow when it's ready.
+        // final String variant = DayZeroHelper.getDayZeroVariant();
+        
+        handleOnboardingStepForDefaultVariant(mCurrentStep);
     }
 
-    private void handleOnboardingStepForVariantA(int step) {
+    private void handleOnboardingStepForDefaultVariant(final int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
         } else if (step == 1) {
@@ -312,52 +308,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 2) {
             handleAnalyticsConsentPage();
         } else {
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantB(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            // Notification permission
-            handleNotificationPermission();
-        } else if (step == 2) {
-            handleWDPStep();
-        } else if (step == 3) {
-            handleAnalyticsConsentPage();
-        } else {
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantC(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            handleWDPStep();
-        } else if (step == 2) {
-            handleAnalyticsConsentPage();
-        } else {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantD(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            // Notification permission
-            handleNotificationPermission();
-        } else if (step == 2) {
-            handleWDPStep();
-        } else if (step == 3) {
-            handleAnalyticsConsentPage();
-        } else {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
             finalStep();
         }
     }
@@ -371,15 +321,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         finish();
         sendFirstRunCompleteIntent();
-    }
-
-    private void handleNotificationPermission() {
-        mCurrentOnboardingPage = CurrentOnboardingPage.NOTIFICATION_PERMISSION;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            BravePermissionUtils.showNotificationPermissionDialog(WelcomeOnboardingActivity.this);
-        } else {
-            nextOnboardingStep();
-        }
     }
 
     private void handleSetAsDefaultStep() {
@@ -508,7 +449,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             PrivacyPreferencesManagerImpl.getInstance()
                                     .isUsageAndCrashReportingPermittedByUser();
                 } catch (Exception e) {
-                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
+                    Log.e(TAG, "CrashReportingOnboarding", e);
                 }
                 // Update checkbox to match current preference
                 if (mCheckboxCrash != null) {
@@ -518,17 +459,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
             if (mCheckboxCrash != null) {
                 mCheckboxCrash.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    UmaSessionStats.changeMetricsReportingConsent(
-                                            isChecked,
-                                            ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
-                                }
+                        (buttonView, isChecked) -> {
+                            try {
+                                UmaSessionStats.changeMetricsReportingConsent(
+                                        isChecked,
+                                        ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                            } catch (Exception e) {
+                                Log.e(TAG, "CrashReportingOnboarding", e);
                             }
                         });
             }
@@ -540,25 +477,21 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             try {
                 isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
-                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
+                Log.e(TAG, "P3aOnboarding", e);
             }
 
             if (mCheckboxP3a != null) {
                 mCheckboxP3a.setChecked(isP3aEnabled);
                 mCheckboxP3a.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    BraveLocalState.get()
-                                            .setBoolean(BravePref.P3A_ENABLED, isChecked);
-                                    BraveLocalState.get()
-                                            .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                                    BraveLocalState.commitPendingWrite();
-                                } catch (Exception e) {
-                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-                                }
+                        (buttonView, isChecked) -> {
+                            try {
+                                BraveLocalState.get()
+                                        .setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                BraveLocalState.get()
+                                        .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                BraveLocalState.commitPendingWrite();
+                            } catch (Exception e) {
+                                Log.e(TAG, "P3aOnboarding", e);
                             }
                         });
             }
@@ -650,31 +583,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             float leafMargin,
             boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
-            int margin = (int) dpToPx(this, leafMargin);
+            int margin = dpToPx(this, leafMargin);
             Animation animation =
                     new Animation() {
                         @Override
-                        protected void applyTransformation(
-                                float interpolatedTime, Transformation t) {
-                            if (leafAlignView != null) {
-                                ViewGroup.MarginLayoutParams layoutParams =
-                                        (ViewGroup.MarginLayoutParams)
-                                                leafAlignView.getLayoutParams();
-                                if (isTopLeaf) {
-                                    layoutParams.bottomMargin =
-                                            margin
-                                                    - (int)
-                                                            ((margin - layoutParams.bottomMargin)
-                                                                    * interpolatedTime);
-                                } else {
-                                    layoutParams.topMargin =
-                                            margin
-                                                    - (int)
-                                                            ((margin - layoutParams.topMargin)
-                                                                    * interpolatedTime);
-                                }
-                                leafAlignView.setLayoutParams(layoutParams);
-                            }
+                        protected void applyTransformation(float time, Transformation t) {
+                            transformLeaf(time, margin, leafAlignView, isTopLeaf);
                         }
                     };
             animation.setDuration(800);
@@ -683,6 +597,22 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (leafView != null) {
             leafView.animate().scaleX(scale).scaleY(scale).setDuration(800);
         }
+    }
+
+    private void transformLeaf(final float time,
+                               final int margin,
+                               final View leafAlignView,
+                               final boolean isTopLeaf) {
+        ViewGroup.MarginLayoutParams layoutParams =
+                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
+        if (isTopLeaf) {
+            layoutParams.bottomMargin =
+                    margin - (int) ((margin - layoutParams.bottomMargin) * time);
+        } else {
+            layoutParams.topMargin =
+                    margin - (int) ((margin - layoutParams.topMargin) * time);
+        }
+        leafAlignView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -699,7 +629,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     @Override
     public void finishNativeInitialization() {
-        ThreadUtils.assertOnUiThread();
         super.finishNativeInitialization();
 
         if (mInitializeViewsDone) {
