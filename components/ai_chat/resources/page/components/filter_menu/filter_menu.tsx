@@ -36,19 +36,11 @@ export function MatchedText(props: { text: string; match?: Match }) {
   }
 
   let lastIndex = 0
-  let keyCounter = 0
   const parts: React.ReactNode[] = []
   for (const range of props.match.ranges) {
+    parts.push(props.text.slice(lastIndex, range.start))
     parts.push(
-      <React.Fragment key={keyCounter++}>
-        {props.text.slice(lastIndex, range.start)}
-      </React.Fragment>,
-    )
-    parts.push(
-      <span
-        key={range.start}
-        className={styles.matchedText}
-      >
+      <span className={styles.matchedText}>
         {props.text.slice(range.start, range.end)}
       </span>,
     )
@@ -56,7 +48,7 @@ export function MatchedText(props: { text: string; match?: Match }) {
   }
   parts.push(props.text.slice(lastIndex))
 
-  return <span>{parts}</span>
+  return <span>{...parts}</span>
 }
 
 export default function FilterMenu<T>(props: Props<T>) {
