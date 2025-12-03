@@ -296,7 +296,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         // Uncomment next line to extract day zero variant
         // for new onboarding flow when it's ready.
         // final String variant = DayZeroHelper.getDayZeroVariant();
-        
+
         handleOnboardingStepForDefaultVariant(mCurrentStep);
     }
 
