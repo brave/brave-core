@@ -6,10 +6,10 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_UI_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_PSST_PSST_UI_DELEGATE_IMPL_H_
 
+#include <cstddef>
 #include <optional>
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#include "brave/components/psst/browser/core/psst_consent_data.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -29,23 +29,28 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
   PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
 
-  void Show(PsstConsentData dialog_data) override;
+  void Show(const url::Origin& origin,
+            PsstWebsiteSettings dialog_data,
+            PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
+      override;
 
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& applied_tasks,
                    const mojom::PsstStatus status) override;
 
-  std::optional<PsstMetadata> GetPsstMetadata(
+  std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
       const url::Origin& origin,
       const std::string& user_id) override;
 
  private:
-  void OnUserAcceptedPsstSettings(base::Value::List urls_to_skip);
+  void OnUserAcceptedPsstSettings(const url::Origin& origin,
+                                  base::Value::List urls_to_skip);
 
-  raw_ptr<content::WebContents> web_contents_;
-  std::optional<PsstConsentData> dialog_data_;
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
+  std::optional<PsstWebsiteSettings> dialog_data_;
+  PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
 };
 
 }  // namespace psst

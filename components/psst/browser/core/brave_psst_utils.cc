@@ -20,10 +20,10 @@ namespace psst {
 
 namespace {
 
-constexpr char kUserIdPermissionKey[] = "user_id";
-constexpr char kConsentStatusPermissionKey[] = "consent_status";
-constexpr char kScriptVersionPermissionKey[] = "script_version";
-constexpr char kUrlsToSkipPermissionKey[] = "urls_to_skip";
+constexpr char kUserIdSettingsKey[] = "user_id";
+constexpr char kConsentStatusSettingsKey[] = "consent_status";
+constexpr char kScriptVersionSettingsKey[] = "script_version";
+constexpr char kUrlsToSkipSettingsKey[] = "urls_to_skip";
 
 base::Value::List VectorToList(std::vector<std::string> values) {
   base::Value::List list;
@@ -34,22 +34,22 @@ base::Value::List VectorToList(std::vector<std::string> values) {
   return list;
 }
 
-base::Value::Dict CreatePsstPermissionObject(PsstMetadata psst_metadata) {
+base::Value::Dict CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   base::Value::Dict object;
-  object.Set(kUserIdPermissionKey, psst_metadata.user_id);
-  object.Set(kConsentStatusPermissionKey,
-             ToString(psst_metadata.consent_status));
-  object.Set(kScriptVersionPermissionKey, psst_metadata.script_version);
-  object.Set(kUrlsToSkipPermissionKey,
+  object.Set(kUserIdSettingsKey, psst_metadata.user_id);
+  object.Set(kConsentStatusSettingsKey, ToString(psst_metadata.consent_status));
+  object.Set(kScriptVersionSettingsKey, psst_metadata.script_version);
+  object.Set(kUrlsToSkipSettingsKey,
              VectorToList(std::move(psst_metadata.urls_to_skip)));
   return object;
 }
 
 }  // namespace
 
-std::optional<PsstMetadata> GetPsstMetadata(HostContentSettingsMap* map,
-                                            const url::Origin& origin,
-                                            std::string_view user_id) {
+std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
+    HostContentSettingsMap* map,
+    const url::Origin& origin,
+    std::string_view user_id) {
   auto metadata_objects = map->GetWebsiteSetting(
       origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
   auto* metadata_objects_dict = metadata_objects.GetIfDict();
@@ -62,31 +62,31 @@ std::optional<PsstMetadata> GetPsstMetadata(HostContentSettingsMap* map,
     return std::nullopt;
   }
 
-  return PsstMetadata::FromValue(*user_id_metadata_dict);
+  return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
-void SetPsstMetadata(HostContentSettingsMap* map,
-                     const url::Origin& origin,
-                     ConsentStatus consent_status,
-                     int script_version,
-                     std::string_view user_id,
-                     base::Value::List urls_to_skip) {
-  auto psst_metadata = PsstMetadata::FromValue(
+void SetPsstWebsiteSettings(HostContentSettingsMap* map,
+                            const url::Origin& origin,
+                            ConsentStatus consent_status,
+                            int script_version,
+                            std::string_view user_id,
+                            base::Value::List urls_to_skip) {
+  auto psst_metadata = PsstWebsiteSettings::FromValue(
       base::Value::Dict()
-          .Set(kUserIdPermissionKey, user_id)
-          .Set(kConsentStatusPermissionKey, ToString(consent_status))
-          .Set(kScriptVersionPermissionKey, script_version)
-          .Set(kUrlsToSkipPermissionKey, std::move(urls_to_skip)));
+          .Set(kUserIdSettingsKey, user_id)
+          .Set(kConsentStatusSettingsKey, ToString(consent_status))
+          .Set(kScriptVersionSettingsKey, script_version)
+          .Set(kUrlsToSkipSettingsKey, std::move(urls_to_skip)));
   if (!psst_metadata) {
     return;
   }
 
-  SetPsstMetadata(map, origin, std::move(*psst_metadata));
+  SetPsstWebsiteSettings(map, origin, std::move(*psst_metadata));
 }
 
-void SetPsstMetadata(HostContentSettingsMap* map,
-                     const url::Origin& origin,
-                     PsstMetadata psst_metadata) {
+void SetPsstWebsiteSettings(HostContentSettingsMap* map,
+                            const url::Origin& origin,
+                            PsstWebsiteSettings psst_metadata) {
   if (origin.scheme() != url::kHttpsScheme) {
     return;
   }
@@ -98,7 +98,7 @@ void SetPsstMetadata(HostContentSettingsMap* map,
   auto* metadata_objects_dict = metadata_objects.GetIfDict();
   if (metadata_objects_dict) {
     metadata_objects_dict->Set(
-        user_id, CreatePsstPermissionObject(std::move(psst_metadata)));
+        user_id, CreatePsstSettingsObject(std::move(psst_metadata)));
     map->SetWebsiteSettingDefaultScope(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
         base::Value(std::move(*metadata_objects_dict)));
@@ -106,7 +106,7 @@ void SetPsstMetadata(HostContentSettingsMap* map,
     map->SetWebsiteSettingDefaultScope(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
         base::Value(base::Value::Dict().Set(
-            user_id, CreatePsstPermissionObject(std::move(psst_metadata)))));
+            user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
 }
 

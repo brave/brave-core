@@ -15,21 +15,22 @@ namespace psst {
 
 // Saves the PSST metadata for the (origin, user_id) pair with the given
 // details.
-void SetPsstMetadata(HostContentSettingsMap* map,
-                     const url::Origin& origin,
-                     ConsentStatus consent_status,
-                     int script_version,
-                     std::string_view user_id,
-                     base::Value::List urls_to_skip);
+void SetPsstWebsiteSettings(HostContentSettingsMap* map,
+                            const url::Origin& origin,
+                            ConsentStatus consent_status,
+                            int script_version,
+                            std::string_view user_id,
+                            base::Value::List urls_to_skip);
 
-// Returns the PSST permission info for the (origin, user_id) pair if exists
-std::optional<PsstMetadata> GetPsstMetadata(HostContentSettingsMap* map,
-                                            const url::Origin& origin,
-                                            std::string_view user_id);
+// Returns the PSST settings for the (origin, user_id) pair if exists
+std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
+    HostContentSettingsMap* map,
+    const url::Origin& origin,
+    std::string_view user_id);
 
-void SetPsstMetadata(HostContentSettingsMap* map,
-                     const url::Origin& origin,
-                     PsstMetadata psst_metadata);
+void SetPsstWebsiteSettings(HostContentSettingsMap* map,
+                            const url::Origin& origin,
+                            PsstWebsiteSettings psst_metadata);
 }  // namespace psst
 
 #endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_BRAVE_PSST_UTILS_H_

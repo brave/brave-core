@@ -24,7 +24,7 @@ base::Value::List VectorToList(const std::vector<std::string>& values) {
   return list;
 }
 
-base::Value::Dict CreatePsstPermissionDict(
+base::Value::Dict CreatePsstSettingsDict(
     psst::ConsentStatus consent_status,
     int script_version,
     const std::string& user_id,
@@ -68,46 +68,50 @@ class BravePsstUtilsUnitTest : public testing::Test {
 };
 
 TEST_F(BravePsstUtilsUnitTest, DontAllowToSaveMetadataForWrongSchema) {
-  const auto first_metadata = PsstMetadata::FromValue(
-      CreatePsstPermissionDict(ConsentStatus::kAllow, 1, "user123", {}));
+  const auto first_metadata = PsstWebsiteSettings::FromValue(
+      CreatePsstSettingsDict(ConsentStatus::kAllow, 1, "user123", {}));
   ASSERT_TRUE(first_metadata);
   const url::Origin http_scheme_origin =
       url::Origin::Create(GURL("http://a.test"));
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), http_scheme_origin, first_metadata->user_id));
-  SetPsstMetadata(map(), http_scheme_origin, first_metadata->consent_status,
-                  first_metadata->script_version, first_metadata->user_id,
-                  base::Value::List());
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), http_scheme_origin, first_metadata->user_id));
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), http_scheme_origin,
+                                      first_metadata->user_id));
+  SetPsstWebsiteSettings(map(), http_scheme_origin,
+                         first_metadata->consent_status,
+                         first_metadata->script_version,
+                         first_metadata->user_id, base::Value::List());
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), http_scheme_origin,
+                                      first_metadata->user_id));
   const url::Origin file_scheme_origin =
       url::Origin::Create(GURL("file://a.test"));
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), file_scheme_origin, first_metadata->user_id));
-  SetPsstMetadata(map(), file_scheme_origin, first_metadata->consent_status,
-                  first_metadata->script_version, first_metadata->user_id,
-                  base::Value::List());
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), file_scheme_origin, first_metadata->user_id));
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), file_scheme_origin,
+                                      first_metadata->user_id));
+  SetPsstWebsiteSettings(map(), file_scheme_origin,
+                         first_metadata->consent_status,
+                         first_metadata->script_version,
+                         first_metadata->user_id, base::Value::List());
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), file_scheme_origin,
+                                      first_metadata->user_id));
   const url::Origin brave_scheme_origin =
       url::Origin::Create(GURL("brave://a.test"));
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), brave_scheme_origin, first_metadata->user_id));
-  SetPsstMetadata(map(), brave_scheme_origin, first_metadata->consent_status,
-                  first_metadata->script_version, first_metadata->user_id,
-                  base::Value::List());
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), brave_scheme_origin, first_metadata->user_id));
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), brave_scheme_origin,
+                                      first_metadata->user_id));
+  SetPsstWebsiteSettings(map(), brave_scheme_origin,
+                         first_metadata->consent_status,
+                         first_metadata->script_version,
+                         first_metadata->user_id, base::Value::List());
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), brave_scheme_origin,
+                                      first_metadata->user_id));
 
   const url::Origin chrome_scheme_origin =
       url::Origin::Create(GURL("chrome://a.test"));
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), chrome_scheme_origin, first_metadata->user_id));
-  SetPsstMetadata(map(), chrome_scheme_origin, first_metadata->consent_status,
-                  first_metadata->script_version, first_metadata->user_id,
-                  base::Value::List());
-  ASSERT_FALSE(
-      GetPsstMetadata(map(), chrome_scheme_origin, first_metadata->user_id));
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), chrome_scheme_origin,
+                                      first_metadata->user_id));
+  SetPsstWebsiteSettings(map(), chrome_scheme_origin,
+                         first_metadata->consent_status,
+                         first_metadata->script_version,
+                         first_metadata->user_id, base::Value::List());
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), chrome_scheme_origin,
+                                      first_metadata->user_id));
 }
 
 TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
@@ -115,26 +119,28 @@ TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
   const std::string first_user_id = "first-user123";
   const std::string second_user_id = "second-user123";
 
-  ASSERT_FALSE(GetPsstMetadata(map(), origin, first_user_id));
+  ASSERT_FALSE(GetPsstWebsiteSettings(map(), origin, first_user_id));
 
-  const auto first_metadata = PsstMetadata::FromValue(CreatePsstPermissionDict(
-      ConsentStatus::kAllow, 1, first_user_id, std::vector<std::string>()));
-  const auto second_metadata = PsstMetadata::FromValue(CreatePsstPermissionDict(
-      ConsentStatus::kAllow, 1, second_user_id, std::vector<std::string>()));
+  const auto first_metadata =
+      PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
+          ConsentStatus::kAllow, 1, first_user_id, std::vector<std::string>()));
+  const auto second_metadata = PsstWebsiteSettings::FromValue(
+      CreatePsstSettingsDict(ConsentStatus::kAllow, 1, second_user_id,
+                             std::vector<std::string>()));
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 0u);
 
-  SetPsstMetadata(map(), origin, first_metadata->consent_status,
-                  first_metadata->script_version, first_metadata->user_id,
-                  base::Value::List());
+  SetPsstWebsiteSettings(map(), origin, first_metadata->consent_status,
+                         first_metadata->script_version,
+                         first_metadata->user_id, base::Value::List());
 
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 1u);
-  SetPsstMetadata(map(), origin, second_metadata->consent_status,
-                  second_metadata->script_version, second_metadata->user_id,
-                  base::Value::List());
+  SetPsstWebsiteSettings(map(), origin, second_metadata->consent_status,
+                         second_metadata->script_version,
+                         second_metadata->user_id, base::Value::List());
   ASSERT_EQ(GetContentSettingsCountByOrigin(map(), origin), 2u);
 
   auto first_metadata_value =
-      GetPsstMetadata(map(), origin, first_metadata->user_id);
+      GetPsstWebsiteSettings(map(), origin, first_metadata->user_id);
   ASSERT_TRUE(first_metadata_value.has_value());
   ASSERT_EQ(first_metadata_value.value().consent_status,
             first_metadata->consent_status);
@@ -145,7 +151,7 @@ TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
             first_metadata->urls_to_skip);
 
   auto second_metadata_value =
-      GetPsstMetadata(map(), origin, second_metadata->user_id);
+      GetPsstWebsiteSettings(map(), origin, second_metadata->user_id);
   ASSERT_TRUE(second_metadata_value.has_value());
   ASSERT_EQ(second_metadata_value.value().consent_status,
             second_metadata->consent_status);
@@ -156,15 +162,15 @@ TEST_F(BravePsstUtilsUnitTest, CreateOrUpdateMetadata) {
             second_metadata->urls_to_skip);
 
   const auto modified_metadata =
-      PsstMetadata::FromValue(CreatePsstPermissionDict(
+      PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
           ConsentStatus::kBlock, first_metadata->script_version,
           first_metadata->user_id, std::vector<std::string>()));
-  SetPsstMetadata(map(), origin, modified_metadata->consent_status,
-                  modified_metadata->script_version, modified_metadata->user_id,
-                  base::Value::List());
+  SetPsstWebsiteSettings(map(), origin, modified_metadata->consent_status,
+                         modified_metadata->script_version,
+                         modified_metadata->user_id, base::Value::List());
 
   auto modified_metadata_value =
-      GetPsstMetadata(map(), origin, modified_metadata->user_id);
+      GetPsstWebsiteSettings(map(), origin, modified_metadata->user_id);
   ASSERT_TRUE(modified_metadata_value.has_value());
   ASSERT_EQ(modified_metadata_value.value().consent_status,
             modified_metadata->consent_status);

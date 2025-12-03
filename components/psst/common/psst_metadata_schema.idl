@@ -13,7 +13,7 @@ namespace psst {
     };
 
     // Metadata for Psst flow
-    dictionary PsstMetadata {
+    dictionary PsstWebsiteSettings {
         // User consent decision
         ConsentStatus consent_status;
         // Actual script version
