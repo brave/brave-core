@@ -252,7 +252,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
 }
 
 void WebcompatReportUploader::OnSimpleURLLoaderComplete(
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool success = !!response_body;

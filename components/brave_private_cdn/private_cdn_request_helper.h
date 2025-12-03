@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -47,7 +48,7 @@ class PrivateCDNRequestHelper {
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
   void OnResponse(SimpleURLLoaderList::iterator iter,
                   DownloadToStringCallback callback,
-                  const std::unique_ptr<std::string> response_body);
+                  std::optional<std::string> response_body);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
   SimpleURLLoaderList url_loaders_;

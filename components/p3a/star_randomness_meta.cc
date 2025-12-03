@@ -290,7 +290,7 @@ void StarRandomnessMeta::ScheduleServerInfoRetry(MetricLogType log_type) {
 
 void StarRandomnessMeta::HandleServerInfoResponse(
     MetricLogType log_type,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   RandomnessServerUpdateState* update_state = update_states_[log_type].get();
   if (!response_body || response_body->empty()) {
     std::string error_str =

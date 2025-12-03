@@ -113,7 +113,7 @@ class DirectFeedFetcher {
       std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info,
       bool https_upgraded,
       size_t redirect_count,
-      const std::unique_ptr<std::string> response_body);
+      std::optional<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
                         DirectFeedResponse result,
                         std::variant<DirectFeedResult, DirectFeedError> data);

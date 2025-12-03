@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_STAR_RANDOMNESS_POINTS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -52,7 +53,7 @@ class StarRandomnessPoints {
   void HandleRandomnessResponse(MetricLogType log_type,
                                 StarRandomnessMeta* randomness_meta,
                                 RandomnessDataCallback callback,
-                                std::unique_ptr<std::string> response_body);
+                                std::optional<std::string> response_body);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>

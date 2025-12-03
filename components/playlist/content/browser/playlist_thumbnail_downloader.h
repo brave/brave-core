@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -43,7 +44,7 @@ class PlaylistThumbnailDownloader {
   class Delegate {
    public:
     virtual void SanitizeImage(
-        std::unique_ptr<std::string> image,
+        std::optional<std::string> image,
         base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)>
             callback) = 0;
 
@@ -83,10 +84,10 @@ class PlaylistThumbnailDownloader {
 
   void SaveResponseToFile(const std::string& id,
                           base::FilePath path,
-                          std::unique_ptr<std::string> response_body);
+                          std::optional<std::string> response_body);
   void ConvertResponseToImage(const std::string& id,
                               base::OnceCallback<void(gfx::Image)> callback,
-                              std::unique_ptr<std::string> response_body);
+                              std::optional<std::string> response_body);
 
   void WriteToFile(const base::FilePath& path,
                    base::OnceCallback<void(base::FilePath)> callback,

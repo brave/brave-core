@@ -9,6 +9,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -293,7 +294,7 @@ class RewardsServiceImpl final : public RewardsService,
 
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            LoadURLCallback callback,
-                           std::unique_ptr<std::string> response_body);
+                           std::optional<std::string> response_body);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void OnGetSPLTokenAccountBalance(

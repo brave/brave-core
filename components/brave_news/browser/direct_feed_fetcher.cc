@@ -244,7 +244,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
     std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info,
     bool https_upgraded,
     size_t redirect_count,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto* loader = iter->get();
 
   if (loader->NetError() == net::ERR_FAILED && loader->GetFinalURL() != url &&
