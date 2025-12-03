@@ -11,7 +11,9 @@
 
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
-branding_path_component = "brave"
-branding_path_product = "brave"
+
+# branding_path_component and branding_path_product are set in config.js
+# based on is_brave_origin_branded, since the value needs to be known before
+# this file is imported.
 enable_glic = false
 enable_widevine = true
