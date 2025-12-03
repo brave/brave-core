@@ -21,29 +21,39 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 
-using namespace content;  // NOLINT
-
 namespace {
 
-class RenderProcessExitObserver : public RenderProcessHostObserver {
+class RenderProcessExitObserver : public content::RenderProcessHostObserver {
  public:
-  explicit RenderProcessExitObserver(RenderProcessHost* render_process_host)
-      : render_process_host_(render_process_host) {
+  explicit RenderProcessExitObserver(content::RenderProcessHost* host)
+      : render_process_host_(host) {
+    CHECK(render_process_host_);
     render_process_host_->AddObserver(this);
   }
 
- protected:
-  // RenderProcessHostObserver:
-  void RenderProcessExited(RenderProcessHost* /*host*/,
-                           const ChildProcessTerminationInfo& info) override {
-    render_process_host_->RemoveObserver(this);
+  ~RenderProcessExitObserver() override { Reset(); }
 
+ protected:
+  // content::RenderProcessHostObserver:
+  void RenderProcessExited(
+      content::RenderProcessHost* host,
+      const content::ChildProcessTerminationInfo& info) override {
     // Ensure the process exited normally and not due to a crash.
     EXPECT_EQ(info.exit_code, content::RESULT_CODE_NORMAL_EXIT);
   }
 
-  const raw_ptr<RenderProcessHost, DanglingUntriaged> render_process_host_ =
-      nullptr;
+  void RenderProcessHostDestroyed(content::RenderProcessHost* host) override {
+    Reset();
+  }
+
+  void Reset() {
+    if (render_process_host_) {
+      render_process_host_->RemoveObserver(this);
+      render_process_host_ = nullptr;
+    }
+  }
+
+  raw_ptr<content::RenderProcessHost> render_process_host_ = nullptr;
 };
 
 void VerifyDocumentBodyInnerTextExpectation(
@@ -61,7 +71,7 @@ void VerifyNewTabPageLoadedExpectation(content::WebContents* web_contents) {
                   .ExtractBool());
 }
 
-void SimulateGoBack(WebContents* web_contents) {
+void SimulateGoBack(content::WebContents* web_contents) {
   content::TestNavigationObserver observer(
       web_contents, /*expected_number_of_navigations=*/1);
   web_contents->GetController().GoBack();
@@ -71,7 +81,8 @@ void SimulateGoBack(WebContents* web_contents) {
 
 }  // namespace
 
-class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
+class BraveNewTabPageUIBrowserTest
+    : public extensions::ExtensionFunctionalTest {
  protected:
   content::WebContents* GetActiveWebContents() {
     content::WebContents* web_contents =
@@ -93,10 +104,10 @@ class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
 };
 
 // Test that properties are set on the correct RenderViewHost.
-IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
+IN_PROC_BROWSER_TEST_F(BraveNewTabPageUIBrowserTest, StartupURLTest) {
   content::WebContents* web_contents = GetActiveWebContents();
 
-  RenderProcessHost* render_process_host =
+  content::RenderProcessHost* render_process_host =
       web_contents->GetPrimaryMainFrame()->GetProcess();
   RenderProcessExitObserver observer(render_process_host);
 
@@ -114,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
 // This test simply checks that by default the Brave new tab page is used.
 // It does this by loading the newtab page and then checking if
 // window.brave_new_tab exists.
-IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
+IN_PROC_BROWSER_TEST_F(BraveNewTabPageUIBrowserTest, BraveNewTabIsDefault) {
   content::WebContents* web_contents = GetActiveWebContents();
   SimulateOpenNewTabAndWaitForLoad(web_contents);
   VerifyNewTabPageLoadedExpectation(web_contents);
@@ -122,7 +133,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
 
 // This test simply loads an extension that sets a newtab override.
 // It checks to make sure the newtab override is used as the newtab page.
-IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
+IN_PROC_BROWSER_TEST_F(BraveNewTabPageUIBrowserTest,
+                       NewTabPageLocationOverride) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
   InstallExtensionSilently(extension_service(),

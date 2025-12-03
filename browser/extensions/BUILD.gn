@@ -215,6 +215,8 @@ source_set("test_support") {
   sources = [
     "brave_base_local_data_files_browsertest.cc",
     "brave_base_local_data_files_browsertest.h",
+    "brave_extension_functional_test.cc",
+    "brave_extension_functional_test.h",
   ]
 
   deps = [
