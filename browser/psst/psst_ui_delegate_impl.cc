@@ -50,7 +50,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
   // Save the PSST settings when user accepts the dialog
   SetPsstWebsiteSettings(host_content_settings_map_, origin,
                          ConsentStatus::kAllow, dialog_data_->script_version,
-                         dialog_data_->user_id, std::move(urls_to_skip));
+                         dialog_data_->user_id, urls_to_skip.Clone());
 
   if (apply_changes_callback_) {
     std::move(apply_changes_callback_).Run(std::move(urls_to_skip));
