@@ -775,7 +775,9 @@ gfx::Size BraveVerticalTabStripRegionView::CalculatePreferredSize(
 }
 
 gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
-  if (IsFloatingEnabledForBrowserFullscreen()) {
+  if (IsFloatingEnabledForBrowserFullscreen() ||
+      ((tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_) &&
+        state_ != State::kExpanded))) {
     // Vertical tab strip always overlaps the contents area.
     return {};
   }

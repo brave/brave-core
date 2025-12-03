@@ -320,8 +320,10 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // Due to vertical tab's padding(tabs::kMarginForVerticalTabContainers), we
   // can see some space between vertical tab and contents. However, If we don't
   // have margin from contents, vertical tab side contents shadow isn't visible.
-  // So, having half or margin from vertical tab and half from contents.
+  // So, having half of margin from vertical tab and half from contents.
   if (browser() && tabs::utils::ShouldShowVerticalTabs(browser()) &&
+      (vertical_tab_strip_host_ &&
+       vertical_tab_strip_host_->GetPreferredSize().width() != 0) &&
       !IsFullscreenForBrowser()) {
     const int margin_with_vertical_tab =
         browser()
@@ -463,6 +465,8 @@ gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
     const gfx::Insets& insets) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+      (vertical_tab_strip_host_ &&
+       vertical_tab_strip_host_->GetPreferredSize().width() == 0) ||
       (browser_view && browser_view->IsFullscreen())) {
     return insets;
   }
