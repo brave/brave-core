@@ -12,6 +12,9 @@ source_set("ai_chat") {
     "ai_chat_service_factory.mm",
     "ai_chat_settings_helper.h",
     "ai_chat_settings_helper.mm",
+    "ai_chat_ui_handler_bridge.h",
+    "ai_chat_ui_handler_bridge_holder.h",
+    "ai_chat_ui_handler_bridge_holder.mm",
     "ai_chat_utils.h",
     "ai_chat_utils.mm",
     "model_service_factory.h",
@@ -37,6 +40,7 @@ source_set("ai_chat") {
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/chrome/common",
+    "//ios/web/public",
   ]
 
   frameworks = [ "Foundation.framework" ]

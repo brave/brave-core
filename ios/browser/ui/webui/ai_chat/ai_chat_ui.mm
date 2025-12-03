@@ -22,6 +22,9 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
+#include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/browser/ui/webui/favicon_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
@@ -37,6 +40,7 @@
 #include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
+#include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
@@ -122,8 +126,16 @@ AIChatUI::~AIChatUI() {
 
 void AIChatUI::BindInterfaceUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
+  id<AIChatUIHandlerBridge> bridge =
+      ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(
+          web_ui()->GetWebState())
+          ->bridge();
+  web::WebState* chat_context_web_state = nullptr;
+  if (BraveWebView* webView = [bridge webViewForAssociatedContent]) {
+    chat_context_web_state = webView.webState;
+  }
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebState(), /*chat_context_web_state=*/nullptr, profile_,
+      web_ui()->GetWebState(), chat_context_web_state, profile_,
       std::move(receiver));
 }
 

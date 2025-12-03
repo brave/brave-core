@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_BRIDGE_HOLDER_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_BRIDGE_HOLDER_H_
+#ifndef BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_HOLDER_H_
+#define BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_HOLDER_H_
 
 #include "ios/web/public/lazy_web_state_user_data.h"
 
@@ -27,4 +27,4 @@ class UIHandlerBridgeHolder
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_BRIDGE_HOLDER_H_
+#endif  // BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_HOLDER_H_

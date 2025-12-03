@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_UI_HANDLER_BRIDGE_H_
-#define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_UI_HANDLER_BRIDGE_H_
+#ifndef BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_H_
+#define BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
 
 @class AiChatUploadedFile;
+@class BraveWebView;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 NS_SWIFT_NAME(AIChatUIHandler)
 @protocol AIChatUIHandlerBridge
 @required
+
+/// Return the web view that will be used to associate content with conversation
+- (nullable BraveWebView*)webViewForAssociatedContent;
 
 /// Handle when a user taps on the microphone icon and call the completion
 /// handler with a text version of the users prompt or nil if the user had
@@ -51,4 +55,4 @@ NS_SWIFT_NAME(AIChatUIHandler)
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_AI_CHAT_UI_HANDLER_BRIDGE_H_
+#endif  // BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_H_
