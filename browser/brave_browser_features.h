@@ -27,7 +27,6 @@ BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
 BASE_DECLARE_FEATURE(kBraveV8JitlessMode);
 #if BUILDFLAG(IS_ANDROID)
 BASE_DECLARE_FEATURE(kBraveAndroidDynamicColors);
-BASE_DECLARE_FEATURE(kNewAndroidOnboarding);
 BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExperiment);
 #endif  // BUILDFLAG(IS_ANDROID)
 
