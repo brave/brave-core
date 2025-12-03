@@ -45,6 +45,7 @@ export default function BeginGeneration() {
           handleClick={() => {}}
           handleEditClick={() => {}}
           handleNewSkillClick={() => {}}
+          isMobile={false}
         />
         <InputBox
           conversationStarted

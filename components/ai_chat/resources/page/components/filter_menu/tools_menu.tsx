@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import { ActionEntry, Skill } from 'components/ai_chat/resources/common/mojom'
+import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import FilterMenu, { MatchedText, Props } from './filter_menu'
 import { matches } from './query'
@@ -17,6 +18,7 @@ import { FuzzyFinder } from './fuzzy_finder'
 export type ExtendedActionEntry = ActionEntry | Skill
 
 type ToolsMenuProps = {
+  isMobile: boolean
   handleClick: (type: ExtendedActionEntry) => void
   handleEditClick: (skill: Skill) => void
   handleNewSkillClick: () => void
@@ -88,7 +90,10 @@ export default function ToolsMenu(props: ToolsMenuProps) {
                 <Button
                   fab
                   kind='plain-faint'
-                  className={styles.editButton}
+                  className={classnames({
+                    [styles.editButton]: true,
+                    [styles.editButtonMobile]: props.isMobile,
+                  })}
                   onClick={(e) => {
                     e.stopPropagation()
                     props.handleEditClick(item)

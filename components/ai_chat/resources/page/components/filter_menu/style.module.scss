@@ -98,6 +98,10 @@
   opacity: 0;
 }
 
+.editButtonMobile {
+  opacity: 1;
+}
+
 .toolsMenuItemContent:hover .editButton,
 .toolsMenuItemContent:focus-within .editButton,
 leo-menu-item:focus-visible .editButton {
