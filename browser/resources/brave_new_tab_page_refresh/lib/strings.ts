@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { getLocale } from '$web-common/locale'
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import '$web-common/strings'
 
 import {
@@ -28,5 +28,5 @@ export type StringKey =
   | BraveOmniboxStrings
 
 export function getString(key: StringKey) {
-  return getLocale(key)
+  return loadTimeData.getString(key)
 }

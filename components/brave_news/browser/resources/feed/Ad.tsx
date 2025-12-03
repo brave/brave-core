@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import SecureLink from '$web-common/SecureLink';
-import { getLocale } from '$web-common/locale';
+import { getString } from '../strings'
 import { useOnVisibleCallback } from '$web-common/useVisible';
 import VisibilityTimer from '$web-common/visibilityTimer';
 import Button from '@brave/leo/react/button';
@@ -117,7 +117,7 @@ export default function Advert(props: Props) {
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
     <AdImage loading='eager' src={imageUrl} />
     <MetaInfoContainer>
-      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale(S.BRAVE_NEWS_ADVERT_BADGE)}</BatAdLabel>
+      <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getString(S.BRAVE_NEWS_ADVERT_BADGE)}</BatAdLabel>
       •
       {' ' + advert.description}
     </MetaInfoContainer>

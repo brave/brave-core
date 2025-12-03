@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getString } from './strings'
 import Icon from '@brave/leo/react/icon'
 import { radius, spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
@@ -105,7 +105,7 @@ export default function FeedV2() {
           className='brave-news-load-new-content-button'
           onClick={refreshFeedV2}
         >
-          {getLocale(S.BRAVE_NEWS_NEW_CONTENT_AVAILABLE)}
+          {getString(S.BRAVE_NEWS_NEW_CONTENT_AVAILABLE)}
         </LoadNewContentButton>}
       <Feed feed={feedV2} onViewCountChange={reportViewCount} onSessionStart={reportSessionStart} />
     </Flex>
@@ -113,10 +113,10 @@ export default function FeedV2() {
     <ButtonsContainer className='brave-news-feed-controls'>
       <ButtonSpacer>
         {isSmall && <React.Suspense fallback={null}><SidebarMenu /></React.Suspense>}
-        <SettingsButton onClick={() => setCustomizePage('news')} title={getLocale(S.BRAVE_NEWS_CUSTOMIZE_FEED)}>
+        <SettingsButton onClick={() => setCustomizePage('news')} title={getString(S.BRAVE_NEWS_CUSTOMIZE_FEED)}>
           <Icon name="tune" />
         </SettingsButton>
-        <SettingsButton isLoading={!feedV2} title={getLocale(S.BRAVE_NEWS_REFRESH_FEED)} onClick={() => {
+        <SettingsButton isLoading={!feedV2} title={getString(S.BRAVE_NEWS_REFRESH_FEED)} onClick={() => {
           refreshFeedV2()
         }}><Icon name="refresh" /></SettingsButton>
       </ButtonSpacer>

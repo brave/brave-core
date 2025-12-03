@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getLocale } from '$web-common/locale';
+import { getString } from './strings';
 import Icon from '@brave/leo/react/icon';
 import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
@@ -13,7 +13,7 @@ import Variables from './Variables';
 import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
-import { loadTimeData } from '$web-common/loadTimeData';
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
 const NewsButton = styled.button`
   cursor: pointer;
@@ -119,7 +119,7 @@ export default function Peek() {
     ? <Container>
       {showNewsButton && <NewsButton onClick={scrollToNews}>
         <Icon name='product-brave-news' />
-        {getLocale(S.BRAVE_NEWS_NEWS_PEEK)}
+        {getString(S.BRAVE_NEWS_NEWS_PEEK)}
         <Icon name='carat-down' />
       </NewsButton>}
       {data && <PeekingCard onClick={scrollToNews}>

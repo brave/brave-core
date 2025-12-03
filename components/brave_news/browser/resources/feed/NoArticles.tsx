@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { getLocale } from '$web-common/locale';
+import { getString } from '../strings'
 import { spacing } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -57,9 +57,9 @@ export default function NoArticles() {
         </linearGradient>
       </defs>
     </svg>
-    <Title>{getLocale(S.BRAVE_NEWS_NO_ARTICLES_TITLE)}</Title>
+    <Title>{getString(S.BRAVE_NEWS_NO_ARTICLES_TITLE)}</Title>
     <div>
-      {getLocale(S.BRAVE_NEWS_NO_ARTICLES_MESSAGE)}
+      {getString(S.BRAVE_NEWS_NO_ARTICLES_MESSAGE)}
     </div>
   </Container>
 }

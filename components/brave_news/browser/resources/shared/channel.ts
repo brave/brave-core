@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { getLocale } from "$web-common/locale"
+import { getString } from '../strings'
 
 const getChannelStringId = (channelName: string) => 'BRAVE_NEWS_CHANNEL_'
   + channelName.toUpperCase()
@@ -13,7 +13,7 @@ const getChannelStringId = (channelName: string) => 'BRAVE_NEWS_CHANNEL_'
 export const getTranslatedChannelName = (channelName: string) => {
   if (!channelName) return ''
   try {
-    return getLocale(getChannelStringId(channelName))
+    return getString(getChannelStringId(channelName) as any)
   } catch (err) {
     console.error(`Couldn't find translation for channel '${channelName}'`)
     return channelName

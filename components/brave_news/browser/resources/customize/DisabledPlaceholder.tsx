@@ -6,7 +6,8 @@
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
 import styled from 'styled-components'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getString } from '../strings'
+import { formatString } from '$web-common/formatString'
 import Flex from '$web-common/Flex'
 
 const TodayGraphic = <svg width="370" height="80" viewBox="0 0 370 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +58,7 @@ const EnableButton = styled(Button)`
   margin-bottom: 48px;
 `
 
-const description = formatLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO, {
+const description = formatString(getString(S.BRAVE_NEWS_INTRO_DESCRIPTION_TWO), {
   $1: content => <a href='https://brave.com/privacy/browser/'>
     {content}
   </a>
@@ -68,18 +69,18 @@ export default function DisabledPlaceholder (props: { enableBraveNews: () => voi
     <Container align="center" justify="center" direction="column" gap={26}>
       {TodayGraphic}
       <Header>
-        {getLocale(S.BRAVE_NEWS_INTRO_TITLE)}
+        {getString(S.BRAVE_NEWS_INTRO_TITLE)}
       </Header>
       <div>
         <Subtitle>
-          {getLocale(S.BRAVE_NEWS_INTRO_DESCRIPTION)}
+          {getString(S.BRAVE_NEWS_INTRO_DESCRIPTION)}
         </Subtitle>
         <Subtitle>
           {description}
         </Subtitle>
       </div>
       <EnableButton onClick={props.enableBraveNews}>
-        {getLocale(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
+        {getString(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
       </EnableButton>
     </Container>
   )

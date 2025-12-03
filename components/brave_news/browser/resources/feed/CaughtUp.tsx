@@ -6,7 +6,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '$web-common/Flex';
-import { getLocale } from '../../../../common/locale';
+import { getString } from '../strings'
 import Icon from '@brave/leo/react/icon';
 import { spacing } from '@brave/leo/tokens/css/variables';
 
@@ -24,7 +24,7 @@ export default function CaughtUp() {
   return <Container align='center' justify='stretch'>
     <hr />
     <Flex align='center' gap={6}>
-      <Icon name='check-circle-outline' /> <span>{getLocale(S.BRAVE_NEWS_CAUGHT_UP)}</span>
+      <Icon name='check-circle-outline' /> <span>{getString(S.BRAVE_NEWS_CAUGHT_UP)}</span>
     </Flex>
     <hr />
   </Container>

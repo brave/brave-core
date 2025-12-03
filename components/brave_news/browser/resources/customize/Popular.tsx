@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getString } from '../strings'
 import * as React from 'react'
 import { useBraveNews } from '../shared/Context'
 import Carousel from './Carousel'
@@ -37,9 +37,9 @@ export function PopularCarousel () {
   const popularPublisherIds = usePopularPublisherIds()
   return (
     <Carousel title={<Flex justify='space-between'>
-      {getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}
+      {getString(S.BRAVE_NEWS_POPULAR_TITLE)}
       <CustomizeLink onClick={() => setCustomizePage('popular')}>
-        {getLocale(S.BRAVE_NEWS_VIEW_ALL_BUTTON)}
+        {getString(S.BRAVE_NEWS_VIEW_ALL_BUTTON)}
       </CustomizeLink>
     </Flex>} publisherIds={popularPublisherIds} />
   )
@@ -47,7 +47,7 @@ export function PopularCarousel () {
 
 export function PopularPage () {
   const popularPublisherIds = usePopularPublisherIds()
-  return <CustomizePage title={getLocale(S.BRAVE_NEWS_POPULAR_TITLE)}>
+  return <CustomizePage title={getString(S.BRAVE_NEWS_POPULAR_TITLE)}>
     <DiscoverSection>
       {popularPublisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}
     </DiscoverSection>

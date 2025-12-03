@@ -6,7 +6,7 @@
 import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
-import { loadTimeData } from "$web-common/loadTimeData";
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import { mojoTimeToJSDate } from "$web-common/mojomUtils";
 
 export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`

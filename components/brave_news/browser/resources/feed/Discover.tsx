@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { getLocale } from '$web-common/locale';
+import { getString } from '../strings'
 import Icon from '@brave/leo/react/icon';
 import { icon, spacing } from '@brave/leo/tokens/css/variables';
 import { Discover as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
@@ -35,7 +35,7 @@ export default function Component({ info }: Props) {
   return <Container>
     <Title>
       <TitleIcon name="star-outline" />
-      {getLocale(S.BRAVE_NEWS_SOURCES_RECOMMENDATION)}
+      {getString(S.BRAVE_NEWS_SOURCES_RECOMMENDATION)}
     </Title>
     <Row>
       {info.publisherIds.map(p => <PublisherCard key={p} publisherId={p} />)}

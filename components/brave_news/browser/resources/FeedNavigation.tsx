@@ -11,7 +11,7 @@ import Card from './feed/Card';
 import { useBraveNews } from './shared/Context';
 import { isPublisherEnabled } from './shared/api';
 import { FeedView } from './shared/useFeedV2';
-import { getLocale } from '$web-common/locale';
+import { getString } from './strings'
 import SettingsButton from './SettingsButton';
 
 const DEFAULT_SHOW_COUNT = 4;
@@ -147,12 +147,12 @@ export default function Sidebar() {
     .slice(0, showingMoreChannels ? undefined : DEFAULT_SHOW_COUNT), [subscribedChannels, showingMoreChannels])
 
   return <Container>
-    <Item id='all' name={getLocale(S.BRAVE_NEWS_FOR_YOU_FEED)} />
-    <Item id='following' name={getLocale(S.BRAVE_NEWS_FOLLOWING_FEED)} />
+    <Item id='all' name={getString(S.BRAVE_NEWS_FOR_YOU_FEED)} />
+    <Item id='following' name={getString(S.BRAVE_NEWS_FOLLOWING_FEED)} />
     <Section open>
       <summary>
         {subscribedChannels.length ? Marker : PlaceholderMarker}
-        {getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}
+        {getString(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}
         <AddButton size="tiny" onClick={(event) => {
           event.preventDefault()
           setCustomizePage('news')
@@ -164,14 +164,14 @@ export default function Sidebar() {
       {subscribedChannels.length > DEFAULT_SHOW_COUNT
         && <CustomButton faint onClick={() => setShowingMoreChannels(s => !s)}>
           {showingMoreChannels
-            ? getLocale(S.BRAVE_NEWS_SHOW_LESS)
-            : getLocale(S.BRAVE_NEWS_SHOW_ALL)}
+            ? getString(S.BRAVE_NEWS_SHOW_LESS)
+            : getString(S.BRAVE_NEWS_SHOW_ALL)}
         </CustomButton>}
     </Section>
     <Section open>
       <summary>
         {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
-        {getLocale(S.BRAVE_NEWS_PUBLISHERS_HEADING)}
+        {getString(S.BRAVE_NEWS_PUBLISHERS_HEADING)}
         <AddButton size="tiny" onClick={(event) => {
           event.preventDefault()
           setCustomizePage('popular')
@@ -183,8 +183,8 @@ export default function Sidebar() {
       {subscribedPublisherIds.length > DEFAULT_SHOW_COUNT
         && <CustomButton faint onClick={() => setShowingMorePublishers(s => !s)}>
           {showingMorePublishers
-            ? getLocale(S.BRAVE_NEWS_SHOW_LESS)
-            : getLocale(S.BRAVE_NEWS_SHOW_ALL)}
+            ? getString(S.BRAVE_NEWS_SHOW_LESS)
+            : getString(S.BRAVE_NEWS_SHOW_ALL)}
         </CustomButton>}
     </Section>
   </Container>

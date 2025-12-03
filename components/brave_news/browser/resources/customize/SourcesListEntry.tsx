@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getString } from '../strings'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'
@@ -89,7 +89,7 @@ export function FeedListEntry (props: Props) {
       <FavIcon publisherId={props.publisherId} />
       <Text>{publisher.publisherName}</Text>
       <ToggleButton onClick={() => setFollowed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
+        {getString(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
       </ToggleButton>
     </Container>
   )
@@ -105,7 +105,7 @@ export function ChannelListEntry (props: { channelName: string }) {
       </FavIconContainer>
       <ChannelNameText>{getTranslatedChannelName(props.channelName)}</ChannelNameText>
       <ToggleButton onClick={() => setSubscribed(false)}>
-        {getLocale(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
+        {getString(S.BRAVE_NEWS_FOLLOW_BUTTON_FOLLOWING)}
       </ToggleButton>
     </Container>
   )

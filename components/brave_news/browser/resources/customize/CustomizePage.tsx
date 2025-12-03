@@ -7,7 +7,7 @@ import Flex from '$web-common/Flex'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useBraveNews } from '../shared/Context'
-import { getLocale } from '$web-common/locale'
+import { getString } from '../strings'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
@@ -38,7 +38,7 @@ export default function CustomizePage (props: {
     <Flex align="center">
         <BackButton onClick={() => setCustomizePage('news')}>
           <Icon name="arrow-left" slot="icon-before" />
-          {getLocale(S.BRAVE_NEWS_BACK_BUTTON)}
+          {getString(S.BRAVE_NEWS_BACK_BUTTON)}
         </BackButton>
       <Header>{props.title}</Header>
       <Spacer />

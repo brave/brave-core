@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getString } from '../strings'
 import TextInput from '$web-components/input'
 import Button from '@brave/leo/react/button'
 import * as React from 'react'
@@ -36,7 +36,7 @@ export default function Discover () {
 
   return <Flex direction='column'>
     <Header>Discover</Header>
-    <SearchInput type="search" placeholder={getLocale(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onChange={e => setQuery(e.currentTarget.value)} />
+    <SearchInput type="search" placeholder={getString(S.BRAVE_NEWS_SEARCH_PLACEHOLDER_LABEL)} value={query} onChange={e => setQuery(e.currentTarget.value)} />
     { query.length
       ? <SearchResults query={query} />
       : <Home />
@@ -58,7 +58,7 @@ function Home () {
     <>
       <PopularCarousel />
       <SuggestionsCarousel />
-      <DiscoverSection name={getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
+      <DiscoverSection name={getString(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
       {channelNames.map(channelName =>
         <ChannelCard key={channelName} channelName={channelName} />
       )}
@@ -81,30 +81,30 @@ function SearchResults (props: SearchResultsProps) {
   return (
     <>
       {hasAnyChannels &&
-      <DiscoverSection name={getLocale(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
+      <DiscoverSection name={getString(S.BRAVE_NEWS_BROWSE_CHANNELS_HEADER)}>
         {search.filteredChannels.map(c =>
           <ChannelCard key={c.channelName} channelName={c.channelName} />
         )}
       </DiscoverSection>
       }
-      <DiscoverSection name={getLocale(S.BRAVE_NEWS_ALL_SOURCES_HEADER)}>
+      <DiscoverSection name={getString(S.BRAVE_NEWS_ALL_SOURCES_HEADER)}>
         {search.filteredSources.publisherIds.map(publisherId =>
           <PublisherCard key={publisherId} publisherId={publisherId} />
         )}
         {showFetchPermissionButton &&
           <div>
             <Button size='tiny' kind='plain-faint' onClick={() => search.setCanFetchUrl(true)} isLoading={search.loading}>
-              {getLocale(S.BRAVE_NEWS_DIRECT_SEARCH_BUTTON).replace('$1', search.feedUrlQuery ?? '')}
+              {getString(S.BRAVE_NEWS_DIRECT_SEARCH_BUTTON).replace('$1', search.feedUrlQuery ?? '')}
             </Button>
           </div>
         }
         {search.filteredSources.direct.map(r =>
           <DirectPublisherCard key={r.feedUrl.url} feedUrl={r.feedUrl.url} title={r.feedTitle} />)}
         {!search.canQueryFilterSources &&
-          getLocale(S.BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT)
+          getString(S.BRAVE_NEWS_SEARCH_QUERY_TOO_SHORT)
         }
         {isFetchable && !hasAnySources && !showFetchPermissionButton &&
-          getLocale(S.BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS).replace('$1', search.feedUrlQuery ?? '')
+          getString(S.BRAVE_NEWS_DIRECT_SEARCH_NO_RESULTS).replace('$1', search.feedUrlQuery ?? '')
         }
       </DiscoverSection>
     </>

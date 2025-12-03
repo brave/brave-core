@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Flex from '$web-common/Flex'
-import { getLocale } from '$web-common/locale'
+import { getString } from '../strings'
 import usePromise from '$web-common/usePromise'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 import * as React from 'react'
@@ -32,7 +32,7 @@ export default function SourcesList () {
 
   return <div>
     <Flex direction="row" justify="space-between" align="center">
-      <Title>{getLocale(S.BRAVE_NEWS_FEEDS_HEADING)}</Title>
+      <Title>{getString(S.BRAVE_NEWS_FEEDS_HEADING)}</Title>
       <Subtitle>{sourcesCount}</Subtitle>
     </Flex>
     <Flex direction="column">
