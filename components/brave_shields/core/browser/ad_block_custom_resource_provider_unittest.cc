@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -38,16 +39,46 @@ class TestResourceProvider : public AdBlockResourceProvider {
 
   void LoadResources(
       base::OnceCallback<void(AdblockResourceStorageBox)> on_load) override {
+    default_resource_load_calls_++;
     auto storage = adblock::new_resource_storage(resources_json_);
     std::move(on_load).Run(std::move(storage));
   }
 
   void SetResources(const std::string& resources_json) {
     resources_json_ = resources_json;
+    base::test::TestFuture<AdblockResourceStorageBox> result;
+    LoadResources(result.GetCallback());
+    auto storage = result.Take();
+    NotifyResourcesLoaded(std::move(storage));
+  }
+
+  int default_resource_load_calls() const {
+    return default_resource_load_calls_;
   }
 
  private:
+  int default_resource_load_calls_ = 0;
   std::string resources_json_;
+};
+
+class TestObserver : public AdBlockResourceProvider::Observer {
+ public:
+  explicit TestObserver(AdBlockResourceProvider* provider) {
+    observation_.Observe(provider);
+  }
+  ~TestObserver() override = default;
+
+  void WaitForResourcesUpdated() { run_loop_.Run(); }
+
+  void OnResourcesLoaded(AdblockResourceStorageBox /*storage*/) override {
+    run_loop_.Quit();
+  }
+
+ private:
+  base::ScopedObservation<AdBlockResourceProvider,
+                          AdBlockResourceProvider::Observer>
+      observation_{this};
+  base::RunLoop run_loop_;
 };
 
 }  // namespace
@@ -263,23 +294,45 @@ TEST_F(AdBlockCustomResourceProviderTest, UpdateResource) {
 }
 
 TEST_F(AdBlockCustomResourceProviderTest, LoadResource) {
+  // Empty resources by default and a single call to load resources.
   EXPECT_FALSE(HasResource("default-1.js"));
+  EXPECT_EQ(1, default_resource_provider()->default_resource_load_calls());
 
-  default_resource_provider()->SetResources(
-      base::ListValue()
-          .Append(CreateResource("default-1.js", "default-1"))
-          .DebugString());
+  {
+    TestObserver observer(custom_resource_provider());
+    default_resource_provider()->SetResources(
+        base::ListValue()
+            .Append(CreateResource("default-1.js", "default-1"))
+            .DebugString());
 
+    observer.WaitForResourcesUpdated();
+    // A single extra call to load the default resources after they are updated.
+    EXPECT_EQ(2, default_resource_provider()->default_resource_load_calls());
+  }
+
+  // Check the loaded resources, the cached copy should be used.
   EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_FALSE(HasResource("user-1.js"));
+  EXPECT_EQ(2, default_resource_provider()->default_resource_load_calls());
 
-  prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
-  AddResource(CreateResource("user-1.js", "user-1"));
+  {
+    TestObserver observer(custom_resource_provider());
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+    AddResource(CreateResource("user-1.js", "user-1"));
+    observer.WaitForResourcesUpdated();
+    // User resources are updated => the default resources is reloaded.
+    EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
+  }
+
   EXPECT_TRUE(HasResource("default-1.js"));
   EXPECT_TRUE(HasResource("user-1.js"));
+  // A cached copy is used.
+  EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
 
   prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, false);
   EXPECT_TRUE(HasResource("default-1.js"));
   EXPECT_TRUE(HasResource("user-1.js"));
+  EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
 }
 
 }  // namespace brave_shields

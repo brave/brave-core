@@ -96,6 +96,7 @@ class AdBlockCustomResourceProvider
   std::unique_ptr<AdBlockResourceProvider> default_resource_provider_ = nullptr;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   base::ObserverList<Observer> observers_;
+  std::optional<AdblockResourceStorageBox> cached_storage_ = std::nullopt;
 
   base::WeakPtrFactory<AdBlockCustomResourceProvider> weak_ptr_factory_{this};
 };
