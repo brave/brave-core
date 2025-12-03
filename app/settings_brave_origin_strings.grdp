@@ -1,0 +1,473 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Settings-specific Brave Origin strings (included from chromium_strings.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Shared across multiple page -->
+  <if expr="not is_chromeos">
+    <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_TITLE" desc="The title of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
+      Relaunch Brave Origin?
+    </message>
+  </if>
+  <!-- About Page -->
+  <if expr="_is_chrome_for_testing_branded">
+    <then>
+      <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave Origin for Testing page.">
+        About Brave Origin for Testing
+      </message>
+      <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave Origin for Testing help page.">
+        Get help with Brave Origin for Testing
+      </message>
+    </then>
+    <else>
+      <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave Origin page.">
+        About Brave Origin
+      </message>
+      <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave Origin help page.">
+        Get help with Brave Origin
+      </message>
+    </else>
+  </if>
+  <if expr="not is_chromeos">
+    <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating Brave Origin">
+      Updating Brave Origin
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_UPDATING_PERCENT" desc="Status label: Updating Brave Origin (90%)">
+      Updating Brave Origin (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave Origin">
+      Nearly up to date! Relaunch Brave Origin to finish updating.
+    </message>
+    <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave Origin)">
+      Brave Origin is up to date
+    </message>
+  </if>
+  <if expr="is_chromeos">
+    <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About ChromeOS page.">
+      About ChromeOS
+    </message>
+    <message name="IDS_OS_SETTINGS_TAG_OS_VERSION" desc="Text for search result item which, when clicked, navigates the user to about ChromeOS settings, which gives information about the current ChromeOS version.">
+      ChromeOS version
+    </message>
+  </if>
+
+  <!-- Autofill Page -->
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_OFFLINE" desc="Error message when the password check can't be completed because the user is offline.">
+    Brave Origin can't check your passwords. Try checking your internet connection.
+  </message>
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_SIGNED_OUT" desc="Error message when the password check can't be completed because the user is not signed in.">
+    Brave Origin can check your passwords when you sign in with your Brave Origin sync chain
+  </message>
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_NO_PASSWORDS" desc="Error message when the password check can't be completed since no passwords could be checked.">
+    No saved passwords. Brave Origin can check your passwords when you save them.
+  </message>
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT_GOOGLE_ACCOUNT" desc="Error message when the password check can't be completed since the user hit the quota limit, but the user is able to check their passwords in their Brave Origin account.">
+    Brave Origin can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>check passwords in your Brave Origin sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Error message when the password check can't be completed since the user hit the quota limit.">
+    Brave Origin can't check your passwords. Try again after 24 hours.
+  </message>
+  <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_GENERIC" desc="Error message when the password check can't be completed for an unspecified reason.">
+    Brave Origin can't check your passwords. Try again later.
+  </message>
+  <message name="IDS_SETTINGS_NO_COMPROMISED_CREDENTIALS_LABEL" desc="Label which is shown when there were no compromised passwords detected.">
+    Brave Origin will notify you when you sign in with a compromised password
+  </message>
+  <message name="IDS_SETTINGS_SIGNED_OUT_USER_LABEL" desc="Label which is shown at the top of the compromised password section if user is signed out.">
+    To check if your passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>sign in to Brave Origin<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_SIGNED_OUT_USER_HAS_COMPROMISED_CREDENTIALS_LABEL" desc="Label which is shown at the bottom of the compromised password section if user is signed out and has compromised credentials.">
+    To check if your other passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>sign in to Brave Origin<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_WEAK_PASSWORDS_DESCRIPTION_GENERATION" desc="Information about why weak passwords are a security issue and what syncing user should do to fix the problem. Has a link.">
+    Weak passwords are easy to guess. Let Brave Origin <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>create and remember strong passwords for you<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_COMPROMISED_EDIT_DISCLAIMER_DESCRIPTION" desc="A description for the dialog which tells the user to edit password in Brave Origin if it was changed already.">
+    If so, please edit your saved password in Brave Origin so it matches your new password.
+  </message>
+
+  <!-- Enhanced autofill Page-->
+  <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION" desc="The description of the enhanced autofill button on chrome://settings/autofill.">
+    Brave Origin understands forms better and can autofill them faster for you
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION_FEATURE_ON" desc="The sublabel of the enhanced autofill row on chrome://settings/ai when the enhanced autofill feature is on. ">
+Brave Origin understands forms better and can autofill them faster for you. This setting is on.
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_DESCRIPTION_FEATURE_OFF" desc="The sublabel of the enhanced autofill row on chrome://settings/ai when the enhanced autofill feature is off.">
+Brave Origin understands forms better and can autofill them faster for you. This setting is off.
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_TOGGLE_SUB_LABEL" desc="The description of the setting. By 'understand forms better', we mean that when a user submits a form on a website, and if they're using enhanced autofill, this feature can offer to save the user's submitted info. When Brave Origin saves that info, we save the submitted values and consider the page context.">
+    Brave Origin understands forms better and can autofill them faster for you
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_USE_TO_FILL" desc="Bullet 2 of 2 that appears beneath the “When on” title. “Later”: this is a two-step feature. 1) data is saved, 2) it becomes valuable to the user later when they want to fill in a form with similar data. “Brave Origin can ask”: the user has a choice, every time, whether their data is saved and also whether they want to autofill their saved info into forms.">
+    Later, Brave Origin can ask if you want to use saved info to autofill forms for you
+  </message>
+
+  <!-- Default Browser Page -->
+  <if expr="not is_chromeos">
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_DEFAULT" desc="The text displayed when Brave Origin is the default browser">
+      Brave Origin is your default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT" desc="Default browser checkbox label">
+      Make Brave Origin the default browser
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_AND_PIN" desc="The text of the button to make Brave Origin the default browser and pin it to the taskbar.">
+      Make Brave Origin the default browser and pin to the taskbar
+    </message>
+    <message name="IDS_SETTINGS_DEFAULT_BROWSER_ERROR" desc="The text displayed when Brave Origin cannot determine or set the default browser">
+      Brave Origin cannot determine or set the default browser
+    </message>
+    <if expr="_is_chrome_for_testing_branded">
+      <then>
+        <message name="IDS_SETTINGS_DEFAULT_BROWSER_SECONDARY" desc="The text displayed when Brave Origin for Testing is installed in side-by-side mode, which does not support setting as the default browser.">
+          Brave Origin for Testing cannot be made your default browser.
+        </message>
+      </then>
+      <else>
+        <message name="IDS_SETTINGS_DEFAULT_BROWSER_SECONDARY" desc="The text displayed when Brave Origin is installed in side-by-side mode, which does not support setting as the default browser.">
+          This is a secondary installation of Brave Origin, and cannot be made your default browser.
+        </message>
+      </else>
+    </if>
+  </if>
+
+  <!-- Preloading Page-->
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_STANDARD_PRELOADING_WHEN_ON_BULLET_TWO" desc="Bullet point in the standard preloading and when on column. Informs the user about what the standard preloading setting does.">
+    Brave Origin preloads pages you're likely to visit, so that they load more quickly when you visit them
+  </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_WHEN_ON_BULLET_TWO" desc="Bullet point in the extended preloading and when on column. Informs the user about what the extended preloading setting does.">
+    Brave Origin preloads even more pages that you're likely to visit, so that they load more quickly when you visit them
+  </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_EXTENDED_PRELOADING_THINGS_TO_CONSIDER_BULLET_TWO" desc="Bullet point in the extended preloading and things to consider column. Informs the user about what the extended preloading setting does.">
+    When a site asks to privately preload links on their page, Brave Origin uses Brave Origin servers. This hides your identity from the preloaded site, but Brave Origin learns what sites get preloaded.
+  </message>
+  <message name="IDS_SETTINGS_PRELOAD_PAGES_THINGS_TO_CONSIDER_BULLET_ONE" desc="Bullet point in the things to consider column. Informs the user about what the preloading setting does.">
+    If you allow cookies, Brave Origin may use them when preloading
+  </message>
+
+  <!-- Privacy Page -->
+  <message name="IDS_SETTINGS_SPELLING_PREF_DESC" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave Origin.">
+    To fix spelling errors, Brave Origin sends the text you type in text fields to Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_RESTART_TO_APPLY_CHANGES" desc="Description in the snackbar to restart Brave Origin and apply changes.">
+    To apply your changes, relaunch Brave Origin
+  </message>
+
+  <if expr="not is_chromeos">
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED" desc="The title of the preference to allow to sign-in to Brave Origin">
+    Allow Brave Origin sign-in
+    </message>
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC" desc="The description of the preference to allow to sign-in to Brave Origin">
+    By turning this off, you can sign in to Brave Origin sites like Gmail without signing in to Brave Origin
+    </message>
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC_2" desc="The description of the preference to allow to sign-in to Brave Origin">
+    Shows prompts to sign in to Brave Origin
+    </message>
+  </if>
+
+  <!-- Site Settings -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PDFS_BLOCKED" desc="Label for the disabled option of the pdfs content setting.">
+    Open PDFs in Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_SITE_SITE_DETAILS_CAMERA_BLOCKED_BY_OS" desc="The description for the camera permission with a link to system settings.">
+      To use your camera, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SITE_DETAILS_MICROPHONE_BLOCKED_BY_OS" desc="The description for the microphone permission with a link to system settings.">
+      To use your microphone, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SITE_DETAILS_LOCATION_BLOCKED_BY_OS" desc="The description for the location permission with a link to system settings.">
+      To use your location, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED_BY_OS" desc="Warning for camera content setting when the camera is disabled on OS level." translateable="false">
+    To use your camera on these sites, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED_BY_OS" desc="Warning for location content setting when the camera is disabled on OS level." translateable="false">
+    To use your location on these sites, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED_BY_OS" desc="Warning for microphone content setting when the camera is disabled on OS level." translateable="false">
+    To use your microphone on these sites, give Brave Origin access in <ph name="BEGIN_LINK">&lt;a href="#" id="openSystemSettingsLink" &gt;</ph>system settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+
+    <!-- Site Settings - Site Data Page-->
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_CLEAR_ON_EXIT_WITH_EXCEPTION_RADIO_SUBLABEL" desc="A description of the benefit/cost of choosing 'Sites can save content on your device. In short, a site will remember your preferences, shopping cart content, etc. during this browser session. But once you close all open windows, and then visit the site again, it's as if you're coming to the site for the first time.">
+    Sites will probably work as expected. You'll be signed out of most sites when you close all Brave Origin windows, except your Brave Origin sync chain if you're signed in to Brave Origin.
+  </message>
+  <message name="IDS_SETTINGS_SITE_DATA_PAGE_DELETE_ON_EXIT_EXCEPTIONS_SUB_HEADING" desc="2 of 3. A label within 'Customized behaviors' that allows for exceptions to the 'On-device site data' setting. This label and the list of sites that can appear beneath it is only relevant if the user has chosen to allow 'on-device site data' as the default value above.">
+    Always delete site data from your device when you close Brave Origin
+  </message>
+
+  <!-- Privacy Guide -->
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_BODY" desc="Body text of a card in the settings page that explains what the 'Privacy Guide' feature is.">
+    Review key privacy and security controls in Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_FEATURE_DESCRIPTION2" desc="A part of the feature description of the standard protection section of the safe browsing card in the 'Privacy Guide'.">
+    Checks URLs with a list of unsafe sites stored in Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the standard protection section of the safe browsing card in the 'Privacy Guide'.">
+    If a site tries to steal your password, or when you download a harmful file, Brave Origin may also send URLs, including bits of page content, to Safe Browsing
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_SUB_LABEL" desc="Text of the Privacy Sandbox sublabel in the completion card of the 'Privacy Guide'.">
+    Brave Origin gives you more control over the ads you see and limits what sites can learn about you when they show you personalized ads
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_SUB_LABEL" desc="Text of the Web and App Activity sublabel in the completion card of the 'Privacy Guide'.">
+    Choose whether to include Brave Origin history for more personalized experiences in Brave Origin services
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_FEATURE_DESCRIPTION3" desc="A part of the feature description of 'make searches and browsing better' in the 'Privacy Guide'.">
+    If you also save your bookmarks in your Brave Origin sync chain, you can track product prices in Brave Origin and get notified when the price drops
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of 'make searches and browsing better' in the 'Privacy Guide'.">
+    If you also share Brave Origin usage reports, those reports include the URLs you visit
+  </message>
+
+  <!-- Privacy Sandbox -->
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_TOPICS_TITLE" desc="TOPICS API A sub title that describes the first of 2 ways a site can get info from Brave Origin in order to target ads to the user. Topics of interest include things like “Live comedy” and “Rock music”. Brave Origin estimates these interests based on the sites users visit. * “Your”: we need to convey a sense of ownership, even if the user didn’t explicitly choose the interests we’re talking about. Without the “your”, it could sound like Brave Origin is simply building a generic library of interests. * “estimated”: It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “by Brave Origin”: This is new behavior for a browser (Brave Origin) to take an active role in processing user data for the purposes of showing ads. It’s important to convey “chrome”, the actor in this case.">
+    Your interests as estimated by Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_DIALOG_DESCRIPTION" desc="A description of the Ad measurement API. * “Ad measurement” is the name of an API in this context. We don’t use “API” with the user, but they need to know that there is something called “A measurement” and what it does. * “sites you visit”: call the API to get information. The actor is the site, not Brave Origin. * “restricts cross-site tracking”: Today, with 3rd-party cookies, ad measurement technologies can inadvertently (and intentionally) share considerable information from one site to another). This feature restricts that sharing in order to improve the user’s privacy.">
+    Ad measurement allows sites you visit to request information from Brave Origin that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.
+  </message>
+
+  <!-- Safety check -->
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_SETTING_SUBLABEL" desc="By default Brave Origin auto-revokes (disables) permissions (e.g. Camera, Location, etc.) for websites that were not visited for a while. This sublabel is for the toggle that allows users to switch off/on this functionality.">
+    To protect your data, let Brave Origin remove permissions from sites you haven't visited recently. Doesn't stop notifications.
+  </message>
+    <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_AND_NOTIFICATIONS_SETTING_SUBLABEL" desc="By default Brave Origin auto-revokes (disables) permissions (e.g. Camera, Location, etc.) for websites that were not visited for a while. This sublabel is for the toggle that allows users to switch off/on this functionality.">
+    To protect your data, let Brave Origin remove permissions from sites you haven't visited recently.
+  </message>
+
+  <!-- Safe Browsing -->
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_TWO" desc="Bullet point under the safe browsing enhanced protection mode">
+    Keeps you safe on Brave Origin and may be used to improve your security in other Brave Origin apps when you are signed in
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO" desc="Bullet point under the safe browsing standard protection mode">
+    Checks URLs with a list of unsafe sites stored in Brave Origin. If a site tries to steal your password, or when you download a harmful file, Brave Origin may also send URLs, including bits of page content, to Safe Browsing.
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_WHEN_ON_BULLET_ONE" desc="Bullet point under the Safe Browsing enhanced protection mode section titled 'When on'">
+    Warns you about dangerous sites, even ones Brave Origin didn't know about before, by analyzing more data from sites than standard protection. You can choose to skip Brave Origin warnings.
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_LEARN_MORE_LABEL" desc="The text for a link to a help center article that gives more information about Safe Browsing.">
+    Learn more about <ph name="BEGIN_LINK">&lt;a href="#" id="enhancedProtectionLearnMoreLink" on-click="onEnhancedProtectionLearnMoreClick_"&gt;</ph>how Brave Origin keeps your data private<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
+    Make it harder for people with access to your internet traffic to see which sites you visit. Brave Origin uses a secure connection to look up a site's IP address in the DNS (Domain Name System).
+  </message>
+
+  <!-- People Page -->
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Brave Origin dialog that indicates profile browsing data will be removed from the device.">
+    This will delete 1 item from this device. To retrieve your data later, sign in to Brave Origin as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_PLURAL" desc="Warning message displayed in the Sign out of Brave Origin dialog that indicates profile browsing data will be removed from the device.">
+    This will delete <ph name="ITEMS_COUNT">$1<ex>66</ex></ph> items from this device. To retrieve your data later, sign in to Brave Origin as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITHOUT_COUNTS" desc="Warning message displayed in the Sign out of Brave Origin dialog that indicates profile browsing data will be removed from the device.">
+    This will delete your browsing data from this device. To retrieve your data later, sign in to Brave Origin as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
+  </message>
+<if expr="not is_chromeos">
+  <message name="IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE" desc="Label of the link that takes you to the page to customize your chrome profile.">
+    Customize your Brave Origin profile
+  </message>
+  <message name="IDS_SETTING_NAME_YOUR_PROFILE" desc="Title of the edit local profile name section on the manage profile page.">
+    Name your Brave Origin profile
+  </message>
+</if>
+  <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is alredy present in Brave Origin.">
+    Sync and personalize Brave Origin across your devices
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_EXPLICIT_SIGN_IN_PROMPT_SECONDARY_WITH_NO_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is already present in Brave Origin.">
+    To get your passwords and more on all your devices, sign in to Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_EXPLICIT_SIGN_IN_PROMPT_SECONDARY_WITH_NO_ACCOUNT_WITH_BOOKMARKS" desc="The secondary text displayed to prompt users to enable sync for an account that is already present in Brave Origin.">
+    To get your passwords, bookmarks, and more on all your devices, sign in to Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_ACCOUNT_AWARE_SIGNIN_ACCOUNT_ROW_TITLE" desc="The title of the avatar row shown to users who are signed in only to the web">
+    Your Brave Origin
+  </message>
+<if expr="is_chromeos">
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
+    You can manage your signed-in Brave Origin sync chains. Your Brave Origin sync chains are used for Brave Origin browser, Play Store, Gmail, and more. If you want to add an account for someone else, like a family member, add a new person to your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> instead. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+</if>
+  <message name="IDS_SETTINGS_SIGNIN_CHROME_SIGNIN_OPTIONS_TITLE" desc="Title of the settings that controls whether a user gets signed in to Brave Origin when signing in to Brave Origin Services.">
+    Sign in to Brave Origin when you sign in to other Brave Origin services
+  </message>
+  <message name="IDS_SETTINGS_SIGNIN_CHROME_SIGNIN_OPTIONS_DESC" desc="Description of the settings that controls whether a user gets signed in to Brave Origin when signing in to Brave Origin Services.">
+    When signing into Brave Origin services like Gmail or Youtube with <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>, you can automatically sign in to Brave Origin with the same account
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_SIGNIN_SECTION_SIGNED_OUT_TITLE" desc="The text displayed to prompt users to sign in to Brave Origin. Shown on top of the account card in the people settings page when the user is signed out.">
+    Make Brave Origin your own
+  </message>
+
+  <!-- Sync Page / Account Settings Page -->
+  <message name="IDS_SETTINGS_SYNC_DATA_ENCRYPTED_TEXT" desc="Text alerting the user that synced data is encrypted.">
+    For added security, Brave Origin will encrypt your data.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_DISCONNECT_TITLE" desc="The title of the dialog to stop syncing and sign out.">
+    Sign out of Brave Origin?
+  </message>
+  <message name="IDS_SETTINGS_SUGGEST_PREF_DESC" desc="The description of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
+    When you type in the address bar or search box, Brave Origin sends what you type to your default search engine to get better suggestions. This is off in Private.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_AGGREGATOR_PREF_DESC" desc="The description of the 'Show suggestions and results from your organization' checkbox, which enables/disables sending omnibox input to the user's organization's search aggregator to get additional suggestions. Note that this setting is controlled by enterprise policy and, while a checkbox is shown, it is always enabled and cannot be disabled.">
+    When you type in the address bar or search box, Brave Origin sends what you type to your organization's search, AI, and agent tools to get suggestions.
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_NO_ACCOUNT" desc="The text displayed to prompt users to sign in to Brave Origin.">
+    Sign in to sync and personalize Brave Origin across your devices
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_DESC" desc="This is the subtitle of a setting that directs users to other settings where they can control how Brave Origin history can be used to personalize other Brave Origin services. This subtitle appears in Brave Origin's Advanced Sync settings, after the 'Control how browsing history is used with your other data across Brave Origin services' string. The 'Web &amp; App Activity' text should match the branded term in Glossary Manager: https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3b75.">
+    To get personalization, include Brave Origin in Web &amp; App Activity
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_DESC_WITH_LINKED_SERVICES" desc="This is the subtitle of a setting that directs users to other settings where they can control how Brave Origin history can be used to personalize other Brave Origin services. This subtitle appears in Brave Origin's Advanced Sync settings, after the 'Control how browsing history is used with your other data across Brave Origin services' string. The 'Web &amp; App Activity' text should match the branded term in Glossary Manager: https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=77d3b75. The 'linked Brave Origin services' text should match the branded term in Glossary Manager: https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=517bace2.">
+    To get personalization and other features, include Brave Origin in Web &amp; App Activity and linked Brave Origin services
+  </message>
+  <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_LINKED_SERVICES_DESC" desc="This is the subtitle of a setting that links to 'Linked Brave Origin services' in the Brave Origin sync chain's Data &amp; privacy settings. This subtitle appears in Brave Origin's Advanced Sync settings and is after the 'Linked Brave Origin services' string.">
+    Link Brave Origin and other Brave Origin services for personalization and other purposes
+  </message>
+    <message name="IDS_SETTINGS_ERROR_PASSPHRASE_USER_ERROR_DESCRIPTION" desc="Subtitle of settings page that indicates user must re-enter their sync password.">
+    To use and save Brave Origin data in your Brave Origin sync chain, enter your passphrase
+  </message>
+  <message name="IDS_SETTINGS_ERROR_TRUSTED_VAULT_USER_ERROR_DESCRIPTION" desc="Error description of the sync/signin error header of the settings page.">
+    To use and save Brave Origin data in your Brave Origin sync chain, verify it's you
+  </message>
+    <message name="IDS_SETTINGS_ERROR_UPGRADE_CLIENT_USER_ERROR_DESCRIPTION" desc="Error message to resolve sync protocol error for out-of-date client.">
+    To use and save Brave Origin data in your Brave Origin sync chain, update Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_PENDING_STATE_DESCRIPTION" desc="Subtitle of settings page that indicates user is in pending state and should sign in.">
+    Verify it's you to use and save Brave Origin data in your account, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_ERROR_PASSPHRASE_USER_ERROR_DESCRIPTION_WITH_EMAIL" desc="Subtitle of settings page that indicates user must re-enter their sync password.">
+    Enter your passphrase to use and save Brave Origin data in your account, <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SIGN_OUT" desc="The text label of the Sign out of Brave Origin button in the settings page.">
+    Sign out of Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_DATA_DASHBOARD" desc="This string is found in the Account settings page in Brave Origin settings to let a user manage the Brave Origin data that they've saved in their Brave Origin sync chain. It is important that it is consistent with the destination's title 'Brave Origin data in your account' (except using 'Brave Origin' instead of 'Brave Origin') (TC ID 2983573066282140756).">
+    Brave Origin data in your account
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
+    Use your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>own passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to encrypt all the Brave Origin data in your Brave Origin sync chain. Payment methods and addresses from Google Pay won’t be encrypted. Browsing history from Brave Origin won’t sync.
+  </message>
+  <message name="IDS_SETTINGS_ENCRYPT_ACCOUNT_DATA_WITH_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave Origin. If you forget your passphrase or want to change this setting, you’ll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave Origin data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ACCOUNT_DATA_ENCRYPTION" desc="Informs user how to change their encryption setting.">
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>delete the Brave Origin data in your account<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+  </message>
+
+  <!-- Page content -->
+  <message name="IDS_SETTINGS_PAGE_CONTENT_THINGS_TO_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables features that provide contextual help for currently opened pages.">
+    To help improve these features, Brave Origin sends your interactions with them to Brave Origin. This data may be read, processed, and annotated by human reviewers.
+  </message>
+
+  <!-- Performance Page -->
+  <message name="IDS_SETTINGS_PERFORMANCE_MEMORY_SAVER_MODE_SETTING_DESCRIPTION" desc="Description for the memory saver mode setting">
+    Brave Origin frees up memory from inactive tabs. This gives active tabs and other apps more computer resources and keeps Brave Origin fast. Your inactive tabs automatically become active again when you go back to them. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" id="learn-more" aria-description="$2"&gt;</ph>Learn more about Memory Saver<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_BATTERY_SAVER_MODE_SETTING_DESCRIPTION" desc="Description for the energy saver mode setting">
+    Brave Origin conserves battery power by limiting background activity and visual effects, such as smooth scrolling and video frame rates. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" id="learn-more" aria-description="$2"&gt;</ph>Learn more about Energy Saver<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_PRELOAD_TOGGLE_SUMMARY" desc="Summary for the preload pages setting">
+    Brave Origin preloads pages which makes browsing and searching faster. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" id="learn-more" aria-description="$2"&gt;</ph>Learn more about preload pages<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+
+  <!-- Languages Page -->
+  <if expr="is_win">
+    <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
+      This language is used to display menus, settings, alerts, and other text in Brave Origin
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_DISPLAY_IN_THIS_LANGUAGE" desc="The label used for a button that changes the UI language.">
+      Display Brave Origin in this language
+    </message>
+  </if>
+
+  <!-- System Page -->
+  <if expr="not is_chromeos">
+    <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Brave Origin is closed.">
+      Continue running background apps when Brave Origin is closed
+    </message>
+  </if>
+
+  <!-- Reset Page -->
+  <message name="IDS_SETTINGS_RESET_PROFILE_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
+    Help make Brave Origin better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+
+  <!-- Safety Hub -->
+  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_NOTHING_TO_DO" desc="This text describes what Safety Hub does (regularly checking whether Brave Origin settings are safe) and indicates whether the user should take action. This text is shown when Safety Hub has not identified any issues at this time. There is nothing to do for the user. As future checks of Safety Hub may identify issues, this state may change. This text is shown on a card in privacy settings next to a button that leads to Safety Hub.">
+    Brave Origin regularly checks to make sure your browser has the safest settings. We'll let you know if anything needs your review.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_HEADER" desc="Title of a row in Brave Origin's privacy settings (chrome://settings/privacy) explaining that Brave Origin recommends for the user to take action to improve their safety. Next to this text there is a button labeled 'Go to SafetyHub' that will take users to a dedicated page where users can take action.">
+    Brave Origin found some safety recommendations for your review
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_EMPTY_STATE_MODULE_SUBHEADER" desc="The header of the 'Empty State Module' in the Safety Hub page. The 'Empty State Module' is visible if there is no safety recommendation.">
+    Brave Origin will let you know if anything needs your review
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_MODULE_UPPERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the SC modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the upper case version (i.e. version that comes first in the sentence) for the name of Brave Origin update module.">
+    Brave Origin update
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_MODULE_LOWERCASE_NAME" desc="The entry point shown on the screenshot leads to Safety Check settings page (chrome://settings/safetyCheck) when at least on of the SC modules have recommendations. The subheader of the entry point lists the modules with recommendations. This string is the lower case version (i.e. version that comes in the middle of the sentence) for the name of Brave Origin update module.">
+    Brave Origin update
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_PASSWORD_CHECK_SUBHEADER_NO_PASSWORDS" desc="This text explains that passwords saved in Brave Origin are automatically checked for issues (e.g. password is leaked or weak) by SafetyHub. However the user does not have any passwords stored in Brave Origin, therefore the feature does not operate. This text is shown as a subtitle of the passwords card of SafetyHub. It sits below the title 'No saved passwords'.">
+    Brave Origin can check your passwords when you save them
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_MODULE_HEADER" desc="The header of the 'User Education Module' in the Safety Hub page. The 'User Education Module' is visible if there is no safety recommendation and gives information about some Brave Origin features.">
+    Learn how Brave Origin keeps you safe
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_DATA_HEADER" desc="The header of the first item in the 'User Education Module' in the Safety Hub page. This item explains how Brave Origin's tools help user to keep their data safe.">
+    Brave Origin's safety tools
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_DATA_SUBHEADER" desc="The subheader of the first item in the 'User Education Module' in the Safety Hub page. This item explains how Brave Origin's tools help user to keep their data safe.">
+    With <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>tools from Brave Origin<ph name="END_LINK">&lt;/a&gt;</ph>, you can browse safely and stay in control
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_INCOGNITO_HEADER" desc="The header of the second item in the 'User Education Module' in the Safety Hub page. This item explains Private mode.">
+    Brave Origin Private
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_USER_EDU_SAFE_BROWSING_SUBHEADER" desc="The header of the second item in the 'User Education Module' in the Safety Hub page. This item explains Safe Browsing.">
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave Origin warns you<ph name="END_LINK">&lt;/a&gt;</ph> about unsafe sites and downloads
+  </message>
+  <if expr="not is_chromeos">
+    <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_CARD_HEADER_RESTART" desc="Safety Hub settings page (chrome://settings/safetyHub) gives users an overview over their safety status. The version card, which this text is a part of, informs the user whether their Brave Origin is up to date. This title of the card is shown when Brave Origin is not up to date but there is an update available and the user needs to restart their browser to finish the update. Shown above the subtitle 'Relaunch to finish update. Your tabs will reopen'.">
+      Brave Origin is out of date
+    </message>
+    <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_CARD_HEADER_UPDATED" desc="Safety Hub settings page (chrome://settings/safetyHub) gives users an overview over their safety status. The version card, which this text is a part of, informs the user whether their Brave Origin is up to date. This title of the card is shown when Brave Origin is up to date and the user does not need to take any action. Shown above the subtitle that is the Brave Origin version.">
+      Brave Origin is up to date
+    </message>
+  </if>
+  <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_NAVIGATION_ARIA_LABEL" desc="Safety Check settings page (chrome://settings/safetyCheck) gives users an overview over their safety status. The version card, which this text is a part of, informs the user whether their Brave Origin is up to date. This string is for the accesibility label for the card to call out where to navigation will happen (chrome://settings/help) if the card is clicked.">
+    Go to About Brave Origin page
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_VERSION_RELAUNCH_ARIA_LABEL" desc="Safety Check settings page (chrome://settings/safetyCheck) gives users an overview over their safety status. The version card, which this text is a part of, informs the user whether their Brave Origin is up to date. This string is for the accesibility label for the card to call out the click on card will result restarting the browser.">
+    Relaunch Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_REMOVED_ONE_PERMISSION_LABEL" desc="'Revoked Permissions' shows the revoked permissions of unused websites. This text describes which permission was removed from an unused site and is shown if there is exactly one permission.">
+    You haven't visited recently. Brave Origin removed <ph name="PERMISSION">$1<ex>location</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_REMOVED_TWO_PERMISSIONS_LABEL" desc="'Revoked Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed from an unused site and is shown if there are exactly two permissions.">
+    You haven't visited recently. Brave Origin removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_REMOVED_THREE_PERMISSIONS_LABEL" desc="'Revoked Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed from an unused site and is shown if there are exactly three permissions.">
+    You haven't visited recently. Brave Origin removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>, <ph name="PERMISSION_3">$3<ex>camera</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_REMOVED_FOUR_OR_MORE_PERMISSIONS_LABEL" desc="'Revoked Permissions' shows the revoked permissions of unused websites. This text describes which permissions were removed from an unused site and is shown if there are four or more permissions. The number indicates the count of permisions that are not shown explicitly. The number is always two or larger.">
+    You haven't visited recently. Brave Origin removed <ph name="PERMISSION_1">$1<ex>location</ex></ph>, <ph name="PERMISSION_2">$2<ex>notifications</ex></ph>, and <ph name="COUNT">$3<ex>2</ex></ph> more.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_HUB_ABUSIVE_NOTIFICATION_PERMISSIONS_SETTING_SUBLABEL" desc="'Revoked Permissions' module shows the revoked permissions of websites. This text describes that abusive notification permissions were removed.">
+    Dangerous site. Brave Origin removed notifications.
+  </message>
+
+  <!-- Secure connections -->
+  <message name="IDS_SETTINGS_SECURE_CONNECTIONS_SECTION_DESCRIPTION" desc="Description for the Secure Connections section in Security settings, explaining the baseline behavior of the browser even if the 'Always use secure connections' toggle is disabled.">
+    Brave Origin upgrades insecure connections to HTTPS automatically when possible
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_SUBTITLE" desc="Subtitle for HTTPS-First Mode section in Security settings">
+    Brave Origin will try to upgrade navigations to HTTPS
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_FULL_SUBLABEL" desc="Sublabel for radio button to fully enable HTTPS-First Mode">
+    Brave Origin will warn you before loading any site using an insecure connection
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_INCOGNITO_SUBLABEL" desc="Sublabel for radio button to enable HTTPS-First Mode in Private">
+    When browsing in Private mode, Brave Origin will warn you before loading a site using an insecure connection
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_DISABLED_SUBLABEL" desc="Sublabel for radio button to disable HTTPS-First Mode">
+    When HTTPS isn't available, Brave Origin will use an insecure connection without warning you
+  </message>
+</grit-part>
