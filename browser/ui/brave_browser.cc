@@ -378,10 +378,7 @@ void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(
 
 bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
   auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
-  if (tab &&
-      tabs_closing_with_onbeforeunload_ignore_.contains(tab->GetHandle())) {
-    return true;
-  }
-
-  return content::WebContentsDelegate::ShouldSuppressDialogs(source);
+  return (tab && tabs_closing_with_onbeforeunload_ignore_.contains(
+                     tab->GetHandle())) ||
+         content::WebContentsDelegate::ShouldSuppressDialogs(source);
 }

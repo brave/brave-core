@@ -217,10 +217,6 @@ void BraveEphemeralStorageServiceDelegate::
     if (!tab_strip) {
       continue;
     }
-    auto* brave_browser = static_cast<BraveBrowser*>(browser);
-    if (!brave_browser) {
-      continue;
-    }
 
     base::flat_set<tabs::TabHandle> tab_handlers;
     for (auto* tab : *tab_strip) {
@@ -230,9 +226,10 @@ void BraveEphemeralStorageServiceDelegate::
       }
       tab_handlers.emplace(tab->GetHandle());
     }
-    brave_browser->SetTabsToIgnoreBeforeUnloadHandlers(tab_handlers);
+    static_cast<BraveBrowser*>(browser)->SetTabsToIgnoreBeforeUnloadHandlers(
+        tab_handlers);
 
-    for (auto tab_handle : tab_handlers) {
+    for (auto& tab_handle : tab_handlers) {
       if (tab_handle == tabs::TabHandle::Null() || !tab_handle.Get()) {
         continue;
       }
@@ -258,7 +255,7 @@ void BraveEphemeralStorageServiceDelegate::
       }
       tabs_to_close.emplace_back(tab->GetHandle());
     }
-    for (auto tab_handle : tabs_to_close) {
+    for (auto& tab_handle : tabs_to_close) {
       tab_handle.Get()->Close();
     }
   }
