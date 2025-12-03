@@ -10,7 +10,7 @@
     type="BINDATA" />
   <include name="IDR_AI_CHAT_UI_MANIFEST" file="../ai_chat/resources/page/manifest.webmanifest" type="BINDATA" />
   <include name="IDR_AI_CHAT_UI_PWA_ICON" file="../ai_chat/resources/page/pwa_icon.svg" type="BINDATA" />
-  <include name="IDR_AI_CHAT_CODE_SANDBOX_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/page/code_sandbox.html"
+  <include name="IDR_AI_CHAT_CODE_SANDBOX_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/code_sandbox/code_sandbox.html"
     use_base_dir="false"
     type="BINDATA" />
 </grit-part>

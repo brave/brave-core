@@ -34,6 +34,7 @@ namespace ai_chat {
 namespace {
 
 constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
+constexpr char kScriptProperty[] = "script";
 
 std::string WrapScript(const std::string& script) {
   return base::StrCat({"(async function() { try { ", script,
@@ -70,13 +71,17 @@ CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() {
 void CodeExecutionTool::CodeExecutionRequest::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (!render_frame_host->GetParent()) {
+  if (!render_frame_host->GetParent() || wrapped_js_.empty()) {
     return;
   }
 
   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&injector_);
 
   auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js_);
+
+  // Clear the wrapped script to avoid re-using it.
+  wrapped_js_ = {};
+
   injector_->RequestAsyncExecuteScript(
       content::ISOLATED_WORLD_ID_GLOBAL, wrapped_js_utf16,
       blink::mojom::UserActivationOption::kActivate,
@@ -120,19 +125,22 @@ std::string_view CodeExecutionTool::Name() const {
 std::string_view CodeExecutionTool::Description() const {
   return "Execute JavaScript code and return a human-readable formatted "
          "string as a result. "
+         "Use only when the task warrants actual code execution or processing. "
+         "Do not use this for content generation. "
          "Do not use console.log statements or similar statements. Always "
-         "return a string as a result."
+         "return a string as a result. Always use an explicit return statement "
+         "(i.e. return result). "
          "The code will be executed in a sandboxed environment.";
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
   return CreateInputProperties(
-      {{"script", StringProperty("The JavaScript code to execute")}});
+      {{kScriptProperty, StringProperty("The JavaScript code to execute")}});
 }
 
 std::optional<std::vector<std::string>> CodeExecutionTool::RequiredProperties()
     const {
-  return std::vector<std::string>{"script"};
+  return std::vector<std::string>{kScriptProperty};
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
@@ -164,7 +172,7 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
     return;
   }
 
-  const std::string* script = input_dict->FindString("script");
+  const std::string* script = input_dict->FindString(kScriptProperty);
 
   if (!script || script->empty()) {
     std::move(callback).Run(

@@ -39,6 +39,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
         base::Unretained(this)));
     ASSERT_TRUE(http_server_.Start());
     tool_ = std::make_unique<CodeExecutionTool>(browser()->profile());
+    tool_->SetExecutionTimeLimitForTesting(base::Seconds(30));
   }
 
   void TearDownOnMainThread() override {
@@ -50,12 +51,7 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
     return http_server_.GetURL("/test").spec();
   }
 
-  void ExecuteCode(const std::string& script, std::string* output) {
-    base::Value::Dict input;
-    input.Set("script", script);
-    std::string input_json;
-    base::JSONWriter::Write(input, &input_json);
-
+  void ExecuteCodeRaw(const std::string& input_json, std::string* output) {
     base::RunLoop run_loop;
     tool_->UseTool(
         input_json,
@@ -67,6 +63,14 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
               run_loop.Quit();
             }));
     run_loop.Run();
+  }
+
+  void ExecuteCode(const std::string& script, std::string* output) {
+    base::Value::Dict input;
+    input.Set("script", script);
+    std::string input_json;
+    base::JSONWriter::Write(input, &input_json);
+    ExecuteCodeRaw(input_json, output);
   }
 
  protected:
@@ -136,16 +140,11 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
-  tool_->SetExecutionTimeLimitForTesting(base::Seconds(1));
+  tool_->SetExecutionTimeLimitForTesting(base::Seconds(2));
 
   std::string script = R"(
-    function fibonacci(n) {
-      if (n <= 1) return n;
-      return fibonacci(n - 1) + fibonacci(n - 2);
-    }
-    let result = 'Starting computation...';
-    result += ' Result: ' + fibonacci(45);
-    return result;
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    return 'Should not reach here';
   )";
 
   std::string output;
@@ -170,6 +169,42 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
   std::string output;
   ExecuteCode(script, &output);
   EXPECT_EQ(output, "Error: Invalid return type or syntax error");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, BadToolInput) {
+  std::string output;
+  ExecuteCodeRaw("not valid json", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Invalid JSON input"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, MissingScriptField) {
+  std::string output;
+  ExecuteCodeRaw(R"({"other_field": "value"})", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Missing or empty 'script' field"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, EmptyScriptField) {
+  std::string output;
+  ExecuteCodeRaw(R"({"script": ""})", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Missing or empty 'script' field"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WindowLocationBlocked) {
+  std::string script = base::StrCat({
+      R"(
+        window.location.href = ')",
+      test_server_url(),
+      R"(';
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        return 'Complete';
+      )"});
+
+  std::string output;
+  ExecuteCode(script, &output);
+  // HandleTestRequest will report a failure if the request was made
+  EXPECT_THAT(output, HasSubstr("Error"));
+  EXPECT_FALSE(output.empty());
 }
 
 }  // namespace ai_chat

@@ -11,17 +11,8 @@ import styles from './tool_event_code_execution.module.scss'
 import '../../../common/strings'
 
 const ToolEventCodeExecution: ToolComponent = (props) => {
-  const jsCode = React.useMemo(() => {
-    if (!props.toolInput?.script) return ''
-    return typeof props.toolInput.script === 'string'
-      ? props.toolInput.script
-      : ''
-  }, [props.toolInput])
-
-  const output = React.useMemo(() => {
-    if (!props.toolUseEvent.output?.[0]?.textContentBlock?.text) return ''
-    return props.toolUseEvent.output[0].textContentBlock.text
-  }, [props.toolUseEvent.output])
+  const jsCode = props.toolInput?.script
+  const output = props.toolUseEvent.output?.[0]?.textContentBlock?.text ?? ''
 
   const content: ToolUseContent = {
     toolLabel: props.content.toolLabel,

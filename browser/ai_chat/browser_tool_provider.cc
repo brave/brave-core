@@ -11,6 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/code_execution_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "content/public/browser/browser_context.h"
 
 namespace ai_chat {
@@ -32,7 +33,9 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
 
 void BrowserToolProvider::CreateTools(
     content::BrowserContext* browser_context) {
-  code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
+  if (features::IsCodeExecutionToolEnabled()) {
+    code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
+  }
 }
 
 }  // namespace ai_chat

@@ -55,8 +55,7 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'unsafe-inline';");
+      network::mojom::CSPDirectiveName::ScriptSrc, "script-src 'none';");
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");

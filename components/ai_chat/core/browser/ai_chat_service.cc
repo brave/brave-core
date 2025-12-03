@@ -31,7 +31,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/types/strong_alias.h"
-#include "base/unguessable_token.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"

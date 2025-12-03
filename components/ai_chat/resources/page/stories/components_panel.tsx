@@ -162,6 +162,22 @@ const toolEvents: Mojom.ConversationEntryEvent[] = [
     argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
     output: undefined,
   }),
+  getToolUseEvent({
+    id: 'abc123h',
+    toolName: Mojom.CODE_EXECUTION_TOOL_NAME,
+    argumentsJson: JSON.stringify({
+      script: 'const result = 1 + 2;\nreturn `1 + 2 = ${result};`',
+    }),
+    output: undefined,
+  }),
+  getToolUseEvent({
+    id: 'abc123i',
+    toolName: Mojom.CODE_EXECUTION_TOOL_NAME,
+    argumentsJson: JSON.stringify({
+      script: 'const result = 1 + 2;\nreturn `1 + 2 = ${result}`;',
+    }),
+    output: [createTextContentBlock('1 + 2 = 3')],
+  }),
 ]
 
 const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
