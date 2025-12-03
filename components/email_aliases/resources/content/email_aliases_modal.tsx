@@ -393,6 +393,7 @@ export const EmailAliasModal = ({
             {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
           </Button>
           <Button
+            id='create-alias-button'
             kind='filled'
             isDisabled={
               awaitingUpdate
