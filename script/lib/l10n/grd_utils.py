@@ -13,11 +13,26 @@ import re
 import FP
 import lxml.etree  # pylint: disable=import-error
 
-from lib.l10n.grd_string_replacements import (branding_replacements,
-                                              default_replacements,
-                                              fixup_replacements,
+from lib.l10n.grd_string_replacements import (get_branding_replacements,
+                                              get_default_replacements,
+                                              get_fixup_replacements,
                                               main_text_only_replacements)
 from lib.l10n.validation import validate_tags_in_one_string
+
+# Brands supported by the l10n system. Each brand has its own *_strings.grd
+# files that are processed by the l10n scripts.
+BRANDS = ('brave', 'brave_origin')
+
+
+def get_brand_from_grd_name(grd_name):
+    """Returns the brand name if grd_name matches a brand's strings file."""
+    basename = os.path.basename(grd_name).split('.')[0]
+    for brand in BRANDS:
+        if basename in (f'{brand}_strings', f'components_{brand}_strings',
+                        f'settings_{brand}_strings'):
+            return brand
+    return None
+
 
 # Map of google_chrome_strings.grd resources ids to migrate to brave_strings.grd
 # The resources and all translations will be migrated to grd and xtb files.
@@ -33,14 +48,21 @@ GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
 INSTALLER_STRINGS = ['IDS_SETUP_PATCH_FAILED']
 
 
-def braveify_grd_text(text, is_main_text, branding_replacements_only):
-    """Replaces text string to Brave wording"""
-    for (pattern, to) in branding_replacements:
+def braveify_grd_text(text, is_main_text, branding_replacements_only, brand):
+    """Replaces text string to Brave wording
+
+    Args:
+        text: The text to replace
+        is_main_text: Whether this is main text (not a description or comment)
+        branding_replacements_only: If True, only apply branding replacements
+        brand: The brand name ('brave' or 'brave_origin')
+    """
+    for (pattern, to) in get_branding_replacements(brand):
         text = re.sub(pattern, to, text)
     if not branding_replacements_only:
-        for (pattern, to) in default_replacements:
+        for (pattern, to) in get_default_replacements(brand):
             text = re.sub(pattern, to, text)
-    for (pattern, to) in fixup_replacements:
+    for (pattern, to) in get_fixup_replacements(brand):
         text = re.sub(pattern, to, text)
     if is_main_text:
         for (pattern, to) in main_text_only_replacements:
@@ -48,21 +70,31 @@ def braveify_grd_text(text, is_main_text, branding_replacements_only):
     return text
 
 
-def generate_braveified_node(elem, is_comment, branding_replacements_only):
-    """Replaces a node and attributes to Brave wording"""
+def generate_braveified_node(elem, is_comment, branding_replacements_only,
+                             brand):
+    """Replaces a node and attributes to Brave wording
+
+    Args:
+        elem: The XML element to process
+        is_comment: Whether this is a comment node
+        branding_replacements_only: If True, only apply branding replacements
+        brand: The brand name ('brave' or 'brave_origin')
+    """
     if elem.text:
-        elem.text = braveify_grd_text(
-            elem.text, not is_comment, branding_replacements_only)
+        elem.text = braveify_grd_text(elem.text, not is_comment,
+                                      branding_replacements_only, brand)
 
     if elem.tail:
-        elem.tail = braveify_grd_text(
-            elem.tail, not is_comment, branding_replacements_only)
+        elem.tail = braveify_grd_text(elem.tail, not is_comment,
+                                      branding_replacements_only, brand)
 
     if 'desc' in elem.keys():
-        elem.attrib['desc'] = braveify_grd_text(
-            elem.attrib['desc'], False, branding_replacements_only)
+        elem.attrib['desc'] = braveify_grd_text(elem.attrib['desc'], False,
+                                                branding_replacements_only,
+                                                brand)
     for child in elem:
-        generate_braveified_node(child, is_comment, branding_replacements_only)
+        generate_braveified_node(child, is_comment, branding_replacements_only,
+                                 brand)
 
 
 def escape_element_text(elem):
@@ -113,21 +145,33 @@ def write_xml_file_from_tree(string_path, xml_tree):
         f.write(transformed_content)
 
 
-def braveify_grd_tree(source_xml_tree, branding_replacements_only):
+def braveify_grd_tree(source_xml_tree, branding_replacements_only, brand):
     """Takes in a grd(p) tree and replaces all messages and comments with Brave
-       wording"""
+       wording
+
+    Args:
+        source_xml_tree: The XML tree to process
+        branding_replacements_only: If True, only apply branding replacements
+        brand: The brand name ('brave' or 'brave_origin')
+    """
     for elem in source_xml_tree.xpath('//message'):
-        generate_braveified_node(elem, False, branding_replacements_only)
+        generate_braveified_node(elem, False, branding_replacements_only,
+                                 brand)
     for elem in source_xml_tree.xpath('//comment()'):
-        generate_braveified_node(elem, True, branding_replacements_only)
+        generate_braveified_node(elem, True, branding_replacements_only, brand)
 
 
-def braveify_grd_in_place(source_string_path):
+def braveify_grd_in_place(source_string_path, brand):
     """Takes in a grd file and replaces all messages and comments with Brave
-       wording"""
+       wording
+
+    Args:
+        source_string_path: Path to the GRD file to process
+        brand: The brand name ('brave' or 'brave_origin')
+    """
     source_xml_tree = lxml.etree.parse(source_string_path)
-    braveify_grd_tree(source_xml_tree, False)
-    print(f'Applying branding to {source_string_path}')
+    braveify_grd_tree(source_xml_tree, False, brand)
+    print(f'Applying branding to {source_string_path} (brand={brand})')
     write_xml_file_from_tree(source_string_path, source_xml_tree)
 
 
@@ -150,8 +194,16 @@ def get_override_file_path(source_string_path):
     return override_string_path
 
 
-def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
-    """Updates XTBs from the local Chromium files"""
+def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang,
+                        brand):
+    """Updates XTBs from the local Chromium files
+
+    Args:
+        grd_file_path: Path to the GRD file
+        brave_source_root: Path to the brave source root
+        only_for_lang: Only process this language, or None for all
+        brand: The brand name ('brave' or 'brave_origin')
+    """
     xtb_files = get_xtb_files(grd_file_path)
     chromium_grd_file_path = get_chromium_grd_src_with_fallback(grd_file_path,
         brave_source_root)
@@ -168,9 +220,9 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
     grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
     chromium_grd_strings = get_grd_strings(
         chromium_grd_file_path, validate_tags=False)
-    # Special treatment for brave_strings.grd
+    # Special treatment for brand strings files (brave_strings.grd, etc.)
     brave_strings_string_ids = []
-    if os.path.basename(grd_file_path) == 'brave_strings.grd':
+    if brand and os.path.basename(grd_file_path) == f'{brand}_strings.grd':
         assert len(grd_strings) == len(chromium_grd_strings) + \
             len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
             len(INSTALLER_STRINGS)
@@ -208,7 +260,7 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         xml_tree = lxml.etree.parse(chromium_xtb_file)
 
         for node in xml_tree.xpath('//translation'):
-            generate_braveified_node(node, False, True)
+            generate_braveified_node(node, False, True, brand)
             # Use our fp, when exists.
             old_fp = node.attrib['id']
             # It's possible for an xtb string to not be in our GRD.
@@ -220,8 +272,8 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
                     node.attrib['id'] = new_fp
                     # print(f'fp: {old_fp} -> {new_fp}')
 
-        # Special treatment for brave_strings.grd
-        if os.path.basename(grd_file_path) == 'brave_strings.grd':
+        # Special treatment for brand strings files (brave_strings.grd, etc.)
+        if brand and os.path.basename(grd_file_path) == f'{brand}_strings.grd':
             add_google_chrome_translations(xtb_file, xml_tree,
                                            brave_strings_string_ids)
 
@@ -317,11 +369,14 @@ def get_original_grd(src_root, grd_file_path):
     # pylint: disable=fixme
     # TODO: consider passing this mapping into the script from l10nUtil.js
     grd_file_name = os.path.basename(grd_file_path)
-    if grd_file_name == 'components_brave_strings.grd':
-        return os.path.join(src_root, 'components',
-                            'components_chromium_strings.grd')
-    if grd_file_name == 'brave_strings.grd':
-        return os.path.join(src_root, 'chrome', 'app', 'chromium_strings.grd')
+    # Handle brand-specific strings files
+    for brand in BRANDS:
+        if grd_file_name == f'components_{brand}_strings.grd':
+            return os.path.join(src_root, 'components',
+                                'components_chromium_strings.grd')
+        if grd_file_name == f'{brand}_strings.grd':
+            return os.path.join(src_root, 'chrome', 'app',
+                                'chromium_strings.grd')
     if grd_file_name == 'generated_resources.grd':
         return os.path.join(src_root, 'chrome', 'app',
                             'generated_resources.grd')
