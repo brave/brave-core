@@ -42,9 +42,12 @@ void DailyStorage::RecordValueNow(uint64_t delta) {
 }
 
 uint64_t DailyStorage::GetLast24HourSum() const {
-  // We record only value for last N days.
+  base::Time min = clock_->Now() - base::Days(1);
   return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
-                         [](const uint64_t acc, const DailyValue& item) {
+                         [&min](const uint64_t acc, const DailyValue& item) {
+                           if (item.time <= min) {
+                             return acc;
+                           }
                            return acc + item.value;
                          });
 }

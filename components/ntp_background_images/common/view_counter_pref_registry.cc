@@ -49,6 +49,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
       kNewTabTakeoverInfobarRemainingDisplayCountThreshold);
+  registry->RegisterListPref(prefs::kNewTabsCreatedDaily);
 }
 
 void RegisterProfilePrefsForMigration(
