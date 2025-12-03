@@ -121,7 +121,7 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
 #if BUILDFLAG(IS_ANDROID)
-    Java_DayZeroHelper_setDayZeroVariant(base::android::AttachCurrentThread(),
+  Java_DayZeroHelper_setDayZeroVariant(base::android::AttachCurrentThread(),
                                        base::android::ConvertUTF8ToJavaString(
                                            base::android::AttachCurrentThread(),
                                            GetDayZeroVariant().value_or("")));
