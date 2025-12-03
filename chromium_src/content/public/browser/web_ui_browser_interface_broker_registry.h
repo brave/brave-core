@@ -58,8 +58,17 @@
  public:                                                                    \
   std::unique_ptr<PerWebUIBrowserInterfaceBroker> CreateInterfaceBroker
 
+// WebUIBrowserInterfaceBrokerRegistry::ForWebUI uses a DCHECK to enforce that
+// all interfaces are registered with a particular WebUI at the same time. This
+// is inconvenient for us because if we want to add our own interface
+// registrations to an upstream UI we have to patch our registrations into the
+// code where upstream registers theirs. To avoid this type of patching we are
+// disabling this DCHECK restriction.
+#define BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI if (false)
+
 #include <content/public/browser/web_ui_browser_interface_broker_registry.h>  // IWYU pragma: export
 
+#undef BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI
 #undef CreateInterfaceBroker
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_

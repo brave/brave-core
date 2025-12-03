@@ -54,36 +54,36 @@ class BraveSettingsUI : public settings::SettingsUI {
                            Profile* profile);
   static bool& ShouldExposeElementsForTesting();
 
-  void BindInterface(mojo::PendingReceiver<commands::mojom::CommandsService>
-                         pending_receiver) override;
+  void BindInterface(
+      mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
-                         pending_receiver) override;
+                         pending_receiver);
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
-          pending_receiver) override;
-  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::OllamaService>
-                         pending_receiver) override;
+          pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<ai_chat::mojom::OllamaService> pending_receiver);
 #endif
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
-                         pending_receiver) override;
+                         pending_receiver);
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
-          pending_receiver) override;
+          pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
       mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
-          pending_receiver) override;
+          pending_receiver);
 #endif
 
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
-          pending_receiver) override;
+          pending_receiver);
 
   void BindInterface(
       mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
-          pending_receiver) override;
+          pending_receiver);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
