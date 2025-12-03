@@ -1,8 +1,15 @@
 diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
-index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..231b1fb13c63120457c8e7c812725dadf0bad8d8 100644
+index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..062acde08500d0dd5b3d74eafa9ec12f3d07b33b 100644
 --- a/chrome/browser/component_updater/updater_state_win.cc
 +++ b/chrome/browser/component_updater/updater_state_win.cc
-@@ -19,20 +19,32 @@ namespace {
+@@ -13,26 +13,44 @@
+ #include "base/win/registry.h"
+ #include "base/win/win_util.h"
+ #include "base/win/windows_types.h"
++#include "brave/components/brave_origin/buildflags/buildflags.h"
+ 
+ namespace component_updater {
+ namespace {
  
  // Google Update group policy settings.
  const wchar_t kGoogleUpdatePoliciesKey[] =
@@ -12,8 +19,13 @@ index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..231b1fb13c63120457c8e7c812725dad
 +#endif
  const wchar_t kCheckPeriodOverrideMinutes[] = L"AutoUpdateCheckPeriodMinutes";
  const wchar_t kUpdatePolicyValue[] = L"UpdateDefault";
++#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
  const wchar_t kChromeUpdatePolicyOverride[] =
++    L"Update{F1EF32DE-F987-4289-81D2-6C4780027F9B}";
++#else
++const wchar_t kChromeUpdatePolicyOverride[] =
 +    L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 +#if 0
      L"Update{8A69D345-D564-463C-AFF1-A69D9E530F96}";
 +#endif

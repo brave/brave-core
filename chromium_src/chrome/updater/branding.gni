@@ -11,6 +11,7 @@
 # So we define our values in a scope here, then use forward_variables_from(...)
 # in upstream's .gni file to apply the changes from this scope.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/chrome_build.gni")
 import("//build/util/branding.gni")
 
@@ -20,13 +21,6 @@ brave_updater_branding = {
   crash_product_name = "BraveUpdater"
   crash_upload_url = "https://cr.brave.com"
   help_center_url = "https://support.brave.app/hc/sections/360003286112"
-  keystone_app_name = "BraveSoftwareUpdate"
-  keystone_bundle_identifier = "com.brave.Keystone"
-  mac_browser_bundle_identifier = "com.brave.Browser"
-  mac_updater_bundle_identifier = "com.brave.BraveUpdater"
-  privileged_helper_bundle_name = "BraveUpdaterPrivilegedHelper"
-  privileged_helper_name = "com.brave.Browser.UpdaterPrivilegedHelper"
-  updater_app_icon_path = "//brave/app/theme/brave/mac/app.icns"
   updater_company_full_name = "Brave Software, Inc"
   updater_company_short_name = "BraveSoftware"
   updater_company_short_name_uppercase = "BRAVESOFTWARE"
@@ -34,6 +28,26 @@ brave_updater_branding = {
   updater_product_full_name = "BraveUpdater"
   mac_team_identifier = "KL8N8XSYF4"
   grdfile_name = "brave_strings"
+
+  # The updater (Omaha 4) is shared between Brave Browser and Brave Origin.
+  # It manages multiple applications, so we don't need separate updater
+  # installations - just different app registrations within the same updater.
+  # The following vars are intentionally the same for both brands:
+  keystone_app_name = "BraveSoftwareUpdate"
+  keystone_bundle_identifier = "com.brave.Keystone"
+  mac_updater_bundle_identifier = "com.brave.BraveUpdater"
+  privileged_helper_bundle_name = "BraveUpdaterPrivilegedHelper"
+  updater_app_icon_path = "//brave/app/theme/brave/mac/app.icns"
+
+  # Brave Origin uses a separate browser bundle identifier for side-by-side
+  # installation with Brave Browser.
+  if (is_brave_origin_branded) {
+    mac_browser_bundle_identifier = "com.brave.Browser.origin"
+  } else {
+    mac_browser_bundle_identifier = "com.brave.Browser"
+  }
+  privileged_helper_name =
+      "${mac_browser_bundle_identifier}.UpdaterPrivilegedHelper"
 
   # The following values come from our Omaha 3 implementation:
   legacy_service_name_prefix = "brave"
