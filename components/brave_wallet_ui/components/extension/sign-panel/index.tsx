@@ -29,7 +29,6 @@ import { isHardwareAccount } from '../../../utils/account-utils'
 import { NavButton } from '../buttons/nav-button/index'
 import { PanelTab } from '../panel-tab/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
-import { SignInWithEthereum } from './sign_in_with_ethereum'
 import { SignCowSwapOrder } from './cow_swap_order'
 import {
   EthSignTypedData, //
@@ -120,7 +119,6 @@ export const SignPanel = (props: Props) => {
   const { account } = useAccountQuery(selectedQueueData?.accountId)
   const ethStandardSignData = selectedQueueData.signData.ethStandardSignData
   const ethSignTypedData = selectedQueueData.signData.ethSignTypedData
-  const ethSIWETypedData = selectedQueueData.signData.ethSiweData
   const solanaSignTypedData = selectedQueueData.signData.solanaSignData
   const cardanoSignTypedData = selectedQueueData.signData.cardanoSignData
 
@@ -197,16 +195,6 @@ export const SignPanel = (props: Props) => {
       setSignStep(SignDataSteps.SignRisk)
     }
   }, [showWarning, ethSignTypedData, cardanoSignTypedData, network])
-
-  if (ethSIWETypedData) {
-    return (
-      <SignInWithEthereum
-        data={selectedQueueData}
-        onCancel={onCancel}
-        onSignIn={onSign}
-      />
-    )
-  }
 
   if (selectedQueueData.signData.ethSignTypedData?.meta?.cowSwapOrder) {
     return (

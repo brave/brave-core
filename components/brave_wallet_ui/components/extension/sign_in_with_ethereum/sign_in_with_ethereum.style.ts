@@ -8,26 +8,24 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import { Text, WalletButton } from '../../shared/style'
+import {
+  Text,
+  WalletButton,
+  Column,
+  ScrollableColumn,
+} from '../../shared/style'
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 100vw;
-  height: 100%;
-  background-color: ${leo.color.container.highlight};
+export const StyledWrapper = styled(Column)`
+  background-color: ${leo.color.page.background};
 `
 
-export const MessageBox = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: column;
-  width: 100%;
+export const HeaderText = styled(Text)`
+  font: ${leo.font.heading.h4};
+  letter-spacing: ${leo.typography.letterSpacing.large};
+`
+
+export const MessageBox = styled(Column)`
   max-height: 280px;
-  padding: 12px 16px;
   background-color: ${leo.color.container.background};
   border-radius: 12px;
   overflow-x: hidden;
@@ -35,55 +33,64 @@ export const MessageBox = styled.div`
 `
 
 export const Title = styled(Text)`
-  line-height: 26px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h4};
+  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
-export const Description = styled(Text)`
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
-`
-
-export const OriginName = styled(Title)`
-  line-height: 28px;
-`
-
-export const MessageText = styled(Title)`
-  line-height: 24px;
+export const MessageText = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
+`
+
+export const SectionTitle = styled(Text)`
+  font: ${leo.font.default.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const URLText = styled(MessageText)`
   word-break: break-all;
 `
 
-export const DetailsKeyText = styled(Title)`
-  color: ${leo.color.text.secondary};
-  line-height: 24px;
+export const DetailsWrapper = styled(Column)`
+  background-color: ${leo.color.container.background};
+  box-sizing: border-box;
+  overflow: hidden;
+`
+
+export const DetailsTitle = styled(Title)`
+  font: ${leo.font.heading.h2};
+  letter-spacing: ${leo.typography.letterSpacing.headings};
+`
+
+export const DetailsContent = styled(Column)`
+  overflow: hidden;
+  box-sizing: border-box;
+`
+
+export const DetailsBox = styled(ScrollableColumn)`
+  background-color: ${leo.color.container.highlight};
+  border-radius: ${leo.radius.m};
+  overflow-x: hidden;
+`
+
+export const DetailsKeyText = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
-  min-width: 25%;
-  max-width: 25%;
-  margin-right: 20px;
 `
 
 export const CodeBlock = styled.code``
 
-export const DetailsInfoText = styled(Title)`
-  color: ${leo.color.text.primary};
-  line-height: 18px;
+export const DetailsInfoText = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
   word-wrap: break-word;
-  max-width: 65%;
-`
-
-export const FavIcon = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin-bottom: 8px;
+  max-width: 100%;
 `
 
 export const IconButton = styled(WalletButton)`
@@ -104,6 +111,21 @@ export const CloseIcon = styled(Icon).attrs({
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};
+`
+
+export const ErrorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100vw;
+  height: 100%;
+  background-color: ${leo.color.container.highlight};
+`
+
+export const ErrorTitle = styled(Text)`
+  line-height: 26px;
+  color: ${leo.color.text.primary};
 `
 
 export const ErrorBox = styled.div`
