@@ -53,7 +53,7 @@ class EmailAliasesService : public KeyedService,
       os_crypt_async::OSCryptAsync* os_crypt_async);
   ~EmailAliasesService() override;
 
-  static void RegisterProfilePref(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   // KeyedService:
   // Called when the owning profile context is shutting down. Releases
