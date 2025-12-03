@@ -25,6 +25,11 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 
+namespace os_crypt_async {
+class Encryptor;
+class OSCryptAsync;
+}  // namespace os_crypt_async
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -44,7 +49,8 @@ class EmailAliasesService : public KeyedService,
  public:
   EmailAliasesService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* pref_service);
+      PrefService* pref_service,
+      os_crypt_async::OSCryptAsync* os_crypt_async);
   ~EmailAliasesService() override;
 
   static void RegisterProfilePref(PrefRegistrySimple* registry);
@@ -105,6 +111,11 @@ class EmailAliasesService : public KeyedService,
   // Callback that receives the response body as an optional string.
   using BodyAsStringCallback =
       base::OnceCallback<void(std::optional<std::string> response_body)>;
+
+  void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
+
+  std::string GetAuthEmail() const;
+  std::string GetAuthToken();
 
   mojom::AuthenticationStatus GetCurrentStatus();
 
@@ -184,10 +195,12 @@ class EmailAliasesService : public KeyedService,
   // Temporary token returned by verify/init and used to authorize polling.
   std::string verification_token_;
 
-  EmailAliasesAuth auth_;
+  std::optional<EmailAliasesAuth> auth_;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  const raw_ptr<PrefService> pref_service_ = nullptr;
 
   // Single SimpleURLLoader instance used for both verify/init and
   // verify/result requests. Recreated for each new request.

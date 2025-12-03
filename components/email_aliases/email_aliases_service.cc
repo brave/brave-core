@@ -23,6 +23,8 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -121,15 +123,18 @@ GURL EmailAliasesService::GetEmailAliasesServiceURL() {
 
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* pref_service)
-    : auth_(pref_service,
-            base::BindRepeating(&EmailAliasesService::OnAuthChanged,
-                                base::Unretained(this))),
-      url_loader_factory_(url_loader_factory),
+    PrefService* pref_service,
+    os_crypt_async::OSCryptAsync* os_crypt_async)
+    : url_loader_factory_(url_loader_factory),
+      pref_service_(pref_service),
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
       verify_result_url_(GetAccountsServiceVerifyResultURL()),
       email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
+  CHECK(pref_service_);
+
+  os_crypt_async->GetInstance(base::BindOnce(
+      &EmailAliasesService::OnEncryptorReady, weak_factory_.GetWeakPtr()));
 }
 
 EmailAliasesService::~EmailAliasesService() = default;
@@ -147,32 +152,32 @@ void EmailAliasesService::Shutdown() {
 void EmailAliasesService::BindInterface(
     mojo::PendingReceiver<mojom::EmailAliasesService> receiver) {
   receivers_.Add(this, std::move(receiver));
-  if (auth_.IsAuthenticated()) {
-    auth_.CheckAndGetAuthToken();
-  }
 }
 
 void EmailAliasesService::NotifyObserversAuthStateChanged(
     mojom::AuthenticationStatus status,
     const std::optional<std::string>& error_message) {
+  const auto email = auth_ ? auth_->GetAuthEmail() : std::string();
   for (auto& observer : observers_) {
     observer->OnAuthStateChanged(
-        mojom::AuthState::New(status, auth_.GetAuthEmail(), error_message));
+        mojom::AuthState::New(status, email, error_message));
   }
 }
 
 void EmailAliasesService::ResetVerificationFlow() {
+  CHECK(auth_);
   verification_simple_url_loader_.reset();
   session_request_timer_.Stop();
   verification_token_.clear();
-  auth_.SetAuthToken({});
+  auth_->SetAuthToken({});
 }
 
 void EmailAliasesService::RequestAuthentication(
     const std::string& auth_email,
     RequestAuthenticationCallback callback) {
+  CHECK(auth_);
   ResetVerificationFlow();
-  auth_.SetAuthEmail(auth_email);
+  auth_->SetAuthEmail(auth_email);
   if (auth_email.empty()) {
     std::move(callback).Run(base::unexpected(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED)));
@@ -210,8 +215,33 @@ void EmailAliasesService::RequestAuthentication(
       kMaxResponseLength.InBytesUnsigned());
 }
 
+void EmailAliasesService::OnEncryptorReady(
+    os_crypt_async::Encryptor encryptor) {
+  CHECK(!auth_);
+  auth_.emplace(pref_service_.get(), std::move(encryptor),
+                base::BindRepeating(&EmailAliasesService::OnAuthChanged,
+                                    weak_factory_.GetWeakPtr()));
+  OnAuthChanged();
+}
+
+std::string EmailAliasesService::GetAuthEmail() const {
+  if (!auth_) {
+    return {};
+  }
+  return auth_->GetAuthEmail();
+}
+
+std::string EmailAliasesService::GetAuthToken() {
+  if (!auth_) {
+    return {};
+  }
+  return auth_->CheckAndGetAuthToken();
+}
+
 mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
-  if (IsAuthenticated()) {
+  if (!auth_) {
+    return mojom::AuthenticationStatus::kStartup;
+  } else if (IsAuthenticated()) {
     return mojom::AuthenticationStatus::kAuthenticated;
   } else if (!verification_token_.empty()) {
     return mojom::AuthenticationStatus::kAuthenticating;
@@ -332,7 +362,7 @@ void EmailAliasesService::OnRequestSessionResponse(
     return;
   }
   // Success; set the auth token and notify observers.
-  auth_.SetAuthToken(*parsed_session->auth_token);
+  auth_->SetAuthToken(*parsed_session->auth_token);
   session_poll_elapsed_timer_.reset();
   // Kick off an initial aliases refresh on successful authentication.
   RefreshAliases();
@@ -421,17 +451,17 @@ void EmailAliasesService::AddObserver(
   auto* remote = observers_.Get(id);
   if (remote) {
     remote->OnAuthStateChanged(
-        mojom::AuthState::New(GetCurrentStatus(), auth_.GetAuthEmail(),
+        mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail(),
                               /*error_message=*/std::nullopt));
   }
 }
 
 bool EmailAliasesService::IsAuthenticated() const {
-  return auth_.IsAuthenticated();
+  return auth_ && auth_->IsAuthenticated();
 }
 
 std::string EmailAliasesService::GetAuthTokenForTesting() {
-  return auth_.CheckAndGetAuthToken();
+  return GetAuthToken();
 }
 
 void EmailAliasesService::ApiFetch(const GURL& url,
@@ -460,7 +490,7 @@ void EmailAliasesService::ApiFetchInternal(
     const std::string_view method,
     std::optional<std::string> serialized_body,
     BodyAsStringCallback callback) {
-  const auto auth_token = auth_.CheckAndGetAuthToken();
+  const auto auth_token = GetAuthToken();
   if (auth_token.empty()) {
     return;
   }

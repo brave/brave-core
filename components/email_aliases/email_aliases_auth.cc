@@ -7,39 +7,44 @@
 
 #include "base/auto_reset.h"
 #include "base/base64.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace {
 
-bool Encrypt(const std::string& plain_text, std::string& out) {
+bool Encrypt(const os_crypt_async::Encryptor& encryptor,
+             const std::string& plain_text,
+             std::string& out) {
   if (plain_text.empty()) {
     return false;
   }
 
-  if (!OSCrypt::EncryptString(plain_text, &out)) {
+  auto encrypted = encryptor.EncryptString(plain_text);
+  if (!encrypted) {
     return false;
   }
 
-  out = base::Base64Encode(out);
+  out = base::Base64Encode(encrypted.value());
   return true;
 }
 
-bool Decrypt(const std::string& base64, std::string& out) {
+bool Decrypt(const os_crypt_async::Encryptor& encryptor,
+             const std::string& base64,
+             std::string& out) {
   if (base64.empty()) {
     return false;
   }
 
-  std::string encrypted;
-  if (!base::Base64Decode(base64, &encrypted)) {
+  auto encrypted = base::Base64Decode(base64);
+  if (!encrypted) {
     return false;
   }
 
-  if (!OSCrypt::DecryptString(encrypted, &out)) {
+  auto decrypted = encryptor.DecryptData(encrypted.value());
+  if (!decrypted) {
     return false;
   }
-
+  out = std::string(decrypted->begin(), decrypted->end());
   return true;
 }
 
@@ -48,8 +53,9 @@ bool Decrypt(const std::string& base64, std::string& out) {
 namespace email_aliases {
 
 EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
+                                   os_crypt_async::Encryptor encryptor,
                                    OnChangedCallback on_changed)
-    : on_changed_(std::move(on_changed)) {
+    : encryptor_(std::move(encryptor)), on_changed_(std::move(on_changed)) {
   CHECK(prefs_service);
   CHECK(on_changed_);
 
@@ -85,7 +91,7 @@ void EmailAliasesAuth::SetAuthEmail(const std::string& base_email) {
 
 void EmailAliasesAuth::SetAuthToken(const std::string& auth_token) {
   std::string encrypted;
-  if (auth_token.empty() || !Encrypt(auth_token, encrypted)) {
+  if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
     pref_auth_token_.SetValue({});
   } else {
     pref_auth_token_.SetValue(encrypted);
@@ -107,7 +113,7 @@ std::string EmailAliasesAuth::CheckAndGetAuthToken() {
     return {};
   }
 
-  if (!Decrypt(encrypted, token)) {
+  if (!Decrypt(encryptor_, encrypted, token)) {
     // Failed to decrypt token -> reset.
     SetAuthToken({});
     return {};
