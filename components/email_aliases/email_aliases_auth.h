@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
 #include "components/os_crypt/async/common/encryptor.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 
 class PrefRegistrySimple;
@@ -16,8 +17,8 @@ namespace email_aliases {
 
 namespace prefs {
 
-inline constexpr char kBaseEmail[] = "brave.email_aliases.base_email";
-inline constexpr char kAuthToken[] = "brave.email_aliases.auth_token";
+inline constexpr char kAuth[] = "brave.email_aliases.auth";
+
 }  // namespace prefs
 
 class EmailAliasesAuth {
@@ -33,7 +34,7 @@ class EmailAliasesAuth {
 
   bool IsAuthenticated() const;
 
-  void SetAuthEmail(const std::string& base_email);
+  void SetAuthEmail(const std::string& email);
   void SetAuthToken(const std::string& auth_token);
 
   std::string GetAuthEmail() const;
@@ -42,17 +43,18 @@ class EmailAliasesAuth {
  private:
   void OnPrefChanged(const std::string& pref_name);
 
+  const raw_ptr<PrefService> prefs_service_ = nullptr;
+
   os_crypt_async::Encryptor encryptor_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   OnChangedCallback on_changed_;
 
-  // The email address used for the authentication attempt.
-  StringPrefMember pref_auth_email_;
-
-  // Long-lived token returned by verify/result upon successful authentication.
-  StringPrefMember pref_auth_token_;
-
   bool notify_ = true;
+
+  std::string auth_email_;
+  bool is_authenticated_ = false;
 };
 
 }  // namespace email_aliases

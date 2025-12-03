@@ -43,6 +43,7 @@ source_set("auth") {
     "//base",
     "//components/os_crypt/async/common",
     "//components/prefs",
+    "//services/preferences/public/cpp",
   ]
 }
 

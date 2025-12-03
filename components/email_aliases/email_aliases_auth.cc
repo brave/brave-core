@@ -7,10 +7,16 @@
 
 #include "base/auto_reset.h"
 #include "base/base64.h"
+#include "base/values.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "services/preferences/public/cpp/dictionary_value_update.h"
+#include "services/preferences/public/cpp/scoped_pref_update.h"
 
 namespace {
+
+constexpr char kEmailField[] = "email";
+constexpr char kTokenField[] = "token";
 
 bool Encrypt(const os_crypt_async::Encryptor& encryptor,
              const std::string& plain_text,
@@ -55,79 +61,91 @@ namespace email_aliases {
 EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
                                    os_crypt_async::Encryptor encryptor,
                                    OnChangedCallback on_changed)
-    : encryptor_(std::move(encryptor)), on_changed_(std::move(on_changed)) {
-  CHECK(prefs_service);
+    : prefs_service_(prefs_service),
+      encryptor_(std::move(encryptor)),
+      on_changed_(std::move(on_changed)) {
+  CHECK(prefs_service_);
   CHECK(on_changed_);
 
-  pref_auth_email_.Init(prefs::kBaseEmail, prefs_service,
-                        base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                                            base::Unretained(this)));
-  pref_auth_token_.Init(prefs::kAuthToken, prefs_service,
-                        base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                                            base::Unretained(this)));
+  pref_change_registrar_.Init(prefs_service_);
+  pref_change_registrar_.Add(
+      prefs::kAuth, base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
+                                        base::Unretained(this)));
+
+  auth_email_ = GetAuthEmail();
 }
 
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 // static
 void EmailAliasesAuth::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(prefs::kBaseEmail, {});
-  registry->RegisterStringPref(prefs::kAuthToken, {});
+  registry->RegisterDictionaryPref(prefs::kAuth);
 }
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return !pref_auth_email_.GetValue().empty() &&
-         !pref_auth_token_.GetValue().empty();
+  return is_authenticated_;
 }
 
-void EmailAliasesAuth::SetAuthEmail(const std::string& base_email) {
-  if (pref_auth_email_.GetValue() != base_email) {
-    base::AutoReset<bool> notifyonce(&notify_, false);  // notify once
-    pref_auth_token_.SetValue({});
-    pref_auth_email_.SetValue(base_email);
-    on_changed_.Run();
+void EmailAliasesAuth::SetAuthEmail(const std::string& email) {
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
+  if (GetAuthEmail() != email) {
+    update->SetString(kEmailField, email);
+    update->SetString(kTokenField, std::string_view{});
   }
 }
 
 void EmailAliasesAuth::SetAuthToken(const std::string& auth_token) {
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
+
   std::string encrypted;
   if (auth_token.empty() || !Encrypt(encryptor_, auth_token, encrypted)) {
-    pref_auth_token_.SetValue({});
+    update->SetString(kTokenField, std::string_view{});
   } else {
-    pref_auth_token_.SetValue(encrypted);
+    update->SetString(kTokenField, encrypted);
   }
-  base::AutoReset<bool> reenter(
-      &notify_, false);  // Do not renotificate if callback changes prefs.
-  on_changed_.Run();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
-  return pref_auth_email_.GetValue();
+  const base::Value::Dict& auth = prefs_service_->GetDict(prefs::kAuth);
+  if (const auto* email = auth.FindString(kEmailField)) {
+    return *email;
+  }
+  return {};
 }
 
 std::string EmailAliasesAuth::CheckAndGetAuthToken() {
-  const std::string encrypted = pref_auth_token_.GetValue();
-  std::string token;
+  const base::Value::Dict& auth = prefs_service_->GetDict(prefs::kAuth);
+  if (const auto* encrypted_token = auth.FindString(kTokenField)) {
+    if (encrypted_token->empty()) {
+      return {};
+    }
 
-  if (encrypted.empty()) {
-    return {};
+    std::string token;
+    if (!Decrypt(encryptor_, *encrypted_token, token)) {
+      // Failed to decrypt token -> reset.
+      SetAuthToken({});
+      return {};
+    }
+    return token;
   }
-
-  if (!Decrypt(encryptor_, encrypted, token)) {
-    // Failed to decrypt token -> reset.
-    SetAuthToken({});
-    return {};
-  }
-  return token;
+  return {};
 }
 
 void EmailAliasesAuth::OnPrefChanged(const std::string& pref_name) {
-  if (notify_) {
-    base::AutoReset<bool> reenter(
-        &notify_, false);  // Do not renotificate if callback changes prefs.
-    CheckAndGetAuthToken();
-    on_changed_.Run();
+  if (!notify_) {
+    return;
   }
+
+  base::AutoReset reenter(&notify_, false);
+
+  auto auth_email = GetAuthEmail();
+  if (auth_email != auth_email_) {
+    SetAuthToken({});
+    auth_email_ = std::move(auth_email);
+  }
+
+  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
+  on_changed_.Run();
 }
 
 }  // namespace email_aliases

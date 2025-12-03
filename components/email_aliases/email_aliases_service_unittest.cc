@@ -167,6 +167,57 @@ TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success_MultipleCalls) {
   EXPECT_TRUE(result3.Get().has_value());
 }
 
+TEST_F(EmailAliasesServiceTest, Auth) {
+  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                        base::BindLambdaForTesting([&]() {}));
+
+  auth.SetAuthEmail("test@domain.com");
+  EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
+
+  auth.SetAuthToken("token");
+  EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+
+  auth.SetAuthEmail({});
+  EXPECT_EQ(auth.GetAuthEmail(), "");
+  EXPECT_EQ(auth.CheckAndGetAuthToken(), "");
+
+  auth.SetAuthEmail("test@domain.com");
+  auth.SetAuthToken("token");
+
+  {
+    // set the same email
+    prefs_.SetDict(
+        prefs::kAuth,
+        base::Value::Dict()
+            .Set("email", "test@domain.com")
+            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
+    EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+  }
+
+  {
+    // set new email
+    prefs_.SetDict(
+        prefs::kAuth,
+        base::Value::Dict()
+            .Set("email", "new@domain.com")
+            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
+  }
+  {
+    // token becomes invalid
+    auth.SetAuthToken("token");
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+    prefs_.SetDict(prefs::kAuth, base::Value::Dict()
+                                     .Set("email", "new@domain.com")
+                                     .Set("token", "invalid"));
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
+  }
+}
+
 TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
   RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
                          "\"service\":\"email-aliases\"}"},
@@ -197,10 +248,10 @@ TEST_F(EmailAliasesServiceTest, SessionPreserved) {
   EXPECT_EQ("test@example.com", auth.GetAuthEmail());
   EXPECT_EQ("auth456", auth.CheckAndGetAuthToken());
 
-  EXPECT_EQ("test@example.com", prefs_.GetString(prefs::kBaseEmail));
-  const auto prefs_token = prefs_.GetString(prefs::kAuthToken);
-  EXPECT_FALSE(prefs_token.empty());  // token saved
-  EXPECT_NE("auth456", prefs_token);  // token encrypted
+  const auto& pref_value = prefs_.GetDict(prefs::kAuth);
+  EXPECT_EQ("test@example.com", *pref_value.FindString("email"));
+  EXPECT_FALSE(pref_value.FindString("token")->empty());  // token saved
+  EXPECT_NE("auth456", *pref_value.FindString("token"));  // token encrypted
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
