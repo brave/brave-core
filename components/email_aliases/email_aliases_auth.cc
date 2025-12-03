@@ -70,7 +70,7 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 // static
-void EmailAliasesAuth::RegisterProfilePref(PrefRegistrySimple* registry) {
+void EmailAliasesAuth::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBaseEmail, {});
   registry->RegisterStringPref(prefs::kAuthToken, {});
 }

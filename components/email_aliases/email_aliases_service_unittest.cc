@@ -41,7 +41,7 @@ class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
-    EmailAliasesService::RegisterProfilePref(prefs_.registry());
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
   }
 
   void SetUp() override {
@@ -262,7 +262,7 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
-    EmailAliasesService::RegisterProfilePref(prefs_.registry());
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     service_ = std::make_unique<EmailAliasesService>(
         url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
@@ -465,7 +465,7 @@ class EmailAliasesAPITest : public ::testing::Test {
 
  protected:
   void SetUp() override {
-    EmailAliasesService::RegisterProfilePref(prefs_.registry());
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     SetupAuth();
 

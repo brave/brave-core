@@ -29,7 +29,7 @@ class EmailAliasesAuth {
                             OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth();
 
-  static void RegisterProfilePref(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   bool IsAuthenticated() const;
 

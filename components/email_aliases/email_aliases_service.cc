@@ -140,8 +140,8 @@ EmailAliasesService::EmailAliasesService(
 EmailAliasesService::~EmailAliasesService() = default;
 
 // static
-void EmailAliasesService::RegisterProfilePref(PrefRegistrySimple* registry) {
-  EmailAliasesAuth::RegisterProfilePref(registry);
+void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  EmailAliasesAuth::RegisterProfilePrefs(registry);
 }
 
 void EmailAliasesService::Shutdown() {
