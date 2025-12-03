@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index afe730971495212258a609dd09b74baf7cea6bf2..2ec966a0928bc5cb7ac917bf3de8a3955c460aa8 100644
+index afeed7c6d9702e0a5e6994dc9170cedeb2a3f010..8fc96e93c3f15d0aac0c47898c4fffac2a5fa7fd 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
 @@ -183,7 +183,7 @@ export class SettingsSyncControlsElement extends
@@ -11,7 +11,7 @@ index afe730971495212258a609dd09b74baf7cea6bf2..2ec966a0928bc5cb7ac917bf3de8a395
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
      // <if expr="not is_chromeos">
-@@ -381,6 +381,7 @@ export class SettingsSyncControlsElement extends
+@@ -376,6 +376,7 @@ export class SettingsSyncControlsElement extends
    private disableTypeCheckBox_(
        syncStatus: SyncStatus, syncAllDataTypes: boolean,
        dataTypeManaged: boolean): boolean {
