@@ -1,10 +1,10 @@
 diff --git a/base/test/launcher/test_results_tracker.cc b/base/test/launcher/test_results_tracker.cc
-index 0641d9b37f26f69a898ce6640e2904fcbc7abfd8..afd080ace72b9376556c701043ca4183de573047 100644
+index 760f0982cf35b9294cb916da82e7b39aa522142c..06642daac8a193e476279413fe35555a5e85e0b0 100644
 --- a/base/test/launcher/test_results_tracker.cc
 +++ b/base/test/launcher/test_results_tracker.cc
-@@ -307,6 +307,7 @@ TestResultsTracker::~TestResultsTracker() {
-                    : ""),
-               result.GetTestCaseName().c_str());
+@@ -304,6 +304,7 @@ TestResultsTracker::~TestResultsTracker() {
+                : ""),
+           result.GetTestCaseName().c_str()));
        if (result.status != TestResult::TEST_SUCCESS) {
 +        TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS
          // The actual failure message is not propagated up to here, as it's too
