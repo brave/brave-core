@@ -1,10 +1,15 @@
 include_rules = [
-  "+absl/strings/str_format.h",
-  "+components/keyed_service/core",
-  "+components/grit/brave_components_strings.h",
-  "+components/os_crypt/sync/os_crypt.h",
-  "+components/os_crypt/sync/os_crypt_mocker.h",
-  "+components/prefs",
-  "+services/network/public/cpp",
-  "+services/network/test",
+  '+absl/strings/str_format.h',
+  '+components/keyed_service/core',
+  '+components/grit/brave_components_strings.h',
+  '+components/os_crypt/async',
+  '+components/prefs',
+  '+services/network/public/cpp',
+  '+services/network/test',
 ]
+
+specific_include_rules = {
+  "test_utils.*": [
+    "+gtest"
+  ],
+}

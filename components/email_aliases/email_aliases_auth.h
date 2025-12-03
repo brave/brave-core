@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
+#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_member.h"
 
 class PrefRegistrySimple;
@@ -24,6 +25,7 @@ class EmailAliasesAuth {
   using OnChangedCallback = base::RepeatingClosure;
 
   explicit EmailAliasesAuth(PrefService* prefs_service,
+                            os_crypt_async::Encryptor encryptor,
                             OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth();
 
@@ -39,6 +41,8 @@ class EmailAliasesAuth {
 
  private:
   void OnPrefChanged(const std::string& pref_name);
+
+  os_crypt_async::Encryptor encryptor_;
 
   OnChangedCallback on_changed_;
 

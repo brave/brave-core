@@ -17,6 +17,8 @@
 #include "brave/components/email_aliases/email_aliases_auth.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/test_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
@@ -397,11 +399,13 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuNotAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
-  email_aliases_service()->RequestAuthentication("success@domain.com",
-                                                 base::DoNothing());
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !email_aliases_service()->GetAuthTokenForTesting().empty();
-  }));
+  auto* service = email_aliases_service();
+  {
+    auto initilized = test::AuthStateObserver::Setup(service, true);
+  }
+  service->RequestAuthentication("success@domain.com", base::DoNothing());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !service->GetAuthTokenForTesting().empty(); }));
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
@@ -500,7 +504,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   // Prepare auth token
-  EmailAliasesAuth auth(browser()->profile()->GetPrefs());
+  EmailAliasesAuth auth(
+      browser()->profile()->GetPrefs(),
+      test::GetEncryptor(g_browser_process->os_crypt_async()));
   auth.SetAuthEmail(kSuccessEmail);
   auth.SetAuthToken("success_token");
 
