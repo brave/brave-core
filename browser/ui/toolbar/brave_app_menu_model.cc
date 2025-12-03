@@ -103,6 +103,7 @@ void BraveAppMenuModel::Build() {
   BuildBraveProductsSection();
   BuildBrowserSection();
   BuildMoreToolsSubMenu();
+  BuildPasswordsAndAutofillSubmenu();
   BuildHelpSubMenu();
 
   ApplyLeoIcons(this);
@@ -125,6 +126,26 @@ void BraveAppMenuModel::Build() {
         *reading_list_submenu_index);
     CHECK(reading_list_submenu);
     ApplyLeoIcons(static_cast<ui::SimpleMenuModel*>(reading_list_submenu));
+  }
+}
+
+void BraveAppMenuModel::BuildPasswordsAndAutofillSubmenu() {
+  if (!GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU)) {
+    return;
+  }
+
+  auto* autofill_menu_model =
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
+  CHECK(autofill_menu_model);
+
+  if (IsCommandIdEnabled(IDC_SHOW_EMAIL_ALIASES)) {
+    const auto index =
+        autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_PASSWORD_MANAGER);
+    CHECK(index);
+
+    autofill_menu_model->InsertItemWithStringIdAt(
+        *index + 1, IDC_SHOW_EMAIL_ALIASES, IDS_SHOW_EMAIL_ALIASES);
   }
 }
 

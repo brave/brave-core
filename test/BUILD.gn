@@ -931,6 +931,7 @@ test("brave_browser_tests") {
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
+    "//brave/components/email_aliases:features",
     "//brave/components/global_privacy_control",
     "//brave/components/https_upgrade_exceptions/browser",
     "//brave/components/l10n/common",
