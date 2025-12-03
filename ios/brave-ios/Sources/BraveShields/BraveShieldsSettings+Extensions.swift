@@ -61,11 +61,7 @@ extension BraveShieldsSettings {
 
       // Shields Enabled / Disabled
       let domainsWithExplicitAllOff = domains.filter { $0.shield_allOff != nil }
-      let (secureDomainsWithExplicitAllOff, insecureDomainsWithExplicitAllOff) =
-        domainsWithExplicitAllOff.splitAndSortedForMigration()
-      // prefer https Shield setting
-      let shieldEnabledDomainToMigrate =
-        secureDomainsWithExplicitAllOff.first ?? insecureDomainsWithExplicitAllOff.first
+      let shieldEnabledDomainToMigrate = domainsWithExplicitAllOff.sortedForMigration().first
       // only assign if an explicit value assigned, else default is used
       if let shieldEnabledDomainToMigrate,
         let urlString = shieldEnabledDomainToMigrate.url,
@@ -79,11 +75,7 @@ extension BraveShieldsSettings {
       let domainsWithExplicitShieldLevel = domains.filter {
         $0.shield_blockAdsAndTrackingLevel != nil
       }
-      let (secureDomainsWithExplicitShieldLevel, insecureDomainsWithExplicitShieldLevel) =
-        domainsWithExplicitShieldLevel.splitAndSortedForMigration()
-      // prefer https Shield setting
-      let shieldLevelDomainToMigrate =
-        secureDomainsWithExplicitShieldLevel.first ?? insecureDomainsWithExplicitShieldLevel.first
+      let shieldLevelDomainToMigrate = domainsWithExplicitShieldLevel.sortedForMigration().first
       // only assign if an explicit value assigned, else default is used
       if let shieldLevelDomainToMigrate,
         let urlString = shieldLevelDomainToMigrate.url,
@@ -97,14 +89,8 @@ extension BraveShieldsSettings {
       let domainsWithExplicitFingerprintingProtection = domains.filter {
         $0.shield_fpProtection != nil
       }
-      let (
-        secureDomainsWithExplicitFingerprintingProtection,
-        insecureDomainsWithExplicitFingerprintingProtection
-      ) = domainsWithExplicitFingerprintingProtection.splitAndSortedForMigration()
-      // prefer https Shield setting
       let fingerprintingProtectionDomainToMigrate =
-        secureDomainsWithExplicitFingerprintingProtection.first
-        ?? insecureDomainsWithExplicitFingerprintingProtection.first
+        domainsWithExplicitFingerprintingProtection.sortedForMigration().first
       // only assign if an explicit value assigned, else default is used
       if let fingerprintingProtectionDomainToMigrate,
         let urlString = fingerprintingProtectionDomainToMigrate.url,
@@ -120,11 +106,7 @@ extension BraveShieldsSettings {
 
       // Block Scripts
       let domainsWithExplicitBlockScripts = domains.filter { $0.shield_noScript != nil }
-      let (secureDomainsWithExplicitBlockScripts, insecureDomainsWithExplicitBlockScripts) =
-        domainsWithExplicitBlockScripts.splitAndSortedForMigration()
-      // prefer https Shield setting
-      let blockScriptsDomainToMigrate =
-        secureDomainsWithExplicitBlockScripts.first ?? insecureDomainsWithExplicitBlockScripts.first
+      let blockScriptsDomainToMigrate = domainsWithExplicitBlockScripts.sortedForMigration().first
       // only assign if an explicit value assigned, else default is used
       if let blockScriptsDomainToMigrate,
         let urlString = blockScriptsDomainToMigrate.url,
@@ -153,11 +135,7 @@ extension BraveShieldsSettings {
       guard !domain.isEmpty else { continue }
 
       let domainsWithExplicitShredLevel = domains.filter { $0.shield_shredLevel != nil }
-      let (secureDomainsWithExplicitShredLevel, insecureDomainsWithExplicitShredLevel) =
-        domainsWithExplicitShredLevel.splitAndSortedForMigration()
-      // prefer https Shield setting
-      let shredLevelDomainToMigrate =
-        secureDomainsWithExplicitShredLevel.first ?? insecureDomainsWithExplicitShredLevel.first
+      let shredLevelDomainToMigrate = domainsWithExplicitShredLevel.sortedForMigration().first
       // only assign if an explicit value assigned, else default is used
       if let shredLevelDomainToMigrate,
         let urlString = shredLevelDomainToMigrate.url,
@@ -179,21 +157,18 @@ extension BraveShieldsSettings {
 }
 
 extension Array where Element == Domain {
-  private func sortedForMigration() -> [Domain] {
-    sorted(by: { $0.url ?? "" < $1.url ?? "" })
-  }
-
-  fileprivate func splitAndSortedForMigration() -> (secure: [Domain], insecure: [Domain]) {
-    var secureDomains: [Domain] = []
-    var insecureDomains: [Domain] = []
-    // single loop instead of 2n using filter
-    for domain in self {
-      if domain.url?.hasPrefix("https://") == true {
-        secureDomains.append(domain)
-      } else if domain.url?.hasPrefix("http://") == true {
-        insecureDomains.append(domain)
+  fileprivate func sortedForMigration() -> [Domain] {
+    sorted(by: { lhs, rhs in
+      let isLHSHttps = lhs.url?.hasPrefix("https://") == true
+      let isRHSHttps = rhs.url?.hasPrefix("https://") == true
+      // prioritize https
+      if isLHSHttps && !isRHSHttps {
+        return true
+      } else if isRHSHttps && !isLHSHttps {
+        return false
       }
-    }
-    return (secureDomains.sortedForMigration(), insecureDomains.sortedForMigration())
+      // otherwise alphabetical sort
+      return lhs.url?.localizedCaseInsensitiveCompare(rhs.url ?? "") == .orderedAscending
+    })
   }
 }
