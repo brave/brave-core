@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
-index c8f0c444c21fa229d9b87bcb26fb8390d6a025ac..9ee3500a8ea92833253b9c1decd8a5d96785a8ec 100644
+index 6633db977ecfd00d10034bb0db7ebd41162e1aa1..641c26db3b944f681afb96866c9fb05347966ef0 100644
 --- a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
 +++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
 @@ -3,6 +3,7 @@
@@ -64,10 +64,10 @@ index c8f0c444c21fa229d9b87bcb26fb8390d6a025ac..9ee3500a8ea92833253b9c1decd8a5d9
          }
          Ok(())
 @@ -193,6 +205,7 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
-         while let Some(_) = access.next_element_seed(ValueVisitor {
+         while access.next_element_seed(ValueVisitor {
              aggregate: DeserializationTarget::List { ctx: inner_ctx.as_mut() },
              recursion_depth_check: self.recursion_depth_check.recurse()?,
 +            allow_64bit_numbers: self.allow_64bit_numbers,
-         })? {}
+         })?.is_some() {}
          Ok(())
      }
