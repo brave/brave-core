@@ -226,20 +226,6 @@ def main():
         print(f'- {len(local_data_components)} sub-components added in ' \
               'local_data/LICENSE')
 
-    # Brave New Tab UI component
-    ntp_data_dir = os.path.join(components_dir, 'brave_new_tab_ui', 'data')
-    ntp_backgrounds_preamble = 'These licenses do not apply to any of the ' \
-        'code shipped with the Brave Browser and instead apply to ' \
-        'background images used on the new tab page. The Brave Browser and ' \
-        'such data files are separate and independent works.'
-
-    ntp_backgrounds = list_ntp_backgrounds(
-        os.path.join(ntp_data_dir, 'backgrounds.ts'))
-    if write_license_file(ntp_data_dir, generate_backgrounds_license(
-            ntp_backgrounds_preamble, ntp_backgrounds)):
-        print(f'- {len(ntp_backgrounds)} sub-components added in ' \
-              'brave_new_tab_ui/data/LICENSE')
-
 
 if __name__ == '__main__':
     sys.exit(main())

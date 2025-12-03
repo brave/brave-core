@@ -143,7 +143,6 @@
     "CheckForDeprecatedOSMacros": [
       "browser/ntp_background/custom_background_file_manager\\.h",
       "browser/ntp_background/ntp_custom_background_images_service_delegate\\.cc",
-      "browser/ui/webui/new_tab_page/brave_new_tab_page_handler\\.cc",
       "components/brave_sync/network_time_helper\\.cc",
     ],
     "CheckConsistentGrdChanges": [
@@ -228,7 +227,6 @@
       "utility/importer/chrome_importer\\.cc",
     ],
     "/\\busing namespace ": [
-      "browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest\\.cc",
       "browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_browsertest\\.cc",
       "chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest\\.cc",
       "components/brave_shields/browser/ad_block_engine\\.cc",

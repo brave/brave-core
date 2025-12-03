@@ -132,3 +132,4 @@ export function SponsoredRichMediaBackground(props: Props) {
     </SponsoredRichMediaBackgroundIframe>
   )
 }
+

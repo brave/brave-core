@@ -99,7 +99,6 @@ include_rules += [
   "+brave/components/decentralized_dns/core",
   "+brave/components/services/bat_ads/public",
   "+brave/components/translate/core/common",
-  "+brave/components/brave_new_tab_ui",
   "+brave/components/brave_private_new_tab_ui/common",
   "+brave/components/widevine/constants.h",
   "+brave/components/brave_drm",

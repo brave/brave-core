@@ -786,13 +786,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveFilledBookmarkFolderIcon),        \
       },                                                                       \
       {                                                                        \
-          "brave-ntp-refresh-enabled",                                         \
-          "New Tab Page refresh",                                              \
-          "Enables the refreshed version of the New Tab Page",                 \
-          kOsDesktop,                                                          \
-          FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
-      },                                                                       \
-      {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
           "Take DNS CNAME records into account when making network request "   \

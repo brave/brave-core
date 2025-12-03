@@ -29,7 +29,6 @@ static_library("misc_metrics") {
 
   deps = [
     "//base",
-    "//brave/components/brave_new_tab_ui:mojom",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/p3a_utils",

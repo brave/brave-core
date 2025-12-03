@@ -35,15 +35,6 @@
         <include name="IDR_BRAVE_WELCOME_PAGE_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
       </if>
 
-      <!-- WebUI newtab resources -->
-      <!-- TODO: move to brave_new_tab_ui component -->
-      <if expr="not is_android">
-        <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
-      </if>
-
       <!-- WebUI wallet resources -->
       <if expr="enable_brave_wallet">
         <include name="IDR_WALLET_PAGE_HTML" file="${root_gen_dir}/brave/components/brave_wallet_ui/page/preprocessed/wallet_page.html" use_base_dir="false" type="BINDATA" />
@@ -77,7 +68,6 @@
       </if>
 
       <!-- WebUI private new tab resources -->
-      <!-- TODO: move to brave_new_tab_ui component -->
       <if expr="not is_android">
         <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
         <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />

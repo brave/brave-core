@@ -11,7 +11,7 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 import {
   SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
-} from '../brave_new_tab_ui/containers/newTab/sponsored_rich_media_background'
+} from './sponsored_rich_media_background'
 
 function sanitizeId(value: string | null): string | null {
   if (!value || value.length === 0) {

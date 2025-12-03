@@ -287,7 +287,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     # contained under a "third_party" or "vendor" directory.
     additional_list = list(additional_paths)
     additional_list += [
-        os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
         os.path.join('brave', 'browser', 'brave_vpn', 'win',
                      'brave_vpn_wireguard_service'),
         os.path.join('brave', 'components', 'filecoin'),

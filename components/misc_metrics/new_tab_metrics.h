@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_NEW_TAB_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_NEW_TAB_METRICS_H_
 
+#include <optional>
+
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -23,28 +23,21 @@ inline constexpr char kNTPSearchUsageHistogramName[] =
 inline constexpr char kNTPGoogleWidgetUsageHistogramName[] =
     "Brave.Search.GoogleWidgetUsage";
 
-class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
+class NewTabMetrics {
  public:
   explicit NewTabMetrics(PrefService* local_state);
-  ~NewTabMetrics() override;
+  ~NewTabMetrics();
 
   NewTabMetrics(const NewTabMetrics&) = delete;
   NewTabMetrics& operator=(const NewTabMetrics&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void Bind(
-      mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics> receiver);
-
-  // brave_new_tab_page::mojom::NewTabMetrics:
-  void ReportNTPSearchDefaultEngine(
-      std::optional<int64_t> prepopulate_id) override;
-  void ReportNTPSearchUsage(int64_t prepopulate_id) override;
+  void ReportNTPSearchDefaultEngine(std::optional<int64_t> prepopulate_id);
+  void ReportNTPSearchUsage(int64_t prepopulate_id);
 
  private:
   void ReportCounts();
-
-  mojo::ReceiverSet<brave_new_tab_page::mojom::NewTabMetrics> receivers_;
 
   WeeklyStorage usage_storage_;
 

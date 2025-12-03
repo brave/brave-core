@@ -202,27 +202,27 @@ describe('TeamcityReporter', () => {
       const testCases = [
         {
           testFilePath:
-            'components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
+            'components/test/brave_shields_panel/state/shieldsState_test.ts',
           expectedPrefix:
-            'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
+            'components.test.brave_shields_panel.state.shieldsState_test.ts.Test',
         },
         {
           testFilePath:
-            'components/test/brave_new_tab_ui/state/gridSitesState_test@#$%...ts',
+            'components/test/brave_shields_panel/state/shieldsState_test@#$%...ts',
           expectedPrefix:
-            'components.test.brave_new_tab_ui.state.gridSitesState_test__$_.ts.Test',
+            'components.test.brave_shields_panel.state.shieldsState_test__$_.ts.Test',
         },
         {
           testFilePath:
-            '0components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
+            '0components/test/brave_shields_panel/state/shieldsState_test.ts',
           expectedPrefix:
-            '_0components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
+            '_0components.test.brave_shields_panel.state.shieldsState_test.ts.Test',
         },
         {
           testFilePath:
-            'components\\test\\brave_new_tab_ui\\state\\gridSitesState_test.ts',
+            'components\\test\\brave_shields_panel\\state\\shieldsState_test.ts',
           expectedPrefix:
-            'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
+            'components.test.brave_shields_panel.state.shieldsState_test.ts.Test',
         },
       ]
       for (const testCase of testCases) {
