@@ -3244,6 +3244,23 @@ extension BrowserViewController {
       return
     }
 
+    if FeatureList.kAIChatWebUIEnabled.enabled, FeatureList.kUseChromiumWebViews.enabled {
+      if let query,
+        let conversationURL = AIChatUtils.openLeoURL(
+          withQuerySubmitted: query,
+          profile: profileController.profile
+        )
+      {
+        tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
+      } else {
+        tabManager.addTabAndSelect(
+          URLRequest(url: .webUI.aiChat),
+          isPrivate: false
+        )
+      }
+      return
+    }
+
     let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
 
     let model = AIChatViewModel(

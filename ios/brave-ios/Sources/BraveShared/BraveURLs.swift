@@ -113,8 +113,12 @@ extension URL {
       string: "https://support.apple.com/en-ca/guide/iphone/iph1852764a6/18.0/ios/18.0"
     )!
   }
+  public enum WebUI {
+    public static let aiChat = URL(string: "brave://leo-ai")!
+  }
   public static let brave = Brave.self
   public static let apple = Apple.self
+  public static let webUI = WebUI.self
 }
 
 public struct AppURLScheme {
