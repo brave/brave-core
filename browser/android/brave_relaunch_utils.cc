@@ -15,3 +15,5 @@ void JNI_BraveRelaunchUtils_Restart(JNIEnv* env) {
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveRelaunchUtils)

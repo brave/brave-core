@@ -535,3 +535,5 @@ static int JNI_BraveSyncWorker_GetWordsCount(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveSyncWorker)

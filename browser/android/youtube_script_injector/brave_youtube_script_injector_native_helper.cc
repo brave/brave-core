@@ -68,3 +68,5 @@ void EnterPictureInPicture(content::WebContents* web_contents) {
 }
 
 }  // namespace youtube_script_injector
+
+DEFINE_JNI(BraveYouTubeScriptInjectorNativeHelper)

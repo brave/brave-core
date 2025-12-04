@@ -40,3 +40,5 @@ static void JNI_BraveFirstPartyStorageCleanerUtils_CleanupTLDFirstPartyStorage(
 }
 
 }  // namespace brave_shields
+
+DEFINE_JNI(BraveFirstPartyStorageCleanerUtils)
