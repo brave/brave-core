@@ -67,21 +67,25 @@ class BraveShieldsSettingsMigrationTests: CoreDataTestCase {
 
     // verify expected migrations
     let testBraveShieldsSettings = TestBraveShieldsSettings()
+    var setShieldsEnabledURLs = [URL]()
     testBraveShieldsSettings._setBraveShieldsEnabled = { enabled, url in
       XCTAssertFalse(enabled)
-      XCTAssertEqual(url.domainURL.absoluteString, shieldsEnabledDomain.url ?? "")
+      setShieldsEnabledURLs.append(url)
     }
+    var setAdBlockModeURLs = [URL]()
     testBraveShieldsSettings._setAdBlockMode = { adBlockMode, url in
       XCTAssertEqual(adBlockMode, .aggressive)
-      XCTAssertEqual(url.domainURL.absoluteString, adBlockModeDomain.url ?? "")
+      setAdBlockModeURLs.append(url)
     }
+    var setBlockScriptsURLs = [URL]()
     testBraveShieldsSettings._setBlockScriptsEnabled = { enabled, url in
       XCTAssertTrue(enabled)
-      XCTAssertEqual(url.domainURL.absoluteString, blockScriptsDomain.url ?? "")
+      setBlockScriptsURLs.append(url)
     }
+    var setFingerprintModeURLs = [URL]()
     testBraveShieldsSettings._setFingerprintMode = { fingerprintMode, url in
       XCTAssertEqual(fingerprintMode, .allowMode)
-      XCTAssertEqual(url.domainURL.absoluteString, fingerprintProtectionDomain.url ?? "")
+      setFingerprintModeURLs.append(url)
     }
     testBraveShieldsSettings._setAutoShredMode = { autoShredMode, url in
       XCTAssertEqual(autoShredMode, .lastTabClosed)
@@ -90,6 +94,24 @@ class BraveShieldsSettingsMigrationTests: CoreDataTestCase {
 
     let allDomains = Domain.allDomainsWithExlicitShieldSettings()
     testBraveShieldsSettings.migrateShieldsToContentSettings(for: allDomains)
+
+    // verify `set*` was called for each of the subdomainURLsForMigration
+    XCTAssertEqual(
+      setShieldsEnabledURLs,
+      [shieldsEnabledURL] + shieldsEnabledURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setAdBlockModeURLs,
+      [adBlockModeURL] + adBlockModeURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setBlockScriptsURLs,
+      [blockScriptsURL] + blockScriptsURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setFingerprintModeURLs,
+      [fingerprintProtectionURL] + fingerprintProtectionURL.subdomainURLsForMigration()
+    )
   }
 
   /// Some shields settings are stored on 2 different CoreData `Domain` models,
@@ -184,34 +206,56 @@ class BraveShieldsSettingsMigrationTests: CoreDataTestCase {
 
     // verify expected migrations (https preferred)
     let testBraveShieldsSettings = TestBraveShieldsSettings()
+    var setShieldsEnabledURLs = [URL]()
     testBraveShieldsSettings._setBraveShieldsEnabled = { enabled, url in
       XCTAssertFalse(enabled)
-      XCTAssertEqual(url.domainURL.absoluteString, shieldsEnabledDomain.url ?? "")
       XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
+      setShieldsEnabledURLs.append(url)
     }
+    var setAdBlockModeURLs = [URL]()
     testBraveShieldsSettings._setAdBlockMode = { adBlockMode, url in
       XCTAssertEqual(adBlockMode, .aggressive)
-      XCTAssertEqual(url.domainURL.absoluteString, adBlockModeDomain.url ?? "")
       XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
+      setAdBlockModeURLs.append(url)
     }
+    var setBlockScriptsURLs = [URL]()
     testBraveShieldsSettings._setBlockScriptsEnabled = { enabled, url in
       XCTAssertTrue(enabled)
-      XCTAssertEqual(url.domainURL.absoluteString, blockScriptsDomain.url ?? "")
       XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
+      setBlockScriptsURLs.append(url)
     }
+    var setFingerprintModeURLs = [URL]()
     testBraveShieldsSettings._setFingerprintMode = { fingerprintMode, url in
       XCTAssertEqual(fingerprintMode, .allowMode)
-      XCTAssertEqual(url.domainURL.absoluteString, fingerprintProtectionDomain.url ?? "")
       XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
+      setFingerprintModeURLs.append(url)
     }
     testBraveShieldsSettings._setAutoShredMode = { autoShredMode, url in
       XCTAssertEqual(autoShredMode, .lastTabClosed)
-      XCTAssertEqual(url.domainURL.absoluteString, autoShredModeDomain.url ?? "")
       XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
+      XCTAssertEqual(url.domainURL.absoluteString, autoShredModeDomain.url ?? "")
     }
 
     let allDomains = Domain.allDomainsWithExlicitShieldSettings()
     testBraveShieldsSettings.migrateShieldsToContentSettings(for: allDomains)
+
+    // verify `set*` was called for each of the subdomainURLsForMigration()
+    XCTAssertEqual(
+      setShieldsEnabledURLs,
+      [shieldsEnabledURL] + shieldsEnabledURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setAdBlockModeURLs,
+      [adBlockModeURL] + adBlockModeURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setBlockScriptsURLs,
+      [blockScriptsURL] + blockScriptsURL.subdomainURLsForMigration()
+    )
+    XCTAssertEqual(
+      setFingerprintModeURLs,
+      [fingerprintProtectionURL] + fingerprintProtectionURL.subdomainURLsForMigration()
+    )
   }
 }
 

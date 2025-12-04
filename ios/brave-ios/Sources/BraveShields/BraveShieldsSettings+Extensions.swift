@@ -68,6 +68,9 @@ extension BraveShieldsSettings {
       {
         let shieldsEnabled: Bool = !shieldEnabledDomainToMigrate.areAllShieldsOff
         setBraveShieldsEnabled(shieldsEnabled, for: urlToMigrate)
+        for url in urlToMigrate.subdomainURLsForMigration() {
+          setBraveShieldsEnabled(shieldsEnabled, for: url)
+        }
       }
 
       // ShieldLevel / AdBlockMode
@@ -82,6 +85,9 @@ extension BraveShieldsSettings {
       {
         let shieldLevel: ShieldLevel = shieldLevelDomainToMigrate.domainBlockAdsAndTrackingLevel
         setAdBlockMode(shieldLevel.adBlockMode, for: urlToMigrate)
+        for url in urlToMigrate.subdomainURLsForMigration() {
+          setAdBlockMode(shieldLevel.adBlockMode, for: url)
+        }
       }
 
       // Block Fingerprinting
@@ -101,6 +107,9 @@ extension BraveShieldsSettings {
             considerAllShieldsOption: false
           )
         setFingerprintMode(fingerPrintingProtection ? .standardMode : .allowMode, for: urlToMigrate)
+        for url in urlToMigrate.subdomainURLsForMigration() {
+          setFingerprintMode(fingerPrintingProtection ? .standardMode : .allowMode, for: url)
+        }
       }
 
       // Block Scripts
@@ -116,6 +125,9 @@ extension BraveShieldsSettings {
           considerAllShieldsOption: false
         )
         setBlockScriptsEnabled(blockScripts, for: urlToMigrate)
+        for url in urlToMigrate.subdomainURLsForMigration() {
+          setBlockScriptsEnabled(blockScripts, for: url)
+        }
       }
     }
 
@@ -141,6 +153,8 @@ extension BraveShieldsSettings {
       {
         let autoShredMode = shredLevelDomainToMigrate.shredLevel.autoShredMode
         self.setAutoShredMode(autoShredMode, for: urlToMigrate)
+        // subdomainURLsForMigration() is not neded for Auto Shred because the
+        // domain pattern used for AutoShredMode removes the subdomains.
       }
     }
   }
@@ -168,6 +182,35 @@ extension Array where Element == Domain {
       // otherwise alphabetical sort
       return lhs.url?.localizedCaseInsensitiveCompare(rhs.url ?? "") == .orderedAscending
     })
+  }
+}
+
+extension URL {
+
+  /// Adds the given subdomain if it's not already the prefix of the host.
+  private func addingSubdomainIfNeeded(subdomain: String) -> URL? {
+    guard let host,
+      host.hasPrefix(subdomain + ".") == false,
+      var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+    else { return nil }
+    components.host = subdomain + "." + host
+    return components.url
+  }
+
+  /// The subdomain URLs we should migrate to for the current URL.
+  /// On iOS, the `domainURL` used for `Domain` model strips `www|m|mobile`
+  /// from the `URL`, so these subdomains are treated as the same, but with
+  /// content settings they are treated separately. For migration, we migrate
+  /// to these trivial subdomains so there is no perceived data loss (of site-
+  /// specific Shield setings) to the user.
+  /// - returns: an array of URLs with `www|m|mobile` subdomain added to the
+  /// host (if needed).
+  func subdomainURLsForMigration() -> [URL] {
+    [
+      addingSubdomainIfNeeded(subdomain: "www"),
+      addingSubdomainIfNeeded(subdomain: "m"),
+      addingSubdomainIfNeeded(subdomain: "mobile"),
+    ].compactMap { $0 }
   }
 }
 
