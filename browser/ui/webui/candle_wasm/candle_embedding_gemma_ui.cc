@@ -7,10 +7,12 @@
 
 #include <utility>
 
+#include "brave/browser/local_ai/candle_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/local_ai/browser/candle_service.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_gemma_bridge_generated.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_gemma_bridge_generated_map.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -60,7 +62,14 @@ WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedCandleEmbeddingGemmaUI)
 
 void UntrustedCandleEmbeddingGemmaUI::BindInterface(
     mojo::PendingReceiver<mojom::CandleService> receiver) {
-  CandleService::GetInstance()->BindReceiver(std::move(receiver));
+  // Get the CandleService for this profile
+  Profile* profile =
+      Profile::FromWebUI(web_ui());
+  CandleService* service =
+      CandleServiceFactory::GetForBrowserContext(profile);
+  if (service) {
+    service->BindReceiver(std::move(receiver));
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -11,18 +11,11 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "chrome/browser/profiles/profile_observer.h"
 #include "components/passage_embeddings/passage_embeddings_types.h"
-#include "content/public/browser/web_contents_observer.h"
 
-class GURL;
 class Profile;
-
-namespace content {
-class WebContents;
-class RenderFrameHost;
-}
 
 namespace local_ai {
 class CandleService;
@@ -32,11 +25,9 @@ namespace brave {
 
 // BraveEmbedder implements the passage_embeddings::Embedder interface
 // using Brave's EmbeddingGemma model via CandleService.
-class BraveEmbedder : public passage_embeddings::Embedder,
-                      public content::WebContentsObserver,
-                      public ProfileObserver {
+class BraveEmbedder : public passage_embeddings::Embedder {
  public:
-  BraveEmbedder();
+  explicit BraveEmbedder(Profile* profile);
   ~BraveEmbedder() override;
 
   BraveEmbedder(const BraveEmbedder&) = delete;
@@ -71,29 +62,10 @@ class BraveEmbedder : public passage_embeddings::Embedder,
                          size_t passage_index,
                          const std::vector<double>& embedding);
 
-  // content::WebContentsObserver:
-  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                     const GURL& validated_url) override;
-
-  // ProfileObserver:
-  void OnProfileWillBeDestroyed(Profile* profile) override;
-
-  void CloseWasmWebContents();
-  void LoadWasmModel();
-  void OnGotDefaultModelPath(const std::optional<base::FilePath>& model_path);
-  void OnModelFilesLoaded(bool success);
-  void RetryLoadWasmModel();
-
   TaskId next_task_id_ = 1;
   std::map<TaskId, PendingTask> pending_tasks_;
 
   raw_ptr<local_ai::CandleService> candle_service_;
-  raw_ptr<Profile> profile_;
-  std::unique_ptr<content::WebContents> wasm_web_contents_;
-
-  base::FilePath pending_model_path_;
-  int model_load_retry_count_ = 0;
-  static constexpr int kMaxModelLoadRetries = 10;
 
   base::WeakPtrFactory<BraveEmbedder> weak_ptr_factory_{this};
 };
