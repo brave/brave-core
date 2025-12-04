@@ -32,10 +32,12 @@
 #undef CLIPBOARD_READ_WRITE
 #undef JNI_WebsitePreferenceBridge_ClearCookieData
 
-static void JNI_WebsitePreferenceBridge_ClearCookieData(
+// We can't use DEFINE_JNI when override upstream's JNI method as it causes
+// class redefinition issues. So we use [[maybe_unused]] to suppress the error.
+[[maybe_unused]] static void JNI_WebsitePreferenceBridge_ClearCookieData(
     JNIEnv* env,
-    const JavaParamRef<jobject>& jbrowser_context_handle,
-    const JavaParamRef<jstring>& jorigin) {
+    const jni_zero::JavaParamRef<jobject>& jbrowser_context_handle,
+    const jni_zero::JavaParamRef<jstring>& jorigin) {
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl(
       env, jbrowser_context_handle, jorigin);
 

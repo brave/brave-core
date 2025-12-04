@@ -28,3 +28,5 @@ JNI_WebcompatReporterServiceFactory_GetInterfaceToWebcompatReporterService(
 }  // namespace android
 
 }  // namespace chrome
+
+DEFINE_JNI(WebcompatReporterServiceFactory)

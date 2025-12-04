@@ -54,3 +54,5 @@ static jboolean JNI_WalletNativeUtils_IsSnsTld(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(WalletNativeUtils)

@@ -24,3 +24,5 @@ static jlong JNI_SwapServiceFactory_GetInterfaceToSwapService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(SwapServiceFactory)
