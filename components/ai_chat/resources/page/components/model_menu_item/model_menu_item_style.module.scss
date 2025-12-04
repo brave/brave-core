@@ -76,3 +76,18 @@
     color: var(--leo-color-text-interactive);
   }
 }
+
+.disabled {
+  opacity: 0.5;
+}
+
+.disabledOption {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  cursor: not-allowed;
+}
