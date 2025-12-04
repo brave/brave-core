@@ -153,6 +153,12 @@ bool IsNEARModelsEnabled() {
 
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatConversationAPIV2Enabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatConversationAPIV2);
+}
+
 const base::FeatureParam<std::string> kRichSearchWidgetsOrigin{
     &kRichSearchWidgets, "rich_search_widgets_origin",
     "https://prod.browser-ai-includes.s.brave.app"};
