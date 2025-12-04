@@ -77,7 +77,6 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
-#include "content/public/common/content_features.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
@@ -396,20 +395,11 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidDynamicColors),      \
   })
-#define BRAVE_ANDROID_OPEN_PDF_INLINE                      \
-  EXPAND_FEATURE_ENTRIES({                                 \
-      "brave-android-open-pdf-inline",                     \
-      "Open PDF inline on Android",                        \
-      "Opens pdf files in browser when enabled.",          \
-      kOsAndroid,                                          \
-      FEATURE_VALUE_TYPE(features::kAndroidOpenPdfInline), \
-  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_ANDROID_DYNAMIC_COLORS
-#define BRAVE_ANDROID_OPEN_PDF_INLINE
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1325,7 +1315,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
-  BRAVE_ANDROID_OPEN_PDF_INLINE                                                \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
