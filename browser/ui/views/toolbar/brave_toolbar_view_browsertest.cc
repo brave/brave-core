@@ -276,8 +276,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   // Check loaded in sidebar.
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
-  auto* side_panel_coordinator =
-      browser()->GetFeatures().side_panel_coordinator();
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing(
       SidePanelEntry::PanelType::kContent));
   button->ButtonPressed();
