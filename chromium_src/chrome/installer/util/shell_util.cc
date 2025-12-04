@@ -55,13 +55,14 @@ int GetIconIndexForFileType() {
 
 // Give BraveXXFile prog id for some file type.(ex, .pdf or .svg) instead of
 // BraveHTML.
-#define BRAVE_GET_SHELL_INTEGRATION_ENTRIES                               \
-  const std::wstring file_ext = ShellUtil::kPotentialFileAssociations[i]; \
-  if (installer::ShouldUseFileTypeProgId(file_ext)) {                     \
-    entries->push_back(std::make_unique<RegistryEntry>(                   \
-        capabilities + L"\\FileAssociations", file_ext,                   \
-        installer::GetProgIdForFileType()));                              \
-    continue;                                                             \
+#define BRAVE_GET_SHELL_INTEGRATION_ENTRIES                  \
+  UNSAFE_TODO(const std::wstring file_ext =                  \
+                  ShellUtil::kPotentialFileAssociations[i];) \
+  if (installer::ShouldUseFileTypeProgId(file_ext)) {        \
+    entries->push_back(std::make_unique<RegistryEntry>(      \
+        capabilities + L"\\FileAssociations", file_ext,      \
+        installer::GetProgIdForFileType()));                 \
+    continue;                                                \
   }
 #else
 #define BRAVE_GET_CHROME_PROG_ID_ENTRIES
