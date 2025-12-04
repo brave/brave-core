@@ -65,8 +65,7 @@ class AIChatAgentProfileBrowserTest : public InProcessBrowserTest {
 
   void VerifyAIChatSidePanelShowing(Browser* browser,
                                     bool should_open_panel = false) {
-    auto* side_panel_coordinator =
-        browser->GetFeatures().side_panel_coordinator();
+    auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     ASSERT_TRUE(side_panel_coordinator);
     if (should_open_panel) {
       side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
@@ -263,7 +262,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
     // TODO(https://github.com/brave/brave-browser/issues/48165): This would be
     // nicer in an interactive_uitest.
     auto* side_panel_web_contents =
-        browser->GetFeatures().side_panel_coordinator()->GetWebContentsForTest(
+        SidePanelCoordinator::From(browser)->GetWebContentsForTest(
             SidePanelEntry::Id::kChatUI);
     constexpr char kWaitForAIChatRenderScript[] = R"(
       new Promise((resolve, reject) => {
@@ -306,7 +305,7 @@ class AIChatAgentProfileWebUIContentBrowserTest
 
   bool IsElementInSidePanel(Browser* browser, const std::string& selector) {
     auto* side_panel_web_contents =
-        browser->GetFeatures().side_panel_coordinator()->GetWebContentsForTest(
+        SidePanelCoordinator::From(browser)->GetWebContentsForTest(
             SidePanelEntry::Id::kChatUI);
     auto result = content::EvalJs(
         side_panel_web_contents,
