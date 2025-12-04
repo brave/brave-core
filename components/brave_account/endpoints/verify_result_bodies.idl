@@ -3,10 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/accounts/password/init response.
+// Schema for the /v2/verify/result request and response.
 namespace endpoints {
-  dictionary PasswordInitResponse {
-    DOMString serializedResponse;
-    DOMString verificationToken;
+  dictionary VerifyResultRequestBody {
+    boolean wait;
+  };
+
+  dictionary VerifyResultSuccessBody {
+    // DOMString, or null, but must always be present
+    any authToken;
   };
 };

@@ -23,19 +23,13 @@ source_set("endpoints") {
 
 generated_types("generated_api_types") {
   sources = [
-    "error.idl",
-    "login_finalize_request.idl",
-    "login_finalize_response.idl",
-    "login_init_request.idl",
-    "login_init_response.idl",
-    "password_finalize_request.idl",
-    "password_finalize_response.idl",
-    "password_init_request.idl",
-    "password_init_response.idl",
-    "service_token_request.idl",
-    "service_token_response.idl",
-    "verify_result_request.idl",
-    "verify_result_response.idl",
+    "error_body.idl",
+    "login_finalize_bodies.idl",
+    "login_init_bodies.idl",
+    "password_finalize_bodies.idl",
+    "password_init_bodies.idl",
+    "service_token_bodies.idl",
+    "verify_result_bodies.idl",
   ]
 
   deps = [ "//base" ]

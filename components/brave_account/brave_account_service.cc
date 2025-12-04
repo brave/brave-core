@@ -17,6 +17,7 @@
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -31,7 +32,7 @@ using endpoint_client::Client;
 using endpoint_client::RequestCancelability;
 using endpoint_client::RequestHandle;
 using endpoint_client::WithHeaders;
-using endpoints::Error;
+using endpoints::ErrorBody;
 using endpoints::LoginFinalize;
 using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
@@ -77,7 +78,7 @@ auto MakeRequest() {
 }
 
 template <typename MojomError>
-auto MakeMojomError(int status_code, Error error_body) {
+auto MakeMojomError(int status_code, ErrorBody error_body) {
   auto mojom_error = MojomError::New(status_code, std::nullopt);
 
   if (!error_body.code.is_int()) {

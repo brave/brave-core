@@ -3,9 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Schema for the /v2/auth/login/finalize response.
+// Schema for the /v2/auth/service_token request and response.
 namespace endpoints {
-  dictionary LoginFinalizeResponse {
+  dictionary ServiceTokenRequestBody {
+    DOMString service;
+  };
+
+  dictionary ServiceTokenSuccessBody {
     DOMString authToken;
   };
 };

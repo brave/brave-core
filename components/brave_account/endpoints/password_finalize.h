@@ -7,22 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_PASSWORD_FINALIZE_H_
 
 #include "brave/components/brave_account/endpoint_client/brave_endpoint.h"
-#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
-#include "brave/components/brave_account/endpoints/error.h"
-#include "brave/components/brave_account/endpoints/password_finalize_request.h"
-#include "brave/components/brave_account/endpoints/password_finalize_response.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/password_finalize_bodies.h"
 
 namespace brave_account::endpoints {
 
 using PasswordFinalize = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/accounts/password/finalize",
-    endpoint_client::POST<PasswordFinalizeRequest>,
-    endpoint_client::Response<PasswordFinalizeResponse, Error>>;
-
-static_assert(endpoint_client::IsEndpoint<PasswordFinalize>);
+    endpoint_client::POST<PasswordFinalizeRequestBody>,
+    endpoint_client::Response<PasswordFinalizeSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 
