@@ -48,8 +48,9 @@ CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
     const std::string& script,
     base::TimeDelta execution_time_limit)
     : content::WebContentsObserver(nullptr), wrapped_js_(WrapScript(script)) {
-  auto* otr_profile =
-      profile->GetPrimaryOTRProfile(true /* create_if_needed */);
+  auto otr_profile_id = Profile::OTRProfileID::AIChatCodeExecutionID();
+  auto* otr_profile = profile->GetOffTheRecordProfile(
+      otr_profile_id, /*create_if_needed=*/true);
   content::WebContents::CreateParams create_params(otr_profile);
   web_contents_ = content::WebContents::Create(create_params);
 
