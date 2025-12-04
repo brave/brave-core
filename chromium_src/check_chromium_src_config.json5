@@ -90,6 +90,9 @@
         "chrome/grit/generated_resources.h": [
           "IDS_PERMISSIONS_BUBBLE_PROMPT",
         ],
+        "chrome/install_static/chromium_install_modes.h": [
+            "CHROMIUM_INDEX",
+        ],
         "chrome/install_static/install_constants.h": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],

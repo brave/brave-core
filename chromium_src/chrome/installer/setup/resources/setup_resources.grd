@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit base_dir="." latest_public_release="0" current_release="1"
+      source_lang_id="en" enc_check="möl">
+  <!-- This grd and accompanying xtb files are not processed by grit. They are
+       a placeholder for a string that is needed for Windows installer until
+       we migrate to Omaha 4. The string and the translations are extracted
+       by chromium_rebase_l10n and inserted into brave_strings.grd/xtbs. -->
+  <translations>
+    <file path="setup_resources_af.xtb" lang="af" />
+    <file path="setup_resources_am.xtb" lang="am" />
+    <file path="setup_resources_ar.xtb" lang="ar" />
+    <file path="setup_resources_as.xtb" lang="as" />
+    <file path="setup_resources_az.xtb" lang="az" />
+    <file path="setup_resources_be.xtb" lang="be" />
+    <file path="setup_resources_bs.xtb" lang="bs" />
+    <file path="setup_resources_bg.xtb" lang="bg" />
+    <file path="setup_resources_bn.xtb" lang="bn" />
+    <file path="setup_resources_ca.xtb" lang="ca" />
+    <file path="setup_resources_cs.xtb" lang="cs" />
+    <file path="setup_resources_cy.xtb" lang="cy" />
+    <file path="setup_resources_da.xtb" lang="da" />
+    <file path="setup_resources_de.xtb" lang="de" />
+    <file path="setup_resources_el.xtb" lang="el" />
+    <file path="setup_resources_en-GB.xtb" lang="en-GB" />
+    <file path="setup_resources_es.xtb" lang="es" />
+    <file path="setup_resources_es-419.xtb" lang="es-419" />
+    <file path="setup_resources_et.xtb" lang="et" />
+    <file path="setup_resources_eu.xtb" lang="eu" />
+    <file path="setup_resources_fa.xtb" lang="fa" />
+    <file path="setup_resources_fi.xtb" lang="fi" />
+    <file path="setup_resources_fil.xtb" lang="fil" />
+    <file path="setup_resources_fr.xtb" lang="fr" />
+    <file path="setup_resources_fr-CA.xtb" lang="fr-CA" />
+    <file path="setup_resources_gl.xtb" lang="gl" />
+    <file path="setup_resources_gu.xtb" lang="gu" />
+    <file path="setup_resources_hi.xtb" lang="hi" />
+    <file path="setup_resources_hr.xtb" lang="hr" />
+    <file path="setup_resources_hu.xtb" lang="hu" />
+    <file path="setup_resources_hy.xtb" lang="hy" />
+    <file path="setup_resources_id.xtb" lang="id" />
+    <file path="setup_resources_is.xtb" lang="is" />
+    <file path="setup_resources_it.xtb" lang="it" />
+    <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
+    <file path="setup_resources_iw.xtb" lang="he" />
+    <file path="setup_resources_ja.xtb" lang="ja" />
+    <file path="setup_resources_ka.xtb" lang="ka" />
+    <file path="setup_resources_kk.xtb" lang="kk" />
+    <file path="setup_resources_km.xtb" lang="km" />
+    <file path="setup_resources_kn.xtb" lang="kn" />
+    <file path="setup_resources_ko.xtb" lang="ko" />
+    <file path="setup_resources_ky.xtb" lang="ky" />
+    <file path="setup_resources_lo.xtb" lang="lo" />
+    <file path="setup_resources_lt.xtb" lang="lt" />
+    <file path="setup_resources_lv.xtb" lang="lv" />
+    <file path="setup_resources_mk.xtb" lang="mk" />
+    <file path="setup_resources_ml.xtb" lang="ml" />
+    <file path="setup_resources_mn.xtb" lang="mn" />
+    <file path="setup_resources_mr.xtb" lang="mr" />
+    <file path="setup_resources_ms.xtb" lang="ms" />
+    <file path="setup_resources_my.xtb" lang="my" />
+    <file path="setup_resources_ne.xtb" lang="ne" />
+    <file path="setup_resources_nl.xtb" lang="nl" />
+    <file path="setup_resources_no.xtb" lang="no" />
+    <file path="setup_resources_or.xtb" lang="or" />
+    <file path="setup_resources_pa.xtb" lang="pa" />
+    <file path="setup_resources_pl.xtb" lang="pl" />
+    <file path="setup_resources_pt-BR.xtb" lang="pt-BR" />
+    <file path="setup_resources_pt-PT.xtb" lang="pt-PT" />
+    <file path="setup_resources_ro.xtb" lang="ro" />
+    <file path="setup_resources_ru.xtb" lang="ru" />
+    <file path="setup_resources_si.xtb" lang="si" />
+    <file path="setup_resources_sk.xtb" lang="sk" />
+    <file path="setup_resources_sl.xtb" lang="sl" />
+    <file path="setup_resources_sq.xtb" lang="sq" />
+    <file path="setup_resources_sr.xtb" lang="sr" />
+    <file path="setup_resources_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="setup_resources_sv.xtb" lang="sv" />
+    <file path="setup_resources_sw.xtb" lang="sw" />
+    <file path="setup_resources_ta.xtb" lang="ta" />
+    <file path="setup_resources_te.xtb" lang="te" />
+    <file path="setup_resources_th.xtb" lang="th" />
+    <file path="setup_resources_tr.xtb" lang="tr" />
+    <file path="setup_resources_uk.xtb" lang="uk" />
+    <file path="setup_resources_ur.xtb" lang="ur" />
+    <file path="setup_resources_uz.xtb" lang="uz" />
+    <file path="setup_resources_vi.xtb" lang="vi" />
+    <file path="setup_resources_zh-CN.xtb" lang="zh-CN" />
+    <file path="setup_resources_zh-HK.xtb" lang="zh-HK" />
+    <file path="setup_resources_zh-TW.xtb" lang="zh-TW" />
+    <file path="setup_resources_zu.xtb" lang="zu" />
+  </translations>
+  <release seq="1">
+    <messages fallback_to_english="true">
+      <!-- Windows Installer -->
+      <if expr="is_win">
+        <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
+          Installation failed due to unspecified error. Please download Brave again.
+        </message>
+      </if>
+    </messages>
+  </release>
+</grit>

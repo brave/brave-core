@@ -91,6 +91,15 @@ if (is_win || is_mac || is_linux) {
   brave_all_unit_tests_deps += [ "//brave/updater:brave_updater_unittests" ]
 }
 
+if (is_win) {
+  # These tests are especially important while we are maintaining the delta
+  # update logic ourselves. See github.com/brave/brave-core/pull/31937.
+  brave_all_unit_tests_deps += [
+    "//chrome/installer/setup:setup_unittests",
+    "//chrome/installer/util:installer_util_unittests",
+  ]
+}
+
 # This group is for unit tests that run as part of brave_all_unit_tests. Other
 # tests that you only want to build should be added directly to `all` group
 group("brave_all_unit_tests") {

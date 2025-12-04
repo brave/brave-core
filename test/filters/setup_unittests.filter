@@ -1,0 +1,17 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# We have "Chromium" hard-coded in some strings in non-official builds. This
+# should be fixed. See https://github.com/brave/brave-browser/issues/51175.
+-GetPreviousSetupExePathTest.*
+
+# This test hardcodes kCommandExecuteImplClsid in a non-easily-replaceable way.
+-LegacyCleanupsTest.Do
+
+# This test hardcodes "GoogleUpdateIsMachine" in a non-easily-replaceable way,
+# when we would need "BraveUpdateIsMachine".
+-MiniInstallerConfigurationTest.IsSystemLevel

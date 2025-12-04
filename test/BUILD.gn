@@ -623,7 +623,6 @@ source_set("crypto_unittests") {
 if (!is_android) {
   test("brave_installer_unittests") {
     deps = [
-      "//base/test:run_all_unittests",
       "//base/test:test_support",
       "//brave/base/test:test_vendor_is_brave",
     ]
@@ -645,6 +644,8 @@ if (!is_android) {
       include_dirs = [ "$target_gen_dir" ]
       deps += [
         "//base",
+        "//brave/installer/setup:run_all_unittests",
+        "//brave/installer/setup:unit_tests",
         "//chrome/chrome_elf:nt_registry",
         "//chrome/install_static:install_static_util",
         "//chrome/install_static/test:test_support",
@@ -662,6 +663,8 @@ if (!is_android) {
           "//brave/chromium_src/chrome/installer/setup/test:vpn_unit_tests",
         ]
       }
+    } else {
+      deps += [ "//base/test:run_all_unittests" ]
     }
   }
 }

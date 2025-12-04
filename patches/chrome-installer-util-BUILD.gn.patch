@@ -1,12 +1,12 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index f7d3ac043e245288211974d9c9cc10ea327f83a6..f4aa9a068ab3c6f417b15c247fa34a00e71f8708 100644
+index f7d3ac043e245288211974d9c9cc10ea327f83a6..0d3ef781c071d7b83f25b657917a5ade73d716d4 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -202,6 +202,7 @@ static_library("with_no_strings") {
        "initial_preferences.h",
      ]
    }
-+  import("//brave/chromium_src/chrome/installer/util/sources.gni") deps += brave_chromium_src_chrome_installer_util_deps sources += brave_chromium_src_chrome_installer_util_sources
++  import("//brave/chromium_src/chrome/installer/util/sources.gni") deps += brave_chromium_src_chrome_installer_util_deps
  }
  
  # Use this version of installer_util to link to the generated strings in .rc

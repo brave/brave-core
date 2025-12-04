@@ -28,6 +28,10 @@ GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
     'IDS_SHORTCUT_NAME_DEV': 'IDS_CHROME_SHORTCUT_NAME_DEV'
 }
 
+# Installer strings that need to be in brave_strings.grd until we move Windows
+# to Omaha 4.
+INSTALLER_STRINGS = ['IDS_SETUP_PATCH_FAILED']
+
 
 def braveify_grd_text(text, is_main_text, branding_replacements_only):
     """Replaces text string to Brave wording"""
@@ -168,9 +172,12 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
     brave_strings_string_ids = []
     if os.path.basename(grd_file_path) == 'brave_strings.grd':
         assert len(grd_strings) == len(chromium_grd_strings) + \
-            len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
-        brave_strings_string_ids = remove_google_chrome_strings(
-            grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
+            len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
+            len(INSTALLER_STRINGS)
+        brave_strings_string_ids = remove_installer_strings(
+            remove_google_chrome_strings(grd_strings,
+                                         GOOGLE_CHROME_STRINGS_MIGRATION_MAP),
+            INSTALLER_STRINGS)
     assert len(grd_strings) == len(chromium_grd_strings), (
         f'String count in {grd_file_path} and in {chromium_grd_file_path} do' +
         f'not match: {len(grd_strings)} vs {len(chromium_grd_strings)}.')
@@ -396,6 +403,24 @@ def remove_google_chrome_strings(brave_grd_strings, google_chrome_strings_map):
             to_remove.append(string_tuple)
             string_ids.append(string_tuple[2])
     assert len(to_remove) == len(google_chrome_strings_map)
+
+    for string_tuple in to_remove:
+        brave_grd_strings.remove(string_tuple)
+
+    return string_ids
+
+
+def remove_installer_strings(brave_grd_strings, installer_string):
+    string_ids = []
+    string_names = [
+        string_name[4:].lower() for string_name in installer_string
+    ]
+    to_remove = []
+    for string_tuple in brave_grd_strings:
+        if string_tuple[0] in string_names:
+            to_remove.append(string_tuple)
+            string_ids.append(string_tuple[2])
+    assert len(to_remove) == len(installer_string)
 
     for string_tuple in to_remove:
         brave_grd_strings.remove(string_tuple)

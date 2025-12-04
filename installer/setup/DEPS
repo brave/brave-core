@@ -1,0 +1,10 @@
+include_rules = [
+  "+brave/third_party/bspatch",
+  "+chrome/common/chrome_paths.h",
+  "+chrome/installer/setup",
+  "+chrome/installer/util/lzma_util.h",
+  "+chrome/installer/util/installation_state.h",
+  "+chrome/installer/util/util_constants.h",
+  "+components/zucchini/zucchini.h",
+  "+components/zucchini/zucchini_integration.h",
+]
