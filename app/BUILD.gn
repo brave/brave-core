@@ -131,7 +131,6 @@ source_set("unit_tests") {
     "//chrome/browser/policy:policy_util",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
-    "//chrome/common/privacy_budget",
     "//components/aggregation_service",
     "//components/attribution_reporting",
     "//components/autofill/core/common",
