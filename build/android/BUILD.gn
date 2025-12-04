@@ -51,22 +51,10 @@ action("sign_app") {
     "//brave:create_symbols_dist",
   ]
 
-  if (target_cpu == "arm64" || target_cpu == "x64") {
-    if (target_android_output_format == "aab") {
-      target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.aab"
-    } else {
-      if (defined(android_app_secondary_abi)) {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
-      } else {
-        target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.apk"
-      }
-    }
+  if (target_android_output_format == "aab") {
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.aab"
   } else {
-    if (target_android_output_format == "aab") {
-      target_sign_app_path = "$root_out_dir/apks/ChromeModernPublic.aab"
-    } else {
-      target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
-    }
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
   }
 
   outputs = [ "$brave_android_output-sign-result" ]
@@ -99,28 +87,15 @@ copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  if (target_cpu == "arm64" || target_cpu == "x64") {
-    if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:chrome_public_bundle" ]
-      sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
-    } else {
-      if (defined(android_app_secondary_abi)) {
-        deps += [ "//chrome/android:monochrome_64_public_apk" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
-      } else {
-        deps += [ "//chrome/android:monochrome_64_public_apk" ]
-        sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
-      }
-    }
+
+  if (target_android_output_format == "aab") {
+    deps += [ "//chrome/android:chrome_public_bundle" ]
+    sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
   } else {
-    if (target_android_output_format == "aab") {
-      deps += [ "//chrome/android:chrome_public_bundle" ]
-      sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
-    } else {
-      deps += [ "//chrome/android:chrome_public_apk" ]
-      sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
-    }
+    deps += [ "//chrome/android:chrome_public_apk" ]
+    sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
   }
+
   outputs = [ brave_android_output ]
 }
 
