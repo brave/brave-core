@@ -19,6 +19,9 @@ enum class ExtendedContentBlockType {
   kImage,
   // Customized Brave content block types
   kPageExcerpt,
+  kPageText,
+  kVideoTranscript,
+  kRequestSummary,
   kChangeTone,
   kParaphrase,
   kImprove,

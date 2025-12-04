@@ -198,6 +198,12 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                                      base::UTF8ToUTF16(tone_content->tone)));
           break;
         }
+
+        default: {
+          DVLOG(2) << "Unsupported block type: "
+                   << static_cast<int>(extended_content_block.type);
+          continue;
+        }
       }
 
       content_list.Append(std::move(content_block_dict));

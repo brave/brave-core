@@ -10,7 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
@@ -26,6 +29,11 @@ struct OAIMessage {
   std::string role;
   std::vector<ExtendedContentBlock> content;
 };
+
+std::vector<OAIMessage> BuildOAIMessages(
+    PageContentsMap&& page_contents,
+    const EngineConsumer::ConversationHistory& conversation_history,
+    uint32_t remaining_length);
 
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,
