@@ -206,22 +206,28 @@
   </message>
   <if expr="not is_android">
     <message name="IDS_BOOKMARK_BAR_ALREADY_CREATED_GROUP" desc="Message in the message box shown when user opens a bookmark folder as tab group if user already did that before">
-      You already created a group from this folder.
+      A tab group was already created with this bookmark folder. Do you want to create a new tab group or replace the existing one?
     </message>
     <if expr="not use_titlecase">
+      <message name="IDS_BOOKMARK_BAR_REPLACE_OR_CREATE_NEW_GROUP_TITLE" desc="Title of the message box shown when user opens a bookmark folder as tab group if user already did that before">
+        Replace or create new group?
+      </message>
       <message name="IDS_BOOKMARK_BAR_CREATE_NEW_GROUP_BUTTON" desc="Create new group button of the message box shown when user opens a bookmark folder as tab group if user already did that before">
-        Create new group
+        Create new tab group
       </message>
       <message name="IDS_BOOKMARK_BAR_REPLACE_OLD_GROUP_BUTTON" desc="Replace old group button of the message box shown when user opens a bookmark folder as tab group if user already did that before">
-        Replace old group
+        Replace existing tab group
       </message>
     </if>
     <if expr="use_titlecase">
+      <message name="IDS_BOOKMARK_BAR_REPLACE_OR_CREATE_NEW_GROUP_TITLE" desc="In title case: Title of the message box shown when user opens a bookmark folder as tab group if user already did that before">
+        Replace or Create New Group?
+      </message>
       <message name="IDS_BOOKMARK_BAR_CREATE_NEW_GROUP_BUTTON" desc="In title case: Create new group button of the message box shown when user opens a bookmark folder as tab group if user already did that before">
-        Create New Group
+        Create New Tab Group
       </message>
       <message name="IDS_BOOKMARK_BAR_REPLACE_OLD_GROUP_BUTTON" desc="In title case: Replace old group button of the message box shown when user opens a bookmark folder as tab group if user already did that before">
-        Replace Old Group
+        Replace Existing Tab Group
       </message>
     </if>
   </if>
@@ -295,6 +301,12 @@
     </message>
   </if>
   <!-- End of Desktop to iOS Promo strings. -->
+
+  <!-- UNO Promo strings for bookmarks -->
+  <message name="IDS_SIGNIN_PROMO_TITLE_BOOKMARK" desc="This is the body text of a confirmation message and means that the bookmark was only saved locally to the user's device (not in their Brave sync chain). It appears after a bookmark save if the user is not signed in to Brave or their sign-in credentials have expired. If the user wants to save this data to their Brave sync chain, they can click the button at the bottom of this message. The tone should be motivating.">
+    Bookmark saved to this device
+  </message>
+  <!-- End of UNO Promo strings for bookmarks -->
 
   <!-- Begin of Bookmark Editor strings. -->
   <message name="IDS_BOOKMARK_EDITOR_NAME_LABEL" desc="Label shown before the title/name of the URL." meaning="Name of an inanimate object">
