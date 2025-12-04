@@ -21,7 +21,7 @@ void OpenAIChatForTab(content::WebContents* web_contents) {
 
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);
   auto* coordinator =
-      tab->GetBrowserWindowInterface()->GetFeatures().side_panel_coordinator();
+      SidePanelCoordinator::From(tab->GetBrowserWindowInterface());
   CHECK(coordinator);
   coordinator->Show(SidePanelEntryId::kChatUI);
 }
