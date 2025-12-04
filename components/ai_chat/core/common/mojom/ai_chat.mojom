@@ -333,7 +333,7 @@ interface ConversationHandler {
   GenerateQuestions();
 
   SubmitHumanConversationEntry(
-      string input, array<UploadedFile>? uploaded_files);
+      string input, array<UploadedFile>? uploaded_files, bool enable_research);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   SubmitHumanConversationEntryWithSkill(string input, string skill_id);
   SubmitSummarizationRequest();

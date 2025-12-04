@@ -245,14 +245,15 @@ void ConversationAPIClient::PerformRequest(
     mojom::ConversationCapability conversation_capability,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
-    const std::optional<std::string>& model_name) {
+    const std::optional<std::string>& model_name,
+    const bool enable_research) {
   // Get credentials and then perform request
   auto callback = base::BindOnce(
       &ConversationAPIClient::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
       selected_language, std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capability, model_name, std::move(data_received_callback),
-      std::move(completed_callback));
+      conversation_capability, model_name, enable_research,
+      std::move(data_received_callback), std::move(completed_callback));
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
@@ -263,7 +264,8 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
-    const bool is_sse_enabled) {
+    const bool is_sse_enabled,
+    const bool enable_research) {
   base::Value::Dict dict;
 
   static constexpr auto kCapabilityMap =
@@ -282,6 +284,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
+  dict.Set("brave_enable_research", enable_research);
 #if !BUILDFLAG(IS_IOS)
   dict.Set("use_citations", true);
 #endif
@@ -302,6 +305,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
     const std::optional<std::string>& preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
     const std::optional<std::string>& model_name,
+    const bool enable_research,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
@@ -323,7 +327,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const std::string request_body = CreateJSONRequestBody(
       std::move(conversation), selected_language,
       std::move(oai_tool_definitions), preferred_tool_name,
-      conversation_capability, model_name, is_sse_enabled);
+      conversation_capability, model_name, is_sse_enabled, enable_research);
 
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
@@ -436,7 +440,10 @@ void ConversationAPIClient::OnQueryCompleted(
 void ConversationAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
-  if (!result.has_value() || !result->is_dict()) {
+  if (!result.has_value()) {
+    return;
+  }
+  if (!result->is_dict()) {
     return;
   }
 
@@ -620,6 +627,14 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
             : 0;
     event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
         mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
+  } else if (*type == "research" || *type == "research_start") {
+    // Handle deep research events using shared parsing function
+    auto research_result = ParseResearchEvent(response_event, model_service);
+    if (research_result.has_value()) {
+      return GenerationResultData(std::move(research_result->first),
+                                  std::move(research_result->second));
+    }
+    return std::nullopt;
   } else {
     // Server will provide different types of events. From time to time, new
     // types of events will be introduced and we should ignore unknown ones.

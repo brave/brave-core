@@ -281,6 +281,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
+    bool enable_research,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -544,7 +545,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
                        ToolApiDefinitionsFromTools(tools), std::nullopt,
                        conversation_capability,
                        std::move(data_received_callback),
-                       std::move(completed_callback), model_name);
+                       std::move(completed_callback), model_name,
+                       enable_research);
 }
 
 void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {

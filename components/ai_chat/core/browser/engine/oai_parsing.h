@@ -15,6 +15,8 @@
 
 namespace ai_chat {
 
+class ModelService;
+
 // Construct a tool use event from a tool calls part of a Chat API-style
 // response
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
@@ -23,6 +25,12 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
 // Convert some Tools to Chat API-style JSON list of tool definitions
 std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
+
+// Parse research event (Deep Research feature) from SSE response
+// Returns mojom event and optional model key
+std::optional<std::pair<mojom::ConversationEntryEventPtr, std::optional<std::string>>>
+ParseResearchEvent(base::Value::Dict& response_event,
+                   ModelService* model_service);
 
 }  // namespace ai_chat
 

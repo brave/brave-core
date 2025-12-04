@@ -87,6 +87,8 @@ export default function BeginGeneration() {
             handleSkillClick: () => {},
             selectedSkill: undefined,
             skills: [],
+            enableDeepResearch: false,
+            setEnableDeepResearch: () => {},
           }}
         />
       </FiltersContainer>

@@ -111,7 +111,7 @@
 
 - (void)submitHumanConversationEntry:(NSString*)text {
   _currentConversation->SubmitHumanConversationEntry(
-      base::SysNSStringToUTF8(text), std::nullopt);
+      base::SysNSStringToUTF8(text), std::nullopt, false /* enable_research */);
 }
 
 - (void)submitSuggestion:(NSString*)text {

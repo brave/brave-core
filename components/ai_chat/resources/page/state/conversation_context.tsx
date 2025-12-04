@@ -68,6 +68,7 @@ export type ConversationContext = SendFeedbackState
     isDragOver: boolean
     unassociatedTabs: Mojom.TabData[]
     showPremiumSuggestionForRegenerate: boolean
+    enableDeepResearch: boolean
     clearDragState: () => void
     setCurrentModel: (model: Mojom.Model) => void
     switchToBasicModel: () => void
@@ -101,6 +102,7 @@ export type ConversationContext = SendFeedbackState
     pendingMessageFiles: Mojom.UploadedFile[]
     isUploadingFiles: boolean
     setTemporary: (temporary: boolean) => void
+    setEnableDeepResearch: (enable: boolean) => void
     attachImages: (images: Mojom.UploadedFile[]) => void
     pauseTask: () => void
     resumeTask: () => void
@@ -137,6 +139,7 @@ export const defaultContext: ConversationContext = {
   isDragActive: false,
   isDragOver: false,
   unassociatedTabs: [],
+  enableDeepResearch: false,
   clearDragState: () => {},
   setCurrentModel: () => {},
   switchToBasicModel: () => {},
@@ -164,6 +167,7 @@ export const defaultContext: ConversationContext = {
   pendingMessageFiles: [],
   isUploadingFiles: false,
   setTemporary: (temporary: boolean) => {},
+  setEnableDeepResearch: () => {},
   attachImages: (images: Mojom.UploadedFile[]) => {},
   pauseTask: () => {},
   resumeTask: () => {},
@@ -197,6 +201,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }))
     },
   })
+
+  const [enableDeepResearch, setEnableDeepResearch] = React.useState(false)
 
   const aiChatContext = useAIChat()
   const {
@@ -571,6 +577,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       conversationHandler.submitHumanConversationEntry(
         stringifyContent(context.inputText),
         context.pendingMessageFiles,
+        enableDeepResearch,
       )
     }
 
@@ -856,6 +863,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
     unassociatedTabs,
+    enableDeepResearch,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),
@@ -891,6 +899,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setIgnoreExternalLinkWarning,
     disassociateContent,
     associateDefaultContent,
+    setEnableDeepResearch,
     attachImages: (images: Mojom.UploadedFile[]) => {
       setPartialContext({
         isUploadingFiles: true,

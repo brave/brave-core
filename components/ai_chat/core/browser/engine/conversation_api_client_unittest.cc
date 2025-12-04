@@ -1920,4 +1920,59 @@ TEST_F(ConversationAPIUnitTest, ParseResponseEvent_MissingModelKey) {
   EXPECT_FALSE(result);
 }
 
+TEST_F(ConversationAPIUnitTest, PerformRequest_IncludesEnableResearchFlag) {
+  // Tests that the enable_research flag is included in the request body
+  auto events_and_body = GetMockEventsAndExpectedEventsBody();
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      std::move(events_and_body.first);
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify enable_research is in body
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        base::Value::Dict body_dict = base::test::ParseJsonDict(body);
+        EXPECT_TRUE(!body_dict.empty());
+
+        // Verify brave_enable_research flag is present and set to true
+        std::optional<bool> enable_research =
+            body_dict.FindBool("brave_enable_research");
+        EXPECT_TRUE(enable_research.has_value());
+        EXPECT_TRUE(enable_research.value());
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                200, base::Value(), base::flat_map<std::string, std::string>(),
+                net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).Times(1);
+
+  // Begin request with enable_research = true
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt, /* oai_tool_definitions */
+      std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      std::nullopt, /* model_name */
+      true /* enable_research */);
+
+  run_loop.Run();
+}
+
 }  // namespace ai_chat

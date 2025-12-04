@@ -495,6 +495,39 @@
   <message name="IDS_CHAT_UI_LEARN_MORE" desc="Link text to learn more about a feature" formatter_data="webui=AiChat">
     Learn more
   </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH" desc="Heading for the deep research panel" formatter_data="webui=AiChat">
+    Deep Research
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_SEARCH" desc="Label for search section in deep research" formatter_data="webui=AiChat">
+    Search
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_THINK" desc="Label for think section in deep research" formatter_data="webui=AiChat">
+    Think
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_BLINDSPOTS" desc="Label for blindspots section in deep research" formatter_data="webui=AiChat">
+    Blindspots
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ANSWER_OUTLINE" desc="Label for final answer outline in deep research" formatter_data="webui=AiChat">
+    Answer outline
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_EVALUATING_ANSWER" desc="Label for evaluating possible answer in deep research" formatter_data="webui=AiChat">
+    Evaluating possible answer
+  </message>
+  <message name="IDS_CHAT_UI_TOGGLE_DEEP_RESEARCH_MODE" desc="Tooltip for button to toggle deep research mode" formatter_data="webui=AiChat">
+    Toggle Deep Research Mode
+  </message>
+  <message name="IDS_CHAT_UI_OPEN_CONTENT_AGENT_WINDOW" desc="Tooltip for button to open Leo AI Content Agent window" formatter_data="webui=AiChat">
+    Open Leo AI Content Agent Window
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_URLS_ANALYZED" desc="Label for URLs analyzed stat in deep research panel" formatter_data="webui=AiChat">
+    URLs analyzed
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_QUERIES_ISSUED" desc="Label for queries issued stat in deep research panel" formatter_data="webui=AiChat">
+    Queries issued
+  </message>
+  <message name="IDS_CHAT_UI_DEEP_RESEARCH_ELAPSED" desc="Label for elapsed time stat in deep research panel" formatter_data="webui=AiChat">
+    Elapsed
+  </message>
   <message name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice" formatter_data="webui=AiChat">
     Close this notice
   </message>

@@ -23,6 +23,49 @@
   box-shadow: var(--leo-effect-elevation-01);
 }
 
+.growWrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-height: 300px;
+  overflow-y: auto;
+
+  textarea {
+    width: 100%;
+    resize: none;
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--leo-color-text-tertiary);
+    }
+  }
+
+  &::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+  }
+
+  textarea,
+  &::after {
+    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-neutral-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}
 .buttonAgree {
   background-color: var(--leo-color-button-background);
   color: white;
@@ -97,6 +140,57 @@
 .taskStateActionButtonStop {
   --leo-button-color: var(--leo-color-systemfeedback-error-text);
   color: var(--leo-color-systemfeedback-error-text);
+}
+
+.researchIconActive {
+  svg {
+    display: block;
+    color: var(--leo-color-icon-interactive);
+  }
+}
+
+.researchButton {
+  // Override Leo button defaults
+  border: 1px solid transparent;
+  border-radius: var(--leo-radius-full);
+  background-color: transparent;
+
+  // Smooth transitions matching search.brave.com
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  // Default state - gray icon
+  svg {
+    color: var(--leo-color-icon-default);
+    transition: color 0.2s ease;
+  }
+
+  // Hover state ONLY when not active (matches search.brave.com behavior)
+  &:hover:not(.researchButtonActive) {
+    border-color: var(--leo-color-divider-subtle);
+    background-color: transparent;
+  }
+
+  // Focus state for accessibility
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--leo-color-focus-border);
+    outline: none;
+  }
+}
+
+.researchButtonActive {
+  // Active state: light background + primary icon color (matches search.brave.com)
+  background-color: var(--leo-color-container-background);
+  border-color: var(--leo-color-container-background);
+
+  svg {
+    color: var(--leo-color-icon-interactive);
+  }
+
+  // Active state doesn't show border on hover - background only
+  &:hover {
+    background-color: var(--leo-color-container-background);
+    border-color: var(--leo-color-container-background);
+  }
 }
 
 .attachmentWrapper {

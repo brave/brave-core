@@ -143,7 +143,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), std::move(received_callback),
+      model_options_, std::move(messages), false, std::move(received_callback),
       std::move(completed_callback), std::vector<std::string>{"</response>"});
 }
 
@@ -178,7 +178,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), false, base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -284,6 +284,7 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
   // Perform a non-streaming request with </title> stop sequence for title.
   api_->PerformRequest(
       model_options_, std::move(messages),
+      false,  // enable_research - not needed for title generation
       base::NullCallback(),  // no streaming needed
       base::BindOnce(&EngineConsumerOAIRemote::OnConversationTitleGenerated,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -299,6 +300,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
     mojom::ConversationCapability conversation_capability,
+    bool enable_research,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -317,7 +319,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
       model_options_, page_contents, BuildUserMemoryMessage(is_temporary_chat),
       selected_text, conversation_history);
 
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_, std::move(messages), enable_research,
                        std::move(data_received_callback),
                        std::move(completed_callback));
 }

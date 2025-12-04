@@ -191,6 +191,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
 
   client_->PerformRequest(
       *model_options, std::move(messages),
+      false, /* enable_research */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -243,6 +244,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
   auto messages = base::test::ParseJsonList(expected_conversation_body);
   client_->PerformRequest(
       *model_options, std::move(messages),
+      false, /* enable_research */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -290,6 +292,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
   auto messages = base::test::ParseJsonList(expected_conversation_body);
   client_->PerformRequest(
       *model_options, std::move(messages),
+      false, /* enable_research */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -350,6 +353,7 @@ TEST_P(OAIAPIInvalidResponseTest,
   // Begin request
   client_->PerformRequest(
       *model_options, base::Value::List(),
+      false, /* enable_research */
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -384,5 +388,62 @@ INSTANTIATE_TEST_SUITE_P(
         R"({"choices": [{"message": {"content": {"nested": "invalid"}}}]})",
         // Valid JSON with missing fields
         R"({"choices": [{"index": 0}]})"));
+
+TEST_F(OAIAPIUnitTest, PerformRequest_IncludesEnableResearchFlag) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify enable_research is in body
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+
+        // Verify brave_enable_research flag is present and set to true
+        std::optional<bool> enable_research =
+            dict.FindBool("brave_enable_research");
+        EXPECT_TRUE(enable_research.has_value());
+        EXPECT_TRUE(enable_research.value());
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                200, base::Value(), base::flat_map<std::string, std::string>(),
+                net::OK, GURL()));
+
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).Times(1);
+
+  // Begin request with enable_research = true
+  auto messages = base::test::ParseJsonList(R"([
+    {"role": "user", "content": "Test message"}
+  ])");
+
+  client_->PerformRequest(
+      *model_options, std::move(messages),
+      true, /* enable_research */
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
 
 }  // namespace ai_chat

@@ -65,6 +65,9 @@ type Props = Pick<
   | 'unassociatedTabs'
   | 'handleSkillClick'
   | 'selectedSkill'
+  | 'enableDeepResearch'
+  | 'setEnableDeepResearch'
+  | 'currentModel'
 >
   & Pick<
     AIChatContext,
@@ -83,6 +86,12 @@ export interface InputBoxProps {
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
+
+const ResearchModeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path fillRule="evenodd" d="M11.202 21.2v-3.404L6.38 21.815a.8.8 0 1 1-1.023-1.23l5.846-4.872v-1.839l-4.996 1.812c-1.353.49-2.891-.034-3.625-1.276l-.169-.287-.009-.02c-.825-1.416-.339-3.2 1.064-4.042l12.978-7.787.016-.01.057-.031.025-.014a1.91 1.91 0 0 1 2.444.583l.1.155.006.01 2.679 4.81.004.006a1.846 1.846 0 0 1-1.01 2.622l.002.002-7.966 2.887v2.42l5.846 4.871a.8.8 0 0 1-1.024 1.23l-4.822-4.018V21.2a.8.8 0 0 1-1.6 0M4.29 11.433c-.677.407-.88 1.234-.5 1.875l.006.011.163.277c.33.557 1.049.821 1.702.585l10.492-3.805-2.492-4.566zm13.228-7.82a.3.3 0 0 0-.229.021l-.035.02-2.22 1.332 2.64 4.838 2.549-.922.011-.004.048-.023a.25.25 0 0 0 .102-.12.25.25 0 0 0-.014-.207l-2.669-4.792-.035-.049a.3.3 0 0 0-.148-.095" clipRule="evenodd"/>
+  </svg>
+)
 
 function usePlaceholderText(
   attachmentsCount: number,
@@ -370,6 +379,32 @@ function InputBox(props: InputBoxProps) {
       )}
       <div className={styles.toolsContainer}>
         <div className={styles.tools}>
+          {/* Only show deep research toggle when BYOM/Custom model is selected */}
+          {props.context.currentModel?.options.customModelOptions && (
+            <Button
+              fab
+              kind='plain-faint'
+              size='large'
+              className={classnames(
+                styles.researchButton,
+                { [styles.researchButtonActive]: props.context.enableDeepResearch }
+              )}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                props.context.setEnableDeepResearch(!props.context.enableDeepResearch)
+              }}
+              title={getLocale(S.CHAT_UI_TOGGLE_DEEP_RESEARCH_MODE)}
+            >
+              <div
+                className={classnames({
+                  [styles.researchIconActive]: props.context.enableDeepResearch
+                })}
+              >
+                <ResearchModeIcon />
+              </div>
+            </Button>
+          )}
           <Button
             fab
             kind='plain-faint'
@@ -416,7 +451,7 @@ function InputBox(props: InputBoxProps) {
                 fab
                 kind='plain-faint'
                 onClick={handleContentAgentToggle}
-                title={'Open Leo AI Content Agent Window'}
+                title={getLocale(S.CHAT_UI_OPEN_CONTENT_AGENT_WINDOW)}
               >
                 <Icon name='leo-cursor' />
               </Button>

@@ -1,0 +1,340 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.deepResearch {
+  border-radius: 12px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  min-height: 300px;
+  overflow: hidden;
+  padding: 0 16px 16px 16px;
+  position: relative;
+  margin: 16px 0;
+}
+
+.deepResearch:not(.expanded) {
+  max-height: 300px;
+}
+
+.deepResearch.expanded {
+  padding-bottom: 0;
+  max-height: none;
+  overflow-y: auto;
+}
+
+.deepResearchSticky {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background: var(--leo-color-container-background);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-right: 1px solid var(--leo-color-divider-subtle);
+}
+
+.deepResearchHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.deepResearchHeaderPrimary {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  padding: 0 12px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--leo-color-text-secondary);
+}
+
+.deepResearchExpandToggle {
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  margin-left: auto;
+  width: 28px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deepResearchExpandToggle:hover {
+  background: var(--leo-color-button-background);
+}
+
+.deepResearchStats {
+  border-radius: 12px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.deepResearchStatsItem {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.deepResearchStatsItem:not(:last-child) {
+  border-right: 1px solid var(--leo-color-divider-subtle);
+}
+
+.deepResearchStatsItemValue {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--leo-color-text-secondary);
+}
+
+.deepResearchStatsItemLabel {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--leo-color-text-tertiary);
+  margin-top: 4px;
+}
+
+.deepResearchLastEvent {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  margin-top: 0;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 0 28px;
+  border-right: 1px solid var(--leo-color-divider-subtle);
+}
+
+.deepResearchContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 0 28px;
+  gap: 32px;
+  margin-bottom: 32px;
+  border-right: 1px solid var(--leo-color-divider-subtle);
+}
+
+// Shared styles
+.deepResearchQuery {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.deepResearchIconWrapper {
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.tertiary {
+  color: var(--leo-color-text-tertiary);
+  font-size: 13px;
+}
+
+// Queries event
+.deepResearchQueries {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deepResearchQueriesHeader {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.deepResearchQueriesContentWrapper {
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.deepResearchQueriesContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 12px;
+}
+
+// Thinking event
+.deepResearchThinking {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deepResearchThinkingHeader {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.deepResearchThinkingContentWrapper {
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.deepResearchThinkingContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 12px;
+}
+
+.deepResearchThinkingInnerWrapper {
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.deepResearchThinkingInner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 20px;
+}
+
+.deepResearchThinkingRelevantSources {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 32px;
+  gap: 8px;
+}
+
+.deepResearchSourceChip {
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deepResearchSourceChip:hover {
+  background: var(--leo-color-button-background);
+}
+
+.deepResearchSourceChipFavicon {
+  border-radius: 50%;
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  padding: 4px;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.deepResearchSourceChipFavicon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Answer event
+.deepResearchAnswer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deepResearchAnswerHeader {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.deepResearchAnswerContentWrapper {
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.deepResearchAnswerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 12px;
+  color: var(--leo-color-text-secondary);
+}
+
+// Blindspots event
+.deepResearchBlindspots {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deepResearchBlindspotsHeader {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.deepResearchBlindspotsContentWrapper {
+  border-left: 1px solid var(--leo-color-divider-subtle);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.deepResearchBlindspotsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 12px;
+  color: var(--leo-color-text-secondary);
+}
+
+// Progress event
+.deepResearchProgress {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  color: var(--leo-color-text-secondary);
+  font-size: 14px;
+}

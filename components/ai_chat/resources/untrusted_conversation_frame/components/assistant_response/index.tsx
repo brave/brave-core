@@ -13,6 +13,9 @@ import MarkdownRenderer from '../markdown_renderer'
 import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
+import DeepResearchPanel from '../deep_research_panel'
+import { convertMojomEvent } from '../deep_research_panel/deep_research_types'
+import type { DeepResearchMessage } from '../deep_research_panel/deep_research_types'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -174,6 +177,44 @@ export default function AssistantResponse(props: AssistantResponseProps) {
     !props.isEntryInProgress
     || (props.events?.some((event) => event.completionEvent) ?? false)
 
+  // Detect and accumulate deep research events
+  // Separate research events from completion to avoid reprocessing on every token
+  const researchEventsOnly = React.useMemo(() => {
+    return props.events?.filter(event =>
+      event.thinkingEvent || event.blindspotsEvent || event.progressEvent ||
+      event.searchQueriesEvent || event.searchStatusEvent ||
+      event.imageResultsEvent || event.newsResultsEvent || event.discussionResultsEvent
+    ) ?? []
+  }, [props.events?.length]) // Only recompute when events array length changes
+
+  const deepResearchMessage = React.useMemo((): DeepResearchMessage | null => {
+    if (researchEventsOnly.length === 0) return null
+
+    const researchEvents = researchEventsOnly
+      .map(event => convertMojomEvent(event))
+      .filter((event): event is NonNullable<typeof event> => event !== null)
+
+    return {
+      events: researchEvents,
+      finished: !props.isEntryInProgress
+    }
+  }, [researchEventsOnly, props.isEntryInProgress])
+
+  // Create a Set of research event indices for O(1) lookup
+  const researchEventIndices = React.useMemo(() => {
+    if (!deepResearchMessage) return null
+    const indices = new Set<number>()
+    props.events?.forEach((event, i) => {
+      if (event.thinkingEvent || event.blindspotsEvent ||
+        event.progressEvent || event.searchQueriesEvent ||
+        event.searchStatusEvent || event.imageResultsEvent ||
+        event.newsResultsEvent || event.discussionResultsEvent) {
+        indices.add(i)
+      }
+    })
+    return indices
+  }, [deepResearchMessage, props.events?.length])
+
   return (
     <>
       {sourcesEvent?.richResults
@@ -184,19 +225,31 @@ export default function AssistantResponse(props: AssistantResponseProps) {
             jsonData={r}
           />
         ))}
-      {props.events?.map((event, i) => (
-        <AssistantEvent
-          key={i}
-          event={event}
-          hasCompletionStarted={hasCompletionStarted}
-          isEntryInProgress={props.isEntryInProgress}
-          isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
-          allowedLinks={props.allowedLinks}
-          isLeoModel={props.isLeoModel}
-        />
-      ))}
+      {/* Show deep research panel if research events exist and not finished */}
+      {deepResearchMessage && !deepResearchMessage.finished && (
+        <DeepResearchPanel message={deepResearchMessage} />
+      )}
+      {/* Always render events, but filter out research-specific ones if panel is shown */}
+      {props.events?.map((event, i) => {
+        // Skip research events that are shown in the panel - O(1) lookup
+        if (researchEventIndices?.has(i)) {
+          return null
+        }
 
-      {!props.isEntryInProgress && (
+        return (
+          <AssistantEvent
+            key={i}
+            event={event}
+            hasCompletionStarted={hasCompletionStarted}
+            isEntryInProgress={props.isEntryInProgress}
+            isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
+            allowedLinks={props.allowedLinks}
+            isLeoModel={props.isLeoModel}
+          />
+        )
+      })}
+
+      {!props.isEntryInProgress && !deepResearchMessage && (
         <>
           {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
           {searchQueriesEvent && (

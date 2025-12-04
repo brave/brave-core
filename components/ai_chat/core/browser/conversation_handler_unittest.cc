@@ -322,7 +322,8 @@ class ConversationHandlerUnitTest : public testing::Test {
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaed_images */, nullptr /* skill */,
           entries[i].second /* from_brave_search_SERP */,
-          std::nullopt /* model_key */, nullptr /* near_verification_status */);
+          std::nullopt /* model_key */, nullptr /* near_verification_status */,
+          false /* enable_research */);
       expected_history.push_back(entry.Clone());
       history.push_back(std::move(entry));
     }
@@ -480,14 +481,14 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   // and the action's expanded text.
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            _, LastTurnHasSelectedText(selected_text), StrEq(""),
-                           _, _, _, _, _, _))
+                           _, _, _, _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(expected_response)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -513,7 +514,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -523,7 +524,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -575,13 +576,13 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
 
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            _, LastTurnHasSelectedText(selected_text), StrEq(""),
-                           _, _, _, _, _, _))
+                           _, _, _, _, _, _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(expected_response)),
               std::nullopt /* model_key */, true /* is_near_verified */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   nullptr, std::nullopt /* model_key */,
                   true /* is_near_verified */)))));
@@ -595,7 +596,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -605,7 +606,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      mojom::NEARVerificationStatus::New(true)));
+      mojom::NEARVerificationStatus::New(true), false /* enable_research */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -644,14 +645,14 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   std::string expected_response = "This is the way.";
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            _, LastTurnHasSelectedText(selected_text), StrEq(""),
-                           _, _, _, _, _, _))
+                           _, _, _, _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(expected_response)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -671,7 +672,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -681,7 +682,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -1302,13 +1303,13 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
           mojom::CompletionEvent::New("new answer"));
   // Modify an entry for the first time.
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, LastTurnHasText("prompt2"),
-                                                 StrEq(""), _, _, _, _, _, _))
+                                                 StrEq(""), _, _, _, _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
               "chat-basic" /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1365,13 +1366,13 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
 
   // Modify the same entry again.
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, LastTurnHasText("prompt3"),
-                                                 StrEq(""), _, _, _, _, _, _))
+                                                 StrEq(""), _, _, _, _, _, _, _))
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
               "chat-basic" /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1398,7 +1399,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   // Modifying server response should have text and completion event updated in
   // the entry of edits.
   // Engine should not be called for an assistant edit
-  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _, _, _))
       .Times(0);
   conversation_handler_->ModifyConversation(
       conversation_history[1]->uuid.value(), " answer2 ");
@@ -1449,13 +1450,13 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
   // that came before the assistant turn we're regenerating
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(_, LastTurnHasText(history[0]->text),
-                                        StrEq(""), _, _, _, _, _, _))
+                                        StrEq(""), _, _, _, _, _, _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("regenerated answer")),
               new_model_key)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1551,7 +1552,7 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
       mojom::ActionType::RESPONSE, "original answer", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   conversation_handler_->SetChatHistoryForTesting(
       CloneHistory(single_entry_history));
@@ -1600,7 +1601,7 @@ TEST_F(ConversationHandlerUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
@@ -1608,7 +1609,7 @@ TEST_F(ConversationHandlerUnitTest,
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "summary", std::nullopt, std::nullopt, std::move(events),
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     expected_history[i]->created_time = history[i]->created_time;
@@ -1667,7 +1668,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
@@ -1676,13 +1677,13 @@ TEST_F(ConversationHandlerUnitTest,
       mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
       std::move(events), base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query2", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, true,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
   std::vector<mojom::ConversationEntryEventPtr> events2;
   events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary2")));
@@ -1691,7 +1692,7 @@ TEST_F(ConversationHandlerUnitTest,
       mojom::ActionType::RESPONSE, "summary2", std::nullopt, std::nullopt,
       std::move(events2), base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, true, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -1711,11 +1712,11 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("new answer")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -1733,11 +1734,12 @@ TEST_F(ConversationHandlerUnitTest,
       mojom::ActionType::RESPONSE, "new answer", std::nullopt, std::nullopt,
       std::move(events3), base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */, false /* enable_research */);
   EXPECT_CALL(client, OnConversationHistoryUpdate(TurnEq(expected_turn.get())))
       .Times(testing::AtLeast(2));
 
-  conversation_handler_->SubmitHumanConversationEntry("query3", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("query3", std::nullopt,
+                                       false /* enable_research */);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -1951,6 +1953,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
              mojom::ConversationCapability conversation_capability,
+             bool enable_research,
              EngineConsumer::GenerationDataCallback callback,
              EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)
@@ -1972,8 +1975,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
       .InSequence(request_in_progress_seq)
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit))
       .WillRepeatedly(testing::Return());
-  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt, std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
   EXPECT_FALSE(
       conversation_handler_->GetConversationHistory().back()->uploaded_files);
@@ -1988,7 +1991,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
       .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit))
       .WillRepeatedly(testing::Return());
   conversation_handler_->SubmitHumanConversationEntry(
-      kTestPrompt, std::vector<mojom::UploadedFilePtr>());
+      kTestPrompt, std::vector<mojom::UploadedFilePtr>(),
+      false /* enable_research */);
   loop2.Run();
   EXPECT_FALSE(
       conversation_handler_->GetConversationHistory().back()->uploaded_files);
@@ -2028,8 +2032,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
         .WillOnce(testing::InvokeWithoutArgs(&loop3, &base::RunLoop::Quit));
   }
 
-  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
-                                                      Clone(uploaded_files));
+  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt, Clone(uploaded_files),
+                                                      false /* enable_research */);
   loop3.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
@@ -2312,7 +2316,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   // The prompt should be submitted to the engine, not the title.
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(_, LastTurnHasText("do the thing!"),
-                                        StrEq(""), _, _, _, _, _, _))
+                                        StrEq(""), _, _, _, _, _, _, _))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
   conversation_handler_->SubmitSuggestion("the thing");
@@ -2334,19 +2338,19 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
 
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(_, LastTurnHasText(expected_input1),
-                                        StrEq(""), _, _, _, _, _, _))
+                                        StrEq(""), _, _, _, _, _, _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Tis but a scratch.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
                   mojom::SelectedLanguageEvent::New(
                       expected_selected_language)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -2358,20 +2362,20 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry(expected_input1,
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry(expected_input1, std::nullopt,
+                                                      false /* enable_research */);
 
   loop.Run();
 
   EXPECT_CALL(*engine, GenerateAssistantResponse(
                            _, LastTurnHasText(expected_input2),
-                           StrEq(expected_selected_language), _, _, _, _, _, _))
+                           StrEq(expected_selected_language), _, _, _, _, _, _, _))
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("No, it isn't.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -2381,8 +2385,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry(expected_input2,
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry(expected_input2, std::nullopt,
+                                                      false /* enable_research */);
   loop2.Run();
 
   // Selected Language events should not be added to the conversation events
@@ -2429,20 +2433,20 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
 
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(_, LastTurnHasText(expected_input),
-                                        StrEq(""), _, _, _, _, _, _))
+                                        StrEq(""), _, _, _, _, _, _, _))
       .Times(1)
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(
                       "That may be your way, but it's not mine.")),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+          base::test::RunOnceCallback<8>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewContentReceiptEvent(
                   mojom::ContentReceiptEvent::New(expected_total_tokens,
                                                   expected_trimmed_tokens)),
               std::nullopt /* model_key */)),
-          base::test::RunOnceCallback<8>(
+          base::test::RunOnceCallback<9>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
@@ -2460,8 +2464,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
                             expected_total_tokens, expected_trimmed_tokens))
       .Times(1);
 
-  conversation_handler_->SubmitHumanConversationEntry(expected_input,
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry(expected_input, std::nullopt,
+                                                      false /* enable_research */);
 
   loop.Run();
 
@@ -2680,7 +2684,7 @@ TEST_F(ConversationHandlerUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(  // Complete the request
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -2689,8 +2693,8 @@ TEST_F(ConversationHandlerUnitTest,
               }));
 
   // Submit a human entry to trigger the mocked response
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify the conversation history doens't have an extra entry
@@ -2745,14 +2749,14 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Ok, going to check...")),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2761,7 +2765,7 @@ TEST_F(ConversationHandlerUnitTest,
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -2783,7 +2787,7 @@ TEST_F(ConversationHandlerUnitTest,
       .InSequence(seq)
       .WillOnce(
           // Complete the request
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 tool_response_generation_started = true;
                 std::move(callback).Run(
@@ -2793,8 +2797,8 @@ TEST_F(ConversationHandlerUnitTest,
               }));
 
   // Submit a human entry to trigger the mocked response
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify the conversation history has 3 entries and an error state:
@@ -2877,7 +2881,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
           // First send a tool use event with a name
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2887,7 +2891,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                     std::nullopt));
               }),
           // Then send a partial tool use event with no name
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2896,7 +2900,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                     std::nullopt));
               }),
           // Then send another tool use event with a name
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2906,7 +2910,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                     std::nullopt));
               }),
           // Complete the request
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -2917,8 +2921,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
               })));
 
   // Submit a human entry to trigger the mocked response
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify the conversation history
@@ -2978,14 +2982,14 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Ok, going to check...")),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -2994,7 +2998,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3041,7 +3045,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       .WillOnce(testing::DoAll(
           testing::InvokeWithoutArgs(
               [&]() { second_generation_started = true; }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3049,7 +3053,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                             "Based on the weather data, it's 72F")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3073,7 +3077,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
 
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(
-      "What's the weather in New York?", std::nullopt);
+      "What's the weather in New York?", std::nullopt,
+      false /* enable_research */);
 
   run_loop.Run();
 
@@ -3128,14 +3133,14 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Ok, going to check...")),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3144,7 +3149,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3191,7 +3196,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
           testing::InvokeWithoutArgs(
               [&]() { second_generation_started = true; }),
 
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::unexpected(mojom::APIError::InternalError));
@@ -3209,7 +3214,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
 
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(
-      "What's the weather in New York?", std::nullopt);
+      "What's the weather in New York?", std::nullopt,
+      false /* enable_research */);
 
   run_loop.Run();
 
@@ -3257,7 +3263,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3266,7 +3272,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3275,7 +3281,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3306,7 +3312,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3314,7 +3320,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                             "Based on the weather data, it's 72F")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3325,8 +3331,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
               })));
 
   // Submit human entry to start the flow
-  conversation_handler_->SubmitHumanConversationEntry("What's the weather?",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("What's the weather?", std::nullopt,
+                                                      false /* enable_research */);
 
   run_loop.Run();
 
@@ -3388,7 +3394,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3397,7 +3403,7 @@ TEST_F(ConversationHandlerUnitTest,
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3417,14 +3423,14 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Here's a new response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3435,8 +3441,8 @@ TEST_F(ConversationHandlerUnitTest,
               })));
 
   // Submit first human entry to get tool use event
-  conversation_handler_->SubmitHumanConversationEntry("First question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("First question", std::nullopt,
+                                                      false /* enable_research */);
   first_generation_loop.Run();
 
   // Verify the tool use event exists and has no output
@@ -3450,8 +3456,8 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_FALSE(events_before[0]->get_tool_use_event()->output.has_value());
 
   // Submit a new human entry which should cancel the pending tool use event
-  conversation_handler_->SubmitHumanConversationEntry("New question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("New question", std::nullopt,
+                                                      false /* enable_research */);
   second_generation_loop.Run();
 
   // Verify the pending tool use event was removed
@@ -3505,7 +3511,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3514,7 +3520,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3543,7 +3549,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3552,7 +3558,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3565,7 +3571,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3573,7 +3579,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                             "Final response after tools")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -3590,8 +3596,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
       .InSequence(seq);
 
   // Submit human entry to start the flow
-  conversation_handler_->SubmitHumanConversationEntry("Use multiple tools",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Use multiple tools", std::nullopt,
+                                                      false /* enable_research */);
 
   // Wait for the final response to complete
   run_loop.Run();
@@ -3656,7 +3662,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
       .InSequence(seq)
       .WillOnce(testing::DoAll(
           // Send completion event first (like working test)
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3664,7 +3670,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                     std::nullopt));
               }),
           // Then send tool use event via data callback
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -3674,7 +3680,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                     std::nullopt));
               }),
           // Complete with empty completion event (like working test)
-          testing::WithArg<8>([](EngineConsumer::GenerationCompletedCallback
+          testing::WithArg<9>([](EngineConsumer::GenerationCompletedCallback
                                      completion_callback) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -3687,7 +3693,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -3695,7 +3701,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                             "Final response after handling tool error")),
                     std::nullopt));
               }),
-          testing::WithArg<8>([&](EngineConsumer::GenerationCompletedCallback
+          testing::WithArg<9>([&](EngineConsumer::GenerationCompletedCallback
                                       completion_callback) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
@@ -3718,8 +3724,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
       }));
 
   // Trigger generation which will cause tool lookup
-  conversation_handler_->SubmitHumanConversationEntry("Help me with something",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Help me with something", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 }
 
@@ -3745,14 +3751,15 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
   // the observation is made by the conversation client whilst the request
   // is still in progress so that the UI may follow the progress of the action.
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::WithArg<7>(
+      .WillOnce(testing::WithArg<8>(
           [&](EngineConsumer::GenerationDataCallback callback) {
             mock_tool_provider_->StartContentTask(test_tab_id);
             run_loop.QuitWhenIdle();  // QuitWhenIdle due to mojo connection
           }));
 
   // Submit a human entry to trigger the tool use
-  conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt,
+                                       false /* enable_research */);
   run_loop.Run();
 
   EXPECT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
@@ -3812,7 +3819,7 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response with screenshots")),
@@ -3826,8 +3833,8 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that screenshots were attached to the conversation turn
@@ -3867,7 +3874,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response without screenshots")),
@@ -3881,8 +3888,8 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that no screenshots were attached
@@ -3909,7 +3916,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */, false /* enable_research */);
   history.push_back(std::move(turn_with_screenshots));
   conversation_handler_->SetChatHistoryForTesting(std::move(history));
 
@@ -3920,7 +3927,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New(
@@ -3935,8 +3942,8 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that no new screenshots were attached
@@ -3971,7 +3978,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response with mixed content")),
@@ -3987,8 +3994,8 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
 
   auto existing_images =
       CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      Clone(existing_images));
+  conversation_handler_->SubmitHumanConversationEntry("Test question", Clone(existing_images),
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that screenshots were appended to existing files
@@ -4048,6 +4055,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
              mojom::ConversationCapability conversation_capability,
+             bool enable_research,
              EngineConsumer::GenerationDataCallback callback,
              EngineConsumer::GenerationCompletedCallback done_callback) {
             std::move(done_callback)
@@ -4069,8 +4077,8 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
       })));
 
   // Submit a conversation entry
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that screenshots were attached and model has vision support
@@ -4099,7 +4107,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response without screenshots")),
@@ -4113,8 +4121,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   loop.Run();
 
   // Verify that no screenshots were attached
@@ -4155,7 +4163,7 @@ TEST_F(ConversationHandlerUnitTest,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response with screenshots")),
@@ -4189,7 +4197,8 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt,
+                                       false /* enable_research */);
   loop.Run();
 
   // Verify that the conversation history has screenshots limited to MAX_IMAGES
@@ -4243,7 +4252,7 @@ TEST_F(ConversationHandlerUnitTest,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(base::test::RunOnceCallback<8>(
+      .WillOnce(base::test::RunOnceCallback<9>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Response with screenshots")),
@@ -4272,7 +4281,8 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("", std::nullopt,
+                                       false /* enable_research */);
   loop.Run();
 
   // Verify that the conversation history has all screenshots preserved
@@ -4359,7 +4369,8 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Submit a human turn - this should automatically associate content
   conversation_handler_->SubmitHumanConversationEntry("Test message",
-                                                      std::nullopt);
+                                                      std::nullopt,
+                                                      false /* enable_research */);
 
   // Verify content is now associated with a turn
   auto associated_content = conversation_handler_->associated_content_manager()
@@ -4400,14 +4411,14 @@ TEST_F(ConversationHandlerUnitTest,
       .InSequence(assistant_title_seq)
       .WillOnce(testing::DoAll(
           // Mock successful assistant response
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Assistant response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -4434,8 +4445,8 @@ TEST_F(ConversationHandlerUnitTest,
       .Times(1);
 
   // Submit human entry to trigger the flow
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify conversation has 2 turns (human + assistant)
@@ -4462,14 +4473,14 @@ TEST_F(ConversationHandlerUnitTest,
   base::RunLoop first_loop;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("First response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -4490,8 +4501,8 @@ TEST_F(ConversationHandlerUnitTest,
             first_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntry("First question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("First question", std::nullopt,
+                                                      false /* enable_research */);
   first_loop.Run();
   testing::Mock::VerifyAndClearExpectations(engine);
 
@@ -4499,14 +4510,14 @@ TEST_F(ConversationHandlerUnitTest,
   base::RunLoop second_loop;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Second response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&second_loop](
                   EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
@@ -4524,7 +4535,8 @@ TEST_F(ConversationHandlerUnitTest,
       .WillRepeatedly(testing::Return(true));
 
   conversation_handler_->SubmitHumanConversationEntry("Second question",
-                                                      std::nullopt);
+                                                      std::nullopt,
+                                                      false /* enable_research */);
   second_loop.Run();
 
   // Verify conversation has 4 turns
@@ -4549,14 +4561,14 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Assistant response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&run_loop](
                   EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
@@ -4578,8 +4590,8 @@ TEST_F(ConversationHandlerUnitTest,
       .Times(testing::AtLeast(1))
       .InSequence(request_in_progress_seq);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify conversation has 2 turns but no title generation occurred
@@ -4606,14 +4618,14 @@ TEST_F(ConversationHandlerUnitTest,
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("Assistant response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -4641,8 +4653,8 @@ TEST_F(ConversationHandlerUnitTest,
       .InSequence(request_in_progress_seq);
   EXPECT_CALL(observer, OnConversationTitleChanged).Times(0);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify conversation still completes successfully despite title failure
@@ -4667,7 +4679,7 @@ TEST_F(ConversationHandlerUnitTest,
   base::RunLoop run_loop;
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::WithArg<8>(
+      .WillOnce(testing::WithArg<9>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             // Mock assistant response failure
             std::move(callback).Run(
@@ -4681,8 +4693,8 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify error is set and conversation has only human entry
@@ -4716,7 +4728,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Mock successful response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::WithArg<8>(
+      .WillOnce(testing::WithArg<9>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -4760,7 +4772,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Engine should still be called (invalid skill is silently ignored)
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::WithArg<8>(
+      .WillOnce(testing::WithArg<9>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -4841,7 +4853,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Mock successful response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::WithArg<8>(
+      .WillOnce(testing::WithArg<9>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -4885,7 +4897,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   // (simulating server alignment check blocking the tool)
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool", "tool_id_1", "{\"input\":\"test1\"}",
@@ -4899,7 +4911,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
                         std::move(tool_use)),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool2", "tool_id_2", "{\"input\":\"test2\"}",
@@ -4909,7 +4921,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
                         std::move(tool_use)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -4923,8 +4935,8 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   EXPECT_CALL(*tool1, UseTool).Times(0);
   EXPECT_CALL(*tool2, UseTool).Times(0);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify the tool use event exists with permission challenge
@@ -5023,7 +5035,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
   // Engine returns tool use event without permission challenge
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -5032,7 +5044,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5045,8 +5057,8 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
   // Tool should NOT be called since permission challenge is in initial response
   EXPECT_CALL(*tool1, UseTool).Times(0);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify the tool use event now has permission challenge
@@ -5093,7 +5105,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 // First tool use
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -5113,7 +5125,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5123,7 +5135,8 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                 first_loop.Quit();
               })));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt,
+                                       false /* enable_research */);
   first_loop.Run();
 
   // Verify first tool has permission challenge, second tool has no output yet
@@ -5203,7 +5216,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 auto tool_use = mojom::ToolUseEvent::New(
                     "test_tool", "tool_id_1", "{\"param\":\"value\"}",
@@ -5216,7 +5229,7 @@ TEST_F(ConversationHandlerUnitTest,
                         std::move(tool_use)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5226,7 +5239,8 @@ TEST_F(ConversationHandlerUnitTest,
                 first_loop.Quit();
               })));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt,
+                                       false /* enable_research */);
   first_loop.Run();
 
   // Verify Gate 1: Server permission challenge is present
@@ -5315,7 +5329,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   // when tool execution is paused.
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -5326,7 +5340,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
                 // Pause after receiving the tool use event
                 mock_tool_provider_->SetIsPausedByUser(true);
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5340,8 +5354,8 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   // Before generation, the task state represents no active task
   EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Since pause was called during generation, that should be the state
@@ -5386,7 +5400,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 // Pause after submitting
                 mock_tool_provider_->SetIsPausedByUser(true);
@@ -5398,7 +5412,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5406,8 +5420,8 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
                 first_loop.QuitWhenIdle();
               })));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   first_loop.Run();
 
   // Since pause was called during generation, that should be the state
@@ -5435,7 +5449,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 EXPECT_EQ(GetState()->tool_use_task_state,
                           mojom::TaskState::kRunning);
@@ -5445,7 +5459,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
                         mojom::CompletionEvent::New("Final response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5505,7 +5519,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 // Pause during request
                 mock_tool_provider_->SetIsPausedByUser(true);
@@ -5520,7 +5534,7 @@ TEST_F(ConversationHandlerUnitTest,
                                                  std::nullopt, nullptr)),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5528,8 +5542,8 @@ TEST_F(ConversationHandlerUnitTest,
                 first_loop.Quit();
               })));
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   first_loop.Run();
 
   // Setup first tool to complete and unpause during its execution
@@ -5563,7 +5577,7 @@ TEST_F(ConversationHandlerUnitTest,
       .Times(1)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 // Pause and unpause before any reponse is handled to verify
                 // we don't duplicate the request with the tool output.
@@ -5574,7 +5588,7 @@ TEST_F(ConversationHandlerUnitTest,
                         mojom::CompletionEvent::New("Final response")),
                     std::nullopt));
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5624,7 +5638,7 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   // Engine returns tool use event
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::DoAll(
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -5635,7 +5649,7 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
                 // Pause during generation
                 mock_tool_provider_->SetIsPausedByUser(true);
               }),
-          testing::WithArg<8>(
+          testing::WithArg<9>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -5646,8 +5660,8 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   // Tool should NOT be called since task will be stopped
   EXPECT_CALL(*tool1, UseTool).Times(0);
 
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
+  conversation_handler_->SubmitHumanConversationEntry("Test question", std::nullopt,
+                                                      false /* enable_research */);
   run_loop.Run();
 
   // Verify task is paused

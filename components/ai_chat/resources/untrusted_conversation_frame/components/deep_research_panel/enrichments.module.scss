@@ -1,0 +1,239 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.enrichmentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.enrichmentHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--leo-color-text-secondary);
+}
+
+.expandButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: transparent;
+  color: var(--leo-color-text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--leo-color-button-background);
+  }
+}
+
+// Images Grid
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.imageCard {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.imageThumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// News Grid
+.newsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.newsCard {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--leo-color-button-background);
+  }
+}
+
+.newsThumbnail {
+  position: relative;
+  width: 120px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--leo-color-container-background);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.breakingBadge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: var(--leo-color-red-40);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.newsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.newsTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--leo-color-text-primary);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.newsMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.newsFavicon {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.newsSource {
+  font-weight: 500;
+}
+
+.newsAge {
+  color: var(--leo-color-text-tertiary);
+}
+
+.metaSeparator {
+  color: var(--leo-color-text-tertiary);
+}
+
+// Discussions Grid
+.discussionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.discussionCard {
+  display: flex;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--leo-color-button-background);
+  }
+}
+
+.discussionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.discussionTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--leo-color-text-primary);
+  line-height: 1.4;
+}
+
+.discussionDescription {
+  font-size: 13px;
+  color: var(--leo-color-text-secondary);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.discussionMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--leo-color-text-tertiary);
+}
+
+.discussionFavicon {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.forumName {
+  font-weight: 500;
+}
+
+.answerCount {
+  color: var(--leo-color-text-tertiary);
+}
+
+.discussionAge {
+  color: var(--leo-color-text-tertiary);
+}

@@ -21,6 +21,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -61,6 +62,7 @@ std::string CreateJSONRequestBody(
     base::Value::List messages,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options,
+    const bool enable_research,
     const std::optional<std::vector<std::string>>& stop_sequences) {
   base::Value::Dict dict;
 
@@ -68,6 +70,7 @@ std::string CreateJSONRequestBody(
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
   dict.Set("model", model_options.model_request_name);
+  dict.Set("brave_enable_research", enable_research);
 
   if (stop_sequences && !stop_sequences->empty()) {
     base::Value::List stop_list;
@@ -99,6 +102,7 @@ void OAIAPIClient::ClearAllQueries() {
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
+    bool enable_research,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
@@ -110,7 +114,8 @@ void OAIAPIClient::PerformRequest(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(messages), is_sse_enabled, model_options, stop_sequences);
+      std::move(messages), is_sse_enabled, model_options, enable_research,
+      stop_sequences);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",
@@ -208,7 +213,19 @@ void OAIAPIClient::OnQueryDataReceived(
     return;
   }
 
-  const base::Value::List* choices = result->GetDict().FindList("choices");
+  base::Value::Dict& response_dict = result->GetDict();
+
+  // Check if this is a research event (Deep Research)
+  auto research_result = ParseResearchEvent(response_dict, nullptr);
+  if (research_result.has_value()) {
+    callback.Run(EngineConsumer::GenerationResultData(
+        std::move(research_result->first),
+        std::move(research_result->second)));
+    return;
+  }
+
+  // Fall back to standard OpenAI completion format
+  const base::Value::List* choices = response_dict.FindList("choices");
 
   if (!choices || choices->empty()) {
     VLOG(2) << "No choices list found in response, or it is empty.";

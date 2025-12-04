@@ -67,6 +67,7 @@ class MockOAIAPIClient : public OAIAPIClient {
               PerformRequest,
               (const mojom::CustomModelOptions&,
                base::Value::List,
+               bool enable_research,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::vector<std::string>>&),
@@ -120,10 +121,11 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   auto* client = GetClient();
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce([&run_loop, this](
                     const mojom::CustomModelOptions& model_options,
-                    base::Value::List, EngineConsumer::GenerationDataCallback,
+                    base::Value::List, bool enable_research,
+                    EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback,
                     const std::optional<std::vector<std::string>>&) {
         EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
@@ -150,10 +152,10 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   run_loop.Run();
 
   base::RunLoop run_loop2;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce([&run_loop2](const mojom::CustomModelOptions& model_options,
                              base::Value::List,
-                             EngineConsumer::GenerationDataCallback,
+                             bool enable_research, EngineConsumer::GenerationDataCallback,
                              EngineConsumer::GenerationCompletedCallback,
                              const std::optional<std::vector<std::string>>&) {
         EXPECT_EQ("https://updated-test.com/", model_options.endpoint.spec());
@@ -176,7 +178,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   auto invoke_completion_callback = [](const std::string& result_string) {
     return [result_string](
                const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
+               bool enable_research, EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
       std::move(completed_callback)
@@ -187,7 +189,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
     };
   };
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(invoke_completion_callback("Returning non question format"))
       .WillOnce(invoke_completion_callback(
           "<question>Question 1</question><question>Question 2</question>"))
@@ -349,10 +351,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result doesn't have a value
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
+               bool enable_research, EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
               // Return an error response (result without a value)
@@ -377,10 +379,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
+               bool enable_research, EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
               // Return a result with a null event
@@ -406,10 +408,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has a non-completion event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
+               bool enable_research, EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
               // Return a result with a non-completion event (using DeltaEvent
@@ -438,10 +440,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty completion
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
         .WillOnce(
             [](const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
+               bool enable_research, EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
               // Return a result with an empty completion
@@ -518,7 +520,8 @@ TEST_F(EngineConsumerOAIUnitTest,
       nullptr,                         // No skill
       false,                           // Not from Brave SERP
       std::nullopt,                    // No model_key
-      nullptr                          // near_verification_status
+      nullptr,                         // near_verification_status
+      false                            // enable_research
       ));
 
   // Prepare to capture API client request
@@ -526,11 +529,11 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto run_loop = std::make_unique<base::RunLoop>();
 
   // Expect a single call to PerformRequest
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &human_input, &assistant_response](
               const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             // system role is added by the engine
@@ -556,7 +559,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Initiate the test
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_EQ(result.value(),
@@ -588,22 +592,24 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       assistant_input, std::nullopt /* prompt */, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &assistant_input](
               const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             // system role is added by the engine
@@ -641,7 +647,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, history, "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_EQ(result.value(),
@@ -657,11 +664,11 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Test with a modified server reply.
   run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
               const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             // system role is added by the engine
@@ -691,7 +698,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, GetHistoryWithModifiedReply(), "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -714,11 +722,11 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   constexpr char kAssistantResponse[] =
       "There are images of a lion, a dragon and a stag. And screenshots appear "
       "to be telling the story of Game of Thrones";
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [kTestPrompt, kAssistantResponse, &uploaded_images](
               const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
@@ -781,10 +789,11 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
+                                     false /* enable_research */,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -807,11 +816,11 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
   constexpr char kAssistantResponse[] =
       "These PDFs contain technical documentation and user guides.";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [kTestPrompt, kAssistantResponse, &uploaded_pdfs](
               const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
@@ -862,11 +871,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
       "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
+                                     false /* enable_research */,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -889,10 +899,10 @@ TEST_F(EngineConsumerOAIUnitTest,
   constexpr char kAssistantResponse[] =
       "This PDF contains important information.";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce([kTestPrompt, kAssistantResponse, &uploaded_pdfs](
                     const mojom::CustomModelOptions, base::Value::List messages,
-                    EngineConsumer::GenerationDataCallback,
+                    bool enable_research, EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
                         completed_callback,
                     const std::optional<std::vector<std::string>>&) {
@@ -937,11 +947,12 @@ TEST_F(EngineConsumerOAIUnitTest,
       "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
+                                     false /* enable_research */,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -981,10 +992,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
   constexpr char kAssistantResponse[] =
       "I can see images, screenshots, and a PDF document.";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce([kTestPrompt, kAssistantResponse](
                     const mojom::CustomModelOptions, base::Value::List messages,
-                    EngineConsumer::GenerationDataCallback,
+                    bool enable_research, EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
                         completed_callback,
                     const std::optional<std::vector<std::string>>&) {
@@ -1084,11 +1095,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
       "What do you see in these files?", kTestPrompt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
+                                     false /* enable_research */,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -1104,10 +1116,10 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   EngineConsumer::ConversationHistory history;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Page content should always be attached to the first message
@@ -1136,7 +1148,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   PageContent page_content("This is a page.", false);
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1172,7 +1185,8 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     mock_engine_consumer->GenerateAssistantResponse(
         {{{history.back()->uuid.value(), {page_content_1, page_content_2}}}},
         history, "", false, {}, std::nullopt,
-        mojom::ConversationCapability::CHAT, base::DoNothing(),
+        mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
         base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
@@ -1211,10 +1225,10 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(std::move(entry));
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             ASSERT_EQ(messages.size(), 2u);
@@ -1234,7 +1248,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, history, "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1306,10 +1321,10 @@ TEST_F(EngineConsumerOAIUnitTest,
       {*expected_user_memory_json}, nullptr);
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             ASSERT_EQ(messages.size(), 3u);
@@ -1332,7 +1347,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {}, history, "", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT, base::DoNothing(),
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1376,10 +1392,10 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   base::RunLoop run_loop;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
+              bool enable_research, EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
             // Should only have 2 messages: system prompt and user message
@@ -1405,7 +1421,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   engine_->GenerateAssistantResponse(
       {}, history, "",
       true,  // is_temporary_chat = true
-      {}, std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+      {}, std::nullopt, mojom::ConversationCapability::CHAT, false /* enable_research */,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
@@ -1428,21 +1445,21 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Assistant message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn2));
 
   auto turn3 = mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn3));
 
   auto messages = engine_->BuildMessages(
@@ -1496,7 +1513,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1534,7 +1551,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1577,14 +1594,14 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn2));
 
   auto messages = engine_->BuildMessages(
@@ -1627,7 +1644,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1653,7 +1670,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1685,14 +1702,14 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr, false /* enable_research */);
   conversation_history.push_back(std::move(turn2));
 
   // Gets the content of a page content event
@@ -1819,20 +1836,20 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
       "What is artificial intelligence?", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "AI is a technology that enables machines to simulate human "
       "intelligence.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>& stop_sequences) {
             // Verify the stop sequences
@@ -1916,19 +1933,19 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Analyze these pages", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr));
+      std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Analysis completed.", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr));
+      std::nullopt, nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Should have 3 page content messages + 2 other messages = 5 total
@@ -1998,18 +2015,18 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
       "Explain this concept", std::nullopt,
       "Machine learning is a subset of AI", std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Machine learning allows computers to learn patterns from data.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce([](const mojom::CustomModelOptions&, base::Value::List messages,
-                   EngineConsumer::GenerationDataCallback,
+                   bool enable_research, EngineConsumer::GenerationDataCallback,
                    EngineConsumer::GenerationCompletedCallback
                        completed_callback,
                    const std::optional<std::vector<std::string>>&) {
@@ -2065,20 +2082,20 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
       "What's in this image?", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::move(uploaded_files),
       nullptr /* skill */, false, std::nullopt,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "The image shows a beautiful sunset over mountains.", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt,
-      nullptr /* near_verification_status */));
+      nullptr /* near_verification_status */, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // When uploaded files are present, only assistant response is used
@@ -2132,7 +2149,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        nullptr));
+        nullptr, false /* enable_research */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2150,17 +2167,17 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        nullptr));
+        nullptr, false /* enable_research */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "Hi there!", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, nullptr));
+        false, std::nullopt, nullptr, false /* enable_research */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "How are you?", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, nullptr));
+        false, std::nullopt, nullptr, false /* enable_research */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2183,12 +2200,12 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        nullptr));
+        nullptr, false /* enable_research */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "How are you?", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, nullptr));
+        false, std::nullopt, nullptr, false /* enable_research */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2206,12 +2223,12 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        nullptr));
+        nullptr, false /* enable_research */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hi there!", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, nullptr));
+        false, std::nullopt, nullptr, false /* enable_research */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2231,19 +2248,19 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             std::move(completed_callback)
@@ -2266,19 +2283,19 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return a title longer than 100 characters
@@ -2306,19 +2323,19 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return empty completion
@@ -2346,19 +2363,19 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return title with leading/trailing whitespace
@@ -2388,19 +2405,19 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return result with null event
@@ -2426,19 +2443,19 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr, false /* enable_research */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr));
+      nullptr, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return a non-completion event (e.g., tool use event)
@@ -2474,16 +2491,16 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(skill_entry), false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */, false /* enable_research */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   // Expect that PerformRequest is called with messages that include both
   // skill definition message and the main user message
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [](const mojom::CustomModelOptions&, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
+             bool enable_research, EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Verify messages include system prompt and user message with
@@ -2528,7 +2545,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
 
   engine_->GenerateAssistantResponse(
       {}, conversation_history, "en-US", false, {}, std::nullopt,
-      mojom::ConversationCapability::CHAT,
+      mojom::ConversationCapability::CHAT, false /* enable_research */,
       base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
       future.GetCallback());
 
@@ -2553,10 +2570,11 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateRewriteSuggestion) {
       "Here is the requested rewritten version of "
       "the excerpt in <response> tags:\n<response>";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions& options,
               base::Value::List messages,
+              bool enable_research,
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>& stop_sequences) {

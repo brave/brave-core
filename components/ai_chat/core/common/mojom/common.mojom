@@ -207,12 +207,98 @@ struct ConversationTitleEvent {
   string title;
 };
 
+// Deep research event structs
+struct VideoResult {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url thumbnail_url;
+  string? age;
+  string? description;
+  string? duration;
+  string? creator;
+  string? publisher;
+};
+
+struct VideoResultsEvent {
+  array<VideoResult> videos;
+};
+
+struct ImageResult {
+  string title;
+  url.mojom.Url image_url;
+  url.mojom.Url thumbnail_url;
+  int32? width;
+  int32? height;
+};
+
+struct ImageResultsEvent {
+  array<ImageResult> images;
+};
+
+struct NewsResult {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url thumbnail_url;
+  url.mojom.Url favicon_url;
+  string? age;
+  string? source;
+  bool? is_breaking;
+};
+
+struct NewsResultsEvent {
+  array<NewsResult> news;
+};
+
+struct DiscussionResult {
+  string title;
+  url.mojom.Url url;
+  string? description;
+  url.mojom.Url favicon_url;
+  string? age;
+  string? forum_name;
+  int32? num_answers;
+};
+
+struct DiscussionResultsEvent {
+  array<DiscussionResult> discussions;
+};
+
+struct UrlInfo {
+  string url;
+  string favicon;
+};
+
+struct ThinkingEvent {
+  string query;
+  int32 urls_analyzed;
+  array<string> urls_selected;
+  array<UrlInfo> urls_info;
+};
+
+struct BlindspotsEvent {
+  array<string> blindspots;
+};
+
+struct ProgressEvent {
+  int32 iteration;
+  double elapsed_seconds;
+  int32 urls_analyzed;
+  int32 queries_issued;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
+  VideoResultsEvent video_results_event;
+  ImageResultsEvent image_results_event;
+  NewsResultsEvent news_results_event;
+  DiscussionResultsEvent discussion_results_event;
+  ThinkingEvent thinking_event;
+  BlindspotsEvent blindspots_event;
+  ProgressEvent progress_event;
   ToolUseEvent tool_use_event;
 
   // These events don't normally get added to the conversation entry
@@ -284,6 +370,9 @@ struct ConversationTurn {
 
   // NEAR attestation verification status associated with this turn.
   NEARVerificationStatus? near_verification_status;
+
+  // Enable deep research mode for this turn (applicable to BYOM models).
+  bool enable_research = false;
 };
 
 // State of the tool loop task execution. A Task represents a loop of tool

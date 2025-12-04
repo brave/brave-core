@@ -168,7 +168,8 @@ class ConversationAPIClient {
       mojom::ConversationCapability conversation_capability,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
-      const std::optional<std::string>& model_name = std::nullopt);
+      const std::optional<std::string>& model_name = std::nullopt,
+      const bool enable_research = false);
 
   void ClearAllQueries();
 
@@ -184,7 +185,8 @@ class ConversationAPIClient {
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
-      const bool is_sse_enabled);
+      const bool is_sse_enabled,
+      const bool enable_research);
 
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
@@ -202,6 +204,7 @@ class ConversationAPIClient {
       const std::optional<std::string>& preferred_tool_name,
       mojom::ConversationCapability conversation_capability,
       const std::optional<std::string>& model_name,
+      const bool enable_research,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback,
       std::optional<CredentialCacheEntry> credential);

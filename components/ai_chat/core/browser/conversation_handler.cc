@@ -528,7 +528,8 @@ void ConversationHandler::GetIsRequestInProgress(
 
 void ConversationHandler::SubmitHumanConversationEntry(
     const std::string& input,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+    bool enable_research) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -541,7 +542,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::move(uploaded_files), nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      enable_research);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -660,7 +662,8 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(skill_entry), false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -713,7 +716,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
         std::nullopt /* prompt */, std::nullopt /* selected_text */,
         std::move(events), base::Time::Now(), std::nullopt /* edits */,
         std::nullopt, nullptr /* skill */, false, turn->model_key,
-        nullptr /* near_verification_status */);
+        nullptr /* near_verification_status */, turn->enable_research);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -749,7 +752,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
       nullptr /* skill */, false, turn->model_key,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */, turn->enable_research);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -826,7 +829,8 @@ void ConversationHandler::SubmitSummarizationRequest() {
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -853,7 +857,7 @@ void ConversationHandler::SubmitSuggestion(
       suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */);
+      nullptr /* near_verification_status */, false /* enable_research */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -1008,7 +1012,8 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -1048,7 +1053,8 @@ void ConversationHandler::AddSubmitSelectedTextError(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */);
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      false /* enable_research */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1210,10 +1216,18 @@ void ConversationHandler::PerformAssistantGeneration() {
   // assistant entries in a row.
   needs_new_entry_ = true;
 
+  // Get enable_research flag from the last turn (which should be the human turn)
+  bool enable_research = false;
+  if (!chat_history_.empty() &&
+      chat_history_.back()->character_type == mojom::CharacterType::HUMAN) {
+    enable_research = chat_history_.back()->enable_research;
+  }
+
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
       selected_language_, IsTemporaryChat(), GetTools(),
       std::nullopt /* preferred_tool_name */, conversation_capability_,
+      enable_research,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1251,7 +1265,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         std::nullopt /* prompt */, std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false,
-        result.model_key, nullptr /* near_verification_status */);
+        result.model_key, nullptr /* near_verification_status */,
+        false /* enable_research */);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1486,7 +1501,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         true, std::nullopt /* model_key */,
-        nullptr /* near_verification_status */));
+        nullptr /* near_verification_status */, false /* enable_research */));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1498,7 +1513,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         true, std::nullopt /* model_key */,
-        nullptr /* near_verification_status */));
+        nullptr /* near_verification_status */, false /* enable_research */));
     OnConversationEntryAdded(chat_history_.back());
   }
 }

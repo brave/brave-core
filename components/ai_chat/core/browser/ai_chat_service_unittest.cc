@@ -487,6 +487,7 @@ TEST_P(AIChatServiceUnitTest,
                      const std::vector<base::WeakPtr<Tool>>& tools,
                      std::optional<std::string_view> preferred_tool_name,
                      mojom::ConversationCapability conversation_capability,
+                     bool enable_research,
                      base::RepeatingCallback<void(
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(
@@ -1454,7 +1455,7 @@ TEST_P(AIChatServiceUnitTest,
   // |associated_content| shouldn't have been updated on the metadata yet.
   EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 0u);
 
-  handler->SubmitHumanConversationEntry("Human message", {});
+  handler->SubmitHumanConversationEntry("Human message", {}, false /* enable_research */);
 
   EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 1u);
 }
