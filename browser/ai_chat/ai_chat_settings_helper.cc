@@ -283,6 +283,7 @@ void AIChatSettingsHelper::OnRefreshOrder(RefreshOrderCallback callback,
                                           skus::mojom::SkusResultPtr response) {
   std::move(callback).Run(response->message);
 }
-#endif
+DEFINE_JNI(BraveLeoMojomHelper)
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace ai_chat

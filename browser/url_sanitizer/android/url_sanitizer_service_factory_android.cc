@@ -25,3 +25,5 @@ static jlong JNI_UrlSanitizerServiceFactory_GetInterfaceToUrlSanitizerService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(UrlSanitizerServiceFactory)

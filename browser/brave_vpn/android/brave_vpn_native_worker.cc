@@ -286,3 +286,5 @@ static void JNI_BraveVpnNativeWorker_Init(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveVpnNativeWorker)

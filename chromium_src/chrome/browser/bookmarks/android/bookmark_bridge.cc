@@ -26,6 +26,8 @@
 #include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
 #undef BraveBookmarkBridge
 
+using BraveBookmarkBridge = BookmarkBridge;
+
 #include "ui/android/window_android.h"
 
 #include <chrome/browser/bookmarks/android/bookmark_bridge.cc>
@@ -209,3 +211,5 @@ void BookmarkBridge::ExportBookmarks(
       profile_, file_export_path,
       base::BindOnce(&OnExportFinished, ScopedJavaGlobalRef<jobject>(obj)));
 }
+
+DEFINE_JNI(BraveBookmarkBridge)
