@@ -930,3 +930,5 @@ static void JNI_BraveRewardsNativeWorker_Init(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveRewardsNativeWorker)

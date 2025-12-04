@@ -243,3 +243,5 @@ void NTPBackgroundImagesBridge::OnSponsoredImagesDataDidUpdate(
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
+
+DEFINE_JNI(NTPBackgroundImagesBridge)

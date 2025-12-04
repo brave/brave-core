@@ -414,3 +414,5 @@ void PasswordUiViewAndroid::PostSerializedPasswords(
       break;
   }
 }
+
+DEFINE_JNI(PasswordUiView)
