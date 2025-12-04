@@ -22,6 +22,7 @@ source_set("ai_chat") {
   deps = [
     "//brave/browser/ai_chat",
     "//brave/browser/misc_metrics",
+    "//brave/common:webui_url_constants",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",

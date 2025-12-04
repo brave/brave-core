@@ -47,6 +47,12 @@ group("common") {
   public_deps = [ "//chrome/common" ]
 }
 
+source_set("webui_url_constants") {
+  visibility = brave_common_visibility_targets
+
+  sources = [ "webui_url_constants.h" ]
+}
+
 config("constants_configs") {
   visibility = brave_common_visibility_targets +
                # These are layering violation and need to be fixed
