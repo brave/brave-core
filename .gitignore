@@ -36,6 +36,7 @@ patches/**/*.patchinfo
 /third_party/cryptography
 /third_party/macholib
 /third_party/libdmg-hfsplus/
+/third_party/opengrep/bin/
 *.xcodeproj
 !/ios/brave-ios/App/*.xcodeproj
 *.swp
