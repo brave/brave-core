@@ -23,6 +23,7 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -81,6 +82,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (ai_chat::features::IsAIChatEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<AIChatUntrustedConversationUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<ai_chat::CodeSandboxUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }

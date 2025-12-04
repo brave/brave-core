@@ -39,6 +39,7 @@ preprocess_if_expr("preprocess_html") {
   visibility = [ ":resources_grit" ]
   in_folder = "."
   in_files = [
+    "code_sandbox/code_sandbox.html",
     "page/ai_chat_ui.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]

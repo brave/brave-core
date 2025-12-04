@@ -25,6 +25,7 @@
 namespace {
 const char kSearchBackupResultsOTRProfileIDPrefix[] =
     "SearchBackupResults::OTR";
+const char kAIChatCodeExecutionOTRProfileID[] = "AIChatCodeExecution::OTR";
 }  // namespace
 
 // static
@@ -68,6 +69,11 @@ Profile::OTRProfileID::CreateUniqueForSearchBackupResults() {
 bool Profile::OTRProfileID::IsSearchBackupResults() const {
   return base::StartsWith(profile_id_, kSearchBackupResultsOTRProfileIDPrefix,
                           base::CompareCase::SENSITIVE);
+}
+
+// static
+const Profile::OTRProfileID Profile::OTRProfileID::AIChatCodeExecutionID() {
+  return OTRProfileID(kAIChatCodeExecutionOTRProfileID);
 }
 
 // This is to avoid a circular dep on chrome/browser in the Factory for

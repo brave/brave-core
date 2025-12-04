@@ -15,12 +15,15 @@ source_set("ai_chat") {
     "ai_chat_ui_page_handler.h",
     "ai_chat_untrusted_conversation_ui.cc",
     "ai_chat_untrusted_conversation_ui.h",
+    "code_sandbox_ui.cc",
+    "code_sandbox_ui.h",
   ]
 
   deps = [
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
+    "//brave/common:webui_url_constants",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/browser/ollama",

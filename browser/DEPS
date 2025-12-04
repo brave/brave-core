@@ -66,6 +66,7 @@ include_rules += [
   "+brave/components/psst/common",
   "+brave/components/psst/buildflags",
   "+brave/components/query_filter",
+  "+brave/components/script_injector/common/mojom",
   "+brave/components/skus/browser",
   "+brave/components/skus/common",
   "+brave/components/speedreader",
