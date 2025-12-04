@@ -14,12 +14,15 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -525,5 +528,182 @@ TEST(OaiParsingTest, ToolApiDefinitionsFromTools_MultipleTools) {
 
   EXPECT_THAT(*result, base::test::IsJson(kExptectedJson));
 }
+
+// Tests for ParseOAICompletionResponse
+
+TEST(OAIParsingTest, ParseOAICompletionResponse_ValidStreamingResponse) {
+  // Test parsing a valid streaming response (delta.content)
+  constexpr char kResponseJson[] = R"({
+    "model": "gpt-3.5-turbo",
+    "choices": [{
+      "delta": {
+        "content": "Hello, world!"
+      }
+    }]
+  })";
+
+  auto response_dict = base::test::ParseJsonDict(kResponseJson);
+  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion, "Hello, world!");
+  EXPECT_FALSE(result->model_key.has_value());
+}
+
+TEST(OAIParsingTest, ParseOAICompletionResponse_ValidNonStreamingResponse) {
+  // Test parsing a valid non-streaming response (message.content)
+  constexpr char kResponseJson[] = R"({
+    "model": "gpt-3.5-turbo",
+    "choices": [{
+      "message": {
+        "content": "Test response"
+      }
+    }]
+  })";
+
+  auto response_dict = base::test::ParseJsonDict(kResponseJson);
+  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion, "Test response");
+  EXPECT_FALSE(result->model_key.has_value());
+}
+
+TEST(OAIParsingTest, ParseOAICompletionResponse_MissingModelField) {
+  // Test response without model field - should still work
+  constexpr char kResponseJson[] = R"({
+    "choices": [{
+      "delta": {
+        "content": "Content without model"
+      }
+    }]
+  })";
+
+  auto response_dict = base::test::ParseJsonDict(kResponseJson);
+  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion,
+            "Content without model");
+  EXPECT_FALSE(result->model_key.has_value());
+}
+
+TEST(OAIParsingTest, ParseOAICompletionResponse_EmptyContent) {
+  // Test with empty content string (should still return result)
+  constexpr char kResponseJson[] = R"({
+    "model": "gpt-3.5-turbo",
+    "choices": [{
+      "delta": {
+        "content": ""
+      }
+    }]
+  })";
+
+  auto response_dict = base::test::ParseJsonDict(kResponseJson);
+  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ(result->event->get_completion_event()->completion, "");
+}
+
+TEST(OAIParsingTest, ParseOAICompletionResponse_WithModelService) {
+  TestingPrefServiceSimple pref_service;
+  prefs::RegisterProfilePrefs(pref_service.registry());
+  ModelService::RegisterProfilePrefs(pref_service.registry());
+  ModelService model_service(&pref_service);
+
+  // Test with invalid model name - should return nullopt for model_key
+  {
+    constexpr char kResponseJson[] = R"({
+      "model": "unknown-model",
+      "choices": [{
+        "delta": {
+          "content": "Test content"
+        }
+      }]
+    })";
+
+    auto response_dict = base::test::ParseJsonDict(kResponseJson);
+    auto result = ParseOAICompletionResponse(response_dict, &model_service);
+
+    ASSERT_TRUE(result.has_value());
+    ASSERT_TRUE(result->event);
+    ASSERT_TRUE(result->event->is_completion_event());
+    EXPECT_EQ(result->event->get_completion_event()->completion,
+              "Test content");
+    // Model key should be nullopt since the model name was not found
+    EXPECT_FALSE(result->model_key.has_value());
+  }
+
+  // Test with valid model name - should return model_key
+  {
+    constexpr char kResponseJson[] = R"({
+      "model": "claude-3-sonnet",
+      "choices": [{
+        "message": {
+          "content": "Valid model response"
+        }
+      }]
+    })";
+
+    auto response_dict = base::test::ParseJsonDict(kResponseJson);
+    auto result = ParseOAICompletionResponse(response_dict, &model_service);
+
+    ASSERT_TRUE(result.has_value());
+    ASSERT_TRUE(result->event);
+    ASSERT_TRUE(result->event->is_completion_event());
+    EXPECT_EQ(result->event->get_completion_event()->completion,
+              "Valid model response");
+    // Model key should be present since the model name was found
+    ASSERT_TRUE(result->model_key.has_value());
+    EXPECT_EQ(result->model_key.value(), "chat-claude-sonnet");
+  }
+}
+
+struct InvalidResponseTestCase {
+  const char* test_name;
+  const char* response_json;
+};
+
+class ParseOAICompletionResponseInvalidTest
+    : public ::testing::TestWithParam<InvalidResponseTestCase> {};
+
+TEST_P(ParseOAICompletionResponseInvalidTest, ReturnsNullopt) {
+  const InvalidResponseTestCase& test_case = GetParam();
+  auto response_dict = base::test::ParseJsonDict(test_case.response_json);
+  auto result = ParseOAICompletionResponse(response_dict, nullptr);
+  EXPECT_FALSE(result.has_value());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    ParseOAICompletionResponseInvalidTest,
+    ::testing::Values(
+        InvalidResponseTestCase{"MissingChoices",
+                                R"({"model": "gpt-3.5-turbo"})"},
+        InvalidResponseTestCase{"EmptyChoicesArray",
+                                R"({"model": "gpt-3.5-turbo", "choices": []})"},
+        InvalidResponseTestCase{
+            "NonDictChoice",
+            R"({"model": "gpt-3.5-turbo", "choices": ["invalid"]})"},
+        InvalidResponseTestCase{
+            "NoDeltaOrMessage",
+            R"({"model": "gpt-3.5-turbo", "choices": [{"index": 0}]})"},
+        InvalidResponseTestCase{"NoContentInDelta",
+                                R"({"model": "gpt-3.5-turbo",
+                                    "choices": [
+                                      {"delta": {"role": "assistant"}}
+                                    ]})"}),
+    [](const ::testing::TestParamInfo<InvalidResponseTestCase>& info) {
+      return info.param.test_name;
+    });
 
 }  // namespace ai_chat

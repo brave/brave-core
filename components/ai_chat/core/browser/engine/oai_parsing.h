@@ -15,6 +15,8 @@
 
 namespace ai_chat {
 
+class ModelService;
+
 // Construct a tool use event from a tool calls part of a Chat API-style
 // response
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
@@ -23,6 +25,16 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
 // Convert some Tools to Chat API-style JSON list of tool definitions
 std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
+
+// Parse OpenAI-format completion response for both streaming and
+// non-streaming requests. Response can have either delta.content (streaming)
+// or message.content (non-streaming).
+// model_service: Optional. If provided, extracts model from response and
+//                performs lookup. If nullptr, returns nullopt for model_key.
+//                Only supports looking up Leo models and not custom models.
+std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
+    const base::Value::Dict& response,
+    ModelService* model_service);
 
 }  // namespace ai_chat
 
