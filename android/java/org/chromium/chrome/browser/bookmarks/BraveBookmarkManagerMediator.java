@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import org.chromium.base.Log;
 import org.chromium.base.PathUtils;
-import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -68,7 +68,7 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             RecyclerView recyclerView,
             DragReorderableRecyclerViewAdapter dragReorderableRecyclerViewAdapter,
             boolean isDialogUi,
-            ObservableSupplierImpl<Boolean> backPressStateSupplier,
+            SettableNonNullObservableSupplier<Boolean> backPressStateSupplier,
             Profile profile,
             BookmarkUndoController bookmarkUndoController,
             ModelList modelList,
