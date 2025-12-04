@@ -457,10 +457,10 @@
   <message name="IDS_IDC_ADD_NEW_TAB_TO_GROUP">
     Add new tab to group
   </message>
-  <message name="IDS_IDC_SPLIT_VIEW_LINK" desc="Text for the link between split view tabs">
+  <message name="IDS_IDC_SPLIT_VIEW_LINK" desc="Text for menu item to link tabs in split tab view">
     Link
   </message>
-  <message name="IDS_IDC_SPLIT_VIEW_UNLINK" desc="Text for the link between split view tabs">
+  <message name="IDS_IDC_SPLIT_VIEW_UNLINK" desc="Text for menu item to unlink tabs in split tab view">
     Unlink
   </message>
 
