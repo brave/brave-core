@@ -11,7 +11,7 @@ import { createDummyApp } from './web_app_settings_utils.js';
 import { getHtml } from './window_mode_item.html.js';
 import { loadTimeData } from '//resources/js/load_time_data.js';
 import { BrowserProxy } from '//resources/cr_components/app_management/browser_proxy.js';
-import { WindowMode } from '//resources/cr_components/app_management/constants.js';
+import {WindowMode} from '//resources/cr_components/app_management/app_management.mojom-webui.js';
 
 export class WindowModeItemElement extends CrLitElement {
   static get is() {
