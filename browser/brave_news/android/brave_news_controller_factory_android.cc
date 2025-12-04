@@ -24,3 +24,5 @@ static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveNewsControllerFactory)

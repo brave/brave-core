@@ -36,3 +36,5 @@ int32_t GetThemeBackgroundColor() {
 }
 
 }  // namespace cosmetic_filters
+
+DEFINE_JNI(BraveCosmeticFiltersUtils)

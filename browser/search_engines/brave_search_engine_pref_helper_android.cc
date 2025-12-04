@@ -26,3 +26,5 @@ jboolean JNI_BraveSearchEnginePrefHelper_GetFetchSEFromNative(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_search::prefs::kFetchFromNative);
 }
+
+DEFINE_JNI(BraveSearchEnginePrefHelper)

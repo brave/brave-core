@@ -89,3 +89,5 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
   web_contents->OpenURL(params, {});
 }
 }  // namespace ai_chat
+
+DEFINE_JNI(BraveLeoUtils)

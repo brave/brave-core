@@ -94,3 +94,5 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
           },
           env, std::move(java_callback)));
 }
+
+DEFINE_JNI(ConnectAccountFragment)

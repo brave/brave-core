@@ -114,3 +114,5 @@ void JNI_BraveAdsNativeHelper_OnNotificationAdClicked(
 }
 
 }  // namespace brave_ads
+
+DEFINE_JNI(BraveAdsNativeHelper)

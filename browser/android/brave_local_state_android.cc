@@ -21,3 +21,5 @@ static void JNI_BraveLocalState_CommitPendingWrite(JNIEnv* env) {
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveLocalState)

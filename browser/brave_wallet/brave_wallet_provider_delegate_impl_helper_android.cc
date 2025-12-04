@@ -90,3 +90,5 @@ static void JNI_BraveWalletProviderDelegateImplHelper_IsSolanaConnected(
 }
 
 }  // namespace brave_wallet
+
+DEFINE_JNI(BraveWalletProviderDelegateImplHelper)
