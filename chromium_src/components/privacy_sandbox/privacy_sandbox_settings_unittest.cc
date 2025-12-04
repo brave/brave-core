@@ -14,7 +14,6 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/content_settings/core/test/content_settings_mock_provider.h"
 #include "components/content_settings/core/test/content_settings_test_utils.h"
-#include "components/policy/core/common/management/management_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/privacy_sandbox/privacy_sandbox_test_util.h"
 #include "components/privacy_sandbox/tracking_protection_settings.h"
@@ -139,12 +138,10 @@ class PrivacySandboxSettingsTest : public testing::Test {
         /*tracking_protection_settings=*/nullptr, false,
         content_settings::CookieSettings::NoFedCmSharingPermissionsCallback(),
         /*tpcd_metadata_manager=*/nullptr, "chrome-extension");
-    management_service_ = std::make_unique<policy::ManagementService>(
-        std::vector<std::unique_ptr<policy::ManagementStatusProvider>>());
+
     tracking_protection_settings_ =
         std::make_unique<privacy_sandbox::TrackingProtectionSettings>(
-            &prefs_, host_content_settings_map_.get(),
-            /*management_service=*/management_service_.get(),
+            &prefs_,
             /*is_incognito=*/false);
   }
   ~PrivacySandboxSettingsTest() override {
@@ -184,7 +181,6 @@ class PrivacySandboxSettingsTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
-  std::unique_ptr<policy::ManagementService> management_service_;
   std::unique_ptr<privacy_sandbox::TrackingProtectionSettings>
       tracking_protection_settings_;
 
