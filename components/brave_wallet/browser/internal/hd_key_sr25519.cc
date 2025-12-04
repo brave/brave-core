@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/containers/span_rust.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
@@ -68,6 +69,7 @@ HDKeySr25519 HDKeySr25519::DeriveHard(
 }
 
 void HDKeySr25519::UseMockRngForTesting() {
+  CHECK_IS_TEST();
   keypair_->use_mock_rng_for_testing();  // IN-TEST
 }
 
