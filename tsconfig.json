@@ -19,6 +19,7 @@
       "es2019",
       "esnext"
     ],
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
