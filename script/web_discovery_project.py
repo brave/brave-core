@@ -10,9 +10,9 @@ from lib.util import execute_stdout, scoped_cwd
 WEB_DISCOVERY_DIR = os.path.join(
     SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
-NPM = 'npm'
+PNPM = 'pnpm'
 if PLATFORM in ['win32', 'cygwin']:
-    NPM += '.cmd'
+    PNPM += '.cmd'
 
 
 def main():
@@ -23,10 +23,10 @@ def main():
         if args.verbose:
             enable_verbose_mode()
         if args.install:
-            execute_stdout([NPM, 'install', '--no-save', '--yes'], env=env)
+            execute_stdout([PNPM, 'install', '--frozen-lockfile'], env=env)
         if args.build:
             env["OUTPUT_PATH"] = args.output_path
-            execute_stdout([NPM, 'run', 'build-module'], env=env)
+            execute_stdout([PNPM, 'build-module'], env=env)
 
 
 def parse_args():

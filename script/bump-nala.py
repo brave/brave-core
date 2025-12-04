@@ -127,11 +127,9 @@ def bump_nala(target):
 Changes {NALA_REPO}/compare/{old_sha}...{new_sha}
 {changes_text}"""
 
-    subprocess.run(['npm', 'install', f'github:{REPO_ID}#{new_sha}'],
-                   check=True)
+    subprocess.run(['pnpm', 'add', f'github:{REPO_ID}#{new_sha}'], check=True)
     subprocess.run([
-        'git', 'commit', 'package.json', 'package-lock.json', '-m',
-        commit_message
+        'git', 'commit', 'package.json', 'pnpm-lock.yaml', '-m', commit_message
     ],
                    check=True)
 
