@@ -1,5 +1,5 @@
 diff --git a/ui/views/controls/menu/menu_separator.cc b/ui/views/controls/menu/menu_separator.cc
-index 2aa01862ea3d794173a6b99b57367f36f83ad009..a628ce45b8f37c4162e86bcc910919956d265221 100644
+index aa43f5d03785ae987ca919a079e2bbbd11b3cf89..26f1ae40556565eef0925f7f2c6dd52974dacdcf 100644
 --- a/ui/views/controls/menu/menu_separator.cc
 +++ b/ui/views/controls/menu/menu_separator.cc
 @@ -53,6 +53,7 @@ void MenuSeparator::OnPaint(gfx::Canvas* canvas) {

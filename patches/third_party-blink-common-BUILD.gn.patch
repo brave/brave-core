@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index 256e5433c3f004098e5be985ff579b1ea93e70ff..4bda25f96f3d99fd4fe74fff81f99e450295084a 100644
+index 8990b735c3330136796a58acf5ece55a6785c2f6..804c618cc52b00f3a04227cdd0269b9146cd1acf 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
-@@ -353,6 +353,7 @@ source_set("common") {
+@@ -354,6 +354,7 @@ source_set("common") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]
@@ -10,7 +10,7 @@ index 256e5433c3f004098e5be985ff579b1ea93e70ff..4bda25f96f3d99fd4fe74fff81f99e45
  }
  
  test("blink_common_unittests") {
-@@ -498,6 +499,7 @@ source_set("common_unittests_sources") {
+@@ -499,6 +500,7 @@ source_set("common_unittests_sources") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]

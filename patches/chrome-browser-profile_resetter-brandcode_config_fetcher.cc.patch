@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
-index e0f8c3d88fb52b7e74e443dc8ec99e69f5caf4c0..6cf29e86b0d1e90fd03c515d92365a78d162f07c 100644
+index 5d95f452c17cad249d0105dc92de4e6969c41b7a..51bcbb54a86e0f71fbb011704a43d0d902b7d4c1 100644
 --- a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
 +++ b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
 @@ -57,6 +57,7 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(

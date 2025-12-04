@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 52b013ca332314ceb2f7a49be89f6d93486cab40..2ac7f42a11ca5903e730781280128349659f9c92 100644
+index bcd84f0d61a8c580d539362f79894e459c9bdbbc..480552926b798bcc0492a836cafe8c07df8fe013 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
 @@ -120,6 +120,7 @@ fn readme_file_from_package<'a>(
@@ -13,12 +13,12 @@ index 52b013ca332314ceb2f7a49be89f6d93486cab40..2ac7f42a11ca5903e730781280128349
 @@ -139,7 +140,7 @@ fn readme_file_from_package<'a>(
          Vec::new()
      };
-
+ 
 -    if license_files.is_empty() {
 +    if license_files.is_empty() && false {
          bail!(
              r#"License file not found for crate `{name}-{version}`.
-
+ 
 @@ -246,6 +247,12 @@ enum LicenseKind {
      /// https://spdx.org/licenses/BSL-1.0.html
      #[strum(serialize = "BSL-1.0")]
@@ -30,5 +30,5 @@ index 52b013ca332314ceb2f7a49be89f6d93486cab40..2ac7f42a11ca5903e730781280128349
 +    #[strum(serialize = "BSD-2-Clause")]
 +    BSD2,
  }
-
+ 
  impl<'a> TryFrom<&'a spdx::LicenseReq> for LicenseKind {
