@@ -10,6 +10,7 @@
 #include "ui/compositor/layer.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/property_effects.h"
 
 #define kNone \
   kNone) && !dialog_delegate->should_ignore_snapping(
