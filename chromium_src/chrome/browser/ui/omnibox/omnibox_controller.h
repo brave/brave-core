@@ -13,7 +13,13 @@
   StartAutocomplete_ChromiumImpl(const AutocompleteInput& input) const; \
   void StartAutocomplete
 
+// Per security/privacy team, we want to disable zero suggest prefetch.
+#define StartZeroSuggestPrefetch     \
+  StartZeroSuggestPrefetch_Unused(); \
+  void StartZeroSuggestPrefetch
+
 #include <chrome/browser/ui/omnibox/omnibox_controller.h>  // IWYU pragma: export
+#undef StartZeroSuggestPrefetch
 #undef StartAutocomplete
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_CONTROLLER_H_

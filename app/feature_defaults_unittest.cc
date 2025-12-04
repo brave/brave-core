@@ -224,7 +224,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
-      &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationHints,
       &permissions::features::kCpssUseTfliteSignatureRunner,
