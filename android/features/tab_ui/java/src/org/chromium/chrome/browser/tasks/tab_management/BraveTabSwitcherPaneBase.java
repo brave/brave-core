@@ -14,6 +14,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
+import org.chromium.chrome.browser.hub.PaneId;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 
@@ -21,16 +22,18 @@ import java.util.function.DoubleConsumer;
 
 public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     BraveTabSwitcherPaneBase(
-            @NonNull Context context,
-            @NonNull TabSwitcherPaneCoordinatorFactory factory,
+            @PaneId int paneId,
+            Context context,
+            TabSwitcherPaneCoordinatorFactory factory,
             boolean isIncognito,
-            @NonNull DoubleConsumer onToolbarAlphaChange,
-            @NonNull UserEducationHelper userEducationHelper,
-            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
-            @NonNull TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
+            DoubleConsumer onToolbarAlphaChange,
+            UserEducationHelper userEducationHelper,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            TabGroupCreationUiDelegate tabGroupCreationUiDelegate,
             @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
         super(
+                paneId,
                 context,
                 factory,
                 isIncognito,
