@@ -24,9 +24,6 @@ namespace content {
 class WebUIDataSource;
 }
 
-class PrefRegistrySimple;
-class PrefService;
-
 // TODO(simonhong): Migrate to brave_new_tab_page.mojom.
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
@@ -38,8 +35,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
       delete;
   ~BraveNewTabMessageHandler() override;
 
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* local_state);
-  static void RecordInitialP3AValues(PrefService* local_state);
   static bool CanPromptBraveTalk();
   static bool CanPromptBraveTalk(base::Time now);
   static BraveNewTabMessageHandler* Create(

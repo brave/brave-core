@@ -7,9 +7,11 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -30,6 +32,12 @@ enum class NTPSearchEngine {
   kOther,
   kMaxValue = kOther
 };
+
+enum class NTPCustomizeUsage { kNeverOpened, kOpened, kOpenedAndEdited, kSize };
+
+constexpr char kNTPCustomizeUsageStatus[] =
+    "brave.new_tab_page.customize_p3a_usage";
+
 constexpr base::TimeDelta kUpdateInterval = base::Days(1);
 constexpr int kUsageBuckets[] = {10, 30, 40};
 
@@ -38,13 +46,33 @@ constexpr int kUsageBuckets[] = {10, 30, 40};
 using TemplateURLPrepopulateData::BravePrepopulatedEngineID;
 
 NewTabMetrics::NewTabMetrics(PrefService* local_state)
-    : usage_storage_(local_state, kMiscMetricsNTPWidgetUsageStorage) {
+    : local_state_(CHECK_DEREF(local_state)),
+      usage_storage_(local_state, kMiscMetricsNTPWidgetUsageStorage) {
   ReportCounts();
 }
 NewTabMetrics::~NewTabMetrics() = default;
 
 void NewTabMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsNTPWidgetUsageStorage);
+  registry->RegisterIntegerPref(kNTPCustomizeUsageStatus, -1);
+}
+
+void NewTabMetrics::RecordInitialP3AValues() {
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kNeverOpened, kCustomizeUsageHistogramName,
+      kNTPCustomizeUsageStatus, &local_state_.get());
+}
+
+void NewTabMetrics::RecordCustomizeDialogOpened() {
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
+      kNTPCustomizeUsageStatus, &local_state_.get());
+}
+
+void NewTabMetrics::RecordCustomizeDialogEdited() {
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
+      NTPCustomizeUsage::kOpenedAndEdited, kCustomizeUsageHistogramName,
+      kNTPCustomizeUsageStatus, &local_state_.get());
 }
 
 void NewTabMetrics::Bind(

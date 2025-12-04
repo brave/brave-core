@@ -75,5 +75,13 @@ export function createNewTabHandler(store: Store<NewTabState>): NewTabActions {
     setShowTalkWidget(showTalkWidget) {
       handler.setShowTalkWidget(showTalkWidget)
     },
+
+    reportCustomizeDialogOpened() {
+      handler.reportCustomizeDialogOpened()
+    },
+
+    reportCustomizeDialogEdited() {
+      handler.reportCustomizeDialogEdited()
+    },
   }
 }

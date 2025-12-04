@@ -13,12 +13,13 @@ import {
   useTopSitesActions,
 } from '../../context/top_sites_context'
 import { getString } from '../../lib/strings'
+import { useActionsWithMetrics } from './settings_action_decorator'
 import classNames from '$web-common/classnames'
 
 import { style } from './top_sites_panel.style'
 
 export function TopSitesPanel() {
-  const actions = useTopSitesActions()
+  const actions = useActionsWithMetrics(useTopSitesActions())
 
   const showTopSites = useTopSitesState((s) => s.showTopSites)
   const listKind = useTopSitesState((s) => s.topSitesListKind)

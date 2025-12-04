@@ -14,6 +14,7 @@ import {
 } from '../../context/background_context'
 import { useRewardsState } from '../../context/rewards_context'
 import { getString } from '../../lib/strings'
+import { useActionsWithMetrics } from './settings_action_decorator'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { BackgroundTypePanel } from './background_type_panel'
 import { Link } from '../common/link'
@@ -30,7 +31,7 @@ import {
 import { style } from './background_panel.style'
 
 export function BackgroundPanel() {
-  const actions = useBackgroundActions()
+  const actions = useActionsWithMetrics(useBackgroundActions())
 
   const backgroundsEnabled = useBackgroundState((s) => s.backgroundsEnabled)
   const backgroundsCustomizable = useBackgroundState(

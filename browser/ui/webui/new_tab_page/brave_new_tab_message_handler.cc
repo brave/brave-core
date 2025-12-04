@@ -32,16 +32,12 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/components/p3a/utils.h"
-#include "brave/components/time_period_storage/weekly_storage.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
@@ -119,33 +115,10 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   return pref_data;
 }
 
-// TODO(petemill): Move p3a to own NTP component so it can
-// be used by other platforms.
-
-enum class NTPCustomizeUsage { kNeverOpened, kOpened, kOpenedAndEdited, kSize };
-
-constexpr char kNTPCustomizeUsageStatus[] =
-    "brave.new_tab_page.customize_p3a_usage";
-constexpr char kCustomizeUsageHistogramName[] =
-    "Brave.NTP.CustomizeUsageStatus.2";
-
 constexpr char kNeedsBrowserUpgradeToServeAds[] =
     "needsBrowserUpgradeToServeAds";
 
 }  // namespace
-
-// static
-void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
-    PrefRegistrySimple* local_state) {
-  local_state->RegisterIntegerPref(kNTPCustomizeUsageStatus, -1);
-}
-
-void BraveNewTabMessageHandler::RecordInitialP3AValues(
-    PrefService* local_state) {
-  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kNeverOpened, kCustomizeUsageHistogramName,
-      kNTPCustomizeUsageStatus, local_state);
-}
 
 // static
 BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
@@ -384,17 +357,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   auto settings_value = args[1].Clone();
   std::string settings_key;
 
-  // Prevent News onboarding below NTP and sponsored NTP notification
-  // state from triggering the "shown & changed" answer for the
-  // customize dialog metric.
-  if (settings_key_input != "showToday" &&
-      settings_key_input != "isBraveNewsOptedIn" &&
-      settings_key_input != "isBrandedWallpaperNotificationDismissed") {
-    p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-        NTPCustomizeUsage::kOpenedAndEdited, kCustomizeUsageHistogramName,
-        kNTPCustomizeUsageStatus, g_browser_process->local_state());
-  }
-
   // Handle string settings
   if (settings_value.is_string()) {
     const auto& settings_value_string = settings_value.GetString();
@@ -577,9 +539,6 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 void BraveNewTabMessageHandler::HandleCustomizeClicked(
     const base::Value::List& args) {
   AllowJavascript();
-  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
-      NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
-      kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {

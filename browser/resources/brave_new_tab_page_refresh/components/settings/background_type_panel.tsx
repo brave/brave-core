@@ -23,6 +23,7 @@ import {
   useCurrentBackground,
   useBackgroundActions,
 } from '../../context/background_context'
+import { useActionsWithMetrics } from './settings_action_decorator'
 
 interface Props {
   backgroundType: SelectedBackgroundType
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export function BackgroundTypePanel(props: Props) {
-  const actions = useBackgroundActions()
+  const actions = useActionsWithMetrics(useBackgroundActions())
 
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)

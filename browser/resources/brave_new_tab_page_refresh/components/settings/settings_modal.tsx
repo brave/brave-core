@@ -11,7 +11,7 @@ import NavigationItem from '@brave/leo/react/navigationItem'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 
-import { useNewTabState } from '../../context/new_tab_context'
+import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
@@ -40,6 +40,7 @@ export function SettingsModal(props: Props) {
   const braveNews = useBraveNews()
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
   const newsFeatureEnabled = useNewTabState((s) => s.newsFeatureEnabled)
+  const actions = useNewTabActions()
 
   const [currentView, setCurrentView] = React.useState<SettingsView>(
     props.initialView || 'background',
@@ -47,6 +48,7 @@ export function SettingsModal(props: Props) {
 
   React.useEffect(() => {
     if (props.isOpen) {
+      actions.reportCustomizeDialogOpened()
       if (props.initialView === 'news') {
         braveNews.setCustomizePage('news')
         setCurrentView('background')

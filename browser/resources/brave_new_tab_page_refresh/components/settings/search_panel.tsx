@@ -10,13 +10,14 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
+import { useActionsWithMetrics } from './settings_action_decorator'
 import { EngineIcon } from '../search/engine_icon'
 import { Link } from '../common/link'
 
 import { style } from './search_panel.style'
 
 export function SearchPanel() {
-  const actions = useSearchActions()
+  const actions = useActionsWithMetrics(useSearchActions())
 
   const showSearchBox = useSearchState((s) => s.showSearchBox)
   const searchEngines = useSearchState((s) => s.searchEngines)

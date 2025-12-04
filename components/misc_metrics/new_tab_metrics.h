@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_MISC_METRICS_NEW_TAB_METRICS_H_
 #define BRAVE_COMPONENTS_MISC_METRICS_NEW_TAB_METRICS_H_
 
+#include "base/memory/raw_ref.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -22,6 +23,8 @@ inline constexpr char kNTPSearchUsageHistogramName[] =
     "Brave.Search.WidgetUsage";
 inline constexpr char kNTPGoogleWidgetUsageHistogramName[] =
     "Brave.Search.GoogleWidgetUsage";
+inline constexpr char kCustomizeUsageHistogramName[] =
+    "Brave.NTP.CustomizeUsageStatus.2";
 
 class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
  public:
@@ -33,8 +36,13 @@ class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  void RecordInitialP3AValues();
+
   void Bind(
       mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics> receiver);
+
+  void RecordCustomizeDialogOpened();
+  void RecordCustomizeDialogEdited();
 
   // brave_new_tab_page::mojom::NewTabMetrics:
   void ReportNTPSearchDefaultEngine(
@@ -43,6 +51,8 @@ class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
 
  private:
   void ReportCounts();
+
+  raw_ref<PrefService> local_state_;
 
   mojo::ReceiverSet<brave_new_tab_page::mojom::NewTabMetrics> receivers_;
 

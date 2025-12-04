@@ -239,4 +239,8 @@ interface NewTabPageHandler {
   // Records VPN widget usage metrics.
   ReportVPNWidgetUsage() => ();
 
+  // Records customize dialog metrics.
+  ReportCustomizeDialogOpened() => ();
+  ReportCustomizeDialogEdited() => ();
+
 };

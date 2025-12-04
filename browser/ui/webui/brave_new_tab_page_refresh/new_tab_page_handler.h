@@ -171,6 +171,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void OpenVPNAccountPage(brave_vpn::mojom::ManageURLType url_type,
                           OpenVPNAccountPageCallback callback) override;
   void ReportVPNWidgetUsage(ReportVPNWidgetUsageCallback callback) override;
+  void ReportCustomizeDialogOpened(
+      ReportCustomizeDialogOpenedCallback callback) override;
+  void ReportCustomizeDialogEdited(
+      ReportCustomizeDialogEditedCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,

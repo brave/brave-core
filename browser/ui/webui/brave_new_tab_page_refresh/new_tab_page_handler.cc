@@ -488,6 +488,18 @@ void NewTabPageHandler::ReportVPNWidgetUsage(
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::ReportCustomizeDialogOpened(
+    ReportCustomizeDialogOpenedCallback callback) {
+  new_tab_metrics_->RecordCustomizeDialogOpened();
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ReportCustomizeDialogEdited(
+    ReportCustomizeDialogEditedCallback callback) {
+  new_tab_metrics_->RecordCustomizeDialogEdited();
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {

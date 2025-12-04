@@ -84,4 +84,32 @@ TEST_F(NewTabMetricsTest, ReportGoogleNTPSearchUsage) {
                                        1);
 }
 
+TEST_F(NewTabMetricsTest, RecordCustomizeDialogUsage) {
+  // Initial P3A values should record "never opened" (0)
+  metrics_->RecordInitialP3AValues();
+  histogram_tester_.ExpectUniqueSample(kCustomizeUsageHistogramName, 0, 1);
+
+  // Recording initial values again should not change the histogram
+  // (RecordValueIfGreater only records if greater)
+  metrics_->RecordInitialP3AValues();
+  histogram_tester_.ExpectUniqueSample(kCustomizeUsageHistogramName, 0, 2);
+
+  // Opening the dialog should record "opened" (1)
+  metrics_->RecordCustomizeDialogOpened();
+  histogram_tester_.ExpectBucketCount(kCustomizeUsageHistogramName, 1, 1);
+
+  // Opening again should still record (same value is still recorded)
+  metrics_->RecordCustomizeDialogOpened();
+  histogram_tester_.ExpectBucketCount(kCustomizeUsageHistogramName, 1, 2);
+
+  // Editing should record "opened and edited" (2)
+  metrics_->RecordCustomizeDialogEdited();
+  histogram_tester_.ExpectBucketCount(kCustomizeUsageHistogramName, 2, 1);
+
+  // After editing, opening should no longer increase the value
+  // (RecordValueIfGreater won't go backwards)
+  metrics_->RecordCustomizeDialogOpened();
+  histogram_tester_.ExpectBucketCount(kCustomizeUsageHistogramName, 2, 2);
+}
+
 }  // namespace misc_metrics

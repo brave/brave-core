@@ -39,6 +39,8 @@ export interface NewTabActions {
   setClockFormat: (format: ClockFormat) => void
   setShowShieldsStats: (showShieldsStats: boolean) => void
   setShowTalkWidget: (showTalkWidget: boolean) => void
+  reportCustomizeDialogOpened: () => void
+  reportCustomizeDialogEdited: () => void
 }
 
 export function defaultNewTabActions(): NewTabActions {
@@ -47,5 +49,7 @@ export function defaultNewTabActions(): NewTabActions {
     setClockFormat(format) {},
     setShowShieldsStats(showShieldsStats) {},
     setShowTalkWidget(showTalkWidget) {},
+    reportCustomizeDialogOpened() {},
+    reportCustomizeDialogEdited() {},
   }
 }

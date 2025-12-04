@@ -8,6 +8,7 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
+import { useActionsWithMetrics } from './settings_action_decorator'
 import {
   useRewardsState,
   useRewardsActions,
@@ -17,9 +18,9 @@ import { useVpnState, useVpnActions } from '../../context/vpn_context'
 import { style } from './widgets_panel.style'
 
 export function WidgetsPanel() {
-  const newTabActions = useNewTabActions()
-  const rewardsActions = useRewardsActions()
-  const vpnActions = useVpnActions()
+  const newTabActions = useActionsWithMetrics(useNewTabActions())
+  const rewardsActions = useActionsWithMetrics(useRewardsActions())
+  const vpnActions = useActionsWithMetrics(useVpnActions())
 
   const showStats = useNewTabState((s) => s.showShieldsStats)
   const talkFeatureEnabled = useNewTabState((s) => s.talkFeatureEnabled)
