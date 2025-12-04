@@ -428,6 +428,13 @@ _BANNED_CPP_FUNCTIONS += (
         ),
         treat_as_error=True,
     ),
+    BanRule(
+        r'/\bOSCrypt::',
+        ('Prefer using OSCryptAsync instead of synchronous OSCrypt. '
+         'See components/os_crypt/sync/README.md', ),
+        treat_as_error=False,
+        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
+    ),
 )
 
 
