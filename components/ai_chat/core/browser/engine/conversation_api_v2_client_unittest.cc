@@ -262,6 +262,24 @@ INSTANTIATE_TEST_SUITE_P(
                                     TextContent{"test content"});
                               }),
                               "brave-page-excerpt"},
+        ContentBlockTestParam{"PageText", base::BindRepeating([]() {
+                                return ExtendedContentBlock(
+                                    ExtendedContentBlockType::kPageText,
+                                    TextContent{"test page content"});
+                              }),
+                              "brave-page-text"},
+        ContentBlockTestParam{"VideoTranscript", base::BindRepeating([]() {
+                                return ExtendedContentBlock(
+                                    ExtendedContentBlockType::kVideoTranscript,
+                                    TextContent{"test video transcript"});
+                              }),
+                              "brave-video-transcript"},
+        ContentBlockTestParam{"RequestSummary", base::BindRepeating([]() {
+                                return ExtendedContentBlock(
+                                    ExtendedContentBlockType::kRequestSummary,
+                                    TextContent{""});
+                              }),
+                              "brave-request-summary"},
         ContentBlockTestParam{"Paraphrase", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kParaphrase,
