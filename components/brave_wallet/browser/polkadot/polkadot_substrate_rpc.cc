@@ -9,6 +9,7 @@
 #include "base/containers/span_reader.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -521,15 +522,21 @@ void PolkadotSubstrateRpc::OnGetRuntimeVersion(
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
-  if (res->result->spec_version < 0 || res->result->transaction_version < 0) {
-    // The RPC docs claim these are intended to be a u32 so a negative value is
-    // invalid.
+  // Our IDL only permits us to work with signed integers, so we use checked
+  // numerics to guarantee correct handling from signed -> unsigned.
+  base::CheckedNumeric<uint32_t> spec_version = res->result->spec_version;
+  base::CheckedNumeric<uint32_t> transaction_version =
+      res->result->transaction_version;
+
+  if (!spec_version.IsValid() || !transaction_version.IsValid()) {
+    // The RPC documentation intends that these fields are U32 types, so if we
+    // have invalid values here we can safely assume the parse is invalid.
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
   PolkadotRuntimeVersion version;
-  version.spec_version = res->result->spec_version;
-  version.transaction_version = res->result->transaction_version;
+  version.spec_version = spec_version.ValueOrDie();
+  version.transaction_version = transaction_version.ValueOrDie();
 
   return std::move(callback).Run(version, std::nullopt);
 }
