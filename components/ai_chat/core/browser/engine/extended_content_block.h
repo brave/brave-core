@@ -22,6 +22,7 @@ enum class ExtendedContentBlockType {
   kPageText,
   kVideoTranscript,
   kRequestSummary,
+  kRequestQuestions,
   kChangeTone,
   kParaphrase,
   kImprove,

@@ -37,6 +37,11 @@ std::vector<OAIMessage> BuildOAIMessages(
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input);
 
+std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
+    PageContents page_contents,
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input);
+
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,
     mojom::ActionType action_type);
