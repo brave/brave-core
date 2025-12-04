@@ -191,6 +191,11 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                                      base::UTF8ToUTF16(tone_content->tone)));
           break;
         }
+
+        case ExtendedContentBlockType::kPageText:
+        case ExtendedContentBlockType::kVideoTranscript:
+        case ExtendedContentBlockType::kRequestSummary:
+          NOTREACHED();
       }
 
       content_list.Append(std::move(content_block_dict));
