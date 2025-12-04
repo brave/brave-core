@@ -1,0 +1,13 @@
+diff --git a/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc b/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
+index 9a2f6ca103d00375445e989c8071123f5fae69ec..24f0c98fe0a19b55d74ab834a8bc531c514c7138 100644
+--- a/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
++++ b/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
+@@ -29,6 +29,8 @@ EnumTraits<unexportable_keys::mojom::SignatureAlgorithm,
+       return unexportable_keys::mojom::SignatureAlgorithm::ECDSA_SHA256;
+     case crypto::SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
+       return unexportable_keys::mojom::SignatureAlgorithm::RSA_PSS_SHA256;
++    default:
++      NOTREACHED();
+   }
+ }
+ 

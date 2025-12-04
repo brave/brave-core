@@ -161,15 +161,25 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
 #endif
 
   ProfileManager::InitProfileUserPrefs(profile);
-  RecordInitialP3AValues(profile);
+
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeaturesPrefsForPerfTesting(profile);
-  MigrateHttpsUpgradeSettings(profile);
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
+  // Moved RecordInitialP3AValues/MigrateHttpsUpgradeSettings calls here from
+  // BraveProfileManager::InitProfileUserPrefs to pass over
+  // CHECK(!IdentityManagerFactory::GetForProfileIfExists(this)) during
+  // Android tests
+  // TODO(https://github.com/brave/brave-browser/issues/50822)
+  // Move RecordInitialP3AValues from here
+  RecordInitialP3AValues(profile);
+  // TODO(https://github.com/brave/brave-browser/issues/50823)
+  // Move MigrateHttpsUpgradeSettings from here as well
+  MigrateHttpsUpgradeSettings(profile);
+
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   if (!do_final_services_init_) {
     return;

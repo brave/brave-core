@@ -576,8 +576,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
   panel_ui->Close(SidePanelEntry::PanelType::kContent);
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+                .has_value();
+  }));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -586,10 +588,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
 
   // Open panel w/o entry id.
   panel_ui->Toggle();
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+        .has_value();
+  }));
   // Check bookmark panel is not opened again as it's deleted item.
-  EXPECT_NE(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_NE(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 // Test sidebar's initial horizontal option is set properly.
@@ -681,7 +686,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
-  auto* main_container = browser_view->main_container();
+  auto* main_shadow_overlay = browser_view->main_shadow_overlay();
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
   auto* screen = display::Screen::Get();
@@ -689,17 +694,17 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // We assume main container is outer-most view for contents.
   // Its width should be same with browser view.
   // This test verifies mouse hover test based on that assumption.
-  EXPECT_EQ(browser_view->width(), main_container->width());
+  EXPECT_EQ(browser_view->width(), main_shadow_overlay->width());
 
   // Check sidebar is not shown.
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on right side.
-  auto main_container_rect = main_container->GetLocalBounds();
-  gfx::Point mouse_position = main_container_rect.top_right();
+  auto main_shadow_overlay_rect = main_shadow_overlay->GetLocalBounds();
+  gfx::Point mouse_position = main_shadow_overlay_rect.top_right();
   mouse_position.Offset(-2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -713,10 +718,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
-  // main_container_rect = main_container->GetLocalBounds();
-  mouse_position = main_container_rect.origin();
+  // main_shadow_overlay_rect = main_shadow_overlay->GetLocalBounds();
+  mouse_position = main_shadow_overlay_rect.origin();
   mouse_position.Offset(2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -728,8 +733,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Check with the space between window border and contents.
   // We have that space with rounded corners.
   // When mouse moves into that space, sidebar should be visible.
-  mouse_position = main_container_rect.origin();
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  mouse_position = main_shadow_overlay_rect.origin();
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -1131,7 +1136,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
-  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
+  EXPECT_FALSE(
+      !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -1142,7 +1148,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -1194,19 +1201,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kCustomizeChrome;
   }));
 
   // Global panel should be set when activate tab at 1.
   tab_model()->ActivateTabAt(1);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 }
 
@@ -1339,10 +1349,12 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
     // Wait till browser has active panel.
-    WaitUntil(base::BindLambdaForTesting(
-        [&]() { return !!panel_ui->GetCurrentEntryId(); }));
+    WaitUntil(base::BindLambdaForTesting([&]() {
+      return !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+    }));
 
-    EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+    EXPECT_EQ(SidePanelEntryId::kChatUI,
+              panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
@@ -1513,21 +1525,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);
   SimulateSidebarItemClickAt(tab_specific_item_index.value());
-  EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kChatUI,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(GetSidePanel()->GetVisible());
   // Tab Specific panel should be open when Tab 1 is active
   EXPECT_EQ(model()->active_index(), tab_specific_item_index);
 
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));

@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index bb625c3acf6e0c1fbccaabb41c55373b25e672bb..2cd391c58900b88fd63a00070b2d54e9fa1ca4ab 100644
+index cbf22b4d6de3977727633f95b6a2e1ba741d3de5..02ef9866dc6ef44dbe700d44434feaed03a2a95c 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1517,6 +1517,7 @@ const FeatureEntry::FeatureVariation kZeroStateSuggestionsVariations[] = {
+@@ -1466,6 +1466,7 @@ const FeatureEntry::FeatureVariation kFRESignInHeaderTextUpdateVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({

@@ -73,8 +73,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
-  std::vector<std::string> _argv_store;
-  std::unique_ptr<const char*[]> _raw_args;
   std::unique_ptr<web::WebMain> _webMain;
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
@@ -154,17 +152,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       }
     }
     [arguments addObjectsFromArray:switches];
-    params.argc = [arguments count];
 
-    // Allocate memory to convert from iOS arguments to Native arguments
-    _raw_args.reset(new const char*[params.argc]);
-    _argv_store.resize([arguments count]);
-
-    for (NSUInteger i = 0; i < [arguments count]; i++) {
-      _argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
-      _raw_args[i] = _argv_store[i].c_str();
+    // Build params.args
+    params.args.clear();
+    params.args.reserve([arguments count]);
+    for (NSString* arg in arguments) {
+      params.args.emplace_back(base::SysNSStringToUTF8(arg));
     }
-    params.argv = _raw_args.get();
 
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
@@ -192,8 +186,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _profileController = nil;
 
   _webMain.reset();
-  _raw_args.reset();
-  _argv_store = {};
   _delegate.reset();
   _webClient.reset();
 }

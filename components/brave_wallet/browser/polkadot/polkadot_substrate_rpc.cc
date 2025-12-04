@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "net/http/http_request_headers.h"
 
 namespace brave_wallet {
 

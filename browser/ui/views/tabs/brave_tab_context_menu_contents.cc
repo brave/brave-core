@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -152,8 +153,9 @@ void BraveTabContextMenuContents::ExecuteCommand(int command_id,
 
   // Executing the command destroys |this|, and can also end up destroying
   // |controller_|. So stop the highlights before executing the command.
-  controller_->ExecuteCommandForTab(
-      static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
+  controller_->ExecuteContextMenuCommand(
+      tab_index_, static_cast<TabStripModel::ContextMenuCommand>(command_id),
+      event_flags);
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

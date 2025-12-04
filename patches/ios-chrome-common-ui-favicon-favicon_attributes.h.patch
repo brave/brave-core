@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/common/ui/favicon/favicon_attributes.h b/ios/chrome/common/ui/favicon/favicon_attributes.h
-index a12772052ebab1b05b9f705f4d844ace8a46d198..0bf69ec175e27e840db3633727e8de072ead466e 100644
+index 0e9f38c33493586397e4de8b852b613a146816e8..7b04434caafe6767afc4e79089cdeef1ea426bee 100644
 --- a/ios/chrome/common/ui/favicon/favicon_attributes.h
 +++ b/ios/chrome/common/ui/favicon/favicon_attributes.h
 @@ -12,6 +12,7 @@ extern const CGFloat kFallbackIconDefaultTextColorGrayscale;

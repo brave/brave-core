@@ -17,8 +17,10 @@
 #include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
+#include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/browsing_data/core/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -88,7 +90,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
-      &autofill::features::test::kAutofillServerCommunication,
+      &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
@@ -98,7 +100,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAIWriterAPI,
       &blink::features::kAllowURNsInIframes,
       &blink::features::kBackgroundResourceFetch,
-      &blink::features::kBuiltInAIAPI,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
@@ -112,6 +113,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+      &browsing_data::features::kDbdRevampDesktop,
+#endif
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif
@@ -184,7 +188,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
-      &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
@@ -236,7 +239,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
-      &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,

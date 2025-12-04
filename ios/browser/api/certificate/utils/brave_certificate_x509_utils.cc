@@ -222,7 +222,7 @@ bool ParseRSAPublicKeyInfo(const bssl::der::Input& input,
 
 bool IsNull(const bssl::der::Input& input) {
   auto IsEmpty = [](const bssl::der::Input& input) {
-    return input.Length() == 0;
+    return input.size() == 0;
   };
 
   bssl::der::Parser parser(input);
@@ -252,7 +252,7 @@ bool OIDToNID(const bssl::der::Input& input, std::int32_t* out) {
   CRYPTO_library_init();
 
   CBS cbs;
-  CBS_init(&cbs, input.UnsafeData(), input.Length());
+  CBS_init(&cbs, input.data(), input.size());
   int nid = OBJ_cbs2nid(&cbs);
   if (nid != NID_undef) {
     result = true;

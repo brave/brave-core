@@ -28,6 +28,8 @@ cargo_crate("lib") {
       "https://github.com/RustCrypto/AEADs/tree/master/chacha20poly1305"
   cargo_pkg_version = "0.10.1"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/aead/v0_5:lib",
     "//brave/third_party/rust/chacha20/v0_9:lib",

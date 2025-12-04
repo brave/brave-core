@@ -23,7 +23,6 @@ declare_args() {
   brave_version_minor = ""
   brave_version_build = ""
   chrome_version_string = ""
-  target_android_base = ""
   target_android_output_format = ""
   brave_android_keystore_path = "."
   brave_android_keystore_name = ""
@@ -159,14 +158,10 @@ is_release_channel = brave_channel == ""
 brave_android_output = ""
 if (is_android) {
   brave_android_output += "$root_out_dir/apks/Brave"
-  if (target_android_base == "modern") {
-    assert(target_cpu != "arm64" && target_cpu != "x64")
-    brave_android_output += "Modern"
-  } else if (target_cpu == "arm64" || target_cpu == "x64" ||
-             target_android_base == "mono") {
-    brave_android_output += "Mono"
-  }
 
+  # TODO(https://github.com/brave/brave-browser/issues/51200)
+  # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
+  brave_android_output += "Mono"
   if (target_android_output_format == "aab") {
     brave_android_output += "$target_cpu.aab"
   } else {

@@ -22,8 +22,7 @@ class BraveTabContainer : public TabContainerImpl {
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
                     TabDragContextBase* drag_context,
-                    TabSlotController& tab_slot_controller,
-                    views::View* scroll_contents_view);
+                    TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
 
   // Calling this will freeze this view's layout. When the returned closure

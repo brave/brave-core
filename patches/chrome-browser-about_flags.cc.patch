@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 8b2c03c03bf6ffdad727773fbc2094feb76d4823..be40392b7ee9c3a47a318384c60b636c209fbea9 100644
+index 321db1b722c063f5370adf840b2b758085a2828c..24e781498e9d2b53771c9f19c947902a92644cf3 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -5200,6 +5200,7 @@ const FeatureEntry::FeatureVariation kProfilePickerTextVariations[] = {
+@@ -5176,6 +5176,7 @@ const FeatureEntry::FeatureVariation kContextualTaskContextVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

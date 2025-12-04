@@ -1,0 +1,14 @@
+diff --git a/chrome/installer/linux/debian/build.py b/chrome/installer/linux/debian/build.py
+index 0f5000cb022f04cafdcec3cf119cf0aa2f85ea5a..5bd9159625990967229fb720ec5a76e698d36a65 100755
+--- a/chrome/installer/linux/debian/build.py
++++ b/chrome/installer/linux/debian/build.py
+@@ -198,6 +198,9 @@ def main():
+ 
+     os.environ["DEB_HOST_ARCH"] = args.arch
+     pkg_name = f"{inst.context['PACKAGE_ORIG']}-{channel}"
++    if channel == "stable":
++        pkg_name = f"{inst.context['PACKAGE_ORIG']}"
++    zip_name = output_dir / f"{pkg_name}-{inst.context['VERSIONFULL']}-linux-{args.arch}.zip"; subprocess.check_call(["zip", "-qr", str(zip_path), "."], cwd=str(install_dir))
+ 
+     if deb_control.exists():
+         gen_control(

@@ -254,6 +254,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/bitvecto-rs/bitvec"
   cargo_pkg_version = "1.0.1"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/funty/v2:lib",
     "//brave/third_party/rust/radium/v0_7:lib",

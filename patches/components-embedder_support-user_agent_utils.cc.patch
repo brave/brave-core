@@ -1,5 +1,5 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index eb4a065f0a695be06a8b7c71e1e4cb464bb9d8bf..5310cf8426a751246c02e0e7aed48a17477b928d 100644
+index 857d7806537545ba98aec06bc87340f29c3f512d..1f30724871a5340be501e41bf922bf9f70ef0c59 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
 @@ -205,10 +205,11 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
@@ -15,7 +15,7 @@ index eb4a065f0a695be06a8b7c71e1e4cb464bb9d8bf..5310cf8426a751246c02e0e7aed48a17
            : major_version;
  
    return GenerateBrandVersionList(major_version_number, brand, brand_version,
-@@ -941,6 +942,7 @@ std::string GetAndroidOSInfo(
+@@ -943,6 +944,7 @@ std::string GetAndroidOSInfo(
  
    // Send information about the device.
    bool semicolon_inserted = false;
