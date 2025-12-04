@@ -13,6 +13,7 @@ source_set("history_embeddings") {
 
   deps = [
     "//base",
+    "//brave/browser/local_ai",
     "//brave/components/constants",
     "//brave/components/local_ai/browser",
     "//brave/components/local_ai/common:mojom",

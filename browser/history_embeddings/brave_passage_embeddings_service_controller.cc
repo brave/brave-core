@@ -6,6 +6,8 @@
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
 #include "brave/browser/history_embeddings/brave_embedder.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
@@ -130,8 +132,15 @@ BravePassageEmbeddingsServiceController::
     : PassageEmbeddingsServiceController() {
   LOG(INFO) << "BravePassageEmbeddingsServiceController created";
 
-  // Create BraveEmbedder
-  brave_embedder_ = std::make_unique<brave::BraveEmbedder>();
+  // Create BraveEmbedder with the last used profile
+  // Note: This is a singleton controller, so it will use the last used profile
+  Profile* profile = ProfileManager::GetLastUsedProfile();
+  if (profile) {
+    brave_embedder_ = std::make_unique<brave::BraveEmbedder>(profile);
+  } else {
+    LOG(ERROR) << "BravePassageEmbeddingsServiceController: No profile "
+                  "available";
+  }
 }
 
 BravePassageEmbeddingsServiceController::

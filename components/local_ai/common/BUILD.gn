@@ -26,3 +26,10 @@ mojom_component("mojom") {
 
   deps = [ "//mojo/public/mojom/base" ]
 }
+
+mojom("local_ai_internals") {
+  sources = [ "local_ai_internals.mojom" ]
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "chrome://local-ai-internals/"
+}
