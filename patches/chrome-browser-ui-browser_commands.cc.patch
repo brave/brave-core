@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index aa732ca6d7774505751cc30f3d2deec4e3170191..bdd3b500ecfe668583d691f7997482c69664083d 100644
+index 51f8ccdbbc78aeca7e5b06822acf980fadc0e6ac..6d0fffcc62ba61b1372acce3b94516f4c551a766 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -603,6 +603,7 @@ void ReloadInternal(BrowserWindowInterface* browser,

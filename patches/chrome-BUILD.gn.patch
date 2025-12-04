@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index fa036801ce974378c5fb586bcf0609da24dd8547..facc2678ff865221a97ed5189f245fd3ca96ab41 100644
+index 5549dad7d160cfa0185ee47f427800699d44dee8..14568c72c82a5ae7bb54e008f3923d9b7e9f25c7 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -195,6 +195,7 @@ if (!is_android && !is_mac) {

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_dispatcher.cc b/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
-index 33c0d26ad3a5fde100e8934b5d57f50ed66dd654..fbed8fee8e087d9ee0e9e030459c09f7b7cbe9b4 100644
+index bac153634ef4c8b648348d7be92ee6bfad0a093b..1a4cb277988af624642aefce56f21f296bb15b26 100644
 --- a/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
 @@ -405,7 +405,7 @@ inline void EventDispatcher::DispatchEventPostProcess(

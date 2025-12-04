@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 84e5155283ccc24b8dad6d0b12b844ce4903e2e2..2f3a796fb1c963d794195fd55fc5255f9cd235a5 100644
+index 9583b9a7c3854ad058ab2ccd86bab917949d1702..4242f8407887ad2585babd11ac9cf4be606c8fc7 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -829,6 +829,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -830,6 +830,7 @@ void LocationBarView::Layout(PassKey) {
                                    .indent_input_when_popup_closed) &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
@@ -10,7 +10,7 @@ index 84e5155283ccc24b8dad6d0b12b844ce4903e2e2..2f3a796fb1c963d794195fd55fc5255f
    if (should_indent) {
      icon_left += 7 /*icon_indent*/;
      icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
-@@ -916,6 +917,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -917,6 +918,7 @@ void LocationBarView::Layout(PassKey) {
        }
        selected_keyword_view_->SetCustomImage(image);
      }
@@ -18,7 +18,7 @@ index 84e5155283ccc24b8dad6d0b12b844ce4903e2e2..2f3a796fb1c963d794195fd55fc5255f
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -976,6 +978,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -977,6 +979,7 @@ void LocationBarView::Layout(PassKey) {
                !all_page_actions_migrated
            ? -3
            : 5;
@@ -26,7 +26,7 @@ index 84e5155283ccc24b8dad6d0b12b844ce4903e2e2..2f3a796fb1c963d794195fd55fc5255f
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0,
                            /*edge_padding=*/
-@@ -999,6 +1002,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -1000,6 +1003,7 @@ void LocationBarView::Layout(PassKey) {
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0,
                            /*edge_padding=*/trailing_decorations_edge_padding);
