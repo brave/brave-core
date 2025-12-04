@@ -60,7 +60,7 @@ extension BraveShieldsSettings {
 
       // Shields Enabled / Disabled
       let domainsWithExplicitAllOff = domains.filter { $0.shield_allOff != nil }
-      let shieldEnabledDomainToMigrate = domainsWithExplicitAllOff.sortedForMigration().first
+      let shieldEnabledDomainToMigrate = domainsWithExplicitAllOff.preferredForMigration()
       // only assign if an explicit value assigned, else default is used
       if let shieldEnabledDomainToMigrate,
         let urlString = shieldEnabledDomainToMigrate.url,
@@ -74,7 +74,7 @@ extension BraveShieldsSettings {
       let domainsWithExplicitShieldLevel = domains.filter {
         $0.shield_blockAdsAndTrackingLevel != nil
       }
-      let shieldLevelDomainToMigrate = domainsWithExplicitShieldLevel.sortedForMigration().first
+      let shieldLevelDomainToMigrate = domainsWithExplicitShieldLevel.preferredForMigration()
       // only assign if an explicit value assigned, else default is used
       if let shieldLevelDomainToMigrate,
         let urlString = shieldLevelDomainToMigrate.url,
@@ -89,7 +89,7 @@ extension BraveShieldsSettings {
         $0.shield_fpProtection != nil
       }
       let fingerprintingProtectionDomainToMigrate =
-        domainsWithExplicitFingerprintingProtection.sortedForMigration().first
+        domainsWithExplicitFingerprintingProtection.preferredForMigration()
       // only assign if an explicit value assigned, else default is used
       if let fingerprintingProtectionDomainToMigrate,
         let urlString = fingerprintingProtectionDomainToMigrate.url,
@@ -105,7 +105,7 @@ extension BraveShieldsSettings {
 
       // Block Scripts
       let domainsWithExplicitBlockScripts = domains.filter { $0.shield_noScript != nil }
-      let blockScriptsDomainToMigrate = domainsWithExplicitBlockScripts.sortedForMigration().first
+      let blockScriptsDomainToMigrate = domainsWithExplicitBlockScripts.preferredForMigration()
       // only assign if an explicit value assigned, else default is used
       if let blockScriptsDomainToMigrate,
         let urlString = blockScriptsDomainToMigrate.url,
@@ -133,7 +133,7 @@ extension BraveShieldsSettings {
     for (domain, domains) in groupedByDomain where !domain.isEmpty {
 
       let domainsWithExplicitShredLevel = domains.filter { $0.shield_shredLevel != nil }
-      let shredLevelDomainToMigrate = domainsWithExplicitShredLevel.sortedForMigration().first
+      let shredLevelDomainToMigrate = domainsWithExplicitShredLevel.preferredForMigration()
       // only assign if an explicit value assigned, else default is used
       if let shredLevelDomainToMigrate,
         let urlString = shredLevelDomainToMigrate.url,
@@ -155,8 +155,8 @@ extension BraveShieldsSettings {
 }
 
 extension Array where Element == Domain {
-  fileprivate func sortedForMigration() -> [Domain] {
-    sorted(by: { lhs, rhs in
+  fileprivate func preferredForMigration() -> Domain? {
+    self.min(by: { lhs, rhs in
       let isLHSHttps = lhs.url?.caseInsensitiveHasPrefix("https://") == true
       let isRHSHttps = rhs.url?.caseInsensitiveHasPrefix("https://") == true
       // prioritize https
