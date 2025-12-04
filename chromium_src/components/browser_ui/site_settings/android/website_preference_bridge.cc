@@ -32,7 +32,7 @@
 #undef CLIPBOARD_READ_WRITE
 #undef JNI_WebsitePreferenceBridge_ClearCookieData
 
-// We can't use BDEFINE_JNI when override upstream's JNI method as it causes
+// We can't use DEFINE_JNI when override upstream's JNI method as it causes
 // class redefinition issues. So we use [[maybe_unused]] to suppress the error.
 [[maybe_unused]] static void JNI_WebsitePreferenceBridge_ClearCookieData(
     JNIEnv* env,
