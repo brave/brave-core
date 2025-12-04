@@ -21,6 +21,7 @@
 -HeadlessModeProtocolBrowserTest.InputClipboardOps
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
+-InterstitialUITest.CTInterstitial
 -HasBeforeUnloadHandlerTest.NonEmptyBeforeUnloadDetected
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
