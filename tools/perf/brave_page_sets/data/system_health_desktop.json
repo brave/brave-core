@@ -3,12 +3,6 @@
     "UpdateProfile": {
       "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
     },
-    "browse:news:hackernews:2020": {
-      "DEFAULT": "system_health_desktop_c72fda288b.wprgo"
-    },
-    "browse:search:google:2020": {
-      "DEFAULT": "system_health_desktop_20c4fe6ace.wprgo"
-    },
     "load:media:youtube:2018": {
       "DEFAULT": "system_health_desktop_81f7c27d9f.wprgo"
     },
