@@ -23,6 +23,8 @@
   }                                 \
   virtual const gfx::VectorIcon& GetReversePositionIcon(__VA_ARGS__)
 
+// Add brave specific commands.
+// kToggleLinkState is for linking/unlinking tabs in split view.
 #define kExitSplit kExitSplit, kToggleLinkState
 
 #include <chrome/browser/ui/tabs/split_tab_menu_model.h>  // IWYU pragma: export

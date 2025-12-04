@@ -12,6 +12,7 @@ source_set("split_view") {
   ]
 
   deps = [
+    "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:ui_features",
     "//components/tabs:public",
     "//content/public/browser",

@@ -5,23 +5,23 @@
 
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/split_tab_data.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 namespace {
 
 content::WebContents* GetRightPaneIfLinked(content::WebContents* source) {
-  if (!source) {
-    return nullptr;
-  }
+  CHECK(source);
 
   // Only handle split tabs.
   tabs::TabInterface* source_tab =
@@ -73,12 +73,17 @@ bool MaybeRedirectToRightPane(content::WebContents* source,
     return false;
   }
 
-  // Load the URL in the right pane
-  content::NavigationController::LoadURLParams params(url);
-  params.transition_type = ui::PAGE_TRANSITION_LINK;
-  params.is_renderer_initiated = false;
+  // We can load url via target contents' NavigationController
+  // but Navigate() is definitely the better choice as this is
+  // another browser initiated navigation.
+  tabs::TabInterface* target_tab =
+      tabs::TabInterface::GetFromContents(target_contents);
+  NavigateParams params(target_tab->GetBrowserWindowInterface(), url,
+                        ui::PAGE_TRANSITION_LINK);
+  params.source_contents = target_contents;
+  params.disposition = WindowOpenDisposition::CURRENT_TAB;
   params.referrer = referrer;
-  target_contents->GetController().LoadURLWithParams(params);
+  Navigate(&params);
 
   return true;
 }
