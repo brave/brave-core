@@ -152,6 +152,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
   "//brave/browser/ui/webui/brave_account",
+  "//brave/browser/ui/webui/email_aliases",
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",

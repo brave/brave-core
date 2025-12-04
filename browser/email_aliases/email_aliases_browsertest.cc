@@ -408,14 +408,95 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   InjectHelpers(ActiveWebContents());
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  auto* email_aliases_controller =
+      browser()->GetFeatures().email_aliases_controller();
 
   EXPECT_EQ("", GetText("#type-email"));
 
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  InjectHelpers(bubble);
+  Wait("#create-alias-button:not([isDisabled=\"true\"])", bubble);
+  Click("#create-alias-button:not([isDisabled=\"true\"])", bubble);
+
+  // Wait for bubble close
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !email_aliases_controller->GetBubbleForTesting(); }));
 
   EXPECT_TRUE(AwaitText("#type-email", "new@alias.com"));
 }
 
+IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
+  email_aliases_service()->RequestAuthentication("success@domain.com",
+                                                 base::DoNothing());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !email_aliases_service()->GetAuthTokenForTesting().empty();
+  }));
+
+  const GURL settings_page("chrome://settings/email-aliases");
+
+  Navigate(GURL("https://a.test/email_aliases/inputs.html"));
+
+  content::TestNavigationObserver waiter(settings_page);
+  waiter.StartWatchingNewWebContents();
+
+  EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  auto* email_aliases_controller =
+      browser()->GetFeatures().email_aliases_controller();
+
+  ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
+  RunContextMenuOn("type-email");
+  menu_waiter.WaitForMenuOpenAndClose();
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  InjectHelpers(bubble);
+  Wait("#manage-button", bubble);
+  Click("#manage-button", bubble);
+
+  waiter.WaitForNavigationFinished();
+
+  EXPECT_EQ(ActiveWebContents()->GetLastCommittedURL(), settings_page);
+}
+
+IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
+  email_aliases_service()->RequestAuthentication("success@domain.com",
+                                                 base::DoNothing());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !email_aliases_service()->GetAuthTokenForTesting().empty();
+  }));
+
+  Navigate(GURL("https://a.test/email_aliases/inputs.html"));
+  InjectHelpers(ActiveWebContents());
+
+  EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  auto* email_aliases_controller =
+      browser()->GetFeatures().email_aliases_controller();
+
+  ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
+  RunContextMenuOn("type-email");
+  menu_waiter.WaitForMenuOpenAndClose();
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  InjectHelpers(bubble);
+  Wait("#cancel-button", bubble);
+  Click("#cancel-button", bubble);
+
+  // Wait for bubble close
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !email_aliases_controller->GetBubbleForTesting(); }));
+
+  EXPECT_TRUE(AwaitText("#type-email", ""));  // text not changed
+}
 }  // namespace email_aliases

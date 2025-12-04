@@ -61,6 +61,7 @@ const BeforeSendingEmailForm = ({
       setErrorMessage(errorMessage as string)
     }
   }
+
   return (
     <SpacedCol>
       <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT)}</h4>
@@ -69,7 +70,9 @@ const BeforeSendingEmailForm = ({
       </div>
       <LoginRow>
         <StretchyInput
-          autofocus
+          ref={(el) => {
+            el?.focus()
+          }}
           onInput={(detail) => setEmail(detail.value)}
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
           name='email'

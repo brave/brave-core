@@ -283,6 +283,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
@@ -290,6 +291,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #endif
 
@@ -760,6 +763,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    registry.ForWebUI<EmailAliasesPanelUI>()
+        .Add<email_aliases::mojom::EmailAliasesService>()
+        .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
+  }
+
 #else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
