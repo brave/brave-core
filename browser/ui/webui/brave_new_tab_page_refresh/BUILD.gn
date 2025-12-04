@@ -83,3 +83,24 @@ source_set("brave_new_tab_page_refresh") {
     ]
   }
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_new_tab_page_ui_browsertest.cc" ]
+
+  deps = [
+    ":brave_new_tab_page_refresh",
+    "//base",
+    "//brave/browser/extensions:test_support",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/public/common:result_codes",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
