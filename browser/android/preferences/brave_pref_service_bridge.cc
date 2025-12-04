@@ -228,3 +228,5 @@ jboolean JNI_BravePrefServiceBridge_GetShowNews(JNIEnv* env) {
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BravePrefServiceBridge)

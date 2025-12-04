@@ -29,6 +29,15 @@
 namespace permissions {
 namespace {
 
+// We can't use DEFINE_JNI when override upstream's JNI method as it causes
+// class redefinition issues. So we use [[maybe_unused]] to suppress the error.
+[[maybe_unused]] const bool kBravePermissionClapperQuietIconJniReferenced =
+    []() {
+      (void)&Java_PermissionDialogController_dismissPermissionClapperQuietIcon;
+      (void)&Java_PermissionDialogController_showPermissionClapperQuietIcon;
+      return true;
+    }();
+
 // This method doesn't belong to PermissionDialogJavaDelegate because
 // when it is invoked, PermissionDialogJavaDelegate::j_delegate_ is not ready
 // yet

@@ -29,3 +29,5 @@ static jlong JNI_MiscAndroidMetricsFactory_GetInterfaceToMiscAndroidMetrics(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(MiscAndroidMetricsFactory)

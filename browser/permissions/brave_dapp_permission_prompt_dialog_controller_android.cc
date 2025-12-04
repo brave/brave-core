@@ -96,3 +96,5 @@ BraveDappPermissionPromptDialogController::GetOrCreateJavaObject() {
                  env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""),
              static_cast<int32_t>(coin_type_));
 }
+
+DEFINE_JNI(BraveDappPermissionPromptDialog)
