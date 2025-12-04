@@ -34,8 +34,11 @@
 
 - (instancetype)initWithBackground:
     (const ntp_background_images::Background&)background {
-  auto imagePath = [NSURL
-      fileURLWithPath:base::SysUTF8ToNSString(background.file_path.value())];
+  // TODO(aseren): This is temporary change to always show sponsored rich media
+  auto imagePath =
+      [NSURL URLWithString:base::SysUTF8ToNSString("brave://ads-internals")];
+  // auto imagePath = [NSURL
+  //     fileURLWithPath:base::SysUTF8ToNSString(background.file_path.value())];
   auto author = base::SysUTF8ToNSString(background.author);
   auto link = [NSURL URLWithString:base::SysUTF8ToNSString(background.link)];
   return [self initWithImagePath:imagePath author:author link:link];
