@@ -36,6 +36,8 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   output.amount = 200000 - 1000;
   tx->AddOutput(std::move(output));
 
+  tx->set_fee(1000u);
+
   CardanoTxMeta meta(cardano_account_id, std::move(tx));
   meta.set_chain_id(mojom::kCardanoTestnet);
   base::Time::Exploded x{1981, 3, 0, 1, 2};

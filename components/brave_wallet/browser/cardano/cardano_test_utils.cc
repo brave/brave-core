@@ -205,8 +205,8 @@ void CardanoTestRpcServer::SetUpCardanoRpc(
 
   auto address_external_0 = keyring->GetAddress(
       0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 0));
-  AddUtxo(address_external_0->address_string, 54321);
-  AddUtxo(address_external_0->address_string, 600000);
+  AddUtxo(address_external_0->address_string, 969750);  // min utxo
+  AddUtxo(address_external_0->address_string, 2000000);
 
   auto address_internal_0 = keyring->GetAddress(
       0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal, 0));

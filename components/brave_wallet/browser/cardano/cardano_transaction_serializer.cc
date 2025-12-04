@@ -24,6 +24,7 @@ namespace brave_wallet {
 
 // https://github.com/Emurgo/cardano-serialization-lib/blob/c8bb8f43a916d804b89c3e226560265b65f1689a/rust/src/utils.rs#L791
 constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
+constexpr int kFeeSearchMaxIterations = 10;
 
 namespace {
 
@@ -62,18 +63,7 @@ cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutput(
     const CardanoTransaction::TxOutput& output) {
   cbor::Value::ArrayValue output_value;
   output_value.emplace_back(output.address.ToCborBytes());
-
-  bool serialize_as_max_value =
-      (output.type == CardanoTransaction::TxOutputType::kTarget &&
-       options_.max_value_for_target_output) ||
-      (output.type == CardanoTransaction::TxOutputType::kChange &&
-       options_.max_value_for_change_output);
-
-  if (serialize_as_max_value) {
-    output_value.emplace_back(std::numeric_limits<int64_t>::max());
-  } else {
-    output_value.emplace_back(AmountToInt64ForCbor(output.amount));
-  }
+  output_value.emplace_back(AmountToInt64ForCbor(output.amount));
 
   return output_value;
 }
@@ -96,11 +86,8 @@ cbor::Value CardanoTransactionSerializer::SerializeTxBody(
 
   body_map.emplace(0, SerializeInputs(tx));
   body_map.emplace(1, SerializeOutputs(tx));
-  body_map.emplace(2,
-                   options_.max_value_for_fee
-                       ? std::numeric_limits<int64_t>::max()
-                       : AmountToInt64ForCbor(tx.EffectiveFeeAmount()));  // fee
-  body_map.emplace(3, base::strict_cast<int64_t>(tx.invalid_after()));    // ttl
+  body_map.emplace(2, AmountToInt64ForCbor(tx.fee()));                  // fee
+  body_map.emplace(3, base::strict_cast<int64_t>(tx.invalid_after()));  // ttl
 
   return cbor::Value(body_map);
 }
@@ -227,12 +214,92 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
   return CalcRequiredCoin(cur_output, epoch_parameters);
 }
 
+// static
 bool CardanoTransactionSerializer::ValidateMinValue(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
   auto min_ada_required = CardanoTransactionSerializer().CalcMinAdaRequired(
       output, epoch_parameters);
   return min_ada_required && output.amount >= min_ada_required.value();
+}
+
+// static
+std::optional<CardanoTransaction>
+CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
+    const CardanoTransaction& base_tx,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  CardanoTransaction result = base_tx;
+
+  base::CheckedNumeric<uint64_t> total_inputs_amount =
+      result.GetTotalInputsAmount();
+
+  // These values are not supposed to be set before.
+  CHECK_EQ(result.fee(), 0u);
+  if (result.ChangeOutput()) {
+    CHECK_EQ(result.ChangeOutput()->amount, 0u);
+  }
+  if (result.sending_max_amount()) {
+    CHECK_EQ(result.TargetOutput()->amount, 0u);
+  }
+
+  // This is starting fee based on minimum size of tx as fee and outputs are 0.
+  uint64_t start_fee =
+      CardanoTransactionSerializer({.use_dummy_witness_set = true})
+          .CalcMinTransactionFee(result, epoch_parameters);
+  result.set_fee(start_fee);
+
+  for (int i = 0; i < kFeeSearchMaxIterations; i++) {
+    // Adjust outputs based on current tx fee.
+    if (result.sending_max_amount()) {
+      if (!base::CheckSub(total_inputs_amount, result.fee())
+               .AssignIfValid(&result.TargetOutput()->amount)) {
+        return std::nullopt;
+      }
+    } else if (result.ChangeOutput()) {
+      if (!base::CheckSub(total_inputs_amount, result.fee(),
+                          result.TargetOutput()->amount)
+               .AssignIfValid(&result.ChangeOutput()->amount)) {
+        return std::nullopt;
+      }
+    }
+
+    auto required_fee =
+        CardanoTransactionSerializer({.use_dummy_witness_set = true})
+            .CalcMinTransactionFee(result, epoch_parameters);
+
+    // Break search loop if required fee is less than or equal to current fee.
+    // That means current tx fee is enough to cover the transaction costs(based
+    // on its binary size).
+    if (required_fee <= result.fee()) {
+      if (ValidateAmounts(result, epoch_parameters)) {
+        return result;
+      }
+      return std::nullopt;
+    }
+
+    // Run the loop again with larger fee.
+    result.set_fee(required_fee);
+  }
+
+  return std::nullopt;
+}
+
+// static
+bool CardanoTransactionSerializer::ValidateAmounts(
+    const CardanoTransaction& tx,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  for (auto& output : tx.outputs()) {
+    if (!ValidateMinValue(output, epoch_parameters)) {
+      return false;
+    }
+  }
+
+  base::CheckedNumeric<uint64_t> inputs = tx.GetTotalInputsAmount();
+  base::CheckedNumeric<uint64_t> outputs =
+      base::CheckAdd(tx.GetTotalOutputsAmount(), tx.fee());
+
+  return inputs.IsValid() && outputs.IsValid() &&
+         inputs.ValueOrDie() == outputs.ValueOrDie();
 }
 
 }  // namespace brave_wallet

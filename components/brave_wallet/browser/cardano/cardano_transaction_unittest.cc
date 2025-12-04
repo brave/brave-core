@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
+#include <limits>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -122,8 +123,9 @@ TEST(CardanoTransaction, Value) {
   tx.set_amount(12345);
   tx.set_invalid_after(777);
   tx.set_sending_max_amount(true);
+  tx.set_fee(1000);
 
-  auto parsed = tx.FromValue(tx.ToValue());
+  auto parsed = CardanoTransaction::FromValue(tx.ToValue());
   ASSERT_TRUE(parsed);
   EXPECT_EQ(*parsed, tx);
   EXPECT_EQ(parsed->inputs(), tx.inputs());
@@ -131,8 +133,15 @@ TEST(CardanoTransaction, Value) {
   EXPECT_EQ(parsed->witnesses(), tx.witnesses());
   EXPECT_EQ(parsed->to(), tx.to());
   EXPECT_EQ(parsed->amount(), tx.amount());
+  EXPECT_EQ(parsed->fee(), tx.fee());
   EXPECT_EQ(parsed->invalid_after(), tx.invalid_after());
   EXPECT_EQ(parsed->sending_max_amount(), tx.sending_max_amount());
+
+  // Legacy format without fee.
+  auto value_no_fee = tx.ToValue();
+  value_no_fee.Remove("fee");
+  auto parsed_no_fee = CardanoTransaction::FromValue(value_no_fee);
+  EXPECT_EQ(parsed_no_fee->fee(), 555667277u);
 }
 
 TEST(CardanoTransaction, IsSigned) {
@@ -166,7 +175,7 @@ TEST(CardanoTransaction, IsSigned) {
 
 TEST(CardanoTransaction, TotalInputsAmount) {
   CardanoTransaction tx;
-  EXPECT_EQ(tx.TotalInputsAmount(), 0u);
+  EXPECT_EQ(tx.GetTotalInputsAmount().ValueOrDie(), 0u);
 
   CardanoTransaction::TxInput input1;
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
@@ -174,7 +183,7 @@ TEST(CardanoTransaction, TotalInputsAmount) {
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
   input1.utxo_value = 555666777;
   tx.AddInput(std::move(input1));
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u);
+  EXPECT_EQ(tx.GetTotalInputsAmount().ValueOrDie(), 555666777u);
 
   CardanoTransaction::TxInput input2;
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
@@ -182,101 +191,38 @@ TEST(CardanoTransaction, TotalInputsAmount) {
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   tx.AddInput(std::move(input2));
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
+  EXPECT_EQ(tx.GetTotalInputsAmount().ValueOrDie(), 555666777u + 555u);
+
+  CardanoTransaction::TxInput input3;
+  input3.utxo_address = *CardanoAddress::FromString(kAddress2);
+  input3.utxo_outpoint.index = 7;
+  base::HexStringToSpan(kTxid2, input3.utxo_outpoint.txid);
+  input3.utxo_value = std::numeric_limits<uint64_t>::max();
+  tx.AddInput(std::move(input3));
+  EXPECT_FALSE(tx.GetTotalInputsAmount().IsValid());
 }
 
 TEST(CardanoTransaction, TotalOutputsAmount) {
   CardanoTransaction tx;
-  EXPECT_EQ(tx.TotalOutputsAmount(), 0u);
+  EXPECT_EQ(tx.GetTotalOutputsAmount().ValueOrDie(), 0u);
 
   CardanoTransaction::TxOutput output1;
   output1.address = *CardanoAddress::FromString(kAddress1);
   output1.amount = 5;
   tx.AddOutput(std::move(output1));
-  EXPECT_EQ(tx.TotalOutputsAmount(), 5u);
+  EXPECT_EQ(tx.GetTotalOutputsAmount().ValueOrDie(), 5u);
 
   CardanoTransaction::TxOutput output2;
   output2.address = *CardanoAddress::FromString(kAddress2);
   output2.amount = 50;
   tx.AddOutput(std::move(output2));
-  EXPECT_EQ(tx.TotalOutputsAmount(), 50u + 5u);
-}
+  EXPECT_EQ(tx.GetTotalOutputsAmount().ValueOrDie(), 50u + 5u);
 
-TEST(CardanoTransaction, EffectiveFeeAmount) {
-  CardanoTransaction tx;
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 0u);
-
-  CardanoTransaction::TxInput input1;
-  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
-  input1.utxo_outpoint.index = 123;
-  base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
-  tx.AddInput(std::move(input1));
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u);
-
-  CardanoTransaction::TxInput input2;
-  input2.utxo_address = *CardanoAddress::FromString(kAddress2);
-  input2.utxo_outpoint.index = 7;
-  base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
-  tx.AddInput(std::move(input2));
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u);
-
-  CardanoTransaction::TxOutput output1;
-  output1.address = *CardanoAddress::FromString(kAddress1);
-  output1.amount = 5;
-  tx.AddOutput(std::move(output1));
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u - 5u);
-
-  CardanoTransaction::TxOutput output2;
-  output2.address = *CardanoAddress::FromString(kAddress2);
-  output2.amount = 50;
-  tx.AddOutput(std::move(output2));
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u - 5u - 50u);
-}
-
-TEST(CardanoTransaction, MoveSurplusFeeToChangeOutput) {
-  CardanoTransaction tx;
-  EXPECT_EQ(tx.EffectiveFeeAmount(), 0u);
-
-  CardanoTransaction::TxInput input1;
-  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
-  input1.utxo_outpoint.index = 123;
-  base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 1000;
-  tx.AddInput(std::move(input1));
-
-  CardanoTransaction::TxInput input2;
-  input2.utxo_address = *CardanoAddress::FromString(kAddress2);
-  input2.utxo_outpoint.index = 7;
-  base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 2000;
-  tx.AddInput(std::move(input2));
-
-  CardanoTransaction::TxOutput output1;
-  output1.address = *CardanoAddress::FromString(kAddress1);
-  output1.amount = 500;
-  tx.AddOutput(std::move(output1));
-
-  CardanoTransaction::TxOutput output2;
-  output2.address = *CardanoAddress::FromString(kAddress2);
-  output2.amount = 0;
-  output2.type = CardanoTransaction::TxOutputType::kChange;
-  tx.AddOutput(std::move(output2));
-
-  EXPECT_TRUE(tx.MoveSurplusFeeToChangeOutput(0));
-  EXPECT_EQ(tx.ChangeOutput()->amount, 2500u);
-
-  EXPECT_TRUE(tx.MoveSurplusFeeToChangeOutput(100));
-  EXPECT_EQ(tx.ChangeOutput()->amount, 2400u);
-
-  EXPECT_TRUE(tx.MoveSurplusFeeToChangeOutput(2500));
-  EXPECT_EQ(tx.ChangeOutput()->amount, 0u);
-
-  // Not enough spare coins to match fee
-  EXPECT_FALSE(tx.MoveSurplusFeeToChangeOutput(2501));
-  EXPECT_FALSE(tx.MoveSurplusFeeToChangeOutput(3000));
-  EXPECT_FALSE(tx.MoveSurplusFeeToChangeOutput(123456));
+  CardanoTransaction::TxOutput output3;
+  output3.address = *CardanoAddress::FromString(kAddress2);
+  output3.amount = std::numeric_limits<uint64_t>::max();
+  tx.AddOutput(std::move(output3));
+  EXPECT_FALSE(tx.GetTotalOutputsAmount().IsValid());
 }
 
 }  // namespace brave_wallet
