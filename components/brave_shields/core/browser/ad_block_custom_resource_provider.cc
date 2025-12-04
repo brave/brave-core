@@ -182,8 +182,10 @@ void AdBlockCustomResourceProvider::RemoveObserver(
 void AdBlockCustomResourceProvider::LoadResources(
     base::OnceCallback<void(AdblockResourceStorageBox)> on_load) {
   if (cached_storage_) {
-    std::move(on_load).Run(
-        adblock::clone_resource_storage(*cached_storage_.value()));
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(on_load), adblock::clone_resource_storage(
+                                               *cached_storage_.value())));
     return;
   }
   default_resource_provider_->LoadResources(
@@ -193,7 +195,7 @@ void AdBlockCustomResourceProvider::LoadResources(
 
 void AdBlockCustomResourceProvider::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
-  cached_storage_ = std::nullopt;
+  cached_storage_.reset();
   OnDefaultResourcesLoaded(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()),
@@ -301,7 +303,7 @@ void AdBlockCustomResourceProvider::OnCustomResourcesLoaded(
 }
 
 void AdBlockCustomResourceProvider::ReloadResourcesAndNotify() {
-  cached_storage_ = std::nullopt;
+  cached_storage_.reset();
   LoadResources(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()));
