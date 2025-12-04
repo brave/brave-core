@@ -166,16 +166,6 @@ patches/*.java.patch @brave/java-patch-reviewers
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @brave/sec-team
 
-# Files related to the installer and differential updates on Windows
-/chromium_src/chrome/installer/setup/resources/ @brave/windows-installer-reviewers
-/installer/mini_installer/brave_mini_installer_constants_unittest.cc @brave/windows-installer-reviewers
-/installer/setup/ @brave/windows-installer-reviewers
-/installer/util/chromium_index_helper_begin.h @brave/windows-installer-reviewers
-/installer/util/chromium_index_helper_end.h @brave/windows-installer-reviewers
-/test/filters/installer_util_unittests.filter @brave/windows-installer-reviewers
-/test/filters/setup_unittests.filter @brave/windows-installer-reviewers
-/third_party/bspatch/ @brave/windows-installer-reviewers
-
 # Boost imports (i.e. config, multiprecision)
 third_party/boost @brave/deps-reviewers
 
