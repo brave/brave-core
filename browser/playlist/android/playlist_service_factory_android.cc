@@ -25,3 +25,5 @@ static jlong JNI_PlaylistServiceFactoryAndroid_GetInterfaceToPlaylistService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(PlaylistServiceFactoryAndroid)

@@ -83,3 +83,5 @@ static jlong JNI_BraveWalletServiceFactory_GetInterfaceToSolanaTxManagerProxy(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveWalletServiceFactory)

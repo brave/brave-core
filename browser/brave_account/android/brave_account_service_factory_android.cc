@@ -34,3 +34,5 @@ static jlong JNI_BraveAccountServiceFactory_GetInterfaceToBraveAccountService(
 }
 
 }  // namespace chrome::android
+
+DEFINE_JNI(BraveAccountServiceFactory)

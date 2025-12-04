@@ -52,3 +52,5 @@ static void JNI_BraveFeatureUtil_EnableFeature(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveFeatureUtil)

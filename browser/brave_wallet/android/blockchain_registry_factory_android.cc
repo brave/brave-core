@@ -46,3 +46,5 @@ JNI_BlockchainRegistryFactory_GetTokensIconsLocation(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BlockchainRegistryFactory)

@@ -28,3 +28,5 @@ JNI_BraveActivity_GetSafeBrowsingApiKey(JNIEnv* env) {
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveActivity)

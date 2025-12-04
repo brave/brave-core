@@ -27,3 +27,5 @@ static jlong JNI_SkusServiceFactory_GetInterfaceToSkusService(
 
 }  // namespace android
 }  // namespace brave
+
+DEFINE_JNI(SkusServiceFactory)
