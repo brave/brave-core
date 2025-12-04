@@ -24,7 +24,8 @@ let someString = Strings.someString
 
 ### Prerequisites
 This script is using bash jq command-line tool for parsing JSON data.
-Make sure jq is installed and added to your PATH
+Make sure jq is installed and added to your PATH.
+It also needs lxml in your python environment. Make sure you have installed lxml.
  
 Once your english strings are all up to date. These changes can be pushed to Crowdin for translation by running the following from Terminal:
 
