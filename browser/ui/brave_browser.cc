@@ -225,7 +225,6 @@ content::WebContents* BraveBrowser::AddNewContents(
       // Navigation was redirected to the right pane, so we don't need to
       // create a new tab. Return nullptr to indicate no new contents were
       // added.
-      *was_blocked = true;
       return nullptr;
     }
   }

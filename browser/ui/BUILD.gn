@@ -356,7 +356,6 @@ source_set("ui") {
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/split_view",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/webui/brave_welcome_page",

@@ -9,6 +9,7 @@
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "content/public/browser/navigation_handle.h"
+#include "net/http/http_request_headers.h"
 #include "ui/base/window_open_disposition.h"
 
 // static
@@ -55,8 +56,9 @@ SplitViewLinkNavigationThrottle::MaybeRedirectToRightPane() {
     return PROCEED;
   }
 
-  // Don't intercept POST requests (forms)
-  if (navigation_handle()->IsPost()) {
+  // Only intercept GET requests as it carries all data in the URL.
+  if (navigation_handle()->GetRequestMethod() !=
+      net::HttpRequestHeaders::kGetMethod) {
     return PROCEED;
   }
 
