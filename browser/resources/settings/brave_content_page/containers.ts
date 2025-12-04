@@ -101,16 +101,14 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onEditContainerClick_(e: Event) {
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    const id = (e.currentTarget as HTMLElement).dataset['id']
+    const id = (e.currentTarget as HTMLElement).getAttribute('id')
     assert(id)
     this.editingContainer_ = this.containersList_.find((c) => c.id === id)
     this.editDialogError_ = undefined
   }
 
   onDeleteContainerClick_(e: Event) {
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    const id = (e.currentTarget as HTMLElement).dataset['id']
+    const id = (e.currentTarget as HTMLElement).getAttribute('id')
     assert(id)
     this.deletingContainer_ = this.containersList_.find((c) => c.id === id)
     this.deleteDialogError_ = undefined

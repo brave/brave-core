@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-
 import { html, nothing } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 import { SettingsBraveContentContainersElement } from './containers.js'
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
@@ -17,6 +15,9 @@ import './containers_icon.js'
 import './containers_background_chip.js'
 
 export function getHtml(this: SettingsBraveContentContainersElement) {
+  const editingContainerBackgroundColor =
+    this.editingContainer_?.backgroundColor ?? { value: 0xFF000000 }
+  const editingContainerIcon = this.editingContainer_?.icon ?? null
   return html`<!--_html_template_start_-->
     <settings-section id="containers" page-title="$i18n{SETTINGS_CONTAINERS_SECTION_LABEL}">
       <div class="cr-row first two-line">
@@ -112,7 +113,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                         (color) => html`
                           <settings-brave-content-containers-background-chip
                             ?selected="${color.value
-                            === this.editingContainer_!.backgroundColor.value}"
+                            === editingContainerBackgroundColor.value}"
                             background-color="${skColorToHexColor(color)}"
                             @background-selected="${this
                               .onContainersBackgroundColorSelected_}"
@@ -132,10 +133,10 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                           (icon) => html`
                             <settings-brave-content-containers-icon
                               background-color="${skColorToHexColor(
-                                this.editingContainer_!.backgroundColor,
+                                editingContainerBackgroundColor,
                               )}"
                               icon=${icon}
-                              ?selected="${icon === this.editingContainer_!.icon}"
+                              ?selected="${icon === editingContainerIcon}"
                               @icon-selected="${this.onContainersIconSelected_}"
                             ></settings-brave-content-containers-icon>
                           `,
