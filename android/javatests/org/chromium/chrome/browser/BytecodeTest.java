@@ -48,6 +48,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -1910,7 +1911,7 @@ public class BytecodeTest {
                         RecyclerView.class,
                         DragReorderableRecyclerViewAdapter.class,
                         boolean.class,
-                        ObservableSupplierImpl.class,
+                        SettableNonNullObservableSupplier.class,
                         Profile.class,
                         BookmarkUndoController.class,
                         ModelList.class,
