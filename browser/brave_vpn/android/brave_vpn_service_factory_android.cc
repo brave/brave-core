@@ -28,3 +28,5 @@ static jlong JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveVpnServiceFactoryAndroid)

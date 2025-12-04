@@ -130,3 +130,5 @@ static void JNI_BraveSyncDevices_Init(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveSyncDevices)

@@ -142,3 +142,5 @@ std::u16string CredentialEditBridge::GetDisplayFederationOrigin() {
                    base::UnescapeRule::SPACES, nullptr, nullptr, nullptr)
              : std::u16string();
 }
+
+DEFINE_JNI(CredentialEditBridge)
