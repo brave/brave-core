@@ -413,9 +413,6 @@ Config.prototype.buildArgs = function () {
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
-    // TODO: Re-enable when chromium_src overrides work for files in relative
-    // paths like widevine_cmdm_compoennt_installer.cc
-    // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
     target_cpu: this.targetArch,
