@@ -1769,7 +1769,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   registry->Register(std::move(toolbar_entry));
 
   // Show the toolbar entry
-  auto* coordinator = browser()->GetFeatures().side_panel_coordinator();
+  auto* coordinator = SidePanelCoordinator::From(browser());
   coordinator->SetNoDelaysForTesting(true);
   coordinator->Show(SidePanelEntry::Id::kAboutThisSite);
 
