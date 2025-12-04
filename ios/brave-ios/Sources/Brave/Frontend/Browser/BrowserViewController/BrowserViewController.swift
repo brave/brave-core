@@ -2809,6 +2809,10 @@ extension BrowserViewController: NewTabPageDelegate {
     )
     self.show(toast: newTabTakeoverInfoBar, duration: nil)
   }
+
+  func isURLBarInOverlayMode() -> Bool {
+    return topToolbar.inOverlayMode
+  }
 }
 
 extension BrowserViewController: PreferencesObserver {

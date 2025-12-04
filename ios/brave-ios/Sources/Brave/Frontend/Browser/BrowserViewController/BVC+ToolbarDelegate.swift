@@ -416,6 +416,7 @@ extension BrowserViewController: TopToolbarDelegate {
     if isUsingBottomBar {
       updateViewConstraints()
     }
+    activeNewTabPageViewController?.urlBarDidLeaveOverlayMode()
   }
 
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView) {
