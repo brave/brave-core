@@ -73,6 +73,7 @@ class SearchPage implements PageInterface {
     for (const listener of this.selectionListeners) listener(selection)
   }
 
+  onShow(): void { }
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
   onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
