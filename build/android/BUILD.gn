@@ -83,17 +83,47 @@ action("sign_app") {
   }
 }
 
+# Some configurations need mapping file name adjustment to match
+# previous filename on CI.
+if (target_android_output_format == "aab") {
+  copy("brave_mappings") {
+    visibility = [ "*" ]
+    deps = []
+    sources = []
+    outputs = []
+
+    if (target_android_output_format == "aab") {
+      deps += [ "//chrome/android:chrome_public_bundle__dex__r8" ]
+      if (target_cpu == "arm64" || target_cpu == "x64") {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic64.aab.mapping" ]
+      } else {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic.aab.mapping" ]
+      }
+    }
+  }
+}
+
 copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
 
   if (target_android_output_format == "aab") {
-    deps += [ "//chrome/android:chrome_public_bundle" ]
+    deps += [
+      ":brave_mappings",
+      "//chrome/android:chrome_public_bundle",
+    ]
     sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
   } else {
-    deps += [ "//chrome/android:chrome_public_apk" ]
-    sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+    if (target_cpu == "arm64" || target_cpu == "x64") {
+      deps += [ "//chrome/android:monochrome_64_public_apk" ]
+      sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
+    } else {
+      deps += [ "//chrome/android:chrome_public_apk" ]
+      sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+    }
   }
 
   outputs = [ brave_android_output ]
