@@ -10,6 +10,8 @@ namespace ntp_background_images::prefs {
 
 inline constexpr char kNewTabsCreated[] =
     "brave.new_tab_page.p3a_new_tabs_created";
+inline constexpr char kNewTabsCreatedDaily[] =
+    "brave.new_tab_page.p3a_new_tabs_created_daily";
 inline constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 

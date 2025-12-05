@@ -84,7 +84,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Importer.ImporterSource.2", {}},
     {"Brave.NTP.CustomizeUsageStatus.2", {}},
     {"Brave.NTP.DefaultPage", {}},
-    {"Brave.NTP.NewTabsCreated.3", {}},
     {"Brave.NTP.SponsoredMediaType", {}},
     {"Brave.Omnibox.SearchCount.NonRewards", {}},
     {"Brave.Omnibox.SearchCount.Rewards", {}},
@@ -209,6 +208,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kRef}
     }},
+    {"Brave.NTP.NewTabsCreatedDaily", MetricConfig{.ephemeral = true}},
     {"Brave.PermissionLifetime.24Hours", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
     {"Brave.Search.BackupResultsFailures", MetricConfig{
