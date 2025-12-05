@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "chrome/browser/ui/tabs/tab_types.h"
 #include "chrome/browser/ui/views/tabs/tab_layout_state.h"
@@ -49,36 +50,24 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 200, /*is_floating_mode=*/true,
-                                  &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 200, &result);
 
-  // In floating mode, the function should return early without adding any
-  // bounds
-  EXPECT_EQ(0u, result.size());
+  // Two pinned tabs should be laid out in grid
+  EXPECT_EQ(2u, result.size());
 }
 
 TEST(BraveTabStripLayoutHelperUnitTest,
      CalculatePinnedTabsBoundsInGrid_ShouldCalculateOnlyPinnedTabs) {
   std::vector<TabWidthConstraints> tabs;
+
+  // Should only lay out the 2 pinned tabs
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
   tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
   tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 200, /*is_floating_mode=*/false,
-                                  &result);
-
-  // Should return early as there are no pinned tabs
-  EXPECT_EQ(0u, result.size());
-
-  // Should only lay out the 2 pinned tabs
-  tabs.clear();
-  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
-  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
-  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
-  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
-
-  result.clear();
-  CalculatePinnedTabsBoundsInGrid(tabs, 200, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 200, &result);
 
   EXPECT_EQ(2u, result.size());
 }
@@ -90,8 +79,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
 
   std::vector<gfx::Rect> result;
   constexpr int kAvailableWidth = 100;
-  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth,
-                                  /*is_floating_mode=*/false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth, &result);
 
   ASSERT_EQ(1u, result.size());
 
@@ -112,9 +100,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   // Enough width that allows both tabs to fit in one row
   std::vector<gfx::Rect> result;
   constexpr int kAvailableWidth = 200;
-  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth,
-                                  /*is_floating_mode=*/false, &result);
-
+  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth, &result);
   ASSERT_EQ(2u, result.size());
 
   // Both tabs should be in the same row (y-coordinate should be the same)
@@ -141,7 +127,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   // Width that allows all three tabs to fit in one row
   std::vector<gfx::Rect> result;
   constexpr int kAvailableWidth = 200;
-  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, kAvailableWidth, &result);
 
   ASSERT_EQ(3u, result.size());
 
@@ -169,7 +155,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   // Narrow width that forces wrapping - the width is set so that only 2 tabs
   // fit per row
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 100, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 100, &result);
 
   ASSERT_EQ(4u, result.size());
 
@@ -201,7 +187,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   // Then all three tabs should be based on 134 / 3 = 44 pixels each,
   // with 2 extra pixels to distribute, so first two tabs should be 45 pixels
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 150, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 150, &result);
 
   ASSERT_EQ(3u, result.size());
 
@@ -219,7 +205,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   tabs.push_back(MakeTabConstraints(TabPinned::kPinned, TabOpen::kOpen));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 200, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 200, &result);
 
   ASSERT_EQ(3u, result.size());
 
@@ -235,7 +221,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, std::nullopt, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, std::nullopt, &result);
 
   ASSERT_EQ(2u, result.size());
 
@@ -250,7 +236,7 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 100, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 100, &result);
 
   ASSERT_EQ(1u, result.size());
 
@@ -266,12 +252,76 @@ TEST(BraveTabStripLayoutHelperUnitTest,
   tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
 
   std::vector<gfx::Rect> result;
-  CalculatePinnedTabsBoundsInGrid(tabs, 200, false, &result);
+  CalculatePinnedTabsBoundsInGrid(tabs, 200, &result);
 
   ASSERT_EQ(2u, result.size());
 
   // Check spacing between tabs in the same row
   EXPECT_EQ(kVerticalTabsSpacing, result[1].x() - result[0].right());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_PinnedTabsNotInGrid_LayOutVertically) {
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kUnpinned));
+
+  constexpr int kAvailableWidth = 200;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/false);
+
+  ASSERT_EQ(5u, bounds.size());
+
+  // When should_layout_pinned_tabs_in_grid is false, pinned tabs should be
+  // laid out vertically (stacked on top of each other) not in a grid
+  // All tabs should have the same x-coordinate (left edge)
+  EXPECT_EQ(bounds[0].x(), bounds[1].x());
+  EXPECT_EQ(bounds[1].x(), bounds[2].x());
+  EXPECT_EQ(bounds[2].x(), bounds[3].x());
+  EXPECT_EQ(bounds[3].x(), bounds[4].x());
+
+  // Pinned tabs should be stacked vertically with proper spacing
+  EXPECT_EQ(kMarginForVerticalTabContainers, bounds[0].y());
+  EXPECT_EQ(bounds[0].bottom() + kVerticalTabsSpacing, bounds[1].y());
+  EXPECT_EQ(bounds[1].bottom() + kVerticalTabsSpacing, bounds[2].y());
+
+  // Unpinned tabs should continue the vertical layout
+  EXPECT_EQ(bounds[2].bottom() + kVerticalTabsSpacing, bounds[3].y());
+  EXPECT_EQ(bounds[3].bottom() + kVerticalTabsSpacing, bounds[4].y());
+
+  // All tabs should have the same width
+  EXPECT_EQ(bounds[0].width(), bounds[1].width());
+  EXPECT_EQ(bounds[1].width(), bounds[2].width());
+  EXPECT_EQ(bounds[2].width(), bounds[3].width());
+  EXPECT_EQ(bounds[3].width(), bounds[4].width());
+}
+
+TEST(BraveTabStripLayoutHelperUnitTest,
+     CalculateVerticalTabBounds_PinnedTabsInGrid_LayOutInGrid) {
+  std::vector<TabWidthConstraints> tabs;
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+  tabs.push_back(MakeTabConstraints(TabPinned::kPinned));
+
+  constexpr int kAvailableWidth = 200;
+  auto [bounds, _] = CalculateVerticalTabBounds(
+      tabs, kAvailableWidth, /*should_layout_pinned_tabs_in_grid=*/true);
+
+  ASSERT_EQ(3u, bounds.size());
+
+  // When should_layout_pinned_tabs_in_grid is true, pinned tabs should be
+  // laid out in a grid (side by side when width allows)
+  // First three tabs are pinned and should be in grid layout
+  // With width of 200, all 3 pinned tabs should fit in one row
+  EXPECT_EQ(bounds[0].y(), bounds[1].y());
+  EXPECT_EQ(bounds[1].y(), bounds[2].y());
+
+  // Tabs should be laid out left to right in the same row
+  EXPECT_LT(bounds[0].right(), bounds[1].x());
+  EXPECT_LT(bounds[1].right(), bounds[2].x());
 }
 
 }  // namespace tabs
