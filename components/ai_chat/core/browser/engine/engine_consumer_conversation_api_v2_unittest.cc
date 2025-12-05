@@ -1289,25 +1289,30 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
                              });
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
+TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   PageContent page_content("Sample page content.", false);
   PageContent video_content("Sample video content.", true);
   PageContents page_contents{page_content, video_content};
 
   std::string selected_language = "en-US";
 
-  std::string expected_events = R"([
-    {"role": "user", "type": "videoTranscript", "content": "Sample video content."},
-    {"role": "user", "type": "pageText", "content": "Sample page content."},
-    {"role": "user", "type": "requestSuggestedActions", "content": ""}
+  std::string expected_messages = R"([
+    {
+      "role": "user",
+      "content": [
+        {"type": "brave-video-transcript", "text": "Sample video content."},
+        {"type": "brave-page-text", "text": "Sample page content."},
+        {"type": "brave-request-questions", "text": ""}
+      ]
+    }
   ])";
 
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
 
   // Test successful response
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -1315,9 +1320,32 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 3u);
+
+          // First content block should be video transcript
+          EXPECT_EQ(messages[0].content[0].type,
+                    ExtendedContentBlockType::kVideoTranscript);
+          EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+                    "Sample video content.");
+
+          // Second content block should be page text
+          EXPECT_EQ(messages[0].content[1].type,
+                    ExtendedContentBlockType::kPageText);
+          EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+                    "Sample page content.");
+
+          // Third content block should be request questions
+          EXPECT_EQ(messages[0].content[2].type,
+                    ExtendedContentBlockType::kRequestQuestions);
+          EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+                    "");
+
+          // Verify JSON serialization matches expected format
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
+
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("question1|question2|question3"));
@@ -1341,7 +1369,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test error response
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -1367,7 +1395,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test empty completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -1396,7 +1424,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test null event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -1422,7 +1450,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test non-completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,

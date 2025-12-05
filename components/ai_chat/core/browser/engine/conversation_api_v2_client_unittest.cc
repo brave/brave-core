@@ -280,6 +280,12 @@ INSTANTIATE_TEST_SUITE_P(
                                     TextContent{""});
                               }),
                               "brave-request-summary"},
+        ContentBlockTestParam{"RequestQuestions", base::BindRepeating([]() {
+                                return ExtendedContentBlock(
+                                    ExtendedContentBlockType::kRequestQuestions,
+                                    TextContent{""});
+                              }),
+                              "brave-request-questions"},
         ContentBlockTestParam{"Paraphrase", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kParaphrase,
