@@ -18,14 +18,14 @@ OAIMessage& OAIMessage::operator=(OAIMessage&&) = default;
 OAIMessage::~OAIMessage() = default;
 
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
-    std::string_view text,
+    const std::string& text,
     mojom::ActionType action_type) {
   std::vector<OAIMessage> messages;
   OAIMessage msg;
   msg.role = "user";
 
   msg.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
-                           TextContent{std::string(text)});
+                           TextContent{text});
 
   switch (action_type) {
     case mojom::ActionType::PARAPHRASE:

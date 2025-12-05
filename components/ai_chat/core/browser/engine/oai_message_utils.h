@@ -8,7 +8,6 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
@@ -29,7 +28,7 @@ struct OAIMessage {
 };
 
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
-    std::string_view text,
+    const std::string& text,
     mojom::ActionType action_type);
 
 }  // namespace ai_chat
