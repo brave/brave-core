@@ -1,14 +1,11 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.firstrun;
 
-import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
+import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.LayoutTransition;
@@ -64,9 +61,9 @@ import org.chromium.ui.text.SpanApplier.SpanInfo;
  * onboarding steps:
  *
  * <ul>
- *   <li>Setting Brave as the default browser</li>
- *   <li>Configuring privacy and analytics preferences (P3A and crash reporting)</li>
- *   <li>Accepting the Terms of Service</li>
+ *   <li>Setting Brave as the default browser
+ *   <li>Configuring privacy and analytics preferences (P3A and crash reporting)
+ *   <li>Accepting the Terms of Service
  * </ul>
  *
  * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
@@ -239,8 +236,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void enableWebDiscoverPreference() {
-        if (isWDPSettingAvailable()
-                && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
+        if (isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
         }
@@ -250,8 +246,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 0 &&
-                                !isBraveSetAsDefaultBrowser(this)) {
+                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
                             setDefaultBrowser(this);
                         } else {
                             enableWebDiscoverPreference();
@@ -444,8 +439,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 mCheckboxP3a.setOnCheckedChangeListener(
                         (buttonView, isChecked) -> {
                             try {
-                                BraveLocalState.get()
-                                        .setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
                                 BraveLocalState.get()
                                         .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
                                 BraveLocalState.commitPendingWrite();
@@ -534,10 +528,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void setLeafAnimation(
-            View leafAlignView,
-            ImageView leafView,
-            float leafMargin,
-            boolean isTopLeaf) {
+            View leafAlignView, ImageView leafView, float leafMargin, boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
             int margin = dpToPx(this, leafMargin);
             Animation animation =
@@ -551,22 +542,22 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             leafAlignView.startAnimation(animation);
         }
         if (leafView != null) {
-            leafView.animate().scaleX(LEAF_SCALE_ANIMATION).scaleY(LEAF_SCALE_ANIMATION).setDuration(800);
+            leafView.animate()
+                    .scaleX(LEAF_SCALE_ANIMATION)
+                    .scaleY(LEAF_SCALE_ANIMATION)
+                    .setDuration(800);
         }
     }
 
-    private void transformLeaf(final float time,
-                               final int margin,
-                               final View leafAlignView,
-                               final boolean isTopLeaf) {
+    private void transformLeaf(
+            final float time, final int margin, final View leafAlignView, final boolean isTopLeaf) {
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
         if (isTopLeaf) {
             layoutParams.bottomMargin =
                     margin - (int) ((margin - layoutParams.bottomMargin) * time);
         } else {
-            layoutParams.topMargin =
-                    margin - (int) ((margin - layoutParams.topMargin) * time);
+            layoutParams.topMargin = margin - (int) ((margin - layoutParams.topMargin) * time);
         }
         leafAlignView.setLayoutParams(layoutParams);
     }

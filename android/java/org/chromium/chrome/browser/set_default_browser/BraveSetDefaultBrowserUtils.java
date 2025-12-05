@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -232,17 +231,17 @@ public class BraveSetDefaultBrowserUtils {
      * @param activity The current activity context
      */
     public static void setDefaultBrowser(AppCompatActivity activity) {
-            RoleManager roleManager = activity.getSystemService(RoleManager.class);
+        RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
-            if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
-                if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    activity.startActivityForResult(
-                            roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
-                            BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
-                }
-            } else {
-                openDefaultAppsSettings(activity);
+        if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
+            if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
+                activity.startActivityForResult(
+                        roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
+                        BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
             }
+        } else {
+            openDefaultAppsSettings(activity);
+        }
     }
 
     public static boolean shouldSetBraveDefaultSetCounter() {
