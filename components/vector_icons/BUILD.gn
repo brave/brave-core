@@ -64,6 +64,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_info_outline.icon",
     "leo_key.icon",
     "leo_launch.icon",
+    "leo_link_broken.icon",
     "leo_link_normal.icon",
     "leo_location_on.icon",
     "leo_message_bubble_ask.icon",

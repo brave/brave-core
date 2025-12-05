@@ -21,6 +21,7 @@
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -47,8 +48,11 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/common/referrer.h"
 #include "content/public/common/url_constants.h"
+#include "services/network/public/mojom/referrer_policy.mojom.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 namespace {
@@ -198,6 +202,35 @@ void BraveBrowser::TabCustomTitleChanged(
                                      tabs::kBraveTabCustomTitleExtraDataKey,
                                      custom_title.value_or(std::string()));
   }
+}
+
+content::WebContents* BraveBrowser::AddNewContents(
+    content::WebContents* source,
+    std::unique_ptr<content::WebContents> new_contents,
+    const GURL& target_url,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& window_features,
+    bool user_gesture,
+    bool* was_blocked) {
+  // Only handle NEW_FOREGROUND_TAB disposition (target="_blank" links)
+  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB &&
+      user_gesture && source && !target_url.is_empty()) {
+    // Check if we should redirect to the right pane in a linked split view
+    // Use the source URL as referrer with default policy
+    content::Referrer referrer(source->GetLastCommittedURL(),
+                               network::mojom::ReferrerPolicy::kDefault);
+    if (split_view::MaybeRedirectToRightPane(source, target_url, referrer)) {
+      // Navigation was redirected to the right pane, so we don't need to
+      // create a new tab. Return nullptr to indicate no new contents were
+      // added.
+      return nullptr;
+    }
+  }
+
+  // For all other cases, use the default Browser implementation
+  return Browser::AddNewContents(source, std::move(new_contents), target_url,
+                                 disposition, window_features, user_gesture,
+                                 was_blocked);
 }
 
 void BraveBrowser::OnTabStripModelChanged(

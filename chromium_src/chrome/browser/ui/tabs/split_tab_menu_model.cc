@@ -8,8 +8,16 @@
 #define GetCommandIdEnum GetCommandIdEnum_Chromium
 #define GetCommandIdInt GetCommandIdInt_Chromium
 
+// Avoid "kToggleLinkState not handled in switch" error.
+#define BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND         \
+  case CommandId::kToggleLinkState: {                      \
+    split_tab_data->set_linked(!split_tab_data->linked()); \
+    break;                                                 \
+  }
+
 #include <chrome/browser/ui/tabs/split_tab_menu_model.cc>
 
+#undef BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND
 #undef GetCommandIdInt
 #undef GetCommandIdEnum
 
