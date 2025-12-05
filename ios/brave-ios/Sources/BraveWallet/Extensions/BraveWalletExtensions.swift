@@ -129,6 +129,12 @@ extension BraveWallet.TransactionInfo {
     // Currently only supported by `EthTxManager`
     coin == .eth && (txStatus == .approved || txStatus == .submitted)
   }
+
+  /// Return true if tx is a bridge tx
+  var isBridge: Bool {
+    guard let swapInfo else { return false }
+    return swapInfo.fromChainId.caseInsensitiveCompare(swapInfo.toChainId) != .orderedSame
+  }
 }
 
 extension BraveWallet.OriginInfo {

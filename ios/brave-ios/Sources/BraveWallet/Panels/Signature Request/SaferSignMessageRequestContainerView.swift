@@ -67,6 +67,7 @@ struct SaferSignMessageRequestContainerView: View {
             fromTokenContractAddress: cowSwapOrder.sellToken,
             fromAmount: ethSwapDetails?.fromAmount,
             toToken: ethSwapDetails?.toToken,
+            toNetwork: ethSwapDetails?.toNetwork,
             toTokenContractAddress: cowSwapOrder.buyToken,
             minBuyAmount: ethSwapDetails?.minBuyAmount
           )

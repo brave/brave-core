@@ -498,12 +498,16 @@ enum TransactionParser {
             && $0.coin == swapInfo.toCoin
         } ?? txNetwork
 
-      let toToken = token(
-        for: toTokenAddress,
-        network: toNetwork,
-        userAssets: userAssets,
-        allTokens: allTokens
-      )
+      var toToken: BraveWallet.BlockchainToken?
+      // bridge tx might not have to token address
+      if !transaction.isBridge, !toTokenAddress.isEmpty {
+        toToken = token(
+          for: toTokenAddress,
+          network: toNetwork,
+          userAssets: userAssets,
+          allTokens: allTokens
+        )
+      }
 
       let toTokenDecimals = Int(toToken?.decimals ?? toNetwork.decimals)
 
