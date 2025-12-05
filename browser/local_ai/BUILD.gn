@@ -3,22 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("browser") {
+source_set("local_ai") {
   sources = [
-    "candle_service.cc",
-    "candle_service.h",
+    "candle_service_factory.cc",
+    "candle_service_factory.h",
   ]
 
   deps = [
-    "//brave/components/constants",
-    "//brave/components/local_ai/common:mojom",
-    "//brave/components/resources:strings_grit",
+    "//base",
+    "//brave/components/local_ai/browser",
     "//chrome/browser/profiles",
+    "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
-    "//mojo/public/cpp/bindings",
-    "//ui/base",
   ]
-
-  public_deps = [ "//base" ]
 }
