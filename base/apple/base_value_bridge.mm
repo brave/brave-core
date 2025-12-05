@@ -198,11 +198,7 @@
     case BaseValueBridgeTagListValue:
       copy.listValue = self.listValue;
       break;
-    case BaseValueBridgeTagNull:
-      copy.tag = self.tag;
-      break;
     default:
-      copy.tag = self.tag;
       break;
   }
   return copy;
