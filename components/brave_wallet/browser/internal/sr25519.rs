@@ -3,47 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use rand_core::{CryptoRng, RngCore};
+use rand_chacha::rand_core::SeedableRng;
 use schnorrkel::Signature;
-
-#[derive(Clone)]
-pub(crate) struct MockRng(u64);
-
-impl CryptoRng for MockRng {}
-
-impl RngCore for MockRng {
-    fn next_u32(&mut self) -> u32 {
-        self.next_u64() as u32
-    }
-
-    fn next_u64(&mut self) -> u64 {
-        self.0 += 1;
-        self.0
-    }
-
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
-        // https://github.com/rust-random/rand/blob/0.6.4/rand_core/src/impls.rs#L36-L64
-        let mut left = dest;
-        while left.len() >= 8 {
-            let (l, r) = { left }.split_at_mut(8);
-            left = r;
-            let chunk: [u8; 8] = self.next_u64().to_le_bytes();
-            l.copy_from_slice(&chunk);
-        }
-        let n = left.len();
-        if n > 4 {
-            let chunk: [u8; 8] = self.next_u64().to_le_bytes();
-            left.copy_from_slice(&chunk[..n]);
-        } else if n > 0 {
-            let chunk: [u8; 4] = self.next_u32().to_le_bytes();
-            left.copy_from_slice(&chunk[..n]);
-        }
-    }
-
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand_core::Error> {
-        Ok(self.fill_bytes(dest))
-    }
-}
 
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
@@ -107,7 +68,7 @@ impl CxxSchnorrkelKeyPair {
     fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64] {
         let t = schnorrkel::signing_context(SIGNING_CTX).bytes(msg);
         if self.use_mock_rng {
-            let t = schnorrkel::context::attach_rng(t, MockRng(0));
+            let t = schnorrkel::context::attach_rng(t, rand_chacha::ChaCha20Rng::seed_from_u64(0));
             return self.keypair.sign(t).to_bytes();
         }
 

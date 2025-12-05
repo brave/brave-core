@@ -318,7 +318,7 @@ TEST(HDKeySr25519, DeterministicSignatures) {
   sig2 = keypair.SignMessage(message);
 
   const char expected_sig[] =
-      R"(a6c93252dc4bfbd9c63299eb59d5b0999fcec35ba41d54470d9728e9174a1a235bce6f0b98d52ec61e8cefd995f698d1151ac13c331e281c77121790997f2286)";
+      R"(b45c968fd66bbb503bedd3a4735fca241a7867cb9b07989dd36bf4837cad4377a8b1fe8135a97ab85ccb5ff7bb0381890d4b78298fec1ac8ffc086387071688e)";
 
   EXPECT_EQ(base::HexEncodeLower(sig1), expected_sig);
   EXPECT_EQ(base::HexEncodeLower(sig2), expected_sig);
