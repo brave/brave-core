@@ -36,13 +36,12 @@ int GetTabCornerRadius(const Tab& tab);
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
-    bool is_floating_mode,
     std::vector<gfx::Rect>* result);
 
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
-    bool is_floating_mode);
+    bool should_layout_pinned_tabs_in_grid);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
     const std::vector<TabSlotView*>& views,
