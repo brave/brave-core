@@ -30,7 +30,5 @@ FULLDESC="Browse faster by blocking ads and trackers that violate your privacy a
 MAINTNAME="Brave Software"
 MAINTMAIL="support@brave.com"
 PRODUCTURL="https://brave.com/"
-VERSION=$(cat $OUTPUTDIR/version | tr -d 'v,')
-VERSIONFULL=$VERSION
 
 RDN="com.brave.Browser"

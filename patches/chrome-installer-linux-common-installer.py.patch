@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..98c6eb91d675873a794681ed6c5e6bea2cae021b 100644
+index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..ecb7a223a9c6912e635001988ddee589251bd660 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
 @@ -63,20 +63,22 @@ def normalize_channel(channel):
@@ -39,3 +39,11 @@ index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..98c6eb91d675873a794681ed6c5e6bea
      gzlog_dir.mkdir(parents=True, exist_ok=True)
      gzlog = gzlog_dir / "changelog.gz"
  
+@@ -254,6 +259,7 @@ class Installer:
+                 "RDN_DESKTOP"] = f"{self.context['RDN']}.{self.channel}"
+         else:
+             self.context["RDN_DESKTOP"] = self.context["RDN"]
++        self.context["PACKAGEANDCHANNEL"] = self.context["PACKAGE"]; self.context["USR_BIN_SYMLINK_NAME"] = self.context["PACKAGE"]; self.context['VERSION'] = f"{self.context['MINOR']}.{self.context['BUILD']}.{self.context['PATCH']}"; self.context["VERSIONFULL"] = self.context["VERSION"]
+ 
+     @property
+     def shlib_perms(self):
