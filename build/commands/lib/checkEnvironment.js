@@ -26,7 +26,8 @@ function checkPnpmVersion() {
     process.env.npm_config_user_agent?.match(/pnpm\/(\S+)/)?.[1]
   const requiredPnpmVersion = process.env.npm_package_engines_pnpm
   const upgradeInstructions =
-    'You can upgrade pnpm by running "pnpm self-update" or "npm install -g pnpm"'
+    'You can upgrade pnpm by running "pnpm self-update" or '
+    + '"npm install -g pnpm"'
 
   // Check pnpm version if it's defined.
   if (pnpmVersion !== undefined && requiredPnpmVersion !== undefined) {
