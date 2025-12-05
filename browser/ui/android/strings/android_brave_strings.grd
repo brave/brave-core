@@ -782,12 +782,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
         With Brave as default, every link you tap opens with Brave's privacy protections.
       </message>
-      <message name="IDS_PRIVACY_ONBOARDING_INDIA" desc="Text for privacy onboarding for india">
-        Block ads. Save data. Every single day.
-      </message>
-      <message name="IDS_ONBOARDING_SET_DEFAULT_INDIA" desc="Text for set default onboarding for india">
-        With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.
-      </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
         Help make Brave better.
       </message>

@@ -7,6 +7,8 @@
 
 package org.chromium.chrome.browser.firstrun;
 
+import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
+import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.LayoutTransition;
@@ -44,7 +46,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -54,8 +55,6 @@ import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
-
-import java.util.Locale;
 
 /**
  * Activity responsible for handling the first-run onboarding experience for new Brave browser
@@ -80,6 +79,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 
     private static final String TAG = "WelcomeOnboarding";
+
+    private static final float LEAF_SCALE_ANIMATION = 1.5f;
 
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
     // from the same thread, so no need to use extra locks
@@ -237,18 +238,23 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
+    private void enableWebDiscoverPreference() {
+        if (isWDPSettingAvailable()
+                && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
+            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+                    .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
+        }
+    }
+
     private void onClickViews() {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 0 && !isDefaultBrowser()) {
-                            setDefaultBrowserAndProceedToNextStep();
+                        if (mCurrentStep == 0 &&
+                                !isBraveSetAsDefaultBrowser(this)) {
+                            setDefaultBrowser(this);
                         } else {
-                            if (isWDPSettingAvailable()
-                                    && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
-                                UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
-                                        .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
-                            }
+                            enableWebDiscoverPreference();
                             nextOnboardingStep();
                         }
                     });
@@ -265,18 +271,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                         }
                     });
         }
-    }
-
-    private void setDefaultBrowserAndProceedToNextStep() {
-        BraveSetDefaultBrowserUtils.setDefaultBrowser(this, true);
-        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-            nextOnboardingStep();
-        }
-        // onActivityResult will call nextOnboardingStep().
-    }
-
-    private boolean isDefaultBrowser() {
-        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
     @Override
@@ -325,13 +319,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void handleSetAsDefaultStep() {
         mCurrentOnboardingPage = CurrentOnboardingPage.SET_AS_DEFAULT;
-        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-            if (mIvBrave != null) {
-                mIvBrave.setVisibility(View.VISIBLE);
-            }
-            showBrowserSelectionPage();
-        } else if (!isDefaultBrowser()) {
-            setDefaultBrowserAndProceedToNextStep();
+        if (!isBraveSetAsDefaultBrowser(this)) {
+            setDefaultBrowser(this);
         } else {
             nextOnboardingStep();
         }
@@ -359,36 +348,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
-    private void showBrowserSelectionPage() {
-        int margin = mIsTablet ? 200 : 30;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
-
-        if (isDefaultBrowser()) {
-            if (mBtnPositive != null) {
-                mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            }
-            if (mBtnNegative != null) {
-                mBtnNegative.setVisibility(View.GONE);
-            }
-        }
-        if (mLayoutCard != null) {
-            mLayoutCard.setVisibility(View.VISIBLE);
-        }
-        if (mIvArrowDown != null) {
-            mIvArrowDown.setVisibility(View.VISIBLE);
-        }
-        String countryCode = Locale.getDefault().getCountry();
-        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-            if (mTvCard != null) {
-                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-            }
-            if (mTvDefault != null) {
-                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
-            }
-        }
-    }
-
     private void handleAnalyticsConsentPage() {
         boolean isP3aManaged = BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED);
         boolean isCrashReportingManaged =
@@ -403,8 +362,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         mCurrentOnboardingPage = CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE;
         int margin = mIsTablet ? 250 : 60;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
 
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.GONE);
@@ -516,8 +475,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void showWDPPage() {
         int margin = mIsTablet ? 250 : 60;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
 
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.GONE);
@@ -533,9 +492,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             ChromeClickableSpan wdpLearnMoreClickableSpan =
                     new ChromeClickableSpan(
                             WelcomeOnboardingActivity.this.getColor(R.color.brave_blue_tint_color),
-                            (textView) -> {
-                                CustomTabActivity.showInfoPage(this, WDP_LINK);
-                            });
+                            (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
             String wdpText = getResources().getString(R.string.wdp_text);
 
             SpannableString wdpLearnMoreSpannableString =
@@ -579,7 +536,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void setLeafAnimation(
             View leafAlignView,
             ImageView leafView,
-            float scale,
             float leafMargin,
             boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
@@ -595,7 +551,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             leafAlignView.startAnimation(animation);
         }
         if (leafView != null) {
-            leafView.animate().scaleX(scale).scaleY(scale).setDuration(800);
+            leafView.animate().scaleX(LEAF_SCALE_ANIMATION).scaleY(LEAF_SCALE_ANIMATION).setDuration(800);
         }
     }
 
