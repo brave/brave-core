@@ -1135,6 +1135,7 @@ source_set("ui") {
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_rewards/content",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
+      "//brave/components/brave_shields/resources/panel_new:generated_resources",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_welcome/common",

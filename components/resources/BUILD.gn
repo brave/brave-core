@@ -125,6 +125,7 @@ repack("resources") {
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
+      "//brave/components/brave_shields/resources/panel_new:generated_resources",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
@@ -133,6 +134,7 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
+      "$root_gen_dir/brave/components/brave_shields/resources/panel_new/brave_shields_panel_new_generated.pak",
       "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
