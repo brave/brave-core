@@ -18,6 +18,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -136,7 +137,10 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             // TODO: Handle wallet toggle change
             return true;
         } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(key)) {
-            // TODO: Handle web discovery project toggle change
+            // Use the generated policy constant
+            // String policyKey = BravePolicyConstants.BRAVE_WEB_DISCOVERY_ENABLED;
+            // TODO: Call BraveOriginService to set the policy value
+            // braveOriginService.setPolicyValue(policyKey, enabled);
             return true;
         }
         return false;

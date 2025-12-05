@@ -3,7 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-_brave_policies = [
+# Public list of Brave policy YAML files
+brave_policies = [
   "BraveSoftware/.group.details.yaml",
   "BraveSoftware/BraveAIChatEnabled.yaml",
   "BraveSoftware/BraveDeAmpEnabled.yaml",
@@ -40,7 +41,7 @@ _brave_policies_sync_config_path =
 # List Brave's policy files as inputs for policy_templates.py to trigger a
 # rebuild if changes are detected.
 brave_generate_policy_templates_inputs =
-    get_path_info(_brave_policies, "abspath") +
+    get_path_info(brave_policies, "abspath") +
     [ _brave_policies_sync_config_path ]
 
 # Generate a policy list to copy into Chromium policy_definitions directory.
@@ -51,7 +52,7 @@ if (current_toolchain == default_toolchain) {
   write_file(
       _brave_policies_sync_config_path,
       {
-        policies = _brave_policies
+        policies = brave_policies
         copy_from = rebase_path(
                 "//brave/components/policy/resources/templates/policy_definitions",
                 root_build_dir)
