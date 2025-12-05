@@ -27,6 +27,7 @@ interface PanelHandler {
   CloseUI();
 
   GetPosition() => (gfx.mojom.Vector2d? vec);
+  GetBrowserWindowHeight() => (int32 height);
   SetAdvancedViewEnabled(bool is_enabled);
   GetAdvancedViewEnabled() => (bool is_enabled);
 };
