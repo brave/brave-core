@@ -867,6 +867,16 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
+
+  // Calling GenerateQuestionSuggestions should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+    mock_engine_consumer->GenerateQuestionSuggestions(
+        {page_content_1, page_content_2}, "", base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
 }
 
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
@@ -1277,6 +1287,166 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
                                  "Human message 1",
                                  "Human message 2",
                              });
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
+  PageContent page_content("Sample page content.", false);
+  PageContent video_content("Sample video content.", true);
+  PageContents page_contents{page_content, video_content};
+
+  std::string selected_language = "en-US";
+
+  std::string expected_events = R"([
+    {"role": "user", "type": "videoTranscript", "content": "Sample video content."},
+    {"role": "user", "type": "pageText", "content": "Sample page content."},
+    {"role": "user", "type": "requestSuggestedActions", "content": ""}
+  ])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+
+  // Test successful response
+  {
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("question1|question2|question3"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    engine_->GenerateQuestionSuggestions(
+        page_contents, selected_language,
+        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                      mojom::APIError> result) {
+          ASSERT_TRUE(result.has_value());
+          std::vector<std::string> expected_questions = {
+              "question1", "question2", "question3"};
+          EXPECT_EQ(*result, expected_questions);
+        }));
+
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test error response
+  {
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          std::move(callback).Run(
+              base::unexpected(mojom::APIError::RateLimitReached));
+        });
+
+    engine_->GenerateQuestionSuggestions(
+        page_contents, selected_language,
+        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                      mojom::APIError> result) {
+          ASSERT_FALSE(result.has_value());
+          EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+        }));
+
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test empty completion event
+  {
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(""));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    engine_->GenerateQuestionSuggestions(
+        page_contents, selected_language,
+        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                      mojom::APIError> result) {
+          ASSERT_FALSE(result.has_value());
+          EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+        }));
+
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test null event
+  {
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          std::move(callback).Run(base::ok(
+              EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+        });
+
+    engine_->GenerateQuestionSuggestions(
+        page_contents, selected_language,
+        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                      mojom::APIError> result) {
+          ASSERT_FALSE(result.has_value());
+          EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+        }));
+
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test non-completion event
+  {
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          auto selected_language_event =
+              mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
+                  mojom::SelectedLanguageEvent::New("en-us"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(selected_language_event), std::nullopt)));
+        });
+
+    engine_->GenerateQuestionSuggestions(
+        page_contents, selected_language,
+        base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                      mojom::APIError> result) {
+          ASSERT_FALSE(result.has_value());
+          EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+        }));
+
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
 }
 
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
