@@ -24,6 +24,7 @@ enum class ExtendedContentBlockType {
   kImprove,
   kShorten,
   kExpand,
+  kMaxValue = kExpand,
 };
 
 // https://platform.openai.com/docs/api-reference/chat/create#chat_create-messages-user_message-content-array_of_content_parts-text_content_part

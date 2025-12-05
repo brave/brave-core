@@ -40,6 +40,7 @@ namespace ai_chat {
 
 namespace {
 
+// https://github.com/brave/aichat/blob/8fc09e023e8674e1069b7c1c30f848c74c4c1154/aichat/serve/open_ai_api.py#L47
 constexpr char kRemotePath[] = "v1/chat/completions";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -82,6 +83,9 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
             "brave-request-improve-excerpt-language"},
            {ExtendedContentBlockType::kShorten, "brave-request-shorten"},
            {ExtendedContentBlockType::kExpand, "brave-request-expansion"}});
+  static_assert(static_cast<size_t>(ExtendedContentBlockType::kMaxValue) + 1 ==
+                    kTypeMap.size(),
+                "Should cover every type in ExtendedContentBlockType");
 
   base::Value::List serialized_messages;
   for (auto& message : messages) {
@@ -97,16 +101,15 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
       // Set type
       auto type_it = kTypeMap.find(extended_content_block.type);
-      CHECK(type_it != kTypeMap.end());
       content_block_dict.Set("type", type_it->second);
 
       // Set content data based on variant type.
       std::visit(
           absl::Overload{
-              [&](TextContent& data) {
+              [&content_block_dict](TextContent& data) {
                 content_block_dict.Set("text", std::move(data.text));
               },
-              [&](ImageContent& data) {
+              [&content_block_dict](ImageContent& data) {
                 base::Value::Dict image_url;
                 image_url.Set("url", std::move(data.image_url.url));
                 if (data.image_url.detail) {
@@ -114,7 +117,8 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
                 }
                 content_block_dict.Set("image_url", std::move(image_url));
               },
-              [&](ChangeToneContent& data) {
+              [&content_block_dict](ChangeToneContent& data) {
+                // Server currently requires the empty text field to be passed.
                 content_block_dict.Set("text", "");
                 content_block_dict.Set("tone", std::move(data.tone));
               }},

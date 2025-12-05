@@ -147,16 +147,6 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
 
   void TearDown() override {}
 
-  std::string GetMessagesJson(std::string_view body_json) {
-    auto dict = base::test::ParseJsonDict(body_json);
-    base::Value::List* messages_list = dict.FindList("messages");
-    EXPECT_TRUE(messages_list);
-    std::string messages_json;
-    base::JSONWriter::WriteWithOptions(
-        *messages_list, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
-    return messages_json;
-  }
-
   // Returns a pair of system_language and selected_langauge
   // The system language is the OS locale.
   // The selected language is the language the server side determined the
@@ -248,7 +238,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    AllContentBlockTypes,
+    ,
     ConversationAPIV2ClientUnitTest_ContentBlocks,
     testing::Values(
         ContentBlockTestParam{"Text", base::BindRepeating([]() {
