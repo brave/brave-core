@@ -115,7 +115,7 @@ public class PasswordSettingsSearchTest {
     public void testSearchIconVisibleInActionBar() {
         mTestHelper.setPasswordSource(null); // Initialize empty preferences.
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
         PasswordSettings f = mSettingsActivityTestRule.getFragment();
 
         // Force the search option into the action bar.
@@ -137,7 +137,7 @@ public class PasswordSettingsSearchTest {
         mTestHelper.setPasswordSource(
                 null); // Initialize empty preferences.mSettingsActivityTestRule
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
         PasswordSettings f = mSettingsActivityTestRule.getFragment();
 
         // Force the search option into the overflow menu.
@@ -165,7 +165,7 @@ public class PasswordSettingsSearchTest {
     public void testTriggeringSearchRestoresHelpIcon() {
         mTestHelper.setPasswordSource(null);
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         // Retrieve the initial status and ensure that the help option is there at all.
         final AtomicReference<Boolean> helpInOverflowMenu = new AtomicReference<>(false);
@@ -187,7 +187,7 @@ public class PasswordSettingsSearchTest {
         // Trigger the search, close it and wait for UI to be restored.
         onView(withSearchMenuIdOrText()).perform(click());
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         // Check that the help option is exactly where it was to begin with.
         if (helpInOverflowMenu.get()) {
@@ -286,7 +286,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.section_saved_passwords_exceptions)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.section_saved_passwords_exceptions)); // Close search view.
+        onViewWaiting(allOf(withText(R.string.section_saved_passwords_exceptions), isDisplayed()));
 
         onView(withText(R.string.section_saved_passwords_exceptions)).check(matches(isDisplayed()));
     }
@@ -341,7 +341,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_settings_save_passwords));
+        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
 
@@ -451,7 +451,7 @@ public class PasswordSettingsSearchTest {
 
         // Go back from search results to main passwords preferences
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_settings_save_passwords));
+        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         // Here at the test duplicates never appear, even without the original issue fix.
         // TODO(https://github.com/brave/brave-browser/issues/50538): AlexeyBarabash
