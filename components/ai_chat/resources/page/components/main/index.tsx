@@ -51,6 +51,7 @@ import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
+import getAPI from '../../api'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -237,13 +238,26 @@ function Main() {
     return [skillGroup, ...aiChatContext.actionList]
   }, [aiChatContext.actionList, aiChatContext.skills])
 
-  const handleToolsMenuClick = React.useCallback(
+  const handleToolsMenuSelect = React.useCallback(
     (value: ExtendedActionEntry) => {
       if (getIsSkill(value)) {
         conversationContext.handleSkillClick(value)
         return
       }
       conversationContext.handleActionTypeClick(value.details!.type)
+    },
+    [
+      conversationContext.handleSkillClick,
+      conversationContext.handleActionTypeClick,
+    ],
+  )
+
+  const handleToolsMenuClick = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSkill(value)) {
+        getAPI().metrics.recordSkillClick(value.shortcut)
+      }
+      handleToolsMenuSelect(value)
     },
     [
       conversationContext.handleSkillClick,
@@ -460,6 +474,7 @@ function Main() {
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
           handleNewSkillClick={handleNewSkillClick}
+          handleAutoSelect={handleToolsMenuSelect}
         />
         <TabsMenu />
         <InputBox

@@ -425,6 +425,9 @@ interface Metrics {
 
   // Notify metrics service if a quick action is being used
   OnQuickActionStatusChange(bool is_enabled);
+
+  // Notify metrics service that a skill was clicked
+  RecordSkillClick(string skill_shortcut);
 };
 
 [EnableIf=is_android]

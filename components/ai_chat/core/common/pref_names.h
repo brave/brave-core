@@ -27,6 +27,18 @@ inline constexpr char kBraveChatP3AChatDurationsWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_durations";
 inline constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
+inline constexpr char kBraveChatP3ASkillsWeeklySessionsStorage[] =
+    "brave.ai_chat.p3a_skills_weekly_sessions";
+inline constexpr char kBraveChatP3ASkillsExplicitSelectionStorage[] =
+    "brave.ai_chat.p3a_skills_explicit_selection";
+inline constexpr char kBraveChatP3ASkillsPromptCountStorage[] =
+    "brave.ai_chat.p3a_skills_prompt_count";
+inline constexpr char kBraveChatP3ASessionDurationWithSkillStorage[] =
+    "brave.ai_chat.p3a_session_duration_with_skill";
+inline constexpr char kBraveChatP3ASkillsLastEngagementTime[] =
+    "brave.ai_chat.p3a_skills_last_engagement_time";
+inline constexpr char kBraveChatP3ASkillsUsedStorage[] =
+    "brave.ai_chat.p3a_skills_used";
 // Stores Leo Premium credentials that have already been fetched from the
 // SKU SDK but were not used because the chat server was unavailable.
 inline constexpr char kBraveChatPremiumCredentialCache[] =
