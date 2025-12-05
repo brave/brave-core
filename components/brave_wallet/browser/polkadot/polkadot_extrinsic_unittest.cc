@@ -506,6 +506,10 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
 
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
+  const char expected_signatured[] =
+      R"(441018831cb0c3977e5e15c1fe632cfb2eeb6147edef9c5d83005df0686fcb64358416735e42f72c0666f8b37fc53d55d4def2b321ef3e143480423ba70d9381)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
   auto signed_extrinsic = make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
       signature, block_number, sender_nonce);
