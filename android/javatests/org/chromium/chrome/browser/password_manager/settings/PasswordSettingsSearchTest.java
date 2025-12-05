@@ -308,7 +308,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.section_saved_passwords_exceptions)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.section_saved_passwords_exceptions)); // Close search view.
+        onViewWaiting(allOf(withText(R.string.section_saved_passwords_exceptions), isDisplayed()));
 
         onView(withText(R.string.section_saved_passwords_exceptions)).check(matches(isDisplayed()));
     }
@@ -363,7 +363,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_settings_save_passwords));
+        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
 
@@ -473,7 +473,7 @@ public class PasswordSettingsSearchTest {
 
         // Go back from search results to main passwords preferences
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_settings_save_passwords));
+        onViewWaiting(allOf(withText(R.string.password_settings_save_passwords), isDisplayed()));
 
         // Here at the test duplicates never appear, even without the original issue fix.
         // TODO(https://github.com/brave/brave-browser/issues/50538): AlexeyBarabash
