@@ -798,7 +798,7 @@ class TabManager: NSObject {
         )
         shredOnAppExitURLs = dataRecords.compactMap { record in
           guard let url = URL(string: "https://" + record.displayName),
-            braveShieldsSettings.autoShredMode(for: url) == .appExit
+            braveShieldsSettings.autoShredMode(for: url, considerAllShieldsOption: true) == .appExit
           else {
             return nil
           }
@@ -862,7 +862,10 @@ class TabManager: NSObject {
     else { return }
     forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
     let shredLevel =
-      tab.braveShieldsHelper?.shredLevel(for: url) ?? .never
+      tab.braveShieldsHelper?.shredLevel(
+        for: url,
+        considerAllShieldsOption: true
+      ) ?? .never
 
     switch shredLevel {
     case .never:
@@ -1367,7 +1370,10 @@ class TabManager: NSObject {
           let profile = isPrivate ? braveCore.profile.offTheRecordProfile : braveCore.profile
           let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
           shouldShredTab =
-            braveShieldsSettings?.autoShredMode(for: url).siteShredLevel.shredOnAppExit ?? false
+            braveShieldsSettings?.autoShredMode(
+              for: url,
+              considerAllShieldsOption: true
+            ).siteShredLevel.shredOnAppExit ?? false
         } else {
           // Don't access `shredLevel` directly, but `TabState` is unavailable
           // to access via `BraveShieldsTabHelper`. Deprecated access here until
