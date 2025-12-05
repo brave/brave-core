@@ -137,6 +137,25 @@ class EngineConsumerConversationAPIV2UnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateRewriteSuggestion_UnsupportedActionTypeReturnsInternalError) {
+  auto* client = GetMockConversationAPIV2Client();
+
+  // Expect PerformRequest is NOT called for unsupported action types
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _, _)).Times(0);
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateRewriteSuggestion("Hello World",
+                                     mojom::ActionType::CREATE_TAGLINE, "",
+                                     base::DoNothing(), future.GetCallback());
+
+  auto result = future.Take();
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
 class EngineConsumerConversationAPIV2UnitTest_GenerateRewrite
     : public EngineConsumerConversationAPIV2UnitTest,
       public testing::WithParamInterface<GenerateRewriteTestParam> {};

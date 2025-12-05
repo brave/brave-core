@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
 #include "base/containers/adapters.h"
-#include "base/notreached.h"
 
 namespace ai_chat {
 
@@ -18,7 +17,7 @@ OAIMessage& OAIMessage::operator=(OAIMessage&&) = default;
 
 OAIMessage::~OAIMessage() = default;
 
-std::vector<OAIMessage> BuildOAIRewriteSuggestionMessages(
+std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     std::string_view text,
     mojom::ActionType action_type) {
   std::vector<OAIMessage> messages;
@@ -66,7 +65,7 @@ std::vector<OAIMessage> BuildOAIRewriteSuggestionMessages(
                                TextContent{""});
       break;
     default:
-      NOTREACHED();
+      return std::nullopt;
   }
 
   messages.push_back(std::move(msg));

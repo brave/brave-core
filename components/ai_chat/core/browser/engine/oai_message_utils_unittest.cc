@@ -20,8 +20,8 @@ constexpr char kTestText[] = "This is test text for rewriting.";
 
 struct RewriteActionTestParam {
   mojom::ActionType action_type;
-  ExtendedContentBlockType expected_content_type;
-  std::string expected_tone;  // Empty for non-ChangeTone types
+  std::optional<ExtendedContentBlockType> expected_content_type;
+  std::string expected_payload;  // non-empty for change tones
 };
 
 }  // namespace
@@ -40,13 +40,19 @@ TEST_P(BuildOAIRewriteSuggestionMessagesTest,
        BuildsCorrectMessageForActionType) {
   RewriteActionTestParam param = GetParam();
 
-  std::vector<OAIMessage> messages =
+  auto messages =
       BuildOAIRewriteSuggestionMessages(kTestText, param.action_type);
+  // Verify invalid action types would return nullopt.
+  if (!param.expected_content_type) {
+    EXPECT_FALSE(messages);
+    return;
+  }
 
+  ASSERT_TRUE(messages);
   // Verify we get exactly one message
-  ASSERT_EQ(messages.size(), 1u);
+  ASSERT_EQ(messages->size(), 1u);
 
-  const auto& message = messages[0];
+  const auto& message = messages->at(0);
   EXPECT_EQ(message.role, "user");
 
   // Verify message has two content blocks
@@ -65,16 +71,16 @@ TEST_P(BuildOAIRewriteSuggestionMessagesTest,
     auto* tone_content =
         std::get_if<ChangeToneContent>(&message.content[1].data);
     ASSERT_TRUE(tone_content);
-    EXPECT_EQ(tone_content->tone, param.expected_tone);
+    EXPECT_EQ(tone_content->tone, param.expected_payload);
   } else {
     auto* action_content = std::get_if<TextContent>(&message.content[1].data);
     ASSERT_TRUE(action_content);
-    EXPECT_EQ(action_content->text, "");
+    EXPECT_EQ(action_content->text, param.expected_payload);
   }
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    AllActionTypes,
+    ,
     BuildOAIRewriteSuggestionMessagesTest,
     testing::Values(
         RewriteActionTestParam{mojom::ActionType::PARAPHRASE,
@@ -97,6 +103,8 @@ INSTANTIATE_TEST_SUITE_P(
         RewriteActionTestParam{mojom::ActionType::SHORTEN,
                                ExtendedContentBlockType::kShorten, ""},
         RewriteActionTestParam{mojom::ActionType::EXPAND,
-                               ExtendedContentBlockType::kExpand, ""}));
+                               ExtendedContentBlockType::kExpand, ""},
+        RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
+                               ""}));
 
 }  // namespace ai_chat

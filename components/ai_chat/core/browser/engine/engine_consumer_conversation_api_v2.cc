@@ -58,7 +58,12 @@ void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIRewriteSuggestionMessages(text, action_type);
-  api_->PerformRequest(std::move(messages), selected_language, std::nullopt,
+  if (!messages) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+  api_->PerformRequest(std::move(*messages), selected_language, std::nullopt,
                        std::nullopt, mojom::ConversationCapability::CHAT,
                        std::move(received_callback),
                        std::move(completed_callback));
