@@ -112,9 +112,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
-#if BUILDFLAG(IS_ANDROID)
-      &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
-#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
