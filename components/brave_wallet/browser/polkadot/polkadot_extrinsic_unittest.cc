@@ -6,7 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -467,10 +467,10 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
   uint32_t spec_version = 1020001;
   uint32_t transaction_version = 27;
 
-  uint32_t sender_nonce = 0;
-  uint32_t block_number = 28636844;
+  uint32_t sender_nonce = 1;
+  uint32_t block_number = 28794326;
   const char block_hash_encoded[] =
-      R"(0xe5ae4dfe809c0ec870e18c2cd8b0d97ff00473f1d9b82b03a746d913e43b9a77)";
+      R"(0x4b12cf2089483b06ea4fab577067bebe0e936dbb5317232d65617ab3af7fa425)";
 
   const char genesis_hash_encoded[] =
       R"(0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e)";
@@ -479,8 +479,13 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
 
   uint32_t account_index = 0;
 
-  PolkadotKeyring keyring(kSchnorrkelSeed, mojom::KeyringId::kPolkadotTestnet);
-  keyring.AddNewHDAccount(account_index);
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
+  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
+
+  keypair.UseMockRngForTesting();
 
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
@@ -497,89 +502,78 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
       spec_version, transaction_version, block_number, genesis_hash,
       block_hash);
 
-  auto signature = keyring.SignMessage(signature_payload, account_index);
+  auto signature = keypair.SignMessage(signature_payload);
 
-  EXPECT_TRUE(
-      keyring.VerifyMessage(signature, signature_payload, account_index));
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   auto signed_extrinsic = make_signed_extrinsic(
-      *testnet_metadata, keyring.GetPublicKey(0), recipient, send_amount_bytes,
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
       signature, block_number, sender_nonce);
 
-  auto signed_extrinsic_encoded = base::HexEncodeLower(signed_extrinsic);
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
+  // clang-format off
   /*
     This extrinsic lives at the testnet here:
-    https://westend.subscan.io/extrinsic/28636848-2
-    Full extrinsic is:
-      35028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274014cc9388b153151257fd528ca6dda63edc2a633f9252ee6d024346a003d97680037729d88d4c9544e20aa158a220f6d5a582dd6014ccb20cf1b1672a23425778dc5020000000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913
+    https://westend.subscan.io/extrinsic/28794338-2
 
-    Broken down, this becomes:
+    This can be verified using:
 
-    3502 // SCALE-encoded length
-    84   // Sign-bit set (0x80), extrinsic version 4.
-    00   // MultiAddress type.
-    d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274
-    01   // Signature type (sr25519).
-    4cc9388b153151257fd528ca6dda63edc2a633f9252ee6d024346a003d97680037729d88d4c9544e20aa158a220f6d5a582dd6014ccb20cf1b1672a23425778d
-    c502 // Mortality era.
-    00   // SCALE-encoded account nonce.
-    00   // Tip.
-    00   // Mode.
-    0400 // Pallet + call index.
-    00   // MultiAddress type.
-    8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48
-    4913 // SCALE-encoded send amount.
+      curl \
+        -H "Content-Type: application/json" \
+        -d "{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"chain_getBlock\", \"params\": [\"0x2a569559aa25d5f70760d412af400fb6c05e9c7fed2b161a159b2873662f4f0a\"]}" \
+      https://westend-rpc.polkadot.io
+
+    The response should contain an array of committed transactions, including the one we have below:
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "block": {
+          "header": {
+            "parentHash": "0x8dcce8c540f1bf9a976f2aa060979156795b9d8c0b2db7c39060bc127c183685",
+            "number": "0x1b75de2", // 28794338 in decimal.
+            "stateRoot": "0x07c8cdac7003abc2487eca5c45b76f44a73a05d61ff4f6942ad004404178cfe6",
+            "extrinsicsRoot": "0x192e5a4077f3a9c7c2bc8779188046fedea352e16622488488aa8cd015e94c56",
+            "digest": {
+              "logs": [
+                "0x0642414245b5010313000000a18c8811000000000e42c1210f073986729415c04138fc8210574d116d45039f09a39755c6ac9f50b15416c75cb23c5cee9a9d85eca1c1e680693b26c53a29c2f4cf42c690c5b501fe302e8df120917052b1b1aa014441d2c02d94ec5c522afd1e5eb291dc8ad407",
+                "0x04424545468403b9409da31bff3549cd873c7c9f283ba4a8ef2e87cfdaf0e8fc406c05bde8e583",
+                "0x05424142450101c89d69dc34a07575db519d335e5f017ec5e770eee528a39c7c64b3dde8d5f618fb0808a143f082627d7176172c0f1c64b3ed122cab86f87215ce32402fc16380"
+              ]
+            }
+          },
+          "extrinsics": [
+            "0x280502000b70fd5ff09a01",
+            ...,
+            "0x35028400d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b4927401441018831cb0c3977e5e15c1fe632cfb2eeb6147edef9c5d83005df0686fcb64358416735e42f72c0666f8b37fc53d55d4def2b321ef3e143480423ba70d938165010400000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913"
+          ]
+        },
+        "justifications": null
+      }
+    }
   */
+  // clang-format on
 
-  std::string_view extrinsic = signed_extrinsic_encoded;
+  std::string_view expected_extrinsic =
+      "3502"  // SCALE-encoded length.
+      "84"    // Sign bit set (0x80), extrinsic version (0x04).
+      "00"    // MultiAddress type.
+      "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274"
+      "01"  // Signature type (sr25519).
+      "441018831cb0c3977e5e15c1fe632cfb2eeb6147edef9c5d83005df0686fcb64"
+      "358416735e42f72c0666f8b37fc53d55d4def2b321ef3e143480423ba70d9381"
+      "6501"  // MortalEra
+      "04"    // SCALE-encoded nonce.
+      "00"    // Tip.
+      "00"    // Mode (disable metadata hash checking).
+      "0400"  // Pallet index, call index.
+      "00"    // MultiAddress type.
+      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
+      "4913"  // SCALE-encoded send amount.
+      ;
 
-  EXPECT_EQ(extrinsic.substr(0, 4), "3502");
-  extrinsic.remove_prefix(4);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "84");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "00");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 64),
-            base::HexEncodeLower(keyring.GetPublicKey(account_index)));
-  extrinsic.remove_prefix(64);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "01");
-  extrinsic.remove_prefix(2);
-
-  std::array<uint8_t, 64> expected_signature = {};
-  base::HexStringToSpan(extrinsic.substr(0, 128), expected_signature);
-  extrinsic.remove_prefix(128);
-
-  EXPECT_TRUE(keyring.VerifyMessage(expected_signature, signature_payload,
-                                    account_index));
-
-  EXPECT_EQ(extrinsic.substr(0, 4), "c502");
-  extrinsic.remove_prefix(4);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "00");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "00");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "00");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 4), "0400");
-  extrinsic.remove_prefix(4);
-
-  EXPECT_EQ(extrinsic.substr(0, 2), "00");
-  extrinsic.remove_prefix(2);
-
-  EXPECT_EQ(extrinsic.substr(0, 64), kBob);
-  extrinsic.remove_prefix(64);
-
-  EXPECT_EQ(extrinsic.substr(0, 4), "4913");
-  extrinsic.remove_prefix(4);
+  EXPECT_EQ(extrinsic, expected_extrinsic);
 }
 
 }  // namespace brave_wallet
