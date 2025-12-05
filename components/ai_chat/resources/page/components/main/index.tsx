@@ -77,8 +77,9 @@ function Main() {
     aiChatContext.hasAcceptedAgreement
     && !aiChatContext.isPremiumStatusFetching // Avoid flash of content
     && !aiChatContext.isPremiumUser
-    && conversationContext.currentModel?.options.leoModelOptions?.access
+    && (conversationContext.currentModel?.options.leoModelOptions?.access
       === Mojom.ModelAccess.PREMIUM
+      || !!conversationContext.showPremiumSuggestionForRegenerate)
 
   const shouldShowStorageNotice =
     aiChatContext.hasAcceptedAgreement

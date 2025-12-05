@@ -22,11 +22,19 @@ interface Props {
   onRegenerate: (selectedModelKey: string) => void
   leoModels: Mojom.Model[]
   turnModelKey: string
+  isPremiumUser?: boolean
 }
 
 export function RegenerateAnswerMenu(props: Props) {
-  const { isOpen, onOpen, onClose, onRegenerate, leoModels, turnModelKey } =
-    props
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    onRegenerate,
+    leoModels,
+    turnModelKey,
+    isPremiumUser,
+  } = props
 
   const modelDisplayName =
     leoModels.find((model) => model.key === turnModelKey)?.displayName ?? ''
@@ -83,6 +91,7 @@ export function RegenerateAnswerMenu(props: Props) {
           model={model}
           isCurrent={model.key === turnModelKey}
           onClick={() => handleRegenerate(model.key)}
+          showPremiumLabel={!isPremiumUser}
         />
       ))}
       <div className={styles.footerGap} />
