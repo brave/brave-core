@@ -26,6 +26,7 @@ enum class ExtendedContentBlockType {
   kExpand,
 };
 
+// https://platform.openai.com/docs/api-reference/chat/create#chat_create-messages-user_message-content-array_of_content_parts-text_content_part
 struct TextContent {
   std::string text;
 };
@@ -41,10 +42,10 @@ struct ImageUrl {
   // Either a URL of the image or the base64 encoded image data.
   std::string url;
   // Specifies the detail level of the image.
-  // https://platform.openai.com/docs/guides/images-vision?api-mode=responses#specify-image-input-detail-level
   std::optional<std::string> detail;
 };
 
+// https://platform.openai.com/docs/api-reference/chat/create#chat_create-messages-user_message-content-array_of_content_parts-image_content_part
 struct ImageContent {
   ImageUrl image_url;
 };

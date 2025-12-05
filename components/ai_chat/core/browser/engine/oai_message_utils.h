@@ -27,7 +27,7 @@ struct OAIMessage {
 };
 
 std::vector<OAIMessage> BuildOAIRewriteSuggestionMessages(
-    const std::string& text,
+    std::string_view text,
     mojom::ActionType action_type);
 
 }  // namespace ai_chat
