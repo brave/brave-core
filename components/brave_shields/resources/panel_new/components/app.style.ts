@@ -61,6 +61,7 @@ style.passthrough.css`
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-height: calc(var(--browser-window-height, 9999px) - 112px);
 
     > .scrollable {
       overflow-y: auto;

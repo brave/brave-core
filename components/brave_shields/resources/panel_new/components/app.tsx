@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+import { useShieldsApi } from '../api/shields_api_context'
 import { MainCard } from './main_card'
 import { Footer } from './footer'
 import { AdvancedSettingsHeader } from './advanced_settings_header'
@@ -28,6 +29,8 @@ type AppView =
 export function App() {
   useCacheInvalidator()
 
+  const api = useShieldsApi()
+  const browserWindowHeight = api.useGetBrowserWindowHeightData()
   const initialized = useInitializedStatus()
   const [view, setView] = React.useState<AppView>('main')
 
@@ -61,7 +64,18 @@ export function App() {
     )
   }
 
-  return <div data-css-scope={style.scope}>{renderContent()}</div>
+  const inlineStyles = {
+    '--browser-window-height': Math.max(browserWindowHeight, 600) + 'px',
+  }
+
+  return (
+    <div
+      data-css-scope={style.scope}
+      style={inlineStyles as React.CSSProperties}
+    >
+      {renderContent()}
+    </div>
+  )
 }
 
 function MainView(props: { showView: (view: AppView) => void }) {

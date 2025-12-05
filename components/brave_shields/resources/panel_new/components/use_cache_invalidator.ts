@@ -14,6 +14,7 @@ export function useCacheInvalidator() {
     const listener = () => {
       if (document.visibilityState === 'visible') {
         api.getAdvancedViewEnabled.invalidate()
+        api.getBrowserWindowHeight.invalidate()
         api.getSiteBlockInfo.invalidate()
         api.getSiteSettings.invalidate()
         api.repeatedReloadsDetected.invalidate()
