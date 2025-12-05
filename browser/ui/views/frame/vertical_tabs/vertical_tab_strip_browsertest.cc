@@ -1209,9 +1209,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
 
-  // The minimum width of the region view should be 4px, which is narrower than
-  // it used to be.
-  EXPECT_EQ(4, region_view->GetMinimumSize().width());
+  // The minimum width of the region view should be 0px as it's hidden
+  // completely when collapsed.
+  EXPECT_EQ(0, region_view->GetMinimumSize().width());
 
   // When the preference is disabled, the minimum width should be back to
   // 41px(w/o rounded corners) or 38px(with rounded corners) due to region
