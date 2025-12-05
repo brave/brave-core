@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -174,17 +173,6 @@ public class BraveSetDefaultBrowserUtils {
         setBraveDefaultTimerDay(days);
     }
 
-    /**
-     * Checks if the device supports the Default Role Manager API. This API was introduced in
-     * Android 10 (API level 29) and allows apps to request to be set as default handlers for
-     * specific roles like browser, phone, etc.
-     *
-     * @return true if the device is running Android 10 or higher, false otherwise
-     */
-    public static boolean supportsDefaultRoleManager() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
-    }
-
     public static void decideToShowBraveSetDefaultBrowserDialog(AppCompatActivity activity) {
         if (shouldShowDefaultBrowserDialog(activity)) {
             handleDefaultBrowserPrompt(activity);
@@ -206,7 +194,7 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     private static void handleDefaultBrowserPrompt(AppCompatActivity activity) {
-        setDefaultBrowser(activity, false);
+        setDefaultBrowser(activity);
         resetBraveDefaultAppOpenCounter();
         updateNextPromptTimer();
     }
@@ -240,32 +228,19 @@ public class BraveSetDefaultBrowserUtils {
      * role if available and not already held - Open system default apps settings if role is
      * unavailable
      *
-     * <p>On older Android versions or when RoleManager is unsupported: - Shows the Brave default
-     * browser dialog if not coming from onboarding - Opens system default apps settings directly if
-     * coming from onboarding
-     *
      * @param activity The current activity context
-     * @param isFromOnboarding Whether this request is coming from the onboarding flow
      */
-    public static void setDefaultBrowser(AppCompatActivity activity, boolean isFromOnboarding) {
-        if (supportsDefaultRoleManager()) {
-            RoleManager roleManager = activity.getSystemService(RoleManager.class);
+    public static void setDefaultBrowser(AppCompatActivity activity) {
+        RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
-            if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
-                if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    activity.startActivityForResult(
-                            roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
-                            BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
-                }
-            } else {
-                openDefaultAppsSettings(activity);
+        if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
+            if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
+                activity.startActivityForResult(
+                        roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
+                        BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
             }
         } else {
-            if (!isFromOnboarding) {
-                showBraveSetDefaultBrowserDialog(activity);
-            } else {
-                openDefaultAppsSettings(activity);
-            }
+            openDefaultAppsSettings(activity);
         }
     }
 

@@ -59,10 +59,6 @@ BASE_FEATURE(kBraveV8JitlessMode,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_ANDROID)
-// Enable new onboarding on Android
-BASE_FEATURE(kNewAndroidOnboarding,
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 // Enable dynamic colors on Android, which allows the app to adapt its
 // color scheme based on the user's wallpaper and system theme.
 // This feature is only available on Android 12 and above.

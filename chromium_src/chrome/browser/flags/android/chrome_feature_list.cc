@@ -83,7 +83,6 @@
     &brave_shields::features::kBlockAllCookiesToggle,                          \
     &brave_shields::features::kBraveShieldsElementPicker,                      \
     &features::kBraveAndroidDynamicColors,                                     \
-    &features::kNewAndroidOnboarding,                                          \
     &features::kBraveFreshNtpAfterIdleExperiment,                              \
     &brave_ads::kNewTabPageAdFeature,                                          \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \

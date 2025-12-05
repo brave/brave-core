@@ -1,17 +1,15 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.firstrun;
 
+import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser;
+import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
-import android.os.Build;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -21,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,12 +32,10 @@ import com.android.installreferrer.api.ReferrerDetails;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
-import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -48,7 +43,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
@@ -59,14 +53,21 @@ import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
-import java.util.Locale;
-
 /**
- * Activity that handles the first run onboarding experience for new Brave browser installations.
- * Extends FirstRunActivityBase to provide onboarding flows for: - Setting Brave as default browser
- * - Configuring privacy and analytics preferences (P3A and crash reporting) - Accepting terms of
- * service The activity guides users through a series of steps using animations and clear UI
- * elements to explain Brave's key features and privacy-focused approach.
+ * Activity responsible for handling the first-run onboarding experience for new Brave browser
+ * installations.
+ *
+ * <p>This activity extends {@link FirstRunActivityBase} and guides users through a series of
+ * onboarding steps:
+ *
+ * <ul>
+ *   <li>Setting Brave as the default browser
+ *   <li>Configuring privacy and analytics preferences (P3A and crash reporting)
+ *   <li>Accepting the Terms of Service
+ * </ul>
+ *
+ * <p>The onboarding flow uses animations and clear UI elements to introduce Brave’s key features
+ * and privacy-focused approach.
  */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private static final String P3A_URL =
@@ -75,6 +76,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             "https://www.brave.com/browser/privacy/#web-discovery-project";
 
     private static final String TAG = "WelcomeOnboarding";
+
+    private static final float LEAF_SCALE_ANIMATION = 1.5f;
 
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
     // from the same thread, so no need to use extra locks
@@ -164,7 +167,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                                                         true);
                                     }
                                 } catch (RemoteException e) {
-                                    Log.e(TAG, "Could not get referral: " + e.getMessage());
+                                    Log.e(TAG, "Could not get referral", e);
                                 }
                                 // Connection established.
                                 break;
@@ -232,18 +235,21 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
+    private void enableWebDiscoverPreference() {
+        if (isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
+            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+                    .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
+        }
+    }
+
     private void onClickViews() {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 0 && !isDefaultBrowser()) {
-                            setDefaultBrowserAndProceedToNextStep();
-                        } else if (isWDPSettingAvailable()
-                                && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
-                            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
-                                    .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
-                            nextOnboardingStep();
+                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
+                            setDefaultBrowser(this);
                         } else {
+                            enableWebDiscoverPreference();
                             nextOnboardingStep();
                         }
                     });
@@ -262,18 +268,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private void setDefaultBrowserAndProceedToNextStep() {
-        BraveSetDefaultBrowserUtils.setDefaultBrowser(this, true);
-        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-            nextOnboardingStep();
-        }
-        // onActivityResult will call nextOnboardingStep().
-    }
-
-    private boolean isDefaultBrowser() {
-        return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
-    }
-
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -287,24 +281,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         mCurrentStep++;
-        String variant = DayZeroHelper.getDayZeroVariant();
-        switch (variant) {
-            case "b":
-                handleOnboardingStepForVariantB(mCurrentStep);
-                break;
-            case "c":
-                handleOnboardingStepForVariantC(mCurrentStep);
-                break;
-            case "d":
-                handleOnboardingStepForVariantD(mCurrentStep);
-                break;
-            default:
-                handleOnboardingStepForVariantA(mCurrentStep);
-                break;
-        }
+
+        // Uncomment next line to extract day zero variant
+        // for new onboarding flow when it's ready.
+        // final String variant = DayZeroHelper.getDayZeroVariant();
+
+        handleOnboardingStepForDefaultVariant(mCurrentStep);
     }
 
-    private void handleOnboardingStepForVariantA(int step) {
+    private void handleOnboardingStepForDefaultVariant(final int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
         } else if (step == 1) {
@@ -312,52 +297,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 2) {
             handleAnalyticsConsentPage();
         } else {
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantB(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            // Notification permission
-            handleNotificationPermission();
-        } else if (step == 2) {
-            handleWDPStep();
-        } else if (step == 3) {
-            handleAnalyticsConsentPage();
-        } else {
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantC(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            handleWDPStep();
-        } else if (step == 2) {
-            handleAnalyticsConsentPage();
-        } else {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
-            finalStep();
-        }
-    }
-
-    private void handleOnboardingStepForVariantD(int step) {
-        if (step == 0) {
-            handleSetAsDefaultStep();
-        } else if (step == 1) {
-            // Notification permission
-            handleNotificationPermission();
-        } else if (step == 2) {
-            handleWDPStep();
-        } else if (step == 3) {
-            handleAnalyticsConsentPage();
-        } else {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
             finalStep();
         }
     }
@@ -373,24 +312,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         sendFirstRunCompleteIntent();
     }
 
-    private void handleNotificationPermission() {
-        mCurrentOnboardingPage = CurrentOnboardingPage.NOTIFICATION_PERMISSION;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            BravePermissionUtils.showNotificationPermissionDialog(WelcomeOnboardingActivity.this);
-        } else {
-            nextOnboardingStep();
-        }
-    }
-
     private void handleSetAsDefaultStep() {
         mCurrentOnboardingPage = CurrentOnboardingPage.SET_AS_DEFAULT;
-        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-            if (mIvBrave != null) {
-                mIvBrave.setVisibility(View.VISIBLE);
-            }
-            showBrowserSelectionPage();
-        } else if (!isDefaultBrowser()) {
-            setDefaultBrowserAndProceedToNextStep();
+        if (!isBraveSetAsDefaultBrowser(this)) {
+            setDefaultBrowser(this);
         } else {
             nextOnboardingStep();
         }
@@ -418,36 +343,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
     }
 
-    private void showBrowserSelectionPage() {
-        int margin = mIsTablet ? 200 : 30;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.3f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
-
-        if (isDefaultBrowser()) {
-            if (mBtnPositive != null) {
-                mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            }
-            if (mBtnNegative != null) {
-                mBtnNegative.setVisibility(View.GONE);
-            }
-        }
-        if (mLayoutCard != null) {
-            mLayoutCard.setVisibility(View.VISIBLE);
-        }
-        if (mIvArrowDown != null) {
-            mIvArrowDown.setVisibility(View.VISIBLE);
-        }
-        String countryCode = Locale.getDefault().getCountry();
-        if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-            if (mTvCard != null) {
-                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-            }
-            if (mTvDefault != null) {
-                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
-            }
-        }
-    }
-
     private void handleAnalyticsConsentPage() {
         boolean isP3aManaged = BraveLocalState.get().isManagedPreference(BravePref.P3A_ENABLED);
         boolean isCrashReportingManaged =
@@ -462,8 +357,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         mCurrentOnboardingPage = CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE;
         int margin = mIsTablet ? 250 : 60;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
 
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.GONE);
@@ -508,7 +403,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             PrivacyPreferencesManagerImpl.getInstance()
                                     .isUsageAndCrashReportingPermittedByUser();
                 } catch (Exception e) {
-                    Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
+                    Log.e(TAG, "CrashReportingOnboarding", e);
                 }
                 // Update checkbox to match current preference
                 if (mCheckboxCrash != null) {
@@ -518,17 +413,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
             if (mCheckboxCrash != null) {
                 mCheckboxCrash.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    UmaSessionStats.changeMetricsReportingConsent(
-                                            isChecked,
-                                            ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "CrashReportingOnboarding: " + e.getMessage());
-                                }
+                        (buttonView, isChecked) -> {
+                            try {
+                                UmaSessionStats.changeMetricsReportingConsent(
+                                        isChecked,
+                                        ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+                            } catch (Exception e) {
+                                Log.e(TAG, "CrashReportingOnboarding", e);
                             }
                         });
             }
@@ -540,25 +431,20 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             try {
                 isP3aEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
             } catch (Exception e) {
-                Log.e(TAG, "P3aOnboarding: " + e.getMessage());
+                Log.e(TAG, "P3aOnboarding", e);
             }
 
             if (mCheckboxP3a != null) {
                 mCheckboxP3a.setChecked(isP3aEnabled);
                 mCheckboxP3a.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(
-                                    CompoundButton buttonView, boolean isChecked) {
-                                try {
-                                    BraveLocalState.get()
-                                            .setBoolean(BravePref.P3A_ENABLED, isChecked);
-                                    BraveLocalState.get()
-                                            .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                                    BraveLocalState.commitPendingWrite();
-                                } catch (Exception e) {
-                                    Log.e(TAG, "P3aOnboarding: " + e.getMessage());
-                                }
+                        (buttonView, isChecked) -> {
+                            try {
+                                BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
+                                BraveLocalState.get()
+                                        .setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                BraveLocalState.commitPendingWrite();
+                            } catch (Exception e) {
+                                Log.e(TAG, "P3aOnboarding", e);
                             }
                         });
             }
@@ -583,8 +469,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void showWDPPage() {
         int margin = mIsTablet ? 250 : 60;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, margin, false);
 
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.GONE);
@@ -600,9 +486,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             ChromeClickableSpan wdpLearnMoreClickableSpan =
                     new ChromeClickableSpan(
                             WelcomeOnboardingActivity.this.getColor(R.color.brave_blue_tint_color),
-                            (textView) -> {
-                                CustomTabActivity.showInfoPage(this, WDP_LINK);
-                            });
+                            (textView) -> CustomTabActivity.showInfoPage(this, WDP_LINK));
             String wdpText = getResources().getString(R.string.wdp_text);
 
             SpannableString wdpLearnMoreSpannableString =
@@ -644,45 +528,38 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void setLeafAnimation(
-            View leafAlignView,
-            ImageView leafView,
-            float scale,
-            float leafMargin,
-            boolean isTopLeaf) {
+            View leafAlignView, ImageView leafView, float leafMargin, boolean isTopLeaf) {
         if (leafMargin > 0 && leafAlignView != null) {
-            int margin = (int) dpToPx(this, leafMargin);
+            int margin = dpToPx(this, leafMargin);
             Animation animation =
                     new Animation() {
                         @Override
-                        protected void applyTransformation(
-                                float interpolatedTime, Transformation t) {
-                            if (leafAlignView != null) {
-                                ViewGroup.MarginLayoutParams layoutParams =
-                                        (ViewGroup.MarginLayoutParams)
-                                                leafAlignView.getLayoutParams();
-                                if (isTopLeaf) {
-                                    layoutParams.bottomMargin =
-                                            margin
-                                                    - (int)
-                                                            ((margin - layoutParams.bottomMargin)
-                                                                    * interpolatedTime);
-                                } else {
-                                    layoutParams.topMargin =
-                                            margin
-                                                    - (int)
-                                                            ((margin - layoutParams.topMargin)
-                                                                    * interpolatedTime);
-                                }
-                                leafAlignView.setLayoutParams(layoutParams);
-                            }
+                        protected void applyTransformation(float time, Transformation t) {
+                            transformLeaf(time, margin, leafAlignView, isTopLeaf);
                         }
                     };
             animation.setDuration(800);
             leafAlignView.startAnimation(animation);
         }
         if (leafView != null) {
-            leafView.animate().scaleX(scale).scaleY(scale).setDuration(800);
+            leafView.animate()
+                    .scaleX(LEAF_SCALE_ANIMATION)
+                    .scaleY(LEAF_SCALE_ANIMATION)
+                    .setDuration(800);
         }
+    }
+
+    private void transformLeaf(
+            final float time, final int margin, final View leafAlignView, final boolean isTopLeaf) {
+        ViewGroup.MarginLayoutParams layoutParams =
+                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
+        if (isTopLeaf) {
+            layoutParams.bottomMargin =
+                    margin - (int) ((margin - layoutParams.bottomMargin) * time);
+        } else {
+            layoutParams.topMargin = margin - (int) ((margin - layoutParams.topMargin) * time);
+        }
+        leafAlignView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -699,7 +576,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     @Override
     public void finishNativeInitialization() {
-        ThreadUtils.assertOnUiThread();
         super.finishNativeInitialization();
 
         if (mInitializeViewsDone) {
