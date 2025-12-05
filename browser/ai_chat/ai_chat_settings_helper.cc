@@ -286,3 +286,5 @@ void AIChatSettingsHelper::OnRefreshOrder(RefreshOrderCallback callback,
 #endif
 
 }  // namespace ai_chat
+
+DEFINE_JNI(BraveLeoMojomHelper)

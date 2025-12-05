@@ -25,3 +25,5 @@ static jlong JNI_AssetRatioServiceFactory_GetInterfaceToAssetRatioService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(AssetRatioServiceFactory)

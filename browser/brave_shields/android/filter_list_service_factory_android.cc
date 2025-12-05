@@ -24,3 +24,5 @@ static jlong JNI_FilterListServiceFactory_GetInterfaceToFilterListService(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(FilterListServiceFactory)

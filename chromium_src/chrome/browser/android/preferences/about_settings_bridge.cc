@@ -13,7 +13,10 @@
 #include <chrome/browser/android/preferences/about_settings_bridge.cc>
 #undef JNI_AboutSettingsBridge_GetApplicationVersion
 
-static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
+// We can't use DEFINE_JNI when override upstream's JNI method as it causes
+// class redefinition issues. So we use [[maybe_unused]] to suppress the error.
+[[maybe_unused]] static std::string
+JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
   JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl(env);
 
   std::string application(base::android::apk_info::host_package_label());

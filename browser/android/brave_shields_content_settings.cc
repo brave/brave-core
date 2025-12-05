@@ -332,3 +332,5 @@ void JNI_BraveShieldsContentSettings_SetAllowElementBlockerInPrivateModeEnabled(
 
 }  // namespace android
 }  // namespace chrome
+
+DEFINE_JNI(BraveShieldsContentSettings)

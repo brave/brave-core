@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 4f2d6e9a048883d5be25ff28fbc7f71e35659807..4f5fa5f8b93fcbc9721c19a77cbf49f8293204c2 100644
+index b0fd1c3f1a603957412b2b81bd4567b2210bcc6a..ffa86aa82a67a6ff4ae3da364385d24155f7a810 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2654,6 +2654,7 @@ static_library("browser") {
+@@ -2652,6 +2652,7 @@ static_library("browser") {
    } else {
      sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
    }
@@ -10,7 +10,7 @@ index 4f2d6e9a048883d5be25ff28fbc7f71e35659807..4f5fa5f8b93fcbc9721c19a77cbf49f8
  
    if (is_android) {
      sources += [
-@@ -8580,6 +8581,7 @@ static_library("browser_public_dependencies") {
+@@ -8573,6 +8574,7 @@ static_library("browser_public_dependencies") {
        "//rlz:rlz_lib",
      ]
    }

@@ -14,7 +14,6 @@
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
 #include "components/autofill/core/common/autofill_debug_features.h"
@@ -157,7 +156,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kShortcutsNotApps,
 #endif
       &features::kHttpsFirstBalancedMode,
-      &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
@@ -219,7 +217,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
-      &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationHints,
       &permissions::features::kCpssUseTfliteSignatureRunner,
@@ -230,7 +227,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
-      &privacy_sandbox::kFingerprintingProtectionUx,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
