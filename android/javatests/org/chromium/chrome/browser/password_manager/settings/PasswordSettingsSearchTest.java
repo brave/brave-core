@@ -104,6 +104,12 @@ public class PasswordSettingsSearchTest {
 
     @After
     public void tearDown() {
+        // Ensure the activity is finished before cleanup to prevent state leakage between tests
+        try {
+            mSettingsActivityTestRule.finishActivity();
+        } catch (Exception e) {
+            // Activity may already be finished, ignore
+        }
         mTestHelper.tearDown();
     }
 
@@ -115,7 +121,11 @@ public class PasswordSettingsSearchTest {
     public void testSearchIconVisibleInActionBar() {
         mTestHelper.setPasswordSource(null); // Initialize empty preferences.
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        // Use a more specific matcher that excludes section headers in LinearLayouts
+        onViewWaiting(
+                allOf(
+                        withText(R.string.password_manager_settings_title),
+                        not(withParent(isAssignableFrom(LinearLayout.class)))));
         PasswordSettings f = mSettingsActivityTestRule.getFragment();
 
         // Force the search option into the action bar.
@@ -137,7 +147,11 @@ public class PasswordSettingsSearchTest {
         mTestHelper.setPasswordSource(
                 null); // Initialize empty preferences.mSettingsActivityTestRule
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        // Use a more specific matcher that excludes section headers in LinearLayouts
+        onViewWaiting(
+                allOf(
+                        withText(R.string.password_manager_settings_title),
+                        not(withParent(isAssignableFrom(LinearLayout.class)))));
         PasswordSettings f = mSettingsActivityTestRule.getFragment();
 
         // Force the search option into the overflow menu.
@@ -165,7 +179,11 @@ public class PasswordSettingsSearchTest {
     public void testTriggeringSearchRestoresHelpIcon() {
         mTestHelper.setPasswordSource(null);
         mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        // Use a more specific matcher that excludes section headers in LinearLayouts
+        onViewWaiting(
+                allOf(
+                        withText(R.string.password_manager_settings_title),
+                        not(withParent(isAssignableFrom(LinearLayout.class)))));
 
         // Retrieve the initial status and ensure that the help option is there at all.
         final AtomicReference<Boolean> helpInOverflowMenu = new AtomicReference<>(false);
@@ -187,7 +205,11 @@ public class PasswordSettingsSearchTest {
         // Trigger the search, close it and wait for UI to be restored.
         onView(withSearchMenuIdOrText()).perform(click());
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        // Use a more specific matcher that excludes section headers in LinearLayouts
+        onViewWaiting(
+                allOf(
+                        withText(R.string.password_manager_settings_title),
+                        not(withParent(isAssignableFrom(LinearLayout.class)))));
 
         // Check that the help option is exactly where it was to begin with.
         if (helpInOverflowMenu.get()) {
