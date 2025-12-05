@@ -82,7 +82,7 @@ mod ffi {
         fn generate_extrinsic_signature_payload(
             chain_metadata: &CxxPolkadotChainMetadata,
             sender_nonce: u32,
-            send_amount_bytes: &mut [u8; 16],
+            send_amount_bytes: &[u8; 16],
             recipient: &[u8; 32],
             spec_version: u32,
             transaction_version: u32,
@@ -324,7 +324,7 @@ fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2] {
 fn generate_extrinsic_signature_payload(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_nonce: u32,
-    send_amount_bytes: &mut [u8; 16],
+    send_amount_bytes: &[u8; 16],
     recipient: &[u8; 32],
     spec_version: u32,
     transaction_version: u32,
