@@ -51,7 +51,7 @@ action("create_symbol_archive") {
 
   # TODO(https://github.com/brave/brave-browser/issues/51200)
   # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
-  archive_file_name = "Default$target_cpu" + "Mono.tar"
+  archive_file_name = "Default$target_cpu" + "mono.tar"
   archive_file_path = "$archive_dir_path/$archive_file_name"
 
   inputs = [
