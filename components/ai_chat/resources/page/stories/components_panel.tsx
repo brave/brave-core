@@ -1320,6 +1320,7 @@ function StoryContext(
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
     isTemporaryChat: options.args.isTemporaryChat,
+    showPremiumSuggestionForRegenerate: false,
     setInputText: (content) => setArgs({ inputText: content }),
     setCurrentModel: () => {},
     switchToBasicModel,
@@ -1397,6 +1398,7 @@ function StoryContext(
     allModels: MODELS,
     currentModelKey: currentModel?.key ?? '',
     associatedContent: [associatedContent],
+    isPremiumUser: options.args.isPremiumUser,
     uiHandler: {
       hasMemory: (memory: string) => {
         // Return false for the "undone" example to show undone state

@@ -45,6 +45,11 @@ interface ParentUIFrame {
 
   // Show the skill creation dialog with the provided prompt text
   ShowSkillDialog(string prompt);
+
+  // If a user is a non-premium user and attempts to use a premium
+  // model to Regenerate an answer. We need to display the
+  // premium suggestion.
+  ShowPremiumSuggestionForRegenerate(bool is_visible);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying
