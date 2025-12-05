@@ -9,8 +9,10 @@
 
 package org.chromium.chrome.browser.password_manager.settings;
 
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -92,7 +94,7 @@ public class PasswordSettingsTest {
     public void testResetListEmpty() {
         // Load the preferences, they should show the empty list.
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
@@ -117,7 +119,7 @@ public class PasswordSettingsTest {
                 });
 
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
 
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
@@ -144,7 +146,7 @@ public class PasswordSettingsTest {
                 });
 
         mTestHelper.startPasswordSettingsFromMainSettings(mPasswordSettingsActivityTestRule);
-        onViewWaiting(withText(R.string.password_manager_settings_title));
+        onViewWaiting(allOf(withText(R.string.password_manager_settings_title), isDisplayed()));
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
                     PasswordSettings savedPasswordPrefs =
