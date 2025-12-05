@@ -348,7 +348,9 @@ void SidebarContainerView::Layout(PassKey) {
   if (side_panel_->GetVisible()) {
     gfx::Rect side_panel_bounds(side_panel_x, 0, width() - control_view_width,
                                 height());
-    side_panel_bounds.Inset(*side_panel_->GetProperty(views::kMarginsKey));
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      side_panel_bounds.Inset(*margins);
+    }
 
     side_panel_->SetBoundsRect(side_panel_bounds);
   }
@@ -384,8 +386,10 @@ gfx::Size SidebarContainerView::CalculatePreferredSize(
   }
 
   if (side_panel_->GetVisible()) {
-    preferred_width += side_panel_->GetPreferredSize().width() +
-                       side_panel_->GetProperty(views::kMarginsKey)->width();
+    preferred_width += side_panel_->GetPreferredSize().width();
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      preferred_width += margins->width();
+    }
   }
 
   return {preferred_width, 0};
@@ -552,9 +556,10 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   if (show_side_panel) {
     // Note: as margins of |side_panel_| are part of |width()| we need to add
     // them when calculating the ideal width of the contents.
-    animation_end_width_ +=
-        side_panel_->GetPreferredSize().width() +
-        side_panel_->GetProperty(views::kMarginsKey)->width();
+    animation_end_width_ += side_panel_->GetPreferredSize().width();
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      animation_end_width_ += margins->width();
+    }
   }
 
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
