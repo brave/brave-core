@@ -58,7 +58,9 @@ brave_chrome_java_deps = [
   "//brave/components/webcompat_reporter/common:mojom_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
+  "//brave/third_party/android_deps:com_google_android_play_app_update_java",
   "//brave/third_party/android_deps:com_google_android_play_integrity_java",
+  "//brave/third_party/android_deps:com_google_android_play_review_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
@@ -111,10 +113,6 @@ brave_chrome_app_java_resources_deps = [
 
 brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]
-
-# Re-define play core target to use full library as we need it for seemless review processes.
-playcore_target =
-    "//brave/third_party/android_deps:com_google_android_play_core_java"
 
 brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",

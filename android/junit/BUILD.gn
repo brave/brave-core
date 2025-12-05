@@ -89,4 +89,24 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.rate") {
+    sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
+
+    deps = [
+      "//brave/third_party/android_deps:com_google_android_play_review_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.app") {
+    sources = [
+      "src/org/chromium/chrome/browser/app/BraveActivityInAppUpdateTest.java",
+    ]
+
+    deps = [
+      "//brave/third_party/android_deps:com_google_android_play_app_update_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
 }

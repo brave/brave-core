@@ -27,16 +27,6 @@ deps = {
     "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
   },
   "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@21c8fe69ff771956c179847b8c1d9fd216181967",
-  'third_party/android_deps/libs/com_google_android_play_core': {
-      'packages': [
-          {
-              'package': 'chromium/third_party/android_deps/libs/com_google_android_play_core',
-              'version': 'version:2@1.10.3.cr1',
-          },
-      ],
-      'condition': 'checkout_android',
-      'dep_type': 'cipd',
-  },
   "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@673d40f017a1559bb685a15cf608ad1d4a94f8fb",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/macholib": {

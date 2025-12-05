@@ -22,8 +22,6 @@ vendor/omaha/
 /out/
 node_modules/
 patches/**/*.patchinfo
-/third_party/android_deps/libs/com_google_android_play_core/core-1.10.0.aar
-/third_party/android_deps/libs/com_google_android_play_core/core-1.10.3.aar
 /third_party/argon2/src
 /third_party/brave-vpn-wireguard-nt-dlls/
 /third_party/brave-vpn-wireguard-tunnel-dlls/
