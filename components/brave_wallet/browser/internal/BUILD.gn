@@ -102,6 +102,7 @@ rust_static_library("sr25519_rs") {
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/rand_chacha/v0_3:lib",
     "//brave/third_party/rust/schnorrkel/v0_11:lib",
   ]
 }
