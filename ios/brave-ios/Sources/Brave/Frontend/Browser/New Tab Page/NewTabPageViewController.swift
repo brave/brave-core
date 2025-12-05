@@ -91,6 +91,7 @@ protocol NewTabPageDelegate: AnyObject {
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
   func showNTPOnboarding()
   func showNewTabTakeoverInfoBarIfNeeded()
+  func isURLBarInOverlayMode() -> Bool
 }
 
 /// The new tab page. Shows users a variety of information, including stats and
@@ -124,6 +125,10 @@ class NewTabPageViewController: UIViewController {
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
   private var videoAdPlayer: NewTabPageVideoAdPlayer?
   private var videoButtonsView = NewTabPageVideoAdButtonsView()
+
+  // Track the ID of the last viewed sponsored background to prevent duplicate
+  // viewed impressions.
+  private var lastViewedSponsoredBackgroundId: String?
 
   var onboardingYouTubeFavoriteInfo: (favorite: Favorite, cell: UIView)? {
     // Get the cell for the youtube from the favs section
@@ -421,9 +426,10 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
-      self?.delegate?.showNewTabTakeoverInfoBarIfNeeded()
-      self?.reportSponsoredBackgroundEvent(.viewedImpression)
+    // Only record a sponsored background viewed impression when the NTP
+    // background is not covered by the URL bar overlay.
+    if delegate?.isURLBarInOverlayMode() == false {
+      reportSponsoredBackgroundViewedEventIfNeeded()
     }
 
     videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
@@ -456,6 +462,8 @@ class NewTabPageViewController: UIViewController {
       videoAdPlayer?.seekToStopFrame()
     }
     backgroundView.playerLayer.player = videoAdPlayer?.player
+
+    lastViewedSponsoredBackgroundId = nil
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -673,6 +681,25 @@ class NewTabPageViewController: UIViewController {
       ? extraHorizontalSpaceOnOneSide : focalXOffset
 
     backgroundView.updateImageXOffset(by: realisticXOffset)
+  }
+
+  // MARK: - Sponsored background events
+
+  private func reportSponsoredBackgroundViewedEventIfNeeded() {
+    guard case .sponsoredMedia = background.currentBackground else {
+      return
+    }
+
+    // Ensure we only record a viewed impression once per placement id.
+    if lastViewedSponsoredBackgroundId == background.wallpaperId.uuidString {
+      return
+    }
+    lastViewedSponsoredBackgroundId = background.wallpaperId.uuidString
+
+    reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
+      self?.delegate?.showNewTabTakeoverInfoBarIfNeeded()
+      self?.reportSponsoredBackgroundEvent(.viewedImpression)
+    }
   }
 
   private func reportSponsoredBackgroundEvent(
@@ -1667,6 +1694,13 @@ extension NewTabPageViewController {
     override func touchesShouldCancel(in view: UIView) -> Bool {
       return true
     }
+  }
+}
+
+// MARK: - URL bar overlay
+extension NewTabPageViewController {
+  func urlBarDidLeaveOverlayMode() {
+    reportSponsoredBackgroundViewedEventIfNeeded()
   }
 }
 
