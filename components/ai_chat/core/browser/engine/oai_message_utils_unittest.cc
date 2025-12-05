@@ -303,4 +303,58 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   EXPECT_EQ(text2->text, "Second question");
 }
 
+TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
+  PageContent text_content1(
+      "This is a very long first text content that will be truncated", false);
+  PageContent video_content("Short video", true);
+  PageContent text_content2("Short text", false);
+  PageContents page_contents = {std::cref(text_content1),
+                                std::cref(video_content),
+                                std::cref(text_content2)};
+
+  bool sanitize_input_called = false;
+  // Set max length to fit last two blocks fully and truncate the first
+  std::vector<OAIMessage> messages = BuildOAIQuestionSuggestionsMessages(
+      page_contents, 23,
+      [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
+
+  EXPECT_TRUE(sanitize_input_called);
+
+  // Should return exactly one message
+  ASSERT_EQ(messages.size(), 1u);
+
+  const auto& message = messages[0];
+  EXPECT_EQ(message.role, "user");
+
+  // Should have 4 blocks: 3 page contents + request questions
+  ASSERT_EQ(message.content.size(), 4u);
+
+  // Content is processed in reverse order, so third content comes first
+  // Third content (text) should be included in full
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
+  auto* text2 = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(text2);
+  EXPECT_EQ(text2->text, "Short text");
+
+  // Second content (video) should be included in full
+  EXPECT_EQ(message.content[1].type,
+            ExtendedContentBlockType::kVideoTranscript);
+  auto* video = std::get_if<TextContent>(&message.content[1].data);
+  ASSERT_TRUE(video);
+  EXPECT_EQ(video->text, "Short video");
+
+  // First content (text) should be truncated due to max_length
+  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kPageText);
+  auto* text1 = std::get_if<TextContent>(&message.content[2].data);
+  ASSERT_TRUE(text1);
+  EXPECT_EQ(text1->text, "Th");
+
+  // Last block is request questions
+  EXPECT_EQ(message.content[3].type,
+            ExtendedContentBlockType::kRequestQuestions);
+  auto* request = std::get_if<TextContent>(&message.content[3].data);
+  ASSERT_TRUE(request);
+  EXPECT_EQ(request->text, "");
+}
+
 }  // namespace ai_chat
