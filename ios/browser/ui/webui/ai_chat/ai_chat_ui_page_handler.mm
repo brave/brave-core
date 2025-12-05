@@ -333,8 +333,8 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const GURL& url,
     const std::string& title,
     const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/50196 Add webpage
-  // context support
+  // TODO: https://github.com/brave/brave-browser/issues/51184 Add support
+  // for associating bookmarks/history
   NOTIMPLEMENTED();
 }
 

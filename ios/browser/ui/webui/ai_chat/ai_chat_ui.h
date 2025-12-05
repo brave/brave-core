@@ -48,8 +48,6 @@ class AIChatUI : public web::WebUIIOSController {
 
  private:
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
-  std::unique_ptr<ai_chat::HistoryUIHandler> history_ui_handler_;
-  std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
   raw_ptr<ProfileIOS> profile_ = nullptr;
 };
 
