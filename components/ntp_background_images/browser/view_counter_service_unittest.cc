@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -440,6 +441,7 @@ class ViewCounterServiceTest : public testing::Test {
   brave_ads::AdsServiceMock ads_service_mock_;
 
   std::unique_ptr<ViewCounterService> view_counter_service_;
+  base::HistogramTester histogram_tester_;
 };
 
 TEST_F(ViewCounterServiceTest, CanShowSponsoredImages) {
@@ -741,6 +743,37 @@ TEST_F(ViewCounterServiceTest,
       .WillOnce(::testing::Return(ad));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
   VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
+}
+
+TEST_F(ViewCounterServiceTest, NewTabsCreatedDailyHistogram) {
+  histogram_tester_.ExpectUniqueSample(kNewTabsCreatedDailyHistogramName, 0, 1);
+
+  view_counter_service_->RegisterPageView();
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 1, 1);
+
+  view_counter_service_->RegisterPageView();
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 2, 1);
+
+  for (int i = 0; i < 2; ++i) {
+    view_counter_service_->RegisterPageView();
+  }
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 4, 1);
+
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 0, 1);
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 0, 2);
+
+  for (int i = 0; i < 3; ++i) {
+    view_counter_service_->RegisterPageView();
+  }
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 3, 2);
+
+  for (int i = 0; i < 13; ++i) {
+    view_counter_service_->RegisterPageView();
+  }
+  histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 7, 1);
+
+  histogram_tester_.ExpectTotalCount(kNewTabsCreatedDailyHistogramName, 25);
 }
 
 }  // namespace ntp_background_images

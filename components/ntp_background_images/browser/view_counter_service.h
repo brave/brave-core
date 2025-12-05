@@ -41,6 +41,7 @@ class WebUIDataSource;
 
 class HostContentSettingsMap;
 class WeeklyStorage;
+class DailyStorage;
 
 namespace ntp_background_images {
 
@@ -50,6 +51,9 @@ class NTPP3AHelper;
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 struct TopSite;
+
+inline constexpr char kNewTabsCreatedDailyHistogramName[] =
+    "Brave.NTP.NewTabsCreatedDaily";
 
 class ViewCounterService : public KeyedService,
                            public content_settings::Observer,
@@ -213,6 +217,7 @@ class ViewCounterService : public KeyedService,
   // If P3A is enabled, these will track number of tabs created
   // and the ratio of those which are branded images.
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
+  std::unique_ptr<DailyStorage> new_tab_count_daily_state_;
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 
   std::unique_ptr<NTPP3AHelper> ntp_p3a_helper_;

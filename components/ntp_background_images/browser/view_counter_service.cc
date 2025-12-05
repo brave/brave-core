@@ -31,6 +31,7 @@
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/time_period_storage/daily_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -49,7 +50,7 @@ constexpr char kSponsoredNewTabsHistogramName[] =
     "Brave.NTP.SponsoredNewTabsCreated.2";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
 
-constexpr base::TimeDelta kP3AReportInterval = base::Days(1);
+constexpr base::TimeDelta kP3AReportInterval = base::Hours(6);
 
 }  // namespace
 
@@ -83,6 +84,8 @@ ViewCounterService::ViewCounterService(
 
   new_tab_count_state_ =
       std::make_unique<WeeklyStorage>(local_state, prefs::kNewTabsCreated);
+  new_tab_count_daily_state_ =
+      std::make_unique<DailyStorage>(prefs, prefs::kNewTabsCreatedDaily);
   branded_new_tab_count_state_ = std::make_unique<WeeklyStorage>(
       local_state, prefs::kSponsoredNewTabsCreated);
 
@@ -389,6 +392,7 @@ void ViewCounterService::ResetNotificationState() {
 
 void ViewCounterService::RegisterPageView() {
   new_tab_count_state_->AddDelta(1);
+  new_tab_count_daily_state_->RecordValueNow(1);
   UpdateP3AValues();
   // This will be no-op when component is not ready.
   background_images_service_->MaybeCheckForSponsoredComponentUpdate();
@@ -559,6 +563,11 @@ void ViewCounterService::UpdateP3AValues() {
   p3a_utils::RecordToHistogramBucket(kNewTabsCreatedHistogramName,
                                      kNewTabsCreatedMetricBuckets,
                                      static_cast<int>(new_tab_count));
+
+  uint64_t new_tab_daily_count = new_tab_count_daily_state_->GetLast24HourSum();
+  p3a_utils::RecordToHistogramBucket(kNewTabsCreatedDailyHistogramName,
+                                     kNewTabsCreatedMetricBuckets,
+                                     static_cast<int>(new_tab_daily_count));
 
   uint64_t branded_new_tab_count =
       branded_new_tab_count_state_->GetHighestValueInWeek();
