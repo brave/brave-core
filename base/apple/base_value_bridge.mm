@@ -176,14 +176,35 @@
 
 - (id)copyWithZone:(nullable NSZone*)zone {
   auto copy = [[BaseValueBridge alloc] init];
-  copy.tag = self.tag;
-  copy.boolValue = self.boolValue;
-  copy.intValue = self.intValue;
-  copy.doubleValue = self.doubleValue;
-  copy.stringValue = self.stringValue;
-  copy.binaryValue = self.binaryValue;
-  copy.dictionaryValue = self.dictionaryValue;
-  copy.listValue = self.listValue;
+  switch (self.tag) {
+    case BaseValueBridgeTagBoolValue:
+      copy.boolValue = self.boolValue;
+      break;
+    case BaseValueBridgeTagIntValue:
+      copy.intValue = self.intValue;
+      break;
+    case BaseValueBridgeTagDoubleValue:
+      copy.doubleValue = self.doubleValue;
+      break;
+    case BaseValueBridgeTagStringValue:
+      copy.stringValue = self.stringValue;
+      break;
+    case BaseValueBridgeTagBinaryValue:
+      copy.binaryValue = self.binaryValue;
+      break;
+    case BaseValueBridgeTagDictionaryValue:
+      copy.dictionaryValue = self.dictionaryValue;
+      break;
+    case BaseValueBridgeTagListValue:
+      copy.listValue = self.listValue;
+      break;
+    case BaseValueBridgeTagNull:
+      copy.tag = self.tag;
+      break;
+    default:
+      copy.tag = self.tag;
+      break;
+  }
   return copy;
 }
 
