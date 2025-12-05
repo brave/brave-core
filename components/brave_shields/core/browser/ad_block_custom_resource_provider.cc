@@ -181,6 +181,13 @@ void AdBlockCustomResourceProvider::RemoveObserver(
 
 void AdBlockCustomResourceProvider::LoadResources(
     base::OnceCallback<void(AdblockResourceStorageBox)> on_load) {
+  if (cached_storage_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(on_load), adblock::clone_resource_storage(
+                                               *cached_storage_.value())));
+    return;
+  }
   default_resource_provider_->LoadResources(
       base::BindOnce(&AdBlockCustomResourceProvider::OnDefaultResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(on_load)));
@@ -188,6 +195,7 @@ void AdBlockCustomResourceProvider::LoadResources(
 
 void AdBlockCustomResourceProvider::OnResourcesLoaded(
     AdblockResourceStorageBox storage) {
+  cached_storage_.reset();
   OnDefaultResourcesLoaded(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()),
@@ -277,7 +285,9 @@ void AdBlockCustomResourceProvider::OnCustomResourcesLoaded(
   CHECK(custom_resources.is_list());
 
   if (custom_resources.GetList().empty()) {
-    std::move(on_load).Run(std::move(default_storage));
+    cached_storage_ = AdblockResourceStorageBox(std::move(default_storage));
+    std::move(on_load).Run(
+        adblock::clone_resource_storage(*cached_storage_.value()));
   } else {
     auto custom_resources_json = base::WriteJson(custom_resources);
     if (!custom_resources_json) {
@@ -285,12 +295,15 @@ void AdBlockCustomResourceProvider::OnCustomResourcesLoaded(
     } else {
       auto merged_storage = adblock::extend_resource_storage(
           *default_storage, *custom_resources_json);
-      std::move(on_load).Run(std::move(merged_storage));
+      cached_storage_ = AdblockResourceStorageBox(std::move(merged_storage));
+      std::move(on_load).Run(
+          adblock::clone_resource_storage(*cached_storage_.value()));
     }
   }
 }
 
 void AdBlockCustomResourceProvider::ReloadResourcesAndNotify() {
+  cached_storage_.reset();
   LoadResources(
       base::BindOnce(&AdBlockCustomResourceProvider::NotifyResourcesLoaded,
                      weak_ptr_factory_.GetWeakPtr()));
