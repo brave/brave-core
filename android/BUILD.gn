@@ -652,6 +652,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/qa_command_line.xml",
     "java/brave-res/layout/quick_action_search_and_bookmark_widget_layout.xml",
     "java/brave-res/layout/radio_button_group_ddns_resolve_method_preference.xml",
+    "java/brave-res/layout/radio_button_group_opening_screen_preference.xml",
     "java/brave-res/layout/recovery_phrase_item_layout.xml",
     "java/brave-res/layout/report_broken_site_layout.xml",
     "java/brave-res/layout/report_broken_site_screenshot_view.xml",

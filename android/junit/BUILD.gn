@@ -29,6 +29,7 @@ if (is_android) {
 
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/ui/messages/android:java",
       "//components/browser_ui/accessibility/android:page_zoom_utils_java",
     ]
   }

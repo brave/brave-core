@@ -46,4 +46,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="opening_screen"
+        android:title="@string/opening_screen_title">
+
+        <org.chromium.chrome.browser.settings.BraveRadioButtonGroupOpeningScreenPreference
+            android:key="opening_screen_option"
+            android:selectable="false"
+            app:allowDividerAbove="true" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
