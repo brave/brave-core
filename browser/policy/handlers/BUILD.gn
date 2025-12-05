@@ -7,6 +7,8 @@ static_library("handlers") {
   sources = [
     "brave_adblock_policy_handler.cc",
     "brave_adblock_policy_handler.h",
+    "brave_fingerprinting_v2_policy_handler.cc",
+    "brave_fingerprinting_v2_policy_handler.h",
     "brave_https_upgrade_policy_handler.cc",
     "brave_https_upgrade_policy_handler.h",
     "brave_referrers_policy_handler.cc",
@@ -17,6 +19,7 @@ static_library("handlers") {
 
   deps = [
     "//base",
+    "//brave/components/constants",
     "//components/content_settings/core/common",
     "//components/policy/core/browser",
     "//components/policy/core/common:common_constants",
@@ -28,6 +31,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_adblock_policy_handler_unittest.cc",
+    "brave_fingerprinting_v2_policy_handler_unittest.cc",
     "brave_https_upgrade_policy_handler_unittest.cc",
     "brave_referrers_policy_handler_unittest.cc",
     "brave_remember_1p_storage_policy_handler_unittest.cc",
@@ -36,6 +40,7 @@ source_set("unit_tests") {
   deps = [
     ":handlers",
     "//base",
+    "//brave/components/constants",
     "//components/content_settings/core/common",
     "//components/policy/core/browser",
     "//components/policy/core/common",
