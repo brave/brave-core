@@ -19,6 +19,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -81,8 +82,9 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
   std::unique_ptr<HttpResponse> http_response;
   for (const auto& server_root : server_roots) {
     http_response = net::test_server::HandleFileRequest(server_root, request);
-    if (http_response)
+    if (http_response) {
       break;
+    }
   }
   if (http_response) {
     GURL request_url = request.GetURL();
@@ -170,8 +172,9 @@ bool HttpRequestMonitor::HasHttpRequestWithCookie(
     const std::string& cookie_value) const {
   base::AutoLock lock(lock_);
   for (const auto& http_request : http_requests_) {
-    if (GetHttpRequestURL(http_request) != url)
+    if (GetHttpRequestURL(http_request) != url) {
       continue;
+    }
     for (const auto& header : http_request.headers) {
       if (header.first == net::HttpRequestHeaders::kCookie &&
           header.second == cookie_value) {
@@ -345,15 +348,7 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
   return content::EvalJs(host, "document.cookie");
 }
 
-size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
-    Profile* profile) {
-  if (!profile) {
-    profile = browser()->profile();
-  }
-  const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
-                               ->GetForContext(profile)
-                               ->FireCleanupTimersForTesting();
-
+void WaitForCleanup(Profile* profile) {
   // NetworkService closes existing connections when a data removal action
   // linked to these connections is performed. This leads to rare page open
   // failures when the timing is "just right". Do a no-op removal here to make
@@ -365,7 +360,17 @@ size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
                           &data_remover_observer);
   data_remover_observer.Wait();
   remover->RemoveObserver(&data_remover_observer);
+}
 
+size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
+    Profile* profile) {
+  if (!profile) {
+    profile = browser()->profile();
+  }
+  const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
+                               ->GetForContext(profile)
+                               ->FireCleanupTimersForTesting();
+  WaitForCleanup(profile);
   return fired_cnt;
 }
 
@@ -1435,3 +1440,228 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest,
     testing::Bool());
+
+class FirstPartyStorageCleanupSiteDataBrowserTest
+    : public EphemeralStorageBrowserTest {
+ public:
+  FirstPartyStorageCleanupSiteDataBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShredFeature);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       StorageIsCleanedTabsIsClosed) {
+  // Open two tabs with different sites.
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 4);
+  EXPECT_TRUE(site_a_tab);
+  EXPECT_TRUE(site_b_tab);
+
+  // Set first and third party storage values in both tabs.
+  SetValuesInFrames(site_a_tab, "a.com", "from=a.com");
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ("a.com", site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.iframe_2.local_storage);
+  SetValuesInFrames(site_b_tab, "b.com", "from=b.com");
+  ValuesFromFrames site_b_tab_values = GetValuesFromFrames(site_b_tab);
+  EXPECT_EQ("b.com", site_b_tab_values.main_frame.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
+
+  // Shred site data for site a.com
+  auto* profile = browser()->profile();
+  auto storage_partition_config =
+      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext(profile)
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, true);
+
+  // Wait for the cleanup to finish.
+  WaitForCleanupAfterKeepAlive(profile);
+
+  // Check if the tab related to site_a_tab has been closed
+  int site_a_tab_index =
+      browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
+  EXPECT_EQ(TabStripModel::kNoTab, site_a_tab_index);
+
+  // Open site A in new tab again and make sure that the storage is empty.
+  site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  auto site_a_tab_values_cleaned = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.main_frame.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.iframe_1.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.iframe_2.local_storage);
+
+  // Make sure that site B's first and third party storage data exists.
+  site_b_tab_values = GetValuesFromFrames(site_b_tab);
+  EXPECT_EQ("b.com", site_b_tab_values.main_frame.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
+}
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       StorageIsCleanedTabsIsClosedForSameDomain) {
+  const auto a_site_ephemeral_storage_url =
+      https_server_.GetURL("a.com", "/ephemeral_storage.html");
+  const auto a_a_site_ephemeral_storage_url =
+      https_server_.GetURL("a.a.com", "/ephemeral_storage.html");
+  const auto b_a_site_ephemeral_storage_url =
+      https_server_.GetURL("b.a.com", "/ephemeral_storage.html");
+
+  // Open tabs with different sites - a.com, a.a.com, b.a.com, and b.com
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url);
+  WebContents* site_a_a_tab = LoadURLInNewTab(a_a_site_ephemeral_storage_url);
+  WebContents* site_b_a_tab = LoadURLInNewTab(b_a_site_ephemeral_storage_url);
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 5);
+  EXPECT_TRUE(site_a_tab);
+  EXPECT_TRUE(site_a_a_tab);
+  EXPECT_TRUE(site_b_a_tab);
+  EXPECT_TRUE(site_b_tab);
+
+  // Set storage values in main frames only (to avoid iframe complexity)
+  // We're primarily testing tab closure behavior, not iframe partitioning
+  RenderFrameHost* site_a_main = site_a_tab->GetPrimaryMainFrame();
+  RenderFrameHost* site_a_a_main = site_a_a_tab->GetPrimaryMainFrame();
+  RenderFrameHost* site_b_a_main = site_b_a_tab->GetPrimaryMainFrame();
+  RenderFrameHost* site_b_main = site_b_tab->GetPrimaryMainFrame();
+
+  SetValuesInFrame(site_a_main, "a.com", "from=a.com");
+  SetValuesInFrame(site_a_a_main, "a.a.com", "from=a.a.com");
+  SetValuesInFrame(site_b_a_main, "b.a.com", "from=b.a.com");
+  SetValuesInFrame(site_b_main, "b.com", "from=b.com");
+
+  // Verify that storage values are set correctly before shredding
+  ValuesFromFrame site_a_tab_values = GetValuesFromFrame(site_a_main);
+  ValuesFromFrame site_a_a_tab_values = GetValuesFromFrame(site_a_a_main);
+  ValuesFromFrame site_b_a_tab_values = GetValuesFromFrame(site_b_a_main);
+  ValuesFromFrame site_b_tab_values = GetValuesFromFrame(site_b_main);
+
+  EXPECT_EQ("a.com", site_a_tab_values.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.session_storage);
+  EXPECT_EQ("from=a.com", site_a_tab_values.cookies);
+
+  EXPECT_EQ("a.a.com", site_a_a_tab_values.local_storage);
+  EXPECT_EQ("a.a.com", site_a_a_tab_values.session_storage);
+  EXPECT_EQ("from=a.a.com", site_a_a_tab_values.cookies);
+
+  EXPECT_EQ("b.a.com", site_b_a_tab_values.local_storage);
+  EXPECT_EQ("b.a.com", site_b_a_tab_values.session_storage);
+  EXPECT_EQ("from=b.a.com", site_b_a_tab_values.cookies);
+
+  EXPECT_EQ("b.com", site_b_tab_values.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.session_storage);
+  EXPECT_EQ("from=b.com", site_b_tab_values.cookies);
+
+  // Shred site data for a.com - this should close tabs for a.com, a.a.com, and
+  // b.a.com
+  auto* profile = browser()->profile();
+  auto storage_partition_config =
+      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext(profile)
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, true);
+
+  // Wait for the cleanup to finish.
+  WaitForCleanupAfterKeepAlive(profile);
+
+  // Check that tabs for a.com, a.a.com, and b.a.com have been closed
+  EXPECT_EQ(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab));
+  EXPECT_EQ(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_a_a_tab));
+  EXPECT_EQ(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_b_a_tab));
+
+  // Make sure that b.com remains open
+  EXPECT_NE(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_b_tab));
+
+  // Verify that b.com tab still has its data intact
+  site_b_tab_values = GetValuesFromFrame(site_b_main);
+  EXPECT_EQ("b.com", site_b_tab_values.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.session_storage);
+  EXPECT_EQ("from=b.com", site_b_tab_values.cookies);
+
+  // Open new tabs for the shredded domains and verify their storage is empty
+  WebContents* new_site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url);
+  WebContents* new_site_a_a_tab =
+      LoadURLInNewTab(a_a_site_ephemeral_storage_url);
+  WebContents* new_site_b_a_tab =
+      LoadURLInNewTab(b_a_site_ephemeral_storage_url);
+
+  // All shredded domains should have empty storage
+  ExpectValuesFromFrameAreEmpty(
+      FROM_HERE, GetValuesFromFrame(new_site_a_tab->GetPrimaryMainFrame()));
+  ExpectValuesFromFrameAreEmpty(
+      FROM_HERE, GetValuesFromFrame(new_site_a_a_tab->GetPrimaryMainFrame()));
+  ExpectValuesFromFrameAreEmpty(
+      FROM_HERE, GetValuesFromFrame(new_site_b_a_tab->GetPrimaryMainFrame()));
+}
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       DoNotCleanupStorageIfShieldsDisabledOnAnySubdomain) {
+  const auto a_site_ephemeral_storage_url =
+      https_server_.GetURL("a.com", "/ephemeral_storage.html");
+  const auto a_a_site_ephemeral_storage_url =
+      https_server_.GetURL("a.a.com", "/ephemeral_storage.html");
+
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        a_a_site_ephemeral_storage_url);
+
+  // Open tabs with different sites - a.com, a.a.com, b.a.com, and b.com
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url);
+  WebContents* site_a_a_tab = LoadURLInNewTab(a_a_site_ephemeral_storage_url);
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 3);
+  EXPECT_TRUE(site_a_tab);
+  EXPECT_TRUE(site_a_a_tab);
+
+  // Set storage values in main frames only (to avoid iframe complexity)
+  // We're primarily testing tab closure behavior, not iframe partitioning
+  RenderFrameHost* site_a_main = site_a_tab->GetPrimaryMainFrame();
+  RenderFrameHost* site_a_a_main = site_a_a_tab->GetPrimaryMainFrame();
+
+  SetValuesInFrame(site_a_main, "a.com", "from=a.com");
+  SetValuesInFrame(site_a_a_main, "a.a.com", "from=a.a.com");
+
+  // Verify that storage values are set correctly before shredding
+  ValuesFromFrame site_a_tab_values = GetValuesFromFrame(site_a_main);
+  ValuesFromFrame site_a_a_tab_values = GetValuesFromFrame(site_a_a_main);
+
+  EXPECT_EQ("a.com", site_a_tab_values.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.session_storage);
+  EXPECT_EQ("from=a.com", site_a_tab_values.cookies);
+
+  EXPECT_EQ("a.a.com", site_a_a_tab_values.local_storage);
+  EXPECT_EQ("a.a.com", site_a_a_tab_values.session_storage);
+  EXPECT_EQ("from=a.a.com", site_a_a_tab_values.cookies);
+
+  // Try to Shred site data for a.com - this should not be executed as shields
+  // are disabled on a.a.com
+  auto* profile = browser()->profile();
+  auto storage_partition_config =
+      site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
+  EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext(profile)
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, false);
+
+  // Wait for the cleanup to finish.
+  WaitForCleanupAfterKeepAlive(profile);
+
+  // Check that tabs for a.com, a.a.com, and b.a.com have not been closed
+  EXPECT_NE(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab));
+  EXPECT_NE(TabStripModel::kNoTab,
+            browser()->tab_strip_model()->GetIndexOfWebContents(site_a_a_tab));
+}

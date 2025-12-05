@@ -16,6 +16,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -65,8 +66,9 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
               web_contents->GetBrowserContext()))),
       brave_shields_settings_(
           CHECK_DEREF(BraveShieldsSettingsServiceFactory::GetForProfile(
-              Profile::FromBrowserContext(
-                  web_contents->GetBrowserContext())))) {
+              Profile::FromBrowserContext(web_contents->GetBrowserContext())))),
+      ephemeral_storage_service_(EphemeralStorageServiceFactory::GetForContext(
+          web_contents->GetBrowserContext())) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
@@ -474,6 +476,20 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
   }
   observer->BlockAllowedScripts(origins);
   ReloadWebContents();
+}
+
+void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
+  auto* site_instance = web_contents()->GetSiteInstance();
+  CHECK(site_instance);
+
+  if (!ephemeral_storage_service_) {
+    return;
+  }
+
+  // Start manual cleanup.
+  ephemeral_storage_service_->CleanupTLDFirstPartyStorage(
+      web_contents()->GetLastCommittedURL(),
+      site_instance->GetStoragePartitionConfig(), true);
 }
 
 void BraveShieldsTabHelper::AllowScriptsOnce(

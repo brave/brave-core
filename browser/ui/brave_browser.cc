@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -47,6 +48,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
@@ -233,6 +235,15 @@ void BraveBrowser::OnTabStripModelChanged(
       selection.active_tab_changed()) {
     sidebar_controller->sidebar()->UpdateSidebarItemsState();
   }
+
+  // Check if all tabs we set to ignore onbeforeunload handler are closed.
+  if (!tabs_closing_with_onbeforeunload_ignore_.empty() &&
+      change.type() == TabStripModelChange::Type::kRemoved) {
+    for (auto& removed_tab : change.GetRemove()->contents) {
+      tabs_closing_with_onbeforeunload_ignore_.erase(
+          removed_tab.tab->GetHandle());
+    }
+  }
 }
 
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
@@ -358,4 +369,16 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
 
 BraveBrowserWindow* BraveBrowser::brave_window() {
   return static_cast<BraveBrowserWindow*>(window_.get());
+}
+
+void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(
+    const base::flat_set<tabs::TabHandle>& for_contents) {
+  tabs_closing_with_onbeforeunload_ignore_ = for_contents;
+}
+
+bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
+  return (tab && tabs_closing_with_onbeforeunload_ignore_.contains(
+                     tab->GetHandle())) ||
+         content::WebContentsDelegate::ShouldSuppressDialogs(source);
 }

@@ -29,6 +29,7 @@ brave_browser_brave_shields_deps = [
   "//brave/components/brave_shields/core/browser",
   "//brave/components/brave_shields/core/common",
   "//brave/components/constants",
+  "//brave/components/ephemeral_storage",
   "//chrome/browser/profiles:profile",
   "//chrome/common",
   "//components/content_settings/core/browser",
@@ -49,4 +50,6 @@ if (is_android) {
     "//brave/browser/android:android_browser_process",
     "//brave/build/android:jni_headers",
   ]
+} else {
+  brave_browser_brave_shields_deps += [ "//brave/browser/ui/tabs:tab_strip" ]
 }

@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -40,6 +41,7 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
+  DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
 }
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
@@ -72,7 +74,8 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
-          CookieSettingsFactory::GetForProfile(profile)));
+          CookieSettingsFactory::GetForProfile(profile),
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

@@ -14,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -254,6 +255,44 @@ BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
 
   return mojom::ContentSettingsOverriddenData::New(
       rule, ConvertSettingsSource(info.source));
+}
+
+bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
+    const GURL& url) const {
+  // First check the exact domain
+  if (CONTENT_SETTING_BLOCK ==
+      host_content_settings_map_->GetContentSetting(
+          url, GURL(), ContentSettingsType::BRAVE_SHIELDS)) {
+    return true;
+  }
+
+  // Check parent domains by iterating through all shield settings
+  ContentSettingsForOneType all_shield_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_SHIELDS);
+
+  const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
+
+  for (const auto& setting : all_shield_settings) {
+    // Skip invalid patterns or settings that don't disable shields
+    if (!setting.primary_pattern.IsValid() ||
+        setting.setting_value != CONTENT_SETTING_BLOCK) {
+      continue;
+    }
+
+    // Skip wildcard patterns that match all hosts
+    if (setting.primary_pattern.MatchesAllHosts()) {
+      return true;
+    }
+
+    if (const GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
+        pattern_url.is_valid() &&
+        ephemeral_domain == net::URLToEphemeralStorageDomain(pattern_url)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace brave_shields

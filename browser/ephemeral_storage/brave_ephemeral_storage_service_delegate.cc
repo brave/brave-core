@@ -5,40 +5,97 @@
 
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
+#include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
-#include "content/public/browser/dom_storage_context.h"
+#include "content/public/browser/render_process_host.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
+#include "net/base/url_util.h"
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_browser.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#else
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #endif
+
+namespace {
+
+bool PrepareTabForFirstPartyStorageCleanup(tabs::TabHandle tab_handle,
+                                           const std::string& etldplusone) {
+  if (tab_handle == tabs::TabHandle::Null()) {
+    return false;
+  }
+  auto* tab = tab_handle.Get();
+  if (!tab) {
+    return false;
+  }
+
+  content::WebContents* contents = tab->GetContents();
+  if (!contents) {
+    return false;
+  }
+
+  const auto tab_tld =
+      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+  if (tab_tld.empty() || tab_tld != etldplusone) {
+    return false;
+  }
+  if (auto* ephemeral_storage_tab_helper =
+          ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+              contents)) {
+    ephemeral_storage_tab_helper->EnforceFirstPartyStorageCleanup();
+    return true;
+  }
+  return false;
+}
+
+}  // namespace
 
 namespace ephemeral_storage {
 
 BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> cookie_settings)
+    scoped_refptr<content_settings::CookieSettings> cookie_settings,
+    brave_shields::BraveShieldsSettingsService* shields_settings_service)
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
-      cookie_settings_(std::move(cookie_settings)) {
+      cookie_settings_(std::move(cookie_settings)),
+      shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
+  CHECK(shields_settings_service_);
 }
 
 BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() {
@@ -144,5 +201,71 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
   BrowserList::RemoveObserver(this);
 }
 #endif
+
+void BraveEphemeralStorageServiceDelegate::
+    PrepareTabsForFirstPartyStorageCleanup(
+        const std::string& ephemeral_domain) {
+  auto* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+
+#if !BUILDFLAG(IS_ANDROID)
+  for (auto* browser : GetAllBrowserWindowInterfaces()) {
+    if (profile != browser->GetProfile()) {
+      continue;
+    }
+    auto* tab_strip = browser->GetTabStripModel();
+    if (!tab_strip) {
+      continue;
+    }
+
+    base::flat_set<tabs::TabHandle> tab_handlers;
+    for (auto* tab : *tab_strip) {
+      if (!tab || !PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
+                                                         ephemeral_domain)) {
+        continue;
+      }
+      tab_handlers.emplace(tab->GetHandle());
+    }
+    static_cast<BraveBrowser*>(browser)->SetTabsToIgnoreBeforeUnloadHandlers(
+        tab_handlers);
+
+    for (auto& tab_handle : tab_handlers) {
+      if (tab_handle == tabs::TabHandle::Null() || !tab_handle.Get()) {
+        continue;
+      }
+
+      // initiate the closing of the tab
+      tab_handle.Get()->Close();
+    }
+  }
+#else
+  for (TabModel* model : TabModelList::models()) {
+    const size_t tab_count = model->GetTabCount();
+    std::vector<tabs::TabHandle> tabs_to_close;
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = model->GetTabAt(index);
+      // Do not process tabs from other profiles.
+      if (!tab || profile != tab->profile()) {
+        continue;
+      }
+
+      if (!PrepareTabForFirstPartyStorageCleanup(tab->GetHandle(),
+                                                 ephemeral_domain)) {
+        continue;
+      }
+      tabs_to_close.emplace_back(tab->GetHandle());
+    }
+    for (auto& tab_handle : tabs_to_close) {
+      tab_handle.Get()->Close();
+    }
+  }
+#endif
+}
+
+bool BraveEphemeralStorageServiceDelegate::
+    IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
+  return shields_settings_service_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      url);
+}
 
 }  // namespace ephemeral_storage

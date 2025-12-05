@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_BRAVE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "content/public/browser/web_contents_delegate.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
@@ -32,7 +36,8 @@ class BraveEphemeralStorageServiceDelegate :
   BraveEphemeralStorageServiceDelegate(
       content::BrowserContext* context,
       HostContentSettingsMap* host_content_settings_map,
-      scoped_refptr<content_settings::CookieSettings> cookie_settings);
+      scoped_refptr<content_settings::CookieSettings> cookie_settings,
+      brave_shields::BraveShieldsSettingsService* shields_settings_service);
   ~BraveEphemeralStorageServiceDelegate() override;
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -44,6 +49,10 @@ class BraveEphemeralStorageServiceDelegate :
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
+  void PrepareTabsForFirstPartyStorageCleanup(
+      const std::string& ephemeral_domain) override;
+  bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      const GURL& url) const override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
@@ -52,6 +61,8 @@ class BraveEphemeralStorageServiceDelegate :
 #if !BUILDFLAG(IS_ANDROID)
   base::OnceClosure first_window_opened_callback_;
 #endif  // !BUILDFLAG(IS_ANDROID)
+  raw_ptr<brave_shields::BraveShieldsSettingsService>
+      shields_settings_service_ = nullptr;
 };
 
 }  // namespace ephemeral_storage
