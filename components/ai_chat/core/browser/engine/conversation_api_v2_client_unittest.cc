@@ -334,9 +334,8 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
         // Verify premium Cookie header is present
         EXPECT_TRUE(headers.contains("Cookie"));
         const auto& cookie = headers.at("Cookie");
-        EXPECT_NE(cookie.find("__Secure-sku#brave-leo-premium="),
-                  std::string::npos);
-        EXPECT_NE(cookie.find(expected_credential), std::string::npos);
+        EXPECT_EQ(cookie,
+                  "__Secure-sku#brave-leo-premium=" + expected_credential);
 
         // Verify other headers still present
         EXPECT_TRUE(headers.contains("x-brave-key"));
