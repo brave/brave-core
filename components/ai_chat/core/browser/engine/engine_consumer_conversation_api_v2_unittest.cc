@@ -45,7 +45,7 @@ struct GenerateRewriteTestParam {
   std::string name;
   mojom::ActionType action_type;
   ExtendedContentBlockType expected_content_type;
-  std::string expected_tone;
+  std::string expected_payload;
   std::string expected_type_string;
 };
 
@@ -182,7 +182,7 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
             ]
           }
         ])",
-        test_text, params.expected_type_string, params.expected_tone);
+        test_text, params.expected_type_string, params.expected_payload);
   } else {
     expected_messages = absl::StrFormat(
         R"([
@@ -233,12 +233,19 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
             EXPECT_EQ(first_message.content[1].type,
                       params.expected_content_type);
 
-            // For change tone, verify the tone parameter
+            // Verify the content data, should have tone for change tone type,
+            // empty text otherwise.
             if (params.expected_content_type ==
                 ExtendedContentBlockType::kChangeTone) {
-              auto tone_content =
-                  std::get<ChangeToneContent>(first_message.content[1].data);
-              EXPECT_EQ(tone_content.tone, params.expected_tone);
+              auto* tone_content = std::get_if<ChangeToneContent>(
+                  &first_message.content[1].data);
+              ASSERT_TRUE(tone_content);
+              EXPECT_EQ(tone_content->tone, params.expected_payload);
+            } else {
+              auto* text_content =
+                  std::get_if<TextContent>(&first_message.content[1].data);
+              ASSERT_TRUE(text_content);
+              EXPECT_EQ(text_content->text, params.expected_payload);
             }
 
             // Verify JSON serialization matches expected format
