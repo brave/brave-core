@@ -41,6 +41,12 @@ extension BrowserViewController: TabManagerDelegate {
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }
+    tab.aiChatWebUIHelper?.tabsForPrivateMode = { [weak self] isPrivate in
+      // Technically we will never get a private tab here since AI Chat WebUI is not supported there
+      // but in case its called incorrectly, avoid returning any private tabs
+      guard let self, !isPrivate else { return [] }
+      return tabManager.allTabs.filter { !$0.isPrivate }
+    }
     tab.walletWebUIHelper = .init(
       tab: tab,
       showWalletBackUpHandler: { [weak self] in

@@ -14,17 +14,20 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/history_ui_handler.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/ios/browser/ui/webui/favicon_source.h"
@@ -108,9 +111,15 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&AIChatUI::BindInterfaceBookmarksPageHandler,
                           base::Unretained(this)));
+
+  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
+      base::BindRepeating(&AIChatUI::BindInterfaceTabTrackerService,
+                          base::Unretained(this)));
 }
 
 AIChatUI::~AIChatUI() {
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::TabTrackerService::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::BookmarksPageHandler::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
@@ -164,4 +173,11 @@ void AIChatUI::BindInterfaceBookmarksPageHandler(
   // TODO: https://github.com/brave/brave-browser/issues/51184 Add support
   // for associating bookmarks/history
   NOTIMPLEMENTED();
+}
+
+void AIChatUI::BindInterfaceTabTrackerService(
+    mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> receiver) {
+  auto* service = ai_chat::TabTrackerServiceFactory::GetForProfile(profile_);
+  CHECK(service);
+  service->Bind(std::move(receiver));
 }
