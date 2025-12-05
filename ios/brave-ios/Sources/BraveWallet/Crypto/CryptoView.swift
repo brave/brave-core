@@ -254,18 +254,16 @@ public struct CryptoView: View {
               .navigationViewStyle(.stack)
             case .webUI(let action):
               if action == .backup {
-                if action == .backup {
-                  NavigationView {
-                    BackupWalletView(
-                      password: nil,
-                      keyringStore: keyringStore
-                    )
-                  }
-                  .accentColor(Color(.braveBlurpleTint))
-                  .navigationViewStyle(.stack)
-                } else {
-                  EmptyView()  // screen will be handled via `visibleScreen`
+                NavigationView {
+                  BackupWalletView(
+                    password: nil,
+                    keyringStore: keyringStore
+                  )
                 }
+                .accentColor(Color(.braveBlurpleTint))
+                .navigationViewStyle(.stack)
+              } else {
+                EmptyView()  // screen will be handled via `visibleScreen`
               }
             }
           }
@@ -335,25 +333,21 @@ public struct CryptoView: View {
     )
     .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { oldValue, newValue in
-      if newValue == .crypto {
-        if case .panelUnlockOrSetup = presentingContext {
-          // wallet is unlocked from wallet panel
-          dismissAction()
-        } else if case .default(_) = presentingContext {
-          // wallet is unlocked from menu
-          if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
-            // need to open wallet webui
-            openWalletURLAction?(.webUI.wallet.home)
-          }
-        } else if case .webUI(let action) = presentingContext {
-          if action == .unlock {
-            // wallet is unlocked from wallet webui
-            dismissAction()
-          } else if case .onboarding(_) = action {
-            // onboarding is completed from wallet webui
-            dismissAction()
-          }
+      guard newValue == .crypto else { return }
+      switch presentingContext {
+      case .panelUnlockOrSetup, .webUI(.unlock), .webUI(.onboarding):
+        // 1. wallet is unlocked from wallet panel
+        // 2. wallet is unlocked from wallet webui
+        // 3. onboarding is completed from wallet webui
+        dismissAction()
+      case .default:
+        // wallet is unlocked from menu
+        if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+          // need to open wallet webui
+          openWalletURLAction?(.webUI.wallet.home)
         }
+      default:
+        break
       }
     }
     .onChange(of: keyringStore.isWalletBackedUp) { oldValue, newValue in
