@@ -190,11 +190,11 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
             "role": "user",
             "content": [
               {"type": "brave-page-excerpt", "text": "%s"},
-              {"type": "%s", "text": ""}
+              {"type": "%s", "text": "%s"}
             ]
           }
         ])",
-        test_text, params.expected_type_string);
+        test_text, params.expected_type_string, params.expected_payload);
   }
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _, _, _))
