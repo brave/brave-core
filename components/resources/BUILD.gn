@@ -32,13 +32,21 @@ brave_grit("static_resources") {
   ]
 
   if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/resources" ]
+    deps += [
+      "//brave/components/ai_chat/resources",
+
+      # Needed for preprocessed HTML files referenced in ai_chat_ui_resources.grdp
+      "//brave/components/ai_chat/resources:preprocess_html",
+    ]
   }
 
   if (enable_brave_wallet) {
     deps += [
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/decentralized_dns/content/resources:bundle_js",
+
+      # Needed for preprocessed HTML files referenced in brave_components_resources.grd
+      "//brave/components/brave_wallet_ui/page:preprocess_html",
     ]
   }
 
