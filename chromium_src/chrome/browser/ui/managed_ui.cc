@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -17,12 +18,7 @@
 
 namespace brave_policy {
 
-bool ShouldHideManagedUI(const policy::PolicyMap& policies) {
-  // Empty policy map means no management at all
-  if (policies.empty()) {
-    return false;
-  }
-
+bool HasOnlyBravePolicies(const policy::PolicyMap& policies) {
   // Check all policies, not just BraveOrigin-related ones
   return std::ranges::all_of(policies, [](const auto& policy_pair) {
     const auto& [policy_name, entry] = policy_pair;
@@ -39,16 +35,28 @@ bool ShouldDisplayManagedUi(Profile* profile) {
   }
 
   // Check if we should hide due to Brave-only management
-  policy::PolicyService* policy_service =
+  auto* profile_policy_service =
       profile->GetProfilePolicyConnector()->policy_service();
-  if (policy_service) {
-    const policy::PolicyMap& policies = policy_service->GetPolicies(
+  if (profile_policy_service) {
+    const auto& profile_policies = profile_policy_service->GetPolicies(
         policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
 
-    if (brave_policy::ShouldHideManagedUI(policies)) {
-      return false;
+    if (!brave_policy::HasOnlyBravePolicies(profile_policies)) {
+      return true;
     }
   }
 
-  return true;
+  // Also check browser-level policies
+  auto* browser_policy_service = g_browser_process->policy_service();
+  if (browser_policy_service) {
+    const auto& browser_policies = browser_policy_service->GetPolicies(
+        policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
+
+    if (!brave_policy::HasOnlyBravePolicies(browser_policies)) {
+      return true;
+    }
+  }
+
+  // Both profile and browser policies are Brave-only (or empty), so hide
+  return false;
 }
