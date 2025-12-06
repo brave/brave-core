@@ -99,9 +99,10 @@ void CloseGroup(Browser* browser);
 bool CanBringAllTabs(Browser* browser);
 void BringAllTabs(Browser* browser);
 
-bool HasDuplicateTabs(Browser* browser);
-void CloseDuplicateTabs(Browser* browser);
-
+bool HasDuplicatesOfActiveTab(Browser* browser);
+void CloseDuplicatesOfActiveTab(Browser* browser);
+bool HasAnyDuplicateTabs(Browser* browser);
+void CloseAllDuplicateTabs(Browser* browser);
 bool CanCloseTabsToLeft(Browser* browser);
 void CloseTabsToLeft(Browser* browser);
 
