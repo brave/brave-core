@@ -13,6 +13,7 @@ vendor/omaha/
 .cipd
 /chromium_src/.clang-format
 /.idea/
+/browser/resources/brave_new_tab_page_refresh/state/background_images/LICENSE
 /components/brave_new_tab_ui/data/LICENSE
 /components/brave_wallet/browser/zcash/rust/librustzcash/src/
 /components/brave_rewards/resources/extension/brave_rewards/out/
