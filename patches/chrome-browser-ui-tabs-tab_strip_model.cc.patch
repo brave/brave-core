@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
+index e39249009ed51c979673754b53f5b886edd60a6b..1427966d54d977c5a4315889ec309f84c85e3c63 100644
+--- a/chrome/browser/ui/tabs/tab_strip_model.cc
++++ b/chrome/browser/ui/tabs/tab_strip_model.cc
+@@ -3013,6 +3013,7 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+     case CommandFirst:
+     case CommandAddNote:
+     case CommandLast:
++    BRAVE_COMMANDS_CASES
+       NOTREACHED();
+   }
+ }
