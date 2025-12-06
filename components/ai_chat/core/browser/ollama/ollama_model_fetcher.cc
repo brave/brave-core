@@ -13,6 +13,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -20,6 +22,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/strings/ascii.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -131,7 +134,7 @@ void OllamaModelFetcher::OnModelsFetched(
     // Store basic info and fetch detailed information
     PendingModelInfo pending_info;
     pending_info.model_name = model_name;
-    pending_info.display_name = model_name;
+    pending_info.display_name = FormatOllamaModelName(model_name);
     pending_models_[model_name] = std::move(pending_info);
 
     FetchModelDetails(model_name);
@@ -186,6 +189,96 @@ void OllamaModelFetcher::OnModelDetailsFetched(
 
   // Remove from pending models
   pending_models_.erase(it);
+}
+
+// static
+std::string OllamaModelFetcher::FormatOllamaModelName(
+    const std::string& raw_name) {
+  // Trim whitespace
+  std::string_view trimmed_view =
+      base::TrimWhitespaceASCII(raw_name, base::TRIM_ALL);
+  if (trimmed_view.empty()) {
+    return raw_name;
+  }
+
+  std::string trimmed(trimmed_view);
+
+  // Remove :latest suffix
+  if (base::EndsWith(trimmed, ":latest")) {
+    trimmed = trimmed.substr(0, trimmed.length() - 7);
+  }
+
+  // Replace colons and hyphens with spaces
+  base::ReplaceChars(trimmed, ":-", " ", &trimmed);
+
+  // Split into tokens to process each part
+  std::vector<std::string> parts = base::SplitString(
+      trimmed, " ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  if (parts.empty()) {
+    return raw_name;
+  }
+
+  // Process each part: capitalize first letter, handle single-letter suffixes
+  std::vector<std::string> processed_parts;
+  for (const std::string& part : parts) {
+    std::string processed;
+    bool at_start = true;
+
+    for (size_t i = 0; i < part.length(); ++i) {
+      char c = part[i];
+      char prev = (i > 0) ? part[i - 1] : '\0';
+
+      // Add space between letter and digit or digit and letter
+      // but keep single letters attached (e.g., v1, 7b)
+      if (i > 0 && !processed.empty()) {
+        bool prev_digit = absl::ascii_isdigit(prev);
+        bool curr_digit = absl::ascii_isdigit(c);
+        bool prev_alpha = absl::ascii_isalpha(prev);
+        bool curr_alpha = absl::ascii_isalpha(c);
+
+        if ((prev_digit && curr_alpha) || (prev_alpha && curr_digit)) {
+          // Check if it's a multi-letter word
+          bool is_multi_letter = false;
+          if (curr_alpha) {
+            // Look ahead for more letters
+            is_multi_letter =
+                (i + 1 < part.length() && absl::ascii_isalpha(part[i + 1]));
+          } else if (prev_alpha) {
+            // Look back for more letters
+            is_multi_letter = (i >= 2 && absl::ascii_isalpha(part[i - 2]));
+          }
+
+          if (is_multi_letter) {
+            processed += ' ';
+            at_start = true;
+          }
+        }
+      }
+
+      // Capitalize appropriately
+      if (absl::ascii_isalpha(c)) {
+        if (at_start) {
+          processed += absl::ascii_toupper(c);
+          at_start = false;
+        } else if (i > 0 && absl::ascii_isdigit(prev)) {
+          // Single letter after digit - uppercase (e.g., 7B)
+          bool is_single =
+              (i + 1 >= part.length() || !absl::ascii_isalpha(part[i + 1]));
+          processed +=
+              is_single ? absl::ascii_toupper(c) : absl::ascii_tolower(c);
+        } else {
+          processed += absl::ascii_tolower(c);
+        }
+      } else {
+        processed += c;
+      }
+    }
+
+    processed_parts.push_back(processed);
+  }
+
+  return base::JoinString(processed_parts, " ");
 }
 
 }  // namespace ai_chat
