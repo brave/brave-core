@@ -137,6 +137,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
+      &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
@@ -159,6 +160,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
+      &features::kPopupBrowserUseNewLayout,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -168,6 +170,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
+      &features::kTabbedBrowserUseNewLayout,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
