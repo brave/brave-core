@@ -765,7 +765,7 @@ void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
 void RewardsServiceImpl::OnURLLoaderComplete(
     SimpleURLLoaderList::iterator loader_it,
     LoadURLCallback callback,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto loader = std::move(*loader_it);
   url_loaders_.erase(loader_it);
 
@@ -805,7 +805,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
     json_sanitizer_task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(
-            [](std::unique_ptr<std::string> response_body,
+            [](std::optional<std::string> response_body,
                LoadURLCallback callback, mojom::UrlResponsePtr response,
                scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
               api_request_helper::ParseJsonNonBlocking(

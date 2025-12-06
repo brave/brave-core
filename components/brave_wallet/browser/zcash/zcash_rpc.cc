@@ -578,7 +578,7 @@ void ZCashRpc::OnGetCompactBlocksResponse(
 
 void ZCashRpc::OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
                                   network::SimpleURLLoader* url_loader,
-                                  std::unique_ptr<std::string> response_body) {
+                                  std::optional<std::string> response_body) {
   auto current_loader = url_loaders_.extract(url_loader);
   CHECK(current_loader);
   if (current_loader.value()->NetError()) {
@@ -623,7 +623,7 @@ void ZCashRpc::OnParseResult(
 void ZCashRpc::OnGetLatestBlockResponse(
     ZCashRpc::GetLatestBlockCallback callback,
     network::SimpleURLLoader* url_loader,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto current_loader = url_loaders_.extract(url_loader);
   CHECK(current_loader);
   if (current_loader.value()->NetError()) {
@@ -645,7 +645,7 @@ void ZCashRpc::OnGetLatestBlockResponse(
 void ZCashRpc::OnGetTransactionResponse(
     ZCashRpc::GetTransactionCallback callback,
     network::SimpleURLLoader* url_loader,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto current_loader = url_loaders_.extract(url_loader);
   CHECK(current_loader);
   if (current_loader.value()->NetError()) {
@@ -723,7 +723,7 @@ void ZCashRpc::IsKnownAddress(const std::string& chain_id,
 void ZCashRpc::OnSendTransactionResponse(
     ZCashRpc::SendTransactionCallback callback,
     network::SimpleURLLoader* url_loader,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto current_loader = url_loaders_.extract(url_loader);
   CHECK(current_loader);
   if (current_loader.value()->NetError()) {
@@ -745,7 +745,7 @@ void ZCashRpc::OnSendTransactionResponse(
 void ZCashRpc::OnGetTreeStateResponse(
     ZCashRpc::GetTreeStateCallback callback,
     network::SimpleURLLoader* url_loader,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   auto current_loader = url_loaders_.extract(url_loader);
   CHECK(current_loader);
   if (current_loader.value()->NetError()) {
@@ -783,7 +783,7 @@ void ZCashRpc::OnGetAddressTxResponse(
 void ZCashRpc::OnGetLightdInfoResponse(
     GetLightdInfoCallback callback,
     network::SimpleURLLoader* url_loader,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   url_loaders_.erase(url_loader);
 
   if (!response_body) {

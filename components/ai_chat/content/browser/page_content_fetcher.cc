@@ -310,7 +310,7 @@ class PageContentFetcherInternal {
       std::unique_ptr<network::SimpleURLLoader> loader,
       bool is_youtube,
       std::string invalidation_token,
-      std::unique_ptr<std::string> response_body) {
+      std::optional<std::string> response_body) {
     auto response_code = -1;
     if (loader->ResponseInfo()) {
       auto headers_list = loader->ResponseInfo()->headers;
@@ -348,7 +348,7 @@ class PageContentFetcherInternal {
   void OnGithubContentFetchResponse(
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
-      std::unique_ptr<std::string> response_body) {
+      std::optional<std::string> response_body) {
     auto response_code = -1;
     if (loader->ResponseInfo()) {
       auto headers_list = loader->ResponseInfo()->headers;
@@ -372,7 +372,7 @@ class PageContentFetcherInternal {
       FetchPageContentCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
       std::string invalidation_token,
-      std::unique_ptr<std::string> response_body) {
+      std::optional<std::string> response_body) {
     if (!response_body || loader->NetError() != net::OK) {
       SendResultAndDeleteSelf(std::move(callback), "", invalidation_token,
                               true);

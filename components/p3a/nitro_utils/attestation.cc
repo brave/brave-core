@@ -215,8 +215,8 @@ void ParseAndVerifyDocument(
     std::vector<uint8_t> nonce,
     base::OnceCallback<void(scoped_refptr<net::X509Certificate>)>
         result_callback,
-    std::unique_ptr<std::string> response_body) {
-  if (response_body == nullptr || response_body->empty()) {
+    std::optional<std::string> response_body) {
+  if (!response_body || response_body->empty()) {
     LOG(ERROR) << "Nitro verification: no body received from server";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
     return;

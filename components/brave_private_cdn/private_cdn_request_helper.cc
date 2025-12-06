@@ -73,7 +73,7 @@ void PrivateCDNRequestHelper::DownloadToString(
 void PrivateCDNRequestHelper::OnResponse(
     SimpleURLLoaderList::iterator iter,
     DownloadToStringCallback callback,
-    const std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   // For now all the caller needs is response code and body as string
   auto* loader = iter->get();
   auto response_code = -1;
@@ -84,8 +84,7 @@ void PrivateCDNRequestHelper::OnResponse(
     }
   }
   url_loaders_.erase(iter);
-  std::move(callback).Run(response_code,
-                          (response_body != nullptr) ? *response_body : "");
+  std::move(callback).Run(response_code, response_body ? *response_body : "");
 }
 
 }  // namespace brave_private_cdn

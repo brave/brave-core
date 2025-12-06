@@ -222,7 +222,7 @@ void BraveReferralsService::OnFinalizationChecksTimerFired() {
 }
 
 void BraveReferralsService::OnReferralInitLoadComplete(
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   int response_code = -1;
   if (referral_init_loader_->ResponseInfo() &&
       referral_init_loader_->ResponseInfo()->headers)
@@ -278,7 +278,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 }
 
 void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   int response_code = -1;
   if (referral_finalization_check_loader_->ResponseInfo() &&
       referral_finalization_check_loader_->ResponseInfo()->headers)

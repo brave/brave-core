@@ -112,7 +112,7 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     MetricLogType log_type,
     StarRandomnessMeta* randomness_meta,
     RandomnessDataCallback callback,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   if (!response_body || response_body->empty()) {
     std::string error_str =
         net::ErrorToShortString(url_loaders_[log_type]->NetError());

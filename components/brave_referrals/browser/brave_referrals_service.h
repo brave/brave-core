@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -93,12 +94,12 @@ class BraveReferralsService {
 
   // Invoked from SimpleURLLoader after referral init load
   // completes.
-  void OnReferralInitLoadComplete(std::unique_ptr<std::string> response_body);
+  void OnReferralInitLoadComplete(std::optional<std::string> response_body);
 
   // Invoked from SimpleURLLoader after referral finalization check
   // load completes.
   void OnReferralFinalizationCheckLoadComplete(
-      std::unique_ptr<std::string> response_body);
+      std::optional<std::string> response_body);
 
   // Invoked after reading contents of promo code file.
   void OnReadPromoCodeComplete(const std::string& promo_code);

@@ -145,7 +145,7 @@ class APIRequestHelper {
 
     // This is used for one shot responses
     void OnResponse(ResponseConversionCallback conversion_callback,
-                    const std::unique_ptr<std::string> response_body);
+                    std::optional<std::string> response_body);
 
     // Decode one shot responses
     void OnParseJsonResponse(APIRequestResult result,

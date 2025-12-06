@@ -432,7 +432,7 @@ void APIRequestHelper::URLLoaderHandler::OnRetry(
 
 void APIRequestHelper::URLLoaderHandler::OnResponse(
     ResponseConversionCallback conversion_callback,
-    const std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response received\n";
   DCHECK(result_callback_);

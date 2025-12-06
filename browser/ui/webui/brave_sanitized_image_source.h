@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SANITIZED_IMAGE_SOURCE_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -65,7 +66,7 @@ class BraveSanitizedImageSource : public content::URLDataSource {
   void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
                      RequestAttributes request_attributes,
                      content::URLDataSource::GotDataCallback callback,
-                     std::unique_ptr<std::string> body);
+                     std::optional<std::string> body);
   void EncodeAndReplyStaticImage(
       RequestAttributes request_attributes,
       content::URLDataSource::GotDataCallback callback,
