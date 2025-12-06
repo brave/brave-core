@@ -19,6 +19,7 @@ export interface Props<T> {
   header?: React.ReactNode
   footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
+  onAutoSelect?: () => void
 
   // Note: undefined means no match.
   matchesQuery: (
@@ -112,6 +113,7 @@ export default function FilterMenu<T>(props: Props<T>) {
 
         if (!menuItem) return
 
+        props.onAutoSelect?.()
         menuItem.click()
       }
 

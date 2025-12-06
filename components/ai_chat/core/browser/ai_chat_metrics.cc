@@ -16,6 +16,7 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/metrics/histogram_functions_internal_overloads.h"
@@ -208,7 +209,8 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state,
       full_page_switch_storage_(local_state,
                                 prefs::kBraveChatP3AFullPageSwitches),
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-      local_state_(local_state) {
+      local_state_(local_state),
+      profile_prefs_(profile_prefs) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   for (int i = 0; i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
     ContextMenuAction action = static_cast<ContextMenuAction>(i);
@@ -264,6 +266,7 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3ARateLimitStops);
   registry->RegisterListPref(prefs::kBraveChatP3AContextLimits);
   AIChatTabFocusMetrics::RegisterPrefs(registry);
+  SkillsMetrics::RegisterPrefs(registry);
 }
 
 void AIChatMetrics::Bind(mojo::PendingReceiver<mojom::Metrics> receiver) {
@@ -341,7 +344,8 @@ void AIChatMetrics::RecordNewPrompt(ConversationHandlerForMetrics* handler,
                                     mojom::ConversationPtr& conversation,
                                     mojom::ConversationTurnPtr& entry) {
   const auto& uuid = conversation->uuid;
-  if (!conversation_start_times_.contains(uuid)) {
+  bool is_new_chat = !conversation_start_times_.contains(uuid);
+  if (is_new_chat) {
     chat_count_storage_.AddDelta(1);
     if (handler->GetConversationHistorySize() > 1) {
       chat_with_history_count_storage_.AddDelta(1);
@@ -383,6 +387,8 @@ void AIChatMetrics::RecordNewPrompt(ConversationHandlerForMetrics* handler,
     context_limit_storage_.AddDelta(1u);
   }
   ReportLimitMetrics();
+
+  EnsureSkillsMetrics()->MaybeRecordNewPrompt(entry, uuid, is_new_chat);
 }
 
 void AIChatMetrics::MaybeRecordLastError(
@@ -399,6 +405,7 @@ void AIChatMetrics::MaybeRecordLastError(
 void AIChatMetrics::RecordConversationUnload(
     std::string_view conversation_uuid) {
   conversation_start_times_.erase(conversation_uuid);
+  EnsureSkillsMetrics()->RecordConversationUnload(conversation_uuid);
   MaybeReportFirstChatPrompts(false);
 }
 
@@ -415,8 +422,34 @@ void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {
   prompted_via_quick_action_ = is_enabled;
 }
 
+void AIChatMetrics::RecordSkillClick(const std::string& skill_shortcut) {
+  EnsureSkillsMetrics()->RecordSkillClick(skill_shortcut);
+}
+
+SkillsMetrics* AIChatMetrics::EnsureSkillsMetrics() {
+  if (!skills_metrics_) {
+    skills_metrics_ =
+        std::make_unique<SkillsMetrics>(local_state_, profile_prefs_, this);
+  }
+  return skills_metrics_.get();
+}
+
 bool AIChatMetrics::IsPremium() const {
   return is_premium_;
+}
+
+uint64_t AIChatMetrics::GetWeekChatCount() {
+  return chat_count_storage_.GetWeeklySum();
+}
+
+base::Time AIChatMetrics::GetConversationStartTime(
+    const std::string& conversation_uuid) {
+  auto* start_time =
+      base::FindOrNull(conversation_start_times_, conversation_uuid);
+  if (!start_time) {
+    return base::Time::Now();
+  }
+  return *start_time;
 }
 
 void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
@@ -494,6 +527,7 @@ void AIChatMetrics::ReportAllMetrics() {
   if (tab_focus_metrics_) {
     tab_focus_metrics_->RecordEnabled();
   }
+  EnsureSkillsMetrics()->ReportAllMetrics();
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   ReportOmniboxCounts();
   ReportContextMenuMetrics();

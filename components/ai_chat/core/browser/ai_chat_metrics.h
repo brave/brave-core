@@ -17,6 +17,7 @@
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
+#include "brave/components/ai_chat/core/browser/skills_metrics.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
@@ -131,7 +132,8 @@ class ConversationHandlerForMetrics {
 };
 
 class AIChatMetrics : public mojom::Metrics,
-                      public AIChatTabFocusMetrics::Delegate {
+                      public AIChatTabFocusMetrics::Delegate,
+                      public SkillsMetrics::Delegate {
  public:
   using RetrievePremiumStatusCallback =
       base::OnceCallback<void(mojom::Service::GetPremiumStatusCallback)>;
@@ -149,6 +151,8 @@ class AIChatMetrics : public mojom::Metrics,
   AIChatTabFocusMetrics* tab_focus_metrics() {
     return tab_focus_metrics_.get();
   }
+
+  SkillsMetrics* skills_metrics() { return EnsureSkillsMetrics(); }
 
   void RecordEnabled(
       bool is_enabled,
@@ -181,9 +185,15 @@ class AIChatMetrics : public mojom::Metrics,
   // Metrics:
   void OnSendingPromptWithFullPage() override;
   void OnQuickActionStatusChange(bool is_enabled) override;
+  void RecordSkillClick(const std::string& skill_id) override;
 
   // AIChatTabFocusMetrics::Delegate:
   bool IsPremium() const override;
+
+  // SkillsMetrics::Delegate:
+  uint64_t GetWeekChatCount() override;
+  base::Time GetConversationStartTime(
+      const std::string& conversation_uuid) override;
 
  private:
   void ReportAllMetrics();
@@ -202,6 +212,8 @@ class AIChatMetrics : public mojom::Metrics,
   void MaybeReportFirstChatPrompts(bool new_prompt_made);
   void RecordContextSource(ConversationHandlerForMetrics* handler,
                            mojom::ConversationTurnPtr& entry);
+
+  SkillsMetrics* EnsureSkillsMetrics();
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
@@ -240,10 +252,12 @@ class AIChatMetrics : public mojom::Metrics,
   base::WallClockTimer periodic_report_timer_;
 
   raw_ptr<PrefService> local_state_;
+  raw_ptr<PrefService> profile_prefs_;
 
   mojo::ReceiverSet<mojom::Metrics> receivers_;
 
   std::unique_ptr<AIChatTabFocusMetrics> tab_focus_metrics_;
+  std::unique_ptr<SkillsMetrics> skills_metrics_;
 
   base::WeakPtrFactory<AIChatMetrics> weak_ptr_factory_{this};
 };
