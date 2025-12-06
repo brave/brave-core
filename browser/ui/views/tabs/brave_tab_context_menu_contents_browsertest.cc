@@ -84,24 +84,21 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest, Basics) {
   auto menu = CreateMenuAt(0);
 
   // All items are disable state when there is only one tab.
-  EXPECT_FALSE(menu->IsCommandIdEnabled(BraveTabMenuModel::CommandRestoreTab));
-  EXPECT_FALSE(
-      menu->IsCommandIdEnabled(BraveTabMenuModel::CommandBookmarkAllTabs));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
 
   chrome::NewTab(browser());
   // Still restore tab menu is disabled because there is no closed tab.
-  EXPECT_FALSE(menu->IsCommandIdEnabled(BraveTabMenuModel::CommandRestoreTab));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   // Bookmark all tabs item is enabled if the number of tabs are 2 or more.
-  EXPECT_TRUE(
-      menu->IsCommandIdEnabled(BraveTabMenuModel::CommandBookmarkAllTabs));
+  EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
 
   // When a tab is closed, restore tab menu item is enabled.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("brave://version/")));
   chrome::CloseTab(browser());
-  EXPECT_TRUE(menu->IsCommandIdEnabled(BraveTabMenuModel::CommandRestoreTab));
-  EXPECT_FALSE(
-      menu->IsCommandIdEnabled(BraveTabMenuModel::CommandBookmarkAllTabs));
+  EXPECT_TRUE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
+  EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
@@ -109,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   auto menu = CreateMenuAt(0);
   auto is_command_visible = [&]() {
     return menu->IsCommandIdVisible(
-        BraveTabMenuModel::CommandBringAllTabsToThisWindow);
+        TabStripModel::CommandBringAllTabsToThisWindow);
   };
 
   // No other browser exists, so the command is not visible.
@@ -155,9 +152,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 
   // Bring all tabs to this browser
   auto menu = CreateMenuAt(0);
-  ASSERT_TRUE(menu->IsCommandIdVisible(
-      BraveTabMenuModel::CommandBringAllTabsToThisWindow));
-  menu->ExecuteCommand(BraveTabMenuModel::CommandBringAllTabsToThisWindow,
+  ASSERT_TRUE(
+      menu->IsCommandIdVisible(TabStripModel::CommandBringAllTabsToThisWindow));
+  menu->ExecuteCommand(TabStripModel::CommandBringAllTabsToThisWindow,
                        /*event_flags=*/0);
 
   // The tabs should be moved to the current browser in the order.
@@ -181,9 +178,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
       incognito_browser->tab_strip_model()->count();
 
   auto menu = CreateMenuAt(0);
-  ASSERT_TRUE(menu->IsCommandIdVisible(
-      BraveTabMenuModel::CommandBringAllTabsToThisWindow));
-  menu->ExecuteCommand(BraveTabMenuModel::CommandBringAllTabsToThisWindow,
+  ASSERT_TRUE(
+      menu->IsCommandIdVisible(TabStripModel::CommandBringAllTabsToThisWindow));
+  menu->ExecuteCommand(TabStripModel::CommandBringAllTabsToThisWindow,
                        /*event_flags=*/0);
 
   EXPECT_EQ(browser()->tab_strip_model()->count(), tab_count + 1);
@@ -407,16 +404,16 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsWithContainersTest,
   // doesn't exist in the tab context menu.
   auto menu = CreateMenuAt(0);
   auto* menu_model = menu->model_.get();
-  auto index = menu_model->GetIndexOfCommandId(
-      BraveTabMenuModel::CommandOpenInContainer);
+  auto index =
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandOpenInContainer);
   EXPECT_TRUE(index.has_value());
 
   chrome::NewEmptyWindow(browser()->profile());
 
   menu = CreateMenuAt(0);
   menu_model = menu->model_.get();
-  index = menu_model->GetIndexOfCommandId(
-      BraveTabMenuModel::CommandOpenInContainer);
+  index =
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandOpenInContainer);
   EXPECT_TRUE(index.has_value());
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)

@@ -7,12 +7,18 @@
 
 #include <utility>
 
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/defaults.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
@@ -29,11 +35,6 @@ BraveBrowserTabStripController::~BraveBrowserTabStripController() {
   }
 }
 
-const std::optional<int> BraveBrowserTabStripController::GetModelIndexOf(
-    Tab* tab) {
-  return tabstrip_->GetModelIndexOf(tab);
-}
-
 void BraveBrowserTabStripController::EnterTabRenameModeAt(int index) {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs));
   return static_cast<BraveTabStrip*>(tabstrip_)->EnterTabRenameModeAt(index);
@@ -48,19 +49,18 @@ void BraveBrowserTabStripController::SetCustomTitleForTab(
 
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
     TabStripModel::ContextMenuCommand command_id,
-    const Tab* tab) const {
+    const Tab* tab) {
   const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
-  return model_index.has_value() ? model_->IsContextMenuCommandEnabled(
-                                       model_index.value(), command_id)
-                                 : false;
+  return model_index.has_value()
+             ? IsContextMenuCommandEnabled(model_index.value(), command_id)
+             : false;
 }
 
 void BraveBrowserTabStripController::ShowContextMenuForTab(
     Tab* tab,
     const gfx::Point& p,
     ui::mojom::MenuSourceType source_type) {
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  const auto tab_index = browser_view->tabstrip()->GetModelIndexOf(tab);
+  const auto tab_index = tabstrip_->GetModelIndexOf(tab);
   if (!tab_index) {
     return;
   }
@@ -73,6 +73,10 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     int index,
     TabStripModel::ContextMenuCommand command_id,
     int event_flags) {
+  if (!model_->ContainsIndex(index)) {
+    return;
+  }
+
   // This tab close customization targets only for split |tab|.
   // When select close tab from context menu, we want to close
   // only that split tab instead of both tabs in split.
@@ -101,6 +105,115 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     }
   }
 
+  // Use if clause to prevent enumeration values not handled in switch errors.
+  if (command_id == TabStripModel::CommandRestoreTab) {
+    chrome::RestoreTab(browser());
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandBookmarkAllTabs) {
+    chrome::BookmarkAllTabs(browser());
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandShowVerticalTabs) {
+    brave::ToggleVerticalTabStrip(browser());
+    BrowserView::GetBrowserViewForBrowser(browser())->InvalidateLayout();
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandToggleTabMuted) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    auto indices = model->GetTabIndicesForCommandAt(index);
+    std::vector<content::WebContents*> contentses;
+    std::transform(
+        indices.begin(), indices.end(), std::back_inserter(contentses),
+        [&model](int index) { return model->GetWebContentsAt(index); });
+
+    const auto all_muted = model->GetAllTabsMuted(indices);
+    for (auto* contents : contentses) {
+      SetTabAudioMuted(contents, !all_muted, TabMutedReason::kAudioIndicator,
+                       /*extension_id=*/std::string());
+    }
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandBringAllTabsToThisWindow) {
+    brave::BringAllTabs(browser());
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
+    brave::CloseDuplicateTabs(browser());
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandRenameTab) {
+    EnterTabRenameModeAt(index);
+    return;
+  }
+
   BrowserTabStripController::ExecuteContextMenuCommand(index, command_id,
                                                        event_flags);
+}
+
+bool BraveBrowserTabStripController::IsContextMenuCommandChecked(
+    TabStripModel::ContextMenuCommand command_id) {
+  if (command_id == TabStripModel::CommandShowVerticalTabs) {
+    return tabs::utils::ShouldShowVerticalTabs(browser());
+  }
+
+  return BrowserTabStripController::IsContextMenuCommandChecked(command_id);
+}
+
+bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
+    int index,
+    TabStripModel::ContextMenuCommand command_id) {
+  if (!model_->ContainsIndex(index)) {
+    return false;
+  }
+
+  // Use if clause to prevent enumeration values not handled in switch errors.
+  if (command_id == TabStripModel::CommandRestoreTab) {
+    auto* restore_service =
+        TabRestoreServiceFactory::GetForProfile(browser()->profile());
+    return restore_service && (!restore_service->IsLoaded() ||
+                               !restore_service->entries().empty());
+  }
+
+  if (command_id == TabStripModel::CommandBookmarkAllTabs) {
+    return browser_defaults::bookmarks_enabled &&
+           chrome::CanBookmarkAllTabs(browser());
+  }
+
+  if (command_id == TabStripModel::CommandToggleTabMuted) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    for (const auto& i : model->GetTabIndicesForCommandAt(index)) {
+      if (!model_->GetWebContentsAt(i)->GetLastCommittedURL().is_empty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
+    return brave::HasDuplicateTabs(browser());
+  }
+
+  if (command_id == TabStripModel::CommandShowVerticalTabs ||
+      command_id == TabStripModel::CommandBringAllTabsToThisWindow ||
+      command_id == TabStripModel::CommandOpenInContainer ||
+      command_id == TabStripModel::CommandRenameTab) {
+    return true;
+  }
+
+  return BrowserTabStripController::IsContextMenuCommandEnabled(index,
+                                                                command_id);
+}
+
+bool BraveBrowserTabStripController::GetContextMenuAccelerator(
+    int command_id,
+    ui::Accelerator* accelerator) {
+  return BrowserTabStripController::GetContextMenuAccelerator(command_id,
+                                                              accelerator);
 }
