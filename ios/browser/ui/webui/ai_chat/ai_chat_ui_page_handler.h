@@ -11,8 +11,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
+#include "ios/web/public/web_state_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -84,17 +87,37 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
+  class ChatContextObserver : public web::WebStateObserver {
+   public:
+    explicit ChatContextObserver(web::WebState* web_state,
+                                 AIChatUIPageHandler& page_handler);
+    ~ChatContextObserver() override;
+
+   private:
+    raw_ptr<web::WebState> web_state_;
+
+    // web::WebStateObserver
+    void WebStateDestroyed(web::WebState* web_state) override;
+    raw_ref<AIChatUIPageHandler> page_handler_;
+  };
+
   void SubmitVoiceQuery(const std::string& conversation_uuid, NSString* query);
+  void HandleWebStateDestroyed();
 
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
-  // AIChatTabHelper::Observer
   raw_ptr<web::WebState> owner_web_state_ = nullptr;
   raw_ptr<ProfileIOS> profile_ = nullptr;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
+
+  raw_ptr<AIChatTabHelper> ai_chat_tab_helper_;
+  base::ScopedObservation<AssociatedContentDelegate,
+                          AssociatedContentDelegate::Observer>
+      associated_content_delegate_observation_{this};
+  std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   // Conversations are not content associated either in standalone mode or in
   // global side panel mode, to the owner_web_contents_.

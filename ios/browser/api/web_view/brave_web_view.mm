@@ -8,6 +8,8 @@
 #include <memory>
 
 #include "base/notreached.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
@@ -149,7 +151,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 @end
 
 @interface BraveWebView ()
-@property(nonatomic, weak) id<AIChatUIHandlerBridge> aiChatUIHandler;
+@property(nonatomic, weak)
+    id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
+        aiChatUIHandler;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
 @end
 
@@ -203,6 +207,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   AttachTabHelpers(self.webState);
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.aiChatUIHandler);
+  ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
 }
@@ -334,10 +340,13 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @implementation BraveWebView (AIChat)
 
-- (void)setAiChatUIHandler:(id<AIChatUIHandlerBridge>)bridge {
+- (void)setAiChatUIHandler:
+    (id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>)bridge {
   _aiChatUIHandler = bridge;
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(bridge);
+  ai_chat::AIChatTabHelper::GetOrCreateForWebState(self.webState)
+      ->SetPageFetcher(self.aiChatUIHandler);
 }
 
 @end
