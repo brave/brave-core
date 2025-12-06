@@ -171,6 +171,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
+      &features::kTabbedBrowserUseNewLayout,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
