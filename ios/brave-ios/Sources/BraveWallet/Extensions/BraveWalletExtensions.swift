@@ -633,6 +633,15 @@ extension URL {
     guard let scheme = self.scheme?.lowercased() else { return false }
     return WalletConstants.supportedIPFSSchemes.contains(scheme)
   }
+
+  /// Return true if url's scheme is either `chrome` or `brave` and host is `wallet`
+  public var isWalletWebUIURL: Bool {
+    guard
+      let scheme = self.scheme?.lowercased(),
+      let host = self.host?.lowercased()
+    else { return false }
+    return (scheme == "chrome" || scheme == "brave") && host == "wallet"
+  }
 }
 
 extension BraveWallet.SwapFees {

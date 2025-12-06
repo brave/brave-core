@@ -177,8 +177,15 @@ extension BrowserViewController: BraveWalletDelegate {
       // dismiss to show the new tab
       self.dismiss(animated: true)
     }
-    if let url = tabManager.selectedTab?.visibleURL, InternalURL.isValid(url: url) {
-      select(url: destinationURL, isUserDefinedURLNavigation: false)
+    if let url = tabManager.selectedTab?.visibleURL {
+      if InternalURL.isValid(url: url) {
+        select(url: destinationURL, isUserDefinedURLNavigation: false)
+      } else {
+        tabManager.addTabAndSelect(
+          URLRequest(url: destinationURL),
+          isPrivate: privateBrowsingManager.isPrivateBrowsing
+        )
+      }
     } else {
       _ = tabManager.addTabAndSelect(
         URLRequest(url: destinationURL),
@@ -726,11 +733,16 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
 // MARK: Wallet WebUI action handlers
 extension BrowserViewController {
   func showWalletBackupUI() {
+    presentNativeWallet(webUIAction: .backup)
   }
 
   func unlockWalletUI() {
+    presentNativeWallet(webUIAction: .unlock)
   }
 
   func showOnboarding(_ isNewWallet: Bool) {
+    presentNativeWallet(
+      webUIAction: .onboarding(isNewAccount: isNewWallet)
+    )
   }
 }
