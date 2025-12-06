@@ -18,21 +18,13 @@ import {
   mockSolanaMainnetNetwork, //
 } from '../../../stories/mock-data/mock-networks'
 import {
-  mockSignMessageRequest, //
-} from '../../../stories/mock-data/mock-eth-requests'
-
-// utils
-import { SignInWithEthereumError } from './sign_in_with_ethereum_error'
-import {
   deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
-
 // components
 import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { SignSolanaTxsPanel } from './sign_solana_txs_panel'
-import { SignInWithEthereum } from './sign_in_with_ethereum'
 
 export const _SignAllSolanaTxPanel = {
   render: () => {
@@ -62,30 +54,6 @@ export const _SignAllSolanaTxPanel = {
           signingAccount={mockSolanaAccount}
           queueLength={1}
           queueNumber={0}
-        />
-      </WalletPanelStory>
-    )
-  },
-}
-
-export const _SignInWithEthereumErrorPanel = {
-  render: () => {
-    return (
-      <WalletPanelStory>
-        <SignInWithEthereumError />
-      </WalletPanelStory>
-    )
-  },
-}
-
-export const _SignInWithEthereumPanel = {
-  render: () => {
-    return (
-      <WalletPanelStory>
-        <SignInWithEthereum
-          data={mockSignMessageRequest}
-          onCancel={() => {}}
-          onSignIn={() => {}}
         />
       </WalletPanelStory>
     )

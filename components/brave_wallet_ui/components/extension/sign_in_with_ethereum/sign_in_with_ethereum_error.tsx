@@ -22,8 +22,8 @@ import CreateSiteOrigin from '../../shared/create-site-origin/index'
 
 // Style
 import {
-  StyledWrapper,
-  Title,
+  ErrorWrapper,
+  ErrorTitle,
   ErrorBox,
   ErrorDescriptionText,
   WarningIcon,
@@ -80,15 +80,15 @@ export const SignInWithEthereumError = () => {
   }
 
   return (
-    <StyledWrapper>
+    <ErrorWrapper>
       <>
         <Row padding='16px 16px 11px 16px'>
-          <Title
+          <ErrorTitle
             isBold={true}
             textSize='18px'
           >
             {getLocale('braveWalletSecurityRiskDetected')}
-          </Title>
+          </ErrorTitle>
         </Row>
         <VerticalDivider />
       </>
@@ -132,6 +132,6 @@ export const SignInWithEthereumError = () => {
           </Button>
         </Row>
       </Column>
-    </StyledWrapper>
+    </ErrorWrapper>
   )
 }

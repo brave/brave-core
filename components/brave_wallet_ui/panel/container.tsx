@@ -63,7 +63,10 @@ import {
 import PageContainer from '../page/container'
 import {
   SignInWithEthereumError, //
-} from '../components/extension/sign-panel/sign_in_with_ethereum_error'
+} from '../components/extension/sign_in_with_ethereum/sign_in_with_ethereum_error'
+import {
+  SignInWithEthereum, //
+} from '../components/extension/sign_in_with_ethereum/sign_in_with_ethereum'
 import {
   PendingTransactionPanel, //
 } from '../components/extension/pending_transaction_panel/pending_transaction_panel'
@@ -241,6 +244,17 @@ function Container() {
     return (
       <PanelWrapper>
         <SignInWithEthereumError />
+      </PanelWrapper>
+    )
+  }
+
+  if (signMessageData?.length && signMessageData[0].signData.ethSiweData) {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SignInWithEthereum data={signMessageData[0]} />
       </PanelWrapper>
     )
   }
