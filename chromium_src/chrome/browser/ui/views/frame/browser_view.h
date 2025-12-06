@@ -14,10 +14,12 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-#define BrowserViewLayoutDelegateImplOld \
-  BrowserViewLayoutDelegateImplOld;      \
-  friend class BraveBrowserView;         \
-  void SetNativeWindowPropertyForWidget(views::Widget* widget)
+#define BrowserViewLayoutDelegateImplOld                        \
+  BrowserViewLayoutDelegateImplOld;                             \
+  friend class BraveBrowserView;                                \
+  void SetNativeWindowPropertyForWidget(views::Widget* widget); \
+  virtual bool IsWebPanelContents(content::WebContents* contents)
+
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define BookmarkBarView BraveBookmarkBarView
@@ -26,6 +28,7 @@
   virtual MaybeShowReadingListInSidePanelIPH
 
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
+#define MaybeUpdateSplitView virtual MaybeUpdateSplitView
 #define GetTabStripVisible virtual GetTabStripVisible
 
 #define GetTabSearchBubbleHost     \
@@ -57,6 +60,7 @@
 
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
+#undef MaybeUpdateSplitView
 #undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView
