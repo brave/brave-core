@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
@@ -19,6 +18,7 @@
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news::p3a {
 
@@ -321,7 +321,7 @@ void NewsMetrics::OnPublishersChanged() {
 
 void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
-  base::flat_set<std::string> distinct_channels;
+  absl::flat_hash_set<std::string> distinct_channels;
   auto channels_map = pref_manager_->GetSubscriptions().channels();
   for (const auto& [locale, channels] : channels_map) {
     distinct_channels.insert(channels.begin(), channels.end());

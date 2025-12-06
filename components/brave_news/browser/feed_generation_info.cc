@@ -24,6 +24,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
@@ -87,10 +88,11 @@ std::vector<mojom::Signal*> GetSignals(
   return result;
 }
 
-ArticleMetadata GetArticleMetadata(const mojom::FeedItemMetadataPtr& article,
-                                   const std::vector<mojom::Signal*>& signals,
-                                   std::vector<std::string> publisher_channels,
-                                   const bool& discoverable) {
+ArticleMetadata GetArticleMetadata(
+    const mojom::FeedItemMetadataPtr& article,
+    const std::vector<mojom::Signal*>& signals,
+    absl::flat_hash_set<std::string> publisher_channels,
+    const bool& discoverable) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
 
@@ -107,8 +109,7 @@ ArticleMetadata GetArticleMetadata(const mojom::FeedItemMetadataPtr& article,
   metadata.visited = signals.at(0)->visit_weight != 0;
   metadata.subscribed = subscribed_weight != 0,
   metadata.discoverable = discoverable;
-  metadata.channels =
-      base::flat_set<std::string>(std::move(publisher_channels));
+  metadata.channels = std::move(publisher_channels);
   return metadata;
 }
 
@@ -117,8 +118,8 @@ ArticleInfos GetArticleInfos(const std::string& locale,
                              const Publishers& publishers,
                              const Signals& signals) {
   ArticleInfos articles;
-  base::flat_set<GURL> seen_articles;
-  base::flat_set<std::string> non_discoverable_publishers;
+  absl::flat_hash_set<std::string> seen_articles;
+  absl::flat_hash_set<std::string> non_discoverable_publishers;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     auto channels = GetChannelsForPublisher(locale, publisher);
@@ -137,12 +138,12 @@ ArticleInfos GetArticleInfos(const std::string& locale,
     if (item->is_article()) {
       // Because we download feeds from multiple locales, it's possible there
       // will be duplicate articles, which we should filter out.
-      if (seen_articles.contains(item->get_article()->data->url)) {
+      if (seen_articles.contains(item->get_article()->data->url.spec())) {
         continue;
       }
       auto& article = item->get_article();
 
-      seen_articles.insert(article->data->url);
+      seen_articles.insert(article->data->url.spec());
 
       auto article_signals =
           GetSignals(locale, article->data, publishers, signals);
