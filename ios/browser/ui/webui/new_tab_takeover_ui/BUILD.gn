@@ -1,0 +1,31 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("new_tab_takeover_ui") {
+  sources = [
+    "new_tab_takeover_ui_handler.cc",
+    "new_tab_takeover_ui_handler.h",
+    "new_tab_takeover_ui_ios.h",
+    "new_tab_takeover_ui_ios.mm",
+    "ntp_sponsored_rich_media_controller.h",
+    "ntp_sponsored_rich_media_controller.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/ios/web/webui",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//url",
+  ]
+
+  public_deps = [
+    "//brave/components/new_tab_takeover/mojom",
+    "//brave/components/ntp_background_images/browser/mojom",
+  ]
+}

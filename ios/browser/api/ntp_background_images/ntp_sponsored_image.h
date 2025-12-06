@@ -41,12 +41,14 @@ OBJC_EXPORT
 OBJC_EXPORT
 @interface NTPSponsoredImageBackground : NSObject
 @property(readonly) NSURL* imagePath;
+@property(readonly) BOOL isRichMedia;
 @property(readonly) CGPoint focalPoint;
 @property(readonly) NSString* creativeInstanceId;
 @property(readonly) NTPSponsoredImageLogo* logo;
 @property(readonly) BraveAdsNewTabPageAdMetricType metricType;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithImagePath:(NSURL*)imagePath
+                       isRichMedia:(BOOL)isRichMedia
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo

@@ -10,12 +10,35 @@ import UIKit
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
   case sponsoredMedia(NTPSponsoredImageBackground)
+  case richNewTabTakeover(NewTabPageAd)
 
   var backgroundVideoPath: URL? {
     if case .sponsoredMedia(let background) = self {
       return background.isVideoFile ? background.imagePath : nil
     }
     return nil
+  }
+
+  var richNewTabTakeoverURL: URL? {
+    if case .richNewTabTakeover(let background) = self {
+      //let url = "chrome://new-tab-takeover-page?creativeInstanceId="+"00000000-0000-4000-8000-000000000004"+"&placementId=1234567890"
+      let url = "chrome://new-tab-takeover-page?creativeInstanceId="+background.creativeInstanceID+"&placementId="+background.placementID
+       return URL(
+         string: url
+       )
+    }
+    return nil
+
+    // // TODO(aseren): Construct this URL from parsed creative parameters.
+    // return URL(
+    //   string:
+    //     "chrome://new-tab-takeover-page?creativeInstanceId=00000000-0000-4000-8000-000000000004&placementId=1234567890"
+    // )
+
+    // if case .sponsoredMedia(let background) = self {
+    //   return background.richNewTabTakeoverURL
+    // }
+    // return nil
   }
 
   var backgroundImage: UIImage? {
@@ -28,7 +51,10 @@ enum NTPWallpaper {
         return nil
       }
       imagePath = background.imagePath
+    case .richNewTabTakeover:
+      return nil
     }
+
     return UIImage(contentsOfFile: imagePath.path)
   }
 
@@ -39,6 +65,8 @@ enum NTPWallpaper {
       imagePath = nil
     case .sponsoredMedia(let background):
       imagePath = background.logo.imagePath
+    case .richNewTabTakeover:
+      return nil
     }
     return imagePath.flatMap { UIImage(contentsOfFile: $0.path) }
   }
@@ -49,6 +77,8 @@ enum NTPWallpaper {
       return nil  // Will eventually return a real value
     case .sponsoredMedia(let background):
       return background.focalPoint
+    case .richNewTabTakeover:
+      return nil
     }
   }
 }
@@ -101,21 +131,37 @@ public class NTPDataSource {
   }
 
   func getSponsoredMediaBackground() -> NTPWallpaper? {
+    //if (NTPWallpaper.)
+    //return .richNewTabTakeover
+
+    print("FOOBAR.getSponsoredMediaBackground().1")
+
     guard let sponsoredImageData = service.sponsoredImageData
     else { return nil }
 
+    print("FOOBAR.getSponsoredMediaBackground().2")
+
     guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
+
+    print("FOOBAR.getSponsoredMediaBackground().3")
 
     let isSponsoredVideoAllowed =
       Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
     for campaign in sponsoredImageData.campaigns {
+      print("FOOBAR.getSponsoredMediaBackground().4")
       if campaign.campaignId != newTabPageAd.campaignID {
         continue
       }
 
+      print("FOOBAR.getSponsoredMediaBackground().5")
+
       for creative in campaign.backgrounds {
+        print("FOOBAR.getSponsoredMediaBackground().6")
+        if creative.isRichMedia {
+          return .richNewTabTakeover(newTabPageAd)
+        }
         if creative.logo.imagePath != nil
           && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
           && (!creative.isVideoFile || isSponsoredVideoAllowed)
@@ -225,4 +271,12 @@ extension NTPSponsoredImageBackground {
   var isVideoFile: Bool {
     imagePath.pathExtension == "mp4"
   }
+
+//  var richNewTabTakeoverURL: URL? {
+//    // TODO(aseren): Construct this URL from parsed creative parameters.
+//    return URL(
+//      string:
+//        "chrome://new-tab-takeover-page?creativeInstanceId=00000000-0000-4000-8000-000000000004&placementId=1234567890"
+//    )
+//  }
 }

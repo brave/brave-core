@@ -74,6 +74,7 @@
 
 @interface NTPSponsoredImageBackground ()
 @property(nonatomic, copy) NSURL* imagePath;
+@property(nonatomic) BOOL isRichMedia;
 @property(nonatomic) CGPoint focalPoint;
 @property(nonatomic, copy) NSString* creativeInstanceId;
 @property(nonatomic) NTPSponsoredImageLogo* logo;
@@ -83,12 +84,14 @@
 @implementation NTPSponsoredImageBackground
 
 - (instancetype)initWithImagePath:(NSURL*)imagePath
+                      isRichMedia:(BOOL)isRichMedia
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
                        metricType:(BraveAdsNewTabPageAdMetricType)metricType {
   if ((self = [super init])) {
     self.imagePath = imagePath;
+    self.isRichMedia = isRichMedia;
     self.focalPoint = focalPoint;
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
@@ -102,6 +105,8 @@
   auto imagePath =
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
                                  sponsoredBackground.file_path.value())];
+  bool isRichMedia = sponsoredBackground.wallpaper_type ==
+                     ntp_background_images::WallpaperType::kRichMedia;
   auto focalPoint = sponsoredBackground.focal_point.ToCGPoint();
   auto creativeInstanceId =
       base::SysUTF8ToNSString(sponsoredBackground.creative_instance_id);
@@ -109,6 +114,7 @@
       [[NTPSponsoredImageLogo alloc] initWithLogo:sponsoredBackground.logo];
   auto metricType = sponsoredBackground.metric_type;
   return [self initWithImagePath:imagePath
+                     isRichMedia:isRichMedia
                       focalPoint:focalPoint
               creativeInstanceId:creativeInstanceId
                             logo:logo

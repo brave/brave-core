@@ -55,10 +55,14 @@ const SponsoredRichMediaBackgroundIframe = styled('iframe') <StatusProps>`
 
   /* Blur out the content when Brave News is interacted
      with. We need the opacity to fade out our background image.
-   */
   filter: blur(calc(var(--ntp-extra-content-effect-multiplier, 0) * 38px));
   opacity: max(0.3, calc(1 - var(--ntp-extra-content-effect-multiplier)));
+  */
+
   background: var(--default-bg-color);
+
+  /* Fade-in animation */
+  transition: opacity 0.1s ease-in;
 `
 
 /// We expect the event data to be of the following format:

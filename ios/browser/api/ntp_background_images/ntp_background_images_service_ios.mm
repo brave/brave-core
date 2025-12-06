@@ -129,7 +129,7 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 }
 
 - (NTPSponsoredImageData*)sponsoredImageData {
-  auto* data = _service->GetSponsoredImagesData(/*supports_rich_media=*/false);
+  auto* data = _service->GetSponsoredImagesData(/*supports_rich_media=*/true);
   if (data == nullptr) {
     return nil;
   }

@@ -17,6 +17,10 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
+namespace ntp_background_images {
+class NTPBackgroundImagesService;
+}  // namespace ntp_background_images
+
 class GURL;
 
 class BraveWebUIControllerFactory : public ChromeWebUIIOSControllerFactory {
@@ -33,12 +37,18 @@ class BraveWebUIControllerFactory : public ChromeWebUIIOSControllerFactory {
   BraveWebUIControllerFactory& operator=(const BraveWebUIControllerFactory&) =
       delete;
 
+  void SetNTPBackgroundImagesService(
+      ntp_background_images::NTPBackgroundImagesService* service);
+
  protected:
   BraveWebUIControllerFactory();
   ~BraveWebUIControllerFactory() override;
 
  private:
   friend class base::NoDestructor<BraveWebUIControllerFactory>;
+
+  raw_ptr<ntp_background_images::NTPBackgroundImagesService>
+      ntp_background_images_service_ = nullptr;
 };
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WEB_UI_CONTROLLER_FACTORY_H_

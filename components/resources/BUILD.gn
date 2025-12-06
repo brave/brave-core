@@ -97,7 +97,7 @@ repack("resources") {
     ]
   }
 
-  if (is_android) {
+  if (is_android || is_ios) {
     deps += [ "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/new_tab_takeover/new_tab_takeover_generated.pak" ]
   }
