@@ -116,7 +116,10 @@ rust_static_library("polkadot_extrinsic_rs") {
   sources = [ "polkadot_extrinsic.rs" ]
   cxx_bindings = [ "polkadot_extrinsic.rs" ]
 
-  deps = [ "//brave/third_party/rust/parity_scale_codec/v3:lib" ]
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/parity_scale_codec/v3:lib",
+  ]
 }
 
 rust_static_library("cardano_tx_decoder_rs") {
