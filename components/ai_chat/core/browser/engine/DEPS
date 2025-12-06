@@ -2,4 +2,7 @@ specific_include_rules = {
   "conversation_api_client\.cc": [
     "!brave/components/l10n/common/locale_util.h",
   ],
+  "conversation_api_v2_client\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
 }
