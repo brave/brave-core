@@ -1,0 +1,13 @@
+diff --git a/media/audio/android/aaudio_stream_wrapper.cc b/media/audio/android/aaudio_stream_wrapper.cc
+index d32e3c7297f713897504b065a1720128437f9bcf..416d9f3e5bf6305b6620c7d20a573d50ce1fe420 100644
+--- a/media/audio/android/aaudio_stream_wrapper.cc
++++ b/media/audio/android/aaudio_stream_wrapper.cc
+@@ -29,7 +29,7 @@
+ #define AAUDIO_LOW_LATENCY_INPUT_MIN_API 30
+ 
+ BASE_FEATURE(kAAudioInputLowLatencyModeByDefault,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT); // Brave: disable for cr143
+ 
+ namespace media {
+ 
