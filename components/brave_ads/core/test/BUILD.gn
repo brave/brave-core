@@ -96,6 +96,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/user_data/fixed/country_code_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data_unittest.cc",

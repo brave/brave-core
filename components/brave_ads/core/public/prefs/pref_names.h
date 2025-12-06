@@ -81,6 +81,12 @@ inline constexpr char kEnabledForLastProfile[] =
 inline constexpr char kEverEnabledForAnyProfile[] =
     "brave.brave_ads.ever_enabled_any_profile";
 
+// OHTTP prefs.
+inline constexpr char kObliviousHttpKeyConfig[] =
+    "brave.brave_ads.ohttp.key_config.public_key";
+inline constexpr char kObliviousHttpKeyConfigExpiresAt[] =
+    "brave.brave_ads.ohttp.key_config.expires_at";
+
 // We don't prefix `brave.brave_ads` to this pref path because we don't want
 // them cleared if the user clears ads data or resets Brave Rewards.
 inline constexpr char kShouldShowSearchResultAdClickedInfoBar[] =

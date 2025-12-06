@@ -168,6 +168,8 @@ static_library("internal") {
     "account/user_data/fixed/conversion_user_data_constants.h",
     "account/user_data/fixed/conversion_user_data_util.cc",
     "account/user_data/fixed/conversion_user_data_util.h",
+    "account/user_data/fixed/country_code_user_data.cc",
+    "account/user_data/fixed/country_code_user_data.h",
     "account/user_data/fixed/created_at_timestamp_user_data.cc",
     "account/user_data/fixed/created_at_timestamp_user_data.h",
     "account/user_data/fixed/page_land_user_data.cc",

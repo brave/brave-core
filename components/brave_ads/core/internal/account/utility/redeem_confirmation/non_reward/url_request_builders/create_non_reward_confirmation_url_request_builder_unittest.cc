@@ -23,7 +23,7 @@ namespace {
 constexpr std::string_view kExpectedUrl =
     R"(https://anonymous.ads.bravesoftware.com/v4/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
 constexpr char kExpectedUrlRequestContent[] =
-    R"JSON({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","type":"view"})JSON";
+    R"JSON({"countryCode":"US","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","type":"view"})JSON";
 
 }  // namespace
 
@@ -58,6 +58,7 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   expected_mojom_url_request->content = kExpectedUrlRequestContent;
   expected_mojom_url_request->content_type = "application/json";
   expected_mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
+  expected_mojom_url_request->use_ohttp = true;
   EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 

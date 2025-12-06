@@ -83,13 +83,9 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "mainnet-polygon.brave.com", "pins": "brave"},
 
     // Rewards
-    { "name": "anonymous.ads.brave.com", "pins": "brave"},
-    { "name": "anonymous.ads.bravesoftware.com", "pins": "brave"},
     { "name": "api.rewards.brave.com", "pins": "brave"},
     { "name": "api.rewards.bravesoftware.com", "pins": "brave"},
     { "name": "api.rewards.brave.software", "pins": "brave"},
-    { "name": "geo.ads.brave.com", "pins": "brave"},
-    { "name": "geo.ads.bravesoftware.com", "pins": "brave"},
     { "name": "grant.rewards.brave.com", "pins": "brave"},
     { "name": "grant.rewards.bravesoftware.com", "pins": "brave"},
     { "name": "grant.rewards.brave.software", "pins": "brave"},
@@ -99,6 +95,14 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "payment.rewards.bravesoftware.com", "pins": "brave"},
     { "name": "payment.rewards.brave.software", "pins": "brave"},
     { "name": "rewards.brave.com", "pins": "brave"},
+
+    // Ads
+    { "name": "anonymous.ads.brave.com", "pins": "brave"},
+    { "name": "anonymous.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "geo.ads.brave.com", "pins": "brave"},
+    { "name": "geo.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "ohttp.ads.brave.com", "pins": "brave"},
+    { "name": "ohttp.ads.bravesoftware.com", "pins": "brave"},
     { "name": "search.anonymous.brave.com", "pins": "brave"},
     { "name": "search.anonymous.bravesoftware.com", "pins": "brave"},
     { "name": "static.ads.brave.com", "pins": "brave"},
@@ -332,16 +336,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
 
     // Rewards
     {
-      "name": "anonymous.ads.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "anonymous.ads.bravesoftware.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
       "name": "api.rewards.brave.com",
       "policy": "custom",
       "mode": "force-https"
@@ -355,16 +349,6 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
       "name": "api.rewards.brave.software",
       "policy": "custom",
       "mode": "force-https"
-    },
-    {
-      "name": "geo.ads.brave.com",
-      "mode": "force-https",
-      "policy": "custom"
-    },
-    {
-      "name": "geo.ads.bravesoftware.com",
-      "mode": "force-https",
-      "policy": "custom"
     },
     {
       "name": "grant.rewards.brave.com",
@@ -408,6 +392,38 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "rewards.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Ads
+    {
+      "name": "anonymous.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "anonymous.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "geo.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "geo.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.ads.bravesoftware.com",
       "mode": "force-https",
       "policy": "custom"
     },
