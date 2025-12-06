@@ -449,6 +449,17 @@ Config.prototype.buildArgs = function () {
     args[key] = getEnvConfig([key])
   }
 
+  // Set branding path based on is_brave_origin_branded. This must be done here
+  // rather than in blink_platform_defaults.gni because the value needs to be
+  // set after is_brave_origin_branded is known from the env config.
+  if (getEnvConfig(['is_brave_origin_branded'])) {
+    args.branding_path_component = 'brave_origin'
+    args.branding_path_product = 'brave_origin'
+  } else {
+    args.branding_path_component = 'brave'
+    args.branding_path_product = 'brave'
+  }
+
   if (this.isOfficialBuild()) {
     args.enable_updater = true
   }

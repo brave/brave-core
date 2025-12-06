@@ -454,7 +454,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
-            Brave LLC
+            Brave Software Inc
           </message>
           <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
             Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.

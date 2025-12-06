@@ -1,18 +1,21 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..11771d378eac45148a35b78b274baab8c5bc6b19 100644
+index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..4b8bf68f17503d77cc292dd43ace7c178dd68c4a 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
-@@ -38,6 +38,9 @@
+@@ -38,6 +38,12 @@
    "chrome/app/chromium_strings.grd": {
      "messages": [800],
    },
 +  "chrome/app/brave_strings.grd": {
 +    "messages": [800],
 +  },
++  "chrome/app/brave_origin_strings.grd": {
++    "messages": [800],
++  },
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -419,7 +422,7 @@
+@@ -419,7 +425,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -21,7 +24,7 @@ index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..11771d378eac45148a35b78b274baab8
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -459,7 +462,7 @@
+@@ -459,7 +465,7 @@
      "includes": [4030],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -30,7 +33,7 @@ index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..11771d378eac45148a35b78b274baab8
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
-@@ -615,7 +618,7 @@
+@@ -615,7 +621,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -39,7 +42,7 @@ index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..11771d378eac45148a35b78b274baab8
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -643,7 +646,7 @@
+@@ -643,7 +649,7 @@
      "includes": [4820],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/customize_chrome/resources.grd": {
@@ -48,17 +51,20 @@ index aeb9f8b8eaf68c076348278f6a8b394cae2ef827..11771d378eac45148a35b78b274baab8
      "includes": [4840],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/history/resources.grd": {
-@@ -1067,6 +1070,9 @@
+@@ -1067,6 +1073,12 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
 +  "components/components_brave_strings.grd": {
 +    "messages": [7020],
 +  },
++  "components/components_brave_origin_strings.grd": {
++    "messages": [7020],
++  },
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1561,11 +1567,11 @@
+@@ -1561,11 +1573,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
