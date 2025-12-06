@@ -18,6 +18,8 @@
 import argparse
 import os
 import subprocess
+import shutil
+import sys
 
 parser = argparse.ArgumentParser(description='Compile Rust packages to WASM')
 parser.add_argument('--wasm_bindgen_cli_path', required=True)
@@ -26,4 +28,12 @@ args, wasm_pack_args = parser.parse_known_args()
 env = os.environ.copy()
 env['PATH'] = args.wasm_bindgen_cli_path + os.pathsep + args.wasm_opt_path + os.pathsep + env[
     'PATH']
+
+rustc_path = shutil.which('rustc', path=env['PATH'])
+if rustc_path:
+    print(f'rust_to_wasm.py is using rustc: {rustc_path}')
+    subprocess.check_call([rustc_path, '--version'], env=env)
+else:
+    print('rustc not found on PATH', file=sys.stderr)
+
 subprocess.check_call(wasm_pack_args, env=env)
