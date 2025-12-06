@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultSearchState } from '../state/search_state'
-import { createSearchHandler } from '../state/search_handler'
+import { createSearchActions } from '../state/search_actions'
 import { createStateProvider } from '../lib/state_provider'
 
 export const SearchProvider = createStateProvider(
   defaultSearchState(),
-  createSearchHandler,
+  createSearchActions,
 )
 
 export const useSearchState = SearchProvider.useState

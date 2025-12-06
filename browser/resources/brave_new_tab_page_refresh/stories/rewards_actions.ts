@@ -3,16 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
+import { RewardsState, RewardsActions } from '../state/rewards_state'
 
-import {
-  RewardsState,
-  RewardsActions,
-  defaultRewardsActions,
-} from '../state/rewards_state'
-
-export function createRewardsHandler(
-  store: Store<RewardsState>,
+export function createRewardsActions(
+  store: StateStore<RewardsState>,
 ): RewardsActions {
   store.update({
     initialized: true,
@@ -38,8 +33,6 @@ export function createRewardsHandler(
   }, 2000)
 
   return {
-    ...defaultRewardsActions(),
-
     setShowRewardsWidget(showRewardsWidget) {
       store.update({ showRewardsWidget })
     },
