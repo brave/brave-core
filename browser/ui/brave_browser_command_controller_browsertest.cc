@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -631,4 +632,27 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+}
+
+class BraveBrowserCommandControllerWithEmailAliasesTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerWithEmailAliasesTest() = default;
+  ~BraveBrowserCommandControllerWithEmailAliasesTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_{
+      email_aliases::features::kEmailAliases};
+};
+
+// Check that the email aliases settings page opens when the command is
+// executed.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
+                       EmailAliasesOpensSettings) {
+  auto* command_controller = browser()->command_controller();
+  ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
+  command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
+  EXPECT_EQ(
+      chrome::GetSettingsUrl("email-aliases"),
+      browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
 }

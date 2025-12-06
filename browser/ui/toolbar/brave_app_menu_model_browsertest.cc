@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -429,3 +430,39 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
 
   CheckMenuIcons(&model, 1);
 }
+
+class BraveAppMenuModelBrowserTestForEmailAliases
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  BraveAppMenuModelBrowserTestForEmailAliases() {
+    scoped_feature_list_.InitWithFeatureState(
+        email_aliases::features::kEmailAliases, IsEmailAliasesEnabled());
+  }
+
+  bool IsEmailAliasesEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
+                       EmailAliasesMenuInsertion) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel model(browser_view->toolbar(), browser());
+  model.Init();
+
+  ui::SimpleMenuModel* autofill_menu_model =
+      static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
+          model.GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
+  ASSERT_TRUE(autofill_menu_model);
+
+  bool present =
+      autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_EMAIL_ALIASES)
+          .has_value();
+  EXPECT_EQ(IsEmailAliasesEnabled(), present);
+}
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         BraveAppMenuModelBrowserTestForEmailAliases,
+                         testing::Bool());
