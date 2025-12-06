@@ -28,22 +28,9 @@ class Browser;
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
-  enum BraveTabContextMenuCommand {
-    CommandStart = TabStripModel::CommandLast,
-    CommandRestoreTab,
-    CommandBookmarkAllTabs,
-    CommandShowVerticalTabs,
-    CommandToggleTabMuted,
-    CommandBringAllTabsToThisWindow,
-    CommandCloseDuplicateTabs,
-    CommandOpenInContainer,
-    CommandRenameTab,
-    CommandLast,
-  };
-
-  static_assert(CommandLast < IDC_OPEN_IN_CONTAINER_START,
+  static_assert(TabStripModel::CommandLast < IDC_OPEN_IN_CONTAINER_START,
                 "Container's menu commands must be after "
-                "BraveTabContextMenuCommand to avoid conflicts");
+                "TabStripModel::CommandLast to avoid conflicts");
 
   BraveTabMenuModel(
       ui::SimpleMenuModel::Delegate* delegate,
@@ -57,8 +44,6 @@ class BraveTabMenuModel : public TabMenuModel {
   BraveTabMenuModel(const BraveTabMenuModel&) = delete;
   BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
-
-  bool all_muted() const { return all_muted_; }
 
   // TabMenuModel:
   std::u16string GetLabelAt(size_t index) const override;

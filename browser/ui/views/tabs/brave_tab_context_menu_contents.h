@@ -31,10 +31,6 @@ namespace gfx {
 class Point;
 }  // namespace gfx
 
-namespace sessions {
-class TabRestoreService;
-}  // namespace sessions
-
 namespace views {
 class MenuRunner;
 }  // namespace views
@@ -63,7 +59,6 @@ class BraveTabContextMenuContents
   // ui::SimpleMenuModel::Delegate overrides:
   bool IsCommandIdChecked(int command_id) const override;
   bool IsCommandIdEnabled(int command_id) const override;
-  bool IsCommandIdVisible(int command_id) const override;
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
   void ExecuteCommand(int command_id, int event_flags) override;
@@ -85,12 +80,6 @@ class BraveTabContextMenuContents
   FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsWithContainersTest,
                            ContainersSubMenuExists);
 
-  bool IsBraveCommandIdEnabled(int command_id) const;
-  void ExecuteBraveCommand(int command_id);
-  void BringAllTabsToThisWindow();
-
-  bool IsBraveCommandId(int command_id) const;
-  bool IsValidContextMenu() const;
   void OnMenuClosed();
 
   std::unique_ptr<BraveTabMenuModel> model_;
@@ -104,7 +93,6 @@ class BraveTabContextMenuContents
   // new instance is created when showing context menu.
   bool menu_closed_ = false;
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   raw_ptr<BraveBrowserTabStripController> controller_ = nullptr;
 
   base::WeakPtrFactory<BraveTabContextMenuContents> weak_ptr_{this};

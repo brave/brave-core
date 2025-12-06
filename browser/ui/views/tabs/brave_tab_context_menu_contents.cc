@@ -24,7 +24,6 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -35,7 +34,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "components/sessions/core/tab_restore_service.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/controls/menu/menu_runner.h"
@@ -57,8 +55,6 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       *this,
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
       index, is_vertical_tab);
-  restore_service_ =
-      TabRestoreServiceFactory::GetForProfile(browser_->profile());
   menu_runner_ = std::make_unique<views::MenuRunner>(
       model_.get(),
       views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU,
@@ -81,76 +77,23 @@ void BraveTabContextMenuContents::RunMenuAt(
 }
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
-  if (!IsValidContextMenu()) {
-    return false;
-  }
-
-  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
-    return tabs::utils::ShouldShowVerticalTabs(browser_);
-  }
-
-  return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
+  return controller_->IsContextMenuCommandChecked(
+      static_cast<TabStripModel::ContextMenuCommand>(command_id));
 }
 
 bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
-  // This could be called after tab is closed.
-  if (!IsValidContextMenu()) {
-    return false;
-  }
-
-  if (IsBraveCommandId(command_id)) {
-    return IsBraveCommandIdEnabled(command_id);
-  }
-
   return controller_->IsCommandEnabledForTab(
       static_cast<TabStripModel::ContextMenuCommand>(command_id), tab_);
-}
-
-bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
-  if (!IsValidContextMenu()) {
-    return false;
-  }
-
-  if (command_id == BraveTabMenuModel::CommandShowVerticalTabs) {
-    return tabs::utils::SupportsVerticalTabs(browser_);
-  }
-
-  if (command_id == BraveTabMenuModel::CommandBringAllTabsToThisWindow) {
-    return brave::CanBringAllTabs(browser_);
-  }
-
-  return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 }
 
 bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
     int command_id,
     ui::Accelerator* accelerator) const {
-  if (!IsValidContextMenu()) {
-    return false;
-  }
-
-  if (IsBraveCommandId(command_id)) {
-    return false;
-  }
-
-  int browser_cmd;
-  views::Widget* widget =
-      BrowserView::GetBrowserViewForBrowser(browser_)->GetWidget();
-  return TabStripModel::ContextMenuCommandToBrowserCommand(command_id,
-                                                           &browser_cmd) &&
-         widget->GetAccelerator(browser_cmd, accelerator);
+  return controller_->GetContextMenuAccelerator(command_id, accelerator);
 }
 
 void BraveTabContextMenuContents::ExecuteCommand(int command_id,
                                                  int event_flags) {
-  if (!IsValidContextMenu()) {
-    return;
-  }
-
-  if (IsBraveCommandId(command_id)) {
-    return ExecuteBraveCommand(command_id);
-  }
-
   // Executing the command destroys |this|, and can also end up destroying
   // |controller_|. So stop the highlights before executing the command.
   controller_->ExecuteContextMenuCommand(
@@ -195,102 +138,6 @@ float BraveTabContextMenuContents::GetScaleFactor() {
   return compositor->device_scale_factor();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
-bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
-    int command_id) const {
-  CHECK(IsValidContextMenu());
-
-  switch (command_id) {
-    case BraveTabMenuModel::CommandRestoreTab:
-      return restore_service_ && (!restore_service_->IsLoaded() ||
-                                  !restore_service_->entries().empty());
-    case BraveTabMenuModel::CommandBookmarkAllTabs:
-      if (browser_) {
-        return browser_defaults::bookmarks_enabled &&
-               chrome::CanBookmarkAllTabs(browser_);
-      }
-      break;
-    case BraveTabMenuModel::CommandToggleTabMuted: {
-      auto* model = static_cast<BraveTabStripModel*>(controller_->model());
-      for (const auto& index : model->GetTabIndicesForCommandAt(tab_index_)) {
-        if (!model->GetWebContentsAt(index)->GetLastCommittedURL().is_empty()) {
-          return true;
-        }
-      }
-      return false;
-    }
-    case BraveTabMenuModel::CommandCloseDuplicateTabs:
-      return brave::HasDuplicateTabs(browser_);
-    case BraveTabMenuModel::CommandShowVerticalTabs:
-      [[fallthrough]];
-    case BraveTabMenuModel::CommandBringAllTabsToThisWindow:
-      [[fallthrough]];
-    case BraveTabMenuModel::CommandOpenInContainer:
-      [[fallthrough]];
-    case BraveTabMenuModel::CommandRenameTab:
-      return true;
-  }
-  NOTREACHED() << "All commands are handled above";
-}
-
-void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
-  CHECK(IsValidContextMenu());
-
-  switch (command_id) {
-    case BraveTabMenuModel::CommandRestoreTab:
-      chrome::RestoreTab(browser_);
-      return;
-    case BraveTabMenuModel::CommandBookmarkAllTabs:
-      chrome::BookmarkAllTabs(browser_);
-      return;
-    case BraveTabMenuModel::CommandShowVerticalTabs: {
-      brave::ToggleVerticalTabStrip(browser_);
-      BrowserView::GetBrowserViewForBrowser(browser_)->InvalidateLayout();
-      return;
-    }
-    case BraveTabMenuModel::CommandToggleTabMuted: {
-      auto* model = static_cast<BraveTabStripModel*>(controller_->model());
-      auto indices = model->GetTabIndicesForCommandAt(tab_index_);
-      std::vector<content::WebContents*> contentses;
-      std::transform(
-          indices.begin(), indices.end(), std::back_inserter(contentses),
-          [&model](int index) { return model->GetWebContentsAt(index); });
-
-      auto all_muted = model_->all_muted();
-      for (auto* contents : contentses) {
-        SetTabAudioMuted(contents, !all_muted, TabMutedReason::kAudioIndicator,
-                         /*extension_id=*/std::string());
-      }
-      return;
-    }
-    case BraveTabMenuModel::CommandBringAllTabsToThisWindow: {
-      brave::BringAllTabs(browser_);
-      return;
-    }
-    case BraveTabMenuModel::CommandCloseDuplicateTabs:
-      brave::CloseDuplicateTabs(browser_);
-      return;
-    case BraveTabMenuModel::CommandRenameTab:
-      CHECK(controller_);
-      controller_->EnterTabRenameModeAt(tab_index_);
-      return;
-  }
-  NOTREACHED() << "All commands are handled above";
-}
-
-bool BraveTabContextMenuContents::IsBraveCommandId(int command_id) const {
-  return command_id > BraveTabMenuModel::CommandStart &&
-         command_id < BraveTabMenuModel::CommandLast;
-}
-
-bool BraveTabContextMenuContents::IsValidContextMenu() const {
-  if (menu_closed_) {
-    return false;
-  }
-
-  return controller_->GetModelIndexOf(tab_).has_value() &&
-         controller_->model()->ContainsIndex(tab_index_);
-}
 
 void BraveTabContextMenuContents::OnMenuClosed() {
   menu_closed_ = true;
