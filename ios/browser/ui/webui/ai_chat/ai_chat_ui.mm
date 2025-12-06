@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/history_ui_handler.h"
@@ -33,8 +34,6 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
-#include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
@@ -155,15 +154,14 @@ void AIChatUI::BindInterfaceParentUIFrame(
 
 void AIChatUI::BindInterfaceHistoryUIHandler(
     mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver) {
-  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
-      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(
-                               profile_, ServiceAccessType::EXPLICIT_ACCESS));
-  CHECK(history_ui_handler_);
+  // TODO: https://github.com/brave/brave-browser/issues/51184 Add support
+  // for associating bookmarks/history
+  NOTIMPLEMENTED();
 }
 
 void AIChatUI::BindInterfaceBookmarksPageHandler(
     mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler> receiver) {
-  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
-      ios::BookmarkModelFactory::GetForProfile(profile_), std::move(receiver));
-  CHECK(bookmarks_page_handler_);
+  // TODO: https://github.com/brave/brave-browser/issues/51184 Add support
+  // for associating bookmarks/history
+  NOTIMPLEMENTED();
 }
