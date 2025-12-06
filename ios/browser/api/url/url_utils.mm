@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/url/url_utils.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #import "net/base/apple/url_conversions.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
@@ -60,6 +61,24 @@ std::string GetRegistry(const GURL& url) {
 
 - (bool)brave_isHostIPAddress {
   return net::GURLWithNSURL(self).HostIsIPAddress();
+}
+
+- (NSString*)brave_hostPatternString {
+  GURL gurl = net::GURLWithNSURL(self);
+  const auto pattern = content_settings::CreateHostPattern(gurl);
+  if (!pattern.IsValid()) {
+    return @"";
+  }
+  return base::SysUTF8ToNSString(pattern.GetHost());
+}
+
+- (NSString*)brave_domainPatternString {
+  GURL gurl = net::GURLWithNSURL(self);
+  const auto pattern = content_settings::CreateDomainPattern(gurl);
+  if (!pattern.IsValid()) {
+    return @"";
+  }
+  return base::SysUTF8ToNSString(pattern.GetHost());
 }
 
 - (NSString*)brave_spec {
