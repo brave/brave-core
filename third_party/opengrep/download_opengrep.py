@@ -19,24 +19,24 @@ import brave_chromium_utils
 import deps
 
 # Configuration
-OPENGREP_VERSION = 'v1.11.5'
+OPENGREP_VERSION = 'v1.12.1'
 
 # SHA256 checksums for each platform binary
 BINARY_CHECKSUMS = {
     'opengrep_osx_arm64': (
-        '895ec727663572dd9a5721cb9ae4f97f69c80f15d57b28cbd1e580f882a27028'),
+        '542ee85211a2828729349d7c672ed90ad432e9b6397fada96d92b0c0e6df269f'),
     'opengrep_osx_x86': (
-        'fc0b0d61b20a9b3d160e841540f5c60b456b036527a96d39c8df7a0ae6793bae'),
+        '7595409c21135349e99f68efac605defdb62944b181d5d7f6e5c4d1822090fc3'),
     'opengrep_manylinux_x86': (
-        'b9dd6dede671e1ea2e2628ef4c04ff10afd8de2c4ef50af764b29d5f0980eec3'),
+        'f18f3c7012070dec9ac612e1d6715a3d9d34e966e8c5f67c190c5f6ac8d63963'),
     'opengrep_manylinux_aarch64': (
-        'd5def7bf466d25e7b57bbcdfd4243c58f297bf3271625f71125d67759dc98742'),
+        '078d7b69b04e416ed4f2ebf59bdb7dae17e744e0a3af380f9f392af219aec8b8'),
     'opengrep_musllinux_x86': (
-        '564bdb4aae5230b0311af5333f08e8b6eff97b896d8569616957e10da25b8644'),
+        '13a0a121549f59295d2a1554ffd9593a9c18e093db6eded4d6f5f637662cdae1'),
     'opengrep_musllinux_aarch64': (
-        'd28498b42c2a1642e4c83071362802ded8aad4b45bd1b7884aadc55209c38916'),
+        'c4dfd2a152f23c980e6ea7f36642999d8b1c1423e92ae6e01cc52be160aeb5ec'),
     'opengrep_windows_x86.exe': (
-        '3d9b283fde540cfc91afdc3949bb52ac64262592099c301a8da0d125f87bf552'),
+        '73fe3433e9ae913dbfafe0a981df849209c0ee744cdc125651c4a812c71b5bd2'),
 }
 
 # Download directory (relative to brave core)
