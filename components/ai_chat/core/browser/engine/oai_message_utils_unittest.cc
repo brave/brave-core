@@ -17,6 +17,7 @@ namespace ai_chat {
 namespace {
 
 constexpr char kTestText[] = "This is test text for rewriting.";
+constexpr char kSeedText[] = "Here is the rewritten version:";
 
 struct RewriteActionTestParam {
   mojom::ActionType action_type;
@@ -106,5 +107,17 @@ INSTANTIATE_TEST_SUITE_P(
                                ExtendedContentBlockType::kExpand, ""},
         RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
                                ""}));
+
+TEST_F(OAIMessageUtilsTest, BuildOAISeedMessage) {
+  OAIMessage message = BuildOAISeedMessage(kSeedText);
+
+  EXPECT_EQ(message.role, "assistant");
+  ASSERT_EQ(message.content.size(), 1u);
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kText);
+
+  auto* text_content = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(text_content);
+  EXPECT_EQ(text_content->text, kSeedText);
+}
 
 }  // namespace ai_chat

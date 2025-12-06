@@ -92,6 +92,7 @@ Put your rewritten version of the excerpt in &lt;response&gt;&lt;/response&gt; t
 <message name="IDS_AI_CHAT_QUESTION_FUNNY_TONE" translateable="false">Rewrite the excerpt in a funny tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_SHORTEN" translateable="false">Generate a shortened version of the excerpt in paragraph format by removing unnecessary details and refining the language for brevity. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_EXPAND" translateable="false">Generate a lengthened version of the excerpt in paragraph format by expanding on the details provided and adding more descriptive information where applicable. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE" translateable="false">Rewrite the excerpt in a <ph name="TONE">$1</ph> tone. Include only the rewritten version in your response.</message>
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC" translateable="false">
 The current time and date is <ph name="DATE">$1</ph>.

@@ -31,6 +31,8 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,
     mojom::ActionType action_type);
 
+OAIMessage BuildOAISeedMessage(const std::string& text);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_MESSAGE_UTILS_H_
