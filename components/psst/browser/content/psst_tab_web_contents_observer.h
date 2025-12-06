@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/common/psst_metadata_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -32,6 +33,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
+  using ConsentCallback =
+      base::OnceCallback<void(const base::Value::List disabled_checks)>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -39,10 +42,18 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   class PsstUiDelegate {
    public:
     virtual ~PsstUiDelegate() = default;
+    // Show the consent dialog to the user with the provided data.
+    virtual void Show(const url::Origin& origin,
+                      PsstWebsiteSettings dialog_data,
+                      ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
                              const mojom::PsstStatus status) = 0;
+    // Provides an access to the PSST settings object
+    virtual std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
+        const url::Origin& origin,
+        const std::string& user_id) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(

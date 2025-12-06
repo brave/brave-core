@@ -9,7 +9,7 @@ assert(enable_psst)
 
 static_library("core") {
   public = [
-    "brave_psst_permission_context.h",
+    "brave_psst_utils.h",
     "matched_rule.h",
     "psst_component_installer.h",
     "psst_rule.h",
@@ -19,7 +19,7 @@ static_library("core") {
   friend = [ ":unit_tests" ]
 
   sources = [
-    "brave_psst_permission_context.cc",
+    "brave_psst_utils.cc",
     "matched_rule.cc",
     "psst_component_installer.cc",
     "psst_rule.cc",
@@ -39,7 +39,7 @@ static_library("core") {
     "//brave/components/psst/common",
     "//brave/extensions:common",
     "//components/component_updater",
-    "//components/permissions",
+    "//components/content_settings/core/browser",
     "//components/prefs",
     "//crypto",
     "//net",
