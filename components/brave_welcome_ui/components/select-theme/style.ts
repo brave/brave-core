@@ -161,8 +161,4 @@ export const ActionBox = styled.div`
   display: flex;
   grid-gap: 10px;
   margin-bottom: 40px;
-
-  button {
-    color: white;
-  }
 `
