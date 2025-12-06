@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import * as mojom from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
@@ -36,7 +35,7 @@ export function NewsWidget() {
         </leo-menu-item>
       </WidgetMenu>
       <div className='title'>{getString(S.NEW_TAB_NEWS_WIDGET_TITLE)}</div>
-      {braveNews.isOptInPrefEnabled ? <PeekItem /> : <OptIn />}
+      {braveNews.isOptInPrefEnabled ? <PeekItem /> : <Preview />}
     </div>
   )
 }
@@ -69,6 +68,7 @@ function PeekItem() {
       <SafeImage
         src={getNewsItemImage(peekItem)}
         targetSize={{ width: 71, height: 48 }}
+        className='article-image'
       />
       <div>
         <div className='meta'>
@@ -83,23 +83,24 @@ function PeekItem() {
   )
 }
 
-function OptIn() {
-  const braveNews = useBraveNews()
+function Preview() {
   return (
-    <div className='opt-in'>
-      <div className='graphic' />
-      <div className='text'>{getString(S.BRAVE_NEWS_INTRO_TITLE)}</div>
-      <div className='actions'>
-        <Button
-          size='small'
-          onClick={() => {
-            braveNews.toggleBraveNewsOnNTP(true)
-          }}
-        >
-          {getString(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
-        </Button>
+    <Link
+      className='peek preview'
+      url='https://brave.com/brave-news'
+      openInNewTab
+    >
+      <div className='article-image' />
+      <div>
+        <div className='meta'>
+          {channelIcons.default}
+          <span>{getString(S.NEW_TAB_NEWS_PREVIEW_TITLE)}</span>
+        </div>
+        <div className='item-title'>
+          {getString(S.NEW_TAB_NEWS_PREVIEW_TEXT)}
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
