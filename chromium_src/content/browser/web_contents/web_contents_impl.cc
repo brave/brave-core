@@ -22,6 +22,14 @@ bool WebContentsImpl::GetShouldDoLearningForTesting() {
 
 #define ShouldDoLearning(...) ShouldDoLearning_ChromiumImpl(__VA_ARGS__)
 
+#define BRAVE_WEB_CONTENTS_IMPL_CREATE_NEW_WINDOW_INHERIT_STORAGE_PARTITION \
+  if (GetContentClient()->browser()->ShouldInheritStoragePartition(         \
+          partition_config)) {                                              \
+    site_instance = SiteInstance::CreateForFixedStoragePartition(           \
+        GetBrowserContext(), params.target_url, partition_config);          \
+  }
+
 #include <content/browser/web_contents/web_contents_impl.cc>
 
 #undef ShouldDoLearning
+#undef BRAVE_WEB_CONTENTS_IMPL_CREATE_NEW_WINDOW_INHERIT_STORAGE_PARTITION
