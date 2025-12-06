@@ -9,6 +9,7 @@
 #include "base/containers/span_reader.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -478,6 +479,66 @@ void PolkadotSubstrateRpc::OnGetBlockHash(GetBlockHashCallback callback,
   }
 
   return std::move(callback).Run(block_hash, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetRuntimeVersion(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+    GetRuntimeVersionCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (block_hash) {
+    params.Append(base::HexEncodeLower(*block_hash));
+  }
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getRuntimeVersion", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetRuntimeVersion,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetRuntimeVersion(
+    GetRuntimeVersionCallback callback,
+    APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotRuntimeVersion>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, treat as an error for this
+    // RPC call.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  // Our IDL only permits us to work with signed integers, so we use checked
+  // numerics to guarantee correct handling from signed -> unsigned.
+  base::CheckedNumeric<uint32_t> spec_version = res->result->spec_version;
+  base::CheckedNumeric<uint32_t> transaction_version =
+      res->result->transaction_version;
+
+  if (!spec_version.IsValid() || !transaction_version.IsValid()) {
+    // The RPC documentation intends that these fields are U32 types, so if we
+    // have invalid values here we can safely assume the parse is invalid.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  PolkadotRuntimeVersion version;
+  version.spec_version = spec_version.ValueOrDie();
+  version.transaction_version = transaction_version.ValueOrDie();
+
+  return std::move(callback).Run(version, std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
