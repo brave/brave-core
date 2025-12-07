@@ -820,27 +820,6 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
   return es_tab_helper->GetEphemeralStorageToken(origin);
 }
 
-bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
-    content::BrowserContext* browser_context,
-    const url::Origin& origin) {
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(browser_context);
-  if (!host_content_settings_map) {
-    return false;
-  }
-  auto cookie_settings = CookieSettingsFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context));
-  if (!cookie_settings) {
-    return false;
-  }
-  const auto url = origin.GetURL();
-  return !brave_shields::GetBraveShieldsEnabled(host_content_settings_map,
-                                                url) ||
-         brave_shields::GetCookieControlType(host_content_settings_map,
-                                             cookie_settings.get(), url) ==
-             brave_shields::ControlType::ALLOW;
-}
-
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
