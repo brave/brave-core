@@ -9,10 +9,10 @@ import UIKit
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
-  case sponsoredMedia(NTPSponsoredImageBackground)
+  case sponsoredMedia(NTPSponsoredImageBackground, NewTabPageAd)
 
   var backgroundVideoPath: URL? {
-    if case .sponsoredMedia(let background) = self {
+    if case .sponsoredMedia(let background, _) = self {
       return background.isVideoFile ? background.imagePath : nil
     }
     return nil
@@ -23,7 +23,7 @@ enum NTPWallpaper {
     switch self {
     case .image(let background):
       imagePath = background.imagePath
-    case .sponsoredMedia(let background):
+    case .sponsoredMedia(let background, _):
       if background.isVideoFile {
         return nil
       }
@@ -37,7 +37,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       imagePath = nil
-    case .sponsoredMedia(let background):
+    case .sponsoredMedia(let background, _):
       imagePath = background.logo.imagePath
     }
     return imagePath.flatMap { UIImage(contentsOfFile: $0.path) }
@@ -47,7 +47,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       return nil  // Will eventually return a real value
-    case .sponsoredMedia(let background):
+    case .sponsoredMedia(let background, _):
       return background.focalPoint
     }
   }
@@ -120,7 +120,7 @@ public class NTPDataSource {
           && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
           && (!creative.isVideoFile || isSponsoredVideoAllowed)
         {
-          return .sponsoredMedia(creative)
+          return .sponsoredMedia(creative, newTabPageAd)
         }
       }
     }
