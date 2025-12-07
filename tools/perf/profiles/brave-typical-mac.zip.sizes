@@ -1,42 +1,42 @@
-Total size 96473K
+Total size 96439K
 
-GROUP Adblock [10007K total]
-   244K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.418 [adcocjohghhfpidemphmcmlmhnfgikei]
-    45K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.16480 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1442K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.18692 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [9979K total]
+   244K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.419 [adcocjohghhfpidemphmcmlmhnfgikei]
+    45K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.16602 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1438K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.18849 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
     99K Brave Ad Block Updater (Regional Catalog) 1.0.85 [gkboaolpopklhgplhaaiboijnklogmbc]
-  4572K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.16013 [iodkpdagapdfkphljnddpjlldadblomo]
+  4545K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.16180 [iodkpdagapdfkphljnddpjlldadblomo]
     17K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.68 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1568K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.1597 [kihnoaefogbkmblfimmibknnmkllbhlf]
+  1571K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.1764 [kihnoaefogbkmblfimmibknnmkllbhlf]
   2016K Brave Ad Block Updater (Resources) 1.0.117 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22972K total]
     68K Brave Ads Resources 1.0.109 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [17402K total]
+GROUP Ntp [17496K total]
  16692K Brave NTP background images 1.0.20 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   709K Brave NTP sponsored images 1.0.2257 [gccbbckogglekeggclmmekihdgdpdgoe]
+   804K Brave NTP sponsored images 1.0.2265 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [136K total]
-   131K Brave Local Data Files Updater 1.0.1307 [afalakplffnnnlkncjhbmahjfjhmlkal]
-     4K Brave User Agent 1.0.271 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
+   132K Brave Local Data Files Updater 1.0.1313 [afalakplffnnnlkncjhbmahjfjhmlkal]
+     4K Brave User Agent 1.0.278 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
 
-GROUP chromium [10769K total]
-   685K crl-set-6243741506995038637.data 10187 [CertificateRevocation]
-    77K Crowd Deny 2025.11.27.121 [Crowd Deny]
+GROUP chromium [10749K total]
+   681K crl-set-13656344288389171423.data 10201 [CertificateRevocation]
+    61K Crowd Deny 2025.12.4.121 [Crowd Deny]
      9K fileTypePolicies 144.0.7512.1 [FileTypePolicies]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
      0K P3A Configuration 1.0.5 [P3AConfig]
-   379K pkiMetadata 1502 [PKIMetadata]
+   379K pkiMetadata 1512 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    180K safetyTips 3088 [SafetyTips]
     34K Third-Party Cookie Deprecation Metadata 2025.10.7.1 [TpcdMetadata]
   1642K zxcvbnData 3 [ZxcvbnData]
 
-GROUP large_files [29141K total]
+GROUP large_files [29032K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6547K Default/RewardsCreators.db
-  1859K Safe Browsing/ChromeExtMalware.store.32_13408993308388510
- 17471K Safe Browsing/UrlSoceng.store.4_13408993308252328
+  1859K Safe Browsing/ChromeExtMalware.store.32_13409598008111538
+ 17362K Safe Browsing/UrlSoceng.store.4_13409598007961211
