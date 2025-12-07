@@ -15,7 +15,6 @@
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/resize_area_delegate.h"
@@ -54,7 +53,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   };
 
   BraveVerticalTabStripRegionView(BrowserView* browser_view,
-                                  TabStripRegionView* region_view);
+                                  HorizontalTabStripRegionView* region_view);
   ~BraveVerticalTabStripRegionView() override;
 
   State state() const { return state_; }
@@ -189,7 +188,7 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
   std::optional<size_t> tab_strip_region_view_original_index_;
-  raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
+  raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
 
   raw_ptr<HeaderView> header_view_ = nullptr;
 
