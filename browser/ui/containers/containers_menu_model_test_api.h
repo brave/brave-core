@@ -16,7 +16,7 @@ namespace containers::test {
 class ContainersMenuModelTestApi {
  public:
   static ContainersMenuModel CreateContainersMenuModel(
-      ContainersMenuModel::Delegate& delegate,
+      ContainersMenuModelDelegate& delegate,
       std::vector<ContainerModel> containers);
 
   // Returns the items in the menu model.
