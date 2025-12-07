@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "extensions/common/manifest_url_handlers.h"
+#include "extensions/common/extension_urls.h"
 
 #define GetHomepageURL GetHomepageURL_Unused
 #define GetWebStoreURL GetWebStoreURL_Unused
@@ -27,8 +28,12 @@ const GURL ManifestURL::GetHomepageURL(const Extension* extension) {
 }
 
 // static
+// Restore Chromium’s Web Store URL logic
 const GURL ManifestURL::GetWebStoreURL(const Extension* extension) {
-  return GURL::EmptyGURL();
+  if(!extension)
+    return GURL::EmptyGURL();
+  
+  return GURL(extension_urls::GetWebstoreItemDetailURLPrefix()+ extension->id());
 }
 
 }  // namespace extensions
