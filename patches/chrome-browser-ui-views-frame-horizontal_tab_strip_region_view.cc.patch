@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
+index 58a0dfc27a340937b08ea0d95a3b80a2082bae09..47f18535b13a642c1341d384454dccdda9ea3124 100644
+--- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
++++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
+@@ -122,7 +122,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(BrowserView* browser_view) {
+       std::move(tab_menu_model_factory));
+   BrowserTabStripController* tabstrip_controller_ptr =
+       tabstrip_controller.get();
+-  auto tab_strip = std::make_unique<TabStrip>(std::move(tabstrip_controller));
++  BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP
+   tabstrip_controller_ptr->InitFromModel(tab_strip.get());
+   return tab_strip;
+ }

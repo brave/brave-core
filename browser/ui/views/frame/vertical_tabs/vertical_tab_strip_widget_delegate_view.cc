@@ -89,7 +89,7 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
       region_view_(
           AddChildView(std::make_unique<BraveVerticalTabStripRegionView>(
               browser_view_,
-              views::AsViewClass<TabStripRegionView>(
+              views::AsViewClass<HorizontalTabStripRegionView>(
                   browser_view_->tab_strip_view())))) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
