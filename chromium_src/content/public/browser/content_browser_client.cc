@@ -28,12 +28,6 @@ ContentBrowserClient::GetEphemeralStorageToken(
   return std::nullopt;
 }
 
-bool ContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(
-    BrowserContext* browser_context,
-    const url::Origin& origin) {
-  return false;
-}
-
 brave_shields::mojom::ShieldsSettingsPtr
 ContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,

@@ -104,10 +104,6 @@ class BravePrivacySandboxSettings
   privacy_sandbox::TpcdExperimentEligibility
   GetCookieDeprecationExperimentCurrentEligibility() const override;
 
-  bool IsCookieDeprecationLabelAllowed() const override;
-  bool IsCookieDeprecationLabelAllowedForContext(
-      const url::Origin& top_frame_origin,
-      const url::Origin& context_origin) const override;
   void SetAllPrivacySandboxAllowedForTesting() override;
   void SetTopicsBlockedForTesting() override;
   bool IsPrivacySandboxRestricted() const override;

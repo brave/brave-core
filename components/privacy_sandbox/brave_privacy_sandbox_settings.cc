@@ -172,16 +172,6 @@ BravePrivacySandboxSettings::GetCookieDeprecationExperimentCurrentEligibility()
       privacy_sandbox::TpcdExperimentEligibility::Reason::k3pCookiesBlocked);
 }
 
-bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowed() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsCookieDeprecationLabelAllowedForContext(
-    const url::Origin& top_frame_origin,
-    const url::Origin& context_origin) const {
-  return false;
-}
-
 void BravePrivacySandboxSettings::SetAllPrivacySandboxAllowedForTesting() {}
 void BravePrivacySandboxSettings::SetTopicsBlockedForTesting() {}
 
