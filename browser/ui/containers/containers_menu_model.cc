@@ -36,13 +36,13 @@ std::vector<ContainerModel> GetContainerModelsFromPrefs(
 
 }  // namespace
 
-ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
+ContainersMenuModel::ContainersMenuModel(ContainersMenuModelDelegate& delegate,
                                          const PrefService& prefs)
     : ContainersMenuModel(
           delegate,
           GetContainerModelsFromPrefs(prefs, delegate.GetScaleFactor())) {}
 
-ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
+ContainersMenuModel::ContainersMenuModel(ContainersMenuModelDelegate& delegate,
                                          std::vector<ContainerModel> items)
     : ui::SimpleMenuModel(this), delegate_(delegate), items_(std::move(items)) {
   // Trim the items to fit within the command ID range.

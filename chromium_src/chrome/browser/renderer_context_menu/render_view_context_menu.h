@@ -49,7 +49,7 @@ class BraveRenderViewContextMenu
     : public RenderViewContextMenu_Chromium
 #if BUILDFLAG(ENABLE_CONTAINERS)
     ,
-      public containers::ContainersMenuModel::Delegate
+      public containers::ContainersMenuModelDelegate
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
  public:
@@ -72,7 +72,7 @@ class BraveRenderViewContextMenu
   void AppendDeveloperItems() override;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  // ContainersMenuModel::Delegate:
+  // ContainersMenuModelDelegate:
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override;
   base::flat_set<std::string> GetCurrentContainerIds() override;

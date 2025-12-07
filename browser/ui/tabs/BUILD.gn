@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -59,6 +60,27 @@ if (!is_android) {
     ]
 
     public_deps = [ "//chrome/browser:browser_public_dependencies" ]
+  }
+}
+
+source_set("tab_menu") {
+  sources = [
+    "brave_browser_tab_menu_model_delegate.cc",
+    "brave_browser_tab_menu_model_delegate.h",
+    "tab_menu_model_delegate.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/containers/buildflags",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_menu",
+    "//ui/compositor",
+    "//ui/views",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/browser/ui/containers" ]
   }
 }
 
