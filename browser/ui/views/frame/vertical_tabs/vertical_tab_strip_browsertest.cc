@@ -40,7 +40,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
@@ -249,8 +249,8 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  TabStripRegionView* tab_strip_region_view() {
-    return views::AsViewClass<TabStripRegionView>(
+  HorizontalTabStripRegionView* tab_strip_region_view() {
+    return views::AsViewClass<HorizontalTabStripRegionView>(
         BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
   }
 
