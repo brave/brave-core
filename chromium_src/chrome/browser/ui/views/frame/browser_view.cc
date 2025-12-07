@@ -29,7 +29,7 @@
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
 #define ToolbarView BraveToolbarView
-#define TabStripRegionView BraveTabStripRegionView
+#define HorizontalTabStripRegionView BraveHorizontalTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
 #define MultiContentsView BraveMultiContentsView
 
@@ -47,7 +47,7 @@
 #undef UpdateExclusiveAccessBubble
 #undef MultiContentsView
 #undef BookmarkBarView
-#undef TabStripRegionView
+#undef HorizontalTabStripRegionView
 #undef ToolbarView
 #undef BrowserViewLayout
 #undef InfoBarContainerView

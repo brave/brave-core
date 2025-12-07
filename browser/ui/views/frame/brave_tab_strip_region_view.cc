@@ -17,11 +17,12 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
-BraveTabStripRegionView::~BraveTabStripRegionView() = default;
+BraveHorizontalTabStripRegionView::~BraveHorizontalTabStripRegionView() =
+    default;
 
-void BraveTabStripRegionView::Layout(PassKey) {
+void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   UpdateTabStripMargin();
-  LayoutSuperclass<TabStripRegionView>(this);
+  LayoutSuperclass<HorizontalTabStripRegionView>(this);
 
   if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     // in vertical tabs mode, we make tab strip's height is the same with this
@@ -37,8 +38,8 @@ void BraveTabStripRegionView::Layout(PassKey) {
   }
 }
 
-void BraveTabStripRegionView::UpdateTabStripMargin() {
-  TabStripRegionView::UpdateTabStripMargin();
+void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
+  HorizontalTabStripRegionView::UpdateTabStripMargin();
 
   gfx::Insets margins;
   bool vertical_tabs =
@@ -67,12 +68,12 @@ void BraveTabStripRegionView::UpdateTabStripMargin() {
   tab_strip_container_->SetProperty(views::kMarginsKey, margins);
 }
 
-void BraveTabStripRegionView::Initialize() {
+void BraveHorizontalTabStripRegionView::Initialize() {
   // Use our own icon for the new tab button.
   if (auto* ntb = views::AsViewClass<TabStripControlButton>(new_tab_button_)) {
     ntb->SetVectorIcon(kLeoPlusAddIcon);
   }
 }
 
-BEGIN_METADATA(BraveTabStripRegionView)
+BEGIN_METADATA(BraveHorizontalTabStripRegionView)
 END_METADATA
