@@ -401,7 +401,7 @@ END_METADATA
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
     BrowserView* browser_view,
-    TabStripRegionView* region_view)
+    HorizontalTabStripRegionView* region_view)
     : views::AnimationDelegateViews(this),
       browser_view_(browser_view),
       browser_(browser_view->browser()),
