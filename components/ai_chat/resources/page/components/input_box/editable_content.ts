@@ -79,10 +79,25 @@ const createDOMNodeRepresentation = (node: ContentNode) => {
   throw new Error('Unknown content type: ' + JSON.stringify(node))
 }
 
+function maybeRestoreSelection(el: HTMLElement) {
+  // If the element is active there's nothing to do here.
+  if (document.activeElement === el) return
+
+  if ('lastSelection' in el) {
+    const selection = window.getSelection()
+    if (!selection) return
+
+    selection.removeAllRanges()
+    selection.addRange(el.lastSelection as Range)
+  }
+}
+
 class EditorAPI {
   constructor(private readonly target: HTMLElement) {}
 
   private get canEdit() {
+    maybeRestoreSelection(this.target)
+
     let editingNode = document.getSelection()?.anchorNode
     while (editingNode) {
       if (editingNode === this.target) return true

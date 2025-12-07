@@ -84,6 +84,16 @@ export default React.forwardRef<HTMLDivElement, EditableProps>(
     return (
       <span
         ref={refFunc}
+        onBlurCapture={() => {
+          // Note: We need to store the focus when we blur in case the event which caused us
+          // to lose focus wants to make an edit (i.e. clicking a menu button).
+          if (elRef.current) {
+            ;(elRef.current as any).lastSelection = window
+              .getSelection()
+              ?.getRangeAt(0)
+              ?.cloneRange()
+          }
+        }}
         data-editor
         autoFocus
         data-placeholder={placeholder}
