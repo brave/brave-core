@@ -42,11 +42,13 @@ function buildDefaultGClientConfig(
         'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
         // chromium-variations .git takes ~4 GB, not used in the build.
         'src/third_party/chromium-variations': null,
+        ...config.gClientCustomDeps,
       },
       custom_vars: {
         'checkout_clang_coverage_tools': true,
         'checkout_pgo_profiles': config.isBraveReleaseBuild(),
         'download_reclient': true,
+        ...config.gClientCustomVars,
       },
     },
   ]

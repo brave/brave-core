@@ -66,6 +66,8 @@ def merge_rewrapper_large_cfg(rewrapper_cfg, tool, host_os):
 
 def post_configure():
     generate_python_remote_wrapper()
+    configure_sisoenv()
+    configure_sisorc()
 
 
 # Python remote wrapper sets PYTHONPATH during remote execution.
@@ -99,4 +101,31 @@ def generate_python_remote_wrapper():
     FileUtils.write_text_file(
         (f'{Paths.src_dir}/buildtools/reclient_cfgs/python/'
          'python_remote_wrapper'),
-        ShellTemplate(python_remote_wrapper_template).substitute(template_vars))
+        ShellTemplate(python_remote_wrapper_template).substitute(
+            template_vars))
+
+
+def configure_sisoenv():
+    FileUtils.write_text_file(
+        f'{Paths.src_dir}/build/config/siso/.sisoenv',
+        ("SISO_REAPI_INSTANCE=default\n"
+         f"SISO_REAPI_ADDRESS={os.environ.get('RBE_service')}\n"))
+
+
+def configure_sisorc():
+    ninja_flags = []
+    if os.environ.get('RBE_service'):
+        # `-reapi_keep_exec_stream` to keep exec stream alive during remote
+        # execution, otherwise siso terminates it each minute which aborts
+        # remote exec in EngFlow backend.
+        ninja_flags.append('-reapi_keep_exec_stream')
+
+    if cache_dir := os.environ.get('SISO_CACHE_DIR'):
+        # `-cache_dir` and `-local_cache_enable` to use a local disk cache for
+        # remote execution. Cache is disabled if `SISO_CACHE_DIR` is not set.
+        ninja_flags.append(f'-cache_dir "{cache_dir}" -local_cache_enable')
+        os.makedirs(cache_dir, exist_ok=True)
+
+    FileUtils.write_text_file(
+        f'{Paths.src_dir}/build/config/siso/.sisorc',
+        f'ninja {" ".join(ninja_flags)}\n' if ninja_flags else '')
