@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Ralat App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Diaudit secara independen";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Kelajuan sambungan sepantas kilat";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Sembunyikan IP anda & ubah lokasi anda";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Dasar tanpa log";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Privasi & keselamatan dalam talian tambahan";

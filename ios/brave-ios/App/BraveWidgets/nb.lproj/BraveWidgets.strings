@@ -32,6 +32,9 @@
 "AGMpus" = "Konfigurering av snarveier";
 
 /* (No Comment) */
+"bUHTuL" = "Spør Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Statistikktype";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Bare som en bekreftelse – du ville ha 'Ny fane'?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Bare som en bekreftelse – du ville ha 'Ask Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Bare som en bekreftelse – du ville ha 'Ny fane'?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Bare som en bekreftelse – du ville ha 'Ask Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "${count} alternativer matcher med 'Ask Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Bare som en bekreftelse – du ville ha 'Ny fane'?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Bare som en bekreftelse – du ville ha 'Ask Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "${count} alternativer matcher med 'Ask Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "${count} alternativer matcher med 'Ask Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Bare som en bekreftelse – du ville ha 'Ny fane'?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Bare som en bekreftelse – du ville ha 'Ask Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Bare som en bekreftelse – du ville ha 'Bokmerker'?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "${count} alternativer matcher med 'Ny fane'.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "${count} alternativer matcher med 'Ask Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "${count} alternativer matcher med 'Bokmerker'.";

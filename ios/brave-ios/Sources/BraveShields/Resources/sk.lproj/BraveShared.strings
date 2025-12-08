@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Typ zdroja";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Ak by mal Shred odstraňovať položky histórie.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred odstraňuje históriu";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Aktualizujte Auto Shred a upravte, ktoré údaje sa budú triediť.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Zničiť";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Zničiť";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Zdrojová URL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Zničiť údaje stránky";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Zničením dôjde k zatvorenie všetkých otvorených kariet tejto stránky. Zároveň sa vymažú všetky údaje stránky. Tento krok nemožno zvrátiť.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Zničiť údaje stránky teraz";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Zničením dôjde k zatvoreniu vybratých kariet, a vymazaniu všetkých údajov stránky. Tento krok nemožno zvrátiť.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Stránka nie je zabezpečená";

@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store से जुड़ी गड़बड़ी";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "स्वतंत्र रूप से ऑडिट किया गया";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "बिजली की तरह तेज़ कनेक्शन स्पीड";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "अपना IP छुपाएं और अपनी लोकेशन बदलें";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "नो-लॉग्स नीति";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "और ज़्यादा प्राइवेसी और ऑनलाइन सिक्योरिटी";

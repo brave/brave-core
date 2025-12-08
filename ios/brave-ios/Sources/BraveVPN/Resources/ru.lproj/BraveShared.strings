@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Ошибка соединения с App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Независимо проверено";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Фантастическая скорость соединения";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Скрытый IP-адрес и измененное местоположение";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Политика отсутствия логирования";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Дополнительная приватность и безопасность";

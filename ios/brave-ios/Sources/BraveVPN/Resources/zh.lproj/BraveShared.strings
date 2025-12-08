@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store 錯誤";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "獨立審計";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "快如闪电的连接速度";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "隐藏您的 IP 并变更您的位置";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "無日誌政策";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "更多隐私和更多网上安全";

@@ -32,6 +32,9 @@
 "AGMpus" = "ショートカットの設定";
 
 /* (No Comment) */
+"bUHTuL" = "Braveに質問";
+
+/* (No Comment) */
 "bUXzTx" = "統計の種類";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "確認ですが、'Brave に質問' を探していましたか？";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "確認ですが、'Brave に質問' を探していましたか？";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "'Brave に質問' に一致する ${count} 件のオプションがあります";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "確認ですが、'Brave に質問' を探していましたか？";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "'Brave に質問' に一致する ${count} 件のオプションがあります";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "'Brave に質問' に一致する ${count} 件のオプションがあります";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "確認ですが、'Brave に質問' を探していましたか？";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "確認ですが、'ブックマーク' を探していましたか？";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "'Brave に質問' に一致する ${count} 件のオプションがあります";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";

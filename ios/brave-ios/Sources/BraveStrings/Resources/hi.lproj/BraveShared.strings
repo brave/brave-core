@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "चालू";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Brave से पूछें";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "इससे Brave का आपका ऐक्सेस ऑथेंटिकेट हो जाता है";
 
@@ -799,6 +802,9 @@
 /* No comment provided by engineer. */
 "genericErrorTitle" = "गड़बड़ी";
 
+/* Button text to get started with Brave Account */
+"GetStarted" = "आरंभ करें";
+
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "खतरनाक वेबसाइटें ब्लॉक करें";
 
@@ -854,7 +860,7 @@
 "Home" = "होम";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "कनेक्शंस को HTTPS पर अपग्रेड करें";
+"HTTPSEverywhere" = "कनेक्शन को HTTPS पर अपग्रेड करें";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "जब संभव हो, तब HTTP के बजाय, सुरक्षित HTTPS का इस्तेमाल करके साइटें खोलें।";

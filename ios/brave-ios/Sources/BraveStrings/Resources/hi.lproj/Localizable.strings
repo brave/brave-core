@@ -61,6 +61,9 @@
 /* The checkout option that lets the user use Brave's own purchase flow */
 "paywall.braveAccountCheckoutOptionTitle" = "Brave अकाउंट";
 
+/* Button action text which will bring user to Brave VPN web page for more information. */
+"paywall.braveVPNLearnMoreButtonTitle" = "Brave VPN के बारे में और जानें";
+
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "कोई प्रोमो कोड है?";
 
@@ -98,7 +101,7 @@
 "shortcutsButton.shortcutButtonTitle" = "शॉर्टकट बटन";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "बुकमार्क्स दिखाएँ";
+"showBookmarksTitle" = "बुकमार्क दिखाएँ";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowNextTabTitle" = "नया टैब दिखाएँ";

@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "広告";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "アナリティクス";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Originはサブスクリプションベースのサービスで、Braveの事業を支える収益生成機能を無効にできます。Brave Originのサブスクライバーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、Brave Leo、News、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\nサブスクライバーには、ブラウザの設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。\n\n**注：Brave Originは現在使用しているブラウザ機能を無効にしないため、Brave Search機能やBrave Search広告には影響しません。**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "機能";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "News";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Playlist";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "プライバシー保護分析";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "デフォルトにリセット";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "リワード";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "統計報告";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "ウォレット";
 

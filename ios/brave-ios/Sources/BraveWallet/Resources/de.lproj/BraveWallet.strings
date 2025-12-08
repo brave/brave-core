@@ -1265,7 +1265,7 @@
 "wallet.providerListBestOption" = "BESTE WAHL";
 
 /* The title of the button that user can use to open the link to buy crypto. */
-"wallet.providerListBuyWith" = "Kaufe mit %@";
+"wallet.providerListBuyWith" = "Kaufen mit %@";
 
 /* One of title that displays under provider option. Exchange rate with fees that this provider offers. */
 "wallet.providerListExchangeRateWithFees" = "Wechselkurs mit Gebühren";
@@ -1286,7 +1286,7 @@
 "wallet.providerListTotal" = "Insgesamt";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
-"wallet.providerSelectionButtonTitle" = "Kaufe mit %@";
+"wallet.providerSelectionButtonTitle" = "Kaufen mit %@";
 
 /* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
 "wallet.providerSelectionScreenTitle" = "Kaufmethode auswählen";
