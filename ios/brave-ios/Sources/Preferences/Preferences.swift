@@ -39,15 +39,15 @@ extension Preferences {
     /// Upon setting this value, UserDefaults will be updated and any observers will be called
     @Published public var value: ValueType {
       didSet {
-        if value == oldValue { return }
-
         writePreferenceValue(container, key, value)
 
         container.synchronize()
 
-        let key = self.key
-        observers.forEach {
-          $0.preferencesDidChange(for: key)
+        if value != oldValue {
+          let key = self.key
+          observers.forEach {
+            $0.preferencesDidChange(for: key)
+          }
         }
       }
     }
