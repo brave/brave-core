@@ -120,6 +120,8 @@ class SidePanel : public views::View,
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
 
+  views::View* resize_area_for_testing() { return nullptr; }
+
  private:
   friend class sidebar::SidebarBrowserTest;
 
