@@ -5,6 +5,12 @@
 
 import("//brave/components/brave_page_graph/common/buildflags.gni")
 
+brave_third_party_blink_renderer_bindings_web_idl_database_inputs =
+    [ gn_args_page_graph_file ]
+
+brave_third_party_blink_renderer_bindings_web_idl_database_deps =
+    [ "//brave/components/brave_page_graph/common:buildflags" ]
+
 brave_third_party_blink_renderer_bindings_generate_bindings_inputs =
     [ gn_args_page_graph_file ]
 
