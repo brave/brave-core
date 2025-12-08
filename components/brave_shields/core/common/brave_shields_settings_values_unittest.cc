@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 
 #include "base/check.h"
+#include "base/functional/function_ref.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_shields {
