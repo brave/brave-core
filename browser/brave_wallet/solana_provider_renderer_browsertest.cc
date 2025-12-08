@@ -659,7 +659,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
   EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
                               kEvalIsBraveWallet)
                   .ExtractBool());
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
@@ -674,7 +674,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
   EXPECT_TRUE(content::EvalJs(web_contents(browser())->GetPrimaryMainFrame(),
                               kEvalIsBraveWallet)
                   .ExtractBool());
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   for (const std::string& provider : {"braveSolana", "solana"}) {
