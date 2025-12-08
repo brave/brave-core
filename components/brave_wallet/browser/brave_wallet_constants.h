@@ -688,6 +688,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER},
     {"braveWalletFilExportPrivateKeyFormatDescription",
      IDS_BRAVE_WALLET_FIL_EXPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
+    {"braveWalletTestnetAccounts", IDS_BRAVE_WALLET_TESTNET_ACCOUNTS},
     {"braveWalletFilImportPrivateKeyFormatDescription",
      IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION},
     {"braveWalletBtcImportPrivateKeyFormatDescription",

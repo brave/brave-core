@@ -9,7 +9,10 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 
 // types
-import { CreateAccountOptionsType } from '../../../../../constants/types'
+import {
+  CreateAccountOptionsType,
+  SupportedTestNetworks,
+} from '../../../../../constants/types'
 
 // components
 import { DividerLine } from '../../../../extension/divider/index'
@@ -21,6 +24,7 @@ import {
   SelectAccountTitle,
   SelectAccountTypeWrapper,
 } from './select-account-type.style'
+import { Text, Row } from '../../../../shared/style'
 
 interface Props {
   createAccountOptions: CreateAccountOptionsType[]
@@ -33,6 +37,23 @@ export const SelectAccountType = ({
   buttonText,
   onSelectAccountType,
 }: Props) => {
+  // Memos
+  const mainnetAccountOptions = React.useMemo(
+    () =>
+      createAccountOptions.filter(
+        (option) => !SupportedTestNetworks.includes(option.fixedNetwork ?? ''),
+      ),
+    [createAccountOptions],
+  )
+
+  const testnetAccountOptions = React.useMemo(
+    () =>
+      createAccountOptions.filter((option) =>
+        SupportedTestNetworks.includes(option.fixedNetwork ?? ''),
+      ),
+    [createAccountOptions],
+  )
+
   // render
   return (
     <SelectAccountTypeWrapper>
@@ -42,7 +63,33 @@ export const SelectAccountType = ({
 
       <DividerLine />
 
-      {createAccountOptions.map((network, index) => (
+      {mainnetAccountOptions.map((network, index) => (
+        <SelectAccountItemWrapper key={network.name}>
+          <AccountTypeItem
+            onClickCreate={onSelectAccountType(network)}
+            icon={network.icon}
+            description={network.description}
+            title={network.name}
+            buttonText={buttonText}
+          />
+          {index + 1 !== mainnetAccountOptions.length && <DividerLine />}
+        </SelectAccountItemWrapper>
+      ))}
+
+      <Row
+        margin='32px 0px 0px 0px'
+        justifyContent='flex-start'
+      >
+        <Text
+          textSize='12px'
+          isBold={true}
+          textColor='primary'
+        >
+          {getLocale('braveWalletTestnetAccounts')}
+        </Text>
+      </Row>
+
+      {testnetAccountOptions.map((network, index) => (
         <SelectAccountItemWrapper key={network.name}>
           <AccountTypeItem
             onClickCreate={onSelectAccountType(network)}
@@ -52,7 +99,7 @@ export const SelectAccountType = ({
             buttonText={buttonText}
           />
 
-          {index + 1 !== createAccountOptions.length && <DividerLine />}
+          {index + 1 !== testnetAccountOptions.length && <DividerLine />}
         </SelectAccountItemWrapper>
       ))}
     </SelectAccountTypeWrapper>
