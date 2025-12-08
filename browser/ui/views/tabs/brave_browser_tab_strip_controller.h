@@ -11,8 +11,6 @@
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
-class BraveTabContextMenuContents;
-
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:
   BraveBrowserTabStripController(TabStripModel* model,
@@ -39,9 +37,6 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
                               const Tab* tab);
 
   // BrowserTabStripController overrides:
-  void ShowContextMenuForTab(Tab* tab,
-                             const gfx::Point& p,
-                             ui::mojom::MenuSourceType source_type) override;
   void ExecuteContextMenuCommand(int index,
                                  TabStripModel::ContextMenuCommand command_id,
                                  int event_flags) override;
@@ -50,12 +45,6 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   bool IsContextMenuCommandEnabled(
       int index,
       TabStripModel::ContextMenuCommand command_id) override;
-  bool GetContextMenuAccelerator(int command_id,
-                                 ui::Accelerator* accelerator) override;
-
- private:
-  // If non-NULL it means we're showing a menu for the tab.
-  std::unique_ptr<BraveTabContextMenuContents> context_menu_contents_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

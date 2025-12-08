@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
@@ -25,15 +25,14 @@ BraveBrowserTabStripController::BraveBrowserTabStripController(
     TabStripModel* model,
     BrowserView* browser_view,
     std::unique_ptr<TabMenuModelFactory> menu_model_factory_override)
-    : BrowserTabStripController(model,
-                                browser_view,
-                                std::move(menu_model_factory_override)) {}
+    : BrowserTabStripController(
+          model,
+          browser_view,
+          menu_model_factory_override
+              ? std::move(menu_model_factory_override)
+              : std::make_unique<brave::BraveTabMenuModelFactory>()) {}
 
-BraveBrowserTabStripController::~BraveBrowserTabStripController() {
-  if (context_menu_contents_) {
-    context_menu_contents_->Cancel();
-  }
-}
+BraveBrowserTabStripController::~BraveBrowserTabStripController() = default;
 
 void BraveBrowserTabStripController::EnterTabRenameModeAt(int index) {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs));
@@ -54,19 +53,6 @@ bool BraveBrowserTabStripController::IsCommandEnabledForTab(
   return model_index.has_value()
              ? IsContextMenuCommandEnabled(model_index.value(), command_id)
              : false;
-}
-
-void BraveBrowserTabStripController::ShowContextMenuForTab(
-    Tab* tab,
-    const gfx::Point& p,
-    ui::mojom::MenuSourceType source_type) {
-  const auto tab_index = tabstrip_->GetModelIndexOf(tab);
-  if (!tab_index) {
-    return;
-  }
-  context_menu_contents_ =
-      std::make_unique<BraveTabContextMenuContents>(tab, this, *tab_index);
-  context_menu_contents_->RunMenuAt(p, source_type);
 }
 
 void BraveBrowserTabStripController::ExecuteContextMenuCommand(
@@ -209,11 +195,4 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   return BrowserTabStripController::IsContextMenuCommandEnabled(index,
                                                                 command_id);
-}
-
-bool BraveBrowserTabStripController::GetContextMenuAccelerator(
-    int command_id,
-    ui::Accelerator* accelerator) {
-  return BrowserTabStripController::GetContextMenuAccelerator(command_id,
-                                                              accelerator);
 }
