@@ -24,6 +24,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
@@ -149,8 +150,9 @@ std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowser();
   if (browser &&
       brave_tabs::AreTooltipsEnabled(browser->profile()->GetPrefs())) {
-    return Tab::GetTooltipText(data_.title,
-                               GetAlertStateToShow(data_.alert_state));
+    return Tab::GetTooltipText(
+        data_.title,
+        tabs::TabAlertController::GetAlertStateToShow(data_.alert_state));
   }
   return TabSlotView::GetTooltipText();
 }
