@@ -86,6 +86,7 @@ class BraveBrowser : public Browser {
   friend class BraveTestLauncherDelegate;
   friend class WindowClosingConfirmBrowserTest;
   friend class InProcessBrowserTest;
+  friend class FirstPartyStorageCleanupSiteDataBrowserTest;
 
   // static
   static void SuppressBrowserWindowClosingDialogForTesting(bool suppress);
