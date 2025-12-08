@@ -139,7 +139,7 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   // chrome/browser/flag-metadata.json.
   const SkColor background_color = TabStyle::Get()->GetTabBackgroundColor(
       TabStyle::TabSelectionState::kActive, /*hovered=*/false,
-      /*frame_active*/ true, *GetColorProvider());
+      /*frame_active*/ true, GetColorProvider());
   const SkColor frame_color =
       controller_->GetFrameColor(BrowserFrameActiveState::kActive);
   const float contrast_ratio =

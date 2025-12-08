@@ -159,7 +159,7 @@ std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
 
   SkColor blend_background = TabStyle::Get()->GetTabBackgroundColor(
       TabStyle::TabSelectionState::kInactive, /*hovered=*/false,
-      GetWidget()->ShouldPaintAsActive(), *color_provider);
+      GetWidget()->ShouldPaintAsActive(), color_provider);
 
   SkAlpha alpha =
       SkColorGetA(color_provider->GetColor(kColorTabGroupBackgroundAlpha));
