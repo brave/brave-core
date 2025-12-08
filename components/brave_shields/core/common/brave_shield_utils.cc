@@ -10,6 +10,7 @@
 #include "base/containers/map_util.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"

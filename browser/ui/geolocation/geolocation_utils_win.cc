@@ -15,6 +15,7 @@
 
 #include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/core_winrt_util.h"
 
