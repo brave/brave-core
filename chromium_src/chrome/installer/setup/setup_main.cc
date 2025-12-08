@@ -65,7 +65,7 @@ bool BraveHandleNonInstallCmdLineOptions(
       cmd_line.GetSwitchValuePath(installer::switches::kNewSetupExe));
   if (installer::ArchivePatchHelper::UncompressAndPatch(
           new_setup_exe.DirName(), compressed_archive, setup_exe, new_setup_exe,
-          installer::UnPackConsumer::SETUP_EXE_PATCH)) {
+          installer::UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE)) {
     status = installer::NEW_VERSION_UPDATED;
   }
 
