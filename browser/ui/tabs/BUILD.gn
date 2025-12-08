@@ -103,3 +103,29 @@ source_set("tab_model") {
     "//ui/base",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_tab_menu_browsertest.cc" ]
+
+  deps = [
+    ":tab_menu",
+    ":tab_model",
+    "//brave/components/containers/buildflags",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/core/common:features" ]
+  }
+}
