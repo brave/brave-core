@@ -80,8 +80,8 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   }
 
   cache_ = params;
-  nav_button_provider_->RedrawImages(cache_.top_area_height, cache_.maximized,
-                                     cache_.active);
+  nav_button_provider_->RedrawImages(cache_->top_area_height, cache_->maximized,
+                                     cache_->active);
 
   for (auto type : {
            ui::NavButtonProvider::FrameButtonDisplayType::kMinimize,
