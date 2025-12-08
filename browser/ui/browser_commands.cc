@@ -137,7 +137,7 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
   auto* model = browser->tab_strip_model();
-  const auto selection = model->selection_model();
+  const auto selection = model->selection_model().ToListSelectionModel();
   auto indices = std::vector<int>(selection.selected_indices().begin(),
                                   selection.selected_indices().end());
   CHECK(!indices.empty())
