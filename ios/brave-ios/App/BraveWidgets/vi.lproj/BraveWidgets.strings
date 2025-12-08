@@ -32,6 +32,9 @@
 "AGMpus" = "Cấu hình Phím tắt";
 
 /* (No Comment) */
+"bUHTuL" = "Hỏi Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Loại thống kê";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ mới\"?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Chúng tôi muốn xác nhận có đúng bạn muốn 'Hỏi Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Dấu trang\"?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ mới\"?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Chúng tôi muốn xác nhận có đúng bạn muốn 'Hỏi Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Dấu trang\"?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Có ${count} tùy chọn khớp với \"Thẻ mới\".";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Có ${count} tùy chọn khớp với 'Hỏi Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Có ${count} tùy chọn khớp với \"Dấu trang\".";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ mới\"?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Chúng tôi muốn xác nhận có đúng bạn muốn 'Hỏi Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Dấu trang\"?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Có ${count} tùy chọn khớp với \"Thẻ mới\".";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Có ${count} tùy chọn khớp với 'Hỏi Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Có ${count} tùy chọn khớp với \"Dấu trang\".";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Có ${count} tùy chọn khớp với \"Thẻ mới\".";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Có ${count} tùy chọn khớp với 'Hỏi Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Có ${count} tùy chọn khớp với \"Dấu trang\".";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Thẻ mới\"?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Chúng tôi muốn xác nhận có đúng bạn muốn 'Hỏi Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Chúng tôi muốn xác nhận có đúng bạn muốn \"Dấu trang\"?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Có ${count} tùy chọn khớp với \"Thẻ mới\".";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Có ${count} tùy chọn khớp với 'Hỏi Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Có ${count} tùy chọn khớp với \"Dấu trang\".";

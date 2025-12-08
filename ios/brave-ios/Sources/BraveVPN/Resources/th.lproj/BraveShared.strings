@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "ข้อผิดพลาดใน App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "ตรวจสอบโดยอิสระ";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "การเชื่อมต่อที่รวดเร็วเป็นพิเศษ";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "ซ่อน IP ของคุณ & เปลี่ยนตำแหน่งของคุณ";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "นโยบายไม่เก็บบันทึก";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "ความเป็นส่วนตัว & ความปลอดภัยทางออนไลน์ที่มากขึ้น";

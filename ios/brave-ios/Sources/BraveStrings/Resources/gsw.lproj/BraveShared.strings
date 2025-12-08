@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Ein";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Frage Brave";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Dies authentifiziert dein Zugang zu Brave";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Fehler";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Loslegen";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Gefährliche Websites blockieren";

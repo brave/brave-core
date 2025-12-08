@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Typ zasobu";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Jeśli funkcja Shred powinna usuwać elementy historii.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred usuwa historię";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Zaktualizuj funkcję Auto Shred i dostosuj, jakie dane są usuwane.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Usuń";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Usuń";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL źródła";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Usuwaj dane strony";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Usunięcie spowoduje zamknięcie wszystkich zakładek otwartych dla tej strony oraz usunięcie wszystkich danych strony. Nie można tego cofnąć.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Usuń dane strony teraz";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Usunięcie spowoduje zamknięcie wybranych zakładek oraz usunięcie wszystkich danych strony. Nie można tego cofnąć.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Strona nie jest bezpieczna";

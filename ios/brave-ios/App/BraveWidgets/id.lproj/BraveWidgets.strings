@@ -32,6 +32,9 @@
 "AGMpus" = "Konfigurasi Jalan Pintas";
 
 /* (No Comment) */
+"bUHTuL" = "Tanya Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Jenis Statistik";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Hanya untuk mengonfirmasi, Anda ingin 'Tanya Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Hanya untuk mengonfirmasi, Anda ingin 'Tanya Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Terdapat ${count} pilihan yang sesuai dengan 'Tanya Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Hanya untuk mengonfirmasi, Anda ingin 'Tanya Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Terdapat ${count} pilihan yang sesuai dengan 'Tanya Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Terdapat ${count} pilihan yang sesuai dengan 'Tanya Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Hanya untuk mengonfirmasi, Anda ingin 'Tab Baru'?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Hanya untuk mengonfirmasi, Anda ingin 'Tanya Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Hanya untuk mengonfirmasi, Anda ingin 'Markah'?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Terdapat ${count} pilihan yang sesuai dengan 'Tab Baru'.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Terdapat ${count} pilihan yang sesuai dengan 'Tanya Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Terdapat ${count} pilihan yang sesuai dengan 'Markah'.";

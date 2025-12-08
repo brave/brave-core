@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Be";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Kérdezz a Brave-tól";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Ez hitelesíti az Ön hozzáférését a Brave-hez";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Hiba";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Első lépések";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Veszélyes webhelyek letiltása";

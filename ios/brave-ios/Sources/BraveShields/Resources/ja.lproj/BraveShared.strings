@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "リソースタイプ";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Shredがhistoryアイテムを削除すべきかどうか。";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shredで履歴を削除";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "自動Shredを更新し、削除するデータを調整します。";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "削除";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "削除";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "ソースURL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "サイトデータを削除";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "削除を選択すると、このサイトに開いている全タブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "サイトデータを削除";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "削除を選択すると、選択したタブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "サイトは安全ではありません";

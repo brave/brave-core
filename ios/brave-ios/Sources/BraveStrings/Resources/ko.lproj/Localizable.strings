@@ -61,6 +61,9 @@
 /* The checkout option that lets the user use Brave's own purchase flow */
 "paywall.braveAccountCheckoutOptionTitle" = "Brave 계정";
 
+/* Button action text which will bring user to Brave VPN web page for more information. */
+"paywall.braveVPNLearnMoreButtonTitle" = "Brave VPN 자세히 알아보기";
+
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "프로모션 코드가 있으신가요?";
 

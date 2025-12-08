@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "켬";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Brave에 묻기";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "이 방법으로 Brave 액세스를 인증합니다.";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "오류";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "시작하기";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "위험한 웹사이트 차단";

@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Pogreška trgovine App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Nezavisno provjereno";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Munjevito brze veze";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Sakrij svoj IP & promijeni svoju lokaciju";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Politika bez zapisivanja";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Dodatna privatnost & sigurnost na mreži";

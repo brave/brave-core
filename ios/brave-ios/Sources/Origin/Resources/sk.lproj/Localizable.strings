@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Reklamy";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analytika";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin je spôsob založený na predplatnom, ako deaktivovať funkcie generujúce príjmy, ktoré inak podporujú spoločnosť Brave. Predplatitelia služby Brave Origin budú naďalej profitovať z našej špičkovej ochrany súkromia, blokátora reklám a rýchlosti (prostredníctvom Štítov Brave), ako aj z pravidelných aktualizácií softvéru, záplat Chromium a vylepšení bezpečnosti a ochrany súkromia. Odomknú si tiež možnosť deaktivovať funkcie, ako sú Brave Leo, Správy, Rewards, Wallet, VPN, Web3 domény a ďalšie.\n\nPredplatitelia budú vidieť nový ovládací panel v ponuke Nastavenia prehliadača. Existujúce funkcie – ako aj všetky nové funkcie, ktoré v budúcnosti spustíme – by sa tu zobrazili a boli by predvolene vypnuté.\n\n**Poznámka: Brave Origin nedeaktivuje funkcie prehliadača, ktoré v súčasnosti používate, a nebude mať vplyv na funkcie Vyhľadávania Brave alebo Ads Vyhľadávania Brave.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funkcie";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "News";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Zoznam";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Analýza zachovávajúca súkromie";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Obnovenie predvolených nastavení";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Odmeny";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Vykazovanie štatistík";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Hovoriť";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Peňaženka";
 

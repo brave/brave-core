@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "रिसोर्स का प्रकार";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "यदि Shred को इतिहास आइटम हटाने चाहिए।";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred इतिहास हटाता है";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Auto Shred को अपडेट करें और समायोजित करें कि कौन सा डेटा साफ किया जाए।";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "श्रेड";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "श्रेड";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "सोर्स का URL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "साइट डेटा श्रेड करें";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "डेटा श्रेड करने से इस साइट के लिए खुले सभी टैब बंद हो जाएँगे और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "अभी साइट डेटा श्रेड करें";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "डेटा श्रेड करने से चुने हुए सभी टैब बंद हो जाएंगे, और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "साइट सुरक्षित नहीं है";

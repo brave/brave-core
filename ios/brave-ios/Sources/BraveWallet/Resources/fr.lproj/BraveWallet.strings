@@ -170,7 +170,7 @@
 "wallet.backupRecoveryPhraseBackButtonTitle" = "Phrase de récupération";
 
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sûr qui n'est pas accessible à d'autres personnes et évitez de la partager avec qui que ce soit.";
+"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sécurisé et ne la communiquez à personne.";
 
 /* The title of the backup recovery phrase screen */
 "wallet.backupRecoveryPhraseTitle" = "Enregistrer la phrase de récupération";
@@ -947,16 +947,16 @@
 "wallet.learnMoreButton" = "En savoir plus";
 
 /* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
-"wallet.legalDescription" = "Nous vous demandons de prendre acte des éléments ci-dessous";
+"wallet.legalDescription" = "Veuillez prendre acte des éléments ci-dessous :";
 
 /* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
-"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@)";
+"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@).";
 
 /* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalTitle" = "Avant de commencer";
 
 /* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
-"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
+"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, que je suis la seule personne responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Verrouiller";
@@ -998,7 +998,7 @@
 "wallet.manageSiteConnectionsRemoveAll" = "Tout supprimer";
 
 /* The page title that will display the top 250 tokens from the market via CoinGecko */
-"wallet.marketPageTitle" = "Au cours du marché";
+"wallet.marketPageTitle" = "Marché";
 
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Frais maximums";
@@ -1787,7 +1787,7 @@
 "wallet.solanaSignTransactionDetails" = "Détails";
 
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Notez que Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos actifs cryptos au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et si vous faites confiance au site demandeur.";
+"wallet.solanaSignTransactionWarning" = "Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos crypto-actifs au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et que vous faites confiance au site demandeur.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Transaction d'échange";
@@ -1901,7 +1901,7 @@
 "wallet.swapLimitOrderType" = "À cours limité";
 
 /* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
-"wallet.swapMarketOrderType" = "Au cours du marché";
+"wallet.swapMarketOrderType" = "Marché";
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "Type d'ordre";
@@ -2222,7 +2222,7 @@
 "wallet.walletPanelSetupWalletDescription" = "Utilisez ce panneau pour accéder en toute sécurité au domaine web3 et à tous vos actifs crypto.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "Paramètres de portefeuille";
+"wallet.walletSettings" = "Paramètres";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Aucun";

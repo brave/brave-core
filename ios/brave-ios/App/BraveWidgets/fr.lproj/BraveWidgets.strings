@@ -32,6 +32,9 @@
 "AGMpus" = "Configuration des raccourcis";
 
 /* (No Comment) */
+"bUHTuL" = "Demander à Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Type de statistique";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Vouliez-vous dire « Demander à Brave » ?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Vouliez-vous dire « Favoris » ?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Vouliez-vous dire « Demander à Brave » ?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Vouliez-vous dire « Favoris » ?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Il y a ${count} options correspondant à « Demander à Brave ».";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Vouliez-vous dire « Demander à Brave » ?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Il y a ${count} options correspondant à « Demander à Brave ».";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Il y a ${count} options correspondant à « Demander à Brave ».";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Vouliez-vous dire « Demander à Brave » ?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Il y a ${count} options correspondant à « Demander à Brave ».";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";

@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "โฆษณา";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "การวิเคราะห์";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin เป็นวิธีการที่ใช้สมาชิกเพื่อปิดใช้งานคุณสมบัติที่สร้างรายได้ซึ่งมิฉะนั้นจะสนับสนุน Brave ในฐานะธุรกิจ ผู้สมัครสมาชิก Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น Brave Leo News รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\nผู้สมัครสมาชิกจะเห็นแผงควบคุมใหม่ในเมนู Settings ของเบราว์เซอร์ คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น\n\n**หมายเหตุ: Brave Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน และจะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือ โฆษณาใน Brave Search";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "ฟีเจอร์";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "ข่าวสาร";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "เพลย์ลิสต์";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "การวิเคราะห์ข้อมูลที่รักษาความเป็นส่วนตัว";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "รีเซ็ตเป็นค่าเริ่มต้น";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Rewards";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "การรายงานสถิติ";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "พูดคุย";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "วอลเล็ท";
 

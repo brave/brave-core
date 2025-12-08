@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Fel i App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Oberoende reviderad";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Blixtsnabba anslutningshastigheter";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Dölj din IP-adress och ändra din plats";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Ingen-loggningspolicy";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Extra integritet och säkerhet online";

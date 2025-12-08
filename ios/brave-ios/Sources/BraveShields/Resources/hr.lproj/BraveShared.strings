@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Tip resursa";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Ako bi Shred trebao ukloniti stavke iz历史ije.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred uklanja povijest";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Ažurirajte Auto Shred i prilagodite koje podatke brišete.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Uništi";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Uništi";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Izvorni URL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Uništavanje podataka s mrežne stranice";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Uništavanje će zatvoriti sve kartice otvorene na ovoj mrežnoj stranici i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Odmah uništiti podatke s mrežne stranice";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Uništavanje će zatvoriti odabrane kartice, i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Mrežno mjesto nije sigurno";

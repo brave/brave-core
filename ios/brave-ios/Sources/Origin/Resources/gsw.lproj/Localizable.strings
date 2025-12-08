@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Anzeigen";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analytics";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin ist ein abonnementbasierter Weg, um die umsatzgenerierenden Funktionen zu deaktivieren, die Brave sonst als Unternehmen unterstützen. Brave Origin-Abonnentinnen und -Abonnenten profitieren weiterhin von unserer branchenführenden Privatsphäre, Werbeblockierung und Geschwindigkeit (durch Brave Shields) sowie von regelmäßigen Softwareupdates, Chromium-Patches und Verbesserungen bei Sicherheit und Datenschutz.\n\nAbonnentinnen und Abonnenten sehen ein neues Kontrollfeld im Browser-Einstellungsmenü. Vorhandene Funktionen – sowie alle neuen Funktionen, die wir in Zukunft bereitstellen – würden hier angezeigt und sind standardmäßig deaktiviert.\n\n**Hinweis: Brave Origin deaktiviert keine Browser-Funktionen, die du aktuell nutzt, und wirkt sich nicht auf Brave Search-Funktionen oder Brave Search Anzeigen aus.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funktionen";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo-KI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Nachrichten";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Playlist";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Datenschutzfreundliche Analysen";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Auf Standard zurücksetzen";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Rewards";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Statistikberichte";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Wallet";
 

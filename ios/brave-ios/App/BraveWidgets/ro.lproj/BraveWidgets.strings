@@ -32,6 +32,9 @@
 "AGMpus" = "Configurarea comenzilor rapide";
 
 /* (No Comment) */
+"bUHTuL" = "Întreabă Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Tip statistică";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Pentru confirmare, ai vrut \"Întrebare Brave\"?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Pentru confirmare, ai vrut \"Marcaje\"?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Pentru confirmare, ai vrut \"Întrebare Brave\"?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Pentru confirmare, ai vrut \"Marcaje\"?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Există ${count} opțiuni care se potrivesc cu \"Filă nouă\".";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Există ${count} opțiuni care se potrivesc cu \"Întrebare Brave\".";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Există ${count} opțiuni care se potrivesc cu \"Marcaje\".";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Pentru confirmare, ai vrut \"Întrebare Brave\"?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Pentru confirmare, ai vrut \"Marcaje\"?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Există ${count} opțiuni care se potrivesc cu \"Filă nouă\".";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Există ${count} opțiuni care se potrivesc cu \"Întrebare Brave\".";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Există ${count} opțiuni care se potrivesc cu \"Marcaje\".";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Există ${count} opțiuni care se potrivesc cu \"Filă nouă\".";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Există ${count} opțiuni care se potrivesc cu \"Întrebare Brave\".";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Există ${count} opțiuni care se potrivesc cu \"Marcaje\".";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Pentru confirmare, ai vrut \"Întrebare Brave\"?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Pentru confirmare, ai vrut \"Marcaje\"?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Există ${count} opțiuni care se potrivesc cu \"Filă nouă\".";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Există ${count} opțiuni care se potrivesc cu \"Întrebare Brave\".";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Există ${count} opțiuni care se potrivesc cu \"Marcaje\".";

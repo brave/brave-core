@@ -32,6 +32,9 @@
 "AGMpus" = "Konfiguracja skrótów";
 
 /* (No Comment) */
+"bUHTuL" = "Zapytaj Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Rodzaj statystyk";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Czy na pewno masz na myśli „Nowa karta”?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Czy na pewno masz na myśli „Zapytaj Brave”?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Czy na pewno masz na myśli „Nowa karta”?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Czy na pewno masz na myśli „Zapytaj Brave”?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Do „Nowa karta” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Do „Zapytaj Brave” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Czy na pewno masz na myśli „Nowa karta”?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Czy na pewno masz na myśli „Zapytaj Brave”?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Do „Nowa karta” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Do „Zapytaj Brave” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Do „Nowa karta” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Do „Zapytaj Brave” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Czy na pewno masz na myśli „Nowa karta”?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Czy na pewno masz na myśli „Zapytaj Brave”?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Czy na pewno masz na myśli „Zakładki”?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Do „Nowa karta” pasuje następująca liczba opcji: ${count}";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Do „Zapytaj Brave” pasuje następująca liczba opcji: ${count}";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Do „Zakładki” pasuje następująca liczba opcji: ${count}";

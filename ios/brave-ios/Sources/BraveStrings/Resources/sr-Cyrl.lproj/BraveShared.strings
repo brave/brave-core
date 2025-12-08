@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "На";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Питајте Brave";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Тиме се потврђује идентитет ради приступа Brave-у";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Грешка";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Почетак";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Блокирај опасне веб-сајтове";

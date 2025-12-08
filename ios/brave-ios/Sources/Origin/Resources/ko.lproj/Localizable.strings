@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Ads";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "분석";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin은 Brave 비즈니스를 지원하는 수익 창출 기능을 비활성화하는 구독 기반 방식입니다. Brave Origin 구독자는 업계 최고의 개인정보 보호, 광고 차단, 속도(Brave 쉴드를 통해)는 물론 정기적인 소프트웨어 업데이트, Chromium 패치, 보안 및 개인정보 보호 개선 사항의 혜택을 계속 누릴 수 있습니다. 또한 Brave 레오, 뉴스, 리워드, 지갑, VPN, Web3 도메인 등의 기능을 비활성화할 수 있는 옵션도 잠금 해제됩니다.\n\n구독자는 브라우저 설정 메뉴에 새로운 제어판을 볼 수 있습니다. 기존 기능은 물론 향후 출시될 새로운 기능도 여기에 표시되며 기본적으로 꺼져 있습니다.\n\n**참고: Brave Origin은 현재 사용 중인 브라우저 기능을 비활성화하지 않으며, Brave 검색 기능이나 Brave 검색 광고에도 영향을 미치지 않습니다.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "기능";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "레오 AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "뉴스";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "재생목록";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "개인 정보 보호 분석";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "기본값으로 재설정";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "리워드";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "통계 보고";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "월렛";
 

@@ -32,6 +32,9 @@
 "AGMpus" = "Verknüpfungskonfiguration";
 
 /* (No Comment) */
+"bUHTuL" = "Frage Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Statistikart";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Nur, um sicherzugehen, du hast nach „Neuer Tab“ gesucht?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Nur, um sicherzugehen, Sie suchten nach „Brave fragen“?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Nur, um sicherzugehen, du hast nach „Lesezeichen“ gesucht?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Nur, um sicherzugehen, du hast nach „Neuer Tab“ gesucht?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Nur, um sicherzugehen, Sie suchten nach „Brave fragen“?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Nur, um sicherzugehen, du hast nach „Lesezeichen“ gesucht?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Es gibt ${count} Optionen, die mit „Brave fragen“ übereinstimmen.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Nur, um sicherzugehen, du hast nach „Neuer Tab“ gesucht?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Nur, um sicherzugehen, Sie suchten nach „Brave fragen“?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Nur, um sicherzugehen, du hast nach „Lesezeichen“ gesucht?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Es gibt ${count} Optionen, die mit „Brave fragen“ übereinstimmen.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Es gibt ${count} Optionen, die mit „Brave fragen“ übereinstimmen.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Nur, um sicherzugehen, du hast nach „Neuer Tab“ gesucht?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Nur, um sicherzugehen, Sie suchten nach „Brave fragen“?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Nur, um sicherzugehen, du hast nach „Lesezeichen“ gesucht?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Es gibt ${count} Optionen, die mit „Neuer Tab“ übereinstimmen.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Es gibt ${count} Optionen, die mit „Brave fragen“ übereinstimmen.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Es gibt ${count} Optionen, die mit „Lesezeichen“ übereinstimmen.";

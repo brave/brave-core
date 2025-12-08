@@ -61,6 +61,9 @@
 /* The checkout option that lets the user use Brave's own purchase flow */
 "paywall.braveAccountCheckoutOptionTitle" = "Учетная запись Brave";
 
+/* Button action text which will bring user to Brave VPN web page for more information. */
+"paywall.braveVPNLearnMoreButtonTitle" = "Узнать больше о Brave VPN";
+
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "У вас есть промокод?";
 

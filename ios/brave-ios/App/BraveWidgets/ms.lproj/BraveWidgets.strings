@@ -32,6 +32,9 @@
 "AGMpus" = "Konfigurasi Pintasan";
 
 /* (No Comment) */
+"bUHTuL" = "Tanya Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Jenis Stat";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Baharu'?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Sebagai pengesahan, betulkah anda inginkan 'Tanya Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Baharu'?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Sebagai pengesahan, betulkah anda inginkan 'Tanya Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Baharu’.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Terdapat ${count} pilihan yang sepadan dengan 'Tanya Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Baharu'?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Sebagai pengesahan, betulkah anda inginkan 'Tanya Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Baharu’.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Terdapat ${count} pilihan yang sepadan dengan 'Tanya Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Baharu’.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Terdapat ${count} pilihan yang sepadan dengan 'Tanya Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Sebagai pengesahan, betulkah anda inginkan 'Tab Baharu'?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Sebagai pengesahan, betulkah anda inginkan 'Tanya Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Sebagai pengesahan, betulkah anda inginkan 'Penanda Halaman'?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Terdapat ${count} pilihan yang sepadan dengan ‘Tab Baharu’.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Terdapat ${count} pilihan yang sepadan dengan 'Tanya Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Terdapat ${count} pilihan yang sepadan dengan ‘Penanda Halaman’.";
