@@ -38,10 +38,10 @@ void PlainCallConnectAccountCallback(
 
 static void JNI_ConnectAccountFragment_ConnectAccount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& java_account_address,
+    const base::android::JavaRef<jstring>& java_account_address,
     jint account_id_coin,
-    const base::android::JavaParamRef<jobject>& java_web_contents,
-    const base::android::JavaParamRef<jobject>& callback) {
+    const base::android::JavaRef<jobject>& java_web_contents,
+    const base::android::JavaRef<jobject>& callback) {
   base::android::ScopedJavaGlobalRef<jobject> java_callback;
   java_callback.Reset(env, callback);
 
