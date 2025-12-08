@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Тип ресурсу";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Якщо Shred має видаляти елементи історії.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred видаляє історію";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Оновіть Auto Shred і налаштуйте, які дані видаляються.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Очистити";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Очистити";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL джерела";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Очищення даних сайту";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Очищення призведе до закриття всіх вкладок, відкритих на цьому сайті, та видалення всіх даних сайту. Цю дію неможливо скасувати.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Очистити дані сайту зараз";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Очищення призведе до закриття вибраних вкладок, та видалення всіх даних сайту. Цю дію неможливо скасувати.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Сайт незахищений";

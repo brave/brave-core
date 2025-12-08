@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "ประเภทแหล่งข้อมูล";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "หากต้องการให้ Shred ลบรายการประวัติ";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred ลบประวัติ";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "อัปเดต Auto Shred และปรับสิ่งที่จะลบ";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "ย่อยข้อมูล";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "ย่อยข้อมูล";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL แหล่งที่มา";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "ย่อยข้อมูลของเว็บไซต์";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "การย่อยข้อมูลจะปิดแท็บทั้งหมดที่เปิดเว็บไซต์นี้ และลบข้อมูลทั้งหมดของเว็บไซต์ การกระทำนี้ไม่สามารถยกเลิกได้";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "ย่อยข้อมูลของเว็บไซต์เดี๋ยวนี้";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "การย่อยข้อมูลจะปิดแท็บที่เลือก และลบข้อมูลทั้งหมดของเว็บไซต์ การกระทำนี้ไม่สามารถยกเลิกได้";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "เว็บไซต์ไม่ปลอดภัย";

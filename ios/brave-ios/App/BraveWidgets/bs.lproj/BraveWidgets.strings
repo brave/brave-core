@@ -32,6 +32,9 @@
 "AGMpus" = "Konfiguracija prečaca";
 
 /* (No Comment) */
+"bUHTuL" = "Pitajte Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Vrsta statistike";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Možete li potvrditi jeste li htjeli 'Pitaj Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Možete li potvrditi jeste li htjeli 'Pitaj Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Sljedeći broj mogućnosti: ${count} podudara se s 'Pitaj Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Možete li potvrditi jeste li htjeli 'Pitaj Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Sljedeći broj mogućnosti: ${count} podudara se s 'Pitaj Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Sljedeći broj mogućnosti: ${count} podudara se s 'Pitaj Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Možete li potvrditi jeste li htjeli „Nova kartica”?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Možete li potvrditi jeste li htjeli 'Pitaj Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Možete li potvrditi jeste li htjeli „Knjižne oznake”?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Sljedeći broj mogućnosti: ${count} podudara se s „Nova kartica”.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Sljedeći broj mogućnosti: ${count} podudara se s 'Pitaj Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Sljedeći broj mogućnosti: ${count} podudara se s „Knjižne oznake”.";

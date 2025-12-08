@@ -32,6 +32,9 @@
 "AGMpus" = "Configuración de accesos directos";
 
 /* (No Comment) */
+"bUHTuL" = "Preguntarle a Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Tipo de estadística";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Solo para confirmar: ¿querías decir \"Ask Brave\"?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Solo para confirmar: ¿querías decir \"Ask Brave\"?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Hay ${count} opciones que coinciden con \"Ask Brave\".";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Solo para confirmar: ¿querías decir \"Ask Brave\"?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Hay ${count} opciones que coinciden con \"Ask Brave\".";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Hay ${count} opciones que coinciden con \"Ask Brave\".";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Solo para confirmar: ¿querías decir \"Nueva pestaña\"?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Solo para confirmar: ¿querías decir \"Ask Brave\"?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Solo para confirmar: ¿querías decir \"Marcadores\"?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Hay ${count} opciones que coinciden con \"Nueva pestaña\".";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Hay ${count} opciones que coinciden con \"Ask Brave\".";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Hay ${count} opciones que coinciden con \"Marcadores\".";

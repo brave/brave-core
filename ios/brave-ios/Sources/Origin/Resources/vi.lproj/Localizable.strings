@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Quảng cáo";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Phân tích";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin là một cách dựa trên đăng ký để tắt các tính năng tạo doanh thu mà nếu không thì sẽ hỗ trợ Brave như một doanh nghiệp. Những người đăng ký Brave Origin sẽ tiếp tục được hưởng lợi từ quyền riêng tư hàng đầu trong ngành, trình chặn quảng cáo và tốc độ (thông qua Lá chắn Brave), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật cũng như quyền riêng tư. Họ cũng sẽ mở khóa tùy chọn để tắt các tính năng như Brave Leo, Tin tức, Phần thưởng, Ví, VPN, tên miền Web3 và hơn thế nữa.\n\nNhững người đăng ký sẽ thấy một bảng điều khiển mới trong menu Cài đặt trình duyệt. Các tính năng hiện có—cũng như bất kỳ tính năng mới nào chúng tôi phát hành trong tương lai—sẽ xuất hiện ở đây và bị tắt theo mặc định.\n\n**Lưu ý: Brave Origin sẽ không tắt các tính năng trình duyệt mà bạn hiện đang sử dụng, và sẽ không ảnh hưởng đến các tính năng Brave Tìm kiếm hoặc Quảng cáo Brave Tìm kiếm.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Tính năng";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Tin tức";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Danh sách phát";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Phân tích bảo vệ quyền riêng tư";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Đặt lại về cài đặt mặc định";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Phần thưởng";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Báo cáo thống kê";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Trò chuyện";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Ví";
 

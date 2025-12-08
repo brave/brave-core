@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "מודעות";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "אנליטיקה";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin היא דרך מבוססת על מנוי להשבית את התכונות היוצרות הכנסות שאחרת תומכות ב-Brave כעסק. מנויי Brave Origin יוכלו להמשיך להستفיד מההגנה על הפרטיות המובילה בתעשייה שלנו, חסימת מודעות, ומהירות (דרך מגיני Brave), כמו גם עדכוני תוכנה קבועים, תיקוני Chromium, ושיפורים בנושא אבטחה והגנה על הפרטיות. הם יוכלו גם לפתוח אפשרות להשבית תכונות כמו Brave Leo, חדשות, Rewards, ארנק, VPN, דומיינים Web3, ועוד.\n\nמנויים יראו לוח בקרה חדש בתפריט ההגדרות של הדפדפן. תכונות קיימות—כמו גם כל תכונה חדשה שאנו משיקים בעתיד—יופיעו כאן וישונו כללית כדי להיות מושבתות כברירת מחדל.\n\n**הערה: Brave Origin לא ישבית תכונות דפדפן שאתה משתמש בהן כרגע, ולא ישפיע על תכונות חיפוש Brave או מודעות חיפוש Brave.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "תכונות";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo המבוסס בינה מלאכותית";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "חדשות";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "רשימת השמעה";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "ניתוח נתונים תוך שמירה על פרטיות";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "אפס להגדרות ברירת מחדל";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "פרסים";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "דיווח סטטיסטי";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "שיחות";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "ארנק";
 

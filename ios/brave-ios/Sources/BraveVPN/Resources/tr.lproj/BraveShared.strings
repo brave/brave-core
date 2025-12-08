@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store Hatası";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Bağımsız olarak denetlenmiş";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Şimşek gibi bağlantı hızları";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "IP'nizi gizleyin ve konumunuzu değiştirin";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Günlük tutmama politikası";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Çevrimiçi ekstra gizlilik ve güvenlik";

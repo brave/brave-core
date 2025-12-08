@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store -virhe";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Riippumattomasti auditoitu";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Salamannopeat yhteydet";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Piilota IP-osoitteesi ja vaihda sijaintisi";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Ei-lokeja-käytäntö";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Parempi tietosuoja ja turvallisuus verkossa";

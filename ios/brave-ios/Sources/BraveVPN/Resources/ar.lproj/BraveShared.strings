@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "خطأ في آب ستور";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "تم التدقيق بشكل مستقل";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "سرعات اتصال فائقة";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "إخفاء عنوان IP الخاص بك وتغيير موقعك";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "سياسة عدم الاحتفاظ بالسجلات";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "الخصوصية والأمان الإضافيان عبر الإنترنت";

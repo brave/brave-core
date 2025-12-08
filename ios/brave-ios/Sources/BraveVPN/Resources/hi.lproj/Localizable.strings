@@ -275,7 +275,7 @@
 "vpn.settingsTransportProtocol" = "ट्रांसपोर्ट प्रोटोकॉल";
 
 /* Button to allow the user to view the App Store receipt. */
-"vpn.settingsViewReceipt" = "App Store की रसीद देखें";
+"vpn.settingsViewReceipt" = "App Store रसीद देखें";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchDescription" = "चालू होने पर, अगर आपका VPN कनेक्शन अचानक से टूट जाता है, तो IP address और डेटा लीक रोकने के लिए आपका डिवाइस अपने-आप इंटरनेट से डिसकनेक्ट हो जाएगा। [ज़्यादा जानें](%@)";
@@ -320,7 +320,7 @@
 "vpn.vpnErrorOfferCodeFailedBody" = "ऑफ़र कोड रिडीम नहीं कर पाए। कृपया फिर से कोशिश करें या अपने ऑफ़र कोड की जानकारी जाँचकर फिर से कोशिश करें।";
 
 /* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करें या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
+"vpn.vpnErrorPurchaseFailedBody" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करे या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "गड़बड़ी";

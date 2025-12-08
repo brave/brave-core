@@ -32,6 +32,9 @@
 "AGMpus" = "Configuració de les dreceres";
 
 /* (No Comment) */
+"bUHTuL" = "Pregunta a Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Tipus d'estadística";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Només per confirmar, volies 'Ask Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Només per confirmar, volies 'Ask Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Hi ha ${count} opcions que coincideixen amb 'Ask Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Només per confirmar, volies 'Ask Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Hi ha ${count} opcions que coincideixen amb 'Ask Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Hi ha ${count} opcions que coincideixen amb 'Ask Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Només per confirmar, volies 'Ask Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Hi ha ${count} opcions que coincideixen amb 'Ask Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";

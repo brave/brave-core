@@ -32,6 +32,9 @@
 "AGMpus" = "Konfigurácia skratiek";
 
 /* (No Comment) */
+"bUHTuL" = "Opýtajte sa Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Druh štatistiky";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Len pre potvrdenie, chceli ste „Opýtať sa Brave“?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Naozaj ste chceli „Záložky“?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Len pre potvrdenie, chceli ste „Opýtať sa Brave“?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Naozaj ste chceli „Záložky“?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Sú k dispozícii ${count} zodpovedajúce možnosti „Opýtať sa Brave“.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Len pre potvrdenie, chceli ste „Opýtať sa Brave“?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Naozaj ste chceli „Záložky“?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Sú k dispozícii ${count} zodpovedajúce možnosti „Opýtať sa Brave“.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Sú k dispozícii ${count} zodpovedajúce možnosti „Opýtať sa Brave“.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Naozaj ste chceli „Nová karta“?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Len pre potvrdenie, chceli ste „Opýtať sa Brave“?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Naozaj ste chceli „Záložky“?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Nová karta“.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Sú k dispozícii ${count} zodpovedajúce možnosti „Opýtať sa Brave“.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Sú k dispozícii ${počet} zodpovedajúce možnosti „Záložky“.";

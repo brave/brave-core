@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "資源類型";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "如果 Shred 應移除歷史項目。";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred 移除歷史";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "更新自動 Shred 並調整要 shred 的資料。";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "銷毀";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "銷毀";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "來源 URL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "銷毀網站資料";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "銷毀將關閉此網站所有打開的分頁，並刪除所有網站資料。此操作無法復原。";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "立即銷毀網站資料";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "銷毀將關閉選取的分頁，並刪除所有網站資料。此操作無法復原。";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "網站不安全";

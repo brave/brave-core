@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Грешка са App Store-ом";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Независно ревидирано";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Муњевито брза веза";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Сакријте IP и промените локацију";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Политика без логова";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Додатна онлајн приватност и безбедност";

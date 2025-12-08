@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "オン";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Braveに質問";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "これによりBraveへのアクセスを認証します";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "エラー";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "始める";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "危険なウェブサイトをブロック";

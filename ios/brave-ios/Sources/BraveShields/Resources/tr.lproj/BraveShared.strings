@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Kaynak Türü";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Shred'in geçmiş öğelerini kaldırıp kaldırmayacağı.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred Geçmişi Kaldırır";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Otomatik Shred'i güncelleyin ve hangi verilerin silineceğini ayarlayın.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Yok et";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Yok et";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Kaynak URL'si";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Site Verilerini Yok Et";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Yok etme bu sitenin açık tüm sekmelerini kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Site Verilerini Şimdi Yok Et";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Yok etme seçilen sekmeleri kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Site güvenli değil";

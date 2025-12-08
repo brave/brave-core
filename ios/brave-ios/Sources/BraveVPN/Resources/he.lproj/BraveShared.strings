@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "שגיאת App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "בדוק עצמאי";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "חיבור במהירות שיא";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "הסתר את כתובת ה-IP שלך &שנה את מיקומך";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "מדיניות ללא רישום";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "פרטיות ואבטחה מוגברות באינטרנט";

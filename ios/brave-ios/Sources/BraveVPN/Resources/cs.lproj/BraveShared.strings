@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Chyba App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Nezávisle auditováno";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Bleskově rychlé připojení";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Skryjte svou IP & změňte své umístění";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Zásada bez logů";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Navíc soukromí & zabezpečení online";

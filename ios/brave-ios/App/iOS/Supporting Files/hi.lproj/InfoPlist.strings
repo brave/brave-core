@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "इससे आप फ़ोटो ले पाते हैं और अपलोड कर पाते हैं।";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "इससे Brave का आपका ऐक्सेस ऑथेंटिकेट होता है";
+"NSFaceIDUsageDescription" = "इससे Brave का आपका ऐक्सेस ऑथेंटिकेट हो जाता है";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "आप जिन वेबसाइटों पर जाते हैं वह आपकी लोकेशन का अनुरोध कर सकती हैं।";

@@ -32,6 +32,9 @@
 "AGMpus" = "תצורת קיצורי דרך";
 
 /* (No Comment) */
+"bUHTuL" = "שאל את Brave";
+
+/* (No Comment) */
 "bUXzTx" = "סוג סטטיסטיקה";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "רק כדי לוודא, רצית את ׳כרטיסיה חדשה׳?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "רק כדי לוודא, רצית את ׳שאל את Brave׳?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "רק כדי לוודא, רצית את ׳סימניות׳?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "רק כדי לוודא, רצית את ׳כרטיסיה חדשה׳?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "רק כדי לוודא, רצית את ׳שאל את Brave׳?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "רק כדי לוודא, רצית את ׳סימניות׳?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "יש ${count} אפשרויות שתואמות אל ׳כרטיסיה חדשה׳.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "יש ${count} אפשרויות שתואמות אל ׳שאל את Brave׳.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "יש ${count} אפשרויות שתואמות אל ׳סימניות׳.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "רק כדי לוודא, רצית את ׳כרטיסיה חדשה׳?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "רק כדי לוודא, רצית את ׳שאל את Brave׳?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "רק כדי לוודא, רצית את ׳סימניות׳?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "יש ${count} אפשרויות שתואמות אל ׳כרטיסיה חדשה׳.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "יש ${count} אפשרויות שתואמות אל ׳שאל את Brave׳.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "יש ${count} אפשרויות שתואמות אל ׳סימניות׳.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "יש ${count} אפשרויות שתואמות אל ׳כרטיסיה חדשה׳.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "יש ${count} אפשרויות שתואמות אל ׳שאל את Brave׳.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "יש ${count} אפשרויות שתואמות אל ׳סימניות׳.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "רק כדי לוודא, רצית את ׳כרטיסיה חדשה׳?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "רק כדי לוודא, רצית את ׳שאל את Brave׳?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "רק כדי לוודא, רצית את ׳סימניות׳?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "יש ${count} אפשרויות שתואמות אל ׳כרטיסיה חדשה׳.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "יש ${count} אפשרויות שתואמות אל ׳שאל את Brave׳.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "יש ${count} אפשרויות שתואמות אל ׳סימניות׳.";
