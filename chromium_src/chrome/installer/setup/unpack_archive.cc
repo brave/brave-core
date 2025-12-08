@@ -187,7 +187,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
         CreateChromeArchiveHelper(
             setup_exe, install_archive, installer_state, unpack_path,
             (previous_version.IsValid()
-                 ? UnPackConsumer::CHROME_ARCHIVE_PATCH
+                 ? UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE
                  : UnPackConsumer::COMPRESSED_CHROME_ARCHIVE)));
     if (archive_helper) {
       VLOG(1) << "Installing Chrome from compressed archive "
