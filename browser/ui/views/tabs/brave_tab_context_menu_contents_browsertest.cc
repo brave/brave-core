@@ -3,11 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
-
 #include <memory>
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
@@ -17,6 +16,7 @@
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -36,16 +36,46 @@ class BraveTabContextMenuContentsTest : public InProcessBrowserTest {
   ~BraveTabContextMenuContentsTest() override = default;
 
  protected:
-  std::unique_ptr<BraveTabContextMenuContents> CreateMenuAt(int tab_index) {
-    TabStrip* tabstrip =
-        BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
-    return std::make_unique<BraveTabContextMenuContents>(
-        tabstrip->tab_at(tab_index),
-        static_cast<BraveBrowserTabStripController*>(
-            BrowserView::GetBrowserViewForBrowser(browser())
-                ->tabstrip()
-                ->controller()),
-        tab_index);
+  std::unique_ptr<TabContextMenuController> CreateMenuControllerAt(
+      int tab_index) {
+    auto* controller = static_cast<BraveBrowserTabStripController*>(
+        BrowserView::GetBrowserViewForBrowser(browser())
+            ->tabstrip()
+            ->controller());
+
+    auto context_menu_controller = std::make_unique<TabContextMenuController>(
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
+            base::Unretained(controller)),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
+            base::Unretained(controller), tab_index),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
+            base::Unretained(controller)),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
+            base::Unretained(controller), tab_index),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::GetContextMenuAccelerator,
+            base::Unretained(controller)));
+
+    return context_menu_controller;
+  }
+
+  ui::SimpleMenuModel* CreateMenuModelAt(
+      TabContextMenuController* context_menu_controller,
+      int tab_index) {
+    brave::BraveTabMenuModelFactory factory;
+    auto model =
+        factory.Create(context_menu_controller,
+                       browser()->GetFeatures().tab_menu_model_delegate(),
+                       browser()->tab_strip_model(), tab_index);
+
+    auto* model_ptr = model.get();
+    context_menu_controller->LoadModel(std::move(model));
+
+    return model_ptr;
   }
 
   Browser* CreateBrowser(bool incognito) {
@@ -81,7 +111,8 @@ class BraveTabContextMenuContentsTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest, Basics) {
-  auto menu = CreateMenuAt(0);
+  auto menu = CreateMenuControllerAt(0);
+  CreateMenuModelAt(menu.get(), 0);
 
   // All items are disable state when there is only one tab.
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
@@ -103,10 +134,12 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest, Basics) {
 
 IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
                        BringAllTabsToThisWindow_VisibleWhenOtherBrowserExists) {
-  auto menu = CreateMenuAt(0);
   auto is_command_visible = [&]() {
-    return menu->IsCommandIdVisible(
-        TabStripModel::CommandBringAllTabsToThisWindow);
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+    return menu_model
+        ->GetIndexOfCommandId(TabStripModel::CommandBringAllTabsToThisWindow)
+        .has_value();
   };
 
   // No other browser exists, so the command is not visible.
@@ -151,9 +184,12 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   expected.insert(expected.begin(), tab_strip_model->GetWebContentsAt(0));
 
   // Bring all tabs to this browser
-  auto menu = CreateMenuAt(0);
+  auto menu = CreateMenuControllerAt(0);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 0);
   ASSERT_TRUE(
-      menu->IsCommandIdVisible(TabStripModel::CommandBringAllTabsToThisWindow));
+      menu_model
+          ->GetIndexOfCommandId(TabStripModel::CommandBringAllTabsToThisWindow)
+          .has_value());
   menu->ExecuteCommand(TabStripModel::CommandBringAllTabsToThisWindow,
                        /*event_flags=*/0);
 
@@ -177,9 +213,12 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   const auto incognito_tab_count =
       incognito_browser->tab_strip_model()->count();
 
-  auto menu = CreateMenuAt(0);
+  auto menu = CreateMenuControllerAt(0);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 0);
   ASSERT_TRUE(
-      menu->IsCommandIdVisible(TabStripModel::CommandBringAllTabsToThisWindow));
+      menu_model
+          ->GetIndexOfCommandId(TabStripModel::CommandBringAllTabsToThisWindow)
+          .has_value());
   menu->ExecuteCommand(TabStripModel::CommandBringAllTabsToThisWindow,
                        /*event_flags=*/0);
 
@@ -203,7 +242,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
     // Cache tab at 0's handle to check it's not closed when closing active tab
     // at 1 via tab context menu.
     auto tab0_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
-    auto menu = CreateMenuAt(1);
+    auto menu = CreateMenuControllerAt(1);
+    CreateMenuModelAt(menu.get(), 1);
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
                          /*event_flags=*/0);
     EXPECT_EQ(1, tab_strip_model->count());
@@ -221,7 +261,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
     // Cache tab at 0's handle to check it's not closed when closing inactive
     // tab at 1 via tab context menu.
     auto tab0_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
-    auto menu = CreateMenuAt(1);
+    auto menu = CreateMenuControllerAt(1);
+    CreateMenuModelAt(menu.get(), 1);
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
                          /*event_flags=*/0);
     EXPECT_EQ(tab0_handle, tab_strip_model->GetTabAtIndex(0)->GetHandle());
@@ -233,8 +274,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 
   // Check split view context menu with normal tab.
   {
-    auto menu = CreateMenuAt(0);
-    auto* menu_model = menu->model_.get();
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandAddToSplit);
     EXPECT_TRUE(index.has_value());
@@ -258,8 +299,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 
   // split tab's context menu has arrange command.
   {
-    auto menu = CreateMenuAt(2);
-    auto* menu_model = menu->model_.get();
+    auto menu = CreateMenuControllerAt(2);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 2);
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
     EXPECT_TRUE(index.has_value());
@@ -286,7 +327,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   // split tab's context menu has arrange command.
   {
     auto tab2_handle = tab_strip_model->GetTabAtIndex(2)->GetHandle();
-    auto menu = CreateMenuAt(1);
+    auto menu = CreateMenuControllerAt(1);
+    CreateMenuModelAt(menu.get(), 1);
     // Execute close tab menu on tab at 1 and check only that inactive tab is
     // closed from split tab.
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
@@ -308,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   // closed.
   {
     auto normal_tab_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
-    auto menu = CreateMenuAt(0);
+    auto menu = CreateMenuControllerAt(0);
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
                          /*event_flags=*/0);
     EXPECT_EQ(2, tab_strip_model->count());
@@ -331,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   // closed.
   {
     auto normal_tab_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
-    auto menu = CreateMenuAt(0);
+    auto menu = CreateMenuControllerAt(0);
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
                          /*event_flags=*/0);
     EXPECT_EQ(2, tab_strip_model->count());
@@ -350,14 +392,15 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   EXPECT_EQ(3, tab_strip_model->count());
   EXPECT_EQ(2, tab_strip_model->active_index());
   {
-    auto menu = CreateMenuAt(2);
-    auto* menu_model = menu->model_.get();
+    auto menu = CreateMenuControllerAt(2);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 2);
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
     ASSERT_TRUE(index);
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
     auto* arrange_split_menu_model =
-        menu_model->arrange_split_view_submenu_for_testing();
+        static_cast<BraveTabMenuModel*>(menu_model)
+            ->arrange_split_view_submenu_for_testing();
     ASSERT_TRUE(arrange_split_menu_model);
     index = arrange_split_menu_model->GetIndexOfCommandId(
         SplitTabMenuModel::GetCommandIdInt(
@@ -376,8 +419,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   // Non active tab's context menu has swap menu when
   // active tab is split tab.
   {
-    auto menu = CreateMenuAt(0);
-    auto* menu_model = menu->model_.get();
+    auto menu = CreateMenuControllerAt(0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     auto index = menu_model->GetIndexOfCommandId(
         TabStripModel::CommandSwapWithActiveSplit);
     EXPECT_TRUE(index.has_value());
@@ -402,16 +445,16 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsWithContainersTest,
   // Regression test for https://github.com/brave/brave-browser/issues/47808
   // The Containers submenu should be added even if CommandMoveTabsToNewWindow
   // doesn't exist in the tab context menu.
-  auto menu = CreateMenuAt(0);
-  auto* menu_model = menu->model_.get();
+  auto menu = CreateMenuControllerAt(0);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 0);
   auto index =
       menu_model->GetIndexOfCommandId(TabStripModel::CommandOpenInContainer);
   EXPECT_TRUE(index.has_value());
 
   chrome::NewEmptyWindow(browser()->profile());
 
-  menu = CreateMenuAt(0);
-  menu_model = menu->model_.get();
+  menu = CreateMenuControllerAt(0);
+  menu_model = CreateMenuModelAt(menu.get(), 0);
   index =
       menu_model->GetIndexOfCommandId(TabStripModel::CommandOpenInContainer);
   EXPECT_TRUE(index.has_value());
