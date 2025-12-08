@@ -40,7 +40,7 @@ class BraveDappPermissionPromptDialogController {
 
   void OnPrimaryButtonClicked(
       JNIEnv* env,
-      const base::android::JavaParamRef<jobjectArray>& accounts,
+      const base::android::JavaRef<jobjectArray>& accounts,
       int permission_lifetime_option);
   void OnNegativeButtonClicked(JNIEnv* env);
   void OnDialogDismissed(JNIEnv* env);

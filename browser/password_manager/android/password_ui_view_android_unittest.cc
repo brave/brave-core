@@ -44,7 +44,7 @@
 namespace android {
 
 using base::android::AttachCurrentThread;
-using base::android::JavaParamRef;
+using base::android::JavaRef;
 using password_manager::PasswordForm;
 using password_manager::TestPasswordStore;
 
@@ -128,7 +128,7 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords) {
 
   std::unique_ptr<PasswordUiViewAndroid, PasswordUiViewAndroidDestroyDeleter>
       password_ui_view(new PasswordUiViewAndroid(
-          env(), JavaParamRef<jobject>(nullptr), testing_profile_));
+          env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
   RunUntilIdle();
 
@@ -160,7 +160,7 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords_Cancelled) {
 
   std::unique_ptr<PasswordUiViewAndroid, PasswordUiViewAndroidDestroyDeleter>
       password_ui_view(new PasswordUiViewAndroid(
-          env(), JavaParamRef<jobject>(nullptr), testing_profile_));
+          env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
   RunUntilIdle();
 
@@ -188,7 +188,7 @@ TEST_F(PasswordUiViewAndroidTest, GetSerializedPasswords_WriteFailed) {
 
   std::unique_ptr<PasswordUiViewAndroid, PasswordUiViewAndroidDestroyDeleter>
       password_ui_view(new PasswordUiViewAndroid(
-          env(), JavaParamRef<jobject>(nullptr), testing_profile_));
+          env(), JavaRef<jobject>(nullptr), testing_profile_));
   // SavedPasswordsPresenter needs time to initialize and fetch passwords.
   RunUntilIdle();
 

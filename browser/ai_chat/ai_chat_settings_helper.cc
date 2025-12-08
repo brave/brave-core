@@ -196,7 +196,7 @@ void AIChatSettingsHelper::BindInterface(
 #if BUILDFLAG(IS_ANDROID)
 static jlong JNI_BraveLeoMojomHelper_Init(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jbrowser_context_handle) {
+    const base::android::JavaRef<jobject>& jbrowser_context_handle) {
   content::BrowserContext* browser_context =
       content::BrowserContextFromJavaHandle(jbrowser_context_handle);
   AIChatSettingsHelper* settings_helper =

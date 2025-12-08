@@ -15,7 +15,7 @@ namespace chrome {
 namespace android {
 static jlong JNI_MiscAndroidMetricsFactory_GetInterfaceToMiscAndroidMetrics(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto* service = misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance()
                       ->GetServiceForContext(profile);
