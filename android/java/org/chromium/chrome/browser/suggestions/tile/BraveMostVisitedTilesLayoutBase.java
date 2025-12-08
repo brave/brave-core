@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.suggestions.tile;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.GridLayout;
 
 /** The most visited tiles layout. */
@@ -40,7 +41,10 @@ public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
             }
             int tileViewWidth = widthMeasureSpec / numColumns;
             for (int i = 0; i < childCount; i++) {
-                SuggestionsTileView tileView = (SuggestionsTileView) getChildAt(i);
+                View tileView = getChildAt(i);
+                // WIP(alexeybarabash) tileView can be here either
+                // SuggestionsTileView or SuggestionsTileVerticalDivider when there is
+                // a pinned tab and the background image is turned off, the width should be adjusted
                 int row = i / numColumns;
                 int column = i % numColumns;
                 GridLayout.LayoutParams params =
