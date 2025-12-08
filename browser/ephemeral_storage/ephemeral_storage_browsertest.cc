@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -32,6 +33,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
@@ -1449,6 +1451,10 @@ class FirstPartyStorageCleanupSiteDataBrowserTest
         brave_shields::features::kBraveShredFeature);
   }
 
+  bool ShouldSupressDialogs(content::WebContents* tab) {
+    return static_cast<BraveBrowser*>(browser())->ShouldSuppressDialogs(tab);
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -1664,4 +1670,23 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
             browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab));
   EXPECT_NE(TabStripModel::kNoTab,
             browser()->tab_strip_model()->GetIndexOfWebContents(site_a_a_tab));
+}
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       IgnoreOnBeforeUnloadWhenCleaningUpStorage) {
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 3);
+  EXPECT_TRUE(site_a_tab);
+  EXPECT_TRUE(site_b_tab);
+
+  auto* site_a_tabi = tabs::TabInterface::MaybeGetFromContents(site_a_tab);
+  base::flat_set<tabs::TabHandle> for_contents{site_a_tabi->GetHandle()};
+
+  static_cast<BraveBrowser*>(browser())->SetTabsToIgnoreBeforeUnloadHandlers(
+      for_contents);
+
+  EXPECT_TRUE(ShouldSupressDialogs(site_a_tab));
+  EXPECT_FALSE(ShouldSupressDialogs(site_b_tab));
 }
