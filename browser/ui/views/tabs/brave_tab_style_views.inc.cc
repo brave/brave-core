@@ -66,10 +66,6 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
 
   // true when |tab| is shown at the beginning of split view.
   bool IsStartSplitTab(const Tab* tab) const;
-
-  SkColor GetTargetTabBackgroundColor(
-      TabStyle::TabSelectionState selection_state,
-      bool hovered) const override;
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
@@ -385,49 +381,6 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
     flags.setStrokeWidth(scale);
     canvas->DrawPath(stroke_path, flags);
   }
-}
-
-SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
-    TabStyle::TabSelectionState selection_state,
-    bool hovered) const {
-  const ui::ColorProvider* cp = tab()->GetColorProvider();
-  if (!cp) {
-    return gfx::kPlaceholderColor;
-  }
-
-  // Tab in tile doesn't have background in inactive state.
-  // In split view tile, we don't have selected tab's background.
-  // When any tab in a tile is clicked, the other tab in a same tile
-  // is also selected because clicking is start point of dragging.
-  // Because of that, whenever click a tab in a tile, the other tab's
-  // background is changed as its becomes selected tab.
-  // It's not easy to know whether selected state is from clicking or
-  // dragging here. As having selected tab state in a tile is not a
-  // common state, I think it's fine to not have that state in a tile.
-  if (IsSplitTab(tab()) && !tab()->IsActive() && !hovered) {
-    return SK_ColorTRANSPARENT;
-  }
-
-  if (!ShouldShowVerticalTabs()) {
-    return TabStyleViewsImpl::GetTargetTabBackgroundColor(selection_state,
-                                                          hovered);
-  }
-
-  if (tab()->IsActive()) {
-    return cp->GetColor(kColorBraveVerticalTabActiveBackground);
-  }
-
-  if (hovered) {
-    return cp->GetColor(kColorBraveVerticalTabHoveredBackground);
-  }
-
-  if (selection_state == TabStyle::TabSelectionState::kSelected) {
-    // Use the same color if th tab is selected via multiselection.
-    return TabStyleViewsImpl::GetTargetTabBackgroundColor(selection_state,
-                                                          hovered);
-  }
-
-  return cp->GetColor(kColorBraveVerticalTabInactiveBackground);
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
