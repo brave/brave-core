@@ -73,6 +73,7 @@ EmailAliasesAuth::EmailAliasesAuth(PrefService* prefs_service,
                                         base::Unretained(this)));
 
   auth_email_ = GetAuthEmail();
+  is_authenticated_ = !CheckAndGetAuthToken().empty() && !auth_email_.empty();
 }
 
 EmailAliasesAuth::~EmailAliasesAuth() = default;
@@ -87,8 +88,8 @@ bool EmailAliasesAuth::IsAuthenticated() const {
 }
 
 void EmailAliasesAuth::SetAuthEmail(const std::string& email) {
-  ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
   if (GetAuthEmail() != email) {
+    ::prefs::ScopedDictionaryPrefUpdate update(prefs_service_, prefs::kAuth);
     update->SetString(kEmailField, email);
     update->SetString(kTokenField, std::string_view{});
   }
