@@ -17,6 +17,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/common/constants.h"
