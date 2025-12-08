@@ -55,7 +55,7 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
-  auto* browser = browser_view()->browser();
+  auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
@@ -127,7 +127,7 @@ views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
 
 void BraveBrowserFrameViewLinuxNative::
     UpdateLeadingTrailingCaptionButtonWidth() {
-  auto* browser = browser_view()->browser();
+  auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
   std::pair<int, int> new_leading_trailing_caption_button_width;
   if (tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
@@ -184,7 +184,7 @@ void BraveBrowserFrameViewLinuxNative::
 
   // Notify toolbar view that caption button's width changed so that it can
   // make space for caption buttons.
-  static_cast<BraveToolbarView*>(browser_view()->toolbar())
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
       ->UpdateHorizontalPadding();
 }
 

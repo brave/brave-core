@@ -25,7 +25,7 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     return;
   }
 
-  auto* browser = view_->browser_view()->browser();
+  auto* browser = view_->GetBrowserView()->browser();
   DCHECK(browser);
 
   const bool should_window_caption_buttons_overlap_toolbar =
@@ -40,7 +40,7 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     // Synchronize frame button's bounds with toolbar's bounds.
     gfx::Size size = button->GetPreferredSize();
     DCHECK_LT(0, size.width());
-    auto* toolbar = view_->browser_view()->toolbar();
+    auto* toolbar = view_->GetBrowserView()->toolbar();
     const auto toolbar_height = toolbar->GetPreferredSize().height();
     size.set_height(toolbar_height);
     button->SetPreferredSize(size);
