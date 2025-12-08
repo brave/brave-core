@@ -136,7 +136,10 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             // TODO: Handle wallet toggle change
             return true;
         } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(key)) {
-            // TODO: Handle web discovery project toggle change
+            // Use the generated policy constant
+            // String policyKey = BravePolicyConstants.BRAVE_WEB_DISCOVERY_ENABLED;
+            // TODO: Call BraveOriginService to set the policy value
+            // braveOriginService.setPolicyValue(policyKey, enabled);
             return true;
         }
         return false;

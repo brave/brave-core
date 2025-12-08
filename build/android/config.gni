@@ -101,6 +101,7 @@ brave_java_cpp_enum_filter =
 brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",
+  "//brave/android:brave_policy_constants_java_srcjar",
   "//brave/browser/android/preferences:java_pref_names_srcjar",
   "//brave/components/web_discovery/browser/android:java_pref_names_srcjar",
 ]
