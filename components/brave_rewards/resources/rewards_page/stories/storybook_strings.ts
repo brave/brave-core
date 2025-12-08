@@ -102,7 +102,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   captchaSupportButtonLabel: 'Contact support',
   closeButtonLabel: 'Close',
   communityTitle: 'Community',
-  connectedAdsViewedText: "You're earning for seeing $1# Ads/$1 this month",
+  connectedAdsViewedText: "You're earning for seeing $1 # Ads/$1 this month",
   connectAccountSubtext: 'Connect a payout account',
   connectAccountText: 'Ready to start earning?',
   connectButtonLabel: 'Connect account',
@@ -251,7 +251,7 @@ export const localeStrings: { [K in StringKey]: string } = {
   tosUpdateRequiredText:
     'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset/$1 Brave Rewards, which will disable the feature.',
   tosUpdateRequiredTitle: 'Updated Terms of Service',
-  unconnectedAdsViewedText: "You've seen $1# Ads/$1 this month",
+  unconnectedAdsViewedText: "You've seen $1 # Ads/$1 this month",
   unsupportedRegionText1:
     'Unfortunately, it looks like you’re in a region where Brave Rewards is not available.',
   unsupportedRegionText2: 'Don’t worry.',

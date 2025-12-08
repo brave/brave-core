@@ -131,6 +131,7 @@ interface ModalAction {
   className?: string
   isDisabled?: boolean
   isPrimary?: boolean
+  autoFocus?: boolean
 }
 
 interface ModalActionsProps {
@@ -138,8 +139,22 @@ interface ModalActionsProps {
 }
 
 function ModalActions(props: ModalActionsProps) {
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (ref.current) {
+      const button = ref.current.querySelector<HTMLElement>(
+        'leo-button[autofocus]',
+      )
+      button?.focus()
+    }
+  }, [])
+
   return (
-    <div data-css-scope={actionsStyle.scope}>
+    <div
+      ref={ref}
+      data-css-scope={actionsStyle.scope}
+    >
       {props.actions.map((action) => {
         let classNames: string[] = []
         if (action.className) {
@@ -155,6 +170,7 @@ function ModalActions(props: ModalActionsProps) {
             isDisabled={action.isDisabled}
             kind={action.isPrimary ? 'filled' : 'outline'}
             className={classNames.join(' ')}
+            autofocus={action.autoFocus}
           >
             {action.text}
           </Button>
