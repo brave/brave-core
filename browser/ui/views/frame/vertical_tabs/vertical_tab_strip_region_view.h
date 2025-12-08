@@ -12,12 +12,19 @@
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/animation/slide_animation.h"
+#include "ui/views/animation/animation_delegate_views.h"
+#include "ui/views/context_menu_controller.h"
 #include "ui/views/controls/resize_area_delegate.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace views {
 class LabelButton;
@@ -27,6 +34,7 @@ class MenuRunner;
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
+class TabStyle;
 
 // Wraps TabStripRegion and show it vertically.
 class BraveVerticalTabStripRegionView : public views::View,
