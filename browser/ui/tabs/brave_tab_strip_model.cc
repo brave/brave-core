@@ -80,7 +80,7 @@ void BraveTabStripModel::UpdateWebContentsStateAt(int index,
   if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     // Make sure that the tab's last origin is updated when the url changes.
     // When last origin changes, the custom title is reset.
-    GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
+    TabUIHelper::From(GetTabAtIndex(index))->UpdateLastOrigin();
   }
 
   TabStripModel::UpdateWebContentsStateAt(index, change_type);
@@ -153,7 +153,7 @@ void BraveTabStripModel::SetCustomTitleForTab(
 
   auto* tab_interface = GetTabAtIndex(index);
   CHECK(tab_interface);
-  auto* tab_ui_helper = tab_interface->GetTabFeatures()->tab_ui_helper();
+  auto* tab_ui_helper = TabUIHelper::From(tab_interface);
   CHECK(tab_ui_helper);
   tab_ui_helper->SetCustomTitle(title);
 
