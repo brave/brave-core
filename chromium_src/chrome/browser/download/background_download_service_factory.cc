@@ -11,6 +11,8 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
 #include "components/download/content/factory/download_service_factory_helper.h"
+#include "components/download/public/background_service/background_download_service.h"
+#include "components/download/public/task/task_scheduler.h"
 
 namespace {
 
