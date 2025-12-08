@@ -62,10 +62,7 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
     tabs::TabInterface* const tab = model->GetTabAtIndex(index);
     CHECK(tab);
 
-    tabs::TabFeatures* const features = tab->GetTabFeatures();
-    CHECK(features);
-
-    TabUIHelper* const tab_ui_helper = features->tab_ui_helper();
+    TabUIHelper* const tab_ui_helper = TabUIHelper::From(tab);
     CHECK(tab_ui_helper);
     data.is_custom_title = tab_ui_helper->has_custom_title();
   }
