@@ -451,7 +451,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         View rewardsBadge = findViewById(R.id.rewards_notfication_badge);
         if (rewardsBadge != null) {
+            mIsInitialNotificationPosted = shouldShow;
             rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+            if (shouldShow) {
+                // We shouldn't show both badges at the same time
+                mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
+            } else {
+                // Update the verified publisher mark depending on the current tab
+                updateVerifiedPublisherMark();
+            }
         }
     }
 
