@@ -13,7 +13,7 @@ namespace cosmetic_filters {
 
 static jboolean JNI_BraveCosmeticFiltersUtils_LaunchContentPickerForWebContent(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& tab) {
+    const base::android::JavaRef<jobject>& tab) {
   TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);
   content::WebContents* web_contents = tab_android->web_contents();
   if (!web_contents) {

@@ -29,7 +29,7 @@
 #include "url/gurl.h"
 
 using base::android::ConvertUTF8ToJavaString;
-using base::android::JavaParamRef;
+using base::android::JavaRef;
 using base::android::ScopedJavaLocalRef;
 using brave_shields::ControlType;
 
@@ -75,7 +75,7 @@ namespace android {
 // This file is deprecated, prefs should be accessed directly from Java
 void JNI_BravePrefServiceBridge_SetCookiesBlockType(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type) {
+    const base::android::JavaRef<jstring>& type) {
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       GetOriginalProfile()->GetPrefs(),
@@ -118,21 +118,21 @@ jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(JNIEnv* env) {
 
 jlong JNI_BravePrefServiceBridge_GetTrackersBlockedCount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jobject>& j_profile) {
   Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kTrackersBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jobject>& j_profile) {
   Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
 jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jobject>& j_profile) {
   Profile* profile = Profile::FromJavaObject(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
@@ -140,7 +140,7 @@ jlong JNI_BravePrefServiceBridge_GetDataSaved(
 
 void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
+    const base::android::JavaRef<jobject>& j_profile,
     jlong count) {
   if (count <= 0) {
     return;
@@ -153,7 +153,7 @@ void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(
 
 void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
+    const base::android::JavaRef<jobject>& j_profile,
     jlong count) {
   if (count <= 0) {
     return;
@@ -165,7 +165,7 @@ void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(
 
 void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile,
+    const base::android::JavaRef<jobject>& j_profile,
     jlong count) {
   if (count <= 0) {
     return;

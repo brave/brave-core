@@ -33,8 +33,9 @@ namespace android {
 // That class is linked to a global toolbar. It's a one instance on Android
 BraveShieldsContentSettings* g_brave_shields_content_settings = nullptr;
 
-static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+static void JNI_BraveShieldsContentSettings_Init(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& jcaller) {
   g_brave_shields_content_settings =
       new BraveShieldsContentSettings(env, jcaller);
 }
@@ -89,10 +90,11 @@ void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id,
       block_type, subresource);
 }
 
-void JNI_BraveShieldsContentSettings_SetBraveShieldsEnabled(JNIEnv* env,
+void JNI_BraveShieldsContentSettings_SetBraveShieldsEnabled(
+    JNIEnv* env,
     jboolean enabled,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -100,19 +102,21 @@ void JNI_BraveShieldsContentSettings_SetBraveShieldsEnabled(JNIEnv* env,
       g_browser_process->local_state());
 }
 
-jboolean JNI_BraveShieldsContentSettings_GetBraveShieldsEnabled(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+jboolean JNI_BraveShieldsContentSettings_GetBraveShieldsEnabled(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   return brave_shields::GetBraveShieldsEnabled(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
-void JNI_BraveShieldsContentSettings_SetAdControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+void JNI_BraveShieldsContentSettings_SetAdControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -123,9 +127,10 @@ void JNI_BraveShieldsContentSettings_SetAdControlType(JNIEnv* env,
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetAdControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+JNI_BraveShieldsContentSettings_GetAdControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType control_type = brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -135,10 +140,11 @@ base::android::ScopedJavaLocalRef<jstring>
       brave_shields::ControlTypeToString(control_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+void JNI_BraveShieldsContentSettings_SetCookieControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -151,9 +157,9 @@ void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
 
 void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -166,23 +172,24 @@ void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(
 
 void JNI_BraveShieldsContentSettings_ResetCosmeticFilter(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url) {
+    const base::android::JavaRef<jstring>& url) {
   g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
 }
 
 jboolean JNI_BraveShieldsContentSettings_AreAnyBlockedElementsPresent(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url) {
+    const base::android::JavaRef<jstring>& url) {
   return g_brave_browser_process->ad_block_service()
       ->AreAnyBlockedElementsPresent(
           GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetCookieControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+JNI_BraveShieldsContentSettings_GetCookieControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType control_type = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -194,10 +201,11 @@ base::android::ScopedJavaLocalRef<jstring>
       brave_shields::ControlTypeToString(control_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -209,9 +217,10 @@ void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(JNIEnv* env,
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetFingerprintingControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+JNI_BraveShieldsContentSettings_GetFingerprintingControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType control_type =
       brave_shields::GetFingerprintingControlType(
           HostContentSettingsMapFactory::GetForProfile(
@@ -224,9 +233,9 @@ base::android::ScopedJavaLocalRef<jstring>
 
 void JNI_BraveShieldsContentSettings_SetHttpsUpgradeControlType(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetHttpsUpgradeControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -239,8 +248,8 @@ void JNI_BraveShieldsContentSettings_SetHttpsUpgradeControlType(
 base::android::ScopedJavaLocalRef<jstring>
 JNI_BraveShieldsContentSettings_GetHttpsUpgradeControlType(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType control_type =
       brave_shields::GetHttpsUpgradeControlType(
           HostContentSettingsMapFactory::GetForProfile(
@@ -254,8 +263,8 @@ JNI_BraveShieldsContentSettings_GetHttpsUpgradeControlType(
 base::android::ScopedJavaLocalRef<jstring>
 JNI_BraveShieldsContentSettings_GetCosmeticFilteringControlType(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType cosmetic_type =
       brave_shields::GetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(
@@ -266,10 +275,11 @@ JNI_BraveShieldsContentSettings_GetCosmeticFilteringControlType(
       env, brave_shields::ControlTypeToString(cosmetic_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+void JNI_BraveShieldsContentSettings_SetNoScriptControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& type,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(
           Profile::FromJavaObject(j_profile)),
@@ -280,9 +290,10 @@ void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,
 }
 
 base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetNoScriptControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+JNI_BraveShieldsContentSettings_GetNoScriptControlType(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   brave_shields::ControlType control_type =
       brave_shields::GetNoScriptControlType(
           HostContentSettingsMapFactory::GetForProfile(
@@ -296,8 +307,8 @@ base::android::ScopedJavaLocalRef<jstring>
 void JNI_BraveShieldsContentSettings_SetForgetFirstPartyStorageEnabled(
     JNIEnv* env,
     jboolean enabled,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromJavaObject(j_profile));
@@ -307,8 +318,8 @@ void JNI_BraveShieldsContentSettings_SetForgetFirstPartyStorageEnabled(
 
 jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& url,
-    const base::android::JavaParamRef<jobject>& j_profile) {
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromJavaObject(j_profile));

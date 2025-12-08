@@ -80,8 +80,8 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
 [[maybe_unused]] static void
 JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jdelegate,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jdelegate,
+    const base::android::JavaRef<jobject>& jweb_contents) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
