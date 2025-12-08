@@ -26,12 +26,14 @@ import {
   ErrorTitle,
   ErrorBox,
   ErrorDescriptionText,
+  WarningIconWrapper,
   WarningIcon,
+  OriginErrorTitle,
   OriginErrorText,
   LaunchButton,
   LaunchIcon,
-} from './sign_in_with_ethereum.style'
-import { Row, Column, VerticalDivider, VerticalSpace } from '../../shared/style'
+} from './sign_in_with_ethereum_error.style'
+import { Row, Column } from '../../shared/style'
 
 export const SignInWithEthereumError = () => {
   // Queries
@@ -80,58 +82,54 @@ export const SignInWithEthereumError = () => {
   }
 
   return (
-    <ErrorWrapper>
-      <>
-        <Row padding='16px 16px 11px 16px'>
-          <ErrorTitle
-            isBold={true}
-            textSize='18px'
-          >
-            {getLocale('braveWalletSecurityRiskDetected')}
-          </ErrorTitle>
-        </Row>
-        <VerticalDivider />
-      </>
-      <Column
+    <ErrorWrapper
+      fullWidth={true}
+      fullHeight={true}
+      justifyContent='space-between'
+    >
+      <Row padding='18px 0px'>
+        <ErrorTitle textColor='primary'>
+          {getLocale('braveWalletSecurityRiskDetected')}
+        </ErrorTitle>
+      </Row>
+      <ErrorBox
         fullWidth={true}
-        fullHeight={true}
         justifyContent='space-between'
-        padding='16px'
+        padding='0px 42px'
+        gap='34px'
       >
-        <ErrorBox>
-          <WarningIcon />
-          <ErrorDescriptionText
-            textSize='16px'
-            isBold={true}
+        <Column>
+          <WarningIconWrapper
+            padding='12px'
+            margin='0px 0px 8px 0px'
           >
+            <WarningIcon />
+          </WarningIconWrapper>
+          <OriginErrorTitle textColor='primary'>
             {errorData?.originInfo.eTldPlusOne ?? ''}
-          </ErrorDescriptionText>
-          <VerticalSpace space='8px' />
-          <OriginErrorText textSize='12px'>
+          </OriginErrorTitle>
+          <OriginErrorText textColor='error'>
             <CreateSiteOrigin
               originSpec={errorData?.originInfo.originSpec ?? ''}
               eTldPlusOne={errorData?.originInfo.eTldPlusOne ?? ''}
             />
           </OriginErrorText>
+        </Column>
 
-          <ErrorDescriptionText
-            textSize='14px'
-            isBold={false}
-          >
-            {errorMessage}
-            {errorData?.chainId && (
-              <LaunchButton onClick={onClickViewOnChainList}>
-                <LaunchIcon />
-              </LaunchButton>
-            )}
-          </ErrorDescriptionText>
-        </ErrorBox>
-        <Row>
-          <Button onClick={onClickClose}>
-            {getLocale('braveWalletButtonClose')}
-          </Button>
-        </Row>
-      </Column>
+        <ErrorDescriptionText textColor='primary'>
+          {errorMessage}
+          {errorData?.chainId && (
+            <LaunchButton onClick={onClickViewOnChainList}>
+              <LaunchIcon />
+            </LaunchButton>
+          )}
+        </ErrorDescriptionText>
+      </ErrorBox>
+      <Row padding='16px'>
+        <Button onClick={onClickClose}>
+          {getLocale('braveWalletButtonClose')}
+        </Button>
+      </Row>
     </ErrorWrapper>
   )
 }

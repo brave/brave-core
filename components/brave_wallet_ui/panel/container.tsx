@@ -242,7 +242,10 @@ function Container() {
 
   if (signMessageErrorData?.length) {
     return (
-      <PanelWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
         <SignInWithEthereumError />
       </PanelWrapper>
     )
