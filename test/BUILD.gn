@@ -1226,6 +1226,7 @@ test("brave_browser_tests") {
       "//chrome/browser/apps/app_service",
       "//chrome/browser/apps/app_service:constants",
       "//chrome/browser/themes",
+      "//chrome/browser/ui/tabs:tabs_public",
       "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",

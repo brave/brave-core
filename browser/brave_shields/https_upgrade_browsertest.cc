@@ -30,7 +30,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ssl/ask_before_http_dialog_controller.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"  // nogncheck
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
