@@ -62,7 +62,7 @@ BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            TabStripUserGestureDetails detail) {
-  if (GetTabCount() == 0) {
+  if (count() == 0) {
     return;
   }
 
