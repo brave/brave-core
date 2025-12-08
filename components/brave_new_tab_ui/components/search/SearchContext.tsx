@@ -80,7 +80,7 @@ class SearchPage implements PageInterface {
   onTabStripChanged() { }
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
   setKeywordSelected(isKeywordSelected: boolean): void {}
-  updateSuggestedTabContext(tab: (TabInfo | null)): void {}
+  updateAutoSuggestedTabContext(tab: (TabInfo | null)): void {}
 }
 
 export const search = new SearchPage()
