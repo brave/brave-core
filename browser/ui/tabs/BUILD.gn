@@ -67,6 +67,8 @@ source_set("tab_menu") {
   sources = [
     "brave_browser_tab_menu_model_delegate.cc",
     "brave_browser_tab_menu_model_delegate.h",
+    "brave_tab_menu_model_factory.cc",
+    "brave_tab_menu_model_factory.h",
     "tab_menu_model_delegate.cc",
   ]
 

@@ -14,6 +14,8 @@
 
 #define ExecuteContextMenuCommand(...)            \
   virtual ExecuteContextMenuCommand(__VA_ARGS__); \
+  friend class BraveTabContextMenuContentsTest;   \
+  friend class VerticalTabStripStringBrowserTest; \
   friend class BraveBrowserTabStripController
 
 #define IsContextMenuCommandChecked(...) \
@@ -22,12 +24,8 @@
 #define IsContextMenuCommandEnabled(...) \
   virtual IsContextMenuCommandEnabled(__VA_ARGS__)
 
-#define GetContextMenuAccelerator(...) \
-  virtual GetContextMenuAccelerator(__VA_ARGS__)
-
 #include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.h>  // IWYU pragma: export
 
-#undef GetContextMenuAccelerator
 #undef IsContextMenuCommandEnabled
 #undef IsContextMenuCommandChecked
 #undef ExecuteContextMenuCommand
