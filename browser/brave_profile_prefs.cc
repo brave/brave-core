@@ -572,7 +572,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   containers::RegisterProfilePrefs(registry);
 #endif
 
-  email_aliases::EmailAliasesService::RegisterProfilePref(registry);
+  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 
   OverrideDefaultPrefValues(registry);
 }
