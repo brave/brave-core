@@ -1,8 +1,24 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index c9239add48c2d63c958585b1ec19b5a148c66d5c..488f0e2a043d2bae161e760b0259b7cf3ff6e701 100644
+index 8555548e21c02e6af04effa25a6719706ae35874..f234c45951deef233ccce12f4ee21daaa3a85658 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
-@@ -133,6 +133,7 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
+@@ -4,6 +4,7 @@
+ 
+ #include "chrome/browser/actor/ui/handoff_button_controller.h"
+ 
++#include "base/feature_list.h"
+ #include "cc/paint/paint_filter.h"
+ #include "cc/paint/paint_flags.h"
+ #include "cc/paint/paint_shader.h"
+@@ -16,6 +17,7 @@
+ #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+ #include "chrome/browser/ui/tabs/public/tab_features.h"
+ #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
++#include "chrome/common/chrome_features.h"
+ #include "chrome/grit/generated_resources.h"
+ #include "components/tabs/public/tab_interface.h"
+ #include "components/vector_icons/vector_icons.h"
+@@ -135,6 +137,7 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
        auto blur_filter = sk_make_sp<cc::BlurPaintFilter>(
            kShadowBlurSigma, kShadowBlurSigma, SkTileMode::kDecal, nullptr);
        shadow_flags.setImageFilter(std::move(blur_filter));
