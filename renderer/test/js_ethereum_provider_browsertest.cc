@@ -165,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   EXPECT_THAT(content::EvalJs(primary_main_frame(), command),
               content::EvalJsResult::ErrorIs(
                   testing::HasSubstr("Cannot read properties of undefined")));
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 
   waiter->Wait();
   histogram_tester_->ExpectUniqueSample(kHistogramName, 0, 1);
@@ -183,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   auto result = content::EvalJs(primary_main_frame(), command);
   EXPECT_TRUE(result.is_ok());
   ASSERT_TRUE(result.ExtractBool());
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   // unable to overwrite
   std::string overwrite = "window.ethereum = ['test'];window.ethereum[0]";
   EXPECT_TRUE(content::EvalJs(primary_main_frame(), overwrite).is_ok());
@@ -223,7 +223,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                     testing::HasSubstr("Cannot read properties of undefined")));
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
@@ -249,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                     testing::HasSubstr("Cannot read properties of undefined")));
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
@@ -276,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
               content::EvalJs(primary_main_frame(), command));
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
@@ -301,7 +301,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
                     .ExtractBool());
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
@@ -329,7 +329,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                     testing::HasSubstr("Cannot read properties of undefined")));
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
@@ -345,7 +345,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kTestEIP6963).ExtractBool());
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
@@ -373,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   EXPECT_TRUE(
       content::EvalJs(primary_main_frame(), kTestEIP6963).ExtractBool());
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -411,7 +411,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
               content::EvalJs(primary_main_frame(), command));
   }
 
-  EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
 }
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
