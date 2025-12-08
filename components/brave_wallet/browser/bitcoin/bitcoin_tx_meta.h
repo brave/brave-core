@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 
 namespace base {
@@ -16,8 +17,6 @@ class Value;
 }  // namespace base
 
 namespace brave_wallet {
-
-class BitcoinTransaction;
 
 class BitcoinTxMeta : public TxMeta {
  public:
