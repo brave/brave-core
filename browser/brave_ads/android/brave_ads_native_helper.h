@@ -12,36 +12,36 @@ namespace brave_ads {
 
 static jboolean JNI_BraveAdsNativeHelper_IsOptedInToNotificationAds(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android);
+    const base::android::JavaRef<jobject>& j_profile_android);
 
 static void JNI_BraveAdsNativeHelper_SetOptedInToNotificationAds(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android,
+    const base::android::JavaRef<jobject>& j_profile_android,
     jboolean opted_in);
 
 static jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android);
+    const base::android::JavaRef<jobject>& j_profile_android);
 
 static void JNI_BraveAdsNativeHelper_ClearData(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android);
+    const base::android::JavaRef<jobject>& j_profile_android);
 
 static void JNI_BraveAdsNativeHelper_OnNotificationAdShown(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android,
-    const base::android::JavaParamRef<jstring>& j_notification_id);
+    const base::android::JavaRef<jobject>& j_profile_android,
+    const base::android::JavaRef<jstring>& j_notification_id);
 
 static void JNI_BraveAdsNativeHelper_OnNotificationAdClosed(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android,
-    const base::android::JavaParamRef<jstring>& j_notification_id,
+    const base::android::JavaRef<jobject>& j_profile_android,
+    const base::android::JavaRef<jstring>& j_notification_id,
     jboolean j_by_user);
 
 static void JNI_BraveAdsNativeHelper_OnNotificationAdClicked(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android,
-    const base::android::JavaParamRef<jstring>& j_notification_id);
+    const base::android::JavaRef<jobject>& j_profile_android,
+    const base::android::JavaRef<jstring>& j_notification_id);
 
 }  // namespace brave_ads
 

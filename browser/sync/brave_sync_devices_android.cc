@@ -108,7 +108,7 @@ syncer::BraveSyncServiceImpl* BraveSyncDevicesAndroid::GetSyncService() const {
 
 void BraveSyncDevicesAndroid::DeleteDevice(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& device_guid) {
+    const base::android::JavaRef<jstring>& device_guid) {
   std::string str_device_guid =
       base::android::ConvertJavaStringToUTF8(device_guid);
   auto* sync_service = GetSyncService();
@@ -124,7 +124,7 @@ void BraveSyncDevicesAndroid::DeleteDevice(
 
 static void JNI_BraveSyncDevices_Init(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    const base::android::JavaRef<jobject>& jcaller) {
   new BraveSyncDevicesAndroid(env, jcaller);
 }
 
