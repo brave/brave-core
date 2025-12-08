@@ -14,7 +14,7 @@
 
 #define ExecuteContextMenuCommand(...)            \
   virtual ExecuteContextMenuCommand(__VA_ARGS__); \
-  friend class BraveTabContextMenuContentsTest;   \
+  friend class BraveTabMenuBrowserTest;           \
   friend class VerticalTabStripStringBrowserTest; \
   friend class BraveBrowserTabStripController
 

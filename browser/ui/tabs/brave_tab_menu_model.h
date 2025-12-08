@@ -45,7 +45,7 @@ class BraveTabMenuModel : public TabMenuModel {
   bool IsNewFeatureAt(size_t index) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,
                            SplitViewMenuCustomizationTest);
 
   void Build(Browser* browser,
