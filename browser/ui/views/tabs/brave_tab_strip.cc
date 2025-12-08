@@ -165,10 +165,9 @@ void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
   TabStrip::UpdateHoverCard(tab, update_type);
 }
 
-void BraveTabStrip::MaybeStartDrag(
-    TabSlotView* source,
-    const ui::LocatedEvent& event,
-    const ui::ListSelectionModel& original_selection) {
+void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
+                                   const ui::LocatedEvent& event,
+                                   ui::ListSelectionModel original_selection) {
   if (ShouldShowVerticalTabs()) {
     // When it's vertical tab strip, all the dragged tabs are either pinned or
     // unpinned.
