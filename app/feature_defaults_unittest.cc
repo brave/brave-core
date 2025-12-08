@@ -249,9 +249,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
-#if !BUILDFLAG(IS_ANDROID)
-      &translate::kTFLiteLanguageDetectionEnabled,
-#endif
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
