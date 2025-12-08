@@ -22,9 +22,9 @@ namespace ai_chat {
 
 static void JNI_BraveLeoUtils_OpenLeoQuery(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents,
-    const base::android::JavaParamRef<jstring>& conversation_uuid,
-    const base::android::JavaParamRef<jstring>& query) {
+    const base::android::JavaRef<jobject>& jweb_contents,
+    const base::android::JavaRef<jstring>& conversation_uuid,
+    const base::android::JavaRef<jstring>& query) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
@@ -68,7 +68,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
 
 static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
+    const base::android::JavaRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(

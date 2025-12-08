@@ -36,8 +36,8 @@
 // class redefinition issues. So we use [[maybe_unused]] to suppress the error.
 [[maybe_unused]] static void JNI_WebsitePreferenceBridge_ClearCookieData(
     JNIEnv* env,
-    const jni_zero::JavaParamRef<jobject>& jbrowser_context_handle,
-    const jni_zero::JavaParamRef<jstring>& jorigin) {
+    const jni_zero::JavaRef<jobject>& jbrowser_context_handle,
+    const jni_zero::JavaRef<jstring>& jorigin) {
   JNI_WebsitePreferenceBridge_ClearCookieData_ChromiumImpl(
       env, jbrowser_context_handle, jorigin);
 

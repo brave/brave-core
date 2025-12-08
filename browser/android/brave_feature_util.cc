@@ -35,7 +35,7 @@ int GetNumberOfOptions(const std::string& internal_name) {
 
 static void JNI_BraveFeatureUtil_EnableFeature(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& featureName,
+    const base::android::JavaRef<jstring>& featureName,
     jboolean enabled,
     jboolean fallback_to_default) {
   std::string feature_name =

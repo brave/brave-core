@@ -53,7 +53,6 @@
 
 namespace {
 
-using base::android::JavaParamRef;
 using base::android::JavaRef;
 using base::android::ScopedJavaLocalRef;
 using IsInsecureCredential = CredentialEditBridge::IsInsecureCredential;
@@ -256,7 +255,7 @@ void PasswordUiViewAndroid::HandleSerializePasswords(
 
 void PasswordUiViewAndroid::HandleShowPasswordEntryEditingView(
     JNIEnv* env,
-    const JavaParamRef<jobject>& context,
+    const JavaRef<jobject>& context,
     int index) {
   if (static_cast<size_t>(index) >= passwords_.size() ||
       credential_edit_bridge_) {
@@ -277,7 +276,7 @@ void PasswordUiViewAndroid::HandleShowPasswordEntryEditingView(
 
 void PasswordUiViewAndroid::HandleShowBlockedCredentialView(
     JNIEnv* env,
-    const JavaParamRef<jobject>& context,
+    const JavaRef<jobject>& context,
     int index) {
   if (static_cast<size_t>(index) >= blocked_sites_.size() ||
       credential_edit_bridge_) {
@@ -351,10 +350,9 @@ jint JNI_PasswordUiView_GetMaxPasswordsPerCsvFile(JNIEnv* env) {
 }
 
 // static
-static jlong JNI_PasswordUiView_Init(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj,
-    Profile* profile) {
+static jlong JNI_PasswordUiView_Init(JNIEnv* env,
+                                     const base::android::JavaRef<jobject>& obj,
+                                     Profile* profile) {
   PasswordUiViewAndroid* controller =
       new PasswordUiViewAndroid(env, obj, profile);
   return reinterpret_cast<intptr_t>(controller);
