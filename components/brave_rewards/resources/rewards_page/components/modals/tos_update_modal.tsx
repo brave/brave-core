@@ -21,16 +21,6 @@ interface Props {
 
 export function TosUpdateModal(props: Props) {
   const { getString } = useLocaleContext()
-
-  const onMount = React.useCallback((elem: HTMLElement | null) => {
-    if (elem) {
-      const link = elem.querySelector<HTMLLinkElement>('a')
-      if (link) {
-        link.focus()
-      }
-    }
-  }, [])
-
   return (
     <Modal>
       <Modal.Header title={getString('tosUpdateRequiredTitle')} />
@@ -40,7 +30,7 @@ export function TosUpdateModal(props: Props) {
             $1: (content) => <button onClick={props.onReset}>{content}</button>,
           })}
         </div>
-        <div ref={onMount}>
+        <div>
           {formatString(getString('tosUpdateLink'), {
             $1: (content) => (
               <NewTabLink href={urls.termsOfServiceURL}>{content}</NewTabLink>
@@ -54,6 +44,7 @@ export function TosUpdateModal(props: Props) {
             text: getString('tosUpdateAcceptButtonLabel'),
             onClick: props.onAccept,
             isPrimary: true,
+            autoFocus: true,
           },
         ]}
       />
