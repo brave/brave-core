@@ -515,7 +515,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       selectedActionType: undefined,
       selectedSkill: skill,
       isToolsMenuOpen: false,
-      inputText: [`/${skill.shortcut} `],
     }
 
     makeEdit(document.querySelector('[data-editor="true"]')!)
