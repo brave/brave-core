@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -30,10 +30,10 @@
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-class BraveTabContextMenuContentsTest : public InProcessBrowserTest {
+class BraveTabMenuBrowserTest : public InProcessBrowserTest {
  public:
-  BraveTabContextMenuContentsTest() = default;
-  ~BraveTabContextMenuContentsTest() override = default;
+  BraveTabMenuBrowserTest() = default;
+  ~BraveTabMenuBrowserTest() override = default;
 
  protected:
   std::unique_ptr<TabContextMenuController> CreateMenuControllerAt(
@@ -110,7 +110,7 @@ class BraveTabContextMenuContentsTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest, Basics) {
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, Basics) {
   auto menu = CreateMenuControllerAt(0);
   CreateMenuModelAt(menu.get(), 0);
 
@@ -132,7 +132,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest, Basics) {
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        BringAllTabsToThisWindow_VisibleWhenOtherBrowserExists) {
   auto is_command_visible = [&]() {
     auto menu = CreateMenuControllerAt(0);
@@ -160,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   EXPECT_FALSE(is_command_visible());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        BringAllTabsToThisWindow_TabsInOrder) {
   // Prepare a new browser with multiple tabs.
   auto* new_browser = CreateBrowser(/*incognito=*/false);
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   EXPECT_THAT(GetWebContentses(browser()), testing::ElementsAreArray(expected));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        BringAllTabsToThisWindow_MultipleWindows) {
   auto* new_browser_1 = CreateBrowser(/*incognito=*/false);
   AddTabs(new_browser_1, /*new_tab_count=*/2, /*pinned_tab_count=*/0);
@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   EXPECT_EQ(incognito_browser->tab_strip_model()->count(), incognito_tab_count);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
                        SplitViewMenuCustomizationTest) {
   // Smoke test for normal tab closing to verify split view's tab closing
   // customization doesn't affect original tab closing behavior.
@@ -429,18 +429,17 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-class BraveTabContextMenuContentsWithContainersTest
-    : public BraveTabContextMenuContentsTest {
+class BraveTabMenuWithContainersBrowserTest : public BraveTabMenuBrowserTest {
  public:
-  BraveTabContextMenuContentsWithContainersTest() = default;
-  ~BraveTabContextMenuContentsWithContainersTest() override = default;
+  BraveTabMenuWithContainersBrowserTest() = default;
+  ~BraveTabMenuWithContainersBrowserTest() override = default;
 
  private:
   base::test::ScopedFeatureList feature_list_{
       containers::features::kContainers};
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsWithContainersTest,
+IN_PROC_BROWSER_TEST_F(BraveTabMenuWithContainersBrowserTest,
                        ContainersSubMenuExists) {
   // Regression test for https://github.com/brave/brave-browser/issues/47808
   // The Containers submenu should be added even if CommandMoveTabsToNewWindow

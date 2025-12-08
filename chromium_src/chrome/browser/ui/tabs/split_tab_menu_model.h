@@ -12,7 +12,7 @@
 #define CloseTabAtIndex(...)                                \
   CloseTabAtIndex(__VA_ARGS__);                             \
   friend class BraveSplitTabMenuModel;                      \
-  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest, \
+  FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,         \
                            SplitViewMenuCustomizationTest); \
   static CommandId GetCommandIdEnum(int command_id);        \
   static int GetCommandIdInt(CommandId command_id)
