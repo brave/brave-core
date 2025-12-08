@@ -59,7 +59,7 @@ struct GenerateRewriteTestParam {
   mojom::ActionType action_type;
   ExtendedContentBlockType expected_content_type;
   int message_id;
-  std::string tone;
+  std::optional<std::string> tone;
 };
 
 }  // namespace
@@ -2613,9 +2613,9 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
       l10n_util::GetStringFUTF8(IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
                                 base::UTF8ToUTF16(test_text));
   std::string expected_text =
-      !params.tone.empty()
+      params.tone.has_value()
           ? l10n_util::GetStringFUTF8(params.message_id,
-                                      base::UTF8ToUTF16(params.tone))
+                                      base::UTF8ToUTF16(*params.tone))
           : l10n_util::GetStringUTF8(params.message_id);
   std::string expected_messages = absl::StrFormat(
       R"([
@@ -2710,16 +2710,16 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         GenerateRewriteTestParam{"Paraphrase", mojom::ActionType::PARAPHRASE,
                                  ExtendedContentBlockType::kParaphrase,
-                                 IDS_AI_CHAT_QUESTION_PARAPHRASE, ""},
+                                 IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt},
         GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
                                  ExtendedContentBlockType::kImprove,
-                                 IDS_AI_CHAT_QUESTION_IMPROVE, ""},
+                                 IDS_AI_CHAT_QUESTION_IMPROVE, std::nullopt},
         GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
                                  ExtendedContentBlockType::kShorten,
-                                 IDS_AI_CHAT_QUESTION_SHORTEN, ""},
+                                 IDS_AI_CHAT_QUESTION_SHORTEN, std::nullopt},
         GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
                                  ExtendedContentBlockType::kExpand,
-                                 IDS_AI_CHAT_QUESTION_EXPAND, ""},
+                                 IDS_AI_CHAT_QUESTION_EXPAND, std::nullopt},
         GenerateRewriteTestParam{"Academic", mojom::ActionType::ACADEMICIZE,
                                  ExtendedContentBlockType::kChangeTone,
                                  IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,

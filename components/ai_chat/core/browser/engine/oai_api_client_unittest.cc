@@ -38,6 +38,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -365,47 +366,39 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
   // First message
   const base::Value::Dict* msg0 = serialized[0].GetIfDict();
   ASSERT_TRUE(msg0);
+  std::string expected_msg1_json = absl::StrFormat(R"({
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Here's an image:"},
+      {"type": "image_url", "image_url": {"detail": "low", "url": "%s"}},
+      {"type": "text", "text": "%s"}
+    ]
+  })",
+                                                   kTestImageUrl, page_excerpt);
   base::Value::Dict expected_msg1 =
-      base::Value::Dict()
-          .Set("role", "user")
-          .Set("content", base::Value::List()
-                              .Append(base::Value::Dict()
-                                          .Set("type", "text")
-                                          .Set("text", "Here's an image:"))
-                              .Append(base::Value::Dict()
-                                          .Set("type", "image_url")
-                                          .Set("image_url",
-                                               base::Value::Dict()
-                                                   .Set("detail", "low")
-                                                   .Set("url", kTestImageUrl)))
-                              .Append(base::Value::Dict()
-                                          .Set("type", "text")
-                                          .Set("text", page_excerpt)));
+      base::test::ParseJsonDict(expected_msg1_json);
   EXPECT_EQ(*msg0, expected_msg1);
 
   // Second message
   const base::Value::Dict* msg1 = serialized[1].GetIfDict();
   ASSERT_TRUE(msg1);
-  base::Value::Dict expected_msg2 =
-      base::Value::Dict()
-          .Set("role", "assistant")
-          .Set("content", base::Value::List().Append(base::Value::Dict()
-                                                         .Set("type", "text")
-                                                         .Set("text",
-                                                              "I see the "
-                                                              "image")));
+  base::Value::Dict expected_msg2 = base::test::ParseJsonDict(R"({
+    "role": "assistant",
+    "content": [
+      {"type": "text", "text": "I see the image"}
+    ]
+  })");
   EXPECT_EQ(*msg1, expected_msg2);
 
   // Third message
   const base::Value::Dict* msg2 = serialized[2].GetIfDict();
   ASSERT_TRUE(msg2);
-  base::Value::Dict expected_msg3 =
-      base::Value::Dict()
-          .Set("role", "user")
-          .Set("content", base::Value::List().Append(
-                              base::Value::Dict()
-                                  .Set("type", "text")
-                                  .Set("text", "Can you improve this?")));
+  base::Value::Dict expected_msg3 = base::test::ParseJsonDict(R"({
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Can you improve this?"}
+    ]
+  })");
   EXPECT_EQ(*msg2, expected_msg3);
 }
 
@@ -450,13 +443,19 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages_SkipsMismatchedContentTypes) {
   ASSERT_EQ(serialized.size(), 1u);
 
   // Expected output: only the valid text block
+  std::string expected_message_json = absl::StrFormat(R"({
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "%s"}
+    ]
+  })",
+                                                      kTestContent);
   base::Value::Dict expected_message =
-      base::Value::Dict()
-          .Set("role", "user")
-          .Set("content",
-               base::Value::List().Append(base::Value::Dict()
-                                              .Set("type", "text")
-                                              .Set("text", kTestContent)));
+      base::test::ParseJsonDict(expected_message_json);
+
+  const base::Value::Dict* msg = serialized[0].GetIfDict();
+  ASSERT_TRUE(msg);
+  EXPECT_EQ(*msg, expected_message);
 }
 
 // Tests to cover serialization of all content block types.

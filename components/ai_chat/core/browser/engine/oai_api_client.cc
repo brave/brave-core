@@ -101,7 +101,7 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
     message_dict.Set("role", std::move(message.role));
 
     base::Value::List content_list;
-    for (auto& extended_content_block : message.content) {
+    for (const auto& extended_content_block : message.content) {
       base::Value::Dict content_block_dict;
 
       switch (extended_content_block.type) {
@@ -143,7 +143,6 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
           content_block_dict.Set("type", "text");
           auto* text_content =
               std::get_if<TextContent>(&extended_content_block.data);
-          CHECK(text_content);
           if (!text_content) {
             DVLOG(2) << "Missing text content for page excerpt type";
             continue;
