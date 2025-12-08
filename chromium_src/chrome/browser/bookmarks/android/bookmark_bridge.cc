@@ -32,7 +32,7 @@ using BraveBookmarkBridge = BookmarkBridge;
 
 #include <chrome/browser/bookmarks/android/bookmark_bridge.cc>
 
-using base::android::JavaParamRef;
+using base::android::JavaRef;
 using user_data_importer::BookmarkParser;
 using user_data_importer::ContentBookmarkParser;
 using user_data_importer::SearchEngineInfo;
@@ -122,9 +122,9 @@ std::unique_ptr<TemplateURL> CreateTemplateURL(const std::u16string& url,
 
 void BookmarkBridge::ImportBookmarks(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj,
-    const base::android::JavaParamRef<jobject>& java_window,
-    const base::android::JavaParamRef<jstring>& j_import_path) {
+    const base::android::JavaRef<jobject>& obj,
+    const base::android::JavaRef<jobject>& java_window,
+    const base::android::JavaRef<jstring>& j_import_path) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ui::WindowAndroid* window =
       ui::WindowAndroid::FromJavaWindowAndroid(java_window);
@@ -189,11 +189,10 @@ void BookmarkBridge::OnParseFinished(
   Java_BraveBookmarkBridge_bookmarksImported(env, obj, import_succeeded);
 }
 
-void BookmarkBridge::ExportBookmarks(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& obj,
-    const JavaParamRef<jobject>& java_window,
-    const JavaParamRef<jstring>& j_export_path) {
+void BookmarkBridge::ExportBookmarks(JNIEnv* env,
+                                     const JavaRef<jobject>& obj,
+                                     const JavaRef<jobject>& java_window,
+                                     const JavaRef<jstring>& j_export_path) {
   DCHECK(IsLoaded());
 
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);

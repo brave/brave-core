@@ -15,7 +15,7 @@ namespace android {
 
 static jlong JNI_SkusServiceFactory_GetInterfaceToSkusService(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
+    const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
   auto pending = mojo::PendingRemote<skus::mojom::SkusService>();
   if (profile) {

@@ -137,7 +137,7 @@ bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
 
 void BraveRewardsNativeWorker::CreateRewardsWallet(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& country_code) {
+    const base::android::JavaRef<jstring>& country_code) {
   if (brave_rewards_service_) {
     brave_rewards_service_->CreateRewardsWallet(
         base::android::ConvertJavaStringToUTF8(env, country_code),
@@ -241,7 +241,7 @@ void BraveRewardsNativeWorker::OnBalance(
 void BraveRewardsNativeWorker::GetPublisherInfo(
     JNIEnv* env,
     int tabId,
-    const base::android::JavaParamRef<jstring>& host) {
+    const base::android::JavaRef<jstring>& host) {
   if (brave_rewards_service_) {
     brave_rewards_service_->NotifyPublisherPageVisit(
         tabId, base::android::ConvertJavaStringToUTF8(env, host), "", "");
@@ -308,8 +308,8 @@ BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env, uint64_t tabId) {
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetCaptchaSolutionURL(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& paymentId,
-    const base::android::JavaParamRef<jstring>& captchaId) {
+    const base::android::JavaRef<jstring>& paymentId,
+    const base::android::JavaRef<jstring>& captchaId) {
   const std::string path =
       absl::StrFormat("/v3/captcha/solution/%s/%s",
                       base::android::ConvertJavaStringToUTF8(env, paymentId),
@@ -332,7 +332,7 @@ BraveRewardsNativeWorker::GetAttestationURL(JNIEnv* env) {
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetAttestationURLWithPaymentId(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& paymentId) {
+    const base::android::JavaRef<jstring>& paymentId) {
   const std::string path =
       base::StrCat({"/v1/attestations/android/",
                     base::android::ConvertJavaStringToUTF8(env, paymentId)});
@@ -536,7 +536,7 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
 
 void BraveRewardsNativeWorker::Donate(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key,
+    const base::android::JavaRef<jstring>& publisher_key,
     double amount,
     bool recurring) {
   if (brave_rewards_service_) {
@@ -560,8 +560,9 @@ void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env) {
   }
 }
 
-void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& notification_id) {
+void BraveRewardsNativeWorker::DeleteNotification(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& notification_id) {
   if (rewards_notification_service_observation_.IsObserving()) {
     rewards_notification_service_observation_.GetSource()->DeleteNotification(
         base::android::ConvertJavaStringToUTF8(env, notification_id));
@@ -590,7 +591,7 @@ void BraveRewardsNativeWorker::OnGetRecurringTips(
 
 bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+    const base::android::JavaRef<jstring>& publisher) {
   return map_recurrent_publishers_.find(
     base::android::ConvertJavaStringToUTF8(env, publisher)) !=
       map_recurrent_publishers_.end();
@@ -630,7 +631,7 @@ void BraveRewardsNativeWorker::OnResetTheWholeState(const bool success) {
 
 double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+    const base::android::JavaRef<jstring>& publisher) {
   double amount(0.0);
   auto it = map_recurrent_publishers_.find(
     base::android::ConvertJavaStringToUTF8(env, publisher));
@@ -641,8 +642,9 @@ double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
   return  amount;
 }
 
-void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher) {
+void BraveRewardsNativeWorker::RemoveRecurring(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& publisher) {
   if (brave_rewards_service_) {
     brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
@@ -796,7 +798,7 @@ void BraveRewardsNativeWorker::OnGetPublishersVisitedCount(int count) {
 
 void BraveRewardsNativeWorker::GetPublisherBanner(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key) {
+    const base::android::JavaRef<jstring>& publisher_key) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetPublisherBanner(
         base::android::ConvertJavaStringToUTF8(env, publisher_key),
@@ -895,7 +897,7 @@ void BraveRewardsNativeWorker::OnExternalWalletReconnected() {
 
 void BraveRewardsNativeWorker::RefreshPublisher(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& publisher_key) {
+    const base::android::JavaRef<jstring>& publisher_key) {
   if (!brave_rewards_service_) {
     return;
   }
@@ -924,7 +926,7 @@ void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
 
 static void JNI_BraveRewardsNativeWorker_Init(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jcaller) {
+    const base::android::JavaRef<jobject>& jcaller) {
   new BraveRewardsNativeWorker(env, jcaller);
 }
 

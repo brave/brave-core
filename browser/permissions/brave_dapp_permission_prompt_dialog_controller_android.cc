@@ -52,7 +52,7 @@ void BraveDappPermissionPromptDialogController::ShowDialog() {
 
 void BraveDappPermissionPromptDialogController::OnPrimaryButtonClicked(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobjectArray>& accounts,
+    const base::android::JavaRef<jobjectArray>& accounts,
     int permission_lifetime_option) {
   std::vector<std::string> allowedAccounts;
   base::android::AppendJavaStringArrayToStringVector(env, accounts,
