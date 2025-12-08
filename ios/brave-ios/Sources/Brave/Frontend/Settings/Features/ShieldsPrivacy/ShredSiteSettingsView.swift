@@ -124,7 +124,11 @@ extension SiteShredLevel: Identifiable {
     self.url = url
     self.isPrivate = isPrivate
     self.tab = tab
-    self.shredLevel = tab.braveShieldsHelper?.shredLevel(for: url) ?? .never
+    self.shredLevel =
+      tab.braveShieldsHelper?.shredLevel(
+        for: url,
+        considerAllShieldsOption: false
+      ) ?? .never
   }
 }
 

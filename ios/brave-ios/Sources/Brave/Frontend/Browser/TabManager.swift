@@ -798,7 +798,7 @@ class TabManager: NSObject {
         )
         shredOnAppExitURLs = dataRecords.compactMap { record in
           guard let url = URL(string: "https://" + record.displayName),
-            braveShieldsSettings.autoShredMode(for: url) == .appExit
+            braveShieldsSettings.autoShredMode(for: url, considerAllShieldsOption: true) == .appExit
           else {
             return nil
           }
@@ -843,9 +843,9 @@ class TabManager: NSObject {
     }
   }
 
-  /// Forget all data for websites if the website has "Forget Me" enabled
-  ///
-  /// A delay allows us to cancel this forget in case the user goes back to this website.
+  /// Forget all data for websites if the website has Auto Shred set to site
+  /// tabs closed. A delay allows us to cancel this Auto Shred in case the user goes back to
+  /// this website.
   ///
   /// - Parameters:
   ///   - url: The url of the website to forget
@@ -862,7 +862,10 @@ class TabManager: NSObject {
     else { return }
     forgetTasks[tab.isPrivate]?[baseDomain]?.cancel()
     let shredLevel =
-      tab.braveShieldsHelper?.shredLevel(for: url) ?? .never
+      tab.braveShieldsHelper?.shredLevel(
+        for: url,
+        considerAllShieldsOption: true
+      ) ?? .never
 
     switch shredLevel {
     case .never:
@@ -1367,7 +1370,10 @@ class TabManager: NSObject {
           let profile = isPrivate ? braveCore.profile.offTheRecordProfile : braveCore.profile
           let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
           shouldShredTab =
-            braveShieldsSettings?.autoShredMode(for: url).siteShredLevel.shredOnAppExit ?? false
+            braveShieldsSettings?.autoShredMode(
+              for: url,
+              considerAllShieldsOption: true
+            ).siteShredLevel.shredOnAppExit ?? false
         } else {
           // Don't access `shredLevel` directly, but `TabState` is unavailable
           // to access via `BraveShieldsTabHelper`. Deprecated access here until

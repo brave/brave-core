@@ -155,12 +155,25 @@ public class BraveShieldsTabHelper {
     return domain.isShieldExpected(shield, considerAllShieldsOption: considerAllShieldsOption)
   }
 
+  /// Returns the `SiteShredLevel` for the given url, optionally checking if
+  /// Shields is disabled on any host that matches the domain pattern.
+  /// For example, this could occur when Shields is disabled on `one.brave.com`,
+  /// but enabled on `two.brave.com` and Auto Shred default is set to app exit.
+  /// - parameter url: The url to fetch the AutoShredMode for.
+  /// - parameter considerAllShieldsOption: Flag to determine if we check if
+  /// Shields is disabled on any host matching the domain pattern. This only
+  /// has an effect when using content settings.
+  /// - returns: The `AutoShredMode` for the given URL.
   public func shredLevel(
-    for url: URL?
+    for url: URL?,
+    considerAllShieldsOption: Bool
   ) -> SiteShredLevel {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .never }
     if isBraveShieldsContentSettingsEnabled {
-      return braveShieldsSettings?.autoShredMode(for: url).siteShredLevel ?? .never
+      return braveShieldsSettings?.autoShredMode(
+        for: url,
+        considerAllShieldsOption: considerAllShieldsOption
+      ).siteShredLevel ?? .never
     }
     // Also assign to Domain until deprecated so reverse migration is not required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
