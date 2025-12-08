@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
