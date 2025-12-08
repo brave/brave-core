@@ -40,12 +40,9 @@ std::u16string GetContentString(const Browser* browser, const TabGroup& group) {
       IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE, group.tab_count() - 1);
 
   std::u16string short_title;
-  gfx::ElideString(browser->tab_strip_model()
-                       ->GetActiveTab()
-                       ->GetTabFeatures()
-                       ->tab_ui_helper()
-                       ->GetTitle(),
-                   kContextMenuTabTitleMaxLength, &short_title);
+  gfx::ElideString(
+      TabUIHelper::From(browser->tab_strip_model()->GetActiveTab())->GetTitle(),
+      kContextMenuTabTitleMaxLength, &short_title);
   return base::ReplaceStringPlaceholders(format_string, short_title, nullptr);
 }
 
