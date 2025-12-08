@@ -151,14 +151,13 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
 // subsequent calls.
 IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
                        GetOrCreateTabHandleForTask) {
-  auto initial_tab_count =
-      agent_browser_window_->GetTabStripModel()->GetTabCount();
+  auto initial_tab_count = agent_browser_window_->GetTabStripModel()->count();
 
   tabs::TabHandle first_handle = GetToolProviderTabHandle();
   ASSERT_TRUE(first_handle.Get());
 
   // First call should result in a new tab
-  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->count(),
             initial_tab_count + 1);
 
   // Should be on the blank page
@@ -172,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   EXPECT_EQ(first_handle, second_handle);
 
   // Should not have opened a second new tab
-  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->count(),
             initial_tab_count + 1);
 }
 
