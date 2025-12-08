@@ -17,6 +17,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/view_utils.h"
 
 BraveExtensionsMenuMainPageView::BraveExtensionsMenuMainPageView(
