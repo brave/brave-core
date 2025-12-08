@@ -140,13 +140,7 @@ def write_license_file(directory, contents):
 def list_ntp_backgrounds(metadata_file):
     json_metadata = ''
     with open(metadata_file, mode='rt', encoding='utf-8') as file_handle:
-        # Extract only the background images.
-        metadata = file_handle.readlines()[3:12]
-        # Hack to turn this TypeScript file into valid JSON
-        json_metadata = "".join(metadata) \
-            .replace("export const images: NewTab.BraveBackground[] = [",
-                     "[") \
-            .replace('"', '"').replace("'", '"')
+        json_metadata = file_handle.read()
 
     images = json.loads(json_metadata)
     return images
@@ -168,7 +162,7 @@ def generate_backgrounds_license(preamble, backgrounds):
         if notices:
             notices += '\n'
 
-        filename = validated_data_field(background, 'wallpaperImageUrl')
+        filename = validated_data_field(background, 'imageUrl')
         author_name = validated_data_field(background, 'author')
         # Don't validate link. it can be empty.
         author_link = background['link']
@@ -226,19 +220,23 @@ def main():
         print(f'- {len(local_data_components)} sub-components added in ' \
               'local_data/LICENSE')
 
-    # Brave New Tab UI component
-    ntp_data_dir = os.path.join(components_dir, 'brave_new_tab_ui', 'data')
+    # Brave New Tab Page UI component
+    ntp_backgrounds_dir = os.path.join(SOURCE_ROOT, 'browser', 'resources',
+                                       'brave_new_tab_page_refresh', 'state',
+                                       'background_images')
     ntp_backgrounds_preamble = 'These licenses do not apply to any of the ' \
         'code shipped with the Brave Browser and instead apply to ' \
         'background images used on the new tab page. The Brave Browser and ' \
         'such data files are separate and independent works.'
 
     ntp_backgrounds = list_ntp_backgrounds(
-        os.path.join(ntp_data_dir, 'backgrounds.ts'))
-    if write_license_file(ntp_data_dir, generate_backgrounds_license(
-            ntp_backgrounds_preamble, ntp_backgrounds)):
+        os.path.join(ntp_backgrounds_dir, 'preloaded.json'))
+    if write_license_file(
+            ntp_backgrounds_dir,
+            generate_backgrounds_license(ntp_backgrounds_preamble,
+                                         ntp_backgrounds)):
         print(f'- {len(ntp_backgrounds)} sub-components added in ' \
-              'brave_new_tab_ui/data/LICENSE')
+              'brave_new_tab_refresh/state/background_images/LICENSE')
 
 
 if __name__ == '__main__':
