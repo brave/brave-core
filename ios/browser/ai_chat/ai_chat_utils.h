@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol PrefServiceBridge;
+@protocol ProfileBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,13 @@ OBJC_EXPORT
 /// the browser (such as settings, menu buttons, etc.)
 + (BOOL)isAIChatEnabledForPrefService:(id<PrefServiceBridge>)prefService
     NS_SWIFT_NAME(isAIChatEnabled(for:));
+
+/// Creates a new conversation with a given query on the AIChatService obtained
+/// from the profile passed in and returns a URL to that specific conversation
++ (nullable NSURL*)openLeoURLWithQuerySubmitted:(NSString*)query
+                                        profile:
+                                            (id<ProfileBridge>)profileBridge;
+
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
