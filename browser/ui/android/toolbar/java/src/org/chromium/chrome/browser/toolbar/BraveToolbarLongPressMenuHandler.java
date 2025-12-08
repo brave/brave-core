@@ -24,6 +24,8 @@ import java.util.function.Supplier;
 /** Brave's extension for the handler for the toolbar long press menu. */
 @NullMarked
 public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandler {
+    private final Supplier<@Nullable GURL> mUrlSupplier;
+
     public BraveToolbarLongPressMenuHandler(
             Context context,
             ObservableSupplier<@Nullable Profile> profileSupplier,
@@ -42,18 +44,22 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                 windowAndroid,
                 urlSupplier,
                 urlBarViewRectProviderSupplier);
+
+        mUrlSupplier = urlSupplier;
     }
 
     @Override
     ModelList buildMenuItems(boolean onTop) {
         ModelList itemList = super.buildMenuItems(onTop);
 
-        // Remove the "Copy link" item from menu.
-        for (int i = 0; i < itemList.size(); i++) {
-            int itemID = itemList.get(i).model.get(ListMenuItemProperties.MENU_ITEM_ID);
-            if (itemID == MenuItemType.COPY_LINK) {
-                itemList.removeAt(i);
-                break;
+        // Remove the "Copy link" item from menu when there is nothing to copy.
+        if (mUrlSupplier == null || mUrlSupplier.get() == null) {
+            for (int i = 0; i < itemList.size(); i++) {
+                int itemID = itemList.get(i).model.get(ListMenuItemProperties.MENU_ITEM_ID);
+                if (itemID == MenuItemType.COPY_LINK) {
+                    itemList.removeAt(i);
+                    break;
+                }
             }
         }
         return itemList;
