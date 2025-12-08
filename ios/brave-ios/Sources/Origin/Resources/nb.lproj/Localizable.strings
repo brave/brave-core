@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Ads";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analyse";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin er en abonnementsbasert måte å deaktivere inntektsgenererende funksjoner som ellers støtter Brave som selskap. Abonnenter på Brave Origin vil fortsatt dra nytte av vår bransjeledende personvernfunksjonalitet, annonseblokkering og hastighet (via Brave Shields), samt regelmessige programvareoppdateringer, Chromium-oppdateringer og forbedringer i sikkerhet og personvern.\n\nDe vil også få mulighet til å deaktivere funksjoner som Brave Leo, Nyheter, Rewards, Wallet, VPN, Web3-domener og mer.\n\n**Merk: Brave Origin vil ikke deaktivere funksjoner i nettleseren som du allerede bruker, og vil ikke påvirke funksjoner i Brave Søk eller Brave Søk Ads.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funksjoner";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Nyheter";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Spilleliste";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Personvernbevarende analyse";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Tilbakestill til standardoppsettet";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Rewards";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Statistikrapportering";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Prat";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Lommebok";
 

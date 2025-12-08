@@ -43,6 +43,9 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Activé";
 
+/* Title for Ask Brave menu item. Brave is the company name and should not be translated */
+"AskBraveMenuItem" = "Demander à Brave";
+
 /* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
 "AuthenticationLoginsTouchReason" = "Authentifie votre accès à Brave";
 
@@ -798,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Erreur";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Démarrer";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Blocage des sites Web dangereux";
@@ -2030,7 +2036,7 @@
 "rewards.disabledBody" = "Activez cette fonctionnalité pour soutenir Brave et la communauté BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "En optant pour le programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
+"rewards.disabledStatusBody" = "En participant au programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
 
 /* Displayed when Brave Rewards is enabled */
 "rewards.enabledBody" = "Vous soutenez Brave et la communauté BAT.";

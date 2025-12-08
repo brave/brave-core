@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "广告";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "分析";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin是一种基于订阅的方式，用户可以禁用Brave的创收功能，否则这些功能将支持Brave的业务。Brave Origin用户将继续受益于我们业界领先的隐私、广告拦截和速度（通过Brave 盾牌），以及定期的软件更新、Chromium补丁、安全和隐私改进。他们还将解锁禁用 Brave Leo、新闻、奖励、钱包、VPN、Web3 域名等功能的选项。\n\n用户将在浏览器设置菜单中看到一个新的控制面板。现有功能以及我们将来推出的任何新功能都将出现在这里，并默认关闭。\n\n**注意：Brave Origin不会禁用您当前使用的浏览器功能，也不会影响Brave 搜索功能或Brave 搜索广告。**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "功能";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo 人工智能";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "新闻";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "播放列表";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "隐私保护分析";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "重置为默认值";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "奖赏";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "统计报告";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "钱包";
 

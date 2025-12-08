@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "资源类型";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "如果 Shred 应删除历史记录项。";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred 删除历史记录";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "更新自动 Shred 并调整哪些数据被 shred。";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "销毁";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "销毁";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "源 URL";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "销毁网站数据";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "立即销毁网站数据";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "销毁操作将关闭所选标签页，并删除所有网站数据。此操作无法撤销。";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "该网站不安全";

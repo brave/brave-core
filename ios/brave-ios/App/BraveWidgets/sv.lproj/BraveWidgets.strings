@@ -32,6 +32,9 @@
 "AGMpus" = "Genvägskonfigurering";
 
 /* (No Comment) */
+"bUHTuL" = "Fråga Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Statistiktyp";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Var det \"Fråga Brave\" du sökte efter?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Var det \"Fråga Brave\" du sökte efter?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Det finns ${count} alternativ som matchar \"Fråga Brave\".";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Var det \"Fråga Brave\" du sökte efter?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Det finns ${count} alternativ som matchar \"Fråga Brave\".";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Det finns ${count} alternativ som matchar \"Fråga Brave\".";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Var det \"Fråga Brave\" du sökte efter?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Det finns ${count} alternativ som matchar ”Ny flik”.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Det finns ${count} alternativ som matchar \"Fråga Brave\".";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Det finns ${count} alternativ som matchar ”Bokmärken”.";

@@ -32,6 +32,9 @@
 "AGMpus" = "快捷方式配置";
 
 /* (No Comment) */
+"bUHTuL" = "詢問 Brave";
+
+/* (No Comment) */
 "bUXzTx" = "统计数据种类";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "您要的是“新标签页”，对吗？";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "您要的是'Ask Brave'，对吗？";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "您要的是“书签”，对吗？";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "您要的是“新标签页”，对吗？";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "您要的是'Ask Brave'，对吗？";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "您要的是“书签”，对吗？";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "有 ${count} 个与“新标签页”匹配的选项。";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "有 ${count} 个与'Ask Brave'匹配的选项。";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "您要的是“新标签页”，对吗？";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "您要的是'Ask Brave'，对吗？";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "您要的是“书签”，对吗？";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "有 ${count} 个与“新标签页”匹配的选项。";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "有 ${count} 个与'Ask Brave'匹配的选项。";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "有 ${count} 个与“新标签页”匹配的选项。";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "有 ${count} 个与'Ask Brave'匹配的选项。";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "您要的是“新标签页”，对吗？";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "您要的是'Ask Brave'，对吗？";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "您要的是“书签”，对吗？";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "有 ${count} 个与“新标签页”匹配的选项。";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "有 ${count} 个与'Ask Brave'匹配的选项。";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "有 ${count} 个与“书签”匹配的选项。";

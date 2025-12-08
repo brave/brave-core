@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Διαφημίσεις";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analytics";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Το Brave Origin είναι ένας τρόπος υπό συνδρομή για απενεργοποίηση των δυνατοτήτων που δημιουργούν έσοδα και διαφορετικά υποστηρίζουν το Brave ως επιχείρηση. Οι συνδρομητές του Brave Origin θα συνεχίσουν να επωφελούνται από το κορυφαίο απόρρητο, το adblock και την ταχύτητα (μέσω των Ασπίδων Brave), καθώς και κανονικές ενημερώσεις λογισμικού, διορθώσεις Chromium και βελτιώσεις ασφάλειας και απορρήτου. Θα ξεκλειδώσουν επίσης την επιλογή απενεργοποίησης δυνατοτήτων όπως το Brave Leo, Νέα, Επιβραβεύσεις, πορτοφόλι, VPN, τομείς Web3 και πολλά άλλα.\n\nΟι συνδρομητές θα δουν ένα νέο πίνακα ελέγχου στο μενού Ρυθμίσεων του προγράμματος περιήγησης. Οι υπάρχουσες δυνατότητες—καθώς και οποιεσδήποτε νέες δυνατότητες που θα κυκλοφορούμε στο μέλλον—θα εμφανίζονταν εδώ και θα ήταν απενεργοποιημένες εξ ορισμού.\n\n**Σημείωση: Το Brave Origin δεν θα απενεργοποιήσει δυνατότητες του προγράμματος περιήγησης που χρησιμοποιείτε αυτήν τη στιγμή και δεν θα επηρεάσει τις δυνατότητες της Αναζήτησης Brave ή τις Διαφημίσεις αναζήτησης Brave.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Δυνατότητες";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "AI Leo";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Ειδήσεις";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Λίστα αναπαραγωγής";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Αναλυτικά στοιχεία για τη διατήρηση της ιδιωτικής ζωής";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Επαναφορά στις προεπιλογές";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Ανταμοιβές";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Αναφορά στατιστικών στοιχείων";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Συνομιλία";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Πορτοφόλι";
 
