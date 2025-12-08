@@ -75,7 +75,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.UnownedUserDataSupplier;
+import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.ui.KeyboardUtils;
@@ -313,7 +313,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
-    private UnownedUserDataSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
+    private SettableObservableSupplier<BrowserControlsManager> mBrowserControlsManagerSupplier;
 
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
