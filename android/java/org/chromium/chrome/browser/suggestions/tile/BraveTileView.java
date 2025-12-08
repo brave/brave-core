@@ -6,8 +6,13 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -23,6 +28,16 @@ public class BraveTileView extends TileView {
 
     public BraveTileView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        ImageView pinnedShortcutBadgeView = findViewById(R.id.pinned_shortcut_badge);
+        if (pinnedShortcutBadgeView != null) {
+            ImageViewCompat.setImageTintList(
+                    pinnedShortcutBadgeView, ColorStateList.valueOf(Color.WHITE));
+        }
     }
 
     @Override
