@@ -6,8 +6,12 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -44,6 +48,14 @@ public class BraveTileView extends TileView {
                         titleView.getPaddingTop(),
                         titleView.getPaddingRight(),
                         bottomPadding);
+
+                // Get the text color from the TextView after TextAppearance is applied
+                // and use it for the icon tint to match the text color
+                ImageView pinnedShortcutBadgeView = findViewById(R.id.pinned_shortcut_badge);
+                if (pinnedShortcutBadgeView != null) {
+                    ColorStateList textColors = titleView.getTextColors();
+                    ImageViewCompat.setImageTintList(pinnedShortcutBadgeView, textColors);
+                }
             }
         } else {
             Log.w(TAG, "Attempt to access profile before native initialization");
