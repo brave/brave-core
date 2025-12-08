@@ -14,19 +14,18 @@ namespace user_data_importer {
 class ContentBookmarkParser;
 }  // namespace user_data_importer
 
-#define SetReadStatus                                                    \
-  ImportBookmarks(                                                       \
-      JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,      \
-      const base::android::JavaParamRef<jobject>& java_window,           \
-      const base::android::JavaParamRef<jstring>& import_file_path);     \
-  void OnParseFinished(                                                  \
-      user_data_importer::BookmarkParser::BookmarkParsingResult result); \
-  base::SequenceBound<user_data_importer::ContentBookmarkParser>         \
-      bookmark_parser_;                                                  \
-  void ExportBookmarks(                                                  \
-      JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,      \
-      const base::android::JavaParamRef<jobject>& java_window,           \
-      const base::android::JavaParamRef<jstring>& export_file_path);     \
+#define SetReadStatus                                                       \
+  ImportBookmarks(JNIEnv* env, const base::android::JavaRef<jobject>& obj,  \
+                  const base::android::JavaRef<jobject>& java_window,       \
+                  const base::android::JavaRef<jstring>& import_file_path); \
+  void OnParseFinished(                                                     \
+      user_data_importer::BookmarkParser::BookmarkParsingResult result);    \
+  base::SequenceBound<user_data_importer::ContentBookmarkParser>            \
+      bookmark_parser_;                                                     \
+  void ExportBookmarks(                                                     \
+      JNIEnv* env, const base::android::JavaRef<jobject>& obj,              \
+      const base::android::JavaRef<jobject>& java_window,                   \
+      const base::android::JavaRef<jstring>& export_file_path);             \
   void SetReadStatus
 
 #include <chrome/browser/bookmarks/android/bookmark_bridge.h>  // IWYU pragma: export
