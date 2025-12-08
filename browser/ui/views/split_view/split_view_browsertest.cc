@@ -459,7 +459,7 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   bool GetIsWebContentsBlockedFromTabAt(int index) {
     auto* tab_strip_model = browser()->tab_strip_model();
     return static_cast<tabs::TabModel*>(tab_strip_model->GetTabAtIndex(index))
-        ->blocked();
+        ->IsBlocked();
   }
 
   web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
