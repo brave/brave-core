@@ -3253,10 +3253,14 @@ extension BrowserViewController {
       {
         tabManager.addTabAndSelect(URLRequest(url: conversationURL), isPrivate: false)
       } else {
-        tabManager.addTabAndSelect(
+        let tab = tabManager.addTab(
           URLRequest(url: .webUI.aiChat),
+          // Ensure we don't start loading the WebUI until we assign the selected tab
+          zombie: true,
           isPrivate: false
         )
+        tab.aiChatWebUIHelper?.associatedTab = tabManager.selectedTab
+        tabManager.selectTab(tab)
       }
       return
     }

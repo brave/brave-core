@@ -41,8 +41,6 @@ extension BrowserViewController: TabManagerDelegate {
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }
-    // Temporarily always assoicate the currently selected tab
-    tab.aiChatWebUIHelper?.associatedTab = tabManager.selectedTab
     tab.walletWebUIHelper = .init(
       tab: tab,
       showWalletBackUpHandler: { [weak self] in
