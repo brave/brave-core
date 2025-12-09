@@ -71,7 +71,7 @@ export default function FilterMenu<T>(props: Props<T>) {
                   return [match, entry] as const
                 })
                 .filter(([match]) => match)
-                .sort((a, b) => a[0]!.score - b[0]!.score)
+                .sort((a, b) => b[0]!.score - a[0]!.score)
                 .map(([_, entry]) => entry),
             }))
             .filter((g) => g.entries.length > 0),
