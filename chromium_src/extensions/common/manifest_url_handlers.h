@@ -10,8 +10,8 @@
   GetHomepageURL_Unused(const Extension* extension); \
   static const GURL GetHomepageURL
 
-#define GetWebStoreURL                               \
-  GetWebStoreURL_Unused(const Extension* extension); \
+#define GetWebStoreURL                                     \
+  GetWebStoreURL_ChromiumImpl(const Extension* extension); \
   static const GURL GetWebStoreURL
 
 #include <extensions/common/manifest_url_handlers.h>  // IWYU pragma: export
