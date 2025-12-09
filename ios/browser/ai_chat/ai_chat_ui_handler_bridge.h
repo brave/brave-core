@@ -8,10 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+#include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
+#else
+#include "ai_chat_associated_content_page_fetcher.h"
+#endif
+
 @class AiChatUploadedFile;
+@protocol ProfileBridge;
 @class BraveWebView;
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol AIChatAssociatedURLContentContext
+@required
+@property(readonly) id<AIChatAssociatedContentPageFetcher> pageFetcher;
+@property(readonly) BraveWebView* webView;
+@end
 
 /// Browser-side handler for general AI Chat UI functions
 ///
@@ -26,6 +39,11 @@ NS_SWIFT_NAME(AIChatUIHandler)
 
 /// Returns a web view associated with a specific tab with a given session ID
 - (nullable BraveWebView*)webViewForTabWithSessionID:(int32_t)id;
+
+/// Create and return context that will allow loading an arbitrary URL into
+/// a BraveWebView and obtain page content from
+- (nullable id<AIChatAssociatedURLContentContext>)
+    contextForAssociatingURLContentForProfile:(id<ProfileBridge>)profile;
 
 /// Handle when a user taps on the microphone icon and call the completion
 /// handler with a text version of the users prompt or nil if the user had

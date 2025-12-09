@@ -28,6 +28,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   public var handler: ((any TabState, AIChatWebUIPageAction) -> Void)?
   public weak var associatedTab: (any TabState)?
   public var tabsForPrivateMode: (_ isPrivate: Bool) -> [any TabState] = { _ in [] }
+  public weak var profileController: BraveProfileController?
 
   public init?(
     tab: some TabState,
@@ -77,6 +78,49 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     guard let tab else { return nil }
     let tabs = tabsForPrivateMode(tab.isPrivate).compactMap { BraveWebView.from(tab: $0) }
     return tabs.first(where: { $0.uniqueSessionID == id })
+  }
+
+  public func contextForAssociatingURLContent(
+    forProfile profile: any Profile
+  ) -> (any AIChatAssociatedURLContentContext)? {
+    class ContextContainer: AIChatAssociatedURLContentContext {
+      var tab: any TabState
+      var webUIHelper: AIChatWebUIHelper
+      init?(tab: some TabState, webUIHelper: AIChatWebUIHelper) {
+        if !tab.isChromiumTab { return nil }
+        self.tab = tab
+        self.webUIHelper = webUIHelper
+      }
+      var webView: BraveWebView {
+        if !tab.isWebViewCreated {
+          tab.createWebView()
+        }
+        // Force unwrap is safe here as we enforce that the tab is a ChromiumTabState
+        return BraveWebView.from(tab: self.tab)!
+      }
+      var pageFetcher: AIChatAssociatedContentPageFetcher {
+        webUIHelper
+      }
+    }
+    guard let profileController else { return nil }
+    let wkConfiguration = WKWebViewConfiguration()
+    if profile.isOffTheRecord {
+      wkConfiguration.websiteDataStore = .nonPersistent()
+    }
+    let tab = TabStateFactory.create(
+      with: .init(initialConfiguration: wkConfiguration, braveCore: profileController)
+    )
+    guard
+      let childHelper = AIChatWebUIHelper(
+        tab: tab,
+        webDelegate: webDelegate,
+        braveTalkJavascript: braveTalkJavascript
+      ),
+      let context = ContextContainer(tab: tab, webUIHelper: childHelper)
+    else {
+      return nil
+    }
+    return context
   }
 
   public func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {
