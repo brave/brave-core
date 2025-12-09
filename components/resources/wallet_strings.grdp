@@ -345,6 +345,7 @@
   <message name="IDS_BRAVE_WALLET_NO_AVAILABLE_ASSETS_DESCRIPTION" desc="No availible assets description on the portfolio page">Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY" desc="Account settings modal show key button">Show key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY" desc="Account settings modal hide key button">Hide key</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DOWNLOAD_KEY" desc="Account settings modal download key button">Download</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR" desc="Account settings modal failed to updated name error">Failed to update account name, please try again.</message>
   <message name="IDS_BRAVE_WALLET_PRESET25" desc="Swap preset 25% button">25%</message>
   <message name="IDS_BRAVE_WALLET_PRESET50" desc="Swap preset 50% button">50%</message>
