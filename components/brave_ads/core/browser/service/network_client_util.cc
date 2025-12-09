@@ -5,35 +5,20 @@
 
 #include "brave/components/brave_ads/core/browser/service/network_client_util.h"
 
-#include <cstddef>
-
-#include "base/check.h"
-#include "base/notreached.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "net/http/http_request_headers.h"
-#include "net/http/http_response_headers.h"
+#include "brave/components/brave_ads/core/browser/service/oblivious_http_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
-std::string ToString(mojom::UrlRequestMethodType value) {
-  CHECK(mojom::IsKnownEnumValue(value));
+GURL ObliviousHttpKeyConfigUrl(bool use_staging) {
+  return GURL(use_staging ? kStagingObliviousHttpKeyConfigUrl
+                          : kProductionObliviousHttpKeyConfigUrl);
+}
 
-  switch (value) {
-    case mojom::UrlRequestMethodType::kGet: {
-      return net::HttpRequestHeaders::kGetMethod;
-    }
-
-    case mojom::UrlRequestMethodType::kPost: {
-      return net::HttpRequestHeaders::kPostMethod;
-    }
-
-    case mojom::UrlRequestMethodType::kPut: {
-      return net::HttpRequestHeaders::kPutMethod;
-    }
-  }
-
-  NOTREACHED() << "Unexpected value for mojom::UrlRequestMethodType: " << value;
+GURL ObliviousHttpRelayUrl(bool use_staging) {
+  return GURL(use_staging ? kStagingObliviousHttpRelayUrl
+                          : kProductionObliviousHttpRelayUrl);
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -57,23 +42,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
-}
-
-base::flat_map<std::string, std::string> ExtractHttpResponseHeaders(
-    const scoped_refptr<net::HttpResponseHeaders>& http_response_headers) {
-  CHECK(http_response_headers);
-
-  size_t iter = 0;
-  std::string key;
-  std::string value;
-
-  base::flat_map<std::string, std::string> headers;
-  while (http_response_headers->EnumerateHeaderLines(&iter, &key, &value)) {
-    key = base::ToLowerASCII(key);
-    headers[key] = value;
-  }
-
-  return headers;
 }
 
 }  // namespace brave_ads

@@ -53,7 +53,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 
   // Assert
   EXPECT_EQ(
-      R"(eyJzaWduYXR1cmUiOiIvcGR1dXhwdk5DZmUrOUorWG5xb3JnRXMxRE14WTAzRXNGZXg4S1NhczUzREh2Rm1DSlRyRW5yYVErL3lybHZyaHFXbGs5SEcyVU0rWDdVbGZZanZ4Zz09IiwidCI6Ii9tZlRBQWpIcldtQWxMaUVrdGJxTlMvZHhvTVZkbnoxZXNvVnBsUVVzN3lHL2FwQXEySzZPZVNUNmxCVEtGSm1PcTdyVjhRYlkvREYySEZSTWN6L0pRPT0ifQ==)",
+      R"(eyJzaWduYXR1cmUiOiJVdFJxQ3BhTGZERHcwMGRvSjZPYmh5d1d0SWFJOTl6ZGhxZHNlaUJGM0NOWHo3SmtvZFA0RnV2aXBpUUJ0YnVqajFKQnB6cVdLaDJEU2FQS1ZMV1FOUT09IiwidCI6Ii9tZlRBQWpIcldtQWxMaUVrdGJxTlMvZHhvTVZkbnoxZXNvVnBsUVVzN3lHL2FwQXEySzZPZVNUNmxCVEtGSm1PcTdyVjhRYlkvREYySEZSTWN6L0pRPT0ifQ==)",
       reward_credential);
 }
 
@@ -91,6 +91,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
                 "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
               }
             ],
+            "countryCode": "US",
             "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
             "platform": "windows",
             "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",

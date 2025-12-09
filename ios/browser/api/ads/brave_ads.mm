@@ -162,10 +162,13 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
 
     networkClient = std::make_unique<brave_ads::NetworkClient>(
-        profile->GetSharedURLLoaderFactory(),
+        *self.localStatePrefService, profile->GetSharedURLLoaderFactory(),
         base::BindRepeating(
             [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
-            profile));
+            profile),
+        /*use_oblivious_http_staging_server=*/
+        brave_rewards::RewardsFlags::ForCurrentProcess().environment !=
+            brave_rewards::RewardsFlags::Environment::kProduction);
   }
   return self;
 }

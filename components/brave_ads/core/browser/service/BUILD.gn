@@ -15,6 +15,13 @@ source_set("service") {
     "network_client_util.h",
     "new_tab_page_ad_prefetcher.cc",
     "new_tab_page_ad_prefetcher.h",
+    "oblivious_http_client_impl.cc",
+    "oblivious_http_client_impl.h",
+    "oblivious_http_constants.h",
+    "oblivious_http_feature.cc",
+    "oblivious_http_feature.h",
+    "oblivious_http_key_config.cc",
+    "oblivious_http_key_config.h",
     "virtual_pref_provider.cc",
     "virtual_pref_provider.h",
     "virtual_pref_provider_util.cc",
@@ -45,7 +52,9 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "network_client_util_unittest.cc",
     "new_tab_page_ad_prefetcher_unittest.cc",
+    "oblivious_http_feature_unittest.cc",
     "virtual_pref_provider_unittest.cc",
   ]
 
@@ -59,6 +68,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/core/public:test_support",
     "//brave/components/skus/browser",
     "//components/prefs:test_support",
+    "//net",
     "//testing/gmock",
     "//testing/gtest",
   ]

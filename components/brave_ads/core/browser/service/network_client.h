@@ -10,11 +10,15 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/browser/service/network_client_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "services/network/public/cpp/network_context_getter.h"
+#include "url/gurl.h"
+
+class PrefService;
 
 namespace network {
 class SimpleURLLoader;
@@ -23,13 +27,18 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
-// Sends network requests, supporting standard HTTP. Standard HTTP requests are
-// issued via `SimpleURLLoader`.
+class ObliviousHttpKeyConfig;
+
+// Sends network requests, supporting both standard HTTP and Oblivious HTTP
+// (OHTTP). Standard HTTP requests are issued via SimpleURLLoader, while OHTTP
+// requests are routed through the network service’s OHTTP implementation.
 class NetworkClient {
  public:
   NetworkClient(
+      PrefService& local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      network::NetworkContextGetter network_context_getter);
+      network::NetworkContextGetter network_context_getter,
+      bool use_ohttp_staging);
 
   NetworkClient(const NetworkClient&) = delete;
   NetworkClient& operator=(const NetworkClient&) = delete;
@@ -54,10 +63,24 @@ class NetworkClient {
                            SendRequestCallback callback,
                            std::optional<std::string> response_body);
 
+  // Sends the request using Oblivious HTTP (OHTTP). For details, see
+  // https://ietf-wg-ohai.github.io/oblivious-http/draft-ietf-ohai-ohttp.html
+  void ObliviousHttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                            const GURL& relay_url,
+                            SendRequestCallback callback);
+  void ObliviousHttpRequestCallback(
+      SendRequestCallback callback,
+      mojom::UrlResponseInfoPtr mojom_url_response);
+
+  const raw_ref<PrefService> local_state_;
+
   const scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // Not owned.
 
   const network::NetworkContextGetter network_context_getter_;
+
+  const std::unique_ptr<ObliviousHttpKeyConfig> oblivious_http_key_config_;
+  const GURL oblivious_http_relay_url_;
 
   base::WeakPtrFactory<NetworkClient> weak_ptr_factory_{this};
 };

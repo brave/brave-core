@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
@@ -45,13 +46,20 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   ASSERT_TRUE(confirmation);
 
   // Assert
+  UserDataInfo expected_user_data;
+  expected_user_data.fixed = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "countryCode": "US",
+          })JSON");
+
   EXPECT_THAT(
       *confirmation,
       ::testing::FieldsAre(test::kTransactionId, test::kCreativeInstanceId,
                            mojom::ConfirmationType::kViewedImpression,
                            mojom::AdType::kNotificationAd,
                            /*created_at*/ test::Now(),
-                           /*reward*/ std::nullopt, UserDataInfo{}));
+                           /*reward*/ std::nullopt, expected_user_data));
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,

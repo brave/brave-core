@@ -46,6 +46,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserData) {
                           "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
                         }
                       ],
+                      "countryCode": "US",
                       "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
                       "platform": "windows",
                       "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
@@ -56,8 +57,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserData) {
             BuildFixedUserData(transaction));
 }
 
-TEST_F(BraveAdsFixedUserDataBuilderTest,
-       DoNotBuildFixedUserDataForNonRewardsUser) {
+TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -67,7 +67,12 @@ TEST_F(BraveAdsFixedUserDataBuilderTest,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_THAT(BuildFixedUserData(transaction), ::testing::IsEmpty());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "countryCode": "US",
+                    })JSON"),
+            BuildFixedUserData(transaction));
 }
 
 }  // namespace brave_ads

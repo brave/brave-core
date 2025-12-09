@@ -62,6 +62,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildConfirmationUserData) {
                 "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
               }
             ],
+            "countryCode": "US",
             "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
             "foo": "bar",
             "platform": "windows",
@@ -94,6 +95,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"JSON(
           {
+            "countryCode": "US",
             "foo": "bar"
           })JSON");
 
