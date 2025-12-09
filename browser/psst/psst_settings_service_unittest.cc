@@ -7,7 +7,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
-#include "brave/components/psst/browser/core/brave_psst_utils.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

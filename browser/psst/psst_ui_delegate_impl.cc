@@ -5,7 +5,6 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
-#include "brave/components/psst/browser/core/brave_psst_utils.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 
 namespace psst {
