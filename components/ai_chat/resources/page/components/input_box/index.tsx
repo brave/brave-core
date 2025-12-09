@@ -416,7 +416,7 @@ function InputBox(props: InputBoxProps) {
                 fab
                 kind='plain-faint'
                 onClick={handleContentAgentToggle}
-                title={'Open Leo AI Content Agent Window'}
+                title={getLocale(S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL)}
               >
                 <Icon name='leo-cursor' />
               </Button>

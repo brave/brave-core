@@ -459,8 +459,11 @@
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message" formatter_data="webui=AiChat">
     Send message to Leo
   </message>
+  <message name="IDS_CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL" desc="A button label for opening AI browsing mode" formatter_data="webui=AiChat">
+    Open AI browsing profile window
+  </message>
   <message name="IDS_CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL" desc="Tooltip for when the AI content agent is not disableable in the current profile" formatter_data="webui=AiChat">
-    Leo AI Content Agent is always enabled in this profile
+    AI browsing is always enabled in this profile
   </message>
   <message name="IDS_CHAT_UI_STOP_GENERATION_BUTTON_LABEL" desc="A button label for stopping generation" formatter_data="webui=AiChat">
     Stop answering

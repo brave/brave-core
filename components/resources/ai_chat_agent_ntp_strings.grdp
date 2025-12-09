@@ -3,22 +3,22 @@
   <message name="IDS_AI_AGENT_NTP_AGENT_MODE_BUTTON_LABEL" translateable="true" desc="Agent mode button text for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
     Agent mode
   </message>
-  <message name="IDS_AI_AGENT_NTP_ABOUT_THE_LEO_PROFILE_CARD_TITLE" translateable="true" desc="About the Leo profile card title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
-    About the Leo profile
+  <message name="IDS_AI_AGENT_NTP_ABOUT_THE_AI_PROFILE_CARD_TITLE" translateable="true" desc="About the AI profile card title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
+    About the AI browsing profile
   </message>
-  <message name="IDS_AI_AGENT_NTP_ABOUT_THE_LEO_PROFILE_CARD_DESCRIPTION" translateable="true" desc="About the Leo profile card description for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
-    To protect your data, this isolated Brave profile limits AI access to your main browsing profile. Leo AI has extra permissions here to visit and interact with sites, so you can try giving it tasks and browsing together to boost productivity.
+  <message name="IDS_AI_AGENT_NTP_ABOUT_THE_AI_PROFILE_CARD_DESCRIPTION" translateable="true" desc="About the AI profile card description for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
+    To protect your data, this isolated AI browsing profile ensures the AI agent has no access to your main browsing profile, with permissions only to visit and interact with sites as needed. You can boost your productivity by giving it tasks and letting it browse for you.
   </message>
   <message name="IDS_AI_AGENT_NTP_YOUR_DATA_AND_SESSIONS_CARD_TITLE" translateable="true" desc="Your data and sessions card title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
     Your data and sessions
   </message>
   <message name="IDS_AI_AGENT_NTP_YOUR_DATA_AND_SESSIONS_CARD_DESCRIPTION" translateable="true" desc="Your data and sessions card description for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
-    When you log into a website using this profile, Leo can see the information on that site if it's open, either when it visits the site itself or when you ask it to do something there.
+    When you log into a website using this profile, Brave's AI browsing agent can see the information on that site if it's open, either when it visits the site itself or when you ask it to do something there.
   </message>
   <message name="IDS_AI_AGENT_NTP_SWITCHING_BACK_CARD_TITLE" translateable="true" desc="Switching back card title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
     Switching back
   </message>
   <message name="IDS_AI_AGENT_NTP_SWITCHING_BACK_CARD_DESCRIPTION" translateable="true" desc="Switching back card description for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
-    You can switch back to your regular profile at any time from the main menu or the Leo avatar in your toolbar. Agent mode will always open in this profile.
+    You can switch back to your regular profile at any time from the main menu or by using the profile menu on the toolbar. AI browsing will always open in the AI browsing profile.
   </message>
 </grit-part>

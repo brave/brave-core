@@ -11,9 +11,9 @@ import styles from './style.module.scss'
 
 const cards = [
   {
-    title: getLocale(S.AI_AGENT_NTP_ABOUT_THE_LEO_PROFILE_CARD_TITLE),
+    title: getLocale(S.AI_AGENT_NTP_ABOUT_THE_AI_PROFILE_CARD_TITLE),
     description: getLocale(
-      S.AI_AGENT_NTP_ABOUT_THE_LEO_PROFILE_CARD_DESCRIPTION,
+      S.AI_AGENT_NTP_ABOUT_THE_AI_PROFILE_CARD_DESCRIPTION,
     ),
     icon: 'leo-cursor',
   },
