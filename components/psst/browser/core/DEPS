@@ -1,6 +1,6 @@
 include_rules = [
   "+components/component_updater",
-  "+components/permissions/object_permission_context_base.h",
+  "+components/content_settings/core/browser/host_content_settings_map.h",
   "+crypto",
   "+components/prefs",
   "+extensions/common",

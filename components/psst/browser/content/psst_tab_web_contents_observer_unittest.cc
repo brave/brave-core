@@ -132,11 +132,24 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
   MockUiDelegate() = default;
   ~MockUiDelegate() override = default;
 
+  MOCK_METHOD(
+      void,
+      Show,
+      (const url::Origin& origin,
+       PsstWebsiteSettings dialog_data,
+       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
+      (override));
+
   MOCK_METHOD(void,
               UpdateTasks,
               (long progress,
                const std::vector<PolicyTask>& applied_tasks,
                const mojom::PsstStatus status),
+              (override));
+
+  MOCK_METHOD(std::optional<PsstWebsiteSettings>,
+              GetPsstWebsiteSettings,
+              (const url::Origin& origin, const std::string& user_id),
               (override));
 };
 
