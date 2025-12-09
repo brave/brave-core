@@ -113,6 +113,7 @@ class EngineConsumer {
   virtual void GenerateConversationTitle(
       const PageContentsMap& page_contents,
       const ConversationHistory& conversation_history,
+      const std::string& selected_language,
       GenerationCompletedCallback completed_callback) {}
 
   // Prevent indirect prompt injections being sent to the AI model.

@@ -55,6 +55,7 @@ class MockEngineConsumer : public EngineConsumer {
               GenerateConversationTitle,
               (const PageContentsMap& page_contents,
                const ConversationHistory& conversation_history,
+               const std::string& selected_language,
                GenerationCompletedCallback completed_callback),
               (override));
 

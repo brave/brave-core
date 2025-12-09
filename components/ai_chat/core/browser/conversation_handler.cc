@@ -1620,6 +1620,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     // Keep the request active and complete the generation in OnTitleGenerated.
     engine_->GenerateConversationTitle(
         associated_content_manager_->GetCachedContentsMap(), chat_history_,
+        selected_language_,
         base::BindOnce(&ConversationHandler::OnTitleGenerated,
                        weak_ptr_factory_.GetWeakPtr()));
     return;

@@ -72,6 +72,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void GenerateConversationTitle(
       const PageContentsMap& page_contents,
       const ConversationHistory& conversation_history,
+      const std::string& selected_language,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
