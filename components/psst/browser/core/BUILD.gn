@@ -14,6 +14,7 @@ static_library("core") {
     "psst_component_installer.h",
     "psst_rule.h",
     "psst_rule_registry.h",
+    "psst_settings_service.h",
   ]
 
   friend = [ ":unit_tests" ]
@@ -25,6 +26,7 @@ static_library("core") {
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
     "psst_rule_registry_impl.h",
+    "psst_settings_service.cc",
     "rule_data_reader.cc",
     "rule_data_reader.h",
   ]

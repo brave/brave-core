@@ -11,9 +11,9 @@
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
-    HostContentSettingsMap* host_content_settings_map)
-    : host_content_settings_map_(host_content_settings_map) {
-  CHECK(host_content_settings_map_);
+    PsstSettingsService* psst_settings_service)
+    : psst_settings_service_(psst_settings_service) {
+  CHECK(psst_settings_service_);
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
@@ -40,17 +40,16 @@ void PsstUiDelegateImpl::UpdateTasks(
 std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
     const url::Origin& origin,
     const std::string& user_id) {
-  return psst::GetPsstWebsiteSettings(host_content_settings_map_, origin,
-                                      user_id);
+  return psst_settings_service_->GetPsstWebsiteSettings(origin, user_id);
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     const url::Origin& origin,
     base::Value::List urls_to_skip) {
   // Save the PSST settings when user accepts the dialog
-  SetPsstWebsiteSettings(host_content_settings_map_, origin,
-                         ConsentStatus::kAllow, dialog_data_->script_version,
-                         dialog_data_->user_id, urls_to_skip.Clone());
+  psst_settings_service_->SetPsstWebsiteSettings(
+      origin, ConsentStatus::kAllow, dialog_data_->script_version,
+      dialog_data_->user_id, urls_to_skip.Clone());
 
   if (apply_changes_callback_) {
     std::move(apply_changes_callback_).Run(std::move(urls_to_skip));
