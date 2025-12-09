@@ -9,6 +9,8 @@
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
@@ -47,8 +49,29 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
     mojom::ConversationCapability conversation_capability,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::move(completed_callback)
-      .Run(base::unexpected(mojom::APIError::InternalError));
+  if (!CanPerformCompletionRequest(conversation_history)) {
+    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    return;
+  }
+
+  auto messages =
+      BuildOAIMessages(std::move(page_contents), conversation_history,
+                       max_associated_content_length_,
+                       [this](std::string& input) { SanitizeInput(input); });
+
+  // Override model_name to be used if model_key existed, used when
+  // regenerating answer.
+  std::optional<std::string> model_name = std::nullopt;
+  if (conversation_history.back()->model_key) {
+    model_name = model_service_->GetLeoModelNameByKey(
+        *conversation_history.back()->model_key);
+  }
+
+  api_->PerformRequest(std::move(messages), selected_language,
+                       ToolApiDefinitionsFromTools(tools), std::nullopt,
+                       conversation_capability,
+                       std::move(data_received_callback),
+                       std::move(completed_callback), model_name);
 }
 
 void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
