@@ -52,6 +52,7 @@ include_rules += [
   "+components/privacy_sandbox/privacy_sandbox_features.h",
   "+components/safe_browsing/core/common/features.h",
   "+components/search/ntp_features.h",
+  "+components/security_interstitials/core/features.h",
   "+components/segmentation_platform/public/features.h",
   "+components/shared_highlighting/core/common/shared_highlighting_features.h",
   "+components/signin/public/base/signin_buildflags.h",

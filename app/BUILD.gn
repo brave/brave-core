@@ -181,6 +181,7 @@ source_set("unit_tests") {
       "//android_webview/common",
       "//chrome/browser/flags:flags_android",
       "//components/password_manager/core/common:features",
+      "//components/security_interstitials/core",
     ]
   } else {
     deps += [

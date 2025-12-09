@@ -70,6 +70,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
+#include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -236,6 +237,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &safe_browsing::kNotificationTelemetry,
+#if BUILDFLAG(IS_ANDROID)
+      &security_interstitials::features::kHttpsFirstDialogUi,
+#endif
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
