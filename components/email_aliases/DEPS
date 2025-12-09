@@ -2,6 +2,15 @@ include_rules = [
   "+absl/strings/str_format.h",
   "+components/keyed_service/core",
   "+components/grit/brave_components_strings.h",
+  "+components/os_crypt/async",
+  "+components/prefs",
   "+services/network/public/cpp",
   "+services/network/test",
+  "+services/preferences/public/cpp",
 ]
+
+specific_include_rules = {
+  "test_utils.*": [
+    "+gtest"
+  ],
+}

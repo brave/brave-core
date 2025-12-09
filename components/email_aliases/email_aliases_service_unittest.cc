@@ -20,7 +20,10 @@
 #include "base/types/expected.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/os_crypt/async/browser/test_utils.h"
+#include "components/prefs/testing_pref_service.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -34,45 +37,22 @@ namespace email_aliases {
 
 using AuthenticationStatus = email_aliases::mojom::AuthenticationStatus;
 
-namespace {
-
-// Test observer for authentication state changes
-class TestObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
- public:
-  void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr state) override {
-    last_state = state->status;
-  }
-  bool WaitFor(AuthenticationStatus expected) {
-    return base::test::RunUntil([&]() { return last_state == expected; });
-  }
-  void OnAliasesUpdated(std::vector<email_aliases::mojom::AliasPtr>) override {}
-  AuthenticationStatus last_state = AuthenticationStatus::kUnauthenticated;
-  mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver_{
-      this};
-  void BindReceiver(
-      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
-          pending) {
-    receiver_.Bind(std::move(pending));
-  }
-};
-
-}  // namespace
-
 class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
   }
 
   void SetUp() override {
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     keyed_service_ = std::make_unique<EmailAliasesService>(
-        test_url_loader_factory_.GetSafeWeakWrapper());
+        test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_,
+        os_crypt_.get());
+
     keyed_service_->BindInterface(service_.BindNewPipeAndPassReceiver());
-    observer_ = std::make_unique<TestObserver>();
-    mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
-        remote;
-    observer_->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
-    service_->AddObserver(std::move(remote));
+    observer_ = email_aliases::test::AuthStateObserver::Setup(
+        keyed_service_.get(), true);
   }
 
   // Make authentication request and wait for the response.
@@ -135,10 +115,12 @@ class EmailAliasesServiceTest : public ::testing::Test {
 
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
+  TestingPrefServiceSimple prefs_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   std::unique_ptr<EmailAliasesService> keyed_service_;
   mojo::Remote<mojom::EmailAliasesService> service_;
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<TestObserver> observer_;
+  std::unique_ptr<test::AuthStateObserver> observer_;
 };
 
 TEST_F(EmailAliasesServiceTest, RequestAuthentication_EmptyEmail) {
@@ -185,11 +167,91 @@ TEST_F(EmailAliasesServiceTest, RequestAuthentication_Success_MultipleCalls) {
   EXPECT_TRUE(result3.Get().has_value());
 }
 
+TEST_F(EmailAliasesServiceTest, Auth) {
+  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                        base::BindLambdaForTesting([&]() {}));
+
+  auth.SetAuthEmail("test@domain.com");
+  EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
+
+  auth.SetAuthToken("token");
+  EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+
+  auth.SetAuthEmail({});
+  EXPECT_EQ(auth.GetAuthEmail(), "");
+  EXPECT_EQ(auth.CheckAndGetAuthToken(), "");
+
+  auth.SetAuthEmail("test@domain.com");
+  auth.SetAuthToken("token");
+
+  {
+    // set the same email
+    prefs_.SetDict(
+        prefs::kAuth,
+        base::Value::Dict()
+            .Set("email", "test@domain.com")
+            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
+    EXPECT_EQ(auth.GetAuthEmail(), "test@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+  }
+
+  {
+    // set new email
+    prefs_.SetDict(
+        prefs::kAuth,
+        base::Value::Dict()
+            .Set("email", "new@domain.com")
+            .Set("token", *prefs_.GetDict(prefs::kAuth).FindString("token")));
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
+  }
+  {
+    // token becomes invalid
+    auth.SetAuthToken("token");
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "token");
+    prefs_.SetDict(prefs::kAuth, base::Value::Dict()
+                                     .Set("email", "new@domain.com")
+                                     .Set("token", "invalid"));
+    EXPECT_EQ(auth.GetAuthEmail(), "new@domain.com");
+    EXPECT_EQ(auth.CheckAndGetAuthToken(), "");  // token reset
+  }
+}
+
 TEST_F(EmailAliasesServiceTest, RequestSession_Success) {
   RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
                          "\"service\":\"email-aliases\"}"},
                         AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
+}
+
+TEST_F(EmailAliasesServiceTest, SessionPreserved) {
+  RunRequestSessionTest({"{\"authToken\":\"auth456\", \"verified\":true, "
+                         "\"service\":\"email-aliases\"}"},
+                        AuthenticationStatus::kAuthenticated);
+  // Simulate next start.
+  keyed_service_ = std::make_unique<EmailAliasesService>(
+      test_url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
+  {
+    auto initialized =
+        test::AuthStateObserver::Setup(keyed_service_.get(), true);
+  }
+  EXPECT_TRUE(keyed_service_->IsAuthenticated());
+  EXPECT_EQ("auth456", keyed_service_->GetAuthTokenForTesting());
+
+  // New Observer is notified.
+  auto observer = test::AuthStateObserver::Setup(keyed_service_.get());
+  EXPECT_TRUE(observer->WaitFor(AuthenticationStatus::kAuthenticated));
+
+  // Prefs contain values.
+  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()));
+  EXPECT_EQ("test@example.com", auth.GetAuthEmail());
+  EXPECT_EQ("auth456", auth.CheckAndGetAuthToken());
+
+  const auto& pref_value = prefs_.GetDict(prefs::kAuth);
+  EXPECT_EQ("test@example.com", *pref_value.FindString("email"));
+  EXPECT_FALSE(pref_value.FindString("token")->empty());  // token saved
+  EXPECT_NE("auth456", *pref_value.FindString("token"));  // token encrypted
 }
 
 TEST_F(EmailAliasesServiceTest, RequestSession_InvalidJson) {
@@ -207,7 +269,7 @@ TEST_F(EmailAliasesServiceTest, RequestSession_RetryOnMissingAuthToken) {
       email_aliases::mojom::AuthenticationStatus::kAuthenticated);
   EXPECT_EQ(keyed_service_->GetAuthTokenForTesting(), "auth456");
   // unauthenticated, authenticating, authenticated
-  EXPECT_EQ(observer_->last_state,
+  EXPECT_EQ(observer_->GetStatus().status,
             email_aliases::mojom::AuthenticationStatus::kAuthenticated);
 }
 
@@ -251,13 +313,12 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper());
-    observer_ = std::make_unique<TestObserver>();
-    mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
-        remote;
-    observer_->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
-    service_->AddObserver(std::move(remote));
+        url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
+    observer_ =
+        email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
   }
 
   // Starts auth and captures verify/result request times via interceptor.
@@ -290,8 +351,10 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  TestingPrefServiceSimple prefs_;
   std::unique_ptr<EmailAliasesService> service_;
-  std::unique_ptr<TestObserver> observer_;
+  std::unique_ptr<test::AuthStateObserver> observer_;
   std::vector<base::TimeTicks> verify_result_request_times_;
 };
 
@@ -335,7 +398,7 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
 
   EXPECT_EQ(verify_result_request_times_.size(), expected_requests);
 
-  EXPECT_EQ(observer_->last_state,
+  EXPECT_EQ(observer_->GetStatus().status,
             email_aliases::mojom::AuthenticationStatus::kUnauthenticated);
 }
 
@@ -441,10 +504,25 @@ class EmailAliasesAPITest : public ::testing::Test {
     return result_out;
   }
 
+  void SetupAuth(bool auth = true) {
+    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()));
+    settings.SetAuthEmail("test@example.com");
+    if (auth) {
+      settings.SetAuthToken("token456");
+    } else {
+      settings.SetAuthEmail({});
+    }
+  }
+
  protected:
   void SetUp() override {
+    EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
+    SetupAuth();
+
     service_ = std::make_unique<EmailAliasesService>(
-        url_loader_factory_.GetSafeWeakWrapper());
+        url_loader_factory_.GetSafeWeakWrapper(), &prefs_, os_crypt_.get());
+    email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
@@ -454,6 +532,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  TestingPrefServiceSimple prefs_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 };

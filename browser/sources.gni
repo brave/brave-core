@@ -206,6 +206,7 @@ brave_chrome_browser_deps = [
   "//brave/components/debounce/content/browser",
   "//brave/components/email_aliases:features",
   "//brave/components/email_aliases:mojom",
+  "//brave/components/email_aliases:service",
   "//brave/components/global_privacy_control",
   "//brave/components/google_sign_in_permission",
   "//brave/components/https_upgrade_exceptions/browser",

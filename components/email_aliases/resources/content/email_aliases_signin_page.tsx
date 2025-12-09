@@ -83,6 +83,7 @@ const BeforeSendingEmailForm = ({
           value={email}
         />
         <Button
+          id='get-login-link-button'
           onClick={requestAuthentication}
           type='submit'
           kind='filled'

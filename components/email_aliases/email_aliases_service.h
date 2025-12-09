@@ -17,12 +17,18 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases_auth.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
+
+namespace os_crypt_async {
+class Encryptor;
+class OSCryptAsync;
+}  // namespace os_crypt_async
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -42,8 +48,12 @@ class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
   EmailAliasesService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* pref_service,
+      os_crypt_async::OSCryptAsync* os_crypt_async);
   ~EmailAliasesService() override;
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   // KeyedService:
   // Called when the owning profile context is shutting down. Releases
@@ -88,7 +98,7 @@ class EmailAliasesService : public KeyedService,
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
 
   // Returns the current auth token for tests. Empty when unauthenticated.
-  std::string GetAuthTokenForTesting() const;
+  std::string GetAuthTokenForTesting();
 
   // Build the fully-qualified Brave Accounts verification URLs.
   static GURL GetAccountsServiceVerifyInitURL();
@@ -101,6 +111,15 @@ class EmailAliasesService : public KeyedService,
   // Callback that receives the response body as an optional string.
   using BodyAsStringCallback =
       base::OnceCallback<void(std::optional<std::string> response_body)>;
+
+  void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
+
+  std::string GetAuthEmail() const;
+  std::string GetAuthToken();
+
+  mojom::AuthenticationStatus GetCurrentStatus();
+
+  void OnAuthChanged();
 
   // Handles the response to the verify/init request. Parses a verification
   // token and, if present, proceeds to poll the session endpoint. Invokes
@@ -176,14 +195,12 @@ class EmailAliasesService : public KeyedService,
   // Temporary token returned by verify/init and used to authorize polling.
   std::string verification_token_;
 
-  // Long-lived token returned by verify/result upon successful authentication.
-  std::string auth_token_;
-
-  // The email address used for the current authentication attempt.
-  std::string auth_email_;
+  std::optional<EmailAliasesAuth> auth_;
 
   // URL loader factory used to issue network requests to Brave Accounts.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  const raw_ptr<PrefService> pref_service_ = nullptr;
 
   // Single SimpleURLLoader instance used for both verify/init and
   // verify/result requests. Recreated for each new request.

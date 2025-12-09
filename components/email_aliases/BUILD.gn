@@ -33,6 +33,20 @@ static_library("features") {
   public_deps = [ "//base" ]
 }
 
+source_set("auth") {
+  sources = [
+    "email_aliases_auth.cc",
+    "email_aliases_auth.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/os_crypt/async/common",
+    "//components/prefs",
+    "//services/preferences/public/cpp",
+  ]
+}
+
 static_library("service") {
   sources = [
     "email_aliases_service.cc",
@@ -47,10 +61,31 @@ static_library("service") {
     "//brave/components/email_aliases:features",
     "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
     "//ui/base",
+  ]
+
+  public_deps = [ ":auth" ]
+}
+
+source_set("test_utils") {
+  testonly = true
+
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    ":service",
+    "//base/test:test_support",
+    "//brave/components/email_aliases:mojom",
+    "//components/os_crypt/async/browser",
+    "//mojo/public/cpp/bindings",
   ]
 }
 
@@ -58,11 +93,13 @@ source_set("unit_tests") {
   testonly = true
   sources = [ "email_aliases_service_unittest.cc" ]
   deps = [
+    ":features",
+    ":service",
+    ":test_utils",
     "//base/test:test_support",
     "//brave/components/constants",
-    "//brave/components/email_aliases:features",
-    "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
+    "//components/os_crypt/async/browser:test_support",
     "//components/prefs:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
