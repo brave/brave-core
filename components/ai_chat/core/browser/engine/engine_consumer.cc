@@ -82,4 +82,38 @@ const std::string& EngineConsumer::GetModelName() const {
   return model_name_;
 }
 
+void EngineConsumer::OnConversationTitleGenerated(
+    GenerationCompletedCallback completion_callback,
+    GenerationResult api_result) {
+  // No available title result
+  if (!api_result.has_value() || !api_result->event ||
+      !api_result->event->is_completion_event() ||
+      api_result->event->get_completion_event()->completion.empty()) {
+    // Just use the internal error should be fine because currently this error
+    // is silently dropped.
+    std::move(completion_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  // Extract and process title from the raw API completion
+  std::string_view title = base::TrimWhitespaceASCII(
+      api_result->event->get_completion_event()->completion,
+      base::TrimPositions::TRIM_ALL);
+
+  // Discard title if longer than 100 characters
+  if (title.length() > 100) {
+    std::move(completion_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  // Create ConversationTitleEvent
+  auto title_event = mojom::ConversationEntryEvent::NewConversationTitleEvent(
+      mojom::ConversationTitleEvent::New(std::string(title)));
+
+  GenerationResultData title_result(std::move(title_event), std::nullopt);
+  std::move(completion_callback).Run(std::move(title_result));
+}
+
 }  // namespace ai_chat

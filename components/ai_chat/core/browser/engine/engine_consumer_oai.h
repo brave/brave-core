@@ -139,10 +139,6 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
-  void OnConversationTitleGenerated(
-      GenerationCompletedCallback completion_callback,
-      GenerationResult api_result);
-
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;
 
