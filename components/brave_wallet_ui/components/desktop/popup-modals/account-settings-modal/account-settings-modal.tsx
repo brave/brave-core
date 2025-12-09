@@ -261,6 +261,33 @@ export const AccountSettingsModal = () => {
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
 
+  // Helper function to download JSON file
+  const downloadJsonFile = React.useCallback(
+    (jsonContent: string, filename: string) => {
+      const blob = new Blob([jsonContent], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    },
+    [],
+  )
+
+  // Handler for downloading Polkadot account export
+  const onDownloadPolkadotKey = React.useCallback(() => {
+    if (!privateKey || !selectedAccount) {
+      return
+    }
+    const accountName = selectedAccount.name || 'account'
+    const sanitizedAccountName = accountName.replace(/[^a-z0-9]/gi, '_')
+    const filename = `${sanitizedAccountName}_export.json`
+    downloadJsonFile(privateKey, filename)
+  }, [privateKey, selectedAccount, downloadJsonFile])
+
   // methods
   const onViewPrivateKey = React.useCallback(
     async (accountId: BraveWallet.AccountId) => {
@@ -269,8 +296,9 @@ export const AccountSettingsModal = () => {
           accountId,
           password,
         )
-      if (isMounted) {
-        return setPrivateKey(privateKey || '')
+      if (isMounted && privateKey) {
+        // Show the key for all accounts (including Polkadot)
+        return setPrivateKey(privateKey)
       }
     },
     [password, isMounted],
@@ -448,19 +476,33 @@ export const AccountSettingsModal = () => {
               />
             )}
             <ButtonWrapper>
-              <LeoSquaredButton
-                onClick={!privateKey ? onShowPrivateKey : onHidePrivateKey}
-                kind='filled'
-                isDisabled={
-                  privateKey ? false : password ? !isCorrectPassword : true
-                }
-              >
-                {getLocale(
-                  !privateKey
-                    ? 'braveWalletAccountSettingsShowKey'
-                    : 'braveWalletAccountSettingsHideKey',
-                )}
-              </LeoSquaredButton>
+              {privateKey ? (
+                <ButtonRow>
+                  {selectedAccount?.accountId.coin
+                    === BraveWallet.CoinType.DOT && (
+                    <LeoSquaredButton
+                      onClick={onDownloadPolkadotKey}
+                      kind='outline'
+                    >
+                      {getLocale('braveWalletAccountSettingsDownloadKey')}
+                    </LeoSquaredButton>
+                  )}
+                  <LeoSquaredButton
+                    onClick={onHidePrivateKey}
+                    kind='filled'
+                  >
+                    {getLocale('braveWalletAccountSettingsHideKey')}
+                  </LeoSquaredButton>
+                </ButtonRow>
+              ) : (
+                <LeoSquaredButton
+                  onClick={onShowPrivateKey}
+                  kind='filled'
+                  isDisabled={password ? !isCorrectPassword : true}
+                >
+                  {getLocale('braveWalletAccountSettingsShowKey')}
+                </LeoSquaredButton>
+              )}
             </ButtonWrapper>
           </PrivateKeyWrapper>
         )}

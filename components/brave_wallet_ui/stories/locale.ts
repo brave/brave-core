@@ -511,6 +511,7 @@ provideStrings({
     + 'Anyone with this private key can take your assets forever.',
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
+  braveWalletAccountSettingsDownloadKey: 'Download',
   braveWalletAccountSettingsUpdateError:
     'Failed to update account name, please try again.',
   braveWalletWatchListTokenId: 'Token ID (only for ERC721)',
