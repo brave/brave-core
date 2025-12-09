@@ -177,10 +177,11 @@ bool MaybeRedirectToRightPane(content::WebContents* source,
                         ui::PAGE_TRANSITION_LINK);
   params.source_contents = target_contents;
   params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  // Preserve original navigation's referrer.
+  // As this redirects to existing right pane, orignal navigation's opener
+  // can't be passed because this opener relationship is established only
+  // when new WebContents is created.
   params.referrer = referrer;
-
-  // Don't want to set opener when routed from window.open().
-  params.opener = from_window_open ? nullptr : source->GetOpener();
   Navigate(&params);
 
   // Close the source tab if it was created by window.open and we redirected.

@@ -81,9 +81,27 @@ constexpr char kTestPageWithTargetBlankLink[] = R"(
   <a id="target-blank-link" href="/target.html" target="_blank">
     Open in new tab
   </a>
+  <a id="target-blank-noreferrer-link"
+     href="/target.html"
+     target="_blank" rel="noreferrer">
+    Open in new tab (noreferrer)
+  </a>
   <script>
     function clickTargetBlankLink() {
       document.getElementById('target-blank-link').click();
+    }
+    function clickTargetBlankNoReferrerLink() {
+      document.getElementById('target-blank-noreferrer-link').click();
+    }
+    // window.open() variations
+    function windowOpenBasic() {
+      window.open('/target.html', '_blank');
+    }
+    function windowOpenWithNoreferrer() {
+      window.open('/target.html', '_blank', 'noreferrer');
+    }
+    function windowOpenWithFeatures() {
+      window.open('/target.html', '_blank', 'width=800,height=600');
     }
   </script>
 </body>
@@ -1337,4 +1355,288 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
   // Wait for navigation in right pane (should navigate normally, not redirect)
   right_pane_observer.Wait();
   EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkPreservesReferrerWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Regular target="_blank" link should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the target="_blank" link from left pane
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is set correctly - should be the test page URL
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" with rel="noreferrer" should NOT preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the noreferrer link from left pane
+    ASSERT_TRUE(
+        content::ExecJs(left_pane, "clickTargetBlankNoReferrerLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to rel="noreferrer"
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Basic window.open() should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is preserved
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: window.open() with 'noreferrer' - referrer should NOT be preserved
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithNoreferrer();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to noreferrer
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 3: window.open() with window features (width, height) should NOT be
+  // redirected - it creates a popup window instead
+  {
+    // Set up observer for new browser window creation
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
+
+    // Wait for new browser window (popup) to be created
+    Browser* popup_browser = browser_created_observer.Wait();
+    ASSERT_TRUE(popup_browser);
+
+    // Verify a popup window was created
+    EXPECT_TRUE(popup_browser->is_type_popup())
+        << "window.open() with features should create a popup window";
+
+    // Verify the original split view tabs remain unchanged
+    EXPECT_EQ(2, tab_strip_model->count())
+        << "Split view should still have 2 tabs (no redirect occurred)";
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       WindowOpenOpenerIsPreservedDuringRedirect) {
+  // This test verifies that when window.open() or target="_blank" links create
+  // a temporary tab that gets redirected to the right pane, the opener
+  // relationship from the original navigation is preserved through the
+  // redirect.
+
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: window.open() redirect
+  {
+    // Verify right pane has no opener BEFORE the redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before window.open() redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Call window.open() which creates a temporary tab with left_pane as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // The temporary tab created by window.open() had left_pane as its opener.
+    // When the navigation was redirected to right_pane, the opener should have
+    // been passed through the NavigateParams. However, since right_pane already
+    // exists, it won't have window.opener set (you can't change the opener of
+    // an existing WebContents).
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the redirect
+    // The opener relationship cannot be changed on an existing WebContents,
+    // so even though the temporary tab had left_pane as its opener and we
+    // passed it through NavigateParams.opener, the right_pane's opener remains
+    // null because it existed before the window.open() call.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after window.open() "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after redirect. "
+           "The opener relationship is established at WebContents creation "
+           "time, "
+           "not during navigation. The NavigateParams.opener field preserves "
+           "the "
+           "opener information through the redirect, but doesn't modify "
+           "existing "
+           "WebContents.";
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" link redirect
+  {
+    // Verify right pane still has no opener before the link click redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before target='_blank' redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click target="_blank" link which creates a temporary tab with left_pane
+    // as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the target="_blank"
+    // redirect Same behavior as window.open() - the opener cannot be changed on
+    // existing WebContents even though the temporary tab had left_pane as its
+    // opener.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after target='_blank' "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after "
+           "target='_blank' redirect. "
+           "Same as window.open(), the opener relationship cannot be changed "
+           "on "
+           "existing WebContents.";
+  }
 }
