@@ -10,6 +10,28 @@ import styles from './rich_search_widget.module.scss'
 const RICH_SEARCH_WIDGETS_ORIGIN = loadTimeData.getString(
   'richSearchWidgetsOrigin',
 )
+
+/** Gets the browser theme (which might be user configured) */
+function getBrowserTheme() {
+  const stringifyStyles = (stylesheet: CSSStyleSheet) => {
+    return Array.from(stylesheet.cssRules || [])
+      .filter((rule) => rule instanceof CSSStyleRule)
+      .map((rule) => rule.cssText)
+      .join('\n')
+  }
+
+  const nala = Array.from(document.styleSheets).find((s) =>
+    s.href?.includes('nala.css'),
+  )!
+
+  const baseColors = Array.from(nala.cssRules || []).find(
+    (rule) =>
+      rule instanceof CSSImportRule && rule.href?.includes('theme/colors.css'),
+  ) as CSSImportRule
+
+  return stringifyStyles(baseColors.styleSheet!) + stringifyStyles(nala)
+}
+
 export default function RichSearchWidget(props: { jsonData: string }) {
   if (!RICH_SEARCH_WIDGETS_ORIGIN) {
     return null
@@ -19,6 +41,10 @@ export default function RichSearchWidget(props: { jsonData: string }) {
     (iframe: HTMLIFrameElement | null) => {
       if (iframe) {
         const sendContent = () => {
+          iframe.contentWindow?.postMessage(
+            { type: 'theme', styles: getBrowserTheme() },
+            RICH_SEARCH_WIDGETS_ORIGIN,
+          )
           iframe.contentWindow?.postMessage(
             JSON.parse(props.jsonData),
             RICH_SEARCH_WIDGETS_ORIGIN,
