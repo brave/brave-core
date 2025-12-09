@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "components/variations/pref_names.h"
@@ -26,7 +27,8 @@ base::Value::Dict BuildCountryCodeUserData() {
     // country code as a fallback.
     country_code = CurrentCountryCode();
   }
-  return base::Value::Dict().Set(kCountryCodeKey, country_code);
+  return base::Value::Dict().Set(kCountryCodeKey,
+                                 base::ToUpperASCII(country_code));
 }
 
 }  // namespace brave_ads
