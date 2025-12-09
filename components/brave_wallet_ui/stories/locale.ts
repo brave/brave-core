@@ -772,6 +772,7 @@ provideStrings({
   braveWalletValue: 'Value',
 
   // Encryption Key Panel
+  braveWalletPublicEncryptionKey: 'Public encryption key',
   braveWalletProvideEncryptionKeyTitle:
     'A DApp is requesting your public encryption key',
   braveWalletProvideEncryptionKeyDescription:

@@ -25,8 +25,10 @@ import {
   AddSuggestedTokenPanel, //
 } from '../components/extension/add_suggested_token_panel/add_suggested_token_panel'
 import {
-  ProvidePubKeyPanel,
-  DecryptRequestPanel,
+  ProvidePublicEncryptionKeyPanel, //
+} from '../components/extension/public_encryption_key_panels/provide_public_encryption_key_panel'
+import {
+  DecryptRequestPanel, //
 } from '../components/extension/encryption-key-panel/index'
 
 import {
@@ -264,10 +266,13 @@ function Container() {
 
   if (getEncryptionPublicKeyRequest) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <ProvidePubKeyPanel payload={getEncryptionPublicKeyRequest} />
-        </LongWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <ProvidePublicEncryptionKeyPanel
+          payload={getEncryptionPublicKeyRequest}
+        />
       </PanelWrapper>
     )
   }
