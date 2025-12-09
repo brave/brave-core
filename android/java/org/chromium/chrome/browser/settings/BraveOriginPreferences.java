@@ -13,11 +13,16 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 
+import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
+import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
@@ -25,7 +30,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 @NullMarked
 public class BraveOriginPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
-    private static final String TAG = "BraveOriginPreferences";
+    private static final String TAG = "BraveOriginPrefs";
 
     // Preference keys
     private static final String PREF_REWARDS_SWITCH = "rewards_switch";
@@ -49,11 +54,20 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_LINK_SUBSCRIPTION = "link_subscription";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    @Nullable private BraveOriginSettingsHandler mBraveOriginSettingsHandler;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_origin_preferences);
         mPageTitle.set(getString(R.string.menu_origin));
+
+        // Initialize BraveOriginSettingsHandler
+        Profile profile = getProfile();
+        if (profile != null) {
+            mBraveOriginSettingsHandler =
+                    BraveOriginServiceFactory.getInstance()
+                            .getBraveOriginSettingsHandler(profile, null);
+        }
 
         // Set up toggle preferences
         setupTogglePreference(PREF_REWARDS_SWITCH);
@@ -108,38 +122,19 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         boolean isEnabled = (Boolean) newValue;
 
         updateToggleDescription(preference, isEnabled);
-        if (PREF_REWARDS_SWITCH.equals(key)) {
-            // TODO: Handle rewards toggle change
-            return true;
-        } else if (PREF_CRASH_REPORTS_SWITCH.equals(key)) {
-            // TODO: Handle crash reports toggle change
-            return true;
-        } else if (PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH.equals(key)) {
-            // TODO: Handle privacy preserving analytics toggle change
-            return true;
-        } else if (PREF_EMAIL_ALIASES_SWITCH.equals(key)) {
-            // TODO: Handle email aliases toggle change
-            return true;
-        } else if (PREF_LEO_AI_SWITCH.equals(key)) {
-            // TODO: Handle Leo AI toggle change
-            return true;
-        } else if (PREF_NEWS_SWITCH.equals(key)) {
-            // TODO: Handle news toggle change
-            return true;
-        } else if (PREF_STATISTICS_REPORTING_SWITCH.equals(key)) {
-            // TODO: Handle statistics reporting toggle change
-            return true;
-        } else if (PREF_VPN_SWITCH.equals(key)) {
-            // TODO: Handle VPN toggle change
-            return true;
-        } else if (PREF_WALLET_SWITCH.equals(key)) {
-            // TODO: Handle wallet toggle change
-            return true;
-        } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(key)) {
-            // TODO: Handle web discovery project toggle change
-            return true;
+        String policyKey = getPolicyKeyForPreference(key);
+        if (policyKey == null || mBraveOriginSettingsHandler == null) {
+            return false;
         }
-        return false;
+        mBraveOriginSettingsHandler.setPolicyValue(
+                policyKey,
+                isEnabled,
+                (success) -> {
+                    if (!success) {
+                        Log.e(TAG, "Failed to set policy value for " + policyKey);
+                    }
+                });
+        return true;
     }
 
     @Override
@@ -152,16 +147,65 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     }
 
     /**
-     * Sets up a toggle preference with listener and initial state.
+     * Sets up a toggle preference with listener and initial state. Also initializes the preference
+     * value from the policy service if available.
      *
      * @param key The preference key
      */
     private void setupTogglePreference(String key) {
         ChromeSwitchPreference preference = (ChromeSwitchPreference) findPreference(key);
-        if (preference != null) {
-            preference.setOnPreferenceChangeListener(this);
-            updateToggleDescription(preference, preference.isChecked());
+        if (preference == null) {
+            assert false : "Preference not found for key: " + key;
+            return;
         }
+        preference.setOnPreferenceChangeListener(this);
+        updateToggleDescription(preference, preference.isChecked());
+
+        // Initialize from policy service if available
+        String policyKey = getPolicyKeyForPreference(key);
+        if (policyKey == null || mBraveOriginSettingsHandler == null) {
+            return;
+        }
+        mBraveOriginSettingsHandler.getPolicyValue(
+                policyKey,
+                (value) -> {
+                    if (value != null) {
+                        preference.setChecked(value);
+                        updateToggleDescription(preference, value);
+                    }
+                });
+    }
+
+    /**
+     * Gets the policy key for a given preference key.
+     *
+     * @param preferenceKey The preference key
+     * @return The policy key, or null if not mapped
+     */
+    @Nullable
+    private String getPolicyKeyForPreference(String preferenceKey) {
+        // Map preference keys to policy keys
+        if (PREF_REWARDS_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_REWARDS_DISABLED;
+        } else if (PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_P3_A_ENABLED;
+        } else if (PREF_LEO_AI_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_A_I_CHAT_ENABLED;
+        } else if (PREF_NEWS_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_NEWS_DISABLED;
+        } else if (PREF_STATISTICS_REPORTING_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_STATS_PING_ENABLED;
+        } else if (PREF_VPN_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_V_P_N_DISABLED;
+        } else if (PREF_WALLET_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_WALLET_DISABLED;
+        } else if (PREF_WEB_DISCOVERY_PROJECT_SWITCH.equals(preferenceKey)) {
+            return BravePolicyConstants.BRAVE_WEB_DISCOVERY_ENABLED;
+        }
+        // TODO: Add mappings for other preferences as they are implemented
+        // PREF_CRASH_REPORTS_SWITCH - no policy mapping found
+        // PREF_EMAIL_ALIASES_SWITCH - no policy mapping found
+        return null;
     }
 
     /**
@@ -235,5 +279,14 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         // Set the tinted icon back to the preference
         preference.setIcon(icon);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mBraveOriginSettingsHandler != null) {
+            mBraveOriginSettingsHandler.close();
+            mBraveOriginSettingsHandler = null;
+        }
     }
 }

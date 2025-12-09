@@ -9,6 +9,7 @@ mojom_component("mojom") {
   output_prefix = "brave_origin_mojom"
   macro_prefix = "BRAVE_ORIGIN_MOJOM"
 
+  generate_java = true
   generate_legacy_js_bindings = true
   webui_module_path = "/"
 

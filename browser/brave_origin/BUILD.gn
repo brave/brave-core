@@ -41,6 +41,11 @@ source_set("brave_origin") {
     "//components/policy/core/common",
   ]
 
+  if (is_android) {
+    sources += [ "android/brave_origin_service_factory_android.cc" ]
+    deps += [ "//brave/browser/brave_origin/android:jni_headers" ]
+  }
+
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }

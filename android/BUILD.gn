@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import(
+    "//brave/components/policy/resources/templates/policy_definitions/brave_policies.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
@@ -26,6 +28,33 @@ java_cpp_template("brave_config_java") {
     "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",
     "BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"",
     "BRAVE_ANDROID_WEB_DISCOVERY_ENABLED=$enable_web_discovery_native",
+  ]
+}
+
+# Generate Java constants from policy YAML files
+# This target generates a srcjar that is consumed by chrome_java via srcjar_deps
+# Using action_with_pydeps like upstream does
+action_with_pydeps("brave_policy_constants_java_srcjar") {
+  script = "//brave/tools/generate_policy_constants_java.py"
+
+  # Collect all YAML policy files as inputs (excluding .group.details.yaml)
+  _policy_yaml_inputs = []
+  foreach(policy_file, brave_policies) {
+    if (policy_file != "BraveSoftware/.group.details.yaml") {
+      _policy_yaml_inputs += [ "//brave/components/policy/resources/templates/policy_definitions/$policy_file" ]
+    }
+  }
+
+  # List files explicitly so GN tracks them for incremental builds
+  inputs = _policy_yaml_inputs
+  outputs = [ "$target_gen_dir/$target_name.srcjar" ]
+  args = [
+    "--policy-dir",
+    rebase_path(
+        "//brave/components/policy/resources/templates/policy_definitions/BraveSoftware",
+        root_build_dir),
+    "--output-srcjar",
+    rebase_path("$target_gen_dir/$target_name.srcjar", root_build_dir),
   ]
 }
 
