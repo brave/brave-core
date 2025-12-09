@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/browser/local_models_updater.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -52,6 +53,7 @@ void RegisterComponentsForUpdate() {
   RegisterZxcvbnDataComponent(cus);
 #endif  // BUILDFLAG(IS_ANDROID)
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
+  local_ai::ManageLocalModelsComponentRegistration(cus);
 }
 
 }  // namespace component_updater

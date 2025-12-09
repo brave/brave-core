@@ -12,6 +12,7 @@ source_set("component_updater") {
   deps = [
     "//base",
     "//brave/components/constants",
+    "//brave/components/local_ai/browser",
     "//chrome/common",
     "//components/component_updater",
     "//components/prefs",
