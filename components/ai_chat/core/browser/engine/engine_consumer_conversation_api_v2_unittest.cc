@@ -831,6 +831,45 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 }
 
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       ShouldCallSanitizeInputOnPageContent) {
+  class MockConversationAPIEngineConsumer
+      : public EngineConsumerConversationAPIV2 {
+   public:
+    using EngineConsumerConversationAPIV2::EngineConsumerConversationAPIV2;
+    ~MockConversationAPIEngineConsumer() override = default;
+
+    MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
+  };
+
+  PageContent page_content_1("This is a page about The Mandalorian.", false);
+  PageContent page_content_2("This is a video about The Mandalorian.", true);
+
+  auto mock_engine_consumer =
+      std::make_unique<MockConversationAPIEngineConsumer>(
+          *model_->options->get_leo_model_options(), nullptr, nullptr,
+          model_service_.get(), &prefs_);
+  mock_engine_consumer->SetAPIForTesting(
+      std::make_unique<MockConversationAPIV2Client>(
+          model_->options->get_leo_model_options()->name));
+
+  // Calling GenerateAssistantResponse should call SanitizeInput
+  {
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
+    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    history.push_back(std::move(turn));
+    mock_engine_consumer->GenerateAssistantResponse(
+        {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false,
+        {}, std::nullopt, mojom::ConversationCapability::CHAT,
+        base::DoNothing(), base::DoNothing());
+    testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
+  }
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
        GenerateAssistantResponse_PageContentsOrderedBeforeTurns) {
   auto* mock_api_client = GetMockConversationAPIV2Client();
   base::RunLoop run_loop;
