@@ -172,8 +172,12 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   turn4->text = "Another question";
   history.push_back(std::move(turn4));
 
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), history, 10000);
+  bool sanitize_input_called = false;
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), history, 10000,
+      [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
+
+  EXPECT_TRUE(sanitize_input_called);
 
   // Should have 4 messages
   ASSERT_EQ(messages.size(), 4u);
@@ -269,8 +273,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   history.push_back(std::move(turn2));
 
   // Set max_length to fit newer content but not both
-  std::vector<OAIMessage> messages =
-      BuildOAIMessages(std::move(page_contents_map), history, 11);
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), history, 11, [](std::string&) {});
 
   // Should have 2 messages
   ASSERT_EQ(messages.size(), 2u);
