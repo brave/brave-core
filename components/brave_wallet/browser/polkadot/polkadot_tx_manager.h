@@ -22,12 +22,17 @@ class KeyringService;
 class TxService;
 class TxStorageDelegate;
 class AccountResolverDelegate;
+class PolkadotWalletService;
 
 // Polkadot transaction manager
 class PolkadotTxManager : public TxManager,
                           public PolkadotBlockTracker::Observer {
  public:
+  using AddUnapprovedPolkadotTransactionCallback =
+      mojom::TxService::AddUnapprovedPolkadotTransactionCallback;
+
   PolkadotTxManager(TxService& tx_service,
+                    PolkadotWalletService& polkadot_wallet_service,
                     KeyringService& keyring_service,
                     TxStorageDelegate& delegate,
                     AccountResolverDelegate& account_resolver_delegate);
@@ -42,6 +47,15 @@ class PolkadotTxManager : public TxManager,
       const mojom::AccountIdPtr& from,
       const std::optional<url::Origin>& origin,
       AddUnapprovedTransactionCallback callback) override;
+
+  void AddUnapprovedPolkadotTransaction(
+      mojom::NewPolkadotTransactionParamsPtr params,
+      AddUnapprovedPolkadotTransactionCallback callback);
+
+  void OnGetChainMetadata(
+      mojom::NewPolkadotTransactionParamsPtr params,
+      AddUnapprovedPolkadotTransactionCallback callback,
+      const base::expected<PolkadotChainMetadata, std::string>& chain_metadata);
 
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback callback) override;
@@ -72,6 +86,10 @@ class PolkadotTxManager : public TxManager,
 
   // Helper methods
   PolkadotBlockTracker& GetPolkadotBlockTracker();
+
+  raw_ref<PolkadotWalletService> polkadot_wallet_service_;
+
+  base::WeakPtrFactory<PolkadotTxManager> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

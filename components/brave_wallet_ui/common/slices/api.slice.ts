@@ -341,6 +341,7 @@ export const {
   useSendSPLTransferMutation,
   useSendZecTransactionMutation,
   useSendCardanoTransactionMutation,
+  useSendPolkadotTransactionMutation,
   useSetAutoLockMinutesMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,

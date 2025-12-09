@@ -18,6 +18,7 @@ import {
   SendSolTransactionParams,
   SendZecTransactionParams,
   SendCardanoTransactionParams,
+  SendPolkadotTransactionParams,
   SerializableTransactionInfo,
   SPLTransferFromParams,
   TransactionInfoLookup,
@@ -716,6 +717,47 @@ export const transactionEndpoints = ({
 
           return {
             data: { success },
+          }
+        } catch (error) {
+          return { error: 'Failed to send ADA transaction' }
+        }
+      },
+      invalidatesTags: (res, err, arg) =>
+        err
+          ? []
+          : TX_CACHE_TAGS.LISTS({
+              coin: arg.fromAccount.accountId.coin,
+              fromAccountId: arg.fromAccount.accountId,
+              chainId: null,
+            }),
+    }),
+
+    // Polkadot
+    sendPolkadotTransaction: mutation<
+      { success: boolean },
+      SendPolkadotTransactionParams
+    >({
+      queryFn: async (payload, { dispatch }, extraOptions, baseQuery) => {
+        try {
+          const { txService } = baseQuery(undefined).data
+
+          const params: BraveWallet.NewPolkadotTransactionParams = {
+            chainId: payload.network.chainId,
+            from: payload.fromAccount.accountId,
+            to: payload.to,
+            amount: BigInt(payload.value),
+            sendingMaxAmount: payload.sendingMaxAmount,
+          }
+
+          const { errorMessage, success } =
+            await txService.addUnapprovedPolkadotTransaction(params)
+
+          if (!success && errorMessage) {
+            throw new Error(errorMessage || 'unknown error')
+          }
+
+          return {
+            data: { success: false },
           }
         } catch (error) {
           return { error: 'Failed to send ADA transaction' }
