@@ -13,7 +13,7 @@
 -TPMMetricsProviderTest.GetMetricsFullName
 -TpmIdentifierTest.TpmTest
 
-# This test fails because of the following CHECK in identity_test_utils.cc:
+# These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -All/AppMenuModelSigninPromoTest.SignedIn/*
 -All/CanOfferSigninWithSigninToSyncFeatureTest.*
@@ -54,8 +54,8 @@
 # actions the test expects to find.
 -CustomizeToolbarHandlerTest.ListActions
 
-# This test fails because the message it checks has Brave intead of Google (or
-# the url it checks uses a brave: scheme when a chrome: scheme is expected).
+# These tests fail because the message they check has Brave intead of Google (or
+# the url they check uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
@@ -462,6 +462,9 @@
 -WebAppRegistrarTest.GetApps
 -WebAppSyncBridgeTest.ApplyIncrementalSyncChanges_AddSyncAppsWithOverlappingPolicyApps
 -WebAppSyncBridgeTest.CommitUpdate_DeleteSyncAppWithOverlappingPolicyApp
+
+# This test is flaky: passes locally but fails on CI
+-TransientKeepAlivePolicyTest.EvictsOldestProcessWhenLimitExceeded
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1

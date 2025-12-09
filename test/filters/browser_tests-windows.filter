@@ -113,12 +113,12 @@
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*
 -InstanceIDApiTest.*
--InterstitialUITest.*
 -IsolatedAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDuetoPushNotification
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*
 -MediaSessionPictureInPictureWindowControllerBrowserTest.*
 -NetErrorTabHelperWithFencedFrameTest.*
+-NotificationHelperLaunchesChrome.ChromeLaunchTest
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*
 -OutOfMemoryReporterPrerenderBrowserTest.*

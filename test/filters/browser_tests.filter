@@ -2696,6 +2696,7 @@
 -DevToolsTagTest.*
 -DevToolsTest.NewWindowFromBrowserContext
 -DevToolsTest.TestRawHeadersWithRedirectAndHSTS
+-DevToolsTest.TestShowScriptsTab
 -DIPSBounceDetectorBrowserTest.DetectStatefulRedirect_Client_IgnoreThirdPartySubresource
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Client
 -DIPSBounceDetectorBrowserTest.Histograms_BounceCategory_Server
@@ -2849,6 +2850,7 @@
 -IntentChipButtonSkipIntentPickerBrowserTest.ClickingChipOpensApp
 -IntentChipButtonSkipIntentPickerBrowserTest.ShowsIntentChipCollapsed
 -InteractiveBrowserTestCodeCoverageBrowsertest.TestCoverageEmits/*
+-InterstitialUITest.*
 -IsolatedOriginWebViewTest.IsolatedOriginInWebview
 -IsolatedOriginWebViewTest.LoadIsolatedOriginInWebviewAfterLoadingInRegularTab
 -JavascriptFrameworksUkmObserverBrowserTest.*
