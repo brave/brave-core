@@ -20,6 +20,7 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
@@ -283,6 +284,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isHideVerticalTabCompletelyFlagEnabled",
       base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely));
+  html_source->AddBoolean(
+      "isShowBraveShieldsInPageInfoEnabled",
+      page_info::features::IsShowBraveShieldsInPageInfoEnabled());
 }
 
 // static

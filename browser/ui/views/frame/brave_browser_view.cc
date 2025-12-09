@@ -25,6 +25,7 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -740,6 +741,10 @@ void BraveBrowserView::AddedToWidget() {
 }
 
 bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    return false;
+  }
+
   auto* shields_action_view =
       static_cast<BraveLocationBarView*>(GetLocationBarView())
           ->brave_actions_contatiner_view()

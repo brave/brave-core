@@ -131,6 +131,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: false
       },
+      isShowBraveShieldsInPageInfoEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isShowBraveShieldsInPageInfoEnabled')
+      },
       isHttpsByDefaultEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
@@ -211,6 +215,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare showStrictFingerprintingMode_: boolean
   private declare isBlockElementFeatureEnabled_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare isShowBraveShieldsInPageInfoEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
