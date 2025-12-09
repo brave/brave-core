@@ -126,16 +126,25 @@ export default function TabsMenu() {
     [history, conversation.associatedContentInfo],
   )
 
+  const distinctEntries = React.useMemo(() => {
+    // Note: We include all tabs, even if they're duplicated.
+    const result: Attachment[] = unselectedTabs
+    const seen = new Set<string>(unselectedTabs.map((t) => t.url.url))
+    for (const item of unselectedBookmarks.concat(unselectedHistory)) {
+      if (seen.has(item.url.url)) continue
+
+      result.push(item)
+      seen.add(item.url.url)
+    }
+    return result
+  }, [unselectedTabs, unselectedBookmarks, unselectedHistory])
+
   return (
     <FilterMenu
       categories={[
         {
           category: '',
-          entries: [
-            ...unselectedTabs,
-            ...unselectedBookmarks,
-            ...unselectedHistory,
-          ],
+          entries: distinctEntries,
         },
       ]}
       isOpen={isOpen}
