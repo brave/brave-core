@@ -224,7 +224,7 @@ describe('input box', () => {
       )
 
       const contentAgentLaunchButton = screen.queryByTitle(
-        'Open Leo AI Content Agent Window',
+        S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL,
       )
       const contentAgentTooltip = screen.queryByTestId('agent-profile-tooltip')
 

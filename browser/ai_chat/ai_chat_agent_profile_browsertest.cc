@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   // Verify the built-in profile title is set as the local user name
   ProfileAttributesEntry* profile_attributes =
       GetProfileAttributesFromProfile(ai_chat_browser->profile());
-  EXPECT_EQ(u"Leo AI Content Agent", profile_attributes->GetLocalProfileName());
+  EXPECT_EQ(u"AI browsing", profile_attributes->GetLocalProfileName());
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
   VerifyAIChatSidePanelShowing(ai_chat_browser);
@@ -326,12 +326,12 @@ class AIChatAgentProfileWebUIContentBrowserTest
 
   bool IsAIChatAgentProfileLaunchButtonPresent(Browser* browser) {
     return IsElementInSidePanel(browser,
-                                "[title=\"Open Leo AI Content Agent Window\"]");
+                                "[title=\"Open AI browsing profile window\"]");
   }
 
   void WaitForAIChatAgentProfileLaunchButton(Browser* browser) {
     WaitForElementInSidePanel(browser,
-                              "[title=\"Open Leo AI Content Agent Window\"]");
+                              "[title=\"Open AI browsing profile window\"]");
   }
 };
 
