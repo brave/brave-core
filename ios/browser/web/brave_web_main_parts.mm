@@ -11,7 +11,6 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -30,7 +29,6 @@ void RegisterComponentsForUpdate(
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
-  ai_chat::MigrateDeprecatedLocalModelsComponent(cus);
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
   RegisterZxcvbnDataComponent(cus);
 }
