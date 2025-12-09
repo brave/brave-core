@@ -572,7 +572,7 @@ class NewTabPageViewController: UIViewController {
     videoAdPlayer?.didFinishAutoplayEvent = { [weak self] in
       guard let self = self else { return }
       self.backgroundButtonsView.videoAutoplayFinished()
-      if case .sponsoredMedia(let background) = self.background.currentBackground {
+      if case .sponsoredMedia(let background, _) = self.background.currentBackground {
         self.backgroundButtonsView.activeButton = .brandLogo(background.logo)
       }
       self.backgroundButtonsView.alpha = 0
@@ -628,7 +628,7 @@ class NewTabPageViewController: UIViewController {
         } else {
           backgroundButtonsView.activeButton = .none
         }
-      case .sponsoredMedia(let background):
+      case .sponsoredMedia(let background, _):
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
       }
     } else {
@@ -686,20 +686,18 @@ class NewTabPageViewController: UIViewController {
   // MARK: - Sponsored background events
 
   private func reportSponsoredBackgroundViewedEventIfNeeded() {
-    guard case .sponsoredMedia = background.currentBackground else {
+    guard case .sponsoredMedia(_, let newTabPageAd) = background.currentBackground else {
       return
     }
 
     // Ensure we only record a viewed impression once per placement id.
-    if lastViewedSponsoredBackgroundId == background.wallpaperId.uuidString {
+    if lastViewedSponsoredBackgroundId == newTabPageAd.placementID {
       return
     }
-    lastViewedSponsoredBackgroundId = background.wallpaperId.uuidString
+    lastViewedSponsoredBackgroundId = newTabPageAd.placementID
 
-    reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
-      self?.delegate?.showNewTabTakeoverInfoBarIfNeeded()
-      self?.reportSponsoredBackgroundEvent(.viewedImpression)
-    }
+    delegate?.showNewTabTakeoverInfoBarIfNeeded()
+    reportSponsoredBackgroundEvent(.viewedImpression)
   }
 
   private func reportSponsoredBackgroundEvent(
@@ -707,10 +705,10 @@ class NewTabPageViewController: UIViewController {
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
     if let tab = browserTab,
-      case .sponsoredMedia(let sponsoredBackground) = background.currentBackground
+      case .sponsoredMedia(let sponsoredBackground, let newTabPageAd) = background.currentBackground
     {
       rewards.ads.triggerNewTabPageAdEvent(
-        background.wallpaperId.uuidString,
+        newTabPageAd.placementID,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         metricType: sponsoredBackground.metricType,
         eventType: event,
@@ -1085,7 +1083,7 @@ class NewTabPageViewController: UIViewController {
     switch background {
     case .image:
       presentImageCredit(sender)
-    case .sponsoredMedia(let background):
+    case .sponsoredMedia(let background, _):
       tappedSponsorButton(background.logo)
     }
   }
