@@ -8,7 +8,6 @@ import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import {
@@ -76,16 +75,6 @@ function ConversationEntries() {
     setActiveMenuId(undefined)
   }
 
-  const { onTouchEnd, onTouchMove, onTouchStart } = useLongPress({
-    onLongPress: (e: React.TouchEvent) => {
-      const currentTarget = e.currentTarget as HTMLElement
-      const id = currentTarget.getAttribute('data-id')
-      if (id === null) return
-      showHumanMenu(parseInt(id))
-    },
-    onTouchMove: () => setActiveMenuId(undefined),
-  })
-
   const getCompletion = (turn: Mojom.ConversationTurn) => {
     const event = turn.events?.find((event) => event.completionEvent)
     return event?.completionEvent?.completion ?? ''
@@ -148,10 +137,6 @@ function ConversationEntries() {
               )?.key ?? undefined)
             : undefined
 
-          const turnContainer = classnames({
-            [styles.turnContainerMobile]: conversationContext.isMobile,
-          })
-
           const turnClass = classnames({
             [styles.turn]: true,
             [styles.turnAI]: isAIAssistant,
@@ -169,10 +154,7 @@ function ConversationEntries() {
           const groupIsTask = isAssistantGroupTask(group)
 
           return (
-            <div
-              key={firstEntryEdit.uuid || index}
-              className={turnContainer}
-            >
+            <div key={firstEntryEdit.uuid || index}>
               <div
                 data-id={index}
                 className={turnClass}
@@ -182,9 +164,6 @@ function ConversationEntries() {
                   setActiveMenuId(undefined)
                   setHoverMenuButtonId(undefined)
                 }}
-                onTouchStart={isHuman ? onTouchStart : undefined}
-                onTouchEnd={isHuman ? onTouchEnd : undefined}
-                onTouchMove={isHuman ? onTouchMove : undefined}
               >
                 <div
                   className={
@@ -247,7 +226,8 @@ function ConversationEntries() {
                             && !firstEntryEdit.selectedText
                             && !showEditInput && (
                               <>
-                                {hoverMenuButtonId === index ? (
+                                {conversationContext.isMobile
+                                || hoverMenuButtonId === index ? (
                                   <ContextMenuHuman
                                     isOpen={activeMenuId === index}
                                     onClick={() => showHumanMenu(index)}
