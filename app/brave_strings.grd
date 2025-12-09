@@ -1353,12 +1353,10 @@ Brave is unable to recover your settings.
       <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME" desc="Name for the Brave Apps Start Menu folder name.">
         Brave Apps
       </message>
-      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY" desc="Name for the Brave Apps Start Menu folder name.">
-        Brave Apps
-      </message>
+      <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY">Brave Nightly Apps</message>
       <if expr="is_win">
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Apps</message>
-        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA">Brave Beta Apps</message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV">Brave Dev Apps</message>
       </if>
 
       <!-- ChromeOS OOBE Terms of Service screen-->

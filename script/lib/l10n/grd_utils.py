@@ -471,17 +471,18 @@ def is_translateable_string(grd_file_path, message_tag):
     # brave/script/chromium-rebase-l10n.py
     grd_file_name = os.path.basename(grd_file_path)
     if grd_file_name == 'chromium_strings.grd':
-        exceptions = {'IDS_SXS_SHORTCUT_NAME',
-                      'IDS_SHORTCUT_NAME_BETA',
-                      'IDS_SHORTCUT_NAME_DEV',
-                      'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
-                      'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
-                      'IDS_INBOUND_MDNS_RULE_NAME_BETA',
-                      'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
-                      'IDS_INBOUND_MDNS_RULE_NAME_DEV',
-                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
-                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
-                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV'}
+        exceptions = {
+            'IDS_SXS_SHORTCUT_NAME', 'IDS_SHORTCUT_NAME_BETA',
+            'IDS_SHORTCUT_NAME_DEV', 'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
+            'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+            'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+            'IDS_INBOUND_MDNS_RULE_NAME_DEV',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV'
+        }
         if message_tag.get('name') in exceptions:
             return True
     return False
