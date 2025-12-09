@@ -38,6 +38,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/core/common/features.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -111,6 +112,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_settings_service_factory.h"
 #endif
 
 namespace brave {
@@ -229,6 +234,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
   BraveShieldsSettingsServiceFactory::GetInstance();
+
+#if BUILDFLAG(ENABLE_PSST)
+  PsstSettingsServiceFactory::GetInstance();
+#endif  // BUILDFLAG(ENABLE_PSST)
 }
 
 }  // namespace brave
