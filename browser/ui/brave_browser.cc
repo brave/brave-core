@@ -50,9 +50,7 @@
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_delegate.h"
-#include "content/public/common/referrer.h"
 #include "content/public/common/url_constants.h"
-#include "services/network/public/mojom/referrer_policy.mojom.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
@@ -214,22 +212,21 @@ content::WebContents* BraveBrowser::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  // Only handle NEW_FOREGROUND_TAB disposition (target="_blank" links)
-  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB &&
-      user_gesture && source && !target_url.is_empty()) {
-    // Check if we should redirect to the right pane in a linked split view
-    // Use the source URL as referrer with default policy
-    content::Referrer referrer(source->GetLastCommittedURL(),
-                               network::mojom::ReferrerPolicy::kDefault);
-    if (split_view::MaybeRedirectToRightPane(source, target_url, referrer)) {
-      // Navigation was redirected to the right pane, so we don't need to
-      // create a new tab. Return nullptr to indicate no new contents were
-      // added.
-      return nullptr;
+  // For NEW_FOREGROUND_TAB disposition (target="_blank" links) from a source
+  // in the left pane of a linked split view, set the split tab ID on the new
+  // contents so that SplitViewLinkNavigationThrottle can redirect it to the
+  // right pane. If the split tab ID was set, change the disposition to
+  // NEW_BACKGROUND_TAB to prevent the empty tab from becoming visible.
+  // It'll be closed immediately right after navigation is routed to right
+  // pane. By routing at SplitViewLinkNavigationThrottle, proper referrer/opener
+  // could be set. These are set after navigation starts. So, can't get it here.
+  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB && source &&
+      user_gesture && new_contents.get() && !target_url.is_empty()) {
+    if (split_view::SetSplitTabIdForRedirect(source, new_contents.get())) {
+      disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
     }
   }
 
-  // For all other cases, use the default Browser implementation
   return Browser::AddNewContents(source, std::move(new_contents), target_url,
                                  disposition, window_features, user_gesture,
                                  was_blocked);
