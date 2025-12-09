@@ -12,8 +12,13 @@
   IsCommandIdChecked_ChromiumImpl(int command_id) const; \
   bool IsCommandIdChecked
 
+#define GetLabelForCommandId(...)                       \
+  GetLabelForCommandId_ChromiumImpl(__VA_ARGS__) const; \
+  std::u16string GetLabelForCommandId(__VA_ARGS__)
+
 #include <chrome/browser/ui/views/frame/system_menu_model_delegate.h>  // IWYU pragma: export
 
+#undef GetLabelForCommandId
 #undef IsCommandIdChecked
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_SYSTEM_MENU_MODEL_DELEGATE_H_
