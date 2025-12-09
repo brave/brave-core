@@ -464,10 +464,8 @@ extension SceneDelegate {
     guard let profileState = Self.profileState else { return }
     // We try to send DAU ping each time the app goes to foreground to work around network edge cases
     // (offline, bad connection etc.).
-    // Also send the ping only after the URP lookup and install attribution has processed.
-    if Preferences.URP.referralLookupOutstanding.value == true,
-      Preferences.URP.installAttributionLookupOutstanding.value == true
-    {
+    // Also send the ping only after install attribution has processed.
+    if Preferences.URP.installAttributionLookupOutstanding.value == false {
       profileState.dau.sendPingToServer()
     }
   }
