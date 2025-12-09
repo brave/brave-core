@@ -748,6 +748,7 @@ source_set("unit_tests") {
     "polkadot/polkadot_keyring_unittest.cc",
     "polkadot/polkadot_substrate_rpc_unittest.cc",
     "polkadot/polkadot_tx_manager_unittest.cc",
+    "polkadot/polkadot_tx_meta_unittest.cc",
     "polkadot/polkadot_wallet_service_unittest.cc",
     "pref_names_unittest.cc",
     "rlp_decode_unittest.cc",

@@ -54,13 +54,34 @@ class PolkadotChainMetadata {
   rust::Box<CxxPolkadotChainMetadata> chain_metadata_;
 };
 
+// The unsigned extrinsic base class meant to be a type-erasing view of a
+// concrete, specific extrinsic. All extrinsics support being encoded as binary
+// and decoded from binary.
+struct PolkadotUnsignedExtrinsic {
+  // Transform the current extrinsic into a string containing the hex-encoding
+  // of its binary serialization.
+  virtual std::string Encode(
+      const PolkadotChainMetadata& chain_metadata) const = 0;
+
+  // Decode is a static member function template intended to provide clarity at
+  // the call-site and also enforce the conceptual requirements of concrete
+  // extrinsics. Users specify the concrete extrinsic they wish to parse from
+  // the hex-encoded form.
+  template <class Extrinsic>
+  static std::optional<Extrinsic> Decode(
+      const PolkadotChainMetadata& chain_metadata,
+      std::string_view input) {
+    return Extrinsic::Decode(chain_metadata, input);
+  }
+};
+
 // An unsigned extrinsic that represents the "transfer_allow_death" call from
 // the Balances pallet. Note, the hosted Westend nodes uses the same runtime
 // metadata as the Kusama chains which have the Balances pallet living at
 // index 4.
 // For more information on the structure of extrinsics and their nature, see the
 // following documentation: https://spec.polkadot.network/id-extrinsics
-class PolkadotUnsignedTransfer {
+class PolkadotUnsignedTransfer : public PolkadotUnsignedExtrinsic {
  public:
   PolkadotUnsignedTransfer(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
@@ -70,7 +91,8 @@ class PolkadotUnsignedTransfer {
   // creates a hex string encoded with the SCALE-encoded length of the string
   // along with the extrinsic version, the pallet index, call index, and the
   // account address type.
-  std::string Encode(const PolkadotChainMetadata& chain_metadata) const;
+  std::string Encode(
+      const PolkadotChainMetadata& chain_metadata) const override;
 
   // Decode recreates the unsigned transfer extrinsic from the provided
   // hex string. This method is the dual of Encode().

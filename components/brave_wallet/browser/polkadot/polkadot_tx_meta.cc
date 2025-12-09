@@ -5,33 +5,54 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 
-#include "base/notimplemented.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-PolkadotTxMeta::PolkadotTxMeta() = default;
+PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
+                               const PolkadotChainMetadata& chain_metadata,
+                               const PolkadotUnsignedExtrinsic& extrinsic) {
+  set_from(from.Clone());
+
+  auto encoded_extrinsic = extrinsic.Encode(chain_metadata);
+
+  if (auto transfer =
+          PolkadotUnsignedExtrinsic::Decode<PolkadotUnsignedTransfer>(
+              chain_metadata, encoded_extrinsic)) {
+    recipient_ = base::HexEncodeLower(transfer->recipient());
+    amount_ = transfer->send_amount();
+  }
+
+  encoded_extrinsic_ = std::move(encoded_extrinsic);
+}
 
 PolkadotTxMeta::~PolkadotTxMeta() = default;
 
 base::Value::Dict PolkadotTxMeta::ToValue() const {
-  NOTIMPLEMENTED_LOG_ONCE();
-
-  base::Value::Dict dict;
+  auto dict = TxMeta::ToValue();
+  dict.Set("extrinsic", encoded_extrinsic_);
   return dict;
 }
 
 mojom::TransactionInfoPtr PolkadotTxMeta::ToTransactionInfo() const {
-  NOTIMPLEMENTED_LOG_ONCE();
-
-  auto tx_info = mojom::TransactionInfo::New();
-  return tx_info;
+  return mojom::TransactionInfo::New(
+      id_, from_.Clone(), tx_hash_,
+      mojom::TxDataUnion::NewPolkadotTxData(
+          mojom::PolkadotTxdata::New(recipient_, amount_, false, 0)),
+      status_, mojom::TransactionType::Other,
+      std::vector<std::string>() /* tx_params */,
+      std::vector<std::string>() /* tx_args */,
+      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
+      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_, "",
+      false, nullptr);
 }
 
 mojom::CoinType PolkadotTxMeta::GetCoinType() const {
-  NOTIMPLEMENTED_LOG_ONCE();
-
   return mojom::CoinType::DOT;
 }
 
