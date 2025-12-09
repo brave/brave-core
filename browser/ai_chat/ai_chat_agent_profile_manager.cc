@@ -28,7 +28,7 @@ namespace {
 const SkColor kAIChatAgentProfileThemeColor = SkColorSetRGB(253, 58, 122);
 #endif
 
-const char16_t kAIChatAgentProfileName[] = u"Leo AI Content Agent";
+const char16_t kAIChatAgentProfileName[] = u"AI browsing";
 
 }  // namespace
 
