@@ -307,8 +307,9 @@ extension URL {
       return nil
     }
     // Use `domainURL` to align with `Domain.getOrCreateInternal` storage
-    // TODO: brave-browser#48761
-    // Don't use domainURL when kBraveShieldsContentSettings enabled
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      return self
+    }
     return domainURL
   }
 
