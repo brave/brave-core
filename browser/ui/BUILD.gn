@@ -1223,8 +1223,8 @@ source_set("ui") {
       "webui/brave_vpn/vpn_panel_ui.cc",
       "webui/brave_vpn/vpn_panel_ui.h",
     ]
+    public_deps += [ "//brave/components/brave_vpn/common/mojom" ]
     deps += [
-      "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",
       "//ui/webui",
