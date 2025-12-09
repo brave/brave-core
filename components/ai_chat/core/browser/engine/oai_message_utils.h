@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/function_ref.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
@@ -33,7 +34,8 @@ struct OAIMessage {
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
-    uint32_t remaining_length);
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input);
 
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,

@@ -13,8 +13,10 @@ namespace {
 
 ExtendedContentBlock GetContentBlockFromAssociatedContent(
     const PageContent& content,
-    uint32_t remaining_length) {
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input) {
   std::string truncated = content.content.substr(0, remaining_length);
+  sanitize_input(truncated);
   return ExtendedContentBlock{content.is_video
                                   ? ExtendedContentBlockType::kVideoTranscript
                                   : ExtendedContentBlockType::kPageText,
@@ -34,7 +36,8 @@ OAIMessage::~OAIMessage() = default;
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
-    uint32_t remaining_length) {
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input) {
   std::vector<OAIMessage> oai_messages;
 
   // Key is conversation entry uuid, value is a list of content blocks for that
@@ -65,8 +68,8 @@ std::vector<OAIMessage> BuildOAIMessages(
           break;
         }
 
-        blocks.emplace_back(
-            GetContentBlockFromAssociatedContent(content, remaining_length));
+        blocks.emplace_back(GetContentBlockFromAssociatedContent(
+            content, remaining_length, sanitize_input));
 
         if (content.get().content.size() > remaining_length) {
           remaining_length = 0;
