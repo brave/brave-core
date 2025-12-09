@@ -286,10 +286,12 @@ fn decode_unsigned_transfer_allow_death(
 // Reference implementation:
 // https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/ExtrinsicEra.ts#L179-L204
 fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2] {
+    assert!(period >= 4 && period.is_power_of_two());
+
     let phase = number % period;
     let factor = (period >> 12).max(1);
 
-    let left = 15.min((period.trailing_zeros() - 1).max(1));
+    let left = 15.min((period.trailing_zeros().saturating_sub(1)).max(1));
     let right = (phase / factor) << 4;
     let encoded = u16::try_from(left | right).unwrap();
 
