@@ -144,6 +144,7 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.paint_preview_show_id, R.drawable.ic_photo_camera);
         MENU_ICON_MAP.put(R.id.get_image_descriptions_id, R.drawable.ic_image_descriptions);
         MENU_ICON_MAP.put(R.id.listen_to_feed_id, R.drawable.ic_play_circle);
+        MENU_ICON_MAP.put(R.id.brave_shred_id, R.drawable.ic_brave_shred);
     }
 
     /**

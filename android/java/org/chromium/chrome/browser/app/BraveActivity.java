@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -180,6 +181,7 @@ import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
+import org.chromium.chrome.browser.shields.BraveEphemeralStorageUtils;
 import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.shields.CreateCustomFiltersFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -235,6 +237,7 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -534,6 +537,8 @@ public abstract class BraveActivity extends ChromeActivity
                     this,
                     braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
                     braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+        } else if (id == R.id.brave_shred_id) {
+            openBraveShred();
         } else {
             return false;
         }
@@ -2202,6 +2207,13 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void openBraveShred() {
+        Tab currentTab = getActivityTabProvider().get();
+        if (currentTab != null) {
+            shredData(currentTab);
+        }
+    }
+
     public void showRewardsPage() {
         getBraveToolbarLayout().showRewardsPage();
     }
@@ -2627,6 +2639,39 @@ public abstract class BraveActivity extends ChromeActivity
                         .setView(view)
                         .setPositiveButton(R.string.brave_action_yes, onClickListener)
                         .setNegativeButton(R.string.brave_action_no, onClickListener)
+                        .create();
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.show();
+    }
+
+    private void shredData(Tab currentTab) {
+        LayoutInflater inflater =
+                (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.brave_shred_data_confirmation, null);
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        BraveEphemeralStorageUtils.cleanupTLDFirstPartyStorage(currentTab);
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
+        GURL lastCommittedUrl = currentTab.getWebContents().getLastCommittedUrl();
+        TextView confirmationTextView =
+                view.findViewById(R.id.brave_shred_data_confirmation_dialog);
+        confirmationTextView.setText(
+                getString(
+                        R.string.brave_shred_data_confirmation,
+                        lastCommittedUrl.getOrigin().getSpec()));
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        AlertDialog alertDialog =
+                alert.setTitle(R.string.brave_shred_data_dialog_title)
+                        .setView(view)
+                        .setPositiveButton(
+                                R.string.brave_shred_data_dialog_ok_button_text, onClickListener)
+                        .setNegativeButton(R.string.brave_cancel, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();

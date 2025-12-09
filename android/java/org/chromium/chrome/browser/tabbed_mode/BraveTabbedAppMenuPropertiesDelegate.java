@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.BraveUrlConstants;
 import org.chromium.base.DeviceInfo;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -63,11 +64,13 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.webapps.WebappsUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.PropertyModel;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.List;
@@ -424,6 +427,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         modelList.add(buildBraveNewsItem());
         modelList.add(buildExitItem());
+
         return modelList;
     }
 
@@ -516,6 +520,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         buildModelForStandardMenuItem(
                                 R.id.translate_id, R.string.menu_translate, 0)));
 
+        // Shred
+        modelList.add(
+                new MVCListAdapter.ListItem(
+                        AppMenuHandler.AppMenuItemType.STANDARD,
+                        buildModelForStandardMenuItem(
+                                R.id.brave_shred_id, R.string.menu_shred_text, 0)));
         // Read aloud
         modelList.add(
                 new MVCListAdapter.ListItem(
@@ -638,6 +648,24 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 R.id.help_id);
         if (!mIsTablet) {
             maybeRemoveMenuItems(modelList, R.id.share_menu_id);
+        }
+
+        // Shred
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+            Tab tab = mActivityTabProvider.get();
+            if (tab != null && !tab.isIncognito() && tab.getWebContents()) {
+                GURL lastCommittedUrl = tab.getWebContents().getLastCommittedUrl();
+                if (!lastCommittedUrl.getScheme().equals(BraveUrlConstants.BRAVE_SCHEME)
+                        && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
+                        && !lastCommittedUrl
+                                .getScheme()
+                                .equals(UrlConstants.CHROME_NATIVE_SCHEME)) {
+                    addMenuItemAfter(
+                            modelList,
+                            buildBraveShredItem(),
+                            Arrays.asList(R.id.request_desktop_site_id));
+                }
+            }
         }
 
         // Add Brave specific items.
@@ -827,6 +855,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.id.brave_leo_id,
                         R.string.menu_brave_leo,
                         shouldShowIconBeforeItem() ? R.drawable.ic_brave_ai : 0));
+    }
+
+    private MVCListAdapter.ListItem buildBraveShredItem() {
+        return new MVCListAdapter.ListItem(
+                AppMenuHandler.AppMenuItemType.STANDARD,
+                buildModelForStandardMenuItem(
+                        R.id.brave_shred_id,
+                        R.string.menu_shred_text,
+                        shouldShowIconBeforeItem() ? R.drawable.ic_brave_shred : 0));
     }
 
     private MVCListAdapter.ListItem buildBraveVpnItem() {
