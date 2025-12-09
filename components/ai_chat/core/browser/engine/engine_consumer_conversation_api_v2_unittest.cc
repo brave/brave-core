@@ -1653,4 +1653,151 @@ INSTANTIATE_TEST_SUITE_P(
       return info.param.name;
     });
 
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateConversationTitle_Success) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  auto history = CreateSampleChatHistory(1);
+  PageContentsMap page_contents;
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([](std::vector<OAIMessage> messages, const std::string&,
+                   std::optional<base::Value::List>,
+                   const std::optional<std::string>&,
+                   mojom::ConversationCapability,
+                   EngineConsumer::GenerationDataCallback,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   const std::optional<std::string>&) {
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("Understanding AI Basics")),
+            std::nullopt)));
+      });
+
+  engine_->GenerateConversationTitle(page_contents, history, "",
+                                     future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event);
+  ASSERT_TRUE(result->event->is_conversation_title_event());
+  EXPECT_EQ(result->event->get_conversation_title_event()->title,
+            "Understanding AI Basics");
+
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateConversationTitle_InvalidHistory) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  PageContentsMap page_contents;
+
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr, false, std::nullopt, nullptr));
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EXPECT_CALL(*mock_api_client, PerformRequest).Times(0);
+
+  engine_->GenerateConversationTitle(page_contents, history, "",
+                                     future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateConversationTitle_NetworkError) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  auto history = CreateSampleChatHistory(1);
+  PageContentsMap page_contents;
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([](std::vector<OAIMessage>, const std::string&,
+                   std::optional<base::Value::List>,
+                   const std::optional<std::string>&,
+                   mojom::ConversationCapability,
+                   EngineConsumer::GenerationDataCallback,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   const std::optional<std::string>&) {
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+
+  engine_->GenerateConversationTitle(page_contents, history, "",
+                                     future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateConversationTitle_EmptyTitle) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  auto history = CreateSampleChatHistory(1);
+  PageContentsMap page_contents;
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([](std::vector<OAIMessage>, const std::string&,
+                   std::optional<base::Value::List>,
+                   const std::optional<std::string>&,
+                   mojom::ConversationCapability,
+                   EngineConsumer::GenerationDataCallback,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   const std::optional<std::string>&) {
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("")),
+            std::nullopt)));
+      });
+
+  engine_->GenerateConversationTitle(page_contents, history, "",
+                                     future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+}
+
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateConversationTitle_TitleTooLong) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
+  auto history = CreateSampleChatHistory(1);
+  PageContentsMap page_contents;
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([](std::vector<OAIMessage>, const std::string&,
+                   std::optional<base::Value::List>,
+                   const std::optional<std::string>&,
+                   mojom::ConversationCapability,
+                   EngineConsumer::GenerationDataCallback,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   const std::optional<std::string>&) {
+        std::string long_title(101, 'x');
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(long_title)),
+            std::nullopt)));
+      });
+
+  engine_->GenerateConversationTitle(page_contents, history, "",
+                                     future.GetCallback());
+
+  auto result = future.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+}
+
 }  // namespace ai_chat

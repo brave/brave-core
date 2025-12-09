@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
 #include "base/containers/adapters.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 
 namespace ai_chat {
 
@@ -21,6 +22,41 @@ ExtendedContentBlock GetContentBlockFromAssociatedContent(
                                   ? ExtendedContentBlockType::kVideoTranscript
                                   : ExtendedContentBlockType::kPageText,
                               TextContent{std::move(truncated)}};
+}
+
+std::vector<ExtendedContentBlock> BuildOAIPageContentBlocks(
+    const PageContents& page_contents,
+    uint32_t& max_associated_content_length,
+    base::FunctionRef<void(std::string&)> sanitize_input,
+    std::optional<uint32_t> max_per_content_length = std::nullopt) {
+  std::vector<ExtendedContentBlock> blocks;
+
+  // Note: We iterate in reverse so that we prefer more recent page content
+  // (i.e. the oldest content will be truncated when we run out of context).
+  for (const auto& page_content : base::Reversed(page_contents)) {
+    uint32_t effective_length_limit = max_associated_content_length;
+    if (max_per_content_length.has_value()) {
+      effective_length_limit =
+          std::min(effective_length_limit, max_per_content_length.value());
+    }
+
+    auto block = GetContentBlockFromAssociatedContent(
+        page_content, effective_length_limit, sanitize_input);
+    auto* truncated_text = std::get_if<TextContent>(&block.data);
+    CHECK(truncated_text);
+    uint32_t truncated_size = truncated_text->text.size();
+
+    blocks.push_back(std::move(block));
+
+    if (truncated_size >= max_associated_content_length) {
+      max_associated_content_length = 0;
+      break;
+    } else {
+      max_associated_content_length -= truncated_size;
+    }
+  }
+
+  return blocks;
 }
 
 }  // namespace
@@ -62,21 +98,12 @@ std::vector<OAIMessage> BuildOAIMessages(
     // each.
     auto page_content_it = page_contents.find(message->uuid.value());
     if (page_content_it != page_contents.end() && remaining_length != 0) {
-      auto& blocks = page_contents_blocks[message->uuid.value()];
-      for (const auto& content : base::Reversed(page_content_it->second)) {
-        if (remaining_length == 0) {
-          break;
-        }
+      page_contents_blocks[message->uuid.value()] = BuildOAIPageContentBlocks(
+          page_content_it->second, remaining_length, sanitize_input);
+    }
 
-        blocks.emplace_back(GetContentBlockFromAssociatedContent(
-            content, remaining_length, sanitize_input));
-
-        if (content.get().content.size() > remaining_length) {
-          remaining_length = 0;
-        } else {
-          remaining_length -= content.get().content.size();
-        }
-      }
+    if (remaining_length == 0) {
+      break;
     }
   }
 
@@ -131,16 +158,10 @@ std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
   OAIMessage msg;
   msg.role = "user";
 
-  // Note: We iterate in reverse so that we prefer more recent page content
-  // (i.e. the oldest content will be truncated when we run out of context).
-  for (const auto& content : base::Reversed(page_contents)) {
-    msg.content.emplace_back(GetContentBlockFromAssociatedContent(
-        content, remaining_length, sanitize_input));
-    if (content.get().content.size() > remaining_length) {
-      break;
-    }
-    remaining_length -= content.get().content.size();
-  }
+  auto blocks = BuildOAIPageContentBlocks(page_contents, remaining_length,
+                                          sanitize_input);
+  msg.content.insert(msg.content.end(), std::make_move_iterator(blocks.begin()),
+                     std::make_move_iterator(blocks.end()));
 
   msg.content.emplace_back(ExtendedContentBlockType::kRequestQuestions,
                            TextContent{""});
@@ -199,6 +220,59 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     default:
       return std::nullopt;
   }
+
+  messages.push_back(std::move(msg));
+  return messages;
+}
+
+std::optional<std::vector<OAIMessage>>
+BuildOAIGenerateConversationTitleMessages(
+    const PageContentsMap& page_contents,
+    const EngineConsumer::ConversationHistory& conversation_history,
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input) {
+  // Validate we have the expected conversation structure
+  if (conversation_history.size() != 2 ||
+      conversation_history[0]->character_type != mojom::CharacterType::HUMAN ||
+      conversation_history[1]->character_type !=
+          mojom::CharacterType::ASSISTANT) {
+    return std::nullopt;
+  }
+
+  const auto& first_turn = conversation_history[0];
+  const auto& assistant_turn = conversation_history[1];
+
+  // Build messages for title generation
+  std::vector<OAIMessage> messages;
+  OAIMessage msg;
+  msg.role = "user";
+
+  // Add page contents from the first turn if available
+  auto page_content_it = page_contents.find(first_turn->uuid.value());
+  if (page_content_it != page_contents.end()) {
+    auto blocks = BuildOAIPageContentBlocks(page_content_it->second,
+                                            remaining_length, sanitize_input,
+                                            kMaxContextCharsForTitleGeneration);
+    msg.content.insert(msg.content.end(),
+                       std::make_move_iterator(blocks.begin()),
+                       std::make_move_iterator(blocks.end()));
+  }
+
+  // Add selected text as page excerpt if present
+  if (first_turn->selected_text.has_value() &&
+      !first_turn->selected_text->empty()) {
+    msg.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
+                             TextContent{*first_turn->selected_text});
+  }
+
+  // Add a message for title generation.
+  // Use first assistant response as the content if files are uploaded (image,
+  // PDF), otherwise use the first human turn text.
+  msg.content.emplace_back(
+      ExtendedContentBlockType::kRequestTitle,
+      TextContent{first_turn->uploaded_files
+                      ? assistant_turn->text
+                      : EngineConsumer::GetPromptForEntry(first_turn)});
 
   messages.push_back(std::move(msg));
   return messages;

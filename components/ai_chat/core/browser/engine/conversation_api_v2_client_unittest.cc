@@ -49,6 +49,8 @@ namespace ai_chat {
 
 namespace {
 
+constexpr char kTestContent[] = "test content";
+
 struct ContentBlockTestParam {
   std::string name;
   base::RepeatingCallback<ExtendedContentBlock()> get_test_content_block;
@@ -244,7 +246,7 @@ INSTANTIATE_TEST_SUITE_P(
         ContentBlockTestParam{"Text", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kText,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "text"},
         ContentBlockTestParam{
@@ -259,7 +261,7 @@ INSTANTIATE_TEST_SUITE_P(
         ContentBlockTestParam{"PageExcerpt", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kPageExcerpt,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "brave-page-excerpt"},
         ContentBlockTestParam{"PageText", base::BindRepeating([]() {
@@ -286,28 +288,34 @@ INSTANTIATE_TEST_SUITE_P(
                                     TextContent{""});
                               }),
                               "brave-request-questions"},
+        ContentBlockTestParam{"RequestTitle", base::BindRepeating([]() {
+                                return ExtendedContentBlock(
+                                    ExtendedContentBlockType::kRequestTitle,
+                                    TextContent{kTestContent});
+                              }),
+                              "brave-conversation-title"},
         ContentBlockTestParam{"Paraphrase", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kParaphrase,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "brave-request-paraphrase"},
         ContentBlockTestParam{"Improve", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kImprove,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "brave-request-improve-excerpt-language"},
         ContentBlockTestParam{"Shorten", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kShorten,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "brave-request-shorten"},
         ContentBlockTestParam{"Expand", base::BindRepeating([]() {
                                 return ExtendedContentBlock(
                                     ExtendedContentBlockType::kExpand,
-                                    TextContent{"test content"});
+                                    TextContent{kTestContent});
                               }),
                               "brave-request-expansion"},
         ContentBlockTestParam{"ChangeTone", base::BindRepeating([]() {

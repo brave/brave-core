@@ -76,9 +76,16 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
       const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
+  void GenerateConversationTitle(
+      const PageContentsMap& page_contents,
+      const ConversationHistory& conversation_history,
+      const std::string& selected_language,
+      GenerationCompletedCallback completed_callback) override;
+
   void SanitizeInput(std::string& input) override {}  // Handle by server.
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
+  bool RequiresClientSideTitleGeneration() const override;
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
   // Given a list of tabs, get the suggested topics from the server.
   void GetSuggestedTopics(const std::vector<Tab>& tabs,
