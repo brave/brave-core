@@ -52,6 +52,18 @@ using ::testing::Sequence;
 
 namespace ai_chat {
 
+namespace {
+
+struct GenerateRewriteTestParam {
+  std::string name;
+  mojom::ActionType action_type;
+  ExtendedContentBlockType expected_content_type;
+  int message_id;
+  std::optional<std::string> tone;
+};
+
+}  // namespace
+
 class MockCallback {
  public:
   MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
@@ -64,6 +76,15 @@ class MockOAIAPIClient : public OAIAPIClient {
   ~MockOAIAPIClient() override = default;
 
   MOCK_METHOD(void,
+              PerformRequestWithOAIMessages,
+              (const mojom::CustomModelOptions&,
+               std::vector<OAIMessage>,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback,
+               const std::optional<std::vector<std::string>>&),
+              (override));
+
+  MOCK_METHOD(void,
               PerformRequest,
               (const mojom::CustomModelOptions&,
                base::Value::List,
@@ -71,6 +92,14 @@ class MockOAIAPIClient : public OAIAPIClient {
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::vector<std::string>>&),
               (override));
+
+  std::string GetMessagesJson(std::vector<OAIMessage> messages) {
+    auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
+    std::string messages_json;
+    base::JSONWriter::WriteWithOptions(
+        serialized, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
+    return messages_json;
+  }
 };
 
 class EngineConsumerOAIUnitTest : public testing::Test {
@@ -104,6 +133,14 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 
   MockOAIAPIClient* GetClient() {
     return static_cast<MockOAIAPIClient*>(engine_->GetAPIForTesting());
+  }
+
+  std::string FormatComparableMessagesJson(std::string_view formatted_json) {
+    auto messages = base::test::ParseJson(formatted_json);
+    std::string messages_json;
+    base::JSONWriter::WriteWithOptions(
+        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &messages_json);
+    return messages_json;
   }
 
   void TearDown() override {}
@@ -2537,57 +2574,122 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
   EXPECT_TRUE(result.has_value());
 }
 
-TEST_F(EngineConsumerOAIUnitTest, GenerateRewriteSuggestion) {
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateRewriteSuggestion_UnsupportedActionTypeReturnsInternalError) {
+  auto* client = GetClient();
+
+  // Expect PerformRequest is NOT called for unsupported action types
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _)).Times(0);
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateRewriteSuggestion("Hello World",
+                                     mojom::ActionType::CREATE_TAGLINE, "",
+                                     base::DoNothing(), future.GetCallback());
+
+  auto result = future.Take();
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+class EngineConsumerOAIUnitTest_GenerateRewrite
+    : public EngineConsumerOAIUnitTest,
+      public testing::WithParamInterface<GenerateRewriteTestParam> {};
+
+TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
+  GenerateRewriteTestParam params = GetParam();
   auto* client = GetClient();
   base::RunLoop run_loop;
 
   std::string test_text = "Hello World";
   std::string expected_response = "Improved text here.";
-  std::string expected_question =
-      GetActionTypeQuestion(mojom::ActionType::IMPROVE);
-  std::string expected_prompt = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(
-          IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
-      {test_text, expected_question}, nullptr);
   std::string expected_seed =
       "Here is the requested rewritten version of "
       "the excerpt in <response> tags:\n<response>";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  // Expected messages in OAI format with l10n strings
+  std::string expected_excerpt_text =
+      l10n_util::GetStringFUTF8(IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+                                base::UTF8ToUTF16(test_text));
+  std::string expected_text =
+      params.tone.has_value()
+          ? l10n_util::GetStringFUTF8(params.message_id,
+                                      base::UTF8ToUTF16(*params.tone))
+          : l10n_util::GetStringUTF8(params.message_id);
+  std::string expected_messages = absl::StrFormat(
+      R"([
+          {
+            "role": "user",
+            "content": [
+              {"type": "text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          },
+          {
+            "role": "assistant",
+            "content": [
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+      expected_excerpt_text, expected_text, expected_seed);
+
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions& options,
-              base::Value::List messages,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>& stop_sequences) {
             // Verify the messages structure
             ASSERT_EQ(messages.size(), 2u);
 
-            // First message should be user with the prompt
-            const auto& first_message = messages[0].GetDict();
-            EXPECT_EQ(*first_message.FindString("role"), "user");
-            EXPECT_EQ(*first_message.FindString("content"), expected_prompt);
+            // First message: user with page excerpt and rewrite action
+            const auto& first_message = messages[0];
+            EXPECT_EQ(first_message.role, "user");
+            ASSERT_EQ(first_message.content.size(), 2u);
+            EXPECT_EQ(first_message.content[0].type,
+                      ExtendedContentBlockType::kPageExcerpt);
+            EXPECT_EQ(std::get<TextContent>(first_message.content[0].data).text,
+                      test_text);
+            EXPECT_EQ(first_message.content[1].type,
+                      params.expected_content_type);
 
-            // Second message should be assistant seed message
-            const auto& second_message = messages[1].GetDict();
-            EXPECT_EQ(*second_message.FindString("role"), "assistant");
-            EXPECT_EQ(*second_message.FindString("content"), expected_seed);
+            // Second message: assistant seed message
+            const auto& second_message = messages[1];
+            EXPECT_EQ(second_message.role, "assistant");
+            ASSERT_EQ(second_message.content.size(), 1u);
+            EXPECT_EQ(second_message.content[0].type,
+                      ExtendedContentBlockType::kText);
+            EXPECT_EQ(
+                std::get<TextContent>(second_message.content[0].data).text,
+                expected_seed);
 
             // Verify stop sequences include </response>
             ASSERT_TRUE(stop_sequences.has_value());
             ASSERT_EQ(stop_sequences->size(), 1u);
             EXPECT_EQ((*stop_sequences)[0], "</response>");
 
+            // Verify serialized JSON format
+            // This actually tests the serialization in API client, although
+            // this unit test is mainly for engine_consumer, it is useful to
+            // also test the client part here so we can make sure each logical
+            // feature such as rewrite requests would produce the expected
+            // serialized messages.
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages));
+
             // Return completion
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New(expected_response)),
-                    std::nullopt /* model_key */)));
+                    std::nullopt /* model_key*/)));
           });
 
   engine_->GenerateRewriteSuggestion(
-      test_text, mojom::ActionType::IMPROVE, "", base::DoNothing(),
+      test_text, params.action_type, "", base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &expected_response](
                                      EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
@@ -2601,5 +2703,45 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateRewriteSuggestion) {
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    EngineConsumerOAIUnitTest_GenerateRewrite,
+    testing::Values(
+        GenerateRewriteTestParam{"Paraphrase", mojom::ActionType::PARAPHRASE,
+                                 ExtendedContentBlockType::kParaphrase,
+                                 IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt},
+        GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
+                                 ExtendedContentBlockType::kImprove,
+                                 IDS_AI_CHAT_QUESTION_IMPROVE, std::nullopt},
+        GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
+                                 ExtendedContentBlockType::kShorten,
+                                 IDS_AI_CHAT_QUESTION_SHORTEN, std::nullopt},
+        GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
+                                 ExtendedContentBlockType::kExpand,
+                                 IDS_AI_CHAT_QUESTION_EXPAND, std::nullopt},
+        GenerateRewriteTestParam{"Academic", mojom::ActionType::ACADEMICIZE,
+                                 ExtendedContentBlockType::kChangeTone,
+                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
+                                 "academic"},
+        GenerateRewriteTestParam{
+            "Professional", mojom::ActionType::PROFESSIONALIZE,
+            ExtendedContentBlockType::kChangeTone,
+            IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "professional"},
+        GenerateRewriteTestParam{"Casual", mojom::ActionType::CASUALIZE,
+                                 ExtendedContentBlockType::kChangeTone,
+                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
+                                 "casual"},
+        GenerateRewriteTestParam{"Funny", mojom::ActionType::FUNNY_TONE,
+                                 ExtendedContentBlockType::kChangeTone,
+                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
+                                 "funny"},
+        GenerateRewriteTestParam{
+            "Persuasive", mojom::ActionType::PERSUASIVE_TONE,
+            ExtendedContentBlockType::kChangeTone,
+            IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "persuasive"}),
+    [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
+      return info.param.name;
+    });
 
 }  // namespace ai_chat

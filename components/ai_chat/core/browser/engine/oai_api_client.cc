@@ -12,6 +12,7 @@
 #include <string_view>
 #include <type_traits>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
@@ -20,15 +21,21 @@
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "components/grit/brave_components_strings.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
 
@@ -85,6 +92,124 @@ std::string CreateJSONRequestBody(
 
 }  // namespace
 
+// static
+base::Value::List OAIAPIClient::SerializeOAIMessages(
+    std::vector<OAIMessage> messages) {
+  base::Value::List serialized_messages;
+  for (const auto& message : messages) {
+    base::Value::Dict message_dict;
+    message_dict.Set("role", std::move(message.role));
+
+    base::Value::List content_list;
+    for (const auto& extended_content_block : message.content) {
+      base::Value::Dict content_block_dict;
+
+      switch (extended_content_block.type) {
+        case ExtendedContentBlockType::kText: {
+          content_block_dict.Set("type", "text");
+
+          auto* text_content =
+              std::get_if<TextContent>(&extended_content_block.data);
+          if (!text_content) {
+            DVLOG(2) << "Missing text content for text type";
+            continue;
+          }
+
+          content_block_dict.Set("text", std::move(text_content->text));
+          break;
+        }
+
+        case ExtendedContentBlockType::kImage: {
+          content_block_dict.Set("type", "image_url");
+
+          auto* image_content =
+              std::get_if<ImageContent>(&extended_content_block.data);
+          if (!image_content) {
+            DVLOG(2) << "Missing image content for image_url type";
+            continue;
+          }
+
+          base::Value::Dict image_url;
+          image_url.Set("url", std::move(image_content->image_url.url));
+          if (image_content->image_url.detail) {
+            image_url.Set("detail",
+                          std::move(*image_content->image_url.detail));
+          }
+          content_block_dict.Set("image_url", std::move(image_url));
+          break;
+        }
+
+        case ExtendedContentBlockType::kPageExcerpt: {
+          content_block_dict.Set("type", "text");
+          auto* text_content =
+              std::get_if<TextContent>(&extended_content_block.data);
+          if (!text_content) {
+            DVLOG(2) << "Missing text content for page excerpt type";
+            continue;
+          }
+
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+                          base::UTF8ToUTF16(text_content->text)));
+          break;
+        }
+
+        case ExtendedContentBlockType::kParaphrase: {
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set("text", l10n_util::GetStringUTF8(
+                                             IDS_AI_CHAT_QUESTION_PARAPHRASE));
+          break;
+        }
+
+        case ExtendedContentBlockType::kImprove: {
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE));
+          break;
+        }
+
+        case ExtendedContentBlockType::kShorten: {
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN));
+          break;
+        }
+
+        case ExtendedContentBlockType::kExpand: {
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND));
+          break;
+        }
+
+        case ExtendedContentBlockType::kChangeTone: {
+          content_block_dict.Set("type", "text");
+          auto* tone_content =
+              std::get_if<ChangeToneContent>(&extended_content_block.data);
+          if (!tone_content) {
+            DVLOG(2) << "Missing change tone content for change tone type";
+            continue;
+          }
+
+          content_block_dict.Set("text",
+                                 l10n_util::GetStringFUTF8(
+                                     IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
+                                     base::UTF8ToUTF16(tone_content->tone)));
+          break;
+        }
+      }
+
+      content_list.Append(std::move(content_block_dict));
+    }
+    message_dict.Set("content", std::move(content_list));
+
+    serialized_messages.Append(std::move(message_dict));
+  }
+
+  return serialized_messages;
+}
+
 OAIAPIClient::OAIAPIClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
@@ -95,6 +220,17 @@ OAIAPIClient::~OAIAPIClient() = default;
 
 void OAIAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
+}
+
+void OAIAPIClient::PerformRequestWithOAIMessages(
+    const mojom::CustomModelOptions& model_options,
+    std::vector<OAIMessage> messages,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback,
+    const std::optional<std::vector<std::string>>& stop_sequences) {
+  PerformRequest(model_options, SerializeOAIMessages(std::move(messages)),
+                 std::move(data_received_callback),
+                 std::move(completed_callback), stop_sequences);
 }
 
 void OAIAPIClient::PerformRequest(
