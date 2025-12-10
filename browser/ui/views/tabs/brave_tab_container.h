@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
+#include "ui/views/controls/scroll_view.h"
 
 namespace views {
 class ScrollView;
@@ -39,6 +40,9 @@ class BraveTabContainer : public TabContainerImpl {
   // of TabContainer. In addition, we can avoid redundant layout as a side
   // effect.
   base::OnceClosure LockLayout();
+
+  // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
+  views::ScrollView::ScrollBarMode GetScrollBarMode() const;
 
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
@@ -68,6 +72,8 @@ class BraveTabContainer : public TabContainerImpl {
   void OnTabSlotAnimationProgressed(TabSlotView* view) override;
   void SetActiveTab(std::optional<size_t> prev_active_index,
                     std::optional<size_t> new_active_index) override;
+  void SetTabPinned(int model_index, TabPinned pinned) override;
+  void MoveTab(int from_model_index, int to_model_index) override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
@@ -151,6 +157,9 @@ class BraveTabContainer : public TabContainerImpl {
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);
 
+  // Show or hide scrollbar based on the preference
+  void UpdateScrollBarVisibility();
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContextBase> drag_context_;
@@ -165,6 +174,7 @@ class BraveTabContainer : public TabContainerImpl {
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;
   BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember should_show_scroll_bar_;
 
   bool layout_locked_ = false;
 

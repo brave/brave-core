@@ -16,6 +16,7 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
+#include "base/notimplemented.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -92,6 +93,10 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
+  should_show_scroll_bar_.Init(
+      brave_tabs::kVerticalTabsShowScrollbar, prefs,
+      base::BindRepeating(&BraveTabContainer::UpdateScrollBarVisibility,
+                          base::Unretained(this)));
 
   UpdateLayoutOrientation();
 }
@@ -112,6 +117,16 @@ base::OnceClosure BraveTabContainer::LockLayout() {
   layout_locked_ = true;
   return base::BindOnce(&BraveTabContainer::OnUnlockLayout,
                         base::Unretained(this));
+}
+
+views::ScrollView::ScrollBarMode BraveTabContainer::GetScrollBarMode() const {
+  if (!IsUnpinnedTabScrollEnabled()) {
+    return views::ScrollView::ScrollBarMode::kDisabled;
+  }
+
+  return *should_show_scroll_bar_
+             ? views::ScrollView::ScrollBarMode::kEnabled
+             : views::ScrollView::ScrollBarMode::kHiddenButEnabled;
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize(
@@ -546,6 +561,13 @@ void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
     SetScrollOffset(new_offset);
     return;
   }
+}
+
+void BraveTabContainer::UpdateScrollBarVisibility() {
+  // As of cr144, we don't have ScrollView any more. We have to re-enable this
+  // test when we add it back.
+  // TODO(https://github.com/brave/brave-browser/issues/51354)
+  NOTIMPLEMENTED();
 }
 
 void BraveTabContainer::OnSplitCreated(const std::vector<int>& indices) {
@@ -1107,6 +1129,12 @@ void BraveTabContainer::ClampScrollOffset() {
 
 void BraveTabContainer::UpdateClipPathForChildren(views::View* view,
                                                   int pinned_tabs_area_bottom) {
+  if (!view->parent()) {
+    // The |view| is detached so we just clear clip path.
+    view->SetClipPath({});
+    return;
+  }
+
   gfx::Rect clip_bounds;
   if (pinned_tabs_area_bottom) {
     // In case we have pinned tabs, clip unpinned tabs below pinned tab area
@@ -1125,6 +1153,19 @@ void BraveTabContainer::UpdateClipPathForChildren(views::View* view,
   };
 
   view->SetClipPath(get_clip_path_for_child(view));
+}
+
+void BraveTabContainer::SetTabPinned(int model_index, TabPinned pinned) {
+  TabContainerImpl::SetTabPinned(model_index, pinned);
+
+  GetTabAtModelIndex(model_index)->UpdateInsets();
+}
+
+void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
+  // When pinning a tab requires moving it, the SetTabPinned() won't be called.
+  // So we need to update insets here as well.
+  TabContainerImpl::MoveTab(from_model_index, to_model_index);
+  GetTabAtModelIndex(to_model_index)->UpdateInsets();
 }
 
 void BraveTabContainer::SetUnpinnedTabScrollEnabled(bool enabled) {
@@ -1149,6 +1190,11 @@ void BraveTabContainer::SetUnpinnedTabScrollEnabled(bool enabled) {
         UpdateClipPathForChildren(view, 0);
       }
     }
+  }
+
+  // As the tab style varies per orientation, we should update all tabs' style.
+  for (int i = 0; i < GetTabCount(); ++i) {
+    views::AsViewClass<BraveTab>(GetTabAtModelIndex(i))->UpdateTabStyle();
   }
 }
 
