@@ -354,16 +354,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
-  // Check toolbar corner radius is always 8 regardless of active tab index.
-  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());

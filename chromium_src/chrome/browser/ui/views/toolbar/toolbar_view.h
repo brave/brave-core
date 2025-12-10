@@ -13,7 +13,6 @@
 #define Init virtual Init
 #define Update virtual Update
 #define ShowBookmarkBubble virtual ShowBookmarkBubble
-#define UpdateRecedingCornerRadius virtual UpdateRecedingCornerRadius
 #define LoadImages(...)                                                       \
   virtual LoadImages(__VA_ARGS__);                                            \
   friend class BraveToolbarView;                                              \
@@ -23,7 +22,6 @@
 #include <chrome/browser/ui/views/toolbar/toolbar_view.h>  // IWYU pragma: export
 
 #undef LoadImages
-#undef UpdateRecedingCornerRadius
 #undef ShowBookmarkBubble
 #undef Update
 #undef Init
