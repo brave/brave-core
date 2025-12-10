@@ -1,5 +1,5 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 9d355f22e0498fe67e2fdcaf560606e7cd3f8cbf..c23aeb9078b6567d3f2120c5758eb644110141a2 100644
+index 9d355f22e0498fe67e2fdcaf560606e7cd3f8cbf..49f74ed8e93a1a3c784f5dbc9e0730bece913342 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
 @@ -3658,6 +3658,7 @@ if (enable_java_templates) {
@@ -22,7 +22,7 @@ index 9d355f22e0498fe67e2fdcaf560606e7cd3f8cbf..c23aeb9078b6567d3f2120c5758eb644
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }
-+      foreach(bytecode_jar, brave_bytecode_jars) { if (rebase_path(_unprocessed_jar_path, root_build_dir) == bytecode_jar) { _bytecode_rewriter_output_jar = _processed_jar_path brave_bytecode_rewriter("${target_name}__bytecode_rewrite") { build_config = _build_config } _unprocessed_jar_deps += [ ":${target_name}__bytecode_rewrite" ] _unprocessed_jar_path = _bytecode_rewriter_output_jar } }
++      _rebased_unprocessed_jar_path = rebase_path(_unprocessed_jar_path, root_build_dir) _rebased_javac_jar_path = "" if (_has_sources) { _rebased_javac_jar_path = rebase_path(_javac_jar_path, root_build_dir) } foreach(bytecode_jar, brave_bytecode_jars) { if (_rebased_unprocessed_jar_path == bytecode_jar || _rebased_javac_jar_path == bytecode_jar) { _bytecode_rewriter_output_jar = _processed_jar_path brave_bytecode_rewriter("${target_name}__bytecode_rewrite") { build_config = _build_config } _unprocessed_jar_deps += [ ":${target_name}__bytecode_rewrite" ] _unprocessed_jar_path = _bytecode_rewriter_output_jar } }
  
        if (_filter_jar && _is_prebuilt) {
          _filter_jar_target_name = "${target_name}__filter_jar"
