@@ -9,7 +9,6 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
 #define IsCommandIdChecked IsCommandIdChecked_ChromiumImpl
 #define GetLabelForCommandId GetLabelForCommandId_ChromiumImpl
@@ -34,12 +33,11 @@ std::u16string SystemMenuModelDelegate::GetLabelForCommandId(
     // BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(). As
     // upstream made this command as dynamic, its label is fetched from this
     // method. Upstream's GetLabelForCommandId() refers
-    // browser_window_features()->vertical_tab_strip_state_controller() to get
-    // label for current vertical tab state. However,
-    // vertical_tab_strip_state_controller() is null now as we're not using
-    // upstream's vertical tab implementation.
-    if (!browser_->browser_window_features()
-             ->vertical_tab_strip_state_controller()) {
+    // tabs::VerticalTabStripStateController::From(browser_) to get label for
+    // current vertical tab state. However,
+    // tabs::VerticalTabStripStateController::From(browser_) is null now as
+    // we're not using upstream's vertical tab implementation.
+    if (!tabs::VerticalTabStripStateController::From(browser_)) {
       return l10n_util::GetStringUTF16(IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
     }
   }
