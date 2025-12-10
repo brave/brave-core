@@ -599,7 +599,11 @@ void CreateTransactionTask::OnGetFeeEstimates(
   }
 
   estimates_ = std::move(estimates.value());
-  DCHECK(!estimates_.empty());
+  if (estimates_.empty()) {
+    SetError(WalletInternalErrorMessage());
+    WorkOnTask();
+    return;
+  }
   WorkOnTask();
 }
 
