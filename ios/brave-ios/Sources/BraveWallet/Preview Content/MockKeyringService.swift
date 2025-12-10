@@ -273,6 +273,15 @@ class MockKeyringService: BraveWalletKeyringService {
     completion("807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }
 
+  func encodePolkadotKeyForExport(
+    accountId: BraveWallet.AccountId,
+    password: String,
+    encryptionPassword: String,
+    completion: @escaping (String?) -> Void
+  ) {
+    completion("807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
+  }
+
   func privateKey(
     forImportedAccount address: String,
     coin: BraveWallet.CoinType,

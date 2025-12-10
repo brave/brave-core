@@ -512,6 +512,14 @@ provideStrings({
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
   braveWalletAccountSettingsDownloadKey: 'Download',
+  braveWalletAccountSettingsEnterPasswordToEncrypt:
+    'Enter a password to encrypt your account export file.',
+  braveWalletAccountSettingsEncryptionPassword: 'Enter encryption password',
+  braveWalletAccountSettingsConfirmEncryptionPassword:
+    'Confirm encryption password',
+  braveWalletAccountSettingsPasswordsDoNotMatch: 'Passwords do not match',
+  braveWalletAccountSettingsEncryptionPasswordTooShort:
+    'Password must be at least 8 characters',
   braveWalletAccountSettingsUpdateError:
     'Failed to update account name, please try again.',
   braveWalletWatchListTokenId: 'Token ID (only for ERC721)',
