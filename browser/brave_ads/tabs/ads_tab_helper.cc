@@ -73,7 +73,8 @@ bool IsErrorPage(int http_status_code) {
 }
 
 std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
-  return absl::StrFormat("%d%d%d", id.frame_routing_id.child_id,
+  return absl::StrFormat("%d%d%d",
+                         id.frame_routing_id.child_id.GetUnsafeValue(),
                          id.frame_routing_id.frame_routing_id, id.player_id);
 }
 
