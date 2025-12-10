@@ -377,6 +377,7 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
+  <message name="IDS_BRAVE_WALLET_PUBLIC_ENCRYPTION_KEY" desc="Public encryption key title">Public encryption key</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL">$1</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button">Provide</message>

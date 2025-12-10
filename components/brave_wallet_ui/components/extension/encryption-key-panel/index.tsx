@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Components
 import { NavButton } from '../buttons/nav-button/index'
@@ -35,85 +35,8 @@ import { TabRow, URLText } from '../shared-panel-styles'
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
 import {
-  useProcessPendingDecryptRequestMutation,
-  useProcessPendingGetEncryptionPublicKeyRequestMutation,
+  useProcessPendingDecryptRequestMutation, //
 } from '../../../common/slices/api.slice'
-
-export interface ProvidePubKeyPanelProps {
-  payload: BraveWallet.GetEncryptionPublicKeyRequest
-}
-
-export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
-  // queries
-  const { account } = useAccountQuery(payload.accountId)
-
-  // mutations
-  const [processGetEncryptionPublicKeyRequest] =
-    useProcessPendingGetEncryptionPublicKeyRequestMutation()
-
-  const orb = useAccountOrb(account)
-
-  const description = formatLocale(
-    'braveWalletProvideEncryptionKeyDescription',
-    {
-      $1: (
-        <CreateSiteOrigin
-          originSpec={payload.originInfo.originSpec}
-          eTldPlusOne={payload.originInfo.eTldPlusOne}
-        />
-      ),
-    },
-  )
-
-  // methods
-  const onProvideOrAllow = async () => {
-    await processGetEncryptionPublicKeyRequest({
-      requestId: payload.requestId,
-      approved: true,
-    }).unwrap()
-  }
-
-  const onCancel = async (requestId: string) => {
-    await processGetEncryptionPublicKeyRequest({
-      requestId,
-      approved: false,
-    }).unwrap()
-  }
-
-  // render
-  return (
-    <StyledWrapper>
-      <AccountCircle orb={orb} />
-      <AccountNameText>
-        {reduceAccountDisplayName(account?.name ?? '', 14)}
-      </AccountNameText>
-      <PanelTitle>
-        {getLocale('braveWalletProvideEncryptionKeyTitle')}
-      </PanelTitle>
-      <TabRow>
-        <PanelTab
-          isSelected={true}
-          text={getLocale('braveWalletSignTransactionMessageTitle')}
-        />
-      </TabRow>
-      <MessageBox needsCenterAlignment={false}>
-        <MessageText>{description}</MessageText>
-      </MessageBox>
-      <ButtonRow>
-        <NavButton
-          buttonType='secondary'
-          text={getLocale('braveWalletButtonCancel')}
-          onSubmit={() => onCancel(payload.requestId)}
-        />
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletProvideEncryptionKeyButton')}
-          onSubmit={onProvideOrAllow}
-        />
-      </ButtonRow>
-    </StyledWrapper>
-  )
-}
 
 interface DecryptRequestPanelProps {
   payload: BraveWallet.DecryptRequest
