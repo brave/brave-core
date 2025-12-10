@@ -128,10 +128,12 @@ std::string_view CodeExecutionTool::Description() const {
          "string as a result. "
          "Use only when the task warrants actual code execution or processing. "
          "Do not use this for content generation. "
+         "Do not use this for fetching information from the internet. "
          "Do not use console.log statements or similar statements. Always "
          "return a string as a result. Always use an explicit return statement "
          "(i.e. return result). "
-         "The code will be executed in a sandboxed environment.";
+         "The code will be executed in a sandboxed environment."
+         "Network requests are not allowed.";
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
