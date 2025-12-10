@@ -344,6 +344,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Create split tab and check contents container/sidebar has rounded corners
   // margin.
   NewSplitTab();
+  browser_view()->DeprecatedLayoutImmediately();
+
   EXPECT_EQ(rounded_corners_margin,
             BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
   EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
@@ -379,6 +381,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Check contents container doesn't have margin when rounded corners is
   // disabled.
   chrome::AddTabAt(browser(), GURL(), -1, true);
+  browser_view()->DeprecatedLayoutImmediately();
 
   if (IsRoundedCornersEnabled()) {
     EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
