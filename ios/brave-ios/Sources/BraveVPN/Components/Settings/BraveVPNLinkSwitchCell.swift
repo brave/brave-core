@@ -31,32 +31,8 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
 
   static let textAccessoryKey = "textAccessoryImageName"
 
-  private let hostingController = UIHostingController(
-    rootView: VPNToggleView(title: "", toggle: .constant(false))
-  ).then {
-    $0.view.backgroundColor = .clear
-  }
-
   public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
-    contentView.addSubview(hostingController.view)
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.0),
-      hostingController.view.bottomAnchor.constraint(
-        equalTo: contentView.bottomAnchor,
-        constant: -16.0
-      ),
-      hostingController.view.leadingAnchor.constraint(
-        equalTo: contentView.leadingAnchor,
-        constant: 16.0
-      ),
-      hostingController.view.trailingAnchor.constraint(
-        equalTo: contentView.trailingAnchor,
-        constant: -16.0
-      ),
-    ])
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -73,20 +49,27 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
     if let imageName = row.context?[BraveVPNLinkSwitchCell.textAccessoryKey] as? String {
       titleAccessory = UIImage(braveSystemNamed: imageName)
     }
-    hostingController.rootView = VPNToggleView(
-      title: row.text ?? "",
-      titleAccessory: titleAccessory,
-      subtitle: row.detailText,
-      openURL: switchView.openURL,
-      toggle: .init(
-        get: { [weak switchView] in
-          switchView?.isOn() ?? false
-        },
-        set: { [weak switchView] in
-          switchView?.valueChange($0)
-        }
+
+    self.contentConfiguration = UIHostingConfiguration {
+      VPNToggleView(
+        title: row.text ?? "",
+        titleAccessory: titleAccessory,
+        subtitle: row.detailText,
+        openURL: switchView.openURL,
+        toggle: .init(
+          get: { [weak switchView] in
+            switchView?.isOn() ?? false
+          },
+          set: { [weak switchView] in
+            switchView?.valueChange($0)
+          }
+        )
       )
-    )
+      .padding(.vertical, 8)
+      .background {
+        Color.clear
+      }
+    }
   }
 
   private struct VPNToggleView: View {
