@@ -1056,22 +1056,8 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
             ->tabstrip()
             ->controller());
 
-    auto context_menu_controller = std::make_unique<TabContextMenuController>(
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::GetContextMenuAccelerator,
-            base::Unretained(controller)));
+    auto context_menu_controller =
+        std::make_unique<TabContextMenuController>(tab_index, controller);
 
     return context_menu_controller;
   }
