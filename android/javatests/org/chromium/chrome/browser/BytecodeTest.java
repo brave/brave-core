@@ -44,6 +44,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -139,7 +140,6 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor.UiState;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
@@ -1530,12 +1530,11 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BackButtonCoordinator.class,
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
-                        ExtensionToolbarCoordinator.class,
                         TopControlsStacker.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class));
