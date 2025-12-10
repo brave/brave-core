@@ -650,10 +650,6 @@ void BraveTabContainer::UpdateIdealBounds() {
   for (int i = 0; i < tab_count; ++i) {
     Tab* tab = GetTabAtModelIndex(i);
     CHECK(tab);
-    if (tab->dragging()) {
-      continue;
-    }
-
     if (tab->data().pinned) {
       continue;
     }
