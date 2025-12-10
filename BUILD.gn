@@ -8,7 +8,7 @@ import(
 import("//brave/build/config.gni")
 import("//brave/build/redirect_cc.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/tools/crates/config.gni")
+import("//brave/tools/crates/build_crate.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//chrome/browser/buildflags.gni")
@@ -723,25 +723,31 @@ if (is_mac) {
   }
 }
 
-action("audit_deps") {
-  script = "//brave/script/audit_deps.py"
-  output = "$target_gen_dir/audit_deps.json"
-
-  # Action must have outputs, and these outputs must be created, otherwise
-  # SISO will fail.
-  outputs = [ output ]
-
-  args = [
-    "--source_root=" + rebase_path("//brave"),
-    "--cargo_audit_exe=" + rebase_path(cargo_audit_exe),
-    "--output=" + rebase_path(output),
-  ]
-
-  if (audit_dev_deps) {
-    args += [ "--audit_dev_deps" ]
+if (current_toolchain == host_toolchain) {
+  build_crate("cargo-audit") {
   }
 
-  deps = [ "//brave/tools/crates:build_cargo_audit($host_toolchain)" ]
+  action("audit_deps") {
+    script = "//brave/script/audit_deps.py"
+    output = "$target_gen_dir/audit_deps.json"
+
+    deps = [ ":cargo-audit" ]
+    cargo_audit_outputs = get_target_outputs(":cargo-audit")
+
+    # Action must have outputs, and these outputs must be created, otherwise
+    # SISO will fail.
+    outputs = [ output ]
+
+    args = [
+      "--source_root=" + rebase_path("//brave"),
+      "--cargo_audit_exe=" + rebase_path(cargo_audit_outputs[0]),
+      "--output=" + rebase_path(output),
+    ]
+
+    if (audit_dev_deps) {
+      args += [ "--audit_dev_deps" ]
+    }
+  }
 }
 
 if (is_redirect_cc_build) {

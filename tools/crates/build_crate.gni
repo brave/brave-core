@@ -3,37 +3,47 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-template("build_crate") {
-  crate = target_name
-  assert(
-      defined(invoker["${crate}_exe"]),
-      "Please add ${crate}_exe to //brave/tools/crates/config.gni (or to $crate itself)!")
-  crate_exe = invoker["${crate}_exe"]
-  crate_target_dir = get_path_info(get_path_info(crate_exe, "dir"), "dir")
+import("//brave/build/host_os_constants.gni")
 
-  action("build_$crate") {
+template("build_crate") {
+  if (defined(invoker["crates"])) {
+    crates = invoker["crates"]
+  } else {
+    crates = [ target_name ]
+  }
+
+  if (defined(invoker["executable_outputs"])) {
+    executable_outputs = invoker["executable_outputs"]
+  } else {
+    executable_outputs = [ target_name ]
+  }
+
+  cargo_target_dir = "$root_build_dir/brave_tools_crates"
+  cargo_profile = "release"
+
+  executable_output_paths = []
+  foreach(output, executable_outputs) {
+    executable_output_paths +=
+        [ "$cargo_target_dir/$cargo_profile/$output$host_exe_suffix" ]
+  }
+
+  action("${target_name}__build") {
     assert(current_toolchain == host_toolchain)
 
     forward_variables_from(invoker, [ "deps" ])
 
-    script = "//brave/script/build_crate.py"
+    script = "//brave/build/gn_run_rsp.py"
+    args = [ "{{response_file_name}}" ]
 
-    cargo_exe = "//third_party/rust-toolchain/bin/cargo"
-    if (host_os == "win") {
-      cargo_exe += ".exe"
-    }
-
+    cargo_exe = "//third_party/rust-toolchain/bin/cargo$host_exe_suffix"
     inputs = [
       cargo_exe,
-      ".cargo/config.toml",
-      "Cargo.lock",
-      "Cargo.toml",
+      "//brave/tools/crates/.cargo/config.toml",
+      "//brave/tools/crates/Cargo.lock",
+      "//brave/tools/crates/Cargo.toml",
     ]
 
-    outputs = [
-      crate_exe,
-      "$crate_target_dir/.stamp",
-    ]
+    outputs = executable_output_paths
 
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
@@ -41,22 +51,40 @@ template("build_crate") {
     #   --config .cargo/config.toml
     #   --frozen (--locked + --offline)
     # when running `cargo build`.
-    args = [
-      "--temp_dir_path",
-      rebase_path(crate_target_dir),
+    response_file_contents = [
+      "TMPDIR=" + rebase_path(cargo_target_dir),
+      "TEMP=" + rebase_path(cargo_target_dir),
+      "TMP=" + rebase_path(cargo_target_dir),
+      "PATH=" +
+          rebase_path("//third_party/rust-toolchain/bin", root_build_dir) +
+          host_path_sep + getenv("PATH"),
       rebase_path(cargo_exe),
       "build",
       "--quiet",
-      "--release",
+      "--profile",
+      cargo_profile,
       "--manifest-path",
-      rebase_path("Cargo.toml"),
+      rebase_path("//brave/tools/crates/Cargo.toml"),
       "--config",
-      rebase_path(".cargo/config.toml"),
+      rebase_path("//brave/tools/crates/.cargo/config.toml"),
       "--target-dir",
-      rebase_path(crate_target_dir),
+      rebase_path(cargo_target_dir),
       "--frozen",
-      "--package",
-      string_replace(crate, "_", "-"),
     ]
+    foreach(crate, crates) {
+      _name_and_output = []
+      _name_and_output = string_split(crate, "|")
+      crate_name = _name_and_output[0]
+      response_file_contents += [
+        "--package",
+        crate_name,
+      ]
+    }
+  }
+
+  copy(target_name) {
+    sources = get_target_outputs(":${target_name}__build")
+    outputs = [ "$root_build_dir/{{source_file_part}}" ]
+    deps = [ ":${target_name}__build" ]
   }
 }

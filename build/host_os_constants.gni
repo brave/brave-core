@@ -3,18 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/tools/crates/build_crate.gni")
-
-build_crate("wasm_crates") {
-  crates = [
-    "wasm-bindgen-cli",
-    "wasm-opt",
-    "wasm-pack",
-  ]
-
-  executable_outputs = [
-    "wasm-bindgen",
-    "wasm-opt",
-    "wasm-pack",
-  ]
+if (host_os == "win") {
+  host_path_sep = ";"
+  host_exe_suffix = ".exe"
+} else {
+  host_path_sep = ":"
+  host_exe_suffix = ""
 }
