@@ -53,7 +53,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 
   // Assert
   EXPECT_EQ(
-      R"(eyJzaWduYXR1cmUiOiJVdFJxQ3BhTGZERHcwMGRvSjZPYmh5d1d0SWFJOTl6ZGhxZHNlaUJGM0NOWHo3SmtvZFA0RnV2aXBpUUJ0YnVqajFKQnB6cVdLaDJEU2FQS1ZMV1FOUT09IiwidCI6Ii9tZlRBQWpIcldtQWxMaUVrdGJxTlMvZHhvTVZkbnoxZXNvVnBsUVVzN3lHL2FwQXEySzZPZVNUNmxCVEtGSm1PcTdyVjhRYlkvREYySEZSTWN6L0pRPT0ifQ==)",
+      R"(eyJzaWduYXR1cmUiOiJDeUhBQlQ5SnI5cVl3U2tsMUMwSUIwQnFEcytUU0FEaEpNcHlVdFNWNktTaWpGdjFvcGVpU1pQbVdyTEROSmlEaHZKUlBaSmFzelpTd01IVkgvalpIZz09IiwidCI6Ii9tZlRBQWpIcldtQWxMaUVrdGJxTlMvZHhvTVZkbnoxZXNvVnBsUVVzN3lHL2FwQXEySzZPZVNUNmxCVEtGSm1PcTdyVjhRYlkvREYySEZSTWN6L0pRPT0ifQ==)",
       reward_credential);
 }
 
@@ -97,7 +97,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
             "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
             "segment": "untargeted",
             "studies": [],
-            "versionNumber": "1.2.3.4"
+            "versionNumber": "1.2.0.0"
           })JSON");
 
   EXPECT_THAT(

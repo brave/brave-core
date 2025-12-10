@@ -50,7 +50,10 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"JSON(
           {
+            "buildChannel": "release",
+            "platform": "windows",
             "countryCode": "US",
+            "versionNumber": "1.2.0.0"
           })JSON");
 
   EXPECT_THAT(

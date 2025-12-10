@@ -20,18 +20,23 @@ TEST_F(BraveAdsVersionNumberUserDataTest, BuildVersionNumberUserData) {
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
-                      "versionNumber": "1.2.3.4"
+                      "versionNumber": "1.2.0.0"
                     })JSON"),
             BuildVersionNumberUserData());
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
-       DoNotBuildVersionNumberUserDataForNonRewardsUser) {
+       BuildVersionNumberUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_THAT(BuildVersionNumberUserData(), ::testing::IsEmpty());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "versionNumber": "1.2.0.0"
+                    })JSON"),
+            BuildVersionNumberUserData());
 }
 
 }  // namespace brave_ads

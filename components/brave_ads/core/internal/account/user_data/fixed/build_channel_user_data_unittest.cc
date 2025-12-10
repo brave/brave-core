@@ -26,12 +26,17 @@ TEST_F(BraveAdsBuildChannelUserDataTest, BuildBuildChannelUserData) {
 }
 
 TEST_F(BraveAdsBuildChannelUserDataTest,
-       DoNotBuildBuildChannelUserDataForNonRewardsUser) {
+       BuildBuildChannelUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_THAT(BuildBuildChannelUserData(), ::testing::IsEmpty());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "buildChannel": "release"
+                    })JSON"),
+            BuildBuildChannelUserData());
 }
 
 }  // namespace brave_ads

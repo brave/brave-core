@@ -25,13 +25,17 @@ TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserData) {
             BuildPlatformUserData());
 }
 
-TEST_F(BraveAdsPlatformUserDataTest,
-       DoNotBuildPlatformUserDataForNonRewardsUser) {
+TEST_F(BraveAdsPlatformUserDataTest, BuildPlatformUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_THAT(BuildPlatformUserData(), ::testing::IsEmpty());
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"JSON(
+                    {
+                      "platform": "windows"
+                    })JSON"),
+            BuildPlatformUserData());
 }
 
 }  // namespace brave_ads

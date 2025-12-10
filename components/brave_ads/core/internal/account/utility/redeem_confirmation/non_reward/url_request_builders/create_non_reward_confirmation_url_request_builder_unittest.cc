@@ -23,7 +23,7 @@ namespace {
 constexpr std::string_view kExpectedUrl =
     R"(https://anonymous.ads.bravesoftware.com/v4/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
 constexpr char kExpectedUrlRequestContent[] =
-    R"JSON({"countryCode":"US","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","type":"view"})JSON";
+    R"JSON({"buildChannel":"release","countryCode":"US","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","platform":"windows","type":"view","versionNumber":"1.2.0.0"})JSON";
 
 }  // namespace
 

@@ -52,7 +52,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserData) {
                       "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
                       "segment": "untargeted",
                       "studies": [],
-                      "versionNumber": "1.2.3.4"
+                      "versionNumber": "1.2.0.0"
                     })JSON"),
             BuildFixedUserData(transaction));
 }
@@ -70,7 +70,10 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
+                      "buildChannel": "release",
                       "countryCode": "US",
+                      "platform": "windows",
+                      "versionNumber": "1.2.0.0"
                     })JSON"),
             BuildFixedUserData(transaction));
 }

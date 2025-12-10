@@ -13,7 +13,11 @@ Included as part of the "confirmation" payload. See [non-Brave Rewards user conf
 
 | key  | example  | description  |
 |---|---|---|
+| buildChannel  | {"buildChannel": "beta"}  | Browser build channel.  |
 | conversion.action[^2]  | {"conversion":[{"action":"click"}]}  | Conversion attribution to determine which advertising efforts led a user to view or click on an ad and subsequently complete a desired action. Also, see [reporting metrics](https://ads-help.brave.com/campaign-performance/reporting/#available-reporting-metrics-in-brave-ads-manager).<br><br> Supported types:<br><br>Brave Search ads:<br>- click-through  |
+| countryCode  | {"countryCode":"US"}  | Two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the user's current country, determined by IP geolocation.  |
+| platform  | {"platform":"windows"}  | Operating system.  |
+| versionNumber  | {"versionNumber":"1.2.0.0"}  | Browser version number with fixed values for build and patch.  |
 
 ## Brave Rewards User
 
@@ -36,7 +40,7 @@ Included as part of the "confirmation token" payload. See [Brave Rewards user co
 | segment[^2]  | {"segment":"sports"}  | Advertising taxonomy for the chosen ad. Also see, https://ads-help.brave.com/campaign-performance/targeting.  |
 | studies  | {"studies":[{"group":"GroupA","name":"BraveAds.FooStudy"},{"group":"GroupB","name":"BraveAds.BarStudy"}]}  | User studies, utilized for A/B testing, should not exceed one active study at any time. Configuration of studies is achievable through Griffin by adding "BraveAds." as a prefix to the experiment name. See [Griffin](https://github.com/brave/brave-browser/wiki/Brave-Variations-(Griffin)).  |
 | systemTimestamp[^1]  | {"systemTimestamp": "2020-11-18T12:00:00.000Z"}  | [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp with fixed values for minutes, seconds, milliseconds and timezone.  |
-| versionNumber  | {"versionNumber":"1.2.3.4"}  | Browser version number.  |
+| versionNumber  | {"versionNumber":"1.2.0.0"}  | Browser version number with fixed values for build and patch.  |
 
 ### User Data Submitted when Redeeming Identifiable Payment Tokens
 
