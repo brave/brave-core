@@ -114,6 +114,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     let tab = TabStateFactory.create(
       with: .init(initialConfiguration: wkConfiguration, braveCore: profileController)
     )
+    tab.createWebView()
     attachPrivacySensitiveTabHelpers?(tab, profile)
     guard
       let childHelper = AIChatWebUIHelper(
