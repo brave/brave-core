@@ -12,6 +12,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-forward.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
@@ -45,6 +46,9 @@ class AIChatUI : public web::WebUIIOSController {
       mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver);
   void BindInterfaceBookmarksPageHandler(
       mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler> receiver);
+  void BindInterfaceTabTrackerService(
+      mojo::PendingReceiver<ai_chat::mojom::TabTrackerService>
+          pending_receiver);
 
  private:
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;

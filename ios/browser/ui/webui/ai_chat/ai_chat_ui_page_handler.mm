@@ -35,6 +35,7 @@
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -44,6 +45,7 @@
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
 #include "ios/web/public/web_state_observer.h"
+#include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "net/base/apple/url_conversions.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/data_decoder/public/mojom/data_decoder_service.mojom.h"
@@ -350,9 +352,22 @@ void AIChatUIPageHandler::BindRelatedConversation(
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/50196 Add webpage
-  // context support
-  NOTIMPLEMENTED();
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  if (BraveWebView* web_view =
+          [bridge webViewForTabWithSessionID:mojom_tab->id]) {
+    web::WebState* web_state = web_view.webState;
+    auto* tab_helper =
+        ai_chat::AIChatTabHelper::GetOrCreateForWebState(web_state);
+    if (!tab_helper) {
+      return;
+    }
+
+    ProfileIOS* profile =
+        ProfileIOS::FromBrowserState(web_state->GetBrowserState());
+    AIChatService* service = AIChatServiceFactory::GetForProfile(profile);
+    service->MaybeAssociateContent(tab_helper, conversation_uuid);
+  }
 }
 
 void AIChatUIPageHandler::AssociateUrlContent(

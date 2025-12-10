@@ -11,6 +11,8 @@
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
+#include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -211,6 +213,15 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
       ->SetPageFetcher(self.aiChatUIHandler);
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
+
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(self.webState->GetBrowserState());
+  ai_chat::TabTrackerService* tab_tracker_service =
+      ai_chat::TabTrackerServiceFactory::GetForProfile(profile);
+  if (tab_tracker_service) {
+    ai_chat::TabDataWebStateObserver::CreateForWebState(self.webState,
+                                                        *tab_tracker_service);
+  }
 }
 
 - (void)updateForOnDownloadCreated {

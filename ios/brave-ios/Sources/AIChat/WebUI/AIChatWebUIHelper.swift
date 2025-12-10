@@ -27,6 +27,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   private(set) weak var tab: (any TabState)?
   public var handler: ((any TabState, AIChatWebUIPageAction) -> Void)?
   public weak var associatedTab: (any TabState)?
+  public var tabsForPrivateMode: (_ isPrivate: Bool) -> [any TabState] = { _ in [] }
 
   public init?(
     tab: some TabState,
@@ -70,6 +71,12 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
       return BraveWebView.from(tab: tab)
     }
     return nil
+  }
+
+  public func webViewForTab(withSessionID id: Int32) -> BraveWebView? {
+    guard let tab else { return nil }
+    let tabs = tabsForPrivateMode(tab.isPrivate).compactMap { BraveWebView.from(tab: $0) }
+    return tabs.first(where: { $0.uniqueSessionID == id })
   }
 
   public func handleVoiceRecognitionRequest(_ completion: @escaping (String?) -> Void) {

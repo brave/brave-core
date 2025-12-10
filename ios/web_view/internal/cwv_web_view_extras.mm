@@ -35,6 +35,10 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 
 @implementation CWVWebView (Extras)
 
+- (int32_t)uniqueSessionID {
+  return self.webState->GetUniqueIdentifier().identifier();
+}
+
 - (UIEdgeInsets)obscuredInsets {
   return self.webState->GetWebViewProxy().obscuredInsets;
 }

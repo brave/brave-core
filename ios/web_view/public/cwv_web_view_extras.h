@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 CWV_EXPORT
 @interface CWVWebView (Extras)
 
+// Returns a unique identifier for this WebState that is stable across
+// restart of the application
+@property(readonly) int32_t uniqueSessionID;
+
 // Web view's obscured insets.
 @property(nonatomic) UIEdgeInsets obscuredInsets;
 

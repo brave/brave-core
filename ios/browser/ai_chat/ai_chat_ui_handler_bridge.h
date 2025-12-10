@@ -24,6 +24,9 @@ NS_SWIFT_NAME(AIChatUIHandler)
 /// Return the web view that will be used to associate content with conversation
 - (nullable BraveWebView*)webViewForAssociatedContent;
 
+/// Returns a web view associated with a specific tab with a given session ID
+- (nullable BraveWebView*)webViewForTabWithSessionID:(int32_t)id;
+
 /// Handle when a user taps on the microphone icon and call the completion
 /// handler with a text version of the users prompt or nil if the user had
 /// cancelled or rejected the microphone permission
