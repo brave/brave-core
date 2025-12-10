@@ -257,7 +257,7 @@ extension BrowserViewController: TabPolicyDecider {
         // Cancel any forget data requests
         tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
 
-        // Forget any websites that have "forget me" enabled
+        // Forget any websites that have Auto Shred set to Site Tabs Closed
         // if we navigated away from the previous domain
         if let currentURL = tab.visibleURL,
           !InternalURL.isValid(url: currentURL),

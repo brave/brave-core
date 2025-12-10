@@ -519,14 +519,20 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     )
 
     // Verify initial values
-    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .never)
+    XCTAssertEqual(
+      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
+      .never
+    )
     XCTAssertNil(domain.shield_shredLevel)
     // Update value
     backgroundSaveAndWaitForExpectation {
       braveShieldsTabHelper.setShredLevel(.appExit, for: url)
     }
     // Verify updated values
-    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .appExit)
+    XCTAssertEqual(
+      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
+      .appExit
+    )
     XCTAssertEqual(domain.shield_shredLevel, SiteShredLevel.appExit.rawValue)
   }
 
@@ -543,6 +549,11 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       XCTAssertEqual(mode, .appExit)
       autoShredMode = mode
     }
+    testBraveShieldsSettings._isShieldsDisabledOnAnyHostMatchingDomain = { url in
+      // return true (Shields disabled on a host matching the given domain)
+      // so we can verify `considerAllShieldsOption` will result in `.never`
+      return true
+    }
 
     let tabState = TabStateFactory.create(with: .init(braveCore: nil))
     // Test with `isBraveShieldsContentSettingsEnabled` enabled
@@ -553,10 +564,22 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     )
 
     // Verify initial values
-    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .never)
+    XCTAssertEqual(
+      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
+      .never
+    )
     // Update value
     braveShieldsTabHelper.setShredLevel(.appExit, for: url)
     // Verify updated value
-    XCTAssertEqual(braveShieldsTabHelper.shredLevel(for: url), .appExit)
+    XCTAssertEqual(
+      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
+      .appExit
+    )
+
+    // Verify `considerAllShieldsOption` for same url returns `.never`
+    XCTAssertEqual(
+      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: true),
+      .never
+    )
   }
 }
