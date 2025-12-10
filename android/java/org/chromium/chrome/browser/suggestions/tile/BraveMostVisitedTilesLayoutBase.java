@@ -5,16 +5,14 @@
 
 package org.chromium.chrome.browser.suggestions.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridLayout;
 
-import org.chromium.components.browser_ui.widget.tile.TileView;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The most visited tiles layout. */
 public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
