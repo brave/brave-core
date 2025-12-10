@@ -355,13 +355,20 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
-  // Check toolbar corner radius is always 8 regardless of active tab index.
+  // Check toolbar corner radius is always kTabstripCurve regardless of active
+  // tab index.
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
+  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
+            ToolbarView::CornerStyle::kTabstripCurve);
+  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
+            ToolbarView::CornerStyle::kTabstripCurve);
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
+  EXPECT_EQ(toolbar_view_->GetCornerStyles().first,
+            ToolbarView::CornerStyle::kTabstripCurve);
+  EXPECT_EQ(toolbar_view_->GetCornerStyles().second,
+            ToolbarView::CornerStyle::kTabstripCurve);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
