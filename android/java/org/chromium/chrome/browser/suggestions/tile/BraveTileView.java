@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,16 +30,6 @@ public class BraveTileView extends TileView {
     }
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        ImageView pinnedShortcutBadgeView = findViewById(R.id.pinned_shortcut_badge);
-        if (pinnedShortcutBadgeView != null) {
-            ImageViewCompat.setImageTintList(
-                    pinnedShortcutBadgeView, ColorStateList.valueOf(Color.WHITE));
-        }
-    }
-
-    @Override
     public void setTitle(String title, int titleLines) {
         super.setTitle(title, titleLines);
         if (ProfileManager.isInitialized()) {
@@ -59,6 +48,14 @@ public class BraveTileView extends TileView {
                         titleView.getPaddingTop(),
                         titleView.getPaddingRight(),
                         bottomPadding);
+
+                // Get the text color from the TextView after TextAppearance is applied
+                // and use it for the icon tint to match the text color
+                ImageView pinnedShortcutBadgeView = findViewById(R.id.pinned_shortcut_badge);
+                if (pinnedShortcutBadgeView != null) {
+                    ColorStateList textColors = titleView.getTextColors();
+                    ImageViewCompat.setImageTintList(pinnedShortcutBadgeView, textColors);
+                }
             }
         } else {
             Log.w(TAG, "Attempt to access profile before native initialization");
