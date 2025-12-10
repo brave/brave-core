@@ -18,6 +18,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
@@ -1785,7 +1786,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
                    EngineConsumer::GenerationDataCallback,
                    EngineConsumer::GenerationCompletedCallback callback,
                    const std::optional<std::string>&) {
-        std::string long_title(101, 'x');
+        std::string long_title(kMaxTitleLength + 1, 'x');
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(long_title)),

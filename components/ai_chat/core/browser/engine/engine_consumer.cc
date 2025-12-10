@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
@@ -101,8 +102,8 @@ void EngineConsumer::OnConversationTitleGenerated(
       api_result->event->get_completion_event()->completion,
       base::TrimPositions::TRIM_ALL);
 
-  // Discard title if longer than 100 characters
-  if (title.length() > 100) {
+  // Discard title if longer than our defined max title length
+  if (title.length() > kMaxTitleLength) {
     std::move(completion_callback)
         .Run(base::unexpected(mojom::APIError::InternalError));
     return;

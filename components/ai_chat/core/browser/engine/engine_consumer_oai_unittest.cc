@@ -2318,8 +2318,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
-            // Return a title longer than 100 characters
-            std::string long_title(101, 'x');
+            std::string long_title(kMaxTitleLength + 1, 'x');
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
