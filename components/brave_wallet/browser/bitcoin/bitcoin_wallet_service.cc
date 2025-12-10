@@ -478,6 +478,35 @@ void CreateTransactionTask::WorkOnTask() {
     return;
   }
 
+  // Guard against requests that exceed the available balance early to avoid
+  // constructing invalid transactions.
+  if (!transaction_.sending_max_amount()) {
+    base::CheckedNumeric<uint64_t> available = 0;
+    for (const auto& [_, utxos] : utxo_map_) {
+      for (const auto& utxo : utxos) {
+        uint64_t utxo_value = 0;
+        if (!base::StringToUint64(utxo.value, &utxo_value)) {
+          SetError(WalletInternalErrorMessage());
+          ScheduleWorkOnTask();
+          return;
+        }
+
+        available += utxo_value;
+        if (!available.IsValid()) {
+          SetError(WalletInternalErrorMessage());
+          ScheduleWorkOnTask();
+          return;
+        }
+      }
+    }
+
+    if (transaction_.amount() > available.ValueOrDie()) {
+      SetError(WalletInsufficientBalanceErrorMessage());
+      ScheduleWorkOnTask();
+      return;
+    }
+  }
+
   if (!change_address_) {
     bitcoin_wallet_service_->DiscoverNextUnusedAddress(
         account_id_.Clone(), true,

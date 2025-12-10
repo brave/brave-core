@@ -214,4 +214,82 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Error);
 }
 
+TEST_F(BitcoinTxManagerUnitTest, MojoRejectsInvalidBitcoinTransactionParams) {
+  mojo::Remote<mojom::TxService> tx_service_remote;
+  tx_service_->Bind(tx_service_remote.BindNewPipeAndPassReceiver());
+  ASSERT_TRUE(tx_service_remote.is_connected());
+
+  const auto valid_account = BtcAcc(0);
+  const std::string valid_address = kMockBtcAddress;
+
+  auto make_params = [&](mojom::AccountIdPtr from, const std::string& to,
+                         uint64_t amount) {
+    return mojom::NewBitcoinTransactionParams::New(
+        mojom::kBitcoinMainnet, std::move(from), to, amount,
+        /*sending_max_amount=*/false);
+  };
+
+  auto call =
+      [this, &tx_service_remote](mojom::NewBitcoinTransactionParamsPtr params) {
+        base::MockCallback<
+            mojom::TxService::AddUnapprovedBitcoinTransactionCallback>
+            callback;
+        bool success = true;
+        std::string meta_id;
+        std::string error_message;
+        EXPECT_CALL(callback, Run(_, _, _))
+            .WillOnce([&](bool success_in, const std::string& meta_in,
+                          const std::string& error_in) {
+              success = success_in;
+              meta_id = meta_in;
+              error_message = error_in;
+            });
+
+        tx_service_remote->AddUnapprovedBitcoinTransaction(std::move(params),
+                                                           callback.Get());
+        tx_service_remote.FlushForTesting();
+        task_environment_.RunUntilIdle();
+        testing::Mock::VerifyAndClearExpectations(&callback);
+        return std::make_tuple(success, meta_id, error_message);
+      };
+
+  // Oversized destination address should fail fast and keep the pipe alive.
+  const std::string oversized_address(4096u, 'a');
+  auto [oversized_success, oversized_meta, oversized_error] =
+      call(make_params(valid_account->Clone(), oversized_address, 5000u));
+  EXPECT_FALSE(oversized_success);
+  EXPECT_TRUE(oversized_meta.empty());
+  EXPECT_FALSE(oversized_error.empty());
+  EXPECT_TRUE(tx_service_remote.is_connected());
+
+  // Zero-amount transactions are rejected before any mutation occurs.
+  auto [zero_success, zero_meta, zero_error] =
+      call(make_params(valid_account->Clone(), valid_address, 0u));
+  EXPECT_FALSE(zero_success);
+  EXPECT_TRUE(zero_meta.empty());
+  EXPECT_FALSE(zero_error.empty());
+
+  // Non-existent account IDs should be rejected without crashing.
+  auto invalid_account =
+      mojom::AccountId::New(mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
+                            mojom::AccountKind::kDerived, valid_address,
+                            /*account_index=*/999u,
+                            /*unique_key=*/"");
+  auto [invalid_success, invalid_meta, invalid_error] =
+      call(make_params(std::move(invalid_account), valid_address, 5000u));
+  EXPECT_FALSE(invalid_success);
+  EXPECT_TRUE(invalid_meta.empty());
+  EXPECT_FALSE(invalid_error.empty());
+
+  // Extremely large amounts should surface an error, not a crash.
+  auto [overflow_success, overflow_meta, overflow_error] =
+      call(make_params(valid_account->Clone(), valid_address,
+                       std::numeric_limits<uint64_t>::max()));
+  EXPECT_FALSE(overflow_success);
+  EXPECT_TRUE(overflow_meta.empty());
+  EXPECT_FALSE(overflow_error.empty());
+
+  EXPECT_TRUE(tx_service_remote.is_connected());
+}
+
 }  //  namespace brave_wallet
