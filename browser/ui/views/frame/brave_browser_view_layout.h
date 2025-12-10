@@ -62,6 +62,7 @@ class BraveBrowserViewLayout : public BrowserViewLayoutImplOld {
 
 #if BUILDFLAG(IS_MAC)
   gfx::Insets AdjustInsetsConsideringFrameBorder(const gfx::Insets& insets);
+  gfx::Insets GetFrameBorderInsetsForVerticalTab() const;
 #endif
 
   raw_ptr<views::View, DanglingUntriaged> vertical_tab_strip_host_ = nullptr;

@@ -1247,6 +1247,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   // When collapsed, it should be inivisible.
   EXPECT_FALSE(region_view->GetVisible());
 
+#if BUILDFLAG(IS_MAC)
+  // On Mac, host view is moved by 1px to prevent vertical tab overlap
+  // with frame border. If failed see
+  // BraveBrowserViewLayout::GetFrameBorderInsetsForVerticalTab();
+  EXPECT_EQ(browser_view()->vertical_tab_strip_host_view_->x(), 1);
+#endif
+
   region_view->ToggleState();
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
             region_view->state());
