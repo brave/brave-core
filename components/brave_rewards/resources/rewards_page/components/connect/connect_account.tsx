@@ -157,6 +157,27 @@ export function ConnectAccount() {
     )
   }
 
+  function renderUnavailableNotice() {
+    const providerAllowed = providers.some((provider) => {
+      return isExternalWalletProviderAllowed(
+        countryCode,
+        (regions && regions[provider]) || null,
+      )
+    })
+    if (providerAllowed) {
+      return null
+    }
+    return (
+      <div className='unavailable-notice'>
+        <Icon name='warning-triangle-filled' />
+        <div>
+          <h4>{getString('connectProvidersUnavailableTitle')}</h4>
+          <p>{getString('connectProvidersUnavailableText')}</p>
+        </div>
+      </div>
+    )
+  }
+
   function renderCustodialSection() {
     const entries = providers.filter((name) => !isSelfCustodyProvider(name))
     if (entries.length === 0) {
@@ -249,6 +270,7 @@ export function ConnectAccount() {
       </nav>
       <h1>{getString('connectTitle')}</h1>
       <p className='text'>{getString('connectText')}</p>
+      {renderUnavailableNotice()}
       {renderCustodialSection()}
       {renderSelfCustodySection()}
     </div>

@@ -85,6 +85,8 @@ export type StringKey =
   | 'connectCustodialTooltip'
   | 'connectLoginText'
   | 'connectProviderNotAvailable'
+  | 'connectProvidersUnavailableText'
+  | 'connectProvidersUnavailableTitle'
   | 'connectRegionsLearnMoreText'
   | 'connectSelfCustodyError'
   | 'connectSelfCustodyNote'

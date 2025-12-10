@@ -623,6 +623,12 @@
   <message name="IDS_REWARDS_CONNECT_PROVIDER_NOT_AVAILABLE" desc="">
     Currently not available in your region
   </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDERS_UNAVAILABLE_TEXT" desc="">
+    We don’t have any payout options in your region yet. You can check again later to see if availability has changed.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDERS_UNAVAILABLE_TITLE" desc="">
+    Payout options unavailable
+  </message>
   <message name="IDS_REWARDS_CONNECT_TEXT" desc="">
     To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.
   </message>
