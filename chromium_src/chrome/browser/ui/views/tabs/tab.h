@@ -45,6 +45,12 @@ struct ControllableCloseButtonState final {
 #define GetWidthOfLargestSelectableRegion \
   virtual GetWidthOfLargestSelectableRegion
 
+// Add a method to resets tab_style_views_ so that it can have correct style for
+// orientation.
+#define UpdateInsets()                                     \
+  ResetTabStyle(std::unique_ptr<TabStyleViews> new_style); \
+  void UpdateInsets()
+
 #define SetData virtual SetData
 #define ActiveStateChanged virtual ActiveStateChanged
 #define GetGroupColor virtual GetGroupColor
@@ -61,6 +67,7 @@ struct ControllableCloseButtonState final {
 #undef UpdateIconVisibility
 #undef GetGroupColor
 #undef ActiveStateChanged
+#undef UpdateInsets
 #undef GetWidthOfLargestSelectableRegion
 #undef kMinimumContentsWidthForCloseButtons
 #undef SetData

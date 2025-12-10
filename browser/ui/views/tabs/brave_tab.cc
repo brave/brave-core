@@ -139,6 +139,12 @@ void BraveTab::EnterRenameMode() {
   rename_textfield_->RequestFocus();
 }
 
+void BraveTab::UpdateTabStyle() {
+  ResetTabStyle(TabStyleViews::CreateForTab(this));
+  UpdateInsets();
+  InvalidateLayout();
+}
+
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowser();
   if (browser &&
@@ -361,3 +367,6 @@ void BraveTab::UpdateRenameTextfieldBounds() {
   bounds.set_height(kHeight);
   rename_textfield_->SetBoundsRect(bounds);
 }
+
+BEGIN_METADATA(BraveTab)
+END_METADATA
