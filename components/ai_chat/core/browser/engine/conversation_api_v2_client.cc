@@ -91,6 +91,8 @@ std::string_view GetContentBlockTypeString(
       return "text";
     case mojom::ContentBlock::Tag::kImageContentBlock:
       return "image_url";
+    case mojom::ContentBlock::Tag::kFileContentBlock:
+      return "file";
     case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
       return "brave-page-excerpt";
     case mojom::ContentBlock::Tag::kPageTextContentBlock:
@@ -160,6 +162,15 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           base::Value::Dict image_url;
           image_url.Set("url", image->image_url.spec());
           content_block_dict.Set("image_url", std::move(image_url));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kFileContentBlock: {
+          const auto& file = block->get_file_content_block();
+          base::Value::Dict file_dict;
+          file_dict.Set("filename", file->filename);
+          file_dict.Set("file_data", file->file_data.spec());
+          content_block_dict.Set("file", std::move(file_dict));
           break;
         }
 
