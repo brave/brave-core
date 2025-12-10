@@ -123,6 +123,32 @@ std::vector<OAIMessage> BuildOAIMessages(
   return oai_messages;
 }
 
+std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
+    PageContents page_contents,
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input) {
+  std::vector<OAIMessage> messages;
+  OAIMessage msg;
+  msg.role = "user";
+
+  // Note: We iterate in reverse so that we prefer more recent page content
+  // (i.e. the oldest content will be truncated when we run out of context).
+  for (const auto& content : base::Reversed(page_contents)) {
+    msg.content.emplace_back(GetContentBlockFromAssociatedContent(
+        content, remaining_length, sanitize_input));
+    if (content.get().content.size() > remaining_length) {
+      break;
+    }
+    remaining_length -= content.get().content.size();
+  }
+
+  msg.content.emplace_back(ExtendedContentBlockType::kRequestQuestions,
+                           TextContent{""});
+  messages.push_back(std::move(msg));
+
+  return messages;
+}
+
 std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,
     mojom::ActionType action_type) {

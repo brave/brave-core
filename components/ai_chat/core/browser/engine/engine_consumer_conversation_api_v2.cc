@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 
 #include "base/check.h"
+#include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
@@ -36,7 +37,39 @@ void EngineConsumerConversationAPIV2::GenerateQuestionSuggestions(
     PageContents page_contents,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+  auto messages = BuildOAIQuestionSuggestionsMessages(
+      page_contents, max_associated_content_length_,
+      [this](std::string& input) { SanitizeInput(input); });
+  auto on_response = base::BindOnce(
+      &EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_->PerformRequest(std::move(messages), selected_language, std::nullopt,
+                       std::nullopt, mojom::ConversationCapability::CHAT,
+                       base::NullCallback(), std::move(on_response));
+}
+
+void EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse(
+    SuggestedQuestionsCallback callback,
+    GenerationResult result) {
+  if (!result.has_value()) {
+    // Query resulted in error
+    std::move(callback).Run(base::unexpected(std::move(result.error())));
+    return;
+  }
+
+  if (!result->event || !result->event->is_completion_event() ||
+      result->event->get_completion_event()->completion.empty()) {
+    // No questions were generated
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  // Success
+  std::vector<std::string> questions =
+      base::SplitString(result->event->get_completion_event()->completion, "|",
+                        base::WhitespaceHandling::TRIM_WHITESPACE,
+                        base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::move(callback).Run(std::move(questions));
 }
 
 void EngineConsumerConversationAPIV2::GenerateAssistantResponse(

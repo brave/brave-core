@@ -95,6 +95,10 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
   ConversationAPIV2Client* GetAPIForTesting() { return api_.get(); }
 
  private:
+  void OnGenerateQuestionSuggestionsResponse(
+      SuggestedQuestionsCallback callback,
+      GenerationResult result);
+
   std::unique_ptr<ConversationAPIV2Client> api_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerConversationAPIV2> weak_ptr_factory_{this};

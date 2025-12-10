@@ -81,6 +81,8 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
            {ExtendedContentBlockType::kVideoTranscript,
             "brave-video-transcript"},
            {ExtendedContentBlockType::kRequestSummary, "brave-request-summary"},
+           {ExtendedContentBlockType::kRequestQuestions,
+            "brave-request-questions"},
            {ExtendedContentBlockType::kChangeTone, "brave-request-change-tone"},
            {ExtendedContentBlockType::kParaphrase, "brave-request-paraphrase"},
            {ExtendedContentBlockType::kImprove,
