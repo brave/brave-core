@@ -7,7 +7,8 @@ import * as React from 'react'
 
 // Mocks
 import {
-  mockEncryptionKeyRequest, //
+  mockEncryptionKeyRequest,
+  mockDecryptRequest, //
 } from '../../../stories/mock-data/mock-encryption-key-payload'
 import { mockEthAccount } from '../../../common/constants/mocks'
 
@@ -18,9 +19,17 @@ import {
 import {
   ProvidePublicEncryptionKeyPanel, //
 } from './provide_public_encryption_key_panel'
+import {
+  DecryptMessageRequestPanel, //
+} from './decrypt_message_request_panel'
 
 const mockProvideEncryptionKeyRequest = {
   ...mockEncryptionKeyRequest,
+  accountId: mockEthAccount.accountId,
+}
+
+const mockDecryptMessageRequest = {
+  ...mockDecryptRequest,
   accountId: mockEthAccount.accountId,
 }
 
@@ -36,6 +45,15 @@ export const _ProvidePublicEncryptionKeyPanel = {
   },
 }
 
+export const _DecryptMessageRequestPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <DecryptMessageRequestPanel payload={mockDecryptMessageRequest} />
+      </WalletPanelStory>
+    )
+  },
+}
 export default {
   title: 'Wallet/Panel/Panels/Public Encryption Key Panels',
   parameters: {
