@@ -643,9 +643,9 @@ void BraveContentBrowserClient::
                                                            associated_registry);
 }
 
-void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
+void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
-  ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+  ChromeContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(registry);
 #if !BUILDFLAG(IS_ANDROID)
   registry.AddGlobal<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
