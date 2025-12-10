@@ -152,7 +152,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     // of acting on existing tabs.
     NavigateParams params(profile_, GURL(url::kAboutBlankURL),
                           ui::PAGE_TRANSITION_FROM_API);
-    params.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
     Navigate(&params);
     content::WebContents* new_contents = params.navigated_or_inserted_contents;
 
