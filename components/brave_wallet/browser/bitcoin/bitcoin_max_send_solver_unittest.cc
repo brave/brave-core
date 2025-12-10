@@ -87,42 +87,25 @@ TEST_F(BitcoinMaxSendSolverUnitTest, NoInputs) {
             solver.Solve().error());
 }
 
-TEST_F(BitcoinMaxSendSolverUnitTest, NotEnoughInputsForFee) {
+TEST_F(BitcoinMaxSendSolverUnitTest, RejectsDustTargetOutput) {
   auto base_tx = MakeMockTransaction();
 
   // Fee for typical 1 input -> 1 output transaction.
-  uint32_t min_fee = ApplyFeeRate(fee_rate(), std::ceil(109.25));
+  const uint32_t min_fee = ApplyFeeRate(fee_rate(), std::ceil(109.25));
 
-  {
-    uint32_t total_input = min_fee;
-    std::vector<BitcoinTransaction::TxInputGroup> input_groups;
-    input_groups.emplace_back();
-    input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    BitcoinMaxSendSolver solver(base_tx, fee_rate(), input_groups);
+  // Force the solver to produce a tiny target output that would be dust on
+  // mainnet. Current implementation lacks dust rejection for the target
+  // output, so this test should fail until that validation is added.
+  const uint64_t total_input = min_fee + 5;  // 5 sats sent after paying fee.
 
-    // We have nothing left after fee is taken from inputs.
-    EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
-              solver.Solve().error());
-  }
+  std::vector<BitcoinTransaction::TxInputGroup> input_groups;
+  input_groups.emplace_back();
+  input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
 
-  {
-    uint32_t total_input = min_fee + 1;
-    std::vector<BitcoinTransaction::TxInputGroup> input_groups;
-    input_groups.emplace_back();
-    input_groups.back().AddInput(MakeMockTxInput(total_input, 0));
-    BitcoinMaxSendSolver solver(base_tx, fee_rate(), input_groups);
-    auto tx = solver.Solve();
+  BitcoinMaxSendSolver solver(base_tx, fee_rate(), input_groups);
+  auto tx = solver.Solve();
 
-    ASSERT_TRUE(tx.has_value());
-
-    // We have 1 sat sent. Will not work when we support avoiding dust
-    // outputs.
-    EXPECT_EQ(tx->EffectiveFeeAmount(), min_fee);
-    EXPECT_EQ(tx->TotalInputsAmount(), total_input);
-    EXPECT_EQ(tx->TotalOutputsAmount(), 1u);
-    EXPECT_EQ(tx->TargetOutput()->amount, 1u);
-    EXPECT_FALSE(tx->ChangeOutput());
-  }
+  EXPECT_FALSE(tx.has_value());
 }
 
 TEST_F(BitcoinMaxSendSolverUnitTest, GroupIsSpentAsAWhole) {

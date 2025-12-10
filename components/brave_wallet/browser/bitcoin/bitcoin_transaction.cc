@@ -224,6 +224,13 @@ BitcoinTransaction::TxInput::FromValue(const base::Value::Dict& value) {
     return std::nullopt;
   }
 
+  // Enforce a conservative upper bound for witness stack serialization to
+  // reject obviously invalid or abusive inputs. Standard script element limit
+  // is 520 bytes; we apply the same ceiling to the serialized witness.
+  if (result.witness.size() > 520) {
+    return std::nullopt;
+  }
+
   if (!ReadOptionalHexByteArrayTo(value, "raw_outpoint_tx",
                                   result.raw_outpoint_tx)) {
     return std::nullopt;

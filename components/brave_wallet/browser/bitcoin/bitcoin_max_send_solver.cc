@@ -9,13 +9,20 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
+
+namespace {
+// Matches the relay dust rate used elsewhere in the wallet stack.
+constexpr double kDustRelayFeeRate = 3.0;  // sat/vbyte
+}  // namespace
 
 BitcoinMaxSendSolver::BitcoinMaxSendSolver(
     BitcoinTransaction base_transaction,
@@ -47,6 +54,18 @@ base::expected<BitcoinTransaction, std::string> BitcoinMaxSendSolver::Solve() {
 
   result.TargetOutput()->amount = result.TotalInputsAmount() - min_fee;
   result.set_amount(result.TargetOutput()->amount);
+
+  // Reject dust-sized target outputs (relay policy).
+  const uint32_t target_vbytes =
+      BitcoinSerializer::CalcOutputVBytesInTransaction(*result.TargetOutput());
+  base::CheckedNumeric<uint64_t> dust_threshold =
+      ApplyFeeRate(kDustRelayFeeRate, target_vbytes);
+  if (!dust_threshold.IsValid()) {
+    return base::unexpected(WalletInternalErrorMessage());
+  }
+  if (result.TargetOutput()->amount < dust_threshold.ValueOrDie()) {
+    return base::unexpected(WalletAmountTooSmallErrorMessage());
+  }
 
   return base::ok(result);
 }

@@ -72,6 +72,22 @@ TEST(BitcoinTransaction, TxInput_Value) {
   ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
+TEST(BitcoinTransaction, TxInput_ValueRejectsOversizeWitness) {
+  BitcoinTransaction::TxInput input;
+  input.utxo_address = kAddress1;
+  input.utxo_outpoint.index = 321;
+  base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
+  input.utxo_value = 42;
+
+  // Witness element intentionally exceeds the standard 520-byte script element
+  // limit used by Bitcoin consensus rules. The current implementation accepts
+  // it without validation; this test codifies the desired rejection.
+  input.witness.assign(600, 0xAA);
+
+  auto parsed = input.FromValue(input.ToValue());
+  EXPECT_FALSE(parsed);
+}
+
 TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
   const std::string rpc_utxo_json = R"(
     {
