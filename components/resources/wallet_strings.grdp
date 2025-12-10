@@ -346,6 +346,11 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY" desc="Account settings modal show key button">Show key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY" desc="Account settings modal hide key button">Hide key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DOWNLOAD_KEY" desc="Account settings modal download key button">Download</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENTER_PASSWORD_TO_ENCRYPT" desc="Account settings modal enter password to encrypt message">Enter a password to encrypt your account export file.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD" desc="Account settings modal encryption password placeholder">Enter encryption password</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_CONFIRM_ENCRYPTION_PASSWORD" desc="Account settings modal confirm encryption password placeholder">Confirm encryption password</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_PASSWORDS_DO_NOT_MATCH" desc="Account settings modal passwords do not match error">Passwords do not match</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_ENCRYPTION_PASSWORD_TOO_SHORT" desc="Account settings modal encryption password too short error">Password must be at least 8 characters</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR" desc="Account settings modal failed to updated name error">Failed to update account name, please try again.</message>
   <message name="IDS_BRAVE_WALLET_PRESET25" desc="Swap preset 25% button">25%</message>
   <message name="IDS_BRAVE_WALLET_PRESET50" desc="Swap preset 50% button">50%</message>

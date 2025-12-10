@@ -1593,6 +1593,30 @@ void KeyringService::EncodePrivateKeyForExport(
   std::move(callback).Run(std::nullopt);
 }
 
+void KeyringService::EncodePolkadotKeyForExport(
+    mojom::AccountIdPtr account_id,
+    const std::string& encryption_password,
+    EncodePrivateKeyForExportCallback callback) {
+  if (!account_id || encryption_password.empty() || IsLockedSync()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Only works for Polkadot accounts
+  if (account_id->coin != mojom::CoinType::DOT) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  if (auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id)) {
+    std::move(callback).Run(keyring->EncodePrivateKeyForExport(
+        account_id->account_index, encryption_password));
+    return;
+  }
+
+  std::move(callback).Run(std::nullopt);
+}
+
 void KeyringService::ImportFilecoinAccount(
     const std::string& account_name,
     const std::string& private_key_hex,

@@ -1296,6 +1296,13 @@ interface KeyringService {
   EncodePrivateKeyForExport(AccountId account_id, string password)
       => (string? privateKey);
 
+  // Encodes the Polkadot private key for exporting with a custom encryption
+  // password.
+  // This method does not validate the password against the wallet password.
+  EncodePolkadotKeyForExport(
+      AccountId account_id, string encryption_password)
+      => (string? privateKey);
+
   // Imports an account with a specific private key to the corresponding keyring
   ImportEthereumAccount(string accountName, string privateKey)
       => (AccountInfo? account);

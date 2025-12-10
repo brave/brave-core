@@ -104,6 +104,10 @@ class KeyringService : public mojom::KeyringService {
       mojom::AccountIdPtr account_id,
       const std::string& password,
       EncodePrivateKeyForExportCallback callback) override;
+  void EncodePolkadotKeyForExport(
+      mojom::AccountIdPtr account_id,
+      const std::string& encryption_password,
+      EncodePrivateKeyForExportCallback callback) override;
   void ImportEthereumAccount(const std::string& account_name,
                              const std::string& private_key,
                              ImportEthereumAccountCallback callback) override;
