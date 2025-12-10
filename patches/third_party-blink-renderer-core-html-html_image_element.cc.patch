@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/html/html_image_element.cc b/third_party/blink/renderer/core/html/html_image_element.cc
-index 8130d0f83f74622b00c7bc85501fcf60e376e354..dadbc6664f87c9cd4dd4219a1085e2a8044cfaba 100644
+index 8130d0f83f74622b00c7bc85501fcf60e376e354..6a506af55db16e276b13f5d532a05186d60a2195 100644
 --- a/third_party/blink/renderer/core/html/html_image_element.cc
 +++ b/third_party/blink/renderer/core/html/html_image_element.cc
 @@ -1104,6 +1104,7 @@ void HTMLImageElement::SetLayoutDisposition(
      EnsureUserAgentShadowRoot();
    }
  
-+  (layout_disposition_ == LayoutDisposition::kCollapsed) ? setAttribute(AtomicString("brave-collapsed-element"), "") : removeAttribute(AtomicString("brave-collapsed-element"));
++  if (base::FeatureList::IsEnabled(features::kBraveCollapsedElementAttribute)) { (layout_disposition_ == LayoutDisposition::kCollapsed) ? setAttribute(AtomicString("brave-collapsed-element"), "") : removeAttribute(AtomicString("brave-collapsed-element")); }
    // ComputedStyle depends on layout_disposition_. Trigger recalc.
    SetNeedsStyleRecalc(
        kLocalStyleChange,
