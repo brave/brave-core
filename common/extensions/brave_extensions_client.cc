@@ -8,11 +8,13 @@
 #include <string>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/skus/common/skus_utils.h"
 #include "components/component_updater/component_updater_switches.h"
+#include "extensions/common/extension_urls.h"
 
 namespace extensions {
 
@@ -47,8 +49,12 @@ BraveExtensionsClient::BraveExtensionsClient() = default;
 
 void BraveExtensionsClient::InitializeWebStoreUrls(
     base::CommandLine* command_line) {
-  webstore_update_url_ = GURL(ParseUpdateUrlHost(
-      command_line->GetSwitchValueASCII(switches::kComponentUpdater)));
+  if (command_line->HasSwitch(switches::kComponentUpdater)) {
+    webstore_update_url_ = GURL(ParseUpdateUrlHost(
+        command_line->GetSwitchValueASCII(switches::kComponentUpdater)));
+  } else {
+    webstore_update_url_ = extension_urls::GetDefaultWebstoreUpdateUrl();
+  }
   ChromeExtensionsClient::InitializeWebStoreUrls(command_line);
 }
 
