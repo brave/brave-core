@@ -55,7 +55,6 @@ class BraveToolbarView : public ToolbarView,
   void Init() override;
   void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
-  void UpdateRecedingCornerRadius() override;
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
@@ -65,12 +64,16 @@ class BraveToolbarView : public ToolbarView,
       const views::ViewHierarchyChangedDetails& details) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
 
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
+
+  std::pair<ToolbarView::CornerStyle, ToolbarView::CornerStyle>
+  GetCornerStyles() const override;
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;

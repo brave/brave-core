@@ -152,8 +152,6 @@ class BraveToolbarView::LayoutGuard {
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
     : ToolbarView(browser, browser_view) {
-  // See the comments in UpdateRecedingCornerRadius().
-  receding_corner_radius_ = GetLayoutConstant(TOOLBAR_CORNER_RADIUS);
 }
 
 BraveToolbarView::~BraveToolbarView() = default;
@@ -396,6 +394,19 @@ void BraveToolbarView::LoadImages() {
 #endif
 }
 
+std::pair<ToolbarView::CornerStyle, ToolbarView::CornerStyle>
+BraveToolbarView::GetCornerStyles() const {
+  const bool webui_tabstrip = browser_view_->webui_tab_strip();
+  const bool vertical_tabstrip = browser_view_->ShouldDrawVerticalTabStrip();
+  if (vertical_tabstrip || webui_tabstrip) {
+    return ToolbarView::GetCornerStyles();
+  }
+
+  // Always show rounded corners for horizontal tabs
+  return std::make_pair(ToolbarView::CornerStyle::kTabstripCurve,
+                        ToolbarView::CornerStyle::kTabstripCurve);
+}
+
 void BraveToolbarView::Update(content::WebContents* tab) {
   ToolbarView::Update(tab);
 
@@ -411,11 +422,6 @@ void BraveToolbarView::Update(content::WebContents* tab) {
         !IsAvatarButtonHideable(profile) || HasMultipleUserProfiles();
     avatar_button->SetVisible(should_show_profile);
   }
-}
-
-void BraveToolbarView::UpdateRecedingCornerRadius() {
-  // Do nothing here as we'll show rounded corners always.
-  // |receding_corner_radius_| is initialized in ctor.
 }
 
 void BraveToolbarView::UpdateBookmarkVisibility() {
