@@ -26,11 +26,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
-import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
@@ -40,12 +38,6 @@ import java.util.TimeZone;
 
 @NullMarked
 public class BraveVpnSupportActivity extends AsyncInitializationActivity {
-    private @Nullable BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
-    private final OneshotSupplier<ProfileProvider> mProfileSupplier;
-
-    public BraveVpnSupportActivity() {
-        mProfileSupplier = createProfileProvider();
-    }
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_support);
@@ -147,14 +139,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer =
-                new BraveFirstRunFlowSequencer(mProfileSupplier) {
-                    @Override
-                    public void onFlowIsKnown(boolean isChild) {
-                        initializeViews();
-                    }
-                };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
     }
 
