@@ -28,12 +28,14 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   public var handler: ((any TabState, AIChatWebUIPageAction) -> Void)?
   public weak var associatedTab: (any TabState)?
   public var tabsForPrivateMode: (_ isPrivate: Bool) -> [any TabState] = { _ in [] }
-  public weak var profileController: BraveProfileController?
+  public var profileController: BraveProfileController
+  public var attachPrivacySensitiveTabHelpers: ((any TabState, any Profile) -> Void)?
 
   public init?(
     tab: some TabState,
     webDelegate: AIChatWebDelegate?,
-    braveTalkJavascript: AIChatBraveTalkJavascript?
+    braveTalkJavascript: AIChatBraveTalkJavascript?,
+    profileController: BraveProfileController
   ) {
     if !tab.isChromiumTab || !FeatureList.kAIChatWebUIEnabled.enabled {
       return nil
@@ -41,6 +43,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     self.tab = tab
     self.webDelegate = webDelegate
     self.braveTalkJavascript = braveTalkJavascript
+    self.profileController = profileController
     super.init()
     tab.addObserver(self)
   }
@@ -80,29 +83,30 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     return tabs.first(where: { $0.uniqueSessionID == id })
   }
 
+  private class ContextContainer: AIChatAssociatedURLContentContext {
+    var tab: any TabState
+    var webUIHelper: AIChatWebUIHelper
+    init?(tab: some TabState, webUIHelper: AIChatWebUIHelper) {
+      if !tab.isChromiumTab { return nil }
+      self.tab = tab
+      self.webUIHelper = webUIHelper
+    }
+    var webView: BraveWebView {
+      if !tab.isWebViewCreated {
+        tab.createWebView()
+      }
+      // Force unwrap is safe here as we enforce that the tab is a ChromiumTabState
+      return BraveWebView.from(tab: self.tab)!
+    }
+    var pageFetcher: AIChatAssociatedContentPageFetcher {
+      webUIHelper
+    }
+  }
+
+  @MainActor
   public func contextForAssociatingURLContent(
     forProfile profile: any Profile
-  ) -> (any AIChatAssociatedURLContentContext)? {
-    class ContextContainer: AIChatAssociatedURLContentContext {
-      var tab: any TabState
-      var webUIHelper: AIChatWebUIHelper
-      init?(tab: some TabState, webUIHelper: AIChatWebUIHelper) {
-        if !tab.isChromiumTab { return nil }
-        self.tab = tab
-        self.webUIHelper = webUIHelper
-      }
-      var webView: BraveWebView {
-        if !tab.isWebViewCreated {
-          tab.createWebView()
-        }
-        // Force unwrap is safe here as we enforce that the tab is a ChromiumTabState
-        return BraveWebView.from(tab: self.tab)!
-      }
-      var pageFetcher: AIChatAssociatedContentPageFetcher {
-        webUIHelper
-      }
-    }
-    guard let profileController else { return nil }
+  ) async -> (any AIChatAssociatedURLContentContext)? {
     let wkConfiguration = WKWebViewConfiguration()
     if profile.isOffTheRecord {
       wkConfiguration.websiteDataStore = .nonPersistent()
@@ -110,11 +114,13 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     let tab = TabStateFactory.create(
       with: .init(initialConfiguration: wkConfiguration, braveCore: profileController)
     )
+    attachPrivacySensitiveTabHelpers?(tab, profile)
     guard
       let childHelper = AIChatWebUIHelper(
         tab: tab,
         webDelegate: webDelegate,
-        braveTalkJavascript: braveTalkJavascript
+        braveTalkJavascript: braveTalkJavascript,
+        profileController: profileController
       ),
       let context = ContextContainer(tab: tab, webUIHelper: childHelper)
     else {

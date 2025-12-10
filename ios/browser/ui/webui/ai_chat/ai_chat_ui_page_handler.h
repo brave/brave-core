@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
@@ -21,6 +22,8 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
+
+@protocol AIChatAssociatedURLContentContext;
 
 class ProfileIOS;
 
@@ -103,6 +106,12 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void SubmitVoiceQuery(const std::string& conversation_uuid, NSString* query);
   void HandleWebStateDestroyed();
+  void OnFetchContextForAssociatingUrlContent(
+      const GURL& url,
+      const std::u16string title,
+      const std::string& conversation_uuid,
+      AIChatService* service,
+      id<AIChatAssociatedURLContentContext> context);
 
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;

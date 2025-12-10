@@ -36,9 +36,17 @@ extension BrowserViewController: TabManagerDelegate {
     tab.aiChatWebUIHelper = .init(
       tab: tab,
       webDelegate: tab.leoTabHelper,
-      braveTalkJavascript: braveTalkJitsiCoordinator
+      braveTalkJavascript: braveTalkJitsiCoordinator,
+      profileController: profileController
     )
-    tab.aiChatWebUIHelper?.profileController = profileController
+    tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { detachedTab, profile in
+      let shieldsHelper = BraveShieldsTabHelper(
+        tab: detachedTab,
+        braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile)
+      )
+      detachedTab.braveShieldsHelper = shieldsHelper
+      detachedTab.addPolicyDecider(shieldsHelper)
+    }
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
       self?.handleAIChatWebUIPageAction(tab, action: action)
     }

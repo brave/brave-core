@@ -42,8 +42,12 @@ NS_SWIFT_NAME(AIChatUIHandler)
 
 /// Create and return context that will allow loading an arbitrary URL into
 /// a BraveWebView and obtain page content from
-- (nullable id<AIChatAssociatedURLContentContext>)
-    contextForAssociatingURLContentForProfile:(id<ProfileBridge>)profile;
+- (void)
+    contextForAssociatingURLContentForProfile:(id<ProfileBridge>)profile
+                            completionHandler:
+                                (void (^)(
+                                    id<AIChatAssociatedURLContentContext> _Nullable))
+                                    completionHandler;
 
 /// Handle when a user taps on the microphone icon and call the completion
 /// handler with a text version of the users prompt or nil if the user had

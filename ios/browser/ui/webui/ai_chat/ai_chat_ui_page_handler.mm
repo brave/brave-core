@@ -379,17 +379,34 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const std::string& conversation_uuid) {
   id<AIChatUIHandlerBridge> bridge =
       UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  if (!bridge) {
+    return;
+  }
   ProfileIOS* profile =
       ProfileIOS::FromBrowserState(owner_web_state_->GetBrowserState());
   AIChatService* service = AIChatServiceFactory::GetForProfile(profile);
   ProfileBridgeImpl* profileBridge =
       [[ProfileBridgeImpl alloc] initWithProfile:profile];
-  if (auto context =
-          [bridge contextForAssociatingURLContentForProfile:profileBridge]) {
-    auto content = std::make_unique<ai_chat::AssociatedURLContent>(
-        url, base::UTF8ToUTF16(title), context);
-    service->AssociateOwnedContent(std::move(content), conversation_uuid);
+  auto callback = base::CallbackToBlock(base::BindOnce(
+      &AIChatUIPageHandler::OnFetchContextForAssociatingUrlContent,
+      weak_ptr_factory_.GetWeakPtr(), url, base::UTF8ToUTF16(title),
+      conversation_uuid, service));
+  [bridge contextForAssociatingURLContentForProfile:profileBridge
+                                  completionHandler:callback];
+}
+
+void AIChatUIPageHandler::OnFetchContextForAssociatingUrlContent(
+    const GURL& url,
+    const std::u16string title,
+    const std::string& conversation_uuid,
+    AIChatService* service,
+    id<AIChatAssociatedURLContentContext> context) {
+  if (!context) {
+    return;
   }
+  auto content =
+      std::make_unique<ai_chat::AssociatedURLContent>(url, title, context);
+  service->AssociateOwnedContent(std::move(content), conversation_uuid);
 }
 
 void AIChatUIPageHandler::DisassociateContent(
