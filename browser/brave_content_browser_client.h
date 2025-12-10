@@ -53,7 +53,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::RenderFrameHost& render_frame_host,
       blink::AssociatedInterfaceRegistry& associated_registry) override;
 
-  void RegisterWebUIInterfaceBrokers(
+  void RegisterTrustedWebUIInterfaceBrokers(
       content::WebUIBrowserInterfaceBrokerRegistry& registry) override;
 
   bool HandleExternalProtocol(
