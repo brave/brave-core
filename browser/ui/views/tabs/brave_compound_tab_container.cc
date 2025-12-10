@@ -15,8 +15,7 @@
 #include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include
-"brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,78 +30,76 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_utils.h"
 
-    namespace {
-  class ContentsView : public views::View {
-   public:
-    explicit ContentsView(BraveCompoundTabContainer* container)
-        : container_(container) {
-      SetLayoutManager(std::make_unique<views::FillLayout>());
-    }
-    ~ContentsView() override = default;
+namespace {
+class ContentsView : public views::View {
+ public:
+  explicit ContentsView(BraveCompoundTabContainer* container)
+      : container_(container) {
+    SetLayoutManager(std::make_unique<views::FillLayout>());
+  }
+  ~ContentsView() override = default;
 
-    // views::View:
-    void ChildPreferredSizeChanged(views::View* child) override {
-      // Bypass ScrollView and notify the BraveCompoundTabContainer directly.
-      container_->ChildPreferredSizeChanged(child);
-    }
+  // views::View:
+  void ChildPreferredSizeChanged(views::View* child) override {
+    // Bypass ScrollView and notify the BraveCompoundTabContainer directly.
+    container_->ChildPreferredSizeChanged(child);
+  }
 
-    base::raw_ptr<BraveCompoundTabContainer> container_;
-  };
+  raw_ptr<BraveCompoundTabContainer> container_;
+};
 
-  // A custom scroll view to avoid bugs from upstream
-  // At the moment,
-  //  * ScrollRectToVisible() doesn't work well, so disable layer and make it
-  //    easier to manipulate offset.
-  //  * When disabling ScrollWithLayers, OnScrollEvent cause DCHECK failure.
-  //  * Even when scrollbar is kHiddenButEnabled, the width for contents view
-  is
-      //  cut off.
-      //    In order to avoid that, attach overlay scroll bar which doesn't take
-      //    space.
-      class CustomScrollView : public views::ScrollView {
-    METADATA_HEADER(CustomScrollView, views::ScrollView)
-   public:
-    explicit CustomScrollView(PrefService* prefs)
-        : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
-      SetDrawOverflowIndicator(false);
-      SetHorizontalScrollBarMode(views::ScrollView::ScrollBarMode::kDisabled);
+// A custom scroll view to avoid bugs from upstream
+// At the moment,
+//  * ScrollRectToVisible() doesn't work well, so disable layer and make it
+//    easier to manipulate offset.
+//  * When disabling ScrollWithLayers, OnScrollEvent cause DCHECK failure.
+//  * Even when scrollbar is kHiddenButEnabled, the width for contents view is
+//    cut off. In order to avoid that, attach overlay scroll bar which doesn't
+//    take space.
+class CustomScrollView : public views::ScrollView {
+  METADATA_HEADER(CustomScrollView, views::ScrollView)
+ public:
+  explicit CustomScrollView(PrefService* prefs)
+      : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
+    SetDrawOverflowIndicator(false);
+    SetHorizontalScrollBarMode(views::ScrollView::ScrollBarMode::kDisabled);
 
-      should_show_scroll_bar_.Init(
-          brave_tabs::kVerticalTabsShowScrollbar, prefs,
-          base::BindRepeating(&CustomScrollView::UpdateScrollbarVisibility,
-                              base::Unretained(this)));
-      UpdateScrollbarVisibility();
-    }
-    ~CustomScrollView() override = default;
+    should_show_scroll_bar_.Init(
+        brave_tabs::kVerticalTabsShowScrollbar, prefs,
+        base::BindRepeating(&CustomScrollView::UpdateScrollbarVisibility,
+                            base::Unretained(this)));
+    UpdateScrollbarVisibility();
+  }
+  ~CustomScrollView() override = default;
 
-    // views::ScrollView:
-    void OnScrollEvent(ui::ScrollEvent* event) override {
-      // DO NOTHING to avoid crash when layer is disabled.
-    }
+  // views::ScrollView:
+  void OnScrollEvent(ui::ScrollEvent* event) override {
+    // DO NOTHING to avoid crash when layer is disabled.
+  }
 
-   private:
-    void UpdateScrollbarVisibility() {
-      if (*should_show_scroll_bar_) {
-        SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
-        // We can't use ScrollBarViews on Mac
+ private:
+  void UpdateScrollbarVisibility() {
+    if (*should_show_scroll_bar_) {
+      SetVerticalScrollBarMode(views::ScrollView::ScrollBarMode::kEnabled);
+      // We can't use ScrollBarViews on Mac
 #if !BUILDFLAG(IS_MAC)
-        SetVerticalScrollBar(std::make_unique<views::ScrollBarViews>(
-            views::ScrollBar::Orientation::kVertical));
+      SetVerticalScrollBar(std::make_unique<views::ScrollBarViews>(
+          views::ScrollBar::Orientation::kVertical));
 #endif
-      } else {
-        SetVerticalScrollBarMode(
-            views::ScrollView::ScrollBarMode::kHiddenButEnabled);
-        SetVerticalScrollBar(std::make_unique<views::OverlayScrollBar>(
-            views::ScrollBar::Orientation::kVertical));
-      }
-      DeprecatedLayoutImmediately();
+    } else {
+      SetVerticalScrollBarMode(
+          views::ScrollView::ScrollBarMode::kHiddenButEnabled);
+      SetVerticalScrollBar(std::make_unique<views::OverlayScrollBar>(
+          views::ScrollBar::Orientation::kVertical));
     }
+    DeprecatedLayoutImmediately();
+  }
 
-    BooleanPrefMember should_show_scroll_bar_;
-  };
+  BooleanPrefMember should_show_scroll_bar_;
+};
 
-  BEGIN_METADATA(CustomScrollView)
-  END_METADATA
+BEGIN_METADATA(CustomScrollView)
+END_METADATA
 
 }  // namespace
 
@@ -179,17 +176,12 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
     auto* contents_view =
         scroll_view_->SetContents(std::make_unique<ContentsView>(this));
     if (unpinned_tab_container_->parent()) {
-      // On Aura, when adding a view to a new parent, it'll be removed from
-      the
-          // old parent automatically. But this causes CHECK failure while
-          updating
-              // tooltip. In order to avoid that, we remove the view from the
-              // old
-                  parent
-                      // manually before adding it to the new parent.
-                      unpinned_tab_container_->parent()
-                          ->RemoveChildView(
-                              base::to_address(unpinned_tab_container_));
+      // On Aura, when adding a view to a new parent, it'll be removed from the
+      // old parent automatically. But this causes CHECK failure while updating
+      // tooltip. In order to avoid that, we remove the view from the old parent
+      // manually before adding it to the new parent.
+      unpinned_tab_container_->parent()->RemoveChildView(
+          base::to_address(unpinned_tab_container_));
     }
     contents_view->AddChildView(base::to_address(unpinned_tab_container_));
     DeprecatedLayoutImmediately();
@@ -233,11 +225,10 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
   to_container.AnimateToIdealBounds();
 
   if (was_pinned != is_pinned) {
-    // After transferring a tab from one to another container, we should
-    layout
-        // the previous container.
-        auto previous_container =
-            was_pinned ? pinned_tab_container_ : unpinned_tab_container_;
+    // After transferring a tab from one to another container, we should layout
+    // the previous container.
+    auto previous_container =
+        was_pinned ? pinned_tab_container_ : unpinned_tab_container_;
     previous_container->CompleteAnimationAndLayout();
     PreferredSizeChanged();
     layout_dirty = true;
@@ -338,19 +329,13 @@ std::vector<Tab*> BraveCompoundTabContainer::AddTabs(
     return CompoundTabContainer::AddTabs(std::move(tabs_params));
   }
 
-  // Upstream implementation expects all tabs to be either pinned or
-  unpinned.
-      // It also checks that the index of pinned tabs is <= than
-      // NumPinnedTabs(), which returns 0 and triggers a check. That check
-      // doesn't make sense
-      since
-          // if I am adding 2 pinned tabs with model_indexes 0 and 1, when
-          // checking for model_index 1 NumPinnedTabs() would still return 0 as
-          // we have not
-              added
-                  // the tab with the index 0 yet. So, add tabs ourselves.
-                  std::vector<TabInsertionParams>
-                      pinned_tabs_params;
+  // Upstream implementation expects all tabs to be either pinned or unpinned.
+  // It also checks that the index of pinned tabs is <= than NumPinnedTabs(),
+  // which returns 0 and triggers a check. That check doesn't make sense since
+  // if I am adding 2 pinned tabs with model_indexes 0 and 1, when checking for
+  // model_index 1 NumPinnedTabs() would still return 0 as we have not added the
+  // tab with the index 0 yet. So, add tabs ourselves.
+  std::vector<TabInsertionParams> pinned_tabs_params;
   std::vector<TabInsertionParams> unpinned_tabs_params;
   for (auto& params : tabs_params) {
     if (params.pinned == TabPinned::kPinned) {
@@ -384,10 +369,9 @@ std::vector<Tab*> BraveCompoundTabContainer::AddTabs(
         new_tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned;
 
     if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
-      // When the browser was initialized without any pinned tabs, pinned
-      tabs
-          // could be hidden initially by the FlexLayout.
-          pinned_tab_container_->SetVisible(true);
+      // When the browser was initialized without any pinned tabs, pinned tabs
+      // could be hidden initially by the FlexLayout.
+      pinned_tab_container_->SetVisible(true);
     }
 
     if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
@@ -481,9 +465,8 @@ void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
   if (ShouldShowVerticalTabs()) {
     // Bypass CompoundTabContainer::PaintChildren() implementation.
     // CompoundTabContainer calls children's View::Paint() even when they
-    have
-        // their own layer, which shouldn't happen.
-        views::View::PaintChildren(info);
+    // have their own layer, which shouldn't happen.
+    views::View::PaintChildren(info);
   } else {
     CompoundTabContainer::PaintChildren(info);
   }
@@ -534,10 +517,9 @@ TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
           : base::to_address(unpinned_tab_container_);
 
   if (!container->GetWidget()) {
-    // Note that this could be happen when we're detaching tabs and we're
-    still
-        // changing view hierarchy.
-        return nullptr;
+    // Note that this could be happen when we're detaching tabs and we're still
+    // changing view hierarchy.
+    return nullptr;
   }
 
   return container;
