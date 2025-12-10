@@ -131,6 +131,11 @@ BitcoinTestRpcServer::GetURLLoaderFactory() {
   return shared_url_loader_factory_;
 }
 
+void BitcoinTestRpcServer::SetFeeEstimatesForTesting(
+    const base::Value& fee_estimates) {
+  fee_estimates_ = fee_estimates.Clone();
+}
+
 bitcoin_rpc::AddressStats BitcoinTestRpcServer::EmptyAddressStats(
     const std::string& address) {
   bitcoin_rpc::AddressStats stats;

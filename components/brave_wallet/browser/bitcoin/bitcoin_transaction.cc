@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -275,14 +276,18 @@ BitcoinTransaction::TxInputGroup& BitcoinTransaction::TxInputGroup::operator=(
 
 void BitcoinTransaction::TxInputGroup::AddInput(
     BitcoinTransaction::TxInput input) {
-  total_amount_ += input.utxo_value;
+  base::CheckedNumeric<uint64_t> new_total = total_amount_;
+  new_total += input.utxo_value;
+  total_amount_ = new_total.ValueOrDie();
   inputs_.push_back(std::move(input));
 }
 
 void BitcoinTransaction::TxInputGroup::AddInputs(
     std::vector<BitcoinTransaction::TxInput> inputs) {
-  for (auto& input : inputs_) {
-    total_amount_ += input.utxo_value;
+  for (auto& input : inputs) {
+    base::CheckedNumeric<uint64_t> new_total = total_amount_;
+    new_total += input.utxo_value;
+    total_amount_ = new_total.ValueOrDie();
     inputs_.push_back(std::move(input));
   }
 }

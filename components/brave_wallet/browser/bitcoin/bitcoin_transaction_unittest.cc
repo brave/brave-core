@@ -226,6 +226,26 @@ TEST(BitcoinTransaction, TotalInputsAmount) {
   EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
 }
 
+TEST(BitcoinTransaction, TxInputGroupAddInputsAccumulatesTotal) {
+  // Ensures grouping inputs correctly sums total_amount_, preventing under-fee
+  // coin selection that could lead to unsafe transactions.
+  BitcoinTransaction::TxInputGroup group;
+
+  BitcoinTransaction::TxInput input1;
+  input1.utxo_value = 100;
+  BitcoinTransaction::TxInput input2;
+  input2.utxo_value = 200;
+
+  std::vector<BitcoinTransaction::TxInput> inputs;
+  inputs.push_back(std::move(input1));
+  inputs.push_back(std::move(input2));
+
+  group.AddInputs(std::move(inputs));
+
+  ASSERT_EQ(group.inputs().size(), 2u);
+  EXPECT_EQ(group.total_amount(), 300u);
+}
+
 TEST(BitcoinTransaction, TotalOutputsAmount) {
   BitcoinTransaction tx;
   EXPECT_EQ(tx.TotalOutputsAmount(), 0u);
