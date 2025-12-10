@@ -21,6 +21,11 @@ interface Props {
 
 export function TosUpdateModal(props: Props) {
   const { getString } = useLocaleContext()
+
+  React.useEffect(() => {
+    document.querySelector<HTMLElement>(`${style.selector} a`)?.focus()
+  }, [])
+
   return (
     <Modal>
       <Modal.Header title={getString('tosUpdateRequiredTitle')} />
@@ -44,7 +49,6 @@ export function TosUpdateModal(props: Props) {
             text: getString('tosUpdateAcceptButtonLabel'),
             onClick: props.onAccept,
             isPrimary: true,
-            autoFocus: true,
           },
         ]}
       />
