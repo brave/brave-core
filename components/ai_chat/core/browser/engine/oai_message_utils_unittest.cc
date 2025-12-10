@@ -313,9 +313,10 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
                                 std::cref(text_content2)};
 
   bool sanitize_input_called = false;
-  // Set max length to fit last two blocks fully and truncate the first
   std::vector<OAIMessage> messages = BuildOAIQuestionSuggestionsMessages(
-      page_contents, 23,
+      page_contents,
+      // Set max length to fit last two blocks fully and truncate the first
+      text_content2.content.size() + video_content.content.size() + 2,
       [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
 
   EXPECT_TRUE(sanitize_input_called);
