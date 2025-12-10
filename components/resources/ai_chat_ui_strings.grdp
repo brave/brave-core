@@ -853,7 +853,7 @@
     Noting down some information for later about the page
   </message>
   <message name="IDS_CHAT_UI_AGENT_MODE_MODEL_INFO" desc="Warning message for agent mode" formatter_data="webui=AiChat">
-    Agent mode works with models with tool support. Non-compatible models are hidden from this list.
+    AI browsing mode works with models with tool support. Non-compatible models are hidden from this list.
   </message>
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <message name="IDS_AI_AGENT_NTP_AGENT_MODE_BUTTON_LABEL" translateable="true" desc="Agent mode button text for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
-    Agent mode
+    AI browsing
   </message>
   <message name="IDS_AI_AGENT_NTP_ABOUT_THE_AI_PROFILE_CARD_TITLE" translateable="true" desc="About the AI profile card title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
     About the AI browsing profile
