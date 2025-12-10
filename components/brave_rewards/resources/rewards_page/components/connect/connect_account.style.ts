@@ -95,6 +95,22 @@ export const style = scoped.css`
     }
   }
 
+  .unavailable-notice {
+    --leo-icon-color: ${color.systemfeedback.warningIcon};
+    --leo-icon-size: 20px;
+
+    border-radius: 12px;
+    padding: 16px;
+    background: ${color.systemfeedback.warningBackground};
+    color: ${color.systemfeedback.warningText};
+    display: flex;
+    gap: 16px;
+
+    leo-icon {
+      margin-top: 2px;
+    }
+  }
+
   .new-badge {
     position: absolute;
     top: 10px;

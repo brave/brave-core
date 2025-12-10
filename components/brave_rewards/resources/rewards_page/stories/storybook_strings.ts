@@ -111,6 +111,9 @@ export const localeStrings: { [K in StringKey]: string } = {
     'Custodial accounts are accounts with trusted third-party services that hold your BAT for you.',
   connectLoginText: 'Log in or sign up',
   connectProviderNotAvailable: 'Currently not available in your region',
+  connectProvidersUnavailableText:
+    'We don’t have any payout options in your region yet. You can check again later to see if availability has changed.',
+  connectProvidersUnavailableTitle: 'Payout options unavailable',
   connectRegionsLearnMoreText: 'Learn more about regions and support',
   connectSelfCustodyError: 'Something went wrong. Please try again',
   connectSelfCustodyNote:

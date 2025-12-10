@@ -59,12 +59,7 @@ export function createModel(): AppModel {
       ],
       autoDetectedSubdivision: 'US-NY',
     },
-    externalWallet: {
-      provider: 'uphold',
-      name: 'Test Account',
-      authenticated: true,
-      url: '',
-    },
+    externalWallet: null,
     externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(4.123),
     tosUpdateRequired: false,
@@ -98,9 +93,10 @@ export function createModel(): AppModel {
       tipChoices: [1.25, 5.0, 10.5],
       rate: 0.56,
       walletProviderRegions: {
-        bitflyer: { allow: [], block: [] },
+        bitflyer: { allow: [], block: ['US'] },
         gemini: { allow: [], block: ['US'] },
-        uphold: { allow: [], block: [] },
+        uphold: { allow: [], block: ['US'] },
+        solana: { allow: [], block: ['US'] },
       },
       payoutStatus: {
         uphold: 'off',
