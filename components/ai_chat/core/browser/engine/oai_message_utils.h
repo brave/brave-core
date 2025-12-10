@@ -46,6 +46,13 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     const std::string& text,
     mojom::ActionType action_type);
 
+std::optional<std::vector<OAIMessage>>
+BuildOAIGenerateConversationTitleMessages(
+    const PageContentsMap& page_contents,
+    const EngineConsumer::ConversationHistory& conversation_history,
+    uint32_t remaining_length,
+    base::FunctionRef<void(std::string&)> sanitize_input);
+
 OAIMessage BuildOAISeedMessage(const std::string& text);
 
 }  // namespace ai_chat

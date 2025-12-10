@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -356,6 +357,206 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
   auto* request = std::get_if<TextContent>(&message.content[3].data);
   ASSERT_TRUE(request);
   EXPECT_EQ(request->text, "");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
+  // Create a conversation history with 1 human turn and 1 assistant turn
+  // without page contents or selected text.
+  // Tests one message with only 1 kRequestTitle block with text set to human
+  // turn's text is returned.
+  auto history = CreateSampleChatHistory(1);
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      PageContentsMap(), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 1u);
+
+  // Should only have a request title block with first turn's text.
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kRequestTitle);
+  auto* title_text = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(title_text);
+  EXPECT_EQ(title_text->text, history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_WithExtraContext) {
+  // Create a conversation history with 1 human turn with 1 page content and
+  // selected text, and 1 assistant turn.
+  // Tests one message with 1 page content block, one page excerpt block, and
+  // one kRequestTitle block with text set to human turn's text is returned.
+  PageContent page_content("Test page content", false);
+
+  auto history = CreateSampleChatHistory(1);
+  history[0]->selected_text = "Selected text excerpt";
+
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 3u);
+
+  // First block should be a page text block with page content text.
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
+  auto* page_text = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(page_text);
+  EXPECT_EQ(page_text->text, "Test page content");
+
+  // Second block should be a page excerpt block with selected text.
+  EXPECT_EQ(message.content[1].type, ExtendedContentBlockType::kPageExcerpt);
+  auto* excerpt_text = std::get_if<TextContent>(&message.content[1].data);
+  ASSERT_TRUE(excerpt_text);
+  EXPECT_EQ(excerpt_text->text, "Selected text excerpt");
+
+  // Third block should be a request title block with first turn's text.
+  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kRequestTitle);
+  auto* title_text = std::get_if<TextContent>(&message.content[2].data);
+  ASSERT_TRUE(title_text);
+  EXPECT_EQ(title_text->text, history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_UploadFiles) {
+  // Create a conversation history with 1 human turn including upload_files,
+  // and 1 assistant turn.
+  // Tests one message with 1 kRequestTitle block with text set to assistant
+  // turn's text is returned.
+  PageContentsMap page_contents_map;
+
+  auto history = CreateSampleChatHistory(1);
+
+  auto uploaded_file = mojom::UploadedFile::New();
+  uploaded_file->filename = "test.png";
+  uploaded_file->filesize = 1024;
+  uploaded_file->type = mojom::UploadedFileType::kImage;
+  history[0]->uploaded_files.emplace();
+  history[0]->uploaded_files->push_back(std::move(uploaded_file));
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 1u);
+
+  // Request title block should use assistant response as the text when there
+  // are upload files.
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kRequestTitle);
+  auto* title_text = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(title_text);
+  EXPECT_EQ(title_text->text, history[1]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_ContentTruncation) {
+  // Create a converation history with 1 human turn with 4 page content blocks
+  // (1 normal, 1 truncated due to max_per_content limit, 1 truncated due to max
+  // associated content length, 1 dropped due to max associated content length)
+  // and 1 assistant turn.
+  // Tests one message with 3 page content blocks and one kRequestTitle block
+  // with text set to human turn's text is returned.
+  PageContent content1(std::string(1000, 'a'), false);
+  PageContent content2(std::string(1000, 'b'), false);
+  PageContent content3(std::string(1500, 'c'), false);
+  PageContent content4(std::string(500, 'd'), false);
+
+  auto history = CreateSampleChatHistory(1);
+
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {
+      std::cref(content1), std::cref(content2), std::cref(content3),
+      std::cref(content4)};
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 1800, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 4u);
+
+  // Content 4 (newest): normal, included fully
+  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
+  auto* text4 = std::get_if<TextContent>(&message.content[0].data);
+  ASSERT_TRUE(text4);
+  EXPECT_EQ(text4->text.size(), 500u);
+  EXPECT_EQ(text4->text, std::string(500, 'd'));
+
+  // Content 3: truncated to 1200 due to max_per_content limit
+  EXPECT_EQ(message.content[1].type, ExtendedContentBlockType::kPageText);
+  auto* text3 = std::get_if<TextContent>(&message.content[1].data);
+  ASSERT_TRUE(text3);
+  EXPECT_EQ(text3->text.size(), 1200u);
+  EXPECT_EQ(text3->text, std::string(1200, 'c'));
+
+  // Content 2: truncated to 100 due to remaining_length
+  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kPageText);
+  auto* text2 = std::get_if<TextContent>(&message.content[2].data);
+  ASSERT_TRUE(text2);
+  EXPECT_EQ(text2->text.size(), 100u);
+  EXPECT_EQ(text2->text, std::string(100, 'b'));
+
+  // Content 1 is dropped (not included)
+
+  // kRequestTitle block
+  EXPECT_EQ(message.content[3].type, ExtendedContentBlockType::kRequestTitle);
+  auto* title_text = std::get_if<TextContent>(&message.content[3].data);
+  ASSERT_TRUE(title_text);
+  EXPECT_EQ(title_text->text, history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_UnexpectedConversations) {
+  // Tests std::nullopt should be returned if the conversation isn't exactly 1
+  // human turn and 1 assistant turn.
+
+  // Case 1: Only 1 turn
+  {
+    auto history = CreateSampleChatHistory(1);
+    history.pop_back();  // Remove assistant turn
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+
+    EXPECT_FALSE(messages);
+  }
+
+  // Case 2: 3 turns (1 human + 1 assistant + 1 human)
+  {
+    auto history = CreateSampleChatHistory(1);
+
+    auto turn3 = mojom::ConversationTurn::New();
+    turn3->uuid = "turn3";
+    turn3->character_type = mojom::CharacterType::HUMAN;
+    turn3->action_type = mojom::ActionType::QUERY;
+    turn3->text = "Second question";
+    history.push_back(std::move(turn3));
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+
+    EXPECT_FALSE(messages);
+  }
 }
 
 }  // namespace ai_chat

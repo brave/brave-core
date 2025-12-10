@@ -133,6 +133,35 @@ bool EngineConsumerConversationAPIV2::SupportsDeltaTextResponses() const {
   return true;
 }
 
+bool EngineConsumerConversationAPIV2::RequiresClientSideTitleGeneration()
+    const {
+  return true;
+}
+
+void EngineConsumerConversationAPIV2::GenerateConversationTitle(
+    const PageContentsMap& page_contents,
+    const ConversationHistory& conversation_history,
+    const std::string& selected_language,
+    GenerationCompletedCallback completed_callback) {
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      page_contents, conversation_history, max_associated_content_length_,
+      [this](std::string& input) { SanitizeInput(input); });
+
+  if (!messages) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  api_->PerformRequest(
+      std::move(*messages), selected_language, std::nullopt, std::nullopt,
+      mojom::ConversationCapability::CHAT,
+      base::NullCallback(),  // no streaming needed
+      base::BindOnce(
+          &EngineConsumerConversationAPIV2::OnConversationTitleGenerated,
+          weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback)));
+}
+
 void EngineConsumerConversationAPIV2::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {

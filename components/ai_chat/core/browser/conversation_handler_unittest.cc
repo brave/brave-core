@@ -4419,7 +4419,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Then title generation is triggered
   EXPECT_CALL(*engine, GenerateConversationTitle)
       .InSequence(assistant_title_seq)
-      .WillOnce(testing::WithArg<2>(
+      .WillOnce(testing::WithArg<3>(
           [](EngineConsumer::GenerationCompletedCallback callback) {
             // Mock successful title generation
             std::move(callback).Run(
@@ -4480,7 +4480,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Title generation should be called for first conversation (2 turns)
   EXPECT_CALL(*engine, GenerateConversationTitle)
-      .WillOnce(testing::WithArg<2>(
+      .WillOnce(testing::WithArg<3>(
           [&first_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(
                 base::ok(EngineConsumer::GenerationResultData(
@@ -4623,7 +4623,7 @@ TEST_F(ConversationHandlerUnitTest,
               })));
 
   EXPECT_CALL(*engine, GenerateConversationTitle)
-      .WillOnce(testing::WithArg<2>(
+      .WillOnce(testing::WithArg<3>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             // Mock title generation failure
             std::move(callback).Run(

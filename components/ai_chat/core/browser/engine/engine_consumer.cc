@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
@@ -80,6 +81,40 @@ bool EngineConsumer::CanPerformCompletionRequest(
 
 const std::string& EngineConsumer::GetModelName() const {
   return model_name_;
+}
+
+void EngineConsumer::OnConversationTitleGenerated(
+    GenerationCompletedCallback completion_callback,
+    GenerationResult api_result) {
+  // No available title result
+  if (!api_result.has_value() || !api_result->event ||
+      !api_result->event->is_completion_event() ||
+      api_result->event->get_completion_event()->completion.empty()) {
+    // Just use the internal error should be fine because currently this error
+    // is silently dropped.
+    std::move(completion_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  // Extract and process title from the raw API completion
+  std::string_view title = base::TrimWhitespaceASCII(
+      api_result->event->get_completion_event()->completion,
+      base::TrimPositions::TRIM_ALL);
+
+  // Discard title if longer than our defined max title length
+  if (title.length() > kMaxTitleLength) {
+    std::move(completion_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  // Create ConversationTitleEvent
+  auto title_event = mojom::ConversationEntryEvent::NewConversationTitleEvent(
+      mojom::ConversationTitleEvent::New(std::string(title)));
+
+  GenerationResultData title_result(std::move(title_event), std::nullopt);
+  std::move(completion_callback).Run(std::move(title_result));
 }
 
 }  // namespace ai_chat

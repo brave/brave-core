@@ -72,6 +72,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void GenerateConversationTitle(
       const PageContentsMap& page_contents,
       const ConversationHistory& conversation_history,
+      const std::string& selected_language,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
@@ -137,10 +138,6 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
-
-  void OnConversationTitleGenerated(
-      GenerationCompletedCallback completion_callback,
-      GenerationResult api_result);
 
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;

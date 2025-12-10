@@ -113,6 +113,7 @@ class EngineConsumer {
   virtual void GenerateConversationTitle(
       const PageContentsMap& page_contents,
       const ConversationHistory& conversation_history,
+      const std::string& selected_language,
       GenerationCompletedCallback completed_callback) {}
 
   // Prevent indirect prompt injections being sent to the AI model.
@@ -161,6 +162,11 @@ class EngineConsumer {
 
   static std::string BuildSkillDefinitionMessage(
       const mojom::SkillEntryPtr& skill);
+
+  void OnConversationTitleGenerated(
+      GenerationCompletedCallback completion_callback,
+      GenerationResult api_result);
+
   uint32_t max_associated_content_length_ = 0;
   std::string model_name_ = "";
   raw_ptr<ModelService> model_service_;

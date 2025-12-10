@@ -83,6 +83,8 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
            {ExtendedContentBlockType::kRequestSummary, "brave-request-summary"},
            {ExtendedContentBlockType::kRequestQuestions,
             "brave-request-questions"},
+           {ExtendedContentBlockType::kRequestTitle,
+            "brave-conversation-title"},
            {ExtendedContentBlockType::kChangeTone, "brave-request-change-tone"},
            {ExtendedContentBlockType::kParaphrase, "brave-request-paraphrase"},
            {ExtendedContentBlockType::kImprove,

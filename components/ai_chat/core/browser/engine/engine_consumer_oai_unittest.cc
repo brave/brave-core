@@ -1915,7 +1915,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2015,7 +2015,7 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2079,7 +2079,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
                 std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2135,7 +2135,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2154,7 +2154,7 @@ TEST_F(EngineConsumerOAIUnitTest,
     EngineConsumer::ConversationHistory history;
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents, history, "",
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -2172,7 +2172,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents, history, "",
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -2200,7 +2200,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents, history, "",
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -2228,7 +2228,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents, history, "",
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -2251,7 +2251,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
-    engine_->GenerateConversationTitle(page_contents, history,
+    engine_->GenerateConversationTitle(page_contents, history, "",
                                        future.GetCallback());
 
     auto result = future.Take();
@@ -2287,7 +2287,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
                 .Run(base::unexpected(mojom::APIError::RateLimitReached));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2318,8 +2318,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
-            // Return a title longer than 100 characters
-            std::string long_title(101, 'x');
+            std::string long_title(kMaxTitleLength + 1, 'x');
             std::move(completed_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -2327,7 +2326,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2366,7 +2365,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2407,7 +2406,7 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2446,7 +2445,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
                     nullptr, std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -2490,7 +2489,7 @@ TEST_F(EngineConsumerOAIUnitTest,
                     std::nullopt)));
           });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents, history, "",
                                      future.GetCallback());
 
   auto result = future.Take();
