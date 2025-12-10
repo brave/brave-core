@@ -73,3 +73,11 @@ bool Tab::IsTabMuteIndicatorNotClickable() {
   return browser && browser->profile()->GetPrefs()->GetBoolean(
                         kTabMuteIndicatorNotClickable);
 }
+
+void Tab::ResetTabStyle(std::unique_ptr<TabStyleViews> new_style) {
+  tab_style_views_ = std::move(new_style);
+
+  views::HighlightPathGenerator::Install(
+      this,
+      std::make_unique<TabStyleHighlightPathGenerator>(tab_style_views()));
+}
