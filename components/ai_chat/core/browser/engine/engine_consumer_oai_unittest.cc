@@ -57,7 +57,7 @@ namespace {
 struct GenerateRewriteTestParam {
   std::string name;
   mojom::ActionType action_type;
-  ExtendedContentBlockType expected_content_type;
+  mojom::ContentBlock::Tag expected_content_type;
   int message_id;
   std::optional<std::string> tone;
 };
@@ -2648,22 +2648,23 @@ TEST_P(EngineConsumerOAIUnitTest_GenerateRewrite, GenerateRewriteSuggestion) {
             const auto& first_message = messages[0];
             EXPECT_EQ(first_message.role, "user");
             ASSERT_EQ(first_message.content.size(), 2u);
-            EXPECT_EQ(first_message.content[0].type,
-                      ExtendedContentBlockType::kPageExcerpt);
-            EXPECT_EQ(std::get<TextContent>(first_message.content[0].data).text,
+            ASSERT_EQ(first_message.content[0]->which(),
+                      mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+            EXPECT_EQ(first_message.content[0]
+                          ->get_page_excerpt_content_block()
+                          ->text,
                       test_text);
-            EXPECT_EQ(first_message.content[1].type,
+            EXPECT_EQ(first_message.content[1]->which(),
                       params.expected_content_type);
 
             // Second message: assistant seed message
             const auto& second_message = messages[1];
             EXPECT_EQ(second_message.role, "assistant");
             ASSERT_EQ(second_message.content.size(), 1u);
-            EXPECT_EQ(second_message.content[0].type,
-                      ExtendedContentBlockType::kText);
-            EXPECT_EQ(
-                std::get<TextContent>(second_message.content[0].data).text,
-                expected_seed);
+            ASSERT_EQ(second_message.content[0]->which(),
+                      mojom::ContentBlock::Tag::kTextContentBlock);
+            EXPECT_EQ(second_message.content[0]->get_text_content_block()->text,
+                      expected_seed);
 
             // Verify stop sequences include </response>
             ASSERT_TRUE(stop_sequences.has_value());
@@ -2707,37 +2708,38 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     EngineConsumerOAIUnitTest_GenerateRewrite,
     testing::Values(
-        GenerateRewriteTestParam{"Paraphrase", mojom::ActionType::PARAPHRASE,
-                                 ExtendedContentBlockType::kParaphrase,
-                                 IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt},
+        GenerateRewriteTestParam{
+            "Paraphrase", mojom::ActionType::PARAPHRASE,
+            mojom::ContentBlock::Tag::kParaphraseContentBlock,
+            IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt},
         GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
-                                 ExtendedContentBlockType::kImprove,
+                                 mojom::ContentBlock::Tag::kImproveContentBlock,
                                  IDS_AI_CHAT_QUESTION_IMPROVE, std::nullopt},
         GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
-                                 ExtendedContentBlockType::kShorten,
+                                 mojom::ContentBlock::Tag::kShortenContentBlock,
                                  IDS_AI_CHAT_QUESTION_SHORTEN, std::nullopt},
         GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
-                                 ExtendedContentBlockType::kExpand,
+                                 mojom::ContentBlock::Tag::kExpandContentBlock,
                                  IDS_AI_CHAT_QUESTION_EXPAND, std::nullopt},
-        GenerateRewriteTestParam{"Academic", mojom::ActionType::ACADEMICIZE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
-                                 "academic"},
+        GenerateRewriteTestParam{
+            "Academic", mojom::ActionType::ACADEMICIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock,
+            IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "academic"},
         GenerateRewriteTestParam{
             "Professional", mojom::ActionType::PROFESSIONALIZE,
-            ExtendedContentBlockType::kChangeTone,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock,
             IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "professional"},
-        GenerateRewriteTestParam{"Casual", mojom::ActionType::CASUALIZE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
-                                 "casual"},
-        GenerateRewriteTestParam{"Funny", mojom::ActionType::FUNNY_TONE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
-                                 "funny"},
+        GenerateRewriteTestParam{
+            "Casual", mojom::ActionType::CASUALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock,
+            IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "casual"},
+        GenerateRewriteTestParam{
+            "Funny", mojom::ActionType::FUNNY_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock,
+            IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "funny"},
         GenerateRewriteTestParam{
             "Persuasive", mojom::ActionType::PERSUASIVE_TONE,
-            ExtendedContentBlockType::kChangeTone,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock,
             IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "persuasive"}),
     [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
       return info.param.name;

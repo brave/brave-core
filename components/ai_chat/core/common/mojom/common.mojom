@@ -124,10 +124,74 @@ struct TextContentBlock {
   string text;
 };
 
+struct PageExcerptContentBlock {
+  string text;
+};
+
+struct PageTextContentBlock {
+  string text;
+};
+
+struct VideoTranscriptContentBlock {
+  string text;
+};
+
+struct RequestSummaryContentBlock {
+  string text;
+};
+
+struct RequestQuestionsContentBlock {
+  string text;
+};
+
+struct RequestTitleContentBlock {
+  string text;
+};
+
+struct ChangeToneContentBlock {
+  string text;
+  string tone;
+};
+
+struct ParaphraseContentBlock {
+  string text;
+};
+
+struct ImproveContentBlock {
+  string text;
+};
+
+struct ShortenContentBlock {
+  string text;
+};
+
+struct ExpandContentBlock {
+  string text;
+};
+
+// Adding/removing any types should update kContentBlockTypeCounts below which
+// is used for static_assert.
 union ContentBlock {
+  // Standard OpenAI content blocks
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
+
+  // Brave customized content blocks
+  PageExcerptContentBlock page_excerpt_content_block;
+  PageTextContentBlock page_text_content_block;
+  VideoTranscriptContentBlock video_transcript_content_block;
+  RequestSummaryContentBlock request_summary_content_block;
+  RequestQuestionsContentBlock request_questions_content_block;
+  RequestTitleContentBlock request_title_content_block;
+  ChangeToneContentBlock change_tone_content_block;
+  ParaphraseContentBlock paraphrase_content_block;
+  ImproveContentBlock improve_content_block;
+  ShortenContentBlock shorten_content_block;
+  ExpandContentBlock expand_content_block;
 };
+
+// Needs to be updated when adding/deleting any types in ContentBlock union.
+const uint8 kContentBlockTypeCounts = 13;
 
 // Permission challenge that blocks tool execution until user approves
 // The existence of this struct means permission is needed. When granted,

@@ -10,7 +10,6 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
-#include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -25,7 +24,7 @@ constexpr char kSeedText[] = "Here is the rewritten version:";
 
 struct RewriteActionTestParam {
   mojom::ActionType action_type;
-  std::optional<ExtendedContentBlockType> expected_content_type;
+  std::optional<mojom::ContentBlock::Tag> expected_content_type;
   std::string expected_payload;  // non-empty for change tones
 };
 
@@ -64,23 +63,37 @@ TEST_P(BuildOAIRewriteSuggestionMessagesTest,
   ASSERT_EQ(message.content.size(), 2u);
 
   // First block should be page excerpt with the text
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageExcerpt);
-  auto* excerpt_content = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(excerpt_content);
-  EXPECT_EQ(excerpt_content->text, kTestText);
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(message.content[0]->get_page_excerpt_content_block()->text,
+            kTestText);
 
   // Second block should be the action-specific content
-  EXPECT_EQ(message.content[1].type, param.expected_content_type);
+  ASSERT_EQ(message.content[1]->which(), param.expected_content_type);
 
-  if (param.expected_content_type == ExtendedContentBlockType::kChangeTone) {
-    auto* tone_content =
-        std::get_if<ChangeToneContent>(&message.content[1].data);
-    ASSERT_TRUE(tone_content);
-    EXPECT_EQ(tone_content->tone, param.expected_payload);
-  } else {
-    auto* action_content = std::get_if<TextContent>(&message.content[1].data);
-    ASSERT_TRUE(action_content);
-    EXPECT_EQ(action_content->text, param.expected_payload);
+  switch (param.expected_content_type.value()) {
+    case mojom::ContentBlock::Tag::kChangeToneContentBlock:
+      EXPECT_EQ(message.content[1]->get_change_tone_content_block()->tone,
+                param.expected_payload);
+      break;
+    case mojom::ContentBlock::Tag::kParaphraseContentBlock:
+      EXPECT_EQ(message.content[1]->get_paraphrase_content_block()->text,
+                param.expected_payload);
+      break;
+    case mojom::ContentBlock::Tag::kImproveContentBlock:
+      EXPECT_EQ(message.content[1]->get_improve_content_block()->text,
+                param.expected_payload);
+      break;
+    case mojom::ContentBlock::Tag::kShortenContentBlock:
+      EXPECT_EQ(message.content[1]->get_shorten_content_block()->text,
+                param.expected_payload);
+      break;
+    case mojom::ContentBlock::Tag::kExpandContentBlock:
+      EXPECT_EQ(message.content[1]->get_expand_content_block()->text,
+                param.expected_payload);
+      break;
+    default:
+      FAIL() << "Unexpected content block type";
   }
 }
 
@@ -88,27 +101,33 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     BuildOAIRewriteSuggestionMessagesTest,
     testing::Values(
-        RewriteActionTestParam{mojom::ActionType::PARAPHRASE,
-                               ExtendedContentBlockType::kParaphrase, ""},
+        RewriteActionTestParam{
+            mojom::ActionType::PARAPHRASE,
+            mojom::ContentBlock::Tag::kParaphraseContentBlock, ""},
         RewriteActionTestParam{mojom::ActionType::IMPROVE,
-                               ExtendedContentBlockType::kImprove, ""},
-        RewriteActionTestParam{mojom::ActionType::ACADEMICIZE,
-                               ExtendedContentBlockType::kChangeTone,
-                               "academic"},
-        RewriteActionTestParam{mojom::ActionType::PROFESSIONALIZE,
-                               ExtendedContentBlockType::kChangeTone,
-                               "professional"},
-        RewriteActionTestParam{mojom::ActionType::PERSUASIVE_TONE,
-                               ExtendedContentBlockType::kChangeTone,
-                               "persuasive"},
-        RewriteActionTestParam{mojom::ActionType::CASUALIZE,
-                               ExtendedContentBlockType::kChangeTone, "casual"},
-        RewriteActionTestParam{mojom::ActionType::FUNNY_TONE,
-                               ExtendedContentBlockType::kChangeTone, "funny"},
+                               mojom::ContentBlock::Tag::kImproveContentBlock,
+                               ""},
+        RewriteActionTestParam{
+            mojom::ActionType::ACADEMICIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic"},
+        RewriteActionTestParam{
+            mojom::ActionType::PROFESSIONALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "professional"},
+        RewriteActionTestParam{
+            mojom::ActionType::PERSUASIVE_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "persuasive"},
+        RewriteActionTestParam{
+            mojom::ActionType::CASUALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "casual"},
+        RewriteActionTestParam{
+            mojom::ActionType::FUNNY_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "funny"},
         RewriteActionTestParam{mojom::ActionType::SHORTEN,
-                               ExtendedContentBlockType::kShorten, ""},
+                               mojom::ContentBlock::Tag::kShortenContentBlock,
+                               ""},
         RewriteActionTestParam{mojom::ActionType::EXPAND,
-                               ExtendedContentBlockType::kExpand, ""},
+                               mojom::ContentBlock::Tag::kExpandContentBlock,
+                               ""},
         RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
                                ""}));
 
@@ -117,11 +136,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAISeedMessage) {
 
   EXPECT_EQ(message.role, "assistant");
   ASSERT_EQ(message.content.size(), 1u);
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kText);
-
-  auto* text_content = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(text_content);
-  EXPECT_EQ(text_content->text, kSeedText);
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(message.content[0]->get_text_content_block()->text, kSeedText);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
@@ -186,62 +203,57 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   // Message 1: Human turn with all content types
   EXPECT_EQ(messages[0].role, "user");
   ASSERT_EQ(messages[0].content.size(), 4u);
-  EXPECT_EQ(messages[0].content[0].type,
-            ExtendedContentBlockType::kVideoTranscript);
-  EXPECT_EQ(messages[0].content[1].type, ExtendedContentBlockType::kPageText);
-  EXPECT_EQ(messages[0].content[2].type,
-            ExtendedContentBlockType::kPageExcerpt);
-  EXPECT_EQ(messages[0].content[3].type, ExtendedContentBlockType::kText);
+  ASSERT_EQ(messages[0].content[0]->which(),
+            mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
+  EXPECT_EQ(messages[0].content[0]->get_video_transcript_content_block()->text,
+            "Video transcript 1");
 
-  auto* video1 = std::get_if<TextContent>(&messages[0].content[0].data);
-  ASSERT_TRUE(video1);
-  EXPECT_EQ(video1->text, "Video transcript 1");
+  ASSERT_EQ(messages[0].content[1]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[0].content[1]->get_page_text_content_block()->text,
+            "Page content 1");
 
-  auto* page1 = std::get_if<TextContent>(&messages[0].content[1].data);
-  ASSERT_TRUE(page1);
-  EXPECT_EQ(page1->text, "Page content 1");
+  ASSERT_EQ(messages[0].content[2]->which(),
+            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(messages[0].content[2]->get_page_excerpt_content_block()->text,
+            "Selected excerpt");
 
-  auto* excerpt1 = std::get_if<TextContent>(&messages[0].content[2].data);
-  ASSERT_TRUE(excerpt1);
-  EXPECT_EQ(excerpt1->text, "Selected excerpt");
-
-  auto* text1 = std::get_if<TextContent>(&messages[0].content[3].data);
-  ASSERT_TRUE(text1);
-  EXPECT_EQ(text1->text, "What is this?");
+  ASSERT_EQ(messages[0].content[3]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[0].content[3]->get_text_content_block()->text,
+            "What is this?");
 
   // Message 2: Assistant turn with no page contents
   EXPECT_EQ(messages[1].role, "assistant");
   ASSERT_EQ(messages[1].content.size(), 1u);
-  EXPECT_EQ(messages[1].content[0].type, ExtendedContentBlockType::kText);
-
-  auto* text2 = std::get_if<TextContent>(&messages[1].content[0].data);
-  ASSERT_TRUE(text2);
-  EXPECT_EQ(text2->text, "This is the answer.");
+  ASSERT_EQ(messages[1].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
+            "This is the answer.");
 
   // Message 3: Human turn with SUMMARIZE_PAGE action
   EXPECT_EQ(messages[2].role, "user");
   ASSERT_EQ(messages[2].content.size(), 2u);
-  EXPECT_EQ(messages[2].content[0].type, ExtendedContentBlockType::kPageText);
-  EXPECT_EQ(messages[2].content[1].type,
-            ExtendedContentBlockType::kRequestSummary);
+  ASSERT_EQ(messages[2].content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[2].content[0]->get_page_text_content_block()->text,
+            "Page content 3");
 
-  auto* page3 = std::get_if<TextContent>(&messages[2].content[0].data);
-  ASSERT_TRUE(page3);
-  EXPECT_EQ(page3->text, "Page content 3");
+  ASSERT_EQ(messages[2].content[1]->which(),
+            mojom::ContentBlock::Tag::kRequestSummaryContentBlock);
 
   // Message 4: Human turn with page content, no selected_text
   EXPECT_EQ(messages[3].role, "user");
   ASSERT_EQ(messages[3].content.size(), 2u);
-  EXPECT_EQ(messages[3].content[0].type, ExtendedContentBlockType::kPageText);
-  EXPECT_EQ(messages[3].content[1].type, ExtendedContentBlockType::kText);
+  ASSERT_EQ(messages[3].content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[3].content[0]->get_page_text_content_block()->text,
+            "Page content 4");
 
-  auto* page4 = std::get_if<TextContent>(&messages[3].content[0].data);
-  ASSERT_TRUE(page4);
-  EXPECT_EQ(page4->text, "Page content 4");
-
-  auto* text4 = std::get_if<TextContent>(&messages[3].content[1].data);
-  ASSERT_TRUE(text4);
-  EXPECT_EQ(text4->text, "Another question");
+  ASSERT_EQ(messages[3].content[1]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[3].content[1]->get_text_content_block()->text,
+            "Another question");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
@@ -283,25 +295,23 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   // Message 1: Older turn - should have NO page content (dropped)
   EXPECT_EQ(messages[0].role, "user");
   ASSERT_EQ(messages[0].content.size(), 1u);
-  EXPECT_EQ(messages[0].content[0].type, ExtendedContentBlockType::kText);
-
-  auto* text1 = std::get_if<TextContent>(&messages[0].content[0].data);
-  ASSERT_TRUE(text1);
-  EXPECT_EQ(text1->text, "First question");
+  ASSERT_EQ(messages[0].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[0].content[0]->get_text_content_block()->text,
+            "First question");
 
   // Message 2: Newer turn - should have full page content
   EXPECT_EQ(messages[1].role, "user");
   ASSERT_EQ(messages[1].content.size(), 2u);
-  EXPECT_EQ(messages[1].content[0].type, ExtendedContentBlockType::kPageText);
-  EXPECT_EQ(messages[1].content[1].type, ExtendedContentBlockType::kText);
+  ASSERT_EQ(messages[1].content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[1].content[0]->get_page_text_content_block()->text,
+            "New content");
 
-  auto* page2 = std::get_if<TextContent>(&messages[1].content[0].data);
-  ASSERT_TRUE(page2);
-  EXPECT_EQ(page2->text, "New content");
-
-  auto* text2 = std::get_if<TextContent>(&messages[1].content[1].data);
-  ASSERT_TRUE(text2);
-  EXPECT_EQ(text2->text, "Second question");
+  ASSERT_EQ(messages[1].content[1]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[1].content[1]->get_text_content_block()->text,
+            "Second question");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
@@ -333,30 +343,27 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
 
   // Content is processed in reverse order, so third content comes first
   // Third content (text) should be included in full
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
-  auto* text2 = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(text2);
-  EXPECT_EQ(text2->text, "Short text");
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
+            "Short text");
 
   // Second content (video) should be included in full
-  EXPECT_EQ(message.content[1].type,
-            ExtendedContentBlockType::kVideoTranscript);
-  auto* video = std::get_if<TextContent>(&message.content[1].data);
-  ASSERT_TRUE(video);
-  EXPECT_EQ(video->text, "Short video");
+  ASSERT_EQ(message.content[1]->which(),
+            mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
+  EXPECT_EQ(message.content[1]->get_video_transcript_content_block()->text,
+            "Short video");
 
   // First content (text) should be truncated due to max_length
-  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kPageText);
-  auto* text1 = std::get_if<TextContent>(&message.content[2].data);
-  ASSERT_TRUE(text1);
-  EXPECT_EQ(text1->text, "Th");
+  ASSERT_EQ(message.content[2]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text, "Th");
 
   // Last block is request questions
-  EXPECT_EQ(message.content[3].type,
-            ExtendedContentBlockType::kRequestQuestions);
-  auto* request = std::get_if<TextContent>(&message.content[3].data);
-  ASSERT_TRUE(request);
-  EXPECT_EQ(request->text, "");
+  ASSERT_EQ(message.content[3]->which(),
+            mojom::ContentBlock::Tag::kRequestQuestionsContentBlock);
+  EXPECT_EQ(message.content[3]->get_request_questions_content_block()->text,
+            "");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
@@ -378,10 +385,10 @@ TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
   ASSERT_EQ(message.content.size(), 1u);
 
   // Should only have a request title block with first turn's text.
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kRequestTitle);
-  auto* title_text = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(title_text);
-  EXPECT_EQ(title_text->text, history[0]->text);
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
+  EXPECT_EQ(message.content[0]->get_request_title_content_block()->text,
+            history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -410,22 +417,22 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(message.content.size(), 3u);
 
   // First block should be a page text block with page content text.
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
-  auto* page_text = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(page_text);
-  EXPECT_EQ(page_text->text, "Test page content");
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
+            "Test page content");
 
   // Second block should be a page excerpt block with selected text.
-  EXPECT_EQ(message.content[1].type, ExtendedContentBlockType::kPageExcerpt);
-  auto* excerpt_text = std::get_if<TextContent>(&message.content[1].data);
-  ASSERT_TRUE(excerpt_text);
-  EXPECT_EQ(excerpt_text->text, "Selected text excerpt");
+  ASSERT_EQ(message.content[1]->which(),
+            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(message.content[1]->get_page_excerpt_content_block()->text,
+            "Selected text excerpt");
 
   // Third block should be a request title block with first turn's text.
-  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kRequestTitle);
-  auto* title_text = std::get_if<TextContent>(&message.content[2].data);
-  ASSERT_TRUE(title_text);
-  EXPECT_EQ(title_text->text, history[0]->text);
+  ASSERT_EQ(message.content[2]->which(),
+            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
+  EXPECT_EQ(message.content[2]->get_request_title_content_block()->text,
+            history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -458,10 +465,10 @@ TEST_F(OAIMessageUtilsTest,
 
   // Request title block should use assistant response as the text when there
   // are upload files.
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kRequestTitle);
-  auto* title_text = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(title_text);
-  EXPECT_EQ(title_text->text, history[1]->text);
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
+  EXPECT_EQ(message.content[0]->get_request_title_content_block()->text,
+            history[1]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -496,33 +503,36 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(message.content.size(), 4u);
 
   // Content 4 (newest): normal, included fully
-  EXPECT_EQ(message.content[0].type, ExtendedContentBlockType::kPageText);
-  auto* text4 = std::get_if<TextContent>(&message.content[0].data);
-  ASSERT_TRUE(text4);
-  EXPECT_EQ(text4->text.size(), 500u);
-  EXPECT_EQ(text4->text, std::string(500, 'd'));
+  ASSERT_EQ(message.content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text.size(),
+            500u);
+  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
+            std::string(500, 'd'));
 
   // Content 3: truncated to 1200 due to max_per_content limit
-  EXPECT_EQ(message.content[1].type, ExtendedContentBlockType::kPageText);
-  auto* text3 = std::get_if<TextContent>(&message.content[1].data);
-  ASSERT_TRUE(text3);
-  EXPECT_EQ(text3->text.size(), 1200u);
-  EXPECT_EQ(text3->text, std::string(1200, 'c'));
+  ASSERT_EQ(message.content[1]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[1]->get_page_text_content_block()->text.size(),
+            1200u);
+  EXPECT_EQ(message.content[1]->get_page_text_content_block()->text,
+            std::string(1200, 'c'));
 
   // Content 2: truncated to 100 due to remaining_length
-  EXPECT_EQ(message.content[2].type, ExtendedContentBlockType::kPageText);
-  auto* text2 = std::get_if<TextContent>(&message.content[2].data);
-  ASSERT_TRUE(text2);
-  EXPECT_EQ(text2->text.size(), 100u);
-  EXPECT_EQ(text2->text, std::string(100, 'b'));
+  ASSERT_EQ(message.content[2]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text.size(),
+            100u);
+  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text,
+            std::string(100, 'b'));
 
   // Content 1 is dropped (not included)
 
   // kRequestTitle block
-  EXPECT_EQ(message.content[3].type, ExtendedContentBlockType::kRequestTitle);
-  auto* title_text = std::get_if<TextContent>(&message.content[3].data);
-  ASSERT_TRUE(title_text);
-  EXPECT_EQ(title_text->text, history[0]->text);
+  ASSERT_EQ(message.content[3]->which(),
+            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
+  EXPECT_EQ(message.content[3]->get_request_title_content_block()->text,
+            history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,

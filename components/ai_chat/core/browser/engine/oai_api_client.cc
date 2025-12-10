@@ -24,7 +24,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -101,109 +100,70 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
     message_dict.Set("role", std::move(message.role));
 
     base::Value::List content_list;
-    for (const auto& extended_content_block : message.content) {
+    for (const auto& block : message.content) {
       base::Value::Dict content_block_dict;
 
-      switch (extended_content_block.type) {
-        case ExtendedContentBlockType::kText: {
+      switch (block->which()) {
+        case mojom::ContentBlock::Tag::kTextContentBlock:
           content_block_dict.Set("type", "text");
-
-          auto* text_content =
-              std::get_if<TextContent>(&extended_content_block.data);
-          if (!text_content) {
-            DVLOG(2) << "Missing text content for text type";
-            continue;
-          }
-
-          content_block_dict.Set("text", std::move(text_content->text));
+          content_block_dict.Set("text", block->get_text_content_block()->text);
           break;
-        }
 
-        case ExtendedContentBlockType::kImage: {
+        case mojom::ContentBlock::Tag::kImageContentBlock: {
           content_block_dict.Set("type", "image_url");
-
-          auto* image_content =
-              std::get_if<ImageContent>(&extended_content_block.data);
-          if (!image_content) {
-            DVLOG(2) << "Missing image content for image_url type";
-            continue;
-          }
-
+          const auto& image = block->get_image_content_block();
           base::Value::Dict image_url;
-          image_url.Set("url", std::move(image_content->image_url.url));
-          if (image_content->image_url.detail) {
-            image_url.Set("detail",
-                          std::move(*image_content->image_url.detail));
-          }
+          image_url.Set("url", image->image_url.spec());
           content_block_dict.Set("image_url", std::move(image_url));
           break;
         }
 
-        case ExtendedContentBlockType::kPageExcerpt: {
+        case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
           content_block_dict.Set("type", "text");
-          auto* text_content =
-              std::get_if<TextContent>(&extended_content_block.data);
-          if (!text_content) {
-            DVLOG(2) << "Missing text content for page excerpt type";
-            continue;
-          }
-
           content_block_dict.Set(
               "text", l10n_util::GetStringFUTF8(
                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
-                          base::UTF8ToUTF16(text_content->text)));
+                          base::UTF8ToUTF16(
+                              block->get_page_excerpt_content_block()->text)));
           break;
-        }
 
-        case ExtendedContentBlockType::kParaphrase: {
+        case mojom::ContentBlock::Tag::kParaphraseContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set("text", l10n_util::GetStringUTF8(
                                              IDS_AI_CHAT_QUESTION_PARAPHRASE));
           break;
-        }
 
-        case ExtendedContentBlockType::kImprove: {
+        case mojom::ContentBlock::Tag::kImproveContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
               "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE));
           break;
-        }
 
-        case ExtendedContentBlockType::kShorten: {
+        case mojom::ContentBlock::Tag::kShortenContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
               "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN));
           break;
-        }
 
-        case ExtendedContentBlockType::kExpand: {
+        case mojom::ContentBlock::Tag::kExpandContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
               "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND));
           break;
-        }
 
-        case ExtendedContentBlockType::kChangeTone: {
+        case mojom::ContentBlock::Tag::kChangeToneContentBlock:
           content_block_dict.Set("type", "text");
-          auto* tone_content =
-              std::get_if<ChangeToneContent>(&extended_content_block.data);
-          if (!tone_content) {
-            DVLOG(2) << "Missing change tone content for change tone type";
-            continue;
-          }
-
-          content_block_dict.Set("text",
-                                 l10n_util::GetStringFUTF8(
-                                     IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
-                                     base::UTF8ToUTF16(tone_content->tone)));
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE,
+                          base::UTF8ToUTF16(
+                              block->get_change_tone_content_block()->tone)));
           break;
-        }
 
-        default: {
+        default:
           DVLOG(2) << "Unsupported block type: "
-                   << static_cast<int>(extended_content_block.type);
+                   << static_cast<int>(block->which());
           continue;
-        }
       }
 
       content_list.Append(std::move(content_block_dict));

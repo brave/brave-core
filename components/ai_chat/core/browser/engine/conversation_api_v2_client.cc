@@ -73,27 +73,33 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
   static constexpr auto kTypeMap =
-      base::MakeFixedFlatMap<ExtendedContentBlockType, std::string_view>(
-          {{ExtendedContentBlockType::kText, "text"},
-           {ExtendedContentBlockType::kImage, "image_url"},
-           {ExtendedContentBlockType::kPageExcerpt, "brave-page-excerpt"},
-           {ExtendedContentBlockType::kPageText, "brave-page-text"},
-           {ExtendedContentBlockType::kVideoTranscript,
-            "brave-video-transcript"},
-           {ExtendedContentBlockType::kRequestSummary, "brave-request-summary"},
-           {ExtendedContentBlockType::kRequestQuestions,
-            "brave-request-questions"},
-           {ExtendedContentBlockType::kRequestTitle,
-            "brave-conversation-title"},
-           {ExtendedContentBlockType::kChangeTone, "brave-request-change-tone"},
-           {ExtendedContentBlockType::kParaphrase, "brave-request-paraphrase"},
-           {ExtendedContentBlockType::kImprove,
-            "brave-request-improve-excerpt-language"},
-           {ExtendedContentBlockType::kShorten, "brave-request-shorten"},
-           {ExtendedContentBlockType::kExpand, "brave-request-expansion"}});
-  static_assert(static_cast<size_t>(ExtendedContentBlockType::kMaxValue) + 1 ==
-                    kTypeMap.size(),
-                "Should cover every type in ExtendedContentBlockType");
+      base::MakeFixedFlatMap<mojom::ContentBlock::Tag, std::string_view>({
+          {mojom::ContentBlock::Tag::kTextContentBlock, "text"},
+          {mojom::ContentBlock::Tag::kImageContentBlock, "image_url"},
+          {mojom::ContentBlock::Tag::kPageExcerptContentBlock,
+           "brave-page-excerpt"},
+          {mojom::ContentBlock::Tag::kPageTextContentBlock, "brave-page-text"},
+          {mojom::ContentBlock::Tag::kVideoTranscriptContentBlock,
+           "brave-video-transcript"},
+          {mojom::ContentBlock::Tag::kRequestSummaryContentBlock,
+           "brave-request-summary"},
+          {mojom::ContentBlock::Tag::kRequestQuestionsContentBlock,
+           "brave-request-questions"},
+          {mojom::ContentBlock::Tag::kRequestTitleContentBlock,
+           "brave-conversation-title"},
+          {mojom::ContentBlock::Tag::kChangeToneContentBlock,
+           "brave-request-change-tone"},
+          {mojom::ContentBlock::Tag::kParaphraseContentBlock,
+           "brave-request-paraphrase"},
+          {mojom::ContentBlock::Tag::kImproveContentBlock,
+           "brave-request-improve-excerpt-language"},
+          {mojom::ContentBlock::Tag::kShortenContentBlock,
+           "brave-request-shorten"},
+          {mojom::ContentBlock::Tag::kExpandContentBlock,
+           "brave-request-expansion"},
+      });
+  static_assert(kTypeMap.size() == mojom::kContentBlockTypeCounts,
+                "kTypeMap must cover all ContentBlock union variants");
 
   base::Value::List serialized_messages;
   for (auto& message : messages) {
@@ -104,33 +110,85 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
 
     // Content blocks
     base::Value::List content_list;
-    for (auto& extended_content_block : message.content) {
+    for (auto& block : message.content) {
       base::Value::Dict content_block_dict;
 
       // Set type
-      auto type_it = kTypeMap.find(extended_content_block.type);
+      auto type_it = kTypeMap.find(block->which());
       content_block_dict.Set("type", type_it->second);
 
-      // Set content data based on variant type.
-      std::visit(
-          absl::Overload{
-              [&content_block_dict](TextContent& data) {
-                content_block_dict.Set("text", std::move(data.text));
-              },
-              [&content_block_dict](ImageContent& data) {
-                base::Value::Dict image_url;
-                image_url.Set("url", std::move(data.image_url.url));
-                if (data.image_url.detail) {
-                  image_url.Set("detail", std::move(*data.image_url.detail));
-                }
-                content_block_dict.Set("image_url", std::move(image_url));
-              },
-              [&content_block_dict](ChangeToneContent& data) {
-                // Server currently requires the empty text field to be passed.
-                content_block_dict.Set("text", "");
-                content_block_dict.Set("tone", std::move(data.tone));
-              }},
-          extended_content_block.data);
+      // Set content data based on union tag
+      switch (block->which()) {
+        case mojom::ContentBlock::Tag::kTextContentBlock:
+          content_block_dict.Set("text", block->get_text_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_page_excerpt_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kPageTextContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_page_text_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+          content_block_dict.Set(
+              "text", block->get_video_transcript_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kRequestSummaryContentBlock:
+          content_block_dict.Set(
+              "text", block->get_request_summary_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kRequestQuestionsContentBlock:
+          content_block_dict.Set(
+              "text", block->get_request_questions_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+          content_block_dict.Set(
+              "text", block->get_request_title_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kParaphraseContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_paraphrase_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kImproveContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_improve_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kShortenContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_shorten_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kExpandContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_expand_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kImageContentBlock: {
+          const auto& image = block->get_image_content_block();
+          base::Value::Dict image_url;
+          image_url.Set("url", image->image_url.spec());
+          content_block_dict.Set("image_url", std::move(image_url));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
+          const auto& tone = block->get_change_tone_content_block();
+          // Server currently requires the empty text field to be passed.
+          content_block_dict.Set("text", tone->text);
+          content_block_dict.Set("tone", tone->tone);
+          break;
+        }
+      }
       content_list.Append(std::move(content_block_dict));
     }
     message_dict.Set("content", std::move(content_list));

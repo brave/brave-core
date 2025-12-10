@@ -21,7 +21,6 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -48,7 +47,7 @@ constexpr int kTestingMaxAssociatedContentLength = 100;
 struct GenerateRewriteTestParam {
   std::string name;
   mojom::ActionType action_type;
-  ExtendedContentBlockType expected_content_type;
+  mojom::ContentBlock::Tag expected_content_type;
   std::string expected_payload;
   std::string expected_type_string;
 };
@@ -187,15 +186,16 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_EQ(messages[0].content.size(), 2u);
 
         // First content block should be page text
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
         // Page content should be truncated
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   expected_page_content);
 
         // Second content block should be the user message
-        EXPECT_EQ(messages[0].content[1].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_text_content_block()->text,
                   expected_user_message_content);
 
         // Verify JSON serialization matches expected format
@@ -273,18 +273,19 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_EQ(messages[0].content.size(), 3u);
 
         // Content blocks should be ordered: newer page content first
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   expected_page_content_2);
 
-        EXPECT_EQ(messages[0].content[1].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_page_text_content_block()->text,
                   expected_page_content_1);
 
-        EXPECT_EQ(messages[0].content[2].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+        ASSERT_EQ(messages[0].content[2]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[2]->get_text_content_block()->text,
                   expected_user_message_content);
 
         // Verify JSON serialization matches expected format
@@ -349,20 +350,22 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_EQ(messages[0].content.size(), 3u);
 
         // Page content
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "This is a page about The Mandalorian.");
 
         // Selected text (page excerpt)
-        EXPECT_EQ(messages[0].content[1].type,
-                  ExtendedContentBlockType::kPageExcerpt);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
-                  "The Mandalorian");
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+        EXPECT_EQ(
+            messages[0].content[1]->get_page_excerpt_content_block()->text,
+            "The Mandalorian");
 
         // User message
-        EXPECT_EQ(messages[0].content[2].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+        ASSERT_EQ(messages[0].content[2]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[2]->get_text_content_block()->text,
                   "Is this related to a broader series?");
 
         // Verify JSON serialization matches expected format
@@ -459,30 +462,34 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         // First message: user with page content, excerpt, and text
         EXPECT_EQ(messages[0].role, "user");
         ASSERT_EQ(messages[0].content.size(), 3u);
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "This is my page. I have spoken.");
-        EXPECT_EQ(messages[0].content[1].type,
-                  ExtendedContentBlockType::kPageExcerpt);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
-                  "I have spoken.");
-        EXPECT_EQ(messages[0].content[2].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+        EXPECT_EQ(
+            messages[0].content[1]->get_page_excerpt_content_block()->text,
+            "I have spoken.");
+        ASSERT_EQ(messages[0].content[2]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[2]->get_text_content_block()->text,
                   "Which show is this catchphrase from?");
 
         // Second message: assistant response
         EXPECT_EQ(messages[1].role, "assistant");
         ASSERT_EQ(messages[1].content.size(), 1u);
-        EXPECT_EQ(messages[1].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[1].content[0].data).text,
+        ASSERT_EQ(messages[1].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
                   "The Mandalorian.");
 
         // Third message: user follow-up
         EXPECT_EQ(messages[2].role, "user");
         ASSERT_EQ(messages[2].content.size(), 1u);
-        EXPECT_EQ(messages[2].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[2].content[0].data).text,
+        ASSERT_EQ(messages[2].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[2].content[0]->get_text_content_block()->text,
                   "Is it related to a broader series?");
 
         // Verify JSON serialization matches expected format
@@ -593,26 +600,29 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         // First message: user with page content
         EXPECT_EQ(messages[0].role, "user");
         ASSERT_EQ(messages[0].content.size(), 2u);
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "I have spoken.");
-        EXPECT_EQ(messages[0].content[1].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_text_content_block()->text,
                   "Which show is 'This is the way' from?");
 
         // Second message: assistant (modified reply)
         EXPECT_EQ(messages[1].role, "assistant");
         ASSERT_EQ(messages[1].content.size(), 1u);
-        EXPECT_EQ(messages[1].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[1].content[0].data).text,
+        ASSERT_EQ(messages[1].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
                   "The Mandalorian.");
 
         // Third message: user follow-up
         EXPECT_EQ(messages[2].role, "user");
         ASSERT_EQ(messages[2].content.size(), 1u);
-        EXPECT_EQ(messages[2].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[2].content[0].data).text,
+        ASSERT_EQ(messages[2].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[2].content[0]->get_text_content_block()->text,
                   "Is it related to a broader series?");
 
         // Verify JSON serialization matches expected format
@@ -666,15 +676,17 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_EQ(messages[0].content.size(), 2u);
 
         // Page content block
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "This is a sample page content.");
 
         // Request summary block
-        EXPECT_EQ(messages[0].content[1].type,
-                  ExtendedContentBlockType::kRequestSummary);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text, "");
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kRequestSummaryContentBlock);
+        EXPECT_EQ(
+            messages[0].content[1]->get_request_summary_content_block()->text,
+            "");
 
         // Verify JSON serialization matches expected format
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
@@ -901,14 +913,15 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_GE(messages[0].content.size(), 2u);
 
         // First content block should be page content
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "Test page content");
 
         // Second content block should be the user message
-        EXPECT_EQ(messages[0].content[1].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_text_content_block()->text,
                   "Human message");
 
         auto completion_event =
@@ -958,8 +971,9 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         EXPECT_EQ(messages[0].role, "user");
         ASSERT_EQ(messages[0].content.size(), 1u);
 
-        EXPECT_EQ(messages[0].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_text_content_block()->text,
                   "Human message");
 
         auto completion_event =
@@ -1012,20 +1026,22 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         ASSERT_GE(messages[0].content.size(), 3u);
 
         // First content block should be video content
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kVideoTranscript);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
-                  "Video content");
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
+        EXPECT_EQ(
+            messages[0].content[0]->get_video_transcript_content_block()->text,
+            "Video content");
 
         // Second content block should be page content
-        EXPECT_EQ(messages[0].content[1].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_page_text_content_block()->text,
                   "First page content");
 
         // Third content block should be the user message
-        EXPECT_EQ(messages[0].content[2].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+        ASSERT_EQ(messages[0].content[2]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[2]->get_text_content_block()->text,
                   "Human message");
 
         auto completion_event =
@@ -1078,30 +1094,33 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         // First message: user with page content for turn-1
         EXPECT_EQ(messages[0].role, "user");
         ASSERT_EQ(messages[0].content.size(), 2u);
-        EXPECT_EQ(messages[0].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+        ASSERT_EQ(messages[0].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[0].content[0]->get_page_text_content_block()->text,
                   "Content for first turn");
-        EXPECT_EQ(messages[0].content[1].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+        ASSERT_EQ(messages[0].content[1]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[0].content[1]->get_text_content_block()->text,
                   "First human message");
 
         // Second message: assistant response
         EXPECT_EQ(messages[1].role, "assistant");
         ASSERT_EQ(messages[1].content.size(), 1u);
-        EXPECT_EQ(messages[1].content[0].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[1].content[0].data).text,
+        ASSERT_EQ(messages[1].content[0]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
                   "First assistant response");
 
         // Third message: user with page content for turn-2
         EXPECT_EQ(messages[2].role, "user");
         ASSERT_EQ(messages[2].content.size(), 2u);
-        EXPECT_EQ(messages[2].content[0].type,
-                  ExtendedContentBlockType::kPageText);
-        EXPECT_EQ(std::get<TextContent>(messages[2].content[0].data).text,
+        ASSERT_EQ(messages[2].content[0]->which(),
+                  mojom::ContentBlock::Tag::kPageTextContentBlock);
+        EXPECT_EQ(messages[2].content[0]->get_page_text_content_block()->text,
                   "Content for second turn");
-        EXPECT_EQ(messages[2].content[1].type, ExtendedContentBlockType::kText);
-        EXPECT_EQ(std::get<TextContent>(messages[2].content[1].data).text,
+        ASSERT_EQ(messages[2].content[1]->which(),
+                  mojom::ContentBlock::Tag::kTextContentBlock);
+        EXPECT_EQ(messages[2].content[1]->get_text_content_block()->text,
                   "Second human message");
 
         auto completion_event =
@@ -1198,8 +1217,16 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
               std::vector<std::string> actual_contents;
               for (const auto& msg : messages) {
                 for (const auto& block : msg.content) {
-                  actual_contents.push_back(
-                      std::get<TextContent>(block.data).text);
+                  if (block->is_text_content_block()) {
+                    actual_contents.push_back(
+                        block->get_text_content_block()->text);
+                  } else if (block->is_page_text_content_block()) {
+                    actual_contents.push_back(
+                        block->get_page_text_content_block()->text);
+                  } else {
+                    FAIL() << "Unexpected block type"
+                           << static_cast<int>(block->which());
+                  }
                 }
               }
 
@@ -1326,21 +1353,27 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
           ASSERT_EQ(messages[0].content.size(), 3u);
 
           // First content block should be video transcript
-          EXPECT_EQ(messages[0].content[0].type,
-                    ExtendedContentBlockType::kVideoTranscript);
-          EXPECT_EQ(std::get<TextContent>(messages[0].content[0].data).text,
+          ASSERT_EQ(messages[0].content[0]->which(),
+                    mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
+          EXPECT_EQ(messages[0]
+                        .content[0]
+                        ->get_video_transcript_content_block()
+                        ->text,
                     "Sample video content.");
 
           // Second content block should be page text
-          EXPECT_EQ(messages[0].content[1].type,
-                    ExtendedContentBlockType::kPageText);
-          EXPECT_EQ(std::get<TextContent>(messages[0].content[1].data).text,
+          ASSERT_EQ(messages[0].content[1]->which(),
+                    mojom::ContentBlock::Tag::kPageTextContentBlock);
+          EXPECT_EQ(messages[0].content[1]->get_page_text_content_block()->text,
                     "Sample page content.");
 
           // Third content block should be request questions
-          EXPECT_EQ(messages[0].content[2].type,
-                    ExtendedContentBlockType::kRequestQuestions);
-          EXPECT_EQ(std::get<TextContent>(messages[0].content[2].data).text,
+          ASSERT_EQ(messages[0].content[2]->which(),
+                    mojom::ContentBlock::Tag::kRequestQuestionsContentBlock);
+          EXPECT_EQ(messages[0]
+                        .content[2]
+                        ->get_request_questions_content_block()
+                        ->text,
                     "");
 
           // Verify JSON serialization matches expected format
@@ -1512,7 +1545,8 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
 
   // Build expected JSON format
   std::string expected_messages;
-  if (params.expected_content_type == ExtendedContentBlockType::kChangeTone) {
+  if (params.expected_content_type ==
+      mojom::ContentBlock::Tag::kChangeToneContentBlock) {
     expected_messages = absl::StrFormat(
         R"([
           {
@@ -1565,28 +1599,52 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
             ASSERT_GE(first_message.content.size(), 2u);
 
             // First content block should be the page excerpt
-            EXPECT_EQ(first_message.content[0].type,
-                      ExtendedContentBlockType::kPageExcerpt);
-            EXPECT_EQ(std::get<TextContent>(first_message.content[0].data).text,
+            ASSERT_EQ(first_message.content[0]->which(),
+                      mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+            EXPECT_EQ(first_message.content[0]
+                          ->get_page_excerpt_content_block()
+                          ->text,
                       test_text);
 
             // Second content block should be the action type
-            EXPECT_EQ(first_message.content[1].type,
+            ASSERT_EQ(first_message.content[1]->which(),
                       params.expected_content_type);
 
             // Verify the content data, should have tone for change tone type,
             // empty text otherwise.
             if (params.expected_content_type ==
-                ExtendedContentBlockType::kChangeTone) {
-              auto* tone_content = std::get_if<ChangeToneContent>(
-                  &first_message.content[1].data);
-              ASSERT_TRUE(tone_content);
+                mojom::ContentBlock::Tag::kChangeToneContentBlock) {
+              const auto& tone_content =
+                  first_message.content[1]->get_change_tone_content_block();
               EXPECT_EQ(tone_content->tone, params.expected_payload);
             } else {
-              auto* text_content =
-                  std::get_if<TextContent>(&first_message.content[1].data);
-              ASSERT_TRUE(text_content);
-              EXPECT_EQ(text_content->text, params.expected_payload);
+              std::string text;
+              switch (params.expected_content_type) {
+                case mojom::ContentBlock::Tag::kParaphraseContentBlock:
+                  text = first_message.content[1]
+                             ->get_paraphrase_content_block()
+                             ->text;
+                  break;
+                case mojom::ContentBlock::Tag::kImproveContentBlock:
+                  text = first_message.content[1]
+                             ->get_improve_content_block()
+                             ->text;
+                  break;
+                case mojom::ContentBlock::Tag::kShortenContentBlock:
+                  text = first_message.content[1]
+                             ->get_shorten_content_block()
+                             ->text;
+                  break;
+                case mojom::ContentBlock::Tag::kExpandContentBlock:
+                  text = first_message.content[1]
+                             ->get_expand_content_block()
+                             ->text;
+                  break;
+                default:
+                  FAIL() << "Unexpected type: "
+                         << static_cast<int>(params.expected_content_type);
+              }
+              EXPECT_EQ(text, params.expected_payload);
             }
 
             // Verify JSON serialization matches expected format
@@ -1621,35 +1679,39 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
     testing::Values(
-        GenerateRewriteTestParam{"Paraphrase", mojom::ActionType::PARAPHRASE,
-                                 ExtendedContentBlockType::kParaphrase, "",
-                                 "brave-request-paraphrase"},
+        GenerateRewriteTestParam{
+            "Paraphrase", mojom::ActionType::PARAPHRASE,
+            mojom::ContentBlock::Tag::kParaphraseContentBlock, "",
+            "brave-request-paraphrase"},
         GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
-                                 ExtendedContentBlockType::kImprove, "",
-                                 "brave-request-improve-excerpt-language"},
+                                 mojom::ContentBlock::Tag::kImproveContentBlock,
+                                 "", "brave-request-improve-excerpt-language"},
         GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
-                                 ExtendedContentBlockType::kShorten, "",
-                                 "brave-request-shorten"},
+                                 mojom::ContentBlock::Tag::kShortenContentBlock,
+                                 "", "brave-request-shorten"},
         GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
-                                 ExtendedContentBlockType::kExpand, "",
-                                 "brave-request-expansion"},
-        GenerateRewriteTestParam{"Academic", mojom::ActionType::ACADEMICIZE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 "academic", "brave-request-change-tone"},
-        GenerateRewriteTestParam{"Professional",
-                                 mojom::ActionType::PROFESSIONALIZE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 "professional", "brave-request-change-tone"},
-        GenerateRewriteTestParam{"Casual", mojom::ActionType::CASUALIZE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 "casual", "brave-request-change-tone"},
-        GenerateRewriteTestParam{"Funny", mojom::ActionType::FUNNY_TONE,
-                                 ExtendedContentBlockType::kChangeTone, "funny",
-                                 "brave-request-change-tone"},
-        GenerateRewriteTestParam{"Persuasive",
-                                 mojom::ActionType::PERSUASIVE_TONE,
-                                 ExtendedContentBlockType::kChangeTone,
-                                 "persuasive", "brave-request-change-tone"}),
+                                 mojom::ContentBlock::Tag::kExpandContentBlock,
+                                 "", "brave-request-expansion"},
+        GenerateRewriteTestParam{
+            "Academic", mojom::ActionType::ACADEMICIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic",
+            "brave-request-change-tone"},
+        GenerateRewriteTestParam{
+            "Professional", mojom::ActionType::PROFESSIONALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "professional",
+            "brave-request-change-tone"},
+        GenerateRewriteTestParam{
+            "Casual", mojom::ActionType::CASUALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "casual",
+            "brave-request-change-tone"},
+        GenerateRewriteTestParam{
+            "Funny", mojom::ActionType::FUNNY_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "funny",
+            "brave-request-change-tone"},
+        GenerateRewriteTestParam{
+            "Persuasive", mojom::ActionType::PERSUASIVE_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "persuasive",
+            "brave-request-change-tone"}),
     [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
       return info.param.name;
     });
