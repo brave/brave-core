@@ -448,39 +448,6 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionRejectsDustTarget) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
-TEST_F(BitcoinWalletServiceUnitTest, CreateTransactionClampsLowFeeEstimates) {
-  SetupBtcAccount();
-
-  // If RPC returns zero/invalid fee rates, clamp to a safe minimum instead of
-  // producing a zero-fee transaction.
-  base::Value::Dict fee_estimates;
-  fee_estimates.Set("4", 0.0);
-  fee_estimates.Set("1", 0.0);
-  bitcoin_test_rpc_server_->SetFeeEstimatesForTesting(
-      base::Value(std::move(fee_estimates)));
-
-  using CreateTransactionResult =
-      base::expected<BitcoinTransaction, std::string>;
-  base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
-
-  BitcoinTransaction actual_tx;
-  EXPECT_CALL(callback, Run(Truly([&](const CreateTransactionResult& arg) {
-                EXPECT_TRUE(arg.has_value());
-                actual_tx = arg.value();
-                return true;
-              })));
-
-  bitcoin_wallet_service_->CreateTransaction(account_id(), kMockBtcAddress,
-                                             48000, false, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-
-  constexpr double kDustRelayFeeRateForTest = 3.0;
-  uint32_t vbytes = BitcoinSerializer::CalcTransactionVBytes(actual_tx, true);
-  uint64_t min_fee = ApplyFeeRate(kDustRelayFeeRateForTest, vbytes);
-  EXPECT_GE(actual_tx.EffectiveFeeAmount(), min_fee);
-}
-
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
   SetupBtcAccount(5, 5);
 

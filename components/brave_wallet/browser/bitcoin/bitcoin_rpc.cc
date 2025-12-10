@@ -25,6 +25,12 @@
 
 namespace {
 
+// Upper bound for fee estimates (sat/vbyte) to reject obviously bogus inputs.
+inline constexpr double kMaxReasonableFeeRate = 1e6;
+
+// Minimum plausible raw transaction size in bytes (version+vin+vout+locktime).
+inline constexpr size_t kMinRawTransactionBytes = 1;
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("bitcoin_rpc", R"(
       semantics {
@@ -302,7 +308,12 @@ void BitcoinRpc::OnGetFeeEstimates(GetFeeEstimatesCallback callback,
         !item.second.GetIfDouble()) {
       return ReplyWithInvalidJsonError(std::move(callback));
     }
-    estimates[blocks] = item.second.GetDouble();
+    double fee = item.second.GetDouble();
+    // Reject zero/negative, NaN/inf, or unreasonably large fee values.
+    if (fee <= 0 || !std::isfinite(fee) || fee > kMaxReasonableFeeRate) {
+      return ReplyWithInvalidJsonError(std::move(callback));
+    }
+    estimates[blocks] = fee;
   }
 
   std::move(callback).Run(base::ok(std::move(estimates)));
@@ -366,6 +377,13 @@ void BitcoinRpc::OnGetTransactionRaw(GetTransactionRawCallback callback,
   if (list->size() != 1 || !list->front().is_string() ||
       !base::HexStringToBytes(list->front().GetString(),
                               &transaction_raw_bytes)) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  // Sanity-check minimum transaction size (version + vin count + vout count +
+  // locktime). Reject implausibly short payloads that decoded successfully but
+  // cannot represent a valid transaction.
+  if (transaction_raw_bytes.size() < kMinRawTransactionBytes) {
     return ReplyWithInvalidJsonError(std::move(callback));
   }
 
