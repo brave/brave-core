@@ -55,7 +55,7 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
     }
 
     @Override
-    boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
+    public boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
         final boolean show = super.showAppMenu(anchorView, startDragging);
         if (show) {
             assert mAppMenuDragHelper != null;
