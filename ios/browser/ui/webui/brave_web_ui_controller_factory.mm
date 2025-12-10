@@ -29,6 +29,8 @@
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+#include "ios/web/public/browser_state.h"
+#include "ios/web/public/web_state.h"
 #include "url/gurl.h"
 
 using web::WebUIIOS;
@@ -47,13 +49,23 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
   return std::make_unique<T>(web_ui, url);
 }
 
+template <class T>
+std::unique_ptr<WebUIIOSController> NewRegularProfileOnlyWebUIIOS(
+    WebUIIOS* web_ui,
+    const GURL& url) {
+  if (web_ui->GetWebState()->GetBrowserState()->IsOffTheRecord()) {
+    return nullptr;
+  }
+  return std::make_unique<T>(web_ui, url);
+}
+
 WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   DCHECK(url.SchemeIs(kChromeUIUntrustedScheme));
   const std::string_view url_host = url.host();
 
   if (url_host == kAIChatUntrustedConversationUIHost &&
       ai_chat::features::IsAIChatWebUIEnabled()) {
-    return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+    return &NewRegularProfileOnlyWebUIIOS<AIChatUntrustedConversationUI>;
   }
 
   if (base::FeatureList::IsEnabled(
@@ -93,7 +105,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<SkusInternalsUI>;
   } else if (url_host == kAIChatUIHost &&
              ai_chat::features::IsAIChatWebUIEnabled()) {
-    return &NewWebUIIOS<AIChatUI>;
+    return &NewRegularProfileOnlyWebUIIOS<AIChatUI>;
   } else if (url_host == kWalletPageHost &&
              base::FeatureList::IsEnabled(
                  brave_wallet::features::kBraveWalletWebUIIOS)) {

@@ -32,6 +32,7 @@ source_set("webui") {
     "//ios/chrome/browser/shared/model/url:constants",
     "//ios/chrome/browser/webui/ui_bundled:webui_internal",
     "//ios/components/webui:url_constants",
+    "//ios/web/public",
     "//ios/web/public/webui",
     "//ui/base",
     "//url",
