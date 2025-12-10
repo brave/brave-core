@@ -284,7 +284,7 @@
 "vpn.settingsVPNKillSwitchTitle" = "Kill Switch einschalten";
 
 /* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
-"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing stellt sicher, dass der Datenverkehr über dedizierte Proxyserver geleitet wird, um den Zugriff auf häufig eingeschränkte Inhalte/Seiten oder Dienste von Drittanbietern zu ermöglichen. [Erfahre mehr]%@)";
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing stellt sicher, dass der Datenverkehr über dedizierte Proxyserver geleitet wird, um den Zugriff auf häufig eingeschränkte Inhalte/Seiten oder Dienste von Drittanbietern zu ermöglichen. [Erfahre mehr](%@)";
 
 /* Whether the VPN's Smart-Proxy feature is enabled or not */
 "vpn.settingsVPNSmartProxyEnabled" = "Smart Proxy einschalten";
