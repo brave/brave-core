@@ -61,14 +61,14 @@ public class BraveProfileMigrations {
 
   @MainActor public func migrateShieldsToContentSettings() {
     guard FeatureList.kBraveShieldsContentSettings.enabled,
-      !Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value,
+      !Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value,
       let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
         profile: profileController.profile
       )
     else {
       return
     }
-    defer { Preferences.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
+    defer { Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
     let domainsToMigrate = Domain.allDomainsWithExlicitShieldSettings()
     // migrate global / default settings first, then site-specific
     braveShieldsSettings.migrateGlobalSettings()
@@ -327,13 +327,6 @@ extension Preferences {
     /// instead of a simple on/off `Bool` on the domain level
     static let domainAdBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.domain-ad-block-and-tracking-protection-shield-level-completed",
-      default: false
-    )
-
-    /// If shields have been migrated from Domain CoreData object to chromium
-    /// content settings.
-    static let shieldsCoreDataToContentSettingsCompleted = Option<Bool>(
-      key: "migration.shields-coredata-to-content-settings-completed",
       default: false
     )
 

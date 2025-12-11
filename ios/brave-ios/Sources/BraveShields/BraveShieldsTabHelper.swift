@@ -30,6 +30,19 @@ public class BraveShieldsTabHelper {
   private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let isBraveShieldsContentSettingsEnabled: Bool
 
+  /// If we should write Shields setting changes to content settings.
+  private var shouldWriteToContentSettings: Bool {
+    // If Shields content settings feature flag is enabled, we should always
+    // write. However if Shields content settings is disabled, but we've
+    // already performed the migration to content settings, we should write so
+    // no data is lost when they re-enable the flag. This could happen if we
+    // roll out the feature flag using percentages as there is no guarantee
+    // that a user in the first study at say 25%, would be included in the
+    // follow-up studies.
+    return isBraveShieldsContentSettingsEnabled
+      || Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value
+  }
+
   public init(
     tab: some TabState,
     braveShieldsSettings: (any BraveShieldsSettings)?,
@@ -51,7 +64,7 @@ public class BraveShieldsTabHelper {
 
   public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if isBraveShieldsContentSettingsEnabled {
+    if shouldWriteToContentSettings {
       braveShieldsSettings?.setBraveShieldsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is not required
@@ -93,7 +106,7 @@ public class BraveShieldsTabHelper {
 
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if isBraveShieldsContentSettingsEnabled {
+    if shouldWriteToContentSettings {
       braveShieldsSettings?.setAdBlockMode(shieldLevel.adBlockMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is not required
@@ -106,7 +119,7 @@ public class BraveShieldsTabHelper {
 
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if isBraveShieldsContentSettingsEnabled {
+    if shouldWriteToContentSettings {
       braveShieldsSettings?.setBlockScriptsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is not required
@@ -119,7 +132,7 @@ public class BraveShieldsTabHelper {
 
   public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if isBraveShieldsContentSettingsEnabled {
+    if shouldWriteToContentSettings {
       braveShieldsSettings?.setFingerprintMode(isEnabled ? .standardMode : .allowMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is not required
@@ -185,7 +198,7 @@ public class BraveShieldsTabHelper {
     for url: URL?
   ) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if isBraveShieldsContentSettingsEnabled {
+    if shouldWriteToContentSettings {
       braveShieldsSettings?.setAutoShredMode(shredLevel.autoShredMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is not required
