@@ -7,6 +7,7 @@
 
 load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
+load("./platform.star", "platform")
 
 __HOST_OS_IS_LINUX = runtime.os == "linux"
 __HOST_OS_IS_WINDOWS = runtime.os == "windows"
@@ -97,12 +98,9 @@ def __adjust_handlers(ctx, step_config, handlers):
     # Adjust rules.
     for rule in step_config["rules"]:
         rule_name = rule["name"]
-
-        if rule_name == "blink/generate_bindings":
-            # This step requires increased timeouts to work.
-            __set_rule_timeout(rule, "15m")
-            __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers)
-            continue
+        rule_command_prefix = rule.get("command_prefix")
+        is_python_rule = rule_command_prefix and rule_command_prefix.startswith(
+            platform.python_bin)
 
         if rule_name.startswith("clang"):
             found_clang_rule = True
@@ -110,7 +108,8 @@ def __adjust_handlers(ctx, step_config, handlers):
             __wrap_with_redirect_cc_handler(ctx, rule, handlers)
             continue
 
-        if rule_name == "mojo/mojom_parser":
+        if is_python_rule and rule_name.startswith(("mojo", "blink")):
+            __set_rule_timeout(rule, "15m")
             __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers)
             continue
 
