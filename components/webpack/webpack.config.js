@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const path = require('path')
 const webpack = require('webpack')
@@ -217,7 +217,25 @@ module.exports = async function (env, argv) {
           test: /\.html/,
           type: 'asset/source',
         },
-      ]
-    }
+        // Trezor popup page is opened with window.open(url) which doesn't
+        // work(opened window loses opener) from chrome-untrusted bridge. We need
+        // to revert legacy behavior which works: open blank page then navigate.
+        // So effectively we rollback this change:
+        // https://github.com/trezor/trezor-suite/pull/10975/changes#diff-38dd02260cff108b8329d6f3adbf8717b8e8737222de87a92c048f8bbf0bf159R256-R258
+        {
+          test: (p) =>
+            p.endsWith(
+              path.join('node_modules', '@trezor', 'connect-web', 'lib', 'popup', 'index.js')
+            ),
+          use: {
+            loader: require.resolve('./string-replace-loader.js'),
+            options: {
+              from: `const windowResult = window.open(url, 'modal');`,
+              to: `const windowResult = window.open('', '_blank'); if (windowResult) {windowResult.location.href=url}`
+            }
+          },
+        },
+      ],
+    },
   }
 }

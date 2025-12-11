@@ -20,6 +20,7 @@ module.exports = {
     timers: require.resolve('timers-browserify'),
     buffer: require.resolve('buffer'),
     process: require.resolve('process/browser'),
+    assert: require.resolve('browser-assert'),
   },
   // Provide globals from NodeJS polyfills
   provideNodeGlobals: new ProvidePlugin({
