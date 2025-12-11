@@ -45,7 +45,7 @@ def parse_args():
 def create_required_spm_resources(force=False):
     # Runs webpack on the JS files that are generated in iOS. This is so that
     # Package.swift/SPM resolves with the resources available
-    execute_stdout(['npm', 'run', 'ios_pack_js'])
+    execute_stdout(['pnpm', 'ios_pack_js'])
     # Creates the expected out/ios_current_link directory and places placeholder
     # xcframeworks inside to ensure Package.swift/SPM validates the manifest
     # correctly.

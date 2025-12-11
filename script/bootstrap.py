@@ -12,9 +12,9 @@ import sys
 from lib.config import PLATFORM, enable_verbose_mode, is_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
-NPM = 'npm'
+PNPM = 'pnpm'
 if sys.platform in ['win32', 'cygwin']:
-    NPM += '.cmd'
+    PNPM += '.cmd'
 
 def main():
     args = parse_args()
@@ -47,9 +47,7 @@ def update_node_modules(dirname, env=None):
     if env is None:
         env = os.environ.copy()
     with scoped_cwd(dirname):
-        args = [NPM, 'install', '--no-save', '--yes']
-        if is_verbose_mode():
-            args += ['--verbose']
+        args = [PNPM, 'install', '--frozen-lockfile']
         execute_stdout(args, env)
 
 

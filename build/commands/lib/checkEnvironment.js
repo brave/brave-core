@@ -9,7 +9,7 @@ const semver = require('semver')
 const Log = require('./logging')
 
 checkNodeVersion()
-checkNpmVersion()
+checkPnpmVersion()
 checkWorkingDirectoryChainOnWindows()
 
 function checkNodeVersion() {
@@ -21,15 +21,17 @@ function checkNodeVersion() {
   checkVersion('node', nodeVersion, requiredNodeVersion, upgradeInstructions)
 }
 
-function checkNpmVersion() {
-  const npmVersion = process.env.npm_config_npm_version
-  const requiredNpmVersion = process.env.npm_package_engines_npm
+function checkPnpmVersion() {
+  const pnpmVersion =
+    process.env.npm_config_user_agent?.match(/pnpm\/(\S+)/)?.[1]
+  const requiredPnpmVersion = process.env.npm_package_engines_pnpm
   const upgradeInstructions =
-    'You can upgrade npm by running "npm install -g npm"'
+    'You can upgrade pnpm by running "pnpm self-update" or '
+    + '"npm install -g pnpm"'
 
-  // Check npm version if it's defined. It can be undefined if Yarn is used.
-  if (npmVersion !== undefined) {
-    checkVersion('npm', npmVersion, requiredNpmVersion, upgradeInstructions)
+  // Check pnpm version if it's defined.
+  if (pnpmVersion !== undefined && requiredPnpmVersion !== undefined) {
+    checkVersion('pnpm', pnpmVersion, requiredPnpmVersion, upgradeInstructions)
   }
 }
 

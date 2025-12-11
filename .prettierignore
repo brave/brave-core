@@ -36,6 +36,7 @@ chromium_presubmit_config.json5
 jest.config.js
 snapcraft.yaml
 .eslintrc.js
+pnpm-lock.yaml
 
 # Needs to be refactored before being formatted
 /build/commands/lib/util.js
