@@ -74,6 +74,7 @@
 }
 
 - (void)dealloc {
+  _service->DeleteConversations();
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE, base::BindOnce(
                      ^(decltype(_currentContent) current_content) {
@@ -83,6 +84,7 @@
 }
 
 - (void)createNewConversation {
+  _service->DeleteConversations();
   _currentConversation = _service->CreateConversationHandlerForContent(
       _currentContent->content_id(), _currentContent->GetWeakPtr());
   _conversationClient->ChangeConversation(_currentConversation.get());
@@ -175,8 +177,18 @@
       [](void (^completion)(AiChatConversationState*),
          ai_chat::mojom::ConversationStatePtr state) {
         if (completion) {
-          completion([[AiChatConversationState alloc]
-              initWithConversationStatePtr:std::move(state)]);
+          auto* bridgedState = [[AiChatConversationState alloc]
+              initWithConversationStatePtr:std::move(state)];
+          NSMutableArray* models = [bridgedState.allModels mutableCopy];
+          // Remove model that has the id "chat-automatic"
+          [models
+              filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(
+                                                    AiChatModel* model,
+                                                    NSDictionary* bindings) {
+                return ![model.key isEqualToString:@"chat-automatic"];
+              }]];
+          bridgedState.allModels = [models copy];
+          completion(bridgedState);
         }
       },
       completion));

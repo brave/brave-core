@@ -207,6 +207,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   @MainActor
   func getInitialState() async {
+    await refreshPremiumStatus()
     let state = await api.state()
     self.requestInProgress = state.isRequestInProgress
     self.suggestedQuestions = state.suggestedQuestions
@@ -217,6 +218,10 @@ public class AIChatViewModel: NSObject, ObservableObject {
     self.models = state.allModels
 
     self.currentModel = self.models.first(where: { $0.key == state.currentModelKey })
+    if self.currentModel == nil {
+      let defaultModel = premiumStatus == .active ? "chat-claude-sonnet" : "chat-basic"
+      self.currentModel = self.models.first(where: { $0.key == defaultModel })
+    }
     self.conversationHistory = api.conversationHistory
   }
 

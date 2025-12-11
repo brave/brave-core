@@ -99,11 +99,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
             : mojom::ModelAccess::PREMIUM;
 
     std::vector<mojom::ModelPtr> models;
-
-#if !BUILDFLAG(IS_IOS)
-    // Not added in iOS as we do not have UI currently to show users what model
-    // is used for each response, this build flag should be removed once we
-    // have the UI, probably when we migrate to WebUI on iOS.
     {
       auto options = mojom::LeoModelOptions::New();
       options->name = "automatic";
@@ -123,7 +118,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
       models.push_back(std::move(model));
     }
-#endif
 
     {
       auto options = mojom::LeoModelOptions::New();
