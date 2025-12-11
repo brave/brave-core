@@ -72,12 +72,9 @@ template("build_crate") {
       "--frozen",
     ]
     foreach(crate, crates) {
-      _name_and_output = []
-      _name_and_output = string_split(crate, "|")
-      crate_name = _name_and_output[0]
       response_file_contents += [
         "--package",
-        crate_name,
+        crate,
       ]
     }
   }
