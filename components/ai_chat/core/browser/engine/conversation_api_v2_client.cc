@@ -72,6 +72,23 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 // static
 base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
+  static constexpr auto kSimpleRequestTypeMap =
+      base::MakeFixedFlatMap<mojom::SimpleRequestType, std::string_view>({
+          {mojom::SimpleRequestType::kParaphrase, "brave-request-paraphrase"},
+          {mojom::SimpleRequestType::kImprove,
+           "brave-request-improve-excerpt-language"},
+          {mojom::SimpleRequestType::kShorten, "brave-request-shorten"},
+          {mojom::SimpleRequestType::kExpand, "brave-request-expansion"},
+          {mojom::SimpleRequestType::kRequestSummary, "brave-request-summary"},
+          {mojom::SimpleRequestType::kRequestQuestions,
+           "brave-request-questions"},
+      });
+
+  static_assert(
+      kSimpleRequestTypeMap.size() ==
+          static_cast<size_t>(mojom::SimpleRequestType::kCount),
+      "kSimpleRequestTypeMap must cover all SimpleRequestType enum values");
+
   static constexpr auto kTypeMap =
       base::MakeFixedFlatMap<mojom::ContentBlock::Tag, std::string_view>({
           {mojom::ContentBlock::Tag::kTextContentBlock, "text"},
@@ -81,25 +98,14 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           {mojom::ContentBlock::Tag::kPageTextContentBlock, "brave-page-text"},
           {mojom::ContentBlock::Tag::kVideoTranscriptContentBlock,
            "brave-video-transcript"},
-          {mojom::ContentBlock::Tag::kRequestSummaryContentBlock,
-           "brave-request-summary"},
-          {mojom::ContentBlock::Tag::kRequestQuestionsContentBlock,
-           "brave-request-questions"},
           {mojom::ContentBlock::Tag::kRequestTitleContentBlock,
            "brave-conversation-title"},
           {mojom::ContentBlock::Tag::kChangeToneContentBlock,
            "brave-request-change-tone"},
-          {mojom::ContentBlock::Tag::kParaphraseContentBlock,
-           "brave-request-paraphrase"},
-          {mojom::ContentBlock::Tag::kImproveContentBlock,
-           "brave-request-improve-excerpt-language"},
-          {mojom::ContentBlock::Tag::kShortenContentBlock,
-           "brave-request-shorten"},
-          {mojom::ContentBlock::Tag::kExpandContentBlock,
-           "brave-request-expansion"},
       });
-  static_assert(kTypeMap.size() == mojom::kContentBlockTypeCounts,
-                "kTypeMap must cover all ContentBlock union variants");
+  static_assert(kTypeMap.size() == mojom::kContentBlockTypeCounts - 1,
+                "kTypeMap must cover all ContentBlock union variants expect "
+                "for SimpleRequestContentBlock");
 
   base::Value::List serialized_messages;
   for (auto& message : messages) {
@@ -113,9 +119,13 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     for (auto& block : message.content) {
       base::Value::Dict content_block_dict;
 
-      // Set type
-      auto type_it = kTypeMap.find(block->which());
-      content_block_dict.Set("type", type_it->second);
+      // Set type for all blocks except SimpleRequestContentBlock
+      // (which sets its own type in the switch below)
+      if (block->which() !=
+          mojom::ContentBlock::Tag::kSimpleRequestContentBlock) {
+        auto type_it = kTypeMap.find(block->which());
+        content_block_dict.Set("type", type_it->second);
+      }
 
       // Set content data based on union tag
       switch (block->which()) {
@@ -138,39 +148,9 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
               "text", block->get_video_transcript_content_block()->text);
           break;
 
-        case mojom::ContentBlock::Tag::kRequestSummaryContentBlock:
-          content_block_dict.Set(
-              "text", block->get_request_summary_content_block()->text);
-          break;
-
-        case mojom::ContentBlock::Tag::kRequestQuestionsContentBlock:
-          content_block_dict.Set(
-              "text", block->get_request_questions_content_block()->text);
-          break;
-
         case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
           content_block_dict.Set(
               "text", block->get_request_title_content_block()->text);
-          break;
-
-        case mojom::ContentBlock::Tag::kParaphraseContentBlock:
-          content_block_dict.Set("text",
-                                 block->get_paraphrase_content_block()->text);
-          break;
-
-        case mojom::ContentBlock::Tag::kImproveContentBlock:
-          content_block_dict.Set("text",
-                                 block->get_improve_content_block()->text);
-          break;
-
-        case mojom::ContentBlock::Tag::kShortenContentBlock:
-          content_block_dict.Set("text",
-                                 block->get_shorten_content_block()->text);
-          break;
-
-        case mojom::ContentBlock::Tag::kExpandContentBlock:
-          content_block_dict.Set("text",
-                                 block->get_expand_content_block()->text);
           break;
 
         case mojom::ContentBlock::Tag::kImageContentBlock: {
@@ -186,6 +166,15 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           // Server currently requires the empty text field to be passed.
           content_block_dict.Set("text", tone->text);
           content_block_dict.Set("tone", tone->tone);
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+          const auto& request = block->get_simple_request_content_block();
+          auto it = kSimpleRequestTypeMap.find(request->type);
+          content_block_dict.Set("type", it->second);
+          // Server currently requires the empty text field to be passed.
+          content_block_dict.Set("text", "");
           break;
         }
       }

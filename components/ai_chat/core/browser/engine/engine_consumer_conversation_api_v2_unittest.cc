@@ -50,6 +50,7 @@ struct GenerateRewriteTestParam {
   mojom::ContentBlock::Tag expected_content_type;
   std::string expected_payload;
   std::string expected_type_string;
+  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
 }  // namespace
@@ -683,10 +684,10 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
 
         // Request summary block
         ASSERT_EQ(messages[0].content[1]->which(),
-                  mojom::ContentBlock::Tag::kRequestSummaryContentBlock);
+                  mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
         EXPECT_EQ(
-            messages[0].content[1]->get_request_summary_content_block()->text,
-            "");
+            messages[0].content[1]->get_simple_request_content_block()->type,
+            mojom::SimpleRequestType::kRequestSummary);
 
         // Verify JSON serialization matches expected format
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
@@ -1369,12 +1370,10 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
 
           // Third content block should be request questions
           ASSERT_EQ(messages[0].content[2]->which(),
-                    mojom::ContentBlock::Tag::kRequestQuestionsContentBlock);
-          EXPECT_EQ(messages[0]
-                        .content[2]
-                        ->get_request_questions_content_block()
-                        ->text,
-                    "");
+                    mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
+          EXPECT_EQ(
+              messages[0].content[2]->get_simple_request_content_block()->type,
+              mojom::SimpleRequestType::kRequestQuestions);
 
           // Verify JSON serialization matches expected format
           EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
@@ -1617,34 +1616,16 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
               const auto& tone_content =
                   first_message.content[1]->get_change_tone_content_block();
               EXPECT_EQ(tone_content->tone, params.expected_payload);
+            } else if (params.expected_content_type ==
+                       mojom::ContentBlock::Tag::kSimpleRequestContentBlock) {
+              const auto& simple_request =
+                  first_message.content[1]->get_simple_request_content_block();
+              ASSERT_TRUE(params.expected_simple_request_type.has_value());
+              EXPECT_EQ(simple_request->type,
+                        *params.expected_simple_request_type);
             } else {
-              std::string text;
-              switch (params.expected_content_type) {
-                case mojom::ContentBlock::Tag::kParaphraseContentBlock:
-                  text = first_message.content[1]
-                             ->get_paraphrase_content_block()
-                             ->text;
-                  break;
-                case mojom::ContentBlock::Tag::kImproveContentBlock:
-                  text = first_message.content[1]
-                             ->get_improve_content_block()
-                             ->text;
-                  break;
-                case mojom::ContentBlock::Tag::kShortenContentBlock:
-                  text = first_message.content[1]
-                             ->get_shorten_content_block()
-                             ->text;
-                  break;
-                case mojom::ContentBlock::Tag::kExpandContentBlock:
-                  text = first_message.content[1]
-                             ->get_expand_content_block()
-                             ->text;
-                  break;
-                default:
-                  FAIL() << "Unexpected type: "
-                         << static_cast<int>(params.expected_content_type);
-              }
-              EXPECT_EQ(text, params.expected_payload);
+              FAIL() << "Unexpected type: "
+                     << static_cast<int>(params.expected_content_type);
             }
 
             // Verify JSON serialization matches expected format
@@ -1681,17 +1662,21 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         GenerateRewriteTestParam{
             "Paraphrase", mojom::ActionType::PARAPHRASE,
-            mojom::ContentBlock::Tag::kParaphraseContentBlock, "",
-            "brave-request-paraphrase"},
-        GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
-                                 mojom::ContentBlock::Tag::kImproveContentBlock,
-                                 "", "brave-request-improve-excerpt-language"},
-        GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
-                                 mojom::ContentBlock::Tag::kShortenContentBlock,
-                                 "", "brave-request-shorten"},
-        GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
-                                 mojom::ContentBlock::Tag::kExpandContentBlock,
-                                 "", "brave-request-expansion"},
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            "brave-request-paraphrase", mojom::SimpleRequestType::kParaphrase},
+        GenerateRewriteTestParam{
+            "Improve", mojom::ActionType::IMPROVE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            "brave-request-improve-excerpt-language",
+            mojom::SimpleRequestType::kImprove},
+        GenerateRewriteTestParam{
+            "Shorten", mojom::ActionType::SHORTEN,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            "brave-request-shorten", mojom::SimpleRequestType::kShorten},
+        GenerateRewriteTestParam{
+            "Expand", mojom::ActionType::EXPAND,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            "brave-request-expansion", mojom::SimpleRequestType::kExpand},
         GenerateRewriteTestParam{
             "Academic", mojom::ActionType::ACADEMICIZE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic",

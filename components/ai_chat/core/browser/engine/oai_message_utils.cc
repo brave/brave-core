@@ -144,8 +144,9 @@ std::vector<OAIMessage> BuildOAIMessages(
     // Build the main content block
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
       oai_message.content.push_back(
-          mojom::ContentBlock::NewRequestSummaryContentBlock(
-              mojom::RequestSummaryContentBlock::New("")));
+          mojom::ContentBlock::NewSimpleRequestContentBlock(
+              mojom::SimpleRequestContentBlock::New(
+                  mojom::SimpleRequestType::kRequestSummary)));
     } else {
       oai_message.content.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
@@ -171,8 +172,9 @@ std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
   msg.content.insert(msg.content.end(), std::make_move_iterator(blocks.begin()),
                      std::make_move_iterator(blocks.end()));
 
-  msg.content.push_back(mojom::ContentBlock::NewRequestQuestionsContentBlock(
-      mojom::RequestQuestionsContentBlock::New("")));
+  msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+      mojom::SimpleRequestContentBlock::New(
+          mojom::SimpleRequestType::kRequestQuestions)));
   messages.push_back(std::move(msg));
 
   return messages;
@@ -190,12 +192,14 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
 
   switch (action_type) {
     case mojom::ActionType::PARAPHRASE:
-      msg.content.push_back(mojom::ContentBlock::NewParaphraseContentBlock(
-          mojom::ParaphraseContentBlock::New("")));
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kParaphrase)));
       break;
     case mojom::ActionType::IMPROVE:
-      msg.content.push_back(mojom::ContentBlock::NewImproveContentBlock(
-          mojom::ImproveContentBlock::New("")));
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kImprove)));
       break;
     case mojom::ActionType::ACADEMICIZE:
       msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
@@ -218,12 +222,14 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
           mojom::ChangeToneContentBlock::New("", "funny")));
       break;
     case mojom::ActionType::SHORTEN:
-      msg.content.push_back(mojom::ContentBlock::NewShortenContentBlock(
-          mojom::ShortenContentBlock::New("")));
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kShorten)));
       break;
     case mojom::ActionType::EXPAND:
-      msg.content.push_back(mojom::ContentBlock::NewExpandContentBlock(
-          mojom::ExpandContentBlock::New("")));
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kExpand)));
       break;
     default:
       return std::nullopt;

@@ -26,6 +26,7 @@ struct RewriteActionTestParam {
   mojom::ActionType action_type;
   std::optional<mojom::ContentBlock::Tag> expected_content_type;
   std::string expected_payload;  // non-empty for change tones
+  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
 }  // namespace
@@ -76,22 +77,13 @@ TEST_P(BuildOAIRewriteSuggestionMessagesTest,
       EXPECT_EQ(message.content[1]->get_change_tone_content_block()->tone,
                 param.expected_payload);
       break;
-    case mojom::ContentBlock::Tag::kParaphraseContentBlock:
-      EXPECT_EQ(message.content[1]->get_paraphrase_content_block()->text,
-                param.expected_payload);
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+      const auto& request =
+          message.content[1]->get_simple_request_content_block();
+      ASSERT_TRUE(param.expected_simple_request_type.has_value());
+      EXPECT_EQ(request->type, param.expected_simple_request_type.value());
       break;
-    case mojom::ContentBlock::Tag::kImproveContentBlock:
-      EXPECT_EQ(message.content[1]->get_improve_content_block()->text,
-                param.expected_payload);
-      break;
-    case mojom::ContentBlock::Tag::kShortenContentBlock:
-      EXPECT_EQ(message.content[1]->get_shorten_content_block()->text,
-                param.expected_payload);
-      break;
-    case mojom::ContentBlock::Tag::kExpandContentBlock:
-      EXPECT_EQ(message.content[1]->get_expand_content_block()->text,
-                param.expected_payload);
-      break;
+    }
     default:
       FAIL() << "Unexpected content block type";
   }
@@ -103,10 +95,12 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         RewriteActionTestParam{
             mojom::ActionType::PARAPHRASE,
-            mojom::ContentBlock::Tag::kParaphraseContentBlock, ""},
-        RewriteActionTestParam{mojom::ActionType::IMPROVE,
-                               mojom::ContentBlock::Tag::kImproveContentBlock,
-                               ""},
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kParaphrase},
+        RewriteActionTestParam{
+            mojom::ActionType::IMPROVE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kImprove},
         RewriteActionTestParam{
             mojom::ActionType::ACADEMICIZE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic"},
@@ -122,12 +116,14 @@ INSTANTIATE_TEST_SUITE_P(
         RewriteActionTestParam{
             mojom::ActionType::FUNNY_TONE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock, "funny"},
-        RewriteActionTestParam{mojom::ActionType::SHORTEN,
-                               mojom::ContentBlock::Tag::kShortenContentBlock,
-                               ""},
-        RewriteActionTestParam{mojom::ActionType::EXPAND,
-                               mojom::ContentBlock::Tag::kExpandContentBlock,
-                               ""},
+        RewriteActionTestParam{
+            mojom::ActionType::SHORTEN,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kShorten},
+        RewriteActionTestParam{
+            mojom::ActionType::EXPAND,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kExpand},
         RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
                                ""}));
 
@@ -240,7 +236,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
             "Page content 3");
 
   ASSERT_EQ(messages[2].content[1]->which(),
-            mojom::ContentBlock::Tag::kRequestSummaryContentBlock);
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
+  EXPECT_EQ(messages[2].content[1]->get_simple_request_content_block()->type,
+            mojom::SimpleRequestType::kRequestSummary);
 
   // Message 4: Human turn with page content, no selected_text
   EXPECT_EQ(messages[3].role, "user");
@@ -361,9 +359,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
 
   // Last block is request questions
   ASSERT_EQ(message.content[3]->which(),
-            mojom::ContentBlock::Tag::kRequestQuestionsContentBlock);
-  EXPECT_EQ(message.content[3]->get_request_questions_content_block()->text,
-            "");
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
+  EXPECT_EQ(message.content[3]->get_simple_request_content_block()->type,
+            mojom::SimpleRequestType::kRequestQuestions);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {

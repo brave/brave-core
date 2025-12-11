@@ -127,30 +127,6 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                               block->get_page_excerpt_content_block()->text)));
           break;
 
-        case mojom::ContentBlock::Tag::kParaphraseContentBlock:
-          content_block_dict.Set("type", "text");
-          content_block_dict.Set("text", l10n_util::GetStringUTF8(
-                                             IDS_AI_CHAT_QUESTION_PARAPHRASE));
-          break;
-
-        case mojom::ContentBlock::Tag::kImproveContentBlock:
-          content_block_dict.Set("type", "text");
-          content_block_dict.Set(
-              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE));
-          break;
-
-        case mojom::ContentBlock::Tag::kShortenContentBlock:
-          content_block_dict.Set("type", "text");
-          content_block_dict.Set(
-              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN));
-          break;
-
-        case mojom::ContentBlock::Tag::kExpandContentBlock:
-          content_block_dict.Set("type", "text");
-          content_block_dict.Set(
-              "text", l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND));
-          break;
-
         case mojom::ContentBlock::Tag::kChangeToneContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
@@ -159,6 +135,34 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                           base::UTF8ToUTF16(
                               block->get_change_tone_content_block()->tone)));
           break;
+
+        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+          const auto& request = block->get_simple_request_content_block();
+          content_block_dict.Set("type", "text");
+
+          int message_id;
+          switch (request->type) {
+            case mojom::SimpleRequestType::kParaphrase:
+              message_id = IDS_AI_CHAT_QUESTION_PARAPHRASE;
+              break;
+            case mojom::SimpleRequestType::kImprove:
+              message_id = IDS_AI_CHAT_QUESTION_IMPROVE;
+              break;
+            case mojom::SimpleRequestType::kShorten:
+              message_id = IDS_AI_CHAT_QUESTION_SHORTEN;
+              break;
+            case mojom::SimpleRequestType::kExpand:
+              message_id = IDS_AI_CHAT_QUESTION_EXPAND;
+              break;
+            default:
+              DVLOG(2) << "Unsupported simple request type: "
+                       << static_cast<int>(request->type);
+              continue;
+          }
+
+          content_block_dict.Set("text", l10n_util::GetStringUTF8(message_id));
+          break;
+        }
 
         default:
           DVLOG(2) << "Unsupported block type: "

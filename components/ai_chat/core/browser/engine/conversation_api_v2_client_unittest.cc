@@ -239,33 +239,12 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
       expected_content.Set(
           "text", original_block->get_video_transcript_content_block()->text);
       break;
-    case mojom::ContentBlock::Tag::kRequestSummaryContentBlock:
-      expected_content.Set(
-          "text", original_block->get_request_summary_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kRequestQuestionsContentBlock:
-      expected_content.Set(
-          "text", original_block->get_request_questions_content_block()->text);
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
+      expected_content.Set("text", "");
       break;
     case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
       expected_content.Set(
           "text", original_block->get_request_title_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kParaphraseContentBlock:
-      expected_content.Set(
-          "text", original_block->get_paraphrase_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kImproveContentBlock:
-      expected_content.Set("text",
-                           original_block->get_improve_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kShortenContentBlock:
-      expected_content.Set("text",
-                           original_block->get_shorten_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kExpandContentBlock:
-      expected_content.Set("text",
-                           original_block->get_expand_content_block()->text);
       break;
   }
 
@@ -308,15 +287,45 @@ INSTANTIATE_TEST_SUITE_P(
             }),
             "brave-video-transcript"},
         ContentBlockTestParam{
-            "RequestSummary", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewRequestSummaryContentBlock(
-                  mojom::RequestSummaryContentBlock::New(""));
+            "SimpleRequest_Paraphrase", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kParaphrase));
+            }),
+            "brave-request-paraphrase"},
+        ContentBlockTestParam{
+            "SimpleRequest_Improve", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kImprove));
+            }),
+            "brave-request-improve-excerpt-language"},
+        ContentBlockTestParam{
+            "SimpleRequest_Shorten", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kShorten));
+            }),
+            "brave-request-shorten"},
+        ContentBlockTestParam{
+            "SimpleRequest_Expand", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kExpand));
+            }),
+            "brave-request-expansion"},
+        ContentBlockTestParam{
+            "SimpleRequest_RequestSummary", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestSummary));
             }),
             "brave-request-summary"},
         ContentBlockTestParam{
-            "RequestQuestions", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewRequestQuestionsContentBlock(
-                  mojom::RequestQuestionsContentBlock::New(""));
+            "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestQuestions));
             }),
             "brave-request-questions"},
         ContentBlockTestParam{
@@ -325,30 +334,6 @@ INSTANTIATE_TEST_SUITE_P(
                   mojom::RequestTitleContentBlock::New(kTestContent));
             }),
             "brave-conversation-title"},
-        ContentBlockTestParam{
-            "Paraphrase", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewParaphraseContentBlock(
-                  mojom::ParaphraseContentBlock::New(kTestContent));
-            }),
-            "brave-request-paraphrase"},
-        ContentBlockTestParam{
-            "Improve", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewImproveContentBlock(
-                  mojom::ImproveContentBlock::New(kTestContent));
-            }),
-            "brave-request-improve-excerpt-language"},
-        ContentBlockTestParam{
-            "Shorten", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewShortenContentBlock(
-                  mojom::ShortenContentBlock::New(kTestContent));
-            }),
-            "brave-request-shorten"},
-        ContentBlockTestParam{
-            "Expand", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewExpandContentBlock(
-                  mojom::ExpandContentBlock::New(kTestContent));
-            }),
-            "brave-request-expansion"},
         ContentBlockTestParam{
             "ChangeTone", base::BindRepeating([]() {
               return mojom::ContentBlock::NewChangeToneContentBlock(

@@ -60,6 +60,7 @@ struct GenerateRewriteTestParam {
   mojom::ContentBlock::Tag expected_content_type;
   int message_id;
   std::optional<std::string> tone;
+  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
 }  // namespace
@@ -2710,17 +2711,24 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         GenerateRewriteTestParam{
             "Paraphrase", mojom::ActionType::PARAPHRASE,
-            mojom::ContentBlock::Tag::kParaphraseContentBlock,
-            IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt},
-        GenerateRewriteTestParam{"Improve", mojom::ActionType::IMPROVE,
-                                 mojom::ContentBlock::Tag::kImproveContentBlock,
-                                 IDS_AI_CHAT_QUESTION_IMPROVE, std::nullopt},
-        GenerateRewriteTestParam{"Shorten", mojom::ActionType::SHORTEN,
-                                 mojom::ContentBlock::Tag::kShortenContentBlock,
-                                 IDS_AI_CHAT_QUESTION_SHORTEN, std::nullopt},
-        GenerateRewriteTestParam{"Expand", mojom::ActionType::EXPAND,
-                                 mojom::ContentBlock::Tag::kExpandContentBlock,
-                                 IDS_AI_CHAT_QUESTION_EXPAND, std::nullopt},
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock,
+            IDS_AI_CHAT_QUESTION_PARAPHRASE, std::nullopt,
+            mojom::SimpleRequestType::kParaphrase},
+        GenerateRewriteTestParam{
+            "Improve", mojom::ActionType::IMPROVE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock,
+            IDS_AI_CHAT_QUESTION_IMPROVE, std::nullopt,
+            mojom::SimpleRequestType::kImprove},
+        GenerateRewriteTestParam{
+            "Shorten", mojom::ActionType::SHORTEN,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock,
+            IDS_AI_CHAT_QUESTION_SHORTEN, std::nullopt,
+            mojom::SimpleRequestType::kShorten},
+        GenerateRewriteTestParam{
+            "Expand", mojom::ActionType::EXPAND,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock,
+            IDS_AI_CHAT_QUESTION_EXPAND, std::nullopt,
+            mojom::SimpleRequestType::kExpand},
         GenerateRewriteTestParam{
             "Academic", mojom::ActionType::ACADEMICIZE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock,

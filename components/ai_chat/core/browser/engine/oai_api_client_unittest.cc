@@ -487,28 +487,32 @@ INSTANTIATE_TEST_SUITE_P(
             LocalizedText{IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "casual"},
             std::nullopt},
         ContentBlockSerializationTestParam{
-            "Paraphrase", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewParaphraseContentBlock(
-                  mojom::ParaphraseContentBlock::New(""));
+            "SimpleRequest_Paraphrase", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kParaphrase));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_PARAPHRASE},
             std::nullopt},
         ContentBlockSerializationTestParam{
-            "Improve", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewImproveContentBlock(
-                  mojom::ImproveContentBlock::New(""));
+            "SimpleRequest_Improve", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kImprove));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_IMPROVE}, std::nullopt},
         ContentBlockSerializationTestParam{
-            "Shorten", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewShortenContentBlock(
-                  mojom::ShortenContentBlock::New(""));
+            "SimpleRequest_Shorten", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kShorten));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_SHORTEN}, std::nullopt},
         ContentBlockSerializationTestParam{
-            "Expand", base::BindRepeating([]() {
-              return mojom::ContentBlock::NewExpandContentBlock(
-                  mojom::ExpandContentBlock::New(""));
+            "SimpleRequest_Expand", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kExpand));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
