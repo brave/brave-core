@@ -13,6 +13,9 @@ if (is_win || is_mac || is_linux) {
       "ping_configurator_unittest.cc",
       "run_all_unittests.cc",
     ]
+    if (is_mac) {
+      sources += [ "activity_impl_util_mac_unittest.cc" ]
+    }
     deps = [
       "//base",
       "//base/test:test_support",
