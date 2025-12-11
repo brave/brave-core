@@ -7,8 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_STATE_MANAGER_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"

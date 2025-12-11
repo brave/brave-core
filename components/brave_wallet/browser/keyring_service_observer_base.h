@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_OBSERVER_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_OBSERVER_BASE_H_
 
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

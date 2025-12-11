@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_MESSAGE_ADDRESS_TABLE_LOOKUP_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/values.h"

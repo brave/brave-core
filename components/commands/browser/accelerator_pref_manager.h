@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_COMMANDS_BROWSER_ACCELERATOR_PREF_MANAGER_H_
 #define BRAVE_COMPONENTS_COMMANDS_BROWSER_ACCELERATOR_PREF_MANAGER_H_
 
-#include <string>
 #include <vector>
 
 #include "base/component_export.h"

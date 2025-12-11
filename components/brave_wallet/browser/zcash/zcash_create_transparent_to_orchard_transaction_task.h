@@ -11,7 +11,6 @@
 #include <string>
 #include <utility>
 #include <variant>
-#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"

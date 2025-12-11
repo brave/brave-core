@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_PROVIDER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_PROVIDER_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 

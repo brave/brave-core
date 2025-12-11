@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_TIME_LIMITED_WORDS_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_TIME_LIMITED_WORDS_H_
 
-#include <map>
 #include <string>
 
 #include "base/gtest_prod_util.h"

@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_DISCOVERY_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_DISCOVERY_MANAGER_H_
 
-#include <map>
 #include <memory>
 #include <queue>
-#include <string>
 #include <utility>
 #include <vector>
 

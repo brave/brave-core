@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
 
-#include <map>
 #include <string>
-#include <vector>
 
 #include "brave/components/brave_rewards/core/engine/database/database_table.h"
 

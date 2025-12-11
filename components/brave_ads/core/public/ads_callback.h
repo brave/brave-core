@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CALLBACK_H_
 
 #include <optional>
-#include <string>
 
 #include "base/functional/callback.h"
 #include "base/types/optional_ref.h"

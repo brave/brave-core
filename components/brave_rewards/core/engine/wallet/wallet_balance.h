@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_WALLET_WALLET_BALANCE_H_
 
 #include <string>
-#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"

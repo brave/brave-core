@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
 
 #include <functional>
-#include <map>
 #include <string>
 
 #include "base/memory/raw_ref.h"

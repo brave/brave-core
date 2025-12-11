@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_GOOGLE_SIGN_IN_PERMISSION_GOOGLE_SIGN_IN_PERMISSION_UTIL_H_
 #define BRAVE_COMPONENTS_GOOGLE_SIGN_IN_PERMISSION_GOOGLE_SIGN_IN_PERMISSION_UTIL_H_
 
-#include <string>
 #include <vector>
 
 #include "components/content_settings/core/common/content_settings_pattern.h"

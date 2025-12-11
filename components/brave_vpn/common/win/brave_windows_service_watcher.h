@@ -9,7 +9,6 @@
 #include <windows.h>
 
 #include <memory>
-#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/synchronization/waitable_event.h"

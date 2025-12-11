@@ -9,7 +9,6 @@
 #include <array>
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"

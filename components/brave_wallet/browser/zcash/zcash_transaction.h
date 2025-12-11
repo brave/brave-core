@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_H_
 
 #include <array>
-#include <map>
 #include <optional>
 #include <set>
 #include <string>

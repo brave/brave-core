@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_F4_JUMBLE_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/containers/span.h"
