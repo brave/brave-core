@@ -273,20 +273,21 @@ fn decode_unsigned_transfer_allow_death(
     Box::new(CxxPolkadotDecodeUnsignedTransferResult(r))
 }
 
-// Mortality tells the blockchain what range of blocks an extrinsic is valid
-// for. Validators use the period and phase to find the block hash included in
-// the payload, which they use to determine signature validity (and thus
-// transaction validity).
-//
-// We use a period of 64, as send thransactions should be of "high priority" and
-// thus subject to smaller mortality windows, i.e. we don't want an extrinsic
-// sitting in the memory pool while the world outside it continues to change.
-//
-// For information on how mortality is encoded, see the documentation at:
-// https://spec.polkadot.network/id-extrinsics#id-mortality
-//
-// Reference implementation:
-// https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/ExtrinsicEra.ts#L179-L204
+/// Mortality tells the blockchain what range of blocks an extrinsic is valid
+/// for. Validators use the period and phase to find the block hash included in
+/// the payload, which they use to determine signature validity (and thus
+/// transaction validity).
+///
+/// We use a period of 64, as send thransactions should be of "high priority"
+/// and thus subject to smaller mortality windows, i.e. we don't want an
+/// extrinsic sitting in the memory pool while the world outside it continues to
+/// change.
+///
+/// For information on how mortality is encoded, see the documentation at:
+/// https://spec.polkadot.network/id-extrinsics#id-mortality
+///
+/// Reference implementation:
+/// https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/ExtrinsicEra.ts#L179-L204
 fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     period = period.checked_next_power_of_two().unwrap().clamp(4, 1 << 16);
 
@@ -300,31 +301,31 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     [(encoded & 0xff) as u8, (encoded >> 8) as u8]
 }
 
-// The definition for the extrinsic signature can be found here:
-// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
-//
-// Extrinsic signatures are created using the following data:
-// P = { Raw if ||Raw|| <= 256, Blake2(Raw) if ||Raw|| > 256 }
-// Raw = (M_i, F_i(m), E, R_v, F_v, H_h(G), H_h(B))
-//
-// M_i = module indicator of the extrinsic (i.e. System, Balances, ...).
-// F_i(m) = function indicator of the module (i.e. call index, parameters).
-// E = extra data (mortality, nonce of sender, tip, mode).
-// R_v = spec_version of the runtime (fetched via state_getRuntimeVersion).
-// F_v = transaction version of the runtime (fetched via
-//       state_getRuntimeVersion).
-// H_h(G) = block hash of the genesis block.
-// H_h(B) = block hash of the block which starts the extrinsic's mortality.
-//
-// We return a binary blob containing all of these fields so that it's suitable
-// for cryptographic signing.
-//
-// The formal spec doesn't define it but here:
-// https://wiki.polkadot.com/learn/learn-transaction-construction/
-// we learn that metadata hashing can be applied to extrinsics but we disable
-// this verification by setting the mode to 0.
-// See also:
-// https://github.com/polkadot-fellows/RFCs/blob/85ca3ff275ded2e690c4c175d5333d12b139d863/text/0078-merkleized-metadata.md
+/// The definition for the extrinsic signature can be found here:
+/// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
+///
+/// Extrinsic signatures are created using the following data:
+/// P = { Raw if ||Raw|| <= 256, Blake2(Raw) if ||Raw|| > 256 }
+/// Raw = (M_i, F_i(m), E, R_v, F_v, H_h(G), H_h(B))
+///
+/// M_i = module indicator of the extrinsic (i.e. System, Balances, ...).
+/// F_i(m) = function indicator of the module (i.e. call index, parameters).
+/// E = extra data (mortality, nonce of sender, tip, mode).
+/// R_v = spec_version of the runtime (fetched via state_getRuntimeVersion).
+/// F_v = transaction version of the runtime (fetched via
+///       state_getRuntimeVersion).
+/// H_h(G) = block hash of the genesis block.
+/// H_h(B) = block hash of the block which starts the extrinsic's mortality.
+///
+/// We return a binary blob containing all of these fields so that it's suitable
+/// for cryptographic signing.
+///
+/// The formal spec doesn't define it but here:
+/// https://wiki.polkadot.com/learn/learn-transaction-construction/
+/// we learn that metadata hashing can be applied to extrinsics but we disable
+/// this verification by setting the mode to 0.
+/// See also:
+/// https://github.com/polkadot-fellows/RFCs/blob/85ca3ff275ded2e690c4c175d5333d12b139d863/text/0078-merkleized-metadata.md
 fn generate_extrinsic_signature_payload(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_nonce: u32,
