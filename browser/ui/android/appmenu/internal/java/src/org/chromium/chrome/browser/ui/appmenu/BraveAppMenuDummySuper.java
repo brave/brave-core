@@ -17,10 +17,11 @@ import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
 @NullMarked
 class BraveAppMenuDummySuper extends AppMenu {
     BraveAppMenuDummySuper(
-            AppMenuHandlerImpl handler,
+            AppMenuVisibilityDelegate visibilityDelegate,
             Resources res,
-            HierarchicalMenuController hierarchicalMenuController) {
-        super(handler, res, hierarchicalMenuController);
+            HierarchicalMenuController hierarchicalMenuController,
+            boolean disableVerticalScrollbar) {
+        super(visibilityDelegate, res, hierarchicalMenuController, disableVerticalScrollbar);
         assert false : "This class usage should be removed in the bytecode!";
     }
 
