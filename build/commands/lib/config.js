@@ -1184,8 +1184,8 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // Restrict remote execution to 160 parallel jobs.
-      const kRemoteLimit = 160
+      // Restrict remote execution jobs.
+      const kRemoteLimit = 600
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'
