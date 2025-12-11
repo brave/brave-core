@@ -682,6 +682,15 @@ const util = {
       ...config.extraNinjaOpts,
     ]
 
+    if (
+      config.isCI
+      && config.useSiso
+      && config.useRemoteExec
+      && config.hostOS === 'linux'
+    ) {
+      ninjaOpts.push('-config=remote-link')
+    }
+
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
