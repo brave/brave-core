@@ -350,6 +350,22 @@ export class MockedWalletApiProxy {
           return { dapps: [] }
       }
     },
+
+    getTokenByAddress: async (
+      chainId: string,
+      coin: BraveWallet.CoinType,
+      address: string,
+    ) => {
+      return {
+        token:
+          this.blockchainTokens.find(
+            (t) =>
+              t.chainId === chainId
+              && t.coin === coin
+              && t.contractAddress.toLowerCase() === address.toLowerCase(),
+          ) ?? null,
+      }
+    },
   }
 
   braveWalletService: Partial<
