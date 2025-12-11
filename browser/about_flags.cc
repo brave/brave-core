@@ -57,6 +57,8 @@
 #include "brave/components/ai_rewriter/common/features.h"
 #endif
 
+#include "brave/components/local_ai/common/features.h"
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
 #endif
@@ -659,6 +661,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #else
 #define BRAVE_AI_REWRITER
 #endif
+
+#define BRAVE_LOCAL_AI_MODELS                                 \
+  EXPAND_FEATURE_ENTRIES({                                    \
+      "brave-local-ai-models",                                \
+      "Brave Local AI Models",                                \
+      "Enables local AI models to be downloaded",             \
+      kOsWin | kOsMac | kOsLinux,                             \
+      FEATURE_VALUE_TYPE(local_ai::features::kLocalAIModels), \
+  })
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -1311,6 +1322,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
+  BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \
