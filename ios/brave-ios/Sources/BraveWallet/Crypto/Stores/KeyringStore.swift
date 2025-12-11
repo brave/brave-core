@@ -720,7 +720,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   @MainActor
-  public func webUIValidation() async -> Bool {
+  public func shouldUseWalletWebUI() async -> Bool {
     guard FeatureList.kBraveWalletWebUIIOS?.enabled == true
     else { return false }
 

@@ -72,7 +72,7 @@ extension BrowserViewController {
   func presentWallet() {
     Task {
       guard let walletStore = self.walletStore ?? newWalletStore() else { return }
-      if await walletStore.keyringStore.webUIValidation() == true {
+      if await walletStore.keyringStore.shouldUseWalletWebUI() == true {
         self.dismiss(animated: true) {
           self.tabManager.addTabAndSelect(
             URLRequest(url: .webUI.wallet.home),
