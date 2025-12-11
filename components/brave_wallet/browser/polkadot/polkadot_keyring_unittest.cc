@@ -364,8 +364,13 @@ TEST(PolkadotKeyring, EncodePrivateKeyForExport) {
 
   PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                           mojom::KeyringId::kPolkadotMainnet);
-  keyring.SetRandBytesForTesting(std::vector<uint8_t>(32, 1),
-                                 std::vector<uint8_t>(24, 2));
+  {
+    std::array<uint8_t, 32> seed_bytes;
+    seed_bytes.fill(1);
+    std::array<uint8_t, 24> nonce_bytes;
+    nonce_bytes.fill(2);
+    keyring.SetRandBytesForTesting(seed_bytes, nonce_bytes);
+  }
 
   // Test account 0
   {
@@ -411,8 +416,14 @@ TEST(PolkadotKeyring, EncodePrivateKeyForExport_Testnet) {
 
   PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
                           mojom::KeyringId::kPolkadotTestnet);
-  keyring.SetRandBytesForTesting(std::vector<uint8_t>(32, 1),
-                                 std::vector<uint8_t>(24, 2));
+
+  {
+    std::array<uint8_t, 32> seed_bytes;
+    seed_bytes.fill(1);
+    std::array<uint8_t, 24> nonce_bytes;
+    nonce_bytes.fill(2);
+    keyring.SetRandBytesForTesting(seed_bytes, nonce_bytes);
+  }
 
   // Test account 0
   {

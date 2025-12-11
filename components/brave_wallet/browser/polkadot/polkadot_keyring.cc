@@ -8,13 +8,13 @@
 #include "base/base64.h"
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/kdf.h"
 #include "crypto/random.h"
 
@@ -114,8 +114,8 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
 }
 
 void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
-    const std::vector<uint8_t>& seed_bytes,
-    const std::vector<uint8_t>& nonce_bytes) {
+    const std::array<uint8_t, kPolkadotEncryptionSaltSize>& seed_bytes,
+    const std::array<uint8_t, crypto_secretbox_NONCEBYTES>& nonce_bytes) {
   CHECK_IS_TEST();
   rand_seed_bytes_for_testing_ = seed_bytes;
   rand_nonce_bytes_for_testing_ = nonce_bytes;
@@ -130,14 +130,11 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     return std::nullopt;
   }
 
-  auto& keypair = EnsureKeyPair(account_index);
-  auto seed = keypair.GetExportKeyPkcs8();
-
-  // Get the address for this account.
+  auto pkcs8_key = EnsureKeyPair(account_index).GetExportKeyPkcs8();
   std::string address = GetAddress(account_index, kSubstratePrefix);
 
   // Generate a random salt for scrypt.
-  std::vector<uint8_t> salt(32);
+  std::array<uint8_t, kPolkadotEncryptionSaltSize> salt;
   if (rand_seed_bytes_for_testing_) {
     CHECK_IS_TEST();
     salt = rand_seed_bytes_for_testing_.value();
@@ -148,6 +145,7 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   // Derive encryption key from password using scrypt
   // Substrate/Polkadot standard parameters: n=32768, r=8, p=1.
   std::array<uint8_t, crypto_secretbox_KEYBYTES> derived_key;
+  // https://github.com/polkadot-js/common/blob/fe0886be239526e6c559e98d1099815d4b4f4a7f/packages/util-crypto/src/scrypt/defaults.ts#L10
   crypto::kdf::ScryptParams scrypt_params = {
       .cost = 32768,                         // n
       .block_size = 8,                       // r
@@ -156,13 +154,12 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   };
 
   if (!crypto::kdf::DeriveKeyScryptNoCheck(
-          scrypt_params, base::as_byte_span(password),
-          base::span<const uint8_t>(salt), derived_key)) {
+          scrypt_params, base::as_byte_span(password), salt, derived_key)) {
     return std::nullopt;
   }
 
   // Generate a random nonce for xsalsa20-poly1305.
-  std::vector<uint8_t> nonce(crypto_secretbox_NONCEBYTES);
+  std::array<uint8_t, crypto_secretbox_NONCEBYTES> nonce;
   if (rand_nonce_bytes_for_testing_) {
     CHECK_IS_TEST();
     nonce = rand_nonce_bytes_for_testing_.value();
@@ -171,15 +168,16 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   }
 
   // Encrypt the seed using NaCl secretbox (xsalsa20-poly1305).
-  std::vector<uint8_t> plaintext(seed.begin(), seed.end());
-  std::vector<uint8_t> padded_plaintext(crypto_secretbox_ZEROBYTES +
-                                        plaintext.size());
-  std::vector<uint8_t> ciphertext(padded_plaintext.size());
+  std::vector<uint8_t> padded_plaintext(
+      pkcs8_key.size() + crypto_secretbox_ZEROBYTES, 0);
+  std::vector<uint8_t> ciphertext = padded_plaintext;
 
-  // Pad plaintext with zeros (NaCl secretbox requirement).
-  for (size_t i = 0; i < plaintext.size(); ++i) {
-    padded_plaintext[i + crypto_secretbox_ZEROBYTES] = plaintext[i];
-  }
+  // Write pkcs8_key with padding.
+  base::SpanWriter padded_plaintext_writer = base::SpanWriter(
+      base::span(padded_plaintext)
+          .subspan(base::checked_cast<size_t>(crypto_secretbox_ZEROBYTES)));
+  padded_plaintext_writer.Write(pkcs8_key);
+  CHECK_EQ(padded_plaintext_writer.remaining(), 0u);
 
   if (crypto_secretbox(ciphertext.data(), padded_plaintext.data(),
                        padded_plaintext.size(), nonce.data(),
@@ -187,35 +185,36 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
     return std::nullopt;
   }
 
-  // Extract the actual ciphertext (skip the zero bytes prefix).
-  std::vector<uint8_t> encrypted_data(
-      ciphertext.begin() + crypto_secretbox_BOXZEROBYTES, ciphertext.end());
-
-  // Encode in polkadot-js format: scryptToU8a(salt, params) + nonce + encrypted
-  // scryptToU8a encodes: salt (32 bytes) + n (4 bytes LE) + r (4 bytes LE) + p
-  // (4 bytes LE).
+  // Encode in polkadot-js format: scryptToU8a(salt, params) + nonce +
+  // encrypted. Where encrypted size is pcks8 size + crypto_secretbox_ZEROBYTES
+  // - crypto_secretbox_BOXZEROBYTES. scryptToU8a encodes: salt (32 bytes) + n
+  // (4 bytes LE) + r (4 bytes LE) + p (4 bytes LE).
   // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L14
-  std::vector<uint8_t> encoded_bytes;
-  encoded_bytes.reserve(32 + 4 + 4 + 4 + nonce.size() + encrypted_data.size());
+  std::vector<uint8_t> encoded_bytes(salt.size() + 4 * 3 + nonce.size() +
+                                         ciphertext.size() -
+                                         crypto_secretbox_BOXZEROBYTES,
+                                     0);
+  auto encoded_bytes_span_writer = base::SpanWriter(base::span(encoded_bytes));
 
   // Add salt (32 bytes)
-  encoded_bytes.insert(encoded_bytes.end(), salt.begin(), salt.end());
+  encoded_bytes_span_writer.Write(salt);
 
   // Add scrypt parameters as 32-bit little-endian integers.
-  auto n_bytes = base::U32ToLittleEndian(scrypt_params.cost);
-  auto p_bytes = base::U32ToLittleEndian(scrypt_params.parallelization);
-  auto r_bytes = base::U32ToLittleEndian(scrypt_params.block_size);
-
-  encoded_bytes.insert(encoded_bytes.end(), n_bytes.begin(), n_bytes.end());
-  encoded_bytes.insert(encoded_bytes.end(), p_bytes.begin(), p_bytes.end());
-  encoded_bytes.insert(encoded_bytes.end(), r_bytes.begin(), r_bytes.end());
+  encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.cost);
+  encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.parallelization);
+  encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.block_size);
 
   // Add nonce.
-  encoded_bytes.insert(encoded_bytes.end(), nonce.begin(), nonce.end());
+  encoded_bytes_span_writer.Write(nonce);
 
   // Add encrypted data.
-  encoded_bytes.insert(encoded_bytes.end(), encrypted_data.begin(),
-                       encrypted_data.end());
+  // Extract the actual ciphertext (skip the zero bytes prefix).
+  auto payload =
+      base::span(ciphertext)
+          .subspan(base::checked_cast<size_t>(crypto_secretbox_BOXZEROBYTES));
+
+  encoded_bytes_span_writer.Write(payload);
+  CHECK_EQ(encoded_bytes_span_writer.remaining(), 0u);
 
   // Encode as base64 for the "encoded" field.
   std::string encoded = base::Base64Encode(encoded_bytes);

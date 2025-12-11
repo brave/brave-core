@@ -21,7 +21,7 @@ inline constexpr size_t kSr25519SeedSize = 32;
 inline constexpr size_t kSr25519SecretKeySize = 64;
 inline constexpr size_t kSr25519PublicKeySize = 32;
 inline constexpr size_t kSr25519SignatureSize = 64;
-inline constexpr size_t kSr25519Pkcs8Size = 85;
+inline constexpr size_t kSr25519Pkcs8Size = 117;
 
 // This class implements basic sr25519 functionality, which is a scheme for
 // signing and key derivation using Schnorr signatures, using Ristretto as a
@@ -51,8 +51,8 @@ class HDKeySr25519 {
   std::array<uint8_t, kSr25519SecretKeySize> GetSecretKey() const;
 
   // Get the export key in PKCS8 format for export purposes.
-  // Returns a vector containing PAIR_HDR + secretKey + PAIR_DIV + publicKey (85
-  // bytes total).
+  // Returns a vector containing PAIR_HDR + secretKey + PAIR_DIV + publicKey
+  // (117 bytes total).
   std::array<uint8_t, kSr25519Pkcs8Size> GetExportKeyPkcs8() const;
 
   // Sign the provided binary blob and get the 64-byte signature that can be
