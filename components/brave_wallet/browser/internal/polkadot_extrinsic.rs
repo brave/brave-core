@@ -79,6 +79,8 @@ mod ffi {
             mut input: &[u8],
         ) -> Box<CxxPolkadotDecodeUnsignedTransferResult>;
 
+        fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2];
+
         fn generate_extrinsic_signature_payload(
             chain_metadata: &CxxPolkadotChainMetadata,
             sender_nonce: u32,
@@ -285,13 +287,13 @@ fn decode_unsigned_transfer_allow_death(
 //
 // Reference implementation:
 // https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/ExtrinsicEra.ts#L179-L204
-fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2] {
-    assert!(period >= 4 && period.is_power_of_two());
+fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
+    period = period.checked_next_power_of_two().unwrap_or(1 << 16).clamp(4, 1 << 16);
 
     let phase = number % period;
     let factor = (period >> 12).max(1);
 
-    let left = 15.min((period.trailing_zeros().saturating_sub(1)).max(1));
+    let left = period.trailing_zeros().saturating_sub(1).clamp(1, 15);
     let right = (phase / factor) << 4;
     let encoded = u16::try_from(left | right).unwrap();
 

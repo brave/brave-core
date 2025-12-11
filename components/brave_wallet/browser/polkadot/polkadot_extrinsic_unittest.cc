@@ -413,6 +413,53 @@ TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
                                                 testnet_extrinsic));
 }
 
+TEST(PolkadotExtrinsics, MortalityEncoding) {
+  // clang-format off
+  /*
+    Test vectors were generated using the polkadot-sdk:
+
+    use parity_scale_codec::Encode;
+    use polkadot_sdk::frame_support::sp_runtime::generic::Era;
+
+    fn to_hex_string(xs: &[u8]) -> String {
+        xs.iter().map(|b| format!("{b:02x}")).collect()
+    }
+
+    let era = Era::mortal(64, 0);
+    let x = era.encode();
+    assert_eq!(to_hex_string(&x), "0500");
+
+    ...
+  */
+  // clang-format on
+
+  // Test numeric limits for the block number, from 0 to u32::MAX.
+  auto x = scale_encode_mortality(0, 64);
+  EXPECT_EQ(base::HexEncodeLower(x), "0500");
+
+  x = scale_encode_mortality(std::numeric_limits<uint32_t>::max(), 64);
+  EXPECT_EQ(base::HexEncodeLower(x), "f503");
+
+  // Test numeric limits for the period, which is defined to be 4 to 1 << 16.
+  x = scale_encode_mortality(1234, 4);
+  EXPECT_EQ(base::HexEncodeLower(x), "2100");
+
+  x = scale_encode_mortality(1234, 3);
+  EXPECT_EQ(base::HexEncodeLower(x), "2100");
+
+  x = scale_encode_mortality(1234, 0);
+  EXPECT_EQ(base::HexEncodeLower(x), "2100");
+
+  x = scale_encode_mortality(1234, 1 << 16);
+  EXPECT_EQ(base::HexEncodeLower(x), "df04");
+
+  x = scale_encode_mortality(1234, (1 << 16) - 1);
+  EXPECT_EQ(base::HexEncodeLower(x), "df04");
+
+  x = scale_encode_mortality(1234, 1 << 17);
+  EXPECT_EQ(base::HexEncodeLower(x), "df04");
+}
+
 TEST(PolkadotExtrinsics, SignaturePayload) {
   auto testnet_metadata =
       PolkadotChainMetadata::FromChainName(kWestendChainType).value();
