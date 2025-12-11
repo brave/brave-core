@@ -71,11 +71,11 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletWebUIIOS)) {
     if (url_host == kUntrustedNftHost) {
-      return &NewWebUIIOS<nft::UntrustedNftUI>;
+      return &NewRegularProfileOnlyWebUIIOS<nft::UntrustedNftUI>;
     } else if (url_host == kUntrustedMarketHost) {
-      return &NewWebUIIOS<market::UntrustedMarketUI>;
+      return &NewRegularProfileOnlyWebUIIOS<market::UntrustedMarketUI>;
     } else if (url_host == kUntrustedLineChartHost) {
-      return &NewWebUIIOS<line_chart::UntrustedLineChartUI>;
+      return &NewRegularProfileOnlyWebUIIOS<line_chart::UntrustedLineChartUI>;
     }
   }
 
@@ -109,7 +109,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kWalletPageHost &&
              base::FeatureList::IsEnabled(
                  brave_wallet::features::kBraveWalletWebUIIOS)) {
-    return &NewWebUIIOS<WalletPageUI>;
+    return &NewRegularProfileOnlyWebUIIOS<WalletPageUI>;
   }
   return nullptr;
 }
