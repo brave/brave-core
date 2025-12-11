@@ -52,8 +52,7 @@ std::array<uint8_t, kSr25519SecretKeySize> HDKeySr25519::GetSecretKey() const {
 
 std::array<uint8_t, kSr25519Pkcs8Size> HDKeySr25519::GetExportKeyPkcs8() const {
   CHECK(IsBoxNonNull(keypair_));
-  auto rust_vec = keypair_->get_export_key_pkcs8();
-  return std::vector<uint8_t>(rust_vec.begin(), rust_vec.end());
+  return keypair_->get_export_key_pkcs8();
 }
 
 std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(

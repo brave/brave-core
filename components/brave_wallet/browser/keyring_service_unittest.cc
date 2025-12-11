@@ -1399,8 +1399,14 @@ TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
         keyring_service.GetKeyring<PolkadotKeyring>(
             mojom::KeyringId::kPolkadotTestnet);
     ASSERT_TRUE(polkadot_keyring);
-    polkadot_keyring->SetRandBytesForTesting(std::vector<uint8_t>(32, 1),
-                                             std::vector<uint8_t>(24, 2));
+    {
+      std::array<uint8_t, 24> nonce_bytes;
+      nonce_bytes.fill(2);
+      std::array<uint8_t, 32> seed_bytes;
+      seed_bytes.fill(32);
+      polkadot_keyring->SetRandBytesForTesting(seed_bytes, nonce_bytes);
+      polkadot_keyring_testnet->SetRandBytesForTesting(seed_bytes, nonce_bytes);
+    }
 
     // Account 1.
     auto polkadot_account =

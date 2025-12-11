@@ -19,7 +19,7 @@ mod ffi {
         // Absolutely do not use in production.
         fn use_mock_rng_for_testing(self: &mut CxxSchnorrkelKeyPair);
         fn get_secret_key(self: &CxxSchnorrkelKeyPair) -> [u8; 64];
-        fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> Vec<u8>;
+        fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> [u8; 117];
         fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64];
         fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
     }
@@ -40,6 +40,7 @@ const SIGNING_CTX: &'static [u8] = b"substrate";
 // equivalent to the chaincode len
 const JUNCTION_ID_LEN: usize = 32;
 
+// https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/defaults.ts#L5
 // public/secret section divider.
 const PAIR_DIV: &[u8] = &[161, 35, 3, 33, 0];
 // public/secret start block.
@@ -75,7 +76,7 @@ impl CxxSchnorrkelKeyPair {
         self.keypair.secret.to_bytes()
     }
 
-    fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> [u8l 85] {
+    fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> [u8; 117] {
         // Export in PKCS8 format: PAIR_HDR + secretKey + PAIR_DIV + publicKey.
         // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L19
         let secret_key = self.keypair.secret.to_bytes();
@@ -88,7 +89,7 @@ impl CxxSchnorrkelKeyPair {
         result.extend_from_slice(&secret_key);
         result.extend_from_slice(PAIR_DIV);
         result.extend_from_slice(&public_key);
-        result
+        result.try_into().unwrap()
     }
 
     fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64] {
