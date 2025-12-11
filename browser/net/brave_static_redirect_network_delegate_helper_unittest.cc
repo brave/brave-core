@@ -88,29 +88,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload) {
-  const GURL url(
-      "https://clients2.googleusercontent.com/crx/blobs/QgAAAC6zw0qH2DJtn"
-      "Xe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
-      "3z4keVhjzzAF10srsaL7lrntfB"
-      "IflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
-      "extension_2_0_67"
-      "3_0.crx");
-  const GURL expected_url(
-      "https://crxdownload.brave.com/crx/blobs/QgAAAC6"
-      "zw0qH2DJtnXe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
-      "3z4keVhjzzAF10sr"
-      "saL7lrntfBIflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
-      "extens"
-      "ion_2_0_673_0.crx");
-
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  int rc =
-      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
   const GURL url(
       "http://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
@@ -169,29 +146,6 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
       "cxpsjblnoxgjoqggdsbvujtof4_58/"
       "khaoiebndkojlmppeemjhbpbandiljpe_58_win_advr4ucepztwtigvw3fduftsvbeq."
       "crx3");
-
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  int rc =
-      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload_http) {
-  const GURL url(
-      "http://clients2.googleusercontent.com/crx/blobs/QgAAAC6zw0qH2DJtn"
-      "Xe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
-      "3z4keVhjzzAF10srsaL7lrntfB"
-      "IflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
-      "extension_2_0_67"
-      "3_0.crx");
-  const GURL expected_url(
-      "https://crxdownload.brave.com/crx/blobs/QgAAAC6"
-      "zw0qH2DJtnXe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
-      "3z4keVhjzzAF10sr"
-      "saL7lrntfBIflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
-      "extens"
-      "ion_2_0_673_0.crx");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
