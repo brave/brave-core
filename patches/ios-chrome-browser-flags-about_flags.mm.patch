@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index bb625c3acf6e0c1fbccaabb41c55373b25e672bb..2cd391c58900b88fd63a00070b2d54e9fa1ca4ab 100644
+index 5d23e00499f5f3918e86d97577fec8f28cd7990a..40a93b1d27b4e57aebc4b5de481b792ff64cf395 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1517,6 +1517,7 @@ const FeatureEntry::FeatureVariation kZeroStateSuggestionsVariations[] = {
