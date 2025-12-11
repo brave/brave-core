@@ -69,7 +69,7 @@ import os
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
-      if FeatureList.kBraveShieldsContentSettings.enabled {
+      if shouldWriteToContentSettings {
         braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
@@ -79,7 +79,7 @@ import os
   @Published var isBlockScriptsEnabled: Bool {
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
-      if FeatureList.kBraveShieldsContentSettings.enabled {
+      if shouldWriteToContentSettings {
         braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
@@ -89,7 +89,7 @@ import os
   @Published var isBlockFingerprintingEnabled: Bool {
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
-      if FeatureList.kBraveShieldsContentSettings.enabled {
+      if shouldWriteToContentSettings {
         braveShieldsSettings?.defaultFingerprintMode =
           isBlockFingerprintingEnabled ? .standardMode : .allowMode
       }
@@ -108,7 +108,7 @@ import os
   }
   @Published var shredLevel: SiteShredLevel {
     didSet {
-      if FeatureList.kBraveShieldsContentSettings.enabled {
+      if shouldWriteToContentSettings {
         braveShieldsSettings?.defaultAutoShredMode = shredLevel.autoShredMode
       }
       Preferences.Shields.shredLevel = shredLevel
@@ -135,6 +135,19 @@ import os
     didSet {
       rewards?.ads.isSurveyPanelistEnabled = isSurveyPanelistEnabled
     }
+  }
+
+  /// If we should write Shields setting changes to content settings.
+  private var shouldWriteToContentSettings: Bool {
+    // If Shields content settings feature flag is enabled, we should always
+    // write. However if Shields content settings is disabled, but we've
+    // already performed the migration to content settings, we should write so
+    // no data is lost when they re-enable the flag. This could happen if we
+    // roll out the feature flag using percentages as there is no guarantee
+    // that a user in the first study at say 25%, would be included in the
+    // follow-up studies.
+    return FeatureList.kBraveShieldsContentSettings.enabled
+      || Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value
   }
 
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void

@@ -8,6 +8,14 @@ import Preferences
 
 extension Preferences {
   public final class Shields {
+    public struct Migration {
+      /// If shields have been migrated from Domain CoreData object to chromium
+      /// content settings.
+      public static let shieldsCoreDataToContentSettingsCompleted = Preferences.Option<Bool>(
+        key: "migration.shields-coredata-to-content-settings-completed",
+        default: false
+      )
+    }
     public static let allShields = [
       googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,
     ]

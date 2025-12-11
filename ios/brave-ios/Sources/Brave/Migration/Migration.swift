@@ -13,6 +13,7 @@ import Shared
 import Storage
 import os.log
 
+@MainActor
 public class BraveProfileMigrations {
   let profileController: BraveProfileController
   public init(profileController: BraveProfileController) {
@@ -25,6 +26,7 @@ public class BraveProfileMigrations {
     migrateDefaultUserAgentPreferences()
     migrateBlockPopupsPreferences()
     migrateSyncPasswordsDefault()
+    migrateShieldsToContentSettings()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -55,6 +57,22 @@ public class BraveProfileMigrations {
     let debounceService = DebounceServiceFactory.get(privateMode: false)
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
+  }
+
+  @MainActor public func migrateShieldsToContentSettings() {
+    guard FeatureList.kBraveShieldsContentSettings.enabled,
+      !Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value,
+      let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
+        profile: profileController.profile
+      )
+    else {
+      return
+    }
+    defer { Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value = true }
+    let domainsToMigrate = Domain.allDomainsWithExlicitShieldSettings()
+    // migrate global / default settings first, then site-specific
+    braveShieldsSettings.migrateGlobalSettings()
+    braveShieldsSettings.migrateShieldsToContentSettings(for: domainsToMigrate)
   }
 
   /// Migrate sync passwords default value to enabled.

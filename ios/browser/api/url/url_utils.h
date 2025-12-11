@@ -37,6 +37,11 @@ OBJC_EXPORT
 /// Returns the canonicalized URL's spec.
 @property(readonly) NSString* brave_spec NS_SWIFT_NAME(spec);
 
+@property(readonly)
+    NSString* brave_hostPatternString NS_SWIFT_NAME(hostPatternString);
+@property(readonly)
+    NSString* brave_domainPatternString NS_SWIFT_NAME(domainPatternString);
+
 /// Appends the key=value query parameter, escaping if needed.
 - (NSURL*)brave_addingQueryParameter:(NSString*)key
                                value:(NSString*)value
