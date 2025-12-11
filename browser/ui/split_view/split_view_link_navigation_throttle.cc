@@ -6,6 +6,7 @@
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "content/public/browser/navigation_handle.h"
@@ -15,12 +16,11 @@
 // static
 void SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry) {
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return;
+  if (base::FeatureList::IsEnabled(features::kSideBySide) &&
+      base::FeatureList::IsEnabled(split_view::features::kSplitViewLink)) {
+    registry.AddThrottle(
+        std::make_unique<SplitViewLinkNavigationThrottle>(registry));
   }
-
-  registry.AddThrottle(
-      std::make_unique<SplitViewLinkNavigationThrottle>(registry));
 }
 
 SplitViewLinkNavigationThrottle::SplitViewLinkNavigationThrottle(

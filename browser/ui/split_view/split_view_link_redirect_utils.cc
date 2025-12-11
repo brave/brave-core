@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -153,13 +154,9 @@ namespace split_view {
 bool MaybeRedirectToRightPane(content::WebContents* source,
                               const GURL& url,
                               const content::Referrer& referrer) {
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return false;
-  }
-
-  if (!source) {
-    return false;
-  }
+  CHECK(base::FeatureList::IsEnabled(features::kSplitViewLink) &&
+        base::FeatureList::IsEnabled(::features::kSideBySide));
+  CHECK(source);
 
   bool from_window_open = false;
   content::WebContents* target_contents =
@@ -209,6 +206,10 @@ bool MaybeRedirectToRightPane(content::WebContents* source,
 bool SetSplitTabIdForRedirect(content::WebContents* source,
                               content::WebContents* new_contents) {
   CHECK(source && new_contents);
+
+  if (!base::FeatureList::IsEnabled(features::kSplitViewLink)) {
+    return false;
+  }
 
   // Get the split tab ID from the source
   tabs::TabInterface* source_tab =

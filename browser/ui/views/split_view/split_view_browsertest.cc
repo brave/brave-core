@@ -8,6 +8,7 @@
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -978,7 +979,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
 // target="_blank" links).
 class SplitViewLinkTest : public SplitViewCommonBrowserTest {
  public:
-  SplitViewLinkTest() = default;
+  SplitViewLinkTest() {
+    // Enable the split view link feature for these tests
+    scoped_features_.InitAndEnableFeature(split_view::features::kSplitViewLink);
+  }
   ~SplitViewLinkTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -1076,6 +1080,9 @@ class SplitViewLinkTest : public SplitViewCommonBrowserTest {
 
     return nullptr;
   }
+
+ protected:
+  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
@@ -1639,4 +1646,101 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
            "on "
            "existing WebContents.";
   }
+}
+
+// Test class for testing that split view link feature can be disabled
+class SplitViewLinkDisabledTest : public SplitViewLinkTest {
+ public:
+  SplitViewLinkDisabledTest() {
+    // Override parent class to explicitly disable the split view link feature
+    // Reset as disabled is by default.
+    scoped_features_.Reset();
+  }
+  ~SplitViewLinkDisabledTest() override = default;
+};
+
+// Test that when the feature is disabled, normal links navigate normally
+// in the left pane (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       NormalLinkDoesNotRedirectWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in left pane
+  left_pane_observer.Wait();
+
+  // With feature disabled, left pane should navigate normally
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
+}
+
+// Test that when the feature is disabled, target="_blank" links create
+// new tabs (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       TargetBlankLinkOpensNewTabWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // With feature disabled, a new tab should be created
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
 }

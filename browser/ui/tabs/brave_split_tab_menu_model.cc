@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -39,7 +40,9 @@ BraveSplitTabMenuModel::BraveSplitTabMenuModel(
     RemoveItemAt(separator_index);
   }
 
-  AddItem(GetCommandIdInt(CommandId::kToggleLinkState), std::u16string());
+  if (base::FeatureList::IsEnabled(split_view::features::kSplitViewLink)) {
+    AddItem(GetCommandIdInt(CommandId::kToggleLinkState), std::u16string());
+  }
 }
 
 BraveSplitTabMenuModel::~BraveSplitTabMenuModel() = default;

@@ -5,6 +5,8 @@
 
 source_set("split_view") {
   sources = [
+    "split_view_features.cc",
+    "split_view_features.h",
     "split_view_link_navigation_throttle.cc",
     "split_view_link_navigation_throttle.h",
     "split_view_link_redirect_utils.cc",
@@ -12,6 +14,7 @@ source_set("split_view") {
   ]
 
   deps = [
+    "//base",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",

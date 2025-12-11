@@ -11,6 +11,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:tab_model",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
