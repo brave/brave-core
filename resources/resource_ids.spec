@@ -1,9 +1,10 @@
-# Since recent changes upstream, Chromium is now using almost the entire ID
+# Since cr144 changes upstream, Chromium is now using almost the entire ID
 # range of //out/<BUILD_TYPE>/gen/tools/gritsettings/default_resource_ids). We
 # now filter out all chromeos/ash entries by doing additional pre-processing of
 # tools/gritsettings/resource_ids.spec via //brave/tools/gritsettings filter.
-# Currently, after filtering the upstreams IDs range reaches ~51,000. Leaving
-# a slight gap and starting ours from 53,000.
+# Currently, after filtering the upstreams IDs range reaches ~43,500. Leaving
+# a gap for upstream to expand, we will be starting our strings from 53,000.
+# This would currently put the end of our strings at ~58,000.
 {
   "SRCDIR": "../..",
   "brave/common/extensions/api/brave_api_resources.grd": {

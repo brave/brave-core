@@ -5,7 +5,7 @@
 
 filtered_resource_id_file =
     get_label_info("//tools/gritsettings:default_resource_ids",
-                   "target_gen_dir") + "/filtered_default_resource_ids"
+                   "target_gen_dir") + "/filtered_default_resource_ids.spec"
 
 filtered_resource_id_file_path =
     rebase_path(filtered_resource_id_file, root_build_dir)
