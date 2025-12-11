@@ -18,6 +18,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -35,9 +36,11 @@
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/ios/browser/ui/webui/ai_chat/associated_url_content.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/navigation/navigation_context.h"
@@ -374,9 +377,36 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const GURL& url,
     const std::string& title,
     const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/51184 Add support
-  // for associating bookmarks/history
-  NOTIMPLEMENTED();
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  if (!bridge) {
+    return;
+  }
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(owner_web_state_->GetBrowserState());
+  AIChatService* service = AIChatServiceFactory::GetForProfile(profile);
+  ProfileBridgeImpl* profileBridge =
+      [[ProfileBridgeImpl alloc] initWithProfile:profile];
+  auto callback = base::CallbackToBlock(base::BindOnce(
+      &AIChatUIPageHandler::OnFetchContextForAssociatingUrlContent,
+      weak_ptr_factory_.GetWeakPtr(), url, base::UTF8ToUTF16(title),
+      conversation_uuid, service));
+  [bridge contextForAssociatingURLContentForProfile:profileBridge
+                                  completionHandler:callback];
+}
+
+void AIChatUIPageHandler::OnFetchContextForAssociatingUrlContent(
+    const GURL& url,
+    const std::u16string title,
+    const std::string& conversation_uuid,
+    AIChatService* service,
+    id<AIChatAssociatedURLContentContext> context) {
+  if (!context) {
+    return;
+  }
+  auto content =
+      std::make_unique<ai_chat::AssociatedURLContent>(url, title, context);
+  service->AssociateOwnedContent(std::move(content), conversation_uuid);
 }
 
 void AIChatUIPageHandler::DisassociateContent(
