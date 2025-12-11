@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import './local_ai_internals.mojom.m.js'
+import {
+  PageHandler,
+} from 'gen/brave/components/local_ai/common/local_ai_internals.mojom.m.js'
 
 console.log('[Local AI Internals] Script loaded')
 
 // Initialize Mojo connection to page handler
-const pageHandler = mojom.PageHandler.getRemote()
+const pageHandler = PageHandler.getRemote()
 
-const serviceStatus = document.getElementById('serviceStatus')
-const compareBtn = document.getElementById('compareBtn')
-const text1Input = document.getElementById('text1')
-const text2Input = document.getElementById('text2')
-const result = document.getElementById('result')
+const serviceStatus = document.getElementById('serviceStatus')!
+const compareBtn = document.getElementById('compareBtn')! as HTMLButtonElement
+const text1Input = document.getElementById('text1')! as HTMLInputElement
+const text2Input = document.getElementById('text2')! as HTMLInputElement
+const result = document.getElementById('result')!
 
 // Update status to show service is shared
 // Use DOM APIs instead of innerHTML to avoid Trusted Types violations
@@ -35,7 +37,7 @@ serviceStatus.style.background = '#e8f5e9'
 compareBtn.disabled = false
 
 // Calculate cosine similarity between two vectors
-function cosineSimilarity(vec1, vec2) {
+function cosineSimilarity(vec1: number[], vec2: number[]): number {
   if (vec1.length !== vec2.length) {
     throw new Error('Vectors must have the same length')
   }
@@ -59,7 +61,7 @@ function cosineSimilarity(vec1, vec2) {
 }
 
 // Get similarity interpretation
-function getSimilarityInterpretation(similarity) {
+function getSimilarityInterpretation(similarity: number) {
   if (similarity >= 0.9) {
     return { label: 'Very High', color: '#4caf50', bg: '#e8f5e9' }
   } else if (similarity >= 0.7) {
@@ -129,7 +131,7 @@ compareBtn.addEventListener('click', async () => {
     result.style.background = interpretation.bg
     result.style.borderLeftColor = interpretation.color
   } catch (error) {
-    result.textContent = `Error: ${error.message || error}`
+    result.textContent = `Error: ${(error as Error).message || error}`
     result.style.display = 'block'
     result.style.background = '#ffebee'
     result.style.borderLeftColor = '#f44336'
