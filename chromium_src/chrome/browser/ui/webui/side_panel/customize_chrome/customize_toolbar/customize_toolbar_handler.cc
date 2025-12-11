@@ -11,7 +11,7 @@
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/grit/generated_resources.h"
+#include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
 
 #define ListCategories ListCategories_ChromiumImpl
