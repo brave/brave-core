@@ -138,6 +138,17 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
   }
   vertical_tab_strip_bounds.set_width(width);
+
+#if BUILDFLAG(IS_MAC)
+  // If host's final width is zero, it means vertical tab is hidden or in
+  // floating mode. In floating mode, vertical tab refers host's origin and
+  // height and update width from it.
+  // To prevent overlap with frame border, set insets for frame border width.
+  if (width == 0 && !IsFullscreenForBrowser()) {
+    vertical_tab_strip_bounds.Inset(GetFrameBorderInsetsForVerticalTab());
+  }
+#endif
+
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
@@ -473,12 +484,16 @@ gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
 
   // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
   // that line
-  auto new_insets(insets);
+  return insets + GetFrameBorderInsetsForVerticalTab();
+}
+
+gfx::Insets BraveBrowserViewLayout::GetFrameBorderInsetsForVerticalTab() const {
+  gfx::Insets insets_for_frame_border;
   if (tabs::utils::IsVerticalTabOnRight(browser())) {
-    new_insets.set_right(1 + insets.right());
+    insets_for_frame_border.set_right(1);
   } else {
-    new_insets.set_left(1 + insets.left());
+    insets_for_frame_border.set_left(1);
   }
-  return new_insets;
+  return insets_for_frame_border;
 }
 #endif
