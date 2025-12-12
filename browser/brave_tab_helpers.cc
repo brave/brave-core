@@ -200,9 +200,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 
+  misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
+
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
-    misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
     if (base::FeatureList::IsEnabled(
             request_otr::features::kBraveRequestOTRTab)) {

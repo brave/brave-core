@@ -12,6 +12,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
+class BrowserContext;
 class NavigationHandle;
 }  // namespace content
 
@@ -38,7 +39,8 @@ class PageMetricsTabHelper
 
   bool CheckNavigationEvent(content::NavigationHandle* navigation_handle);
 
-  raw_ptr<PageMetrics> page_metrics_;
+  raw_ptr<content::BrowserContext> browser_context_;
+  raw_ptr<PageMetrics> page_metrics_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
