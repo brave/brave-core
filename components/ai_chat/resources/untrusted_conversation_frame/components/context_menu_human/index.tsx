@@ -42,7 +42,6 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
           className={classnames({
             [styles.moreButton]: true,
             [styles.moreButtonActive]: props.isOpen,
-            [styles.moreButtonHide]: conversationContext.isMobile,
           })}
         >
           <Icon name='more-vertical' />
