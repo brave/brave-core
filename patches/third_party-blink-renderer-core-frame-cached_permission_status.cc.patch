@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/cached_permission_status.cc b/third_party/blink/renderer/core/frame/cached_permission_status.cc
-index f424a0b5ecad4e9a016e8ac7d8af009f69041a53..23b825a1e383b7fd03645e18701637b7165dc3ba 100644
+index d17de7af08e0f54673ffd781f47ce5e891836525..d0496902ce765c8f696fe232e98ea153a495121d 100644
 --- a/third_party/blink/renderer/core/frame/cached_permission_status.cc
 +++ b/third_party/blink/renderer/core/frame/cached_permission_status.cc
 @@ -15,7 +15,6 @@ using mojom::blink::PermissionDescriptorPtr;
@@ -10,7 +10,7 @@ index f424a0b5ecad4e9a016e8ac7d8af009f69041a53..23b825a1e383b7fd03645e18701637b7
  
  // static
  CachedPermissionStatus* CachedPermissionStatus::From(LocalDOMWindow* window) {
-@@ -45,7 +44,7 @@ void CachedPermissionStatus::Trace(Visitor* visitor) const {
+@@ -47,7 +46,7 @@ void CachedPermissionStatus::Trace(Visitor* visitor) const {
  void CachedPermissionStatus::RegisterClient(
      Client* client,
      const Vector<PermissionDescriptorPtr>& permissions) {

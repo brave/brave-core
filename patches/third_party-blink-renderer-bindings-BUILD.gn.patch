@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index 1a9dfc4c1689e8d592b2a6f97bf5ca8c9064e621..d2aba224db34554900e0c45b9974fd1f6444c655 100644
+index c11ab5aa4a70d9a3303189193fd8f8453139d018..77d981ddb979b9d167c4c6896c2e97d3f82b80c9 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
-@@ -146,6 +146,7 @@ action_with_pydeps("web_idl_database") {
+@@ -145,6 +145,7 @@ action_with_pydeps("web_idl_database") {
             rebase_path(runtime_enabled_features_file, root_build_dir),
             "--",
           ] + rebase_path(input_data_files, root_build_dir)
@@ -10,7 +10,7 @@ index 1a9dfc4c1689e8d592b2a6f97bf5ca8c9064e621..d2aba224db34554900e0c45b9974fd1f
  }
  
  template("generate_bindings") {
-@@ -203,6 +204,7 @@ template("generate_bindings") {
+@@ -202,6 +203,7 @@ template("generate_bindings") {
      args += invoker.targets
  
      deps = [ ":web_idl_database" ]
