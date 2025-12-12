@@ -58,6 +58,8 @@ class PolkadotChainMetadata {
 // concrete, specific extrinsic. All extrinsics support being encoded as binary
 // and decoded from binary.
 struct PolkadotUnsignedExtrinsic {
+  virtual ~PolkadotUnsignedExtrinsic();
+
   // Transform the current extrinsic into a string containing the hex-encoding
   // of its binary serialization.
   virtual std::string Encode(
