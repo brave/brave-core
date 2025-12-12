@@ -67,6 +67,7 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
       rich_media_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
   std::unique_ptr<brave_rewards::RewardsPageHandler> rewards_page_handler_;
+  bool was_restored_ = false;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
