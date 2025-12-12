@@ -216,7 +216,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
               set: { newValue in
                 if !newValue {
                   // dismiss menu if we're dismissing backup from menu
-                  isShowingMainMenu = false
+                  DispatchQueue.main.async {
+                    isShowingMainMenu = false
+                  }
                 }
                 isShowingBackup = newValue
               }
@@ -243,7 +245,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
               set: { newValue in
                 if !newValue {
                   // dismiss menu if we're dismissing add account from menu
-                  isShowingMainMenu = false
+                  DispatchQueue.main.async {
+                    isShowingMainMenu = false
+                  }
                 }
                 isShowingAddAccount = newValue
               }

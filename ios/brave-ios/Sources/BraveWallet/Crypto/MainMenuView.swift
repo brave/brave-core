@@ -91,7 +91,7 @@ struct MainMenuView: View {
     }
     .background(Color(braveSystemName: .containerBackground))
     .presentationDetents([
-      .height(viewHeight)
+      viewHeight == 0 ? .medium : .height(viewHeight)
     ])
   }
 
