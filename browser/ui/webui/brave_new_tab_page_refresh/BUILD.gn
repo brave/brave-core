@@ -83,3 +83,31 @@ source_set("brave_new_tab_page_refresh") {
     ]
   }
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_ads",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/browser:test_support",
+    "//chrome/browser/profiles/keep_alive",
+    "//chrome/browser/sessions",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

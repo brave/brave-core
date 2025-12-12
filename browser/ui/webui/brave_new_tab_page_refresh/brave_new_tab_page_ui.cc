@@ -29,6 +29,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -49,6 +51,12 @@ using brave_new_tab_page_refresh::VPNFacade;
 BraveNewTabPageUI::BraveNewTabPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui, /* enable_chrome_send = */ true) {
   NewTabPageInitializer(*web_ui).Initialize();
+
+  auto* web_contents = web_ui->GetWebContents();
+  CHECK(web_contents);
+  const content::NavigationEntry* navigation_entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  was_restored_ = navigation_entry && navigation_entry->IsRestored();
 }
 
 BraveNewTabPageUI::~BraveNewTabPageUI() = default;
@@ -80,7 +88,14 @@ void BraveNewTabPageUI::BindInterface(
       std::move(background_facade), std::move(top_sites_facade),
       std::move(vpn_facade), *web_contents, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
-      *g_brave_browser_process->process_misc_metrics()->new_tab_metrics());
+      *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
+      was_restored_);
+
+  // Reset `was_restored_` flag so with the next reload the current tab won't be
+  // treated as a restored tab.
+  // TODO(https://github.com/brave/brave-browser/issues/51359): Use tab
+  // visibility instead of `was_restored_` flag.
+  was_restored_ = false;
 }
 
 void BraveNewTabPageUI::BindInterface(
