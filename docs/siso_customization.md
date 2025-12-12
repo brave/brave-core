@@ -51,7 +51,7 @@ We make several adjustments to make the build system work for us:
 
 #### Timeout Adjustments
 
-Build nodes are typically slow, so we give some build steps extra time to
+Build nodes are typically single-core, so we give some build steps extra time to
 complete.
 
 - **Clang rules get 10-minute timeouts**
@@ -135,9 +135,9 @@ file:
 solutions = [
   {
     "custom_vars": {
-      "reapi_instance": "default",  # your instance name
-      "reapi_address": "remotebuild.example.com:443",  # your backend address
-      "reapi_backend_config_path": "google.star",  # backend config
+      "reapi_address": "remotebuild.example.com:443",
+      "reapi_backend_config_path": "/path/to/backend.star",
+      "reapi_instance": "default",
     },
   }
 ]
@@ -198,9 +198,9 @@ allow `autoninja` to work directly.
 ┌─────────────────────────────────────────────────────────────────┐
 │  Developer runs: npm run sync                                   │
 │    └─> generates .gclient with custom_vars                      │
-│          ├─> reapi_instance ('default')                         │
 │          ├─> reapi_address (from rbe_service .env var)          │
 │          └─> reapi_backend_config_path ('google.star')          │
+│          ├─> reapi_instance ('default')                         │
 └──────────────────────┬──────────────────────────────────────────┘
                        │
                        ▼
@@ -208,7 +208,7 @@ allow `autoninja` to work directly.
 │  gclient runhooks                                               │
 │    ├─> configure_siso.py (upstream Chromium)                    │
 │    │     ├─> write .sisoenv (from .gclient custom_vars)         │
-│    │     └─> copy google.star → backend.star                    │
+│    │     └─> copy /path/to/backend.star → backend.star          │
 │    └─> reclient configurator                                    │
 │          └─> brave_custom.py callbacks                          │
 │                ├─> generate python_remote_wrapper               │

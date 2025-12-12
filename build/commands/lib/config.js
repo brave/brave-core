@@ -210,7 +210,6 @@ const Config = function () {
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
   if (this.rbeService) {
     this.reapiAddress = this.rbeService
-    this.reapiInstance = 'default'
     this.reapiBackendConfigPath = path.join(
       this.srcDir,
       'build',
@@ -219,6 +218,7 @@ const Config = function () {
       'backend_config',
       'google.star',
     )
+    this.reapiInstance = 'default'
   }
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
