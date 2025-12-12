@@ -19,10 +19,12 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -587,7 +589,7 @@ public class BraveToolbarManager extends ToolbarManager
                 && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
     }
 
-    private ObservableSupplier<Integer> getConstraintsProxy() {
+    private NullableObservableSupplier<@BrowserControlsState Integer> getConstraintsProxy() {
         if (mToolbar instanceof BraveTopToolbarCoordinator) {
             return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
         }

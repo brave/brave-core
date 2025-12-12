@@ -1521,7 +1521,7 @@ public class BytecodeTest {
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
