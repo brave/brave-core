@@ -290,42 +290,45 @@ INSTANTIATE_TEST_SUITE_P(
             "SimpleRequest_Paraphrase", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kParaphrase));
+                      mojom::SimpleRequestContentBlock::RequestType::
+                          kParaphrase));
             }),
             "brave-request-paraphrase"},
         ContentBlockTestParam{
             "SimpleRequest_Improve", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kImprove));
+                      mojom::SimpleRequestContentBlock::RequestType::kImprove));
             }),
             "brave-request-improve-excerpt-language"},
         ContentBlockTestParam{
             "SimpleRequest_Shorten", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kShorten));
+                      mojom::SimpleRequestContentBlock::RequestType::kShorten));
             }),
             "brave-request-shorten"},
         ContentBlockTestParam{
             "SimpleRequest_Expand", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kExpand));
+                      mojom::SimpleRequestContentBlock::RequestType::kExpand));
             }),
             "brave-request-expansion"},
         ContentBlockTestParam{
             "SimpleRequest_RequestSummary", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kRequestSummary));
+                      mojom::SimpleRequestContentBlock::RequestType::
+                          kRequestSummary));
             }),
             "brave-request-summary"},
         ContentBlockTestParam{
             "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kRequestQuestions));
+                      mojom::SimpleRequestContentBlock::RequestType::
+                          kRequestQuestions));
             }),
             "brave-request-questions"},
         ContentBlockTestParam{

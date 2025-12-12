@@ -145,24 +145,24 @@ struct ChangeToneContentBlock {
   string tone;
 };
 
-enum SimpleRequestType {
-  kParaphrase,
-  kImprove,
-  kShorten,
-  kExpand,
-  kRequestSummary,
-  kRequestQuestions,
-
-  kCount,  // For validation use only.
-};
-
 // Used for content blocks which only needs type information without any data
 // payloads to signal a specific type of requests to the server. Do not add
-// fields into this unless it is needed for every request types in
-// SimpleRequestType, instead, define a new type of content block struct and
-// add it into ContentBlock union.
+// fields into this unless it is needed for every request types in RequestType,
+// instead, define a new type of content block struct and add it into
+// ContentBlock union.
 struct SimpleRequestContentBlock {
-  SimpleRequestType type;
+  enum RequestType {
+    kParaphrase,
+    kImprove,
+    kShorten,
+    kExpand,
+    kRequestSummary,
+    kRequestQuestions,
+
+    kCount,  // For validation use only.
+  };
+
+  RequestType type;
 };
 
 // Adding/removing any types should update kContentBlockTypeCounts below which

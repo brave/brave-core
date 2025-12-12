@@ -73,21 +73,27 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
   static constexpr auto kSimpleRequestTypeMap =
-      base::MakeFixedFlatMap<mojom::SimpleRequestType, std::string_view>({
-          {mojom::SimpleRequestType::kParaphrase, "brave-request-paraphrase"},
-          {mojom::SimpleRequestType::kImprove,
+      base::MakeFixedFlatMap<mojom::SimpleRequestContentBlock::RequestType,
+                             std::string_view>({
+          {mojom::SimpleRequestContentBlock::RequestType::kParaphrase,
+           "brave-request-paraphrase"},
+          {mojom::SimpleRequestContentBlock::RequestType::kImprove,
            "brave-request-improve-excerpt-language"},
-          {mojom::SimpleRequestType::kShorten, "brave-request-shorten"},
-          {mojom::SimpleRequestType::kExpand, "brave-request-expansion"},
-          {mojom::SimpleRequestType::kRequestSummary, "brave-request-summary"},
-          {mojom::SimpleRequestType::kRequestQuestions,
+          {mojom::SimpleRequestContentBlock::RequestType::kShorten,
+           "brave-request-shorten"},
+          {mojom::SimpleRequestContentBlock::RequestType::kExpand,
+           "brave-request-expansion"},
+          {mojom::SimpleRequestContentBlock::RequestType::kRequestSummary,
+           "brave-request-summary"},
+          {mojom::SimpleRequestContentBlock::RequestType::kRequestQuestions,
            "brave-request-questions"},
       });
 
-  static_assert(
-      kSimpleRequestTypeMap.size() ==
-          static_cast<size_t>(mojom::SimpleRequestType::kCount),
-      "kSimpleRequestTypeMap must cover all SimpleRequestType enum values");
+  static_assert(kSimpleRequestTypeMap.size() ==
+                    static_cast<size_t>(
+                        mojom::SimpleRequestContentBlock::RequestType::kCount),
+                "kSimpleRequestTypeMap must cover all "
+                "SimpleRequestContentBlock::RequestType enum values");
 
   static constexpr auto kTypeMap =
       base::MakeFixedFlatMap<mojom::ContentBlock::Tag, std::string_view>({

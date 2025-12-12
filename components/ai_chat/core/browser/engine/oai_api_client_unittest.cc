@@ -490,7 +490,8 @@ INSTANTIATE_TEST_SUITE_P(
             "SimpleRequest_Paraphrase", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kParaphrase));
+                      mojom::SimpleRequestContentBlock::RequestType::
+                          kParaphrase));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_PARAPHRASE},
             std::nullopt},
@@ -498,21 +499,21 @@ INSTANTIATE_TEST_SUITE_P(
             "SimpleRequest_Improve", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kImprove));
+                      mojom::SimpleRequestContentBlock::RequestType::kImprove));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_IMPROVE}, std::nullopt},
         ContentBlockSerializationTestParam{
             "SimpleRequest_Shorten", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kShorten));
+                      mojom::SimpleRequestContentBlock::RequestType::kShorten));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_SHORTEN}, std::nullopt},
         ContentBlockSerializationTestParam{
             "SimpleRequest_Expand", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
-                      mojom::SimpleRequestType::kExpand));
+                      mojom::SimpleRequestContentBlock::RequestType::kExpand));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {

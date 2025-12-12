@@ -26,7 +26,8 @@ struct RewriteActionTestParam {
   mojom::ActionType action_type;
   std::optional<mojom::ContentBlock::Tag> expected_content_type;
   std::string expected_payload;  // non-empty for change tones
-  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
+  std::optional<mojom::SimpleRequestContentBlock::RequestType>
+      expected_simple_request_type;
 };
 
 }  // namespace
@@ -96,11 +97,11 @@ INSTANTIATE_TEST_SUITE_P(
         RewriteActionTestParam{
             mojom::ActionType::PARAPHRASE,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            mojom::SimpleRequestType::kParaphrase},
+            mojom::SimpleRequestContentBlock::RequestType::kParaphrase},
         RewriteActionTestParam{
             mojom::ActionType::IMPROVE,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            mojom::SimpleRequestType::kImprove},
+            mojom::SimpleRequestContentBlock::RequestType::kImprove},
         RewriteActionTestParam{
             mojom::ActionType::ACADEMICIZE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic"},
@@ -119,11 +120,11 @@ INSTANTIATE_TEST_SUITE_P(
         RewriteActionTestParam{
             mojom::ActionType::SHORTEN,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            mojom::SimpleRequestType::kShorten},
+            mojom::SimpleRequestContentBlock::RequestType::kShorten},
         RewriteActionTestParam{
             mojom::ActionType::EXPAND,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            mojom::SimpleRequestType::kExpand},
+            mojom::SimpleRequestContentBlock::RequestType::kExpand},
         RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
                                ""}));
 
@@ -238,7 +239,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   ASSERT_EQ(messages[2].content[1]->which(),
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
   EXPECT_EQ(messages[2].content[1]->get_simple_request_content_block()->type,
-            mojom::SimpleRequestType::kRequestSummary);
+            mojom::SimpleRequestContentBlock::RequestType::kRequestSummary);
 
   // Message 4: Human turn with page content, no selected_text
   EXPECT_EQ(messages[3].role, "user");
@@ -361,7 +362,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
   ASSERT_EQ(message.content[3]->which(),
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
   EXPECT_EQ(message.content[3]->get_simple_request_content_block()->type,
-            mojom::SimpleRequestType::kRequestQuestions);
+            mojom::SimpleRequestContentBlock::RequestType::kRequestQuestions);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {

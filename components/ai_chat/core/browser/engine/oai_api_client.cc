@@ -142,16 +142,16 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
 
           int message_id;
           switch (request->type) {
-            case mojom::SimpleRequestType::kParaphrase:
+            case mojom::SimpleRequestContentBlock::RequestType::kParaphrase:
               message_id = IDS_AI_CHAT_QUESTION_PARAPHRASE;
               break;
-            case mojom::SimpleRequestType::kImprove:
+            case mojom::SimpleRequestContentBlock::RequestType::kImprove:
               message_id = IDS_AI_CHAT_QUESTION_IMPROVE;
               break;
-            case mojom::SimpleRequestType::kShorten:
+            case mojom::SimpleRequestContentBlock::RequestType::kShorten:
               message_id = IDS_AI_CHAT_QUESTION_SHORTEN;
               break;
-            case mojom::SimpleRequestType::kExpand:
+            case mojom::SimpleRequestContentBlock::RequestType::kExpand:
               message_id = IDS_AI_CHAT_QUESTION_EXPAND;
               break;
             default:
