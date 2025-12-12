@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/grit/brave_components_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
@@ -27,6 +28,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -37,7 +39,11 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 constexpr char kScriptProperty[] = "script";
 
 std::string WrapScript(const std::string& script) {
-  return base::StrCat({"(async function() { try { ", script,
+  auto bignumber_js =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_AI_CHAT_BIGNUMBER_JS);
+
+  return base::StrCat({"(async function() { ", bignumber_js, " try { ", script,
                        " } catch (error) { console.error(error.toString()); } "
                        "return true; })()"});
 }
@@ -142,7 +148,10 @@ std::string_view CodeExecutionTool::Description() const {
          "Do not use this for fetching information from the internet. "
          "Use console.log() to output results. "
          "The code will be executed in a sandboxed environment. "
-         "Network requests are not allowed.\n"
+         "Network requests are not allowed. "
+         "bignumber.js is available in the global scope. Use it for any "
+         "decimal math (i.e. financial calculations). "
+         "Do not use require to import bignumber.js, as it is not needed.\n"
          "Example tasks that require code execution:\n"
          " - Financial calculations (e.g. compound interest)\n"
          " - Analyzing data or web content\n"

@@ -13,4 +13,6 @@
   <include name="IDR_AI_CHAT_CODE_SANDBOX_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/code_sandbox/code_sandbox.html"
     use_base_dir="false"
     type="BINDATA" />
+  <include name="IDR_AI_CHAT_BIGNUMBER_JS" file="../../node_modules/bignumber.js/bignumber.js"
+    type="BINDATA" />
 </grit-part>

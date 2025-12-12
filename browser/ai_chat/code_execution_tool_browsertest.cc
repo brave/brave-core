@@ -203,4 +203,11 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   EXPECT_FALSE(output.empty());
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       BigNumberCalculation) {
+  std::string output;
+  ExecuteCode("console.log(new BigNumber(0.1).plus(0.2).toString())", &output);
+  EXPECT_EQ(output, "0.3");
+}
+
 }  // namespace ai_chat
