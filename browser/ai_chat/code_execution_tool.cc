@@ -38,7 +38,8 @@ constexpr char kScriptProperty[] = "script";
 
 std::string WrapScript(const std::string& script) {
   return base::StrCat({"(async function() { try { ", script,
-                       " } catch (error) { return error.toString(); } })()"});
+                       " } catch (error) { console.error(error.toString()); } "
+                       "return true; })()"});
 }
 
 }  // namespace
@@ -91,14 +92,23 @@ void CodeExecutionTool::CodeExecutionRequest::DidFinishLoad(
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+void CodeExecutionTool::CodeExecutionRequest::OnDidAddMessageToConsole(
+    content::RenderFrameHost* source_frame,
+    blink::mojom::ConsoleMessageLevel log_level,
+    const std::u16string& message,
+    int32_t line_no,
+    const std::u16string& source_id,
+    const std::optional<std::u16string>& untrusted_stack_trace) {
+  console_logs_.push_back(base::UTF16ToUTF8(message));
+}
+
 void CodeExecutionTool::CodeExecutionRequest::HandleResult(base::Value result) {
-  std::string output;
-  if (result.is_string()) {
-    output = result.GetString();
-  } else {
-    output = "Error: Invalid return type or syntax error";
+  if (!result.is_bool() || !result.GetBool()) {
+    std::move(resolve_callback_).Run("Error: Syntax error");
+    return;
   }
-  std::move(resolve_callback_).Run(output);
+
+  std::move(resolve_callback_).Run(base::JoinString(console_logs_, "\n"));
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleTimeout() {
@@ -124,16 +134,22 @@ std::string_view CodeExecutionTool::Name() const {
 }
 
 std::string_view CodeExecutionTool::Description() const {
-  return "Execute JavaScript code and return a human-readable formatted "
-         "string as a result. "
-         "Use only when the task warrants actual code execution or processing. "
+  return "Execute JavaScript code and capture console output. "
+         "Use only when the task requires code execution for providing an "
+         "accurate answer. "
+         "Do not use this if you are able to answer without executing code. "
          "Do not use this for content generation. "
          "Do not use this for fetching information from the internet. "
-         "Do not use console.log statements or similar statements. Always "
-         "return a string as a result. Always use an explicit return statement "
-         "(i.e. return result). "
-         "The code will be executed in a sandboxed environment."
-         "Network requests are not allowed.";
+         "Use console.log() to output results. "
+         "The code will be executed in a sandboxed environment. "
+         "Network requests are not allowed.\n"
+         "Example tasks that require code execution:\n"
+         " - Financial calculations (e.g. compound interest)\n"
+         " - Analyzing data or web content\n"
+         "Example tasks that do not require code execution:\n"
+         " - Very simple calculations (e.g. 2 + 2)\n"
+         " - Finding the 4th prime number\n"
+         " - Retrieving weather information for a location";
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {

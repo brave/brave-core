@@ -21,6 +21,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 
 class Profile;
 
@@ -75,6 +76,14 @@ class CodeExecutionTool : public Tool {
     void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                        const GURL& validated_url) override;
 
+    void OnDidAddMessageToConsole(
+        content::RenderFrameHost* source_frame,
+        blink::mojom::ConsoleMessageLevel log_level,
+        const std::u16string& message,
+        int32_t line_no,
+        const std::u16string& source_id,
+        const std::optional<std::u16string>& untrusted_stack_trace) override;
+
     void SetResolveCallback(ResolveCallback callback) {
       resolve_callback_ = std::move(callback);
     }
@@ -88,6 +97,7 @@ class CodeExecutionTool : public Tool {
     mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
     base::OneShotTimer timeout_timer_;
     ResolveCallback resolve_callback_;
+    std::vector<std::string> console_logs_;
     base::WeakPtrFactory<CodeExecutionRequest> weak_ptr_factory_{this};
   };
 

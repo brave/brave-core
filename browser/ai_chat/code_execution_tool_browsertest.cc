@@ -93,9 +93,13 @@ class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, HelloWorld) {
+  std::string script = R"(
+    console.log('hello world');
+    console.log('goodbye cruel world');
+  )";
   std::string output;
-  ExecuteCode("return 'hello world'", &output);
-  EXPECT_EQ(output, "hello world");
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "hello world\ngoodbye cruel world");
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SimpleFibonacci) {
@@ -104,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SimpleFibonacci) {
       if (n <= 1) return n;
       return fibonacci(n - 1) + fibonacci(n - 2);
     }
-    return 'Fibonacci(10) = ' + fibonacci(10);
+    console.log('Fibonacci(10) = ' + fibonacci(10));
   )";
 
   std::string output;
@@ -114,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SimpleFibonacci) {
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
                        AccessLocalStateBlocked) {
-  std::string script = "return localStorage.getItem('sensitive_data')";
+  std::string script = "console.log(localStorage.getItem('sensitive_data'))";
 
   std::string output;
   ExecuteCode(script, &output);
@@ -131,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
       test_server_url(),
       R"(');
         const text = await response.text();
-        return 'Request succeeded: ' + text;
+        console.log('Request succeeded: ' + text);
       )"});
 
   std::string output;
@@ -144,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
 
   std::string script = R"(
     await new Promise(resolve => setTimeout(resolve, 5000));
-    return 'Should not reach here';
+    console.log('Should not reach here');
   )";
 
   std::string output;
@@ -152,23 +156,15 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   EXPECT_EQ(output, "Error: Time limit exceeded");
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, InvalidReturnType) {
-  std::string script = "return 42";
-
-  std::string output;
-  ExecuteCode(script, &output);
-  EXPECT_EQ(output, "Error: Invalid return type or syntax error");
-}
-
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
   std::string script = R"(
     let x = 'unclosed string;
-    return x;
+    console.log(x);
   )";
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_EQ(output, "Error: Invalid return type or syntax error");
+  EXPECT_EQ(output, "Error: Syntax error");
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, BadToolInput) {
@@ -197,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
       test_server_url(),
       R"(';
         await new Promise(resolve => setTimeout(resolve, 2500));
-        return 'Complete';
+        console.log('Complete');
       )"});
 
   std::string output;
