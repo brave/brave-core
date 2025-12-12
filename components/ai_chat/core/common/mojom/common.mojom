@@ -159,14 +159,13 @@ struct SimpleRequestContentBlock {
     kRequestSummary,
     kRequestQuestions,
 
-    kCount,  // For validation use only.
+    // For validation use only, should always stay at the end of this enum.
+    kCount,
   };
 
   RequestType type;
 };
 
-// Adding/removing any types should update kContentBlockTypeCounts below which
-// is used for static_assert.
 union ContentBlock {
   // Standard OpenAI content blocks
   ImageContentBlock image_content_block;
@@ -182,9 +181,6 @@ union ContentBlock {
   // Brave customized content blocks which does not have any data payloads.
   SimpleRequestContentBlock simple_request_content_block;
 };
-
-// Needs to be updated when adding/deleting any types in ContentBlock union.
-const uint8 kContentBlockTypeCounts = 8;
 
 // Permission challenge that blocks tool execution until user approves
 // The existence of this struct means permission is needed. When granted,

@@ -67,11 +67,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-}  // namespace
-
-// static
-base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
-    std::vector<OAIMessage> messages) {
+std::string_view GetContentBlockTypeString(
+    const mojom::ContentBlockPtr& block) {
   static constexpr auto kSimpleRequestTypeMap =
       base::MakeFixedFlatMap<mojom::SimpleRequestContentBlock::RequestType,
                              std::string_view>({
@@ -95,24 +92,34 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
                 "kSimpleRequestTypeMap must cover all "
                 "SimpleRequestContentBlock::RequestType enum values");
 
-  static constexpr auto kTypeMap =
-      base::MakeFixedFlatMap<mojom::ContentBlock::Tag, std::string_view>({
-          {mojom::ContentBlock::Tag::kTextContentBlock, "text"},
-          {mojom::ContentBlock::Tag::kImageContentBlock, "image_url"},
-          {mojom::ContentBlock::Tag::kPageExcerptContentBlock,
-           "brave-page-excerpt"},
-          {mojom::ContentBlock::Tag::kPageTextContentBlock, "brave-page-text"},
-          {mojom::ContentBlock::Tag::kVideoTranscriptContentBlock,
-           "brave-video-transcript"},
-          {mojom::ContentBlock::Tag::kRequestTitleContentBlock,
-           "brave-conversation-title"},
-          {mojom::ContentBlock::Tag::kChangeToneContentBlock,
-           "brave-request-change-tone"},
-      });
-  static_assert(kTypeMap.size() == mojom::kContentBlockTypeCounts - 1,
-                "kTypeMap must cover all ContentBlock union variants expect "
-                "for SimpleRequestContentBlock");
+  switch (block->which()) {
+    case mojom::ContentBlock::Tag::kTextContentBlock:
+      return "text";
+    case mojom::ContentBlock::Tag::kImageContentBlock:
+      return "image_url";
+    case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+      return "brave-page-excerpt";
+    case mojom::ContentBlock::Tag::kPageTextContentBlock:
+      return "brave-page-text";
+    case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+      return "brave-video-transcript";
+    case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+      return "brave-conversation-title";
+    case mojom::ContentBlock::Tag::kChangeToneContentBlock:
+      return "brave-request-change-tone";
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+      const auto& request = block->get_simple_request_content_block();
+      auto it = kSimpleRequestTypeMap.find(request->type);
+      return it->second;
+    }
+  }
+}
 
+}  // namespace
+
+// static
+base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
+    std::vector<OAIMessage> messages) {
   base::Value::List serialized_messages;
   for (auto& message : messages) {
     base::Value::Dict message_dict;
@@ -125,13 +132,8 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     for (auto& block : message.content) {
       base::Value::Dict content_block_dict;
 
-      // Set type for all blocks except SimpleRequestContentBlock
-      // (which sets its own type in the switch below)
-      if (block->which() !=
-          mojom::ContentBlock::Tag::kSimpleRequestContentBlock) {
-        auto type_it = kTypeMap.find(block->which());
-        content_block_dict.Set("type", type_it->second);
-      }
+      // Set type for all blocks
+      content_block_dict.Set("type", GetContentBlockTypeString(block));
 
       // Set content data based on union tag
       switch (block->which()) {
@@ -175,14 +177,10 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           break;
         }
 
-        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
-          const auto& request = block->get_simple_request_content_block();
-          auto it = kSimpleRequestTypeMap.find(request->type);
-          content_block_dict.Set("type", it->second);
+        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
           // Server currently requires the empty text field to be passed.
           content_block_dict.Set("text", "");
           break;
-        }
       }
       content_list.Append(std::move(content_block_dict));
     }
