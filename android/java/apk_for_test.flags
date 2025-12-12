@@ -54,6 +54,7 @@
     *** getLogoMargin(...);
     *** calculateTabletMvtWidth(...);
     *** updateMvtOnTablet(...);
+    *** isInNarrowWindowOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
