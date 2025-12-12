@@ -1081,6 +1081,7 @@ test("brave_browser_tests") {
       "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
       "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
       "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
+      "//brave/browser/ui/webui/brave_wallet/trezor/trezor_ui_browsertest.cc",
       "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
     ]
   }
