@@ -54,10 +54,13 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -1649,6 +1652,43 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
   private_prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarContainerDoesNotObserveToolbarHeightEntry) {
+  // This test verifies that SidebarContainerView doesn't observe
+  // SidePanelEntry with kToolbar type, as it only observes kContent type
+  // entries per AddSidePanelEntryObservation() implementation.
+
+  auto* sidebar_container = GetSidebarContainerView();
+
+  // Get the tab registry and create a kToolbar type entry
+  auto* registry = browser()
+                       ->GetActiveTabInterface()
+                       ->GetTabFeatures()
+                       ->side_panel_registry();
+  ASSERT_TRUE(registry);
+
+  // Create a kToolbar type SidePanelEntry
+  std::unique_ptr<SidePanelEntry> toolbar_entry =
+      std::make_unique<SidePanelEntry>(
+          SidePanelEntry::PanelType::kToolbar,
+          SidePanelEntry::Key(SidePanelEntry::Id::kAboutThisSite),
+          base::BindRepeating([](SidePanelEntryScope&) {
+            return std::make_unique<views::View>();
+          }),
+          /*default_content_width_callback=*/base::NullCallback());
+
+  auto* toolbar_entry_ptr = toolbar_entry.get();
+  registry->Register(std::move(toolbar_entry));
+
+  // Show the toolbar entry
+  auto* coordinator = browser()->GetFeatures().side_panel_coordinator();
+  coordinator->SetNoDelaysForTesting(true);
+  coordinator->Show(SidePanelEntry::Id::kAboutThisSite);
+
+  // Verify that SidebarContainerView is NOT observing the kToolbar entry.
+  EXPECT_FALSE(toolbar_entry_ptr->IsBeingObservedBy(sidebar_container));
 }
 
 }  // namespace sidebar

@@ -925,6 +925,11 @@ void SidebarContainerView::AddSidePanelEntryObservation(SidePanelEntry* entry) {
     return;
   }
 
+  // Brave sidebar can handle only kContent type.
+  if (entry->type() != SidePanelEntry::PanelType::kContent) {
+    return;
+  }
+
   DVLOG(1) << "Start observation: "
            << SidePanelEntryIdToString(entry->key().id());
   entry->AddObserver(this);
