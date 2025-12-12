@@ -508,7 +508,48 @@ async function fetchAssetsForNetwork({
     tokens,
     10,
     async (token: BraveWallet.BlockchainToken) => {
-      const tokenLogo = await cache.getTokenLogo(token)
+      let tokenLogo = await cache.getTokenLogo(token)
+
+      // For user assets, if the logo URL doesn't start with https, try to get
+      // the updated logo from the registry. User's saved tokens may have
+      // old/broken logo URLs from when they were static files. Known tokens
+      // from the API now have correct https URLs.
+      if (
+        listType === 'user'
+        && tokenLogo
+        && !tokenLogo.startsWith('https')
+        && !isNativeAsset(token)
+        && !token.isNft
+        && !token.isErc1155
+        && !token.isErc721
+      ) {
+        const contractAddress =
+          network.coin === BraveWallet.CoinType.ETH
+            ? token.contractAddress.toLowerCase()
+            : // Nothing was getting returned for SOL tokens
+              // when lowercase was used.
+              token.contractAddress
+        const { token: knownToken } =
+          await blockchainRegistry.getTokenByAddress(
+            network.chainId,
+            network.coin,
+            contractAddress,
+          )
+        if (knownToken?.logo) {
+          tokenLogo = await cache.getTokenLogo(knownToken)
+          // Persist the updated logo so we don't have to look it up on every
+          // reload. We use the lower-level service methods directly to avoid
+          // cache invalidation during the registry build.
+          const updatedTokenWithLogo = addLogoToToken(token, tokenLogo)
+          await braveWalletService.removeUserAsset(token)
+          await braveWalletService.addUserAsset(updatedTokenWithLogo)
+        } else {
+          // If the logo is not found, set it to an empty string.
+          // This will cause the token to use the placeholder icon.
+          tokenLogo = ''
+        }
+      }
+
       const updatedToken = addLogoToToken(token, tokenLogo)
       return addChainIdToToken(updatedToken, network.chainId)
     },
