@@ -66,7 +66,6 @@ def merge_rewrapper_large_cfg(rewrapper_cfg, tool, host_os):
 
 def post_configure():
     generate_python_remote_wrapper()
-    configure_sisoenv()
     configure_sisorc()
 
 
@@ -103,13 +102,6 @@ def generate_python_remote_wrapper():
          'python_remote_wrapper'),
         ShellTemplate(python_remote_wrapper_template).substitute(
             template_vars))
-
-
-def configure_sisoenv():
-    FileUtils.write_text_file(
-        f'{Paths.src_dir}/build/config/siso/.sisoenv',
-        ("SISO_REAPI_INSTANCE=default\n"
-         f"SISO_REAPI_ADDRESS={os.environ.get('RBE_service')}\n"))
 
 
 def configure_sisorc():
