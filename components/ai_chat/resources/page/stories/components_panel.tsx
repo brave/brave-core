@@ -211,12 +211,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
         id: 'memory-1',
         toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
         argumentsJson: '{"memory": "works as a software engineer"}',
-        output: [
-          {
-            textContentBlock: { text: '' },
-            imageContentBlock: undefined,
-          },
-        ],
+        output: [createTextContentBlock('')],
       }),
       getCompletionEvent("I'll remember that you work as a software engineer."),
     ],
@@ -256,12 +251,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
         id: 'memory-2',
         toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
         argumentsJson: '{"memory": "Likes cats"}',
-        output: [
-          {
-            textContentBlock: { text: '' },
-            imageContentBlock: undefined,
-          },
-        ],
+        output: [createTextContentBlock('')],
       }),
       getCompletionEvent("I've noted you like cats."),
     ],
@@ -301,12 +291,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
         id: 'memory-3',
         toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
         argumentsJson: '{"memory": "favorite hobby is hiking"}',
-        output: [
-          {
-            textContentBlock: { text: 'Memory storage failed' },
-            imageContentBlock: undefined,
-          },
-        ],
+        output: [createTextContentBlock('Memory storage failed')],
       }),
       getCompletionEvent(
         'I encountered an error while trying to store that information.',
