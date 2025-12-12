@@ -361,6 +361,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper"));
+        Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator")); // presubmit: ignore-long-line
         Assert.assertTrue(
@@ -1315,6 +1317,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         int.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tab/TabBrowserControlsConstraintsHelper",
+                        "getObservableConstraints",
+                        MethodModifier.STATIC,
+                        ObservableSupplier.class,
+                        Tab.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1530,7 +1539,7 @@ public class BytecodeTest {
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
