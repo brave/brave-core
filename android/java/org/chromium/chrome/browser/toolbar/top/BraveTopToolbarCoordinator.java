@@ -16,6 +16,7 @@ import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -53,7 +54,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private final ToolbarLayout mBraveToolbarLayout;
     private final MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
-    private final ObservableSupplier<Integer> mConstraintsProxy;
+    private final NullableObservableSupplier<@BrowserControlsState Integer> mConstraintsProxy;
     private final ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
@@ -76,7 +77,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
-            ObservableSupplier<@Nullable Integer> constraintsSupplier,
+            NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
@@ -202,7 +203,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         return mIsBottomControlsVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
     }
 
-    public ObservableSupplier<Integer> getConstraintsProxy() {
+    public NullableObservableSupplier<@BrowserControlsState Integer> getConstraintsProxy() {
         return mConstraintsProxy;
     }
 
