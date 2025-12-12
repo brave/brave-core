@@ -50,8 +50,7 @@ struct GenerateRewriteTestParam {
   mojom::ContentBlock::Tag expected_content_type;
   std::string expected_payload;
   std::string expected_type_string;
-  std::optional<mojom::SimpleRequestContentBlock::RequestType>
-      expected_simple_request_type;
+  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
 };
 
 }  // namespace
@@ -688,7 +687,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
                   mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
         EXPECT_EQ(
             messages[0].content[1]->get_simple_request_content_block()->type,
-            mojom::SimpleRequestContentBlock::RequestType::kRequestSummary);
+            mojom::SimpleRequestType::kRequestSummary);
 
         // Verify JSON serialization matches expected format
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
@@ -1374,7 +1373,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
                     mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
           EXPECT_EQ(
               messages[0].content[2]->get_simple_request_content_block()->type,
-              mojom::SimpleRequestContentBlock::RequestType::kRequestQuestions);
+              mojom::SimpleRequestType::kRequestQuestions);
 
           // Verify JSON serialization matches expected format
           EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
@@ -1664,23 +1663,20 @@ INSTANTIATE_TEST_SUITE_P(
         GenerateRewriteTestParam{
             "Paraphrase", mojom::ActionType::PARAPHRASE,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            "brave-request-paraphrase",
-            mojom::SimpleRequestContentBlock::RequestType::kParaphrase},
+            "brave-request-paraphrase", mojom::SimpleRequestType::kParaphrase},
         GenerateRewriteTestParam{
             "Improve", mojom::ActionType::IMPROVE,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
             "brave-request-improve-excerpt-language",
-            mojom::SimpleRequestContentBlock::RequestType::kImprove},
+            mojom::SimpleRequestType::kImprove},
         GenerateRewriteTestParam{
             "Shorten", mojom::ActionType::SHORTEN,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            "brave-request-shorten",
-            mojom::SimpleRequestContentBlock::RequestType::kShorten},
+            "brave-request-shorten", mojom::SimpleRequestType::kShorten},
         GenerateRewriteTestParam{
             "Expand", mojom::ActionType::EXPAND,
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
-            "brave-request-expansion",
-            mojom::SimpleRequestContentBlock::RequestType::kExpand},
+            "brave-request-expansion", mojom::SimpleRequestType::kExpand},
         GenerateRewriteTestParam{
             "Academic", mojom::ActionType::ACADEMICIZE,
             mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic",

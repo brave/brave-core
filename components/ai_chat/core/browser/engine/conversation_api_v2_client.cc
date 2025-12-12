@@ -70,27 +70,21 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 std::string_view GetContentBlockTypeString(
     const mojom::ContentBlockPtr& block) {
   static constexpr auto kSimpleRequestTypeMap =
-      base::MakeFixedFlatMap<mojom::SimpleRequestContentBlock::RequestType,
-                             std::string_view>({
-          {mojom::SimpleRequestContentBlock::RequestType::kParaphrase,
-           "brave-request-paraphrase"},
-          {mojom::SimpleRequestContentBlock::RequestType::kImprove,
+      base::MakeFixedFlatMap<mojom::SimpleRequestType, std::string_view>({
+          {mojom::SimpleRequestType::kParaphrase, "brave-request-paraphrase"},
+          {mojom::SimpleRequestType::kImprove,
            "brave-request-improve-excerpt-language"},
-          {mojom::SimpleRequestContentBlock::RequestType::kShorten,
-           "brave-request-shorten"},
-          {mojom::SimpleRequestContentBlock::RequestType::kExpand,
-           "brave-request-expansion"},
-          {mojom::SimpleRequestContentBlock::RequestType::kRequestSummary,
-           "brave-request-summary"},
-          {mojom::SimpleRequestContentBlock::RequestType::kRequestQuestions,
+          {mojom::SimpleRequestType::kShorten, "brave-request-shorten"},
+          {mojom::SimpleRequestType::kExpand, "brave-request-expansion"},
+          {mojom::SimpleRequestType::kRequestSummary, "brave-request-summary"},
+          {mojom::SimpleRequestType::kRequestQuestions,
            "brave-request-questions"},
       });
 
   static_assert(kSimpleRequestTypeMap.size() ==
-                    static_cast<size_t>(
-                        mojom::SimpleRequestContentBlock::RequestType::kCount),
+                    static_cast<size_t>(mojom::SimpleRequestType::kCount),
                 "kSimpleRequestTypeMap must cover all "
-                "SimpleRequestContentBlock::RequestType enum values");
+                "SimpleRequestType enum values");
 
   switch (block->which()) {
     case mojom::ContentBlock::Tag::kTextContentBlock:

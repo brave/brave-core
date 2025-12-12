@@ -146,8 +146,7 @@ std::vector<OAIMessage> BuildOAIMessages(
       oai_message.content.push_back(
           mojom::ContentBlock::NewSimpleRequestContentBlock(
               mojom::SimpleRequestContentBlock::New(
-                  mojom::SimpleRequestContentBlock::RequestType::
-                      kRequestSummary)));
+                  mojom::SimpleRequestType::kRequestSummary)));
     } else {
       oai_message.content.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
@@ -175,7 +174,7 @@ std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
 
   msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
       mojom::SimpleRequestContentBlock::New(
-          mojom::SimpleRequestContentBlock::RequestType::kRequestQuestions)));
+          mojom::SimpleRequestType::kRequestQuestions)));
   messages.push_back(std::move(msg));
 
   return messages;
@@ -195,12 +194,12 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     case mojom::ActionType::PARAPHRASE:
       msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
           mojom::SimpleRequestContentBlock::New(
-              mojom::SimpleRequestContentBlock::RequestType::kParaphrase)));
+              mojom::SimpleRequestType::kParaphrase)));
       break;
     case mojom::ActionType::IMPROVE:
       msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
           mojom::SimpleRequestContentBlock::New(
-              mojom::SimpleRequestContentBlock::RequestType::kImprove)));
+              mojom::SimpleRequestType::kImprove)));
       break;
     case mojom::ActionType::ACADEMICIZE:
       msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
@@ -225,12 +224,12 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
     case mojom::ActionType::SHORTEN:
       msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
           mojom::SimpleRequestContentBlock::New(
-              mojom::SimpleRequestContentBlock::RequestType::kShorten)));
+              mojom::SimpleRequestType::kShorten)));
       break;
     case mojom::ActionType::EXPAND:
       msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
           mojom::SimpleRequestContentBlock::New(
-              mojom::SimpleRequestContentBlock::RequestType::kExpand)));
+              mojom::SimpleRequestType::kExpand)));
       break;
     default:
       return std::nullopt;
