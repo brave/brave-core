@@ -482,12 +482,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
-        if (mBraveRewardsNativeWorker != null
-                && mBraveRewardsNativeWorker.isRewardsEnabled()
-                && mBraveRewardsNativeWorker.isSupported()
-                && mBraveRewardsNativeWorker.isTermsOfServiceUpdateRequired()) {
-            showOrHideRewardsBadge(true);
-        }
+        maybeShowTermsOfServiceUpdateRequiredBadge();
         if (mShieldsLayout != null) {
             updateShieldsLayoutBackground(
                     !(mRewardsLayout != null && mRewardsLayout.getVisibility() == View.VISIBLE));
@@ -1534,6 +1529,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mIsPublisherVerified = verified;
         mPublisherId = publisherId;
         updateVerifiedPublisherMark();
+        maybeShowTermsOfServiceUpdateRequiredBadge();
     }
 
     private void updateVerifiedPublisherMark() {
@@ -1750,5 +1746,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         : View.GONE);
         // Update the shields layout background to match the rewards layout visibility.
         updateShieldsLayoutBackground(mRewardsLayout.getVisibility() == View.GONE);
+    }
+
+    public void maybeShowTermsOfServiceUpdateRequiredBadge() {
+        if (mBraveRewardsNativeWorker != null
+                && mBraveRewardsNativeWorker.isRewardsEnabled()
+                && mBraveRewardsNativeWorker.isSupported()
+                && mBraveRewardsNativeWorker.isTermsOfServiceUpdateRequired()) {
+            showOrHideRewardsBadge(true);
+        }
     }
 }
