@@ -53,12 +53,26 @@ class PolkadotKeyring {
 
   std::optional<std::string> AddNewHDAccount(uint32_t index);
 
+  // Encodes the private key for export in JSON format.
+  // Returns a JSON string with encoded key, encoding metadata, and address.
+  // The seed is encrypted using xsalsa20-poly1305 with a password-derived key.
+  std::optional<std::string> EncodePrivateKeyForExport(
+      uint32_t account_index,
+      const std::string& password);
+
+  // Sets random bytes for testing for private key export.
+  void SetRandBytesForTesting(const std::vector<uint8_t>& seed_bytes,
+                              const std::vector<uint8_t>& nonce_bytes);
+
  private:
   HDKeySr25519& EnsureKeyPair(uint32_t account_index);
 
   HDKeySr25519 root_account_key_;
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> secondary_keys_;
+
+  std::optional<std::vector<uint8_t>> rand_seed_bytes_for_testing_;
+  std::optional<std::vector<uint8_t>> rand_nonce_bytes_for_testing_;
 };
 }  // namespace brave_wallet
 

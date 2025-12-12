@@ -18,7 +18,8 @@ mod ffi {
         // Used for deterministic schnorr signatures in testing.
         // Absolutely do not use in production.
         fn use_mock_rng_for_testing(self: &mut CxxSchnorrkelKeyPair);
-
+        fn get_secret_key(self: &CxxSchnorrkelKeyPair) -> [u8; 64];
+        fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> Vec<u8>;
         fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64];
         fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
     }
@@ -38,6 +39,11 @@ struct CxxSchnorrkelKeyPair {
 const SIGNING_CTX: &'static [u8] = b"substrate";
 // equivalent to the chaincode len
 const JUNCTION_ID_LEN: usize = 32;
+
+// public/secret section divider.
+const PAIR_DIV: &[u8] = &[161, 35, 3, 33, 0];
+// public/secret start block.
+const PAIR_HDR: &[u8] = &[48, 83, 2, 1, 1, 48, 5, 6, 3, 43, 101, 112, 4, 34, 4, 32];
 
 fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
     // from_bytes() only panics on length mismatch which we've now made
@@ -63,6 +69,26 @@ impl CxxSchnorrkelKeyPair {
 
     fn use_mock_rng_for_testing(self: &mut CxxSchnorrkelKeyPair) {
         self.use_mock_rng = true;
+    }
+
+    fn get_secret_key(self: &CxxSchnorrkelKeyPair) -> [u8; 64] {
+        self.keypair.secret.to_bytes()
+    }
+
+    fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> Vec<u8> {
+        // Export in PKCS8 format: PAIR_HDR + secretKey + PAIR_DIV + publicKey.
+        // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L19
+        let secret_key = self.keypair.secret.to_bytes();
+        let public_key = self.keypair.public.to_bytes();
+
+        let mut result = Vec::with_capacity(
+            PAIR_HDR.len() + secret_key.len() + PAIR_DIV.len() + public_key.len(),
+        );
+        result.extend_from_slice(PAIR_HDR);
+        result.extend_from_slice(&secret_key);
+        result.extend_from_slice(PAIR_DIV);
+        result.extend_from_slice(&public_key);
+        result
     }
 
     fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64] {

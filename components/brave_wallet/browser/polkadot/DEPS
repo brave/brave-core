@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "polkadot_keyring\.cc": [
+    "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
+  ],
+}
+
