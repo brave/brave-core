@@ -74,7 +74,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                       "systemTimestamp": "1996-07-08T09:00:00.000Z",
                       "transactionId": "8b742869-6e4a-490c-ac31-31b49130098a",
                       "type": "view",
-                      "versionNumber": "1.2.3.4"
+                      "versionNumber": "1.2.0.0"
                     })JSON"),
             base::test::ParseJsonDict(confirmation_payload));
 }
@@ -95,9 +95,12 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
               {
+                "buildChannel": "release",
                 "countryCode": "US",
                 "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-                "type": "view"
+                "platform": "windows",
+                "type": "view",
+                "versionNumber": "1.2.0.0"
               })JSON"),
             base::test::ParseJsonDict(confirmation_payload));
 }

@@ -7,8 +7,9 @@
 
 #include <string_view>
 
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
@@ -17,11 +18,17 @@ constexpr std::string_view kVersionNumberKey = "versionNumber";
 }  // namespace
 
 base::Value::Dict BuildVersionNumberUserData() {
-  if (!UserHasJoinedBraveRewards()) {
-    return {};
-  }
+  std::vector<std::string> parts =
+      base::SplitString(GetBrowserVersionNumber(), ".", base::KEEP_WHITESPACE,
+                        base::SPLIT_WANT_ALL);
+  parts.reserve(4);
 
-  return base::Value::Dict().Set(kVersionNumberKey, GetBrowserVersionNumber());
+  parts.resize(4, "0");
+  parts[2] = "0";
+  parts[3] = "0";
+
+  return base::Value::Dict().Set(kVersionNumberKey,
+                                 base::JoinString(parts, "."));
 }
 
 }  // namespace brave_ads

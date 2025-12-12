@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
@@ -18,10 +17,6 @@ constexpr std::string_view kBuildChannelKey = "buildChannel";
 }  // namespace
 
 base::Value::Dict BuildBuildChannelUserData() {
-  if (!UserHasJoinedBraveRewards()) {
-    return {};
-  }
-
   const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   CHECK(!build_channel.name.empty());
 

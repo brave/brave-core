@@ -69,7 +69,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest, BuildConfirmationUserData) {
             "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
             "segment": "untargeted",
             "studies": [],
-            "versionNumber": "1.2.3.4"
+            "versionNumber": "1.2.0.0"
           })JSON");
 
   EXPECT_EQ(expected_user_data, user_data);
@@ -95,8 +95,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"JSON(
           {
+            "buildChannel": "release",
             "countryCode": "US",
-            "foo": "bar"
+            "foo": "bar",
+            "platform": "windows",
+            "versionNumber": "1.2.0.0"
           })JSON");
 
   EXPECT_EQ(expected_user_data, user_data);
