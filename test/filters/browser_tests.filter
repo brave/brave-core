@@ -44,6 +44,18 @@
 # This test fails because our SidePanel doesn't set State::kClosing
 -SidePanelCoordinatorTest.OpenWhileClosing
 
+# This test fails because our SidePanel doesn't have header view/resize area
+# but it checks these views focus ordern in the panel.
+-SidePanelCoordinatorTest.VerifyFocusOrder
+
+# This test fails because our SidePanel doesn't use animation but it checks
+# animation state. SidebarContainerView controls panel's animation.
+-SidePanelCoordinatorTest.ClosingMidShowFromAnimationReparentsContentView
+-SidePanelCoordinatorTest.ShowFromAnimationAnimatesContentViewInTheCorrectDirection_LeftAligned
+-SidePanelCoordinatorTest.ShowFromAnimationAnimatesContentViewInTheCorrectDirection_RightAligned
+-SidePanelCoordinatorTest.ShowFromAnimationReparentsContentView
+-SidePanelCoordinatorTest.ShowFromAnimationReparentsContentViewIfInterruptedByADifferentShowAnimation
+
 # These crash due to what looks like an upstream bug of
 # AccessibilityLabelsServiceFactory missing the dependency on
 # MantaServiceFactory and/or MantaServiceFactory not being registered:
@@ -1843,6 +1855,7 @@
 -LensOverlayControllerInnerTextAndApc.*
 -LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
 -LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
+-LensOverlayControllerReinvocationBrowserTest.*
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerRegularTab
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
 -LensOverlayControllerZeroStateCsbTest.*
