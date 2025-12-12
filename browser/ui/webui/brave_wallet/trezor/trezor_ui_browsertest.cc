@@ -29,7 +29,7 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
   content::WebContentsAddedObserver window_observer;
 
   // Trezor connect tries to open popup this way. Make sure our patch works and
-  // do this in a bit different way so opened window has `opener` set.
+  // does this in a bit different way so opened window has `opener` set.
   EXPECT_TRUE(content::ExecJs(
       trezor_bridge,
       content::JsReplace(
