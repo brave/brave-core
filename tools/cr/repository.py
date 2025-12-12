@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from dataclasses import dataclass
-from pathlib import PurePath
+from pathlib import Path, PurePath
 import subprocess
 from typing import Optional
 
@@ -144,9 +144,10 @@ class Repository:
         The contents of the file read. If more than one file is provided, the
         contents of all files are appended to the same string.
         """
-        return self.run_git('show',
-                            *[f'{commit}:{file}' for file in files],
-                            no_trim=True)
+        return self.run_git(
+            'show',
+            *[f'{commit}:{Path(file).as_posix()}' for file in files],
+            no_trim=True)
 
     def current_branch(self) -> str:
         """Gets the current branch name, or HEAD if not in any branch.
