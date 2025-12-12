@@ -278,11 +278,11 @@ INSTANTIATE_TEST_SUITE_P(
         ContentBlockTestParam{
             "File", base::BindRepeating([]() {
               return mojom::ContentBlock::NewFileContentBlock(
-                  mojom::ImageContentBlock::New(
+                  mojom::FileContentBlock::New(
                       GURL("data:application/pdf;base64,abc123"),
                       "filename"));
             }),
-            "image_url"},
+            "file"},
         ContentBlockTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(

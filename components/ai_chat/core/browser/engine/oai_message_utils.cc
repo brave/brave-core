@@ -169,27 +169,27 @@ std::vector<OAIMessage> BuildOAIMessages(
                           ? "uploaded.pdf"
                           : uploaded_file->filename)));
         }
+      }
 
-        if (uploaded_images_content_blocks.size() > 1) {
-          oai_message.content.insert(
-              oai_message.content.end(),
-              std::make_move_iterator(uploaded_images_content_blocks.begin()),
-              std::make_move_iterator(uploaded_images_content_blocks.end()));
-        }
+      if (uploaded_images_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_images_content_blocks.begin()),
+            std::make_move_iterator(uploaded_images_content_blocks.end()));
+      }
 
-        if (screenshots_content_blocks.size() > 1) {
-          oai_message.content.insert(
-              oai_message.content.end(),
-              std::make_move_iterator(screenshots_content_blocks.begin()),
-              std::make_move_iterator(screenshots_content_blocks.end()));
-        }
+      if (screenshots_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(screenshots_content_blocks.begin()),
+            std::make_move_iterator(screenshots_content_blocks.end()));
+      }
 
-        if (uploaded_pdfs_content_blocks.size() > 1) {
-          oai_message.content.insert(
-              oai_message.content.end(),
-              std::make_move_iterator(uploaded_pdfs_content_blocks.begin()),
-              std::make_move_iterator(uploaded_pdfs_content_blocks.end()));
-        }
+      if (uploaded_pdfs_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_pdfs_content_blocks.begin()),
+            std::make_move_iterator(uploaded_pdfs_content_blocks.end()));
       }
     }
 
