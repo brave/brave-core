@@ -41,7 +41,8 @@ NewTabPageHandler::NewTabPageHandler(
     content::WebContents& web_contents,
     PrefService& pref_service,
     TemplateURLService& template_url_service,
-    misc_metrics::NewTabMetrics& new_tab_metrics)
+    misc_metrics::NewTabMetrics& new_tab_metrics,
+    bool was_restored)
     : receiver_(this, std::move(receiver)),
       update_observer_(pref_service, top_sites_facade.get()),
       custom_image_chooser_(std::move(custom_image_chooser)),
@@ -51,7 +52,8 @@ NewTabPageHandler::NewTabPageHandler(
       web_contents_(web_contents),
       pref_service_(pref_service),
       template_url_service_(template_url_service),
-      new_tab_metrics_(new_tab_metrics) {
+      new_tab_metrics_(new_tab_metrics),
+      was_restored_(was_restored) {
   CHECK(custom_image_chooser_);
   CHECK(background_facade_);
   CHECK(top_sites_facade_);
@@ -118,6 +120,16 @@ void NewTabPageHandler::GetSelectedBackground(
 
 void NewTabPageHandler::GetSponsoredImageBackground(
     GetSponsoredImageBackgroundCallback callback) {
+  // Do not show sponsored backgrounds for restored tabs.
+  // TODO(https://github.com/brave/brave-browser/issues/51359): Use tab
+  // visibility instead of `was_restored_` flag.
+  if (was_restored_) {
+    // Reset `was_restored_` flag so with the next reload the current tab won't
+    // be treated as a restored tab.
+    was_restored_ = false;
+    return std::move(callback).Run(nullptr);
+  }
+
   auto sponsored_background = background_facade_->GetSponsoredImageBackground();
   if (sponsored_background) {
     ntp_background_images::NewTabTakeoverInfoBarDelegate::

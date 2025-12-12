@@ -1170,6 +1170,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
+      "//brave/browser/ui/webui/brave_new_tab_page_refresh:browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",
       "//brave/browser/ui/webui/tab_search:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
