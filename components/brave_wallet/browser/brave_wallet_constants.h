@@ -697,6 +697,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY},
     {"braveWalletAccountSettingsHideKey",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY},
+    {"braveWalletAccountSettingsDownloadKey",
+     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DOWNLOAD_KEY},
     {"braveWalletAccountSettingsUpdateError",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_UPDATE_ERROR},
     {"braveWalletPreset25", IDS_BRAVE_WALLET_PRESET25},
