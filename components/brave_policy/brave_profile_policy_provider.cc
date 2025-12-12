@@ -99,14 +99,19 @@ void BraveProfilePolicyProvider::LoadBraveOriginPolicies(
     return;  // No profile context yet
   }
 
+  auto* brave_origin_policy_manager =
+      brave_origin::BraveOriginPolicyManager::GetInstance();
+  if (!brave_origin_policy_manager->IsInitialized()) {
+    return;  // BraveOriginPolicyManager is not initialized yet
+  }
+
   // Create policy map for Chrome domain
   policy::PolicyMap& bundle_policy_map = bundle.Get(
       policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
 
   // Get all profile policies
   const auto policy_values =
-      brave_origin::BraveOriginPolicyManager::GetInstance()
-          ->GetAllProfilePolicies(profile_id_);
+      brave_origin_policy_manager->GetAllProfilePolicies(profile_id_);
   for (const auto& [policy_key, enabled] : policy_values) {
     LoadBraveOriginPolicy(bundle_policy_map, policy_key, enabled);
   }
