@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 
 import {
   NewTabState,
@@ -11,7 +11,9 @@ import {
   defaultNewTabActions,
 } from '../state/new_tab_state'
 
-export function createNewTabHandler(store: Store<NewTabState>): NewTabActions {
+export function createNewTabHandler(
+  store: StateStore<NewTabState>,
+): NewTabActions {
   store.update({
     initialized: true,
     showClock: true,

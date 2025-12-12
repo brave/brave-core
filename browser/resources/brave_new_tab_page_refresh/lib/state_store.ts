@@ -8,7 +8,7 @@ type Listener<State> = (state: State) => void
 type UpdateFunction<State> = (state: State) => Partial<State>
 
 // A simple object-state store.
-export interface Store<State> {
+export interface StateStore<State> {
   // Returns the current state of the store.
   getState: () => State
 
@@ -19,11 +19,13 @@ export interface Store<State> {
 
   // Adds a listener that will be notified when the state store changes. The
   // listener will not be notified immediately. Returns a function that will
-  // remove the listener from store.
+  // remove the listener from the store.
   addListener: (listener: Listener<State>) => () => void
 }
 
-export function createStore<State>(initialState: State): Store<State> {
+export function createStateStore<State>(
+  initialState: State,
+): StateStore<State> {
   const listeners = new Set<Listener<State>>()
   const state = { ...initialState }
   let notificationQueued = false

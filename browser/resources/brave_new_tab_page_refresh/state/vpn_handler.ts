@@ -6,7 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import * as mojom from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import { debounce } from '$web-common/debounce'
 import {
   VpnState,
@@ -15,7 +15,7 @@ import {
   ConnectionState,
 } from './vpn_state'
 
-export function createVpnHandler(store: Store<VpnState>): VpnActions {
+export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
   if (!loadTimeData.getBoolean('vpnFeatureEnabled')) {
     store.update({ initialized: true })
     return defaultVpnActions()
