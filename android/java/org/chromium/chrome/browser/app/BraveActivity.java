@@ -386,8 +386,11 @@ public abstract class BraveActivity extends ChromeActivity
         // TODO(sergz): verify do we need it in that phase or not.
         if (mNativeInitialized) {
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-            if (layout != null && layout.isWalletIconVisible()) {
-                updateWalletBadgeVisibility();
+            if (layout != null) {
+                layout.maybeShowTermsOfServiceUpdateRequiredBadge();
+                if (layout.isWalletIconVisible()) {
+                    updateWalletBadgeVisibility();
+                }
             }
 
             // If a full screen custom tab was closed and bottom controls are enabled,
