@@ -481,6 +481,14 @@ public class BytecodeTest {
                         "updateMvtOnTablet",
                         MethodModifier.REGULAR,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "isInNarrowWindowOnTablet",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        boolean.class,
+                        UiConfig.class));
 
         Assert.assertTrue(
                 methodExists(

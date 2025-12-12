@@ -54,5 +54,10 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         makePublicMethod(sNewTabPageLayoutClassName, "updateMvtOnTablet");
 
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
+
+        changeMethodOwner(
+                sNewTabPageLayoutClassName,
+                "isInNarrowWindowOnTablet",
+                sBraveNewTabPageLayoutClassName);
     }
 }
