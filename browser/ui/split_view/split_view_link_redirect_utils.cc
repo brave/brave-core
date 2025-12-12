@@ -32,18 +32,19 @@ namespace {
 // WebContentsUserData to temporarily store the split tab ID for redirect
 // purposes. This is used when a new WebContents is created (e.g., from
 // window.open) and needs to be redirected based on its source split view.
-class SplitTabIdData : public content::WebContentsUserData<SplitTabIdData> {
+class SourceSplitTabIdData
+    : public content::WebContentsUserData<SourceSplitTabIdData> {
  public:
-  ~SplitTabIdData() override = default;
+  ~SourceSplitTabIdData() override = default;
 
   const split_tabs::SplitTabId& split_tab_id() const { return split_tab_id_; }
 
  private:
-  friend class content::WebContentsUserData<SplitTabIdData>;
+  friend class content::WebContentsUserData<SourceSplitTabIdData>;
 
-  explicit SplitTabIdData(content::WebContents* contents,
-                          const split_tabs::SplitTabId& split_tab_id)
-      : content::WebContentsUserData<SplitTabIdData>(*contents),
+  explicit SourceSplitTabIdData(content::WebContents* contents,
+                                const split_tabs::SplitTabId& split_tab_id)
+      : content::WebContentsUserData<SourceSplitTabIdData>(*contents),
         split_tab_id_(split_tab_id) {}
 
   split_tabs::SplitTabId split_tab_id_;
@@ -51,21 +52,21 @@ class SplitTabIdData : public content::WebContentsUserData<SplitTabIdData> {
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SplitTabIdData);
+WEB_CONTENTS_USER_DATA_KEY_IMPL(SourceSplitTabIdData);
 
 // Gets and clears the split tab ID from a WebContents. Returns nullopt if
 // no split tab ID was set. This is a one-time read operation.
 std::optional<split_tabs::SplitTabId> GetAndClearSplitTabIdForRedirect(
     content::WebContents* contents) {
   CHECK(contents);
-  SplitTabIdData* data = SplitTabIdData::FromWebContents(contents);
+  SourceSplitTabIdData* data = SourceSplitTabIdData::FromWebContents(contents);
   if (!data) {
     return std::nullopt;
   }
 
   split_tabs::SplitTabId split_tab_id = data->split_tab_id();
   // Clear the data after reading it (one-time use)
-  contents->RemoveUserData(SplitTabIdData::UserDataKey());
+  contents->RemoveUserData(SourceSplitTabIdData::UserDataKey());
   return split_tab_id;
 }
 
@@ -138,7 +139,7 @@ content::WebContents* GetRightPaneIfLinked(
     return nullptr;
   }
 
-  // Get the list of tabs in the split and verify this is the left pane
+  // Get the list of tabs in the split and verify |source| is the left pane
   const std::vector<tabs::TabInterface*> tabs_in_split = split_data->ListTabs();
   if (tabs_in_split.size() != 2 || tabs_in_split[0]->GetContents() != source) {
     return nullptr;
@@ -181,7 +182,10 @@ bool MaybeRedirectToRightPane(content::WebContents* source,
   params.referrer = referrer;
   Navigate(&params);
 
-  // Close the source tab if it was created by window.open and we redirected.
+  // Note that the |source| tab is new background tab which was spawned from the
+  // left panel of linked split tabs via BrowserView::AddNewWebContents().
+  // And it's empty as we intercepted the navigation for it and routed it to the
+  // right pane of split tabs. That's why we need to close it.
   // We need to close it asynchronously after the current call stack completes
   // to avoid interfering with the navigation system.
   if (from_window_open) {
@@ -223,7 +227,7 @@ bool SetSplitTabIdForRedirect(content::WebContents* source,
     return false;
   }
 
-  // Verify this is the left pane and the split is linked
+  // Verify |source| is the left pane and the split is linked
   const tabs::TabCollection* parent_collection =
       source_tab->GetParentCollection();
   if (!parent_collection) {
@@ -242,8 +246,10 @@ bool SetSplitTabIdForRedirect(content::WebContents* source,
     return false;
   }
 
-  // This is the left pane of a linked split view, set the split tab ID
-  SplitTabIdData::CreateForWebContents(new_contents, split_tab_id.value());
+  // |source| is the left pane of a linked split view, set the split tab ID to
+  // the |new_contents|.
+  SourceSplitTabIdData::CreateForWebContents(new_contents,
+                                             split_tab_id.value());
   return true;
 }
 

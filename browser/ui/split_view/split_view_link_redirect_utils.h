@@ -16,15 +16,13 @@ class GURL;
 namespace split_view {
 
 // Manages redirecting navigations from the left pane in a split view to the
-// right pane when the split view is linked. This shared logic is used by both
-// SplitViewLinkNavigationThrottle (for normal navigations) and Browser's
-// AddNewContents (for target="_blank" links).
+// right pane when the split view is linked.
 bool MaybeRedirectToRightPane(content::WebContents* source,
                               const GURL& url,
                               const content::Referrer& referrer);
 
-// Sets the split tab ID on a WebContents if the source is the left pane of a
-// linked split view. This is used to temporarily mark a WebContents as
+// Sets the split tab ID on a |new_contents| if the |source| is the left pane of
+// a linked split view. This is used to temporarily mark a WebContents as
 // originating from a specific split view for redirect purposes. The ID should
 // be cleared after being read.
 // Returns true if the split tab ID was set (indicating the source is from a

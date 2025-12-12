@@ -17,6 +17,17 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
+namespace {
+
+bool AreSplitTabLinked(const split_tabs::SplitTabId& split_id,
+                       TabStripModel* tab_strip_model) {
+  split_tabs::SplitTabData* const split_tab_data =
+      tab_strip_model->GetSplitData(split_id);
+  return split_tab_data->linked();
+}
+
+}  // namespace
+
 std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source) {
@@ -76,10 +87,7 @@ std::u16string BraveSplitTabMenuModel::GetLabelForCommandId(
   }
 
   if (id == CommandId::kToggleLinkState) {
-    const split_tabs::SplitTabId split_id = GetSplitTabId();
-    split_tabs::SplitTabData* const split_tab_data =
-        tab_strip_model_->GetSplitData(split_id);
-    const bool linked = split_tab_data->linked();
+    const bool linked = AreSplitTabLinked(GetSplitTabId(), tab_strip_model_);
     return l10n_util::GetStringUTF16(linked ? IDS_IDC_SPLIT_VIEW_UNLINK
                                             : IDS_IDC_SPLIT_VIEW_LINK);
   }
@@ -98,10 +106,7 @@ ui::ImageModel BraveSplitTabMenuModel::GetIconForCommandId(
   }
 
   if (id == CommandId::kToggleLinkState) {
-    const split_tabs::SplitTabId split_id = GetSplitTabId();
-    split_tabs::SplitTabData* const split_tab_data =
-        tab_strip_model_->GetSplitData(split_id);
-    const bool linked = split_tab_data->linked();
+    const bool linked = AreSplitTabLinked(GetSplitTabId(), tab_strip_model_);
     return ui::ImageModel::FromVectorIcon(
         linked ? kLeoLinkBrokenIcon : kLeoLinkNormalIcon, ui::kColorMenuIcon,
         ui::SimpleMenuModel::kDefaultIconSize);
