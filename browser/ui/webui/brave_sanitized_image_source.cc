@@ -96,7 +96,7 @@ void BraveSanitizedImageSource::OnImageLoaded(
     std::unique_ptr<network::SimpleURLLoader> loader,
     RequestAttributes request_attributes,
     content::URLDataSource::GotDataCallback callback,
-    std::unique_ptr<std::string> body) {
+    std::optional<std::string> body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (loader->NetError() != net::OK || !body) {
@@ -109,7 +109,7 @@ void BraveSanitizedImageSource::OnImageLoaded(
     pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
   }
 
-  if (loader->NetError() == net::OK && body &&
+  if (loader->NetError() == net::OK &&
       request_attributes.image_url.host() == pcdn_domain_ &&
       request_attributes.image_url.path().ends_with(".pad")) {
     std::string_view body_payload(body->data(), body->size());

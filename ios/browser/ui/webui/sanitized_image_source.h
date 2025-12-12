@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_UI_WEBUI_SANITIZED_IMAGE_SOURCE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -98,7 +99,7 @@ class SanitizedImageSource : public web::URLDataSourceIOS {
   void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
                      RequestAttributes request_attributes,
                      web::URLDataSourceIOS::GotDataCallback callback,
-                     std::unique_ptr<std::string> body);
+                     std::optional<std::string> body);
   void OnAnimationDecoded(
       RequestAttributes request_attributes,
       web::URLDataSourceIOS::GotDataCallback callback,

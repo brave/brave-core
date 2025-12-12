@@ -100,7 +100,7 @@ class StarRandomnessMeta {
   void AttestServer(bool make_info_request_after);
 
   void HandleServerInfoResponse(MetricLogType log_type,
-                                std::unique_ptr<std::string> response_body);
+                                std::optional<std::string> response_body);
 
   void HandleAttestationResult(
       bool make_info_request_after,

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_SERVICE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -90,7 +91,7 @@ class PlaylistService : public KeyedService,
     virtual ~Delegate() = default;
 
     virtual void SanitizeImage(
-        std::unique_ptr<std::string> image,
+        std::optional<std::string> image,
         base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)>
             callback) = 0;
 
@@ -355,7 +356,7 @@ class PlaylistService : public KeyedService,
 
   // PlaylistThumbnailDownloader::Delegate overrides:
   void SanitizeImage(
-      std::unique_ptr<std::string> image,
+      std::optional<std::string> image,
       base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback)
       override;
   // Called when thumbnail image file is downloaded.

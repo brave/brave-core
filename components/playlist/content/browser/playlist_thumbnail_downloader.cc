@@ -110,7 +110,7 @@ void PlaylistThumbnailDownloader::CancelAllDownloadRequests() {
 void PlaylistThumbnailDownloader::SaveResponseToFile(
     const std::string& id,
     base::FilePath path,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   DVLOG(2) << __func__ << " id: " << id;
 
   if (!url_loader_map_.count(id)) {
@@ -150,7 +150,7 @@ void PlaylistThumbnailDownloader::SaveResponseToFile(
 void PlaylistThumbnailDownloader::ConvertResponseToImage(
     const std::string& id,
     base::OnceCallback<void(gfx::Image)> callback,
-    std::unique_ptr<std::string> response_body) {
+    std::optional<std::string> response_body) {
   DVLOG(2) << __func__ << " id: " << id;
 
   if (!url_loader_map_.count(id)) {

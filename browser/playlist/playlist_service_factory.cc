@@ -94,7 +94,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
   }
 
   void SanitizeImage(
-      std::unique_ptr<std::string> image,
+      std::optional<std::string> image,
       base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback)
       override {
     DecodeImageInIsolatedProcess(
@@ -160,7 +160,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
   }
 
   void DecodeImageInIsolatedProcess(
-      std::unique_ptr<std::string> image,
+      std::optional<std::string> image,
       base::OnceCallback<void(const gfx::Image&)> callback) {
     data_decoder::DecodeImageIsolated(
         base::as_byte_span(*image), data_decoder::mojom::ImageCodec::kDefault,

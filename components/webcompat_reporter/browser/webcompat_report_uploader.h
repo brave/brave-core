@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORT_UPLOADER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -39,7 +40,7 @@ class WebcompatReportUploader {
   void CreateAndStartURLLoader(const GURL& upload_url,
                                const std::string& content_type,
                                const std::string& post_data);
-  void OnSimpleURLLoaderComplete(std::unique_ptr<std::string> response_body);
+  void OnSimpleURLLoaderComplete(std::optional<std::string> response_body);
   SEQUENCE_CHECKER(sequence_checker_);
 };
 

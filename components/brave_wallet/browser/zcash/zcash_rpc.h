@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RPC_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -97,19 +98,19 @@ class ZCashRpc {
 
   void OnGetUtxosResponse(ZCashRpc::GetUtxoListCallback callback,
                           network::SimpleURLLoader* loader,
-                          std::unique_ptr<std::string> response_body);
+                          std::optional<std::string> response_body);
 
   void OnGetLatestBlockResponse(ZCashRpc::GetLatestBlockCallback callback,
                                 network::SimpleURLLoader* loader,
-                                std::unique_ptr<std::string> response_body);
+                                std::optional<std::string> response_body);
 
   void OnGetTransactionResponse(ZCashRpc::GetTransactionCallback callback,
                                 network::SimpleURLLoader* loader,
-                                std::unique_ptr<std::string> response_body);
+                                std::optional<std::string> response_body);
 
   void OnSendTransactionResponse(ZCashRpc::SendTransactionCallback callback,
                                  network::SimpleURLLoader* loader,
-                                 std::unique_ptr<std::string> response_body);
+                                 std::optional<std::string> response_body);
 
   void OnGetAddressTxResponse(ZCashRpc::IsKnownAddressCallback callback,
                               network::SimpleURLLoader* loader,
@@ -118,7 +119,7 @@ class ZCashRpc {
 
   void OnGetTreeStateResponse(ZCashRpc::GetTreeStateCallback callback,
                               network::SimpleURLLoader* loader,
-                              std::unique_ptr<std::string> response_body);
+                              std::optional<std::string> response_body);
 
   void OnGetCompactBlocksResponse(
       ZCashRpc::GetCompactBlocksCallback callback,
@@ -128,7 +129,7 @@ class ZCashRpc {
 
   void OnGetLightdInfoResponse(GetLightdInfoCallback callback,
                                network::SimpleURLLoader* loader,
-                               std::unique_ptr<std::string> response_body);
+                               std::optional<std::string> response_body);
 
   template <typename T>
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,

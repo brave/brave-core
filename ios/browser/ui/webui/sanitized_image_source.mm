@@ -316,7 +316,7 @@ void SanitizedImageSource::OnImageLoaded(
     std::unique_ptr<network::SimpleURLLoader> loader,
     RequestAttributes request_attributes,
     web::URLDataSourceIOS::GotDataCallback callback,
-    std::unique_ptr<std::string> body) {
+    std::optional<std::string> body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Brave:

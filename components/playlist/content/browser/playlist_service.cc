@@ -738,7 +738,7 @@ void PlaylistService::DownloadThumbnail(const mojom::PlaylistItemPtr& item) {
 }
 
 void PlaylistService::SanitizeImage(
-    std::unique_ptr<std::string> image,
+    std::optional<std::string> image,
     base::OnceCallback<void(scoped_refptr<base::RefCountedBytes>)> callback) {
   if (!delegate_) {
     CHECK_IS_TEST();
