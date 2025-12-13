@@ -30,6 +30,7 @@ brave_settings_web_component_files = [
   "brave_content_page/content_page_index.ts",
   "brave_content_page/playlist.ts",
   "brave_data_collection_page/brave_data_collection_page.ts",
+  "brave_debounce_page/brave_debounce_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_new_tab_page/brave_new_tab_page.ts",

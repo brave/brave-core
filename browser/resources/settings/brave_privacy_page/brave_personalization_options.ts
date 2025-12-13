@@ -19,6 +19,7 @@ import {
 
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
+import { Router } from '../router.js'
 
 import '../privacy_page/do_not_track_toggle.js'
 
@@ -141,6 +142,11 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open('chrome://restart', '_self')
+  }
+
+  onDebounceRulesClicked_() {
+    const router = Router.getInstance()
+    router.navigateTo(router.getRoutes().BRAVE_DEBOUNCE_RULES)
   }
 
   override ready() {

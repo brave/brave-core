@@ -77,6 +77,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.BRAVE_SURVEY_PANELIST =
       r.PRIVACY.createChild('/surveyPanelist')
   }
+  if (r.PRIVACY) {
+    r.BRAVE_DEBOUNCE_RULES = r.PRIVACY.createChild('/debounceRules')
+  }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')
     r.DEFAULT_SEARCH.isNavigableDialog = true

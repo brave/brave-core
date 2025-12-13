@@ -13,6 +13,7 @@ import { routes } from '../route.js';
 import { loadTimeData } from "../i18n_setup.js"
 import { pageVisibility } from './page_visibility.js'
 import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
+import '../brave_debounce_page/brave_debounce_page.js'
 import '../site_settings/site_settings_autoplay.js'
 import '../site_settings/site_settings_localhost.js'
 // <if expr="enable_brave_wallet">
@@ -50,6 +51,9 @@ RegisterPolymerPrototypeModification({
     prototype.getViewIdsForRoute_ = function (route: Route) {
       if (route === routes.BRAVE_SURVEY_PANELIST) {
         return ['surveyPanelist'];
+      }
+      if (route === routes.BRAVE_DEBOUNCE_RULES) {
+        return ['debounceRules'];
       }
       return oldGetViewIdsForRoute.call(this, route);
     }
@@ -99,6 +103,16 @@ RegisterPolymerTemplateModifications({
         prefs="{{prefs}}"
         in-search-mode="[[inSearchMode_]]">
       </settings-brave-survey-panelist-page>`)
+    }
+
+    if (loadTimeData.getBoolean('isDebounceFeatureEnabled')) {
+      viewManager.appendChild(html`<settings-brave-debounce-page
+        id="debounceRules"
+        data-parent-view-id="dataCollection"
+        slot="view"
+        prefs="{{prefs}}"
+        in-search-mode="[[inSearchMode_]]">
+      </settings-brave-debounce-page>`)
     }
 
     if (loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')) {
