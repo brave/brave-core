@@ -265,7 +265,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kLocationProviderManager,
 #endif
       &features::kSideBySide,
-      &features::kCloseActiveTabInSplitViewViaHotkey,
       &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
