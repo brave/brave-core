@@ -155,6 +155,8 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
           proto_text->set_text(mojom_block->get_text_content_block()->text);
           break;
         }
+        default:
+          DVLOG(2) << "Non standard content types are not supported yet.";
       }
     }
   }

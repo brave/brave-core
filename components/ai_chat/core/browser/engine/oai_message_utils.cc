@@ -12,24 +12,27 @@ namespace ai_chat {
 
 namespace {
 
-ExtendedContentBlock GetContentBlockFromAssociatedContent(
+mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     const PageContent& content,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
   std::string truncated = content.content.substr(0, remaining_length);
   sanitize_input(truncated);
-  return ExtendedContentBlock{content.is_video
-                                  ? ExtendedContentBlockType::kVideoTranscript
-                                  : ExtendedContentBlockType::kPageText,
-                              TextContent{std::move(truncated)}};
+  if (content.is_video) {
+    return mojom::ContentBlock::NewVideoTranscriptContentBlock(
+        mojom::VideoTranscriptContentBlock::New(std::move(truncated)));
+  } else {
+    return mojom::ContentBlock::NewPageTextContentBlock(
+        mojom::PageTextContentBlock::New(std::move(truncated)));
+  }
 }
 
-std::vector<ExtendedContentBlock> BuildOAIPageContentBlocks(
+std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
     const PageContents& page_contents,
     uint32_t& max_associated_content_length,
     base::FunctionRef<void(std::string&)> sanitize_input,
     std::optional<uint32_t> max_per_content_length = std::nullopt) {
-  std::vector<ExtendedContentBlock> blocks;
+  std::vector<mojom::ContentBlockPtr> blocks;
 
   // Note: We iterate in reverse so that we prefer more recent page content
   // (i.e. the oldest content will be truncated when we run out of context).
@@ -42,9 +45,12 @@ std::vector<ExtendedContentBlock> BuildOAIPageContentBlocks(
 
     auto block = GetContentBlockFromAssociatedContent(
         page_content, effective_length_limit, sanitize_input);
-    auto* truncated_text = std::get_if<TextContent>(&block.data);
-    CHECK(truncated_text);
-    uint32_t truncated_size = truncated_text->text.size();
+    uint32_t truncated_size = 0;
+    if (block->is_video_transcript_content_block()) {
+      truncated_size = block->get_video_transcript_content_block()->text.size();
+    } else if (block->is_page_text_content_block()) {
+      truncated_size = block->get_page_text_content_block()->text.size();
+    }
 
     blocks.push_back(std::move(block));
 
@@ -80,7 +86,7 @@ std::vector<OAIMessage> BuildOAIMessages(
   // entry.
   // We use this so we can look up all the page content blocks for a given
   // conversation entry.
-  base::flat_map<std::string, std::vector<ExtendedContentBlock>>
+  base::flat_map<std::string, std::vector<mojom::ContentBlockPtr>>
       page_contents_blocks;
 
   // Step 1:
@@ -124,24 +130,27 @@ std::vector<OAIMessage> BuildOAIMessages(
     auto page_content_it = page_contents_blocks.find(message->uuid.value());
     if (page_content_it != page_contents_blocks.end()) {
       for (auto& block : page_content_it->second) {
-        oai_message.content.emplace_back(std::move(block));
+        oai_message.content.push_back(std::move(block));
       }
     }
 
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {
-      oai_message.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
-                                       TextContent{*message->selected_text});
+      oai_message.content.push_back(
+          mojom::ContentBlock::NewPageExcerptContentBlock(
+              mojom::PageExcerptContentBlock::New(*message->selected_text)));
     }
 
     // Build the main content block
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
-      oai_message.content.emplace_back(
-          ExtendedContentBlockType::kRequestSummary, TextContent{""});
+      oai_message.content.push_back(
+          mojom::ContentBlock::NewSimpleRequestContentBlock(
+              mojom::SimpleRequestContentBlock::New(
+                  mojom::SimpleRequestType::kRequestSummary)));
     } else {
-      oai_message.content.emplace_back(
-          ExtendedContentBlockType::kText,
-          TextContent{EngineConsumer::GetPromptForEntry(message)});
+      oai_message.content.push_back(
+          mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+              EngineConsumer::GetPromptForEntry(message))));
     }
 
     oai_messages.emplace_back(std::move(oai_message));
@@ -163,8 +172,9 @@ std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
   msg.content.insert(msg.content.end(), std::make_move_iterator(blocks.begin()),
                      std::make_move_iterator(blocks.end()));
 
-  msg.content.emplace_back(ExtendedContentBlockType::kRequestQuestions,
-                           TextContent{""});
+  msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+      mojom::SimpleRequestContentBlock::New(
+          mojom::SimpleRequestType::kRequestQuestions)));
   messages.push_back(std::move(msg));
 
   return messages;
@@ -177,45 +187,49 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
   OAIMessage msg;
   msg.role = "user";
 
-  msg.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
-                           TextContent{text});
+  msg.content.push_back(mojom::ContentBlock::NewPageExcerptContentBlock(
+      mojom::PageExcerptContentBlock::New(text)));
 
   switch (action_type) {
     case mojom::ActionType::PARAPHRASE:
-      msg.content.emplace_back(ExtendedContentBlockType::kParaphrase,
-                               TextContent{""});
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kParaphrase)));
       break;
     case mojom::ActionType::IMPROVE:
-      msg.content.emplace_back(ExtendedContentBlockType::kImprove,
-                               TextContent{""});
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kImprove)));
       break;
     case mojom::ActionType::ACADEMICIZE:
-      msg.content.emplace_back(ExtendedContentBlockType::kChangeTone,
-                               ChangeToneContent{"academic"});
+      msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
+          mojom::ChangeToneContentBlock::New("", "academic")));
       break;
     case mojom::ActionType::PROFESSIONALIZE:
-      msg.content.emplace_back(ExtendedContentBlockType::kChangeTone,
-                               ChangeToneContent{"professional"});
+      msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
+          mojom::ChangeToneContentBlock::New("", "professional")));
       break;
     case mojom::ActionType::PERSUASIVE_TONE:
-      msg.content.emplace_back(ExtendedContentBlockType::kChangeTone,
-                               ChangeToneContent{"persuasive"});
+      msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
+          mojom::ChangeToneContentBlock::New("", "persuasive")));
       break;
     case mojom::ActionType::CASUALIZE:
-      msg.content.emplace_back(ExtendedContentBlockType::kChangeTone,
-                               ChangeToneContent{"casual"});
+      msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
+          mojom::ChangeToneContentBlock::New("", "casual")));
       break;
     case mojom::ActionType::FUNNY_TONE:
-      msg.content.emplace_back(ExtendedContentBlockType::kChangeTone,
-                               ChangeToneContent{"funny"});
+      msg.content.push_back(mojom::ContentBlock::NewChangeToneContentBlock(
+          mojom::ChangeToneContentBlock::New("", "funny")));
       break;
     case mojom::ActionType::SHORTEN:
-      msg.content.emplace_back(ExtendedContentBlockType::kShorten,
-                               TextContent{""});
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kShorten)));
       break;
     case mojom::ActionType::EXPAND:
-      msg.content.emplace_back(ExtendedContentBlockType::kExpand,
-                               TextContent{""});
+      msg.content.push_back(mojom::ContentBlock::NewSimpleRequestContentBlock(
+          mojom::SimpleRequestContentBlock::New(
+              mojom::SimpleRequestType::kExpand)));
       break;
     default:
       return std::nullopt;
@@ -261,18 +275,18 @@ BuildOAIGenerateConversationTitleMessages(
   // Add selected text as page excerpt if present
   if (first_turn->selected_text.has_value() &&
       !first_turn->selected_text->empty()) {
-    msg.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
-                             TextContent{*first_turn->selected_text});
+    msg.content.push_back(mojom::ContentBlock::NewPageExcerptContentBlock(
+        mojom::PageExcerptContentBlock::New(*first_turn->selected_text)));
   }
 
   // Add a message for title generation.
   // Use first assistant response as the content if files are uploaded (image,
   // PDF), otherwise use the first human turn text.
-  msg.content.emplace_back(
-      ExtendedContentBlockType::kRequestTitle,
-      TextContent{first_turn->uploaded_files
-                      ? assistant_turn->text
-                      : EngineConsumer::GetPromptForEntry(first_turn)});
+  msg.content.push_back(mojom::ContentBlock::NewRequestTitleContentBlock(
+      mojom::RequestTitleContentBlock::New(
+          first_turn->uploaded_files
+              ? assistant_turn->text
+              : EngineConsumer::GetPromptForEntry(first_turn))));
 
   messages.push_back(std::move(msg));
   return messages;
@@ -281,8 +295,8 @@ BuildOAIGenerateConversationTitleMessages(
 OAIMessage BuildOAISeedMessage(const std::string& text) {
   OAIMessage message;
   message.role = "assistant";
-  message.content.emplace_back(ExtendedContentBlockType::kText,
-                               TextContent{text});
+  message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New(text)));
   return message;
 }
 

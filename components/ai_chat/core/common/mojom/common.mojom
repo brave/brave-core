@@ -124,9 +124,62 @@ struct TextContentBlock {
   string text;
 };
 
+struct PageExcerptContentBlock {
+  string text;
+};
+
+struct PageTextContentBlock {
+  string text;
+};
+
+struct VideoTranscriptContentBlock {
+  string text;
+};
+
+struct RequestTitleContentBlock {
+  string text;
+};
+
+struct ChangeToneContentBlock {
+  string text;
+  string tone;
+};
+
+enum SimpleRequestType {
+  kParaphrase,
+  kImprove,
+  kShorten,
+  kExpand,
+  kRequestSummary,
+  kRequestQuestions,
+
+  // For validation use only, should always stay at the end of this enum.
+  kCount,
+};
+
+// Used for content blocks which only needs type information without any data
+// payloads to signal a specific type of requests to the server. Do not add
+// fields into this unless it is needed for every request types in
+// SimpleRequestType, instead, define a new type of content block struct and
+// add it into ContentBlock union.
+struct SimpleRequestContentBlock {
+  SimpleRequestType type;
+};
+
 union ContentBlock {
+  // Standard OpenAI content blocks
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
+
+  // Brave customized content blocks
+  PageExcerptContentBlock page_excerpt_content_block;
+  PageTextContentBlock page_text_content_block;
+  VideoTranscriptContentBlock video_transcript_content_block;
+  RequestTitleContentBlock request_title_content_block;
+  ChangeToneContentBlock change_tone_content_block;
+
+  // Brave customized content blocks which does not have any data payloads.
+  SimpleRequestContentBlock simple_request_content_block;
 };
 
 // Permission challenge that blocks tool execution until user approves

@@ -55,8 +55,6 @@ static_library("browser") {
     "engine/engine_consumer_conversation_api_v2.h",
     "engine/engine_consumer_oai.cc",
     "engine/engine_consumer_oai.h",
-    "engine/extended_content_block.cc",
-    "engine/extended_content_block.h",
     "engine/oai_api_client.cc",
     "engine/oai_api_client.h",
     "engine/oai_message_utils.cc",

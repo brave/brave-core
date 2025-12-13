@@ -19,7 +19,6 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/extended_content_block.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -53,7 +52,7 @@ constexpr char kTestContent[] = "test content";
 
 struct ContentBlockTestParam {
   std::string name;
-  base::RepeatingCallback<ExtendedContentBlock()> get_test_content_block;
+  base::RepeatingCallback<mojom::ContentBlockPtr()> get_test_content_block;
   std::string expected_type;
 };
 
@@ -64,12 +63,8 @@ GetMockMessagesAndExpectedContent() {
   // Create a simple user message with text content
   OAIMessage message;
   message.role = "user";
-  ExtendedContentBlock content_block;
-  content_block.type = ExtendedContentBlockType::kText;
-  TextContent text_content;
-  text_content.text = "test message";
-  content_block.data = std::move(text_content);
-  message.content.push_back(std::move(content_block));
+  message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("test message")));
   messages.push_back(std::move(message));
 
   // Create expected messages dict for verification
@@ -184,7 +179,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
        SerializeOAIMessages_ContentBlocks) {
   ContentBlockTestParam params = GetParam();
 
-  ExtendedContentBlock block = params.get_test_content_block.Run();
+  mojom::ContentBlockPtr block = params.get_test_content_block.Run();
   std::vector<OAIMessage> messages;
   OAIMessage message;
   message.role = "user";
@@ -213,27 +208,44 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
   base::Value::Dict expected_content;
   expected_content.Set("type", params.expected_type);
 
-  ExtendedContentBlock original_block = params.get_test_content_block.Run();
-  if (original_block.type == ExtendedContentBlockType::kImage) {
-    const ImageContent* img = std::get_if<ImageContent>(&original_block.data);
-    ASSERT_TRUE(img);
-    base::Value::Dict image_url_dict;
-    image_url_dict.Set("url", img->image_url.url);
-    if (img->image_url.detail) {
-      image_url_dict.Set("detail", *img->image_url.detail);
+  mojom::ContentBlockPtr original_block = params.get_test_content_block.Run();
+  switch (original_block->which()) {
+    case mojom::ContentBlock::Tag::kImageContentBlock: {
+      const auto& img = original_block->get_image_content_block();
+      base::Value::Dict image_url_dict;
+      image_url_dict.Set("url", img->image_url.spec());
+      expected_content.Set("image_url", std::move(image_url_dict));
+      break;
     }
-    expected_content.Set("image_url", std::move(image_url_dict));
-  } else if (original_block.type == ExtendedContentBlockType::kChangeTone) {
-    const ChangeToneContent* tone =
-        std::get_if<ChangeToneContent>(&original_block.data);
-    ASSERT_TRUE(tone);
-    expected_content.Set("text", "");
-    expected_content.Set("tone", tone->tone);
-  } else {
-    // All other types have TextContent data
-    const TextContent* text = std::get_if<TextContent>(&original_block.data);
-    ASSERT_TRUE(text);
-    expected_content.Set("text", text->text);
+    case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
+      const auto& tone = original_block->get_change_tone_content_block();
+      expected_content.Set("text", "");
+      expected_content.Set("tone", tone->tone);
+      break;
+    }
+    case mojom::ContentBlock::Tag::kTextContentBlock:
+      expected_content.Set("text",
+                           original_block->get_text_content_block()->text);
+      break;
+    case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+      expected_content.Set(
+          "text", original_block->get_page_excerpt_content_block()->text);
+      break;
+    case mojom::ContentBlock::Tag::kPageTextContentBlock:
+      expected_content.Set("text",
+                           original_block->get_page_text_content_block()->text);
+      break;
+    case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+      expected_content.Set(
+          "text", original_block->get_video_transcript_content_block()->text);
+      break;
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
+      expected_content.Set("text", "");
+      break;
+    case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+      expected_content.Set(
+          "text", original_block->get_request_title_content_block()->text);
+      break;
   }
 
   EXPECT_EQ(*content_dict, expected_content);
@@ -244,86 +256,90 @@ INSTANTIATE_TEST_SUITE_P(
     ConversationAPIV2ClientUnitTest_ContentBlocks,
     testing::Values(
         ContentBlockTestParam{"Text", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kText,
-                                    TextContent{kTestContent});
+                                return mojom::ContentBlock::NewTextContentBlock(
+                                    mojom::TextContentBlock::New(kTestContent));
                               }),
                               "text"},
         ContentBlockTestParam{
             "Image", base::BindRepeating([]() {
-              ImageContent img;
-              img.image_url.url = "data:image/png;base64,abc123";
-              img.image_url.detail = std::optional<std::string>("high");
-              return ExtendedContentBlock(ExtendedContentBlockType::kImage,
-                                          std::move(img));
+              return mojom::ContentBlock::NewImageContentBlock(
+                  mojom::ImageContentBlock::New(
+                      GURL("data:image/png;base64,abc123")));
             }),
             "image_url"},
-        ContentBlockTestParam{"PageExcerpt", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kPageExcerpt,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-page-excerpt"},
-        ContentBlockTestParam{"PageText", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kPageText,
-                                    TextContent{"test page content"});
-                              }),
-                              "brave-page-text"},
-        ContentBlockTestParam{"VideoTranscript", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kVideoTranscript,
-                                    TextContent{"test video transcript"});
-                              }),
-                              "brave-video-transcript"},
-        ContentBlockTestParam{"RequestSummary", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kRequestSummary,
-                                    TextContent{""});
-                              }),
-                              "brave-request-summary"},
-        ContentBlockTestParam{"RequestQuestions", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kRequestQuestions,
-                                    TextContent{""});
-                              }),
-                              "brave-request-questions"},
-        ContentBlockTestParam{"RequestTitle", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kRequestTitle,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-conversation-title"},
-        ContentBlockTestParam{"Paraphrase", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kParaphrase,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-request-paraphrase"},
-        ContentBlockTestParam{"Improve", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kImprove,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-request-improve-excerpt-language"},
-        ContentBlockTestParam{"Shorten", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kShorten,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-request-shorten"},
-        ContentBlockTestParam{"Expand", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kExpand,
-                                    TextContent{kTestContent});
-                              }),
-                              "brave-request-expansion"},
-        ContentBlockTestParam{"ChangeTone", base::BindRepeating([]() {
-                                return ExtendedContentBlock(
-                                    ExtendedContentBlockType::kChangeTone,
-                                    ChangeToneContent{"professional"});
-                              }),
-                              "brave-request-change-tone"}),
+        ContentBlockTestParam{
+            "PageExcerpt", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewPageExcerptContentBlock(
+                  mojom::PageExcerptContentBlock::New(kTestContent));
+            }),
+            "brave-page-excerpt"},
+        ContentBlockTestParam{
+            "PageText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewPageTextContentBlock(
+                  mojom::PageTextContentBlock::New("test page content"));
+            }),
+            "brave-page-text"},
+        ContentBlockTestParam{
+            "VideoTranscript", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewVideoTranscriptContentBlock(
+                  mojom::VideoTranscriptContentBlock::New(
+                      "test video transcript"));
+            }),
+            "brave-video-transcript"},
+        ContentBlockTestParam{
+            "SimpleRequest_Paraphrase", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kParaphrase));
+            }),
+            "brave-request-paraphrase"},
+        ContentBlockTestParam{
+            "SimpleRequest_Improve", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kImprove));
+            }),
+            "brave-request-improve-excerpt-language"},
+        ContentBlockTestParam{
+            "SimpleRequest_Shorten", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kShorten));
+            }),
+            "brave-request-shorten"},
+        ContentBlockTestParam{
+            "SimpleRequest_Expand", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kExpand));
+            }),
+            "brave-request-expansion"},
+        ContentBlockTestParam{
+            "SimpleRequest_RequestSummary", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestSummary));
+            }),
+            "brave-request-summary"},
+        ContentBlockTestParam{
+            "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestQuestions));
+            }),
+            "brave-request-questions"},
+        ContentBlockTestParam{
+            "RequestTitle", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewRequestTitleContentBlock(
+                  mojom::RequestTitleContentBlock::New(kTestContent));
+            }),
+            "brave-conversation-title"},
+        ContentBlockTestParam{
+            "ChangeTone", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewChangeToneContentBlock(
+                  mojom::ChangeToneContentBlock::New("", "professional"));
+            }),
+            "brave-request-change-tone"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;
     });

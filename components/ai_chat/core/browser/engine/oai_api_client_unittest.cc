@@ -77,7 +77,7 @@ struct LocalizedText {
 
 struct ContentBlockSerializationTestParam {
   std::string name;
-  base::RepeatingCallback<ExtendedContentBlock()> content_factory;
+  base::RepeatingCallback<mojom::ContentBlockPtr()> content_factory;
   std::string expected_type;
   std::optional<LocalizedText> localized_text;
   std::optional<std::string> literal_text;
@@ -331,29 +331,26 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
   // First message: user with multiple block types
   OAIMessage user_msg1;
   user_msg1.role = "user";
-  user_msg1.content.emplace_back(ExtendedContentBlockType::kText,
-                                 TextContent{"Here's an image:"});
-  ImageContent img;
-  img.image_url.url = kTestImageUrl;
-  img.image_url.detail = "low";
-  user_msg1.content.emplace_back(ExtendedContentBlockType::kImage,
-                                 std::move(img));
-  user_msg1.content.emplace_back(ExtendedContentBlockType::kPageExcerpt,
-                                 TextContent{"Page excerpt content"});
+  user_msg1.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Here's an image:")));
+  user_msg1.content.push_back(mojom::ContentBlock::NewImageContentBlock(
+      mojom::ImageContentBlock::New(GURL(kTestImageUrl))));
+  user_msg1.content.push_back(mojom::ContentBlock::NewPageExcerptContentBlock(
+      mojom::PageExcerptContentBlock::New("Page excerpt content")));
   messages.push_back(std::move(user_msg1));
 
   // Second message: assistant response
   OAIMessage assistant_msg;
   assistant_msg.role = "assistant";
-  assistant_msg.content.emplace_back(ExtendedContentBlockType::kText,
-                                     TextContent{"I see the image"});
+  assistant_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("I see the image")));
   messages.push_back(std::move(assistant_msg));
 
   // Third message: user follow-up
   OAIMessage user_msg2;
   user_msg2.role = "user";
-  user_msg2.content.emplace_back(ExtendedContentBlockType::kText,
-                                 TextContent{"Can you improve this?"});
+  user_msg2.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Can you improve this?")));
   messages.push_back(std::move(user_msg2));
 
   auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
@@ -370,7 +367,7 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
     "role": "user",
     "content": [
       {"type": "text", "text": "Here's an image:"},
-      {"type": "image_url", "image_url": {"detail": "low", "url": "%s"}},
+      {"type": "image_url", "image_url": {"url": "%s"}},
       {"type": "text", "text": "%s"}
     ]
   })",
@@ -402,62 +399,6 @@ TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
   EXPECT_EQ(*msg2, expected_msg3);
 }
 
-TEST_F(OAIAPIUnitTest, SerializeOAIMessages_SkipsMismatchedContentTypes) {
-  std::vector<OAIMessage> messages;
-
-  // Create a message with multiple content blocks:
-  // 1. A text type with ImageContent (mismatched - should be skipped)
-  // 2. A text type with TextContent (valid - should be included)
-  // 3. An image type with TextContent (mismatched - should be skipped)
-  // 4. A change_tone type with ImageContent (mismatched - should be skipped)
-  OAIMessage user_message;
-  user_message.role = "user";
-
-  // Content block with kText type but ImageContent data
-  // (should be skipped)
-  ImageUrl image_url1;
-  image_url1.url = kTestImageUrl;
-  user_message.content.push_back(ExtendedContentBlock(
-      ExtendedContentBlockType::kText, ImageContent{std::move(image_url1)}));
-
-  // Content block with kText type and TextContent data
-  // (should be included)
-  user_message.content.push_back(ExtendedContentBlock(
-      ExtendedContentBlockType::kText, TextContent{kTestContent}));
-
-  // Content block with kImage type but TextContent data
-  // (should be skipped)
-  user_message.content.push_back(ExtendedContentBlock(
-      ExtendedContentBlockType::kImage, TextContent{"This is not an image"}));
-
-  // Content block with kChangeTone type but TextContent data
-  // (should be skipped)
-  user_message.content.push_back(
-      ExtendedContentBlock(ExtendedContentBlockType::kChangeTone,
-                           TextContent{"This is not a tone"}));
-
-  messages.push_back(std::move(user_message));
-
-  // Serialize messages
-  auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
-  ASSERT_EQ(serialized.size(), 1u);
-
-  // Expected output: only the valid text block
-  std::string expected_message_json = absl::StrFormat(R"({
-    "role": "user",
-    "content": [
-      {"type": "text", "text": "%s"}
-    ]
-  })",
-                                                      kTestContent);
-  base::Value::Dict expected_message =
-      base::test::ParseJsonDict(expected_message_json);
-
-  const base::Value::Dict* msg = serialized[0].GetIfDict();
-  ASSERT_TRUE(msg);
-  EXPECT_EQ(*msg, expected_message);
-}
-
 // Tests to cover serialization of all content block types.
 class ContentBlockSerializationTest
     : public OAIAPIUnitTest,
@@ -484,15 +425,11 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   base::Value::Dict expected_content_block =
       base::Value::Dict().Set("type", params.expected_type);
 
-  if (content_block.type == ExtendedContentBlockType::kImage) {
-    const ImageContent* img = std::get_if<ImageContent>(&content_block.data);
-    ASSERT_TRUE(img);
+  if (content_block->which() == mojom::ContentBlock::Tag::kImageContentBlock) {
+    const auto& img = content_block->get_image_content_block();
 
     base::Value::Dict image_url_dict;
-    image_url_dict.Set("url", img->image_url.url);
-    if (img->image_url.detail) {
-      image_url_dict.Set("detail", *img->image_url.detail);
-    }
+    image_url_dict.Set("url", img->image_url.spec());
 
     expected_content_block.Set("image_url", std::move(image_url_dict));
   } else {
@@ -504,7 +441,7 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   std::vector<OAIMessage> messages;
   OAIMessage message;
   message.role = "user";
-  message.content.emplace_back(std::move(content_block));
+  message.content.push_back(std::move(content_block));
   messages.push_back(std::move(message));
 
   auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
@@ -515,31 +452,27 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   EXPECT_EQ(*message_dict, expected_msg);
 }
 
-// Adding any new types into ExtendedContentBlock enum should update this test.
+// Adding any new types into mojom::ContentBlock union should update this test.
 INSTANTIATE_TEST_SUITE_P(
     ,
     ContentBlockSerializationTest,
     testing::Values(
         ContentBlockSerializationTestParam{
             "Text", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kText,
-                                          TextContent{kTestContent});
+              return mojom::ContentBlock::NewTextContentBlock(
+                  mojom::TextContentBlock::New(kTestContent));
             }),
             "text", std::nullopt, kTestContent},
         ContentBlockSerializationTestParam{
             "Image", base::BindRepeating([]() {
-              ImageContent img;
-              img.image_url.url = kTestImageUrl;
-              img.image_url.detail = "high";
-              return ExtendedContentBlock(ExtendedContentBlockType::kImage,
-                                          std::move(img));
+              return mojom::ContentBlock::NewImageContentBlock(
+                  mojom::ImageContentBlock::New(GURL(kTestImageUrl)));
             }),
             "image_url", std::nullopt, std::nullopt},
         ContentBlockSerializationTestParam{
             "PageExcerpt", base::BindRepeating([]() {
-              return ExtendedContentBlock(
-                  ExtendedContentBlockType::kPageExcerpt,
-                  TextContent{kTestContent});
+              return mojom::ContentBlock::NewPageExcerptContentBlock(
+                  mojom::PageExcerptContentBlock::New(kTestContent));
             }),
             "text",
             LocalizedText{IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
@@ -547,35 +480,39 @@ INSTANTIATE_TEST_SUITE_P(
             std::nullopt},
         ContentBlockSerializationTestParam{
             "ChangeTone", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kChangeTone,
-                                          ChangeToneContent{"casual"});
+              return mojom::ContentBlock::NewChangeToneContentBlock(
+                  mojom::ChangeToneContentBlock::New("", "casual"));
             }),
             "text",
             LocalizedText{IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "casual"},
             std::nullopt},
         ContentBlockSerializationTestParam{
-            "Paraphrase", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kParaphrase,
-                                          TextContent{""});
+            "SimpleRequest_Paraphrase", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kParaphrase));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_PARAPHRASE},
             std::nullopt},
         ContentBlockSerializationTestParam{
-            "Improve", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kImprove,
-                                          TextContent{""});
+            "SimpleRequest_Improve", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kImprove));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_IMPROVE}, std::nullopt},
         ContentBlockSerializationTestParam{
-            "Shorten", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kShorten,
-                                          TextContent{""});
+            "SimpleRequest_Shorten", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kShorten));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_SHORTEN}, std::nullopt},
         ContentBlockSerializationTestParam{
-            "Expand", base::BindRepeating([]() {
-              return ExtendedContentBlock(ExtendedContentBlockType::kExpand,
-                                          TextContent{""});
+            "SimpleRequest_Expand", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kExpand));
             }),
             "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
