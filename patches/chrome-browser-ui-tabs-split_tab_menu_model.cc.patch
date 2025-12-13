@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
+index b4c29e943515631bd4ea0feda09c42ff17b7ca9f..520e91af206916c8862db7ff9ef17b474bd3733d 100644
+--- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
++++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
+@@ -224,6 +224,7 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
+     case CommandId::kSendFeedback:
+       SendFeedback();
+       break;
++    BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND
+   }
+ 
+   base::UmaHistogramEnumeration(

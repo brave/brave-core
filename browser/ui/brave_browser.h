@@ -46,6 +46,14 @@ class BraveBrowser : public Browser {
   bool NormalBrowserSupportsWindowFeature(
       WindowFeature feature,
       bool check_can_support) const override;
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.

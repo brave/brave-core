@@ -7,11 +7,26 @@
 
 #include <memory>
 
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/split_tab_data.h"
+#include "components/tabs/public/split_tab_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+
+namespace {
+
+bool AreSplitTabLinked(const split_tabs::SplitTabId& split_id,
+                       TabStripModel* tab_strip_model) {
+  split_tabs::SplitTabData* const split_tab_data =
+      tab_strip_model->GetSplitData(split_id);
+  return split_tab_data->linked();
+}
+
+}  // namespace
 
 std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
@@ -35,6 +50,10 @@ BraveSplitTabMenuModel::BraveSplitTabMenuModel(
     RemoveItemAt(feedback_command_index.value());
     RemoveItemAt(separator_index);
   }
+
+  if (base::FeatureList::IsEnabled(split_view::features::kSplitViewLink)) {
+    AddItem(GetCommandIdInt(CommandId::kToggleLinkState), std::u16string());
+  }
 }
 
 BraveSplitTabMenuModel::~BraveSplitTabMenuModel() = default;
@@ -44,6 +63,11 @@ bool BraveSplitTabMenuModel::IsItemForCommandIdDynamic(int command_id) const {
 
   // It's not dynamic but handle like that to apply our label/icon via GetXXX().
   if (id == CommandId::kExitSplit) {
+    return true;
+  }
+
+  // Icon/string can be changed whether it's link or unlink.
+  if (id == CommandId::kToggleLinkState) {
     return true;
   }
 
@@ -62,6 +86,12 @@ std::u16string BraveSplitTabMenuModel::GetLabelForCommandId(
     return l10n_util::GetStringUTF16(IDS_IDC_BREAK_TILE);
   }
 
+  if (id == CommandId::kToggleLinkState) {
+    const bool linked = AreSplitTabLinked(GetSplitTabId(), tab_strip_model_);
+    return l10n_util::GetStringUTF16(linked ? IDS_IDC_SPLIT_VIEW_UNLINK
+                                            : IDS_IDC_SPLIT_VIEW_LINK);
+  }
+
   return SplitTabMenuModel::GetLabelForCommandId(command_id);
 }
 
@@ -72,6 +102,13 @@ ui::ImageModel BraveSplitTabMenuModel::GetIconForCommandId(
   if (id == CommandId::kExitSplit) {
     return ui::ImageModel::FromVectorIcon(
         kLeoBrowserSplitViewUnsplitIcon, ui::kColorMenuIcon,
+        ui::SimpleMenuModel::kDefaultIconSize);
+  }
+
+  if (id == CommandId::kToggleLinkState) {
+    const bool linked = AreSplitTabLinked(GetSplitTabId(), tab_strip_model_);
+    return ui::ImageModel::FromVectorIcon(
+        linked ? kLeoLinkBrokenIcon : kLeoLinkNormalIcon, ui::kColorMenuIcon,
         ui::SimpleMenuModel::kDefaultIconSize);
   }
 

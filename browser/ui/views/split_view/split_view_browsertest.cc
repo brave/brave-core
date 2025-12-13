@@ -8,6 +8,7 @@
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -43,12 +44,17 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
-#include "components/tabs/public/split_tab_visual_data.h"
+#include "components/tabs/public/split_tab_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
 #include "ui/compositor/layer.h"
@@ -65,6 +71,83 @@ ui::MouseEvent GetDummyEvent() {
   return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
                         gfx::PointF(), base::TimeTicks::Now(), 0, 0);
 }
+
+constexpr char kTestPageWithTargetBlankLink[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Page with target="_blank" link</title>
+</head>
+<body>
+  <a id="target-blank-link" href="/target.html" target="_blank">
+    Open in new tab
+  </a>
+  <a id="target-blank-noreferrer-link"
+     href="/target.html"
+     target="_blank" rel="noreferrer">
+    Open in new tab (noreferrer)
+  </a>
+  <script>
+    function clickTargetBlankLink() {
+      document.getElementById('target-blank-link').click();
+    }
+    function clickTargetBlankNoReferrerLink() {
+      document.getElementById('target-blank-noreferrer-link').click();
+    }
+    // window.open() variations
+    function windowOpenBasic() {
+      window.open('/target.html', '_blank');
+    }
+    function windowOpenWithNoreferrer() {
+      window.open('/target.html', '_blank', 'noreferrer');
+    }
+    function windowOpenWithFeatures() {
+      window.open('/target.html', '_blank', 'width=800,height=600');
+    }
+  </script>
+</body>
+</html>
+)";
+
+constexpr char kTargetPage[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Target Page</title>
+</head>
+<body>
+  <p>This is the target page</p>
+</body>
+</html>
+)";
+
+constexpr char kTestPageWithLink[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Page with link</title>
+</head>
+<body>
+  <a id="normal-link" href="/target.html">Normal link</a>
+  <a id="hash-link" href="#section">Hash link</a>
+  <form id="post-form" method="post" action="/target.html">
+    <input type="submit" value="Submit">
+  </form>
+  <script>
+    function clickNormalLink() {
+      document.getElementById('normal-link').click();
+    }
+    function clickHashLink() {
+      document.getElementById('hash-link').click();
+    }
+    function submitForm() {
+      document.getElementById('post-form').submit();
+    }
+  </script>
+</body>
+</html>
+)";
+
 }  // namespace
 
 class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
@@ -890,4 +973,774 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
   chrome::CloseTab(browser());
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(1, tab_strip_model->count());
+}
+
+// Test class for testing link handling in split view (both normal links and
+// target="_blank" links).
+class SplitViewLinkTest : public SplitViewCommonBrowserTest {
+ public:
+  SplitViewLinkTest() {
+    // Enable the split view link feature for these tests
+    scoped_features_.InitAndEnableFeature(split_view::features::kSplitViewLink);
+  }
+  ~SplitViewLinkTest() override = default;
+
+  void SetUpOnMainThread() override {
+    SplitViewCommonBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+        &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+      const net::test_server::HttpRequest& request) {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    if (request.relative_url == "/test.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTestPageWithTargetBlankLink);
+    } else if (request.relative_url == "/link-test.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTestPageWithLink);
+    } else if (request.relative_url == "/target.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTargetPage);
+    } else {
+      return nullptr;
+    }
+    return response;
+  }
+
+  void SetSplitViewLinked(bool linked) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    ASSERT_TRUE(split_id);
+    tab_strip_model->GetSplitData(split_id.value())->set_linked(linked);
+    ;
+  }
+
+  bool IsSplitViewLinked() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return false;
+    }
+
+    return tab_strip_model->GetSplitData(split_id.value())->linked();
+    ;
+  }
+
+  GURL GetTestPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/test.html");
+  }
+
+  GURL GetLinkTestPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/link-test.html");
+  }
+
+  GURL GetTargetPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/target.html");
+  }
+
+  content::WebContents* GetLeftPaneContents() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return nullptr;
+    }
+
+    const auto tabs_in_split =
+        tab_strip_model->GetSplitData(split_id.value())->ListTabs();
+    if (tabs_in_split.size() == 2) {
+      return tabs_in_split[0]->GetContents();
+    }
+
+    return nullptr;
+  }
+
+  content::WebContents* GetRightPaneContents() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return nullptr;
+    }
+
+    const auto tabs_in_split =
+        tab_strip_model->GetSplitData(split_id.value())->ListTabs();
+    if (tabs_in_split.size() == 2) {
+      return tabs_in_split[1]->GetContents();
+    }
+
+    return nullptr;
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkRedirectsToRightPaneWhenLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  right_pane_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for navigation in right pane
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+  // Verify no new tab was opened
+  EXPECT_EQ(initial_tab_count, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkOpensNewTabWhenNotLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Don't link the split view
+  SetSplitViewLinked(false);
+  EXPECT_FALSE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // Verify a new tab was opened
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkOpensNewTabWhenNotInSplitView) {
+  // Don't create split view - just use a normal tab
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(0));
+
+  // Navigate to test page
+  content::WebContents* web_contents = GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(web_contents, GetTestPageURL()));
+  content::WaitForLoadStop(web_contents);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link
+  ASSERT_TRUE(content::ExecJs(web_contents, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // Verify a new tab was opened
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkRedirectsToRightPaneWhenLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in right pane
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+  // Verify left pane didn't navigate
+  EXPECT_NE(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+  EXPECT_EQ(GetLinkTestPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkDoesNotRedirectWhenNotLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Don't link the split view
+  SetSplitViewLinked(false);
+  EXPECT_FALSE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in left pane (should navigate normally)
+  left_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkDoesNotRedirectWhenNotInSplitView) {
+  // Don't create split view - just use a normal tab
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(0));
+
+  // Navigate to test page
+  content::WebContents* web_contents = GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(web_contents, GetLinkTestPageURL()));
+  content::WaitForLoadStop(web_contents);
+
+  // Set up navigation observer
+  content::TestNavigationObserver observer(web_contents);
+
+  // Click the normal link
+  ASSERT_TRUE(content::ExecJs(web_contents, "clickNormalLink();"));
+
+  // Wait for navigation (should navigate normally)
+  observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), web_contents->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, PostFormDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Submit the POST form from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "submitForm();"));
+
+  // Wait for navigation in left pane (POST should not be intercepted)
+  left_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       SameDocumentNavigationDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  GURL initial_url = left_pane->GetLastCommittedURL();
+
+  // Click the hash link (same-document navigation)
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickHashLink();"));
+
+  // Wait a bit and verify URL changed but it's still same document
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return left_pane->GetLastCommittedURL() != initial_url; }));
+
+  // Same-document navigation should not redirect to right pane
+  EXPECT_TRUE(left_pane->GetLastCommittedURL().has_ref());
+  EXPECT_EQ(GetLinkTestPageURL().spec() + "#section",
+            left_pane->GetLastCommittedURL().spec());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate right pane to test page
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  ASSERT_TRUE(content::NavigateToURL(right_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(right_pane);
+
+  // Set up navigation observer for right pane
+  content::TestNavigationObserver right_pane_observer(right_pane);
+
+  // Click the normal link from right pane (should navigate normally)
+  ASSERT_TRUE(content::ExecJs(right_pane, "clickNormalLink();"));
+
+  // Wait for navigation in right pane (should navigate normally, not redirect)
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkPreservesReferrerWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Regular target="_blank" link should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the target="_blank" link from left pane
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is set correctly - should be the test page URL
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" with rel="noreferrer" should NOT preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the noreferrer link from left pane
+    ASSERT_TRUE(
+        content::ExecJs(left_pane, "clickTargetBlankNoReferrerLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to rel="noreferrer"
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Basic window.open() should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is preserved
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: window.open() with 'noreferrer' - referrer should NOT be preserved
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithNoreferrer();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to noreferrer
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 3: window.open() with window features (width, height) should NOT be
+  // redirected - it creates a popup window instead
+  {
+    // Set up observer for new browser window creation
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
+
+    // Wait for new browser window (popup) to be created
+    Browser* popup_browser = browser_created_observer.Wait();
+    ASSERT_TRUE(popup_browser);
+
+    // Verify a popup window was created
+    EXPECT_TRUE(popup_browser->is_type_popup())
+        << "window.open() with features should create a popup window";
+
+    // Verify the original split view tabs remain unchanged
+    EXPECT_EQ(2, tab_strip_model->count())
+        << "Split view should still have 2 tabs (no redirect occurred)";
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       WindowOpenOpenerIsPreservedDuringRedirect) {
+  // This test verifies that when window.open() or target="_blank" links create
+  // a temporary tab that gets redirected to the right pane, the opener
+  // relationship from the original navigation is preserved through the
+  // redirect.
+
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: window.open() redirect
+  {
+    // Verify right pane has no opener BEFORE the redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before window.open() redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Call window.open() which creates a temporary tab with left_pane as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // The temporary tab created by window.open() had left_pane as its opener.
+    // When the navigation was redirected to right_pane, the opener should have
+    // been passed through the NavigateParams. However, since right_pane already
+    // exists, it won't have window.opener set (you can't change the opener of
+    // an existing WebContents).
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the redirect
+    // The opener relationship cannot be changed on an existing WebContents,
+    // so even though the temporary tab had left_pane as its opener and we
+    // passed it through NavigateParams.opener, the right_pane's opener remains
+    // null because it existed before the window.open() call.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after window.open() "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after redirect. "
+           "The opener relationship is established at WebContents creation "
+           "time, "
+           "not during navigation. The NavigateParams.opener field preserves "
+           "the "
+           "opener information through the redirect, but doesn't modify "
+           "existing "
+           "WebContents.";
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" link redirect
+  {
+    // Verify right pane still has no opener before the link click redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before target='_blank' redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click target="_blank" link which creates a temporary tab with left_pane
+    // as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the target="_blank"
+    // redirect Same behavior as window.open() - the opener cannot be changed on
+    // existing WebContents even though the temporary tab had left_pane as its
+    // opener.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after target='_blank' "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after "
+           "target='_blank' redirect. "
+           "Same as window.open(), the opener relationship cannot be changed "
+           "on "
+           "existing WebContents.";
+  }
+}
+
+// Test class for testing that split view link feature can be disabled
+class SplitViewLinkDisabledTest : public SplitViewLinkTest {
+ public:
+  SplitViewLinkDisabledTest() {
+    // Override parent class to explicitly disable the split view link feature
+    // Reset as disabled is by default.
+    scoped_features_.Reset();
+  }
+  ~SplitViewLinkDisabledTest() override = default;
+};
+
+// Test that when the feature is disabled, normal links navigate normally
+// in the left pane (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       NormalLinkDoesNotRedirectWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in left pane
+  left_pane_observer.Wait();
+
+  // With feature disabled, left pane should navigate normally
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
+}
+
+// Test that when the feature is disabled, target="_blank" links create
+// new tabs (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       TargetBlankLinkOpensNewTabWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // With feature disabled, a new tab should be created
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
 }

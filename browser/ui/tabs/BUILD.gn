@@ -69,10 +69,13 @@ source_set("tab_model") {
   ]
 
   deps = [
+    "//base",
+    "//brave/browser/ui/split_view",
     "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/tabs:tab_model",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//ui/base",
   ]
 }
