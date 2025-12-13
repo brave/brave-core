@@ -16,6 +16,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
+class PrefService;
+
 namespace ai_chat {
 
 struct OAIMessage {
@@ -33,6 +35,8 @@ struct OAIMessage {
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
+    PrefService* prefs,
+    bool is_temporary_chat,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input);
 
