@@ -647,7 +647,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   if (last_state_ == State::kFloating && state_ == State::kExpanded) {
     // In this case we need to lay out pinned tabs so that they need to hide
     // title and close button.
-    for (int i = 0; i < tab_strip->GetModelPinnedTabCount(); ++i) {
+    for (int i = 0; i < tab_strip->NumPinnedTabsInModel(); ++i) {
       tab_strip->tab_at(i)->InvalidateLayout();
     }
   }
