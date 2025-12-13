@@ -22,8 +22,8 @@ class TabDragController : public TabDragControllerChromium {
   Liveness Init(TabDragContext* source_context,
                 TabSlotView* source_view,
                 const std::vector<TabSlotView*>& dragging_views,
-                const gfx::Point& mouse_offset,
-                int source_view_offset,
+                const gfx::Point& offset_from_first_dragged_view,
+                const gfx::Point& offset_from_source_view,
                 ui::ListSelectionModel initial_selection_model,
                 ui::mojom::DragEventSource event_source);
 
@@ -44,7 +44,7 @@ class TabDragController : public TabDragControllerChromium {
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();
 
-  gfx::Point mouse_offset_;
+  gfx::Point offset_from_first_dragged_view_;
   bool is_showing_vertical_tabs_ = false;
 
   BraveVerticalTabStripRegionView::ScopedStateResetter
