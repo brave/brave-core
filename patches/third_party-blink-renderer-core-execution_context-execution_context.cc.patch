@@ -1,12 +1,13 @@
 diff --git a/third_party/blink/renderer/core/execution_context/execution_context.cc b/third_party/blink/renderer/core/execution_context/execution_context.cc
-index 631d98670fe77939874f3c6f2d37886389ebd8ed..a0edd31c6e3a3ff918cef294235019e741ce8cfa 100644
+index adf73d0ceaab3756bff630a10888d1601250cf1a..24231de12064aaa707baf40cfe5664f33033c97e 100644
 --- a/third_party/blink/renderer/core/execution_context/execution_context.cc
 +++ b/third_party/blink/renderer/core/execution_context/execution_context.cc
-@@ -585,6 +585,7 @@ void ExecutionContext::Trace(Visitor* visitor) const {
-   visitor->Trace(web_codecs_logger_);
-   visitor->Trace(web_printing_manager_);
-   visitor->Trace(web_view_android_);
-+  visitor->Trace(brave_session_cache_);
+@@ -546,7 +546,7 @@ void ExecutionContext::Trace(Visitor* visitor) const {
+   visitor->Trace(runtime_feature_state_override_context_);
    MojoBindingContext::Trace(visitor);
    ConsoleLogger::Trace(visitor);
+-  Supplementable<ExecutionContext, 34>::Trace(visitor);
++  Supplementable<ExecutionContext, 35>::Trace(visitor);
  }
+ 
+ bool ExecutionContext::IsSameAgentCluster(
