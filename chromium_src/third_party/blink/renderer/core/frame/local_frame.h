@@ -10,12 +10,6 @@
 
 class SkBitmap;
 
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-namespace blink {
-class PageGraph;
-}  // namespace blink
-#endif
-
 #define CopyImageAtViewportPoint                                      \
   CopyImageAtViewportPoint_UnUsed() {}                                \
   SkBitmap GetImageAtViewportPoint(const gfx::Point& viewport_point); \
@@ -25,34 +19,13 @@ class PageGraph;
   ScriptEnabled(const KURL& script_url); \
   bool ScriptEnabled_ChromiumImpl
 
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#define PerformSpellCheck                                          \
-  PerformSpellCheck();                                             \
-  ForwardDeclaredMember<PageGraph> GetPageGraph() const {          \
-    return page_graph_;                                            \
-  }                                                                \
-  void SetPageGraph(ForwardDeclaredMember<PageGraph> page_graph) { \
-    page_graph_ = page_graph;                                      \
-  }                                                                \
-  void Unused
-
-#define link_preview_triggerer_ \
-  link_preview_triggerer_;      \
-  ForwardDeclaredMember<PageGraph> page_graph_
-#endif
-
 #define IsSameOrigin(...)    \
   IsSameOrigin(__VA_ARGS__); \
   url::Origin origin_for_clear_window_name_check_
 
 #include <third_party/blink/renderer/core/frame/local_frame.h>  // IWYU pragma: export
 
-#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#undef link_preview_triggerer_
-#undef PerformSpellCheck
-#endif
 #undef ScriptEnabled
-
 #undef CopyImageAtViewportPoint
 #undef IsSameOrigin
 

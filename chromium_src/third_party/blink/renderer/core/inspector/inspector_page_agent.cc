@@ -20,7 +20,7 @@ protocol::Response InspectorPageAgent::generatePageGraph(String* data) {
     return protocol::Response::ServerError("No main frame found");
   }
 
-  PageGraph* page_graph = main_frame->GetPageGraph();
+  PageGraph* page_graph = blink::PageGraph::From(*main_frame);
   if (!page_graph) {
     return protocol::Response::ServerError("No Page Graph for main frame");
   }
@@ -41,7 +41,7 @@ protocol::Response InspectorPageAgent::generatePageGraphNodeReport(
     return protocol::Response::ServerError("No main frame found");
   }
 
-  PageGraph* page_graph = main_frame->GetPageGraph();
+  PageGraph* page_graph = blink::PageGraph::From(*main_frame);
   if (!page_graph) {
     return protocol::Response::ServerError("No Page Graph for main frame");
   }
