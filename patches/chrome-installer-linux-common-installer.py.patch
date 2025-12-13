@@ -1,16 +1,25 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..bdddd3ec9e7c835075822c396b83a2cfa9841a93 100644
+index cee92db6487c451de062be27b91cd86e3272c343..84a005c3440a3e92eed28e8695e7150f209de562 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
-@@ -111,6 +111,7 @@ def gen_changelog(context, staging_dir, deb_changelog):
+@@ -193,6 +193,8 @@ def gen_changelog(config: "InstallerConfig",
      gzlog_dir = (
-         staging_dir /
-         f"usr/share/doc/{context['PACKAGE']}-{context['CHANNEL']}")
-+    if context['CHANNEL'] == "stable": gzlog_dir = (staging_dir / f"usr/share/doc/{context['PACKAGE']}")
+         config.staging_dir /
+         f"usr/share/doc/{config.info_vars['PACKAGE']}-{config.channel}")
++    if config.channel == "stable":
++        gzlog_dir = (config.staging_dir / f"usr/share/doc/{config.info_vars['PACKAGE']}")
      gzlog_dir.mkdir(parents=True, exist_ok=True)
      gzlog = gzlog_dir / "changelog.gz"
  
-@@ -516,6 +517,7 @@ class Installer:
+@@ -327,6 +329,7 @@ class InstallerConfig:
+     logo_resources_png: str = ""
+     uri_scheme: str = ""
+     extra_desktop_entries: str = ""
++    package_and_channel: str = ""
+ 
+     @classmethod
+     def from_args(cls, args: argparse.Namespace,
+@@ -681,6 +684,7 @@ class InstallerConfig:
                  icon_suffix = "_dev"
              elif self.channel == "canary":
                  icon_suffix = "_canary"
@@ -18,7 +27,7 @@ index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..bdddd3ec9e7c835075822c396b83a2cf
  
          icon_sizes = [16, 24, 32, 48, 64, 128, 256]
          logo_resources_png = []
-@@ -822,3 +824,4 @@ class Installer:
+@@ -1165,3 +1169,4 @@ class Installer:
                          msg += f", but they were {oct(actual_perms)}"
                          print(msg, file=sys.stderr)
                          sys.exit(1)
