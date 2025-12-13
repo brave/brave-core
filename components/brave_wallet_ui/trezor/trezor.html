@@ -8,22 +8,6 @@
 </head>
 
 <body>
-   <!-- sha256-3q8t8I4Oh7OMkbcT1jtKpujXF9gW+HeBTLcAfj/o6w8= -->
-   <script>
-      // Makes it so
-      //   window.open(url, ...args)
-      // becomes
-      //   window.open('', ...args).location.href = url
-      // See https://github.com/brave/brave-core/pull/32798 for details.
-      window.open = new Proxy(window.open, {
-         apply(target, thisArg, [url, ...rest]) {
-            const result = Reflect.apply(target, thisArg, ['', ...rest]);
-            if (result && url) {
-               result.location.href = url;
-            }
-            return result;
-         }
-      })
-   </script>
+   <script src="trezor-patches.bundle.js"></script>
    <script src="trezor.bundle.js"></script>
 </body>

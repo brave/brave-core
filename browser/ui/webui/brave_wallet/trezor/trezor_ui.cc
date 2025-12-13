@@ -33,16 +33,8 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
       "connect-src 'self' https://connect.trezor.io;");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      base::JoinString(
-          {
-              "script-src",
-              "chrome://resources/js/",
-              "'sha256-3q8t8I4Oh7OMkbcT1jtKpujXF9gW+HeBTLcAfj/o6w8='",
-              "'self'",
-              kTrezorConnectURL,
-          },
-          " ") +
-          ";");
+      std::string("script-src chrome://resources/js/ 'self' ") +
+          kTrezorConnectURL + ";");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kTrezorConnectURL + ";");
