@@ -81,6 +81,7 @@ class SearchPage implements PageInterface {
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
   setKeywordSelected(isKeywordSelected: boolean): void {}
   updateAutoSuggestedTabContext(tab: (TabInfo | null)): void {}
+  updateLensSearchEligibility(eligible: boolean): void {}
 }
 
 export const search = new SearchPage()
