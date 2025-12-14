@@ -1791,14 +1791,6 @@ inline constexpr char kERC1155MetadataInterfaceId[] = "0x0e89341c";
 inline constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 inline constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
-inline constexpr char kBitcoinPrefKey[] = "bitcoin";
-inline constexpr char kZCashPrefKey[] = "zcash";
-inline constexpr char kEthereumPrefKey[] = "ethereum";
-inline constexpr char kFilecoinPrefKey[] = "filecoin";
-inline constexpr char kSolanaPrefKey[] = "solana";
-inline constexpr char kCardanoPrefKey[] = "cardano";
-inline constexpr char kPolkadotPrefKey[] = "polkadot";
-
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";
 

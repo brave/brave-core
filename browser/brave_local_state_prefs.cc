@@ -102,7 +102,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #endif
 

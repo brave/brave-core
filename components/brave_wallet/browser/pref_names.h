@@ -10,6 +10,13 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
+class PrefService;
+class PrefRegistrySimple;
+
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace brave_wallet {
 
 inline constexpr char kShouldShowWalletSuggestionBadge[] =
@@ -93,6 +100,15 @@ inline constexpr char kBraveWalletMnemonicBackedUp[] =
 inline constexpr char kBraveWalletDisabledByPolicy[] =
     "brave.wallet.disabled_by_policy";
 
+// Pref keys used within dictionary prefs for per-coin settings.
+inline constexpr char kBitcoinPrefKey[] = "bitcoin";
+inline constexpr char kZCashPrefKey[] = "zcash";
+inline constexpr char kEthereumPrefKey[] = "ethereum";
+inline constexpr char kFilecoinPrefKey[] = "filecoin";
+inline constexpr char kSolanaPrefKey[] = "solana";
+inline constexpr char kCardanoPrefKey[] = "cardano";
+inline constexpr char kPolkadotPrefKey[] = "polkadot";
+
 // Added 06/2024 to migrate Eip1559 flag to a separate pref.
 inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
     "brave.wallet.eip1559_chains_migrated";
@@ -123,6 +139,18 @@ inline constexpr char kERCEncryptedSeedDeprecated[] =
 inline constexpr char kERCPrefVersionDeprecated[] = "brave.wallet.pref_version";
 inline constexpr char kERCOptedIntoCryptoWalletsDeprecated[] =
     "brave.wallet.opted_in";
+
+// Pref registration and migration functions.
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry);
+void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);
+void ClearKeyringServiceProfilePrefs(PrefService* prefs);
+void ClearBraveWalletServicePrefs(PrefService* prefs);
+void MigrateObsoleteProfilePrefs(PrefService* prefs);
+void MigrateCryptoWalletsPrefToBraveWallet(PrefService* prefs);
 
 }  // namespace brave_wallet
 
