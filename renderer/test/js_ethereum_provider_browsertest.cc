@@ -6,6 +6,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/functional/callback_helpers.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/path_service.h"
 #include "base/test/metrics/histogram_tester.h"

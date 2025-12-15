@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"

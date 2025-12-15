@@ -9,6 +9,7 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/to_vector.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"

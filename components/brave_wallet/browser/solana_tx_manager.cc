@@ -15,6 +15,7 @@
 #include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"

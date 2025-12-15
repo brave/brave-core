@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/files/file_path.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
