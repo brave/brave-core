@@ -76,7 +76,9 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  if (!transaction_.orchard_part().outputs.empty()) {
+  // Process Orchard part if there are Orchard inputs or outputs
+  if (!transaction_.orchard_part().inputs.empty() ||
+      !transaction_.orchard_part().outputs.empty()) {
     if (!transaction_.orchard_part().anchor_block_height.has_value()) {
       error_ = "Anchor not selected";
       ScheduleWorkOnTask();
@@ -242,8 +244,6 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.orchard_part().inputs;
-  // TODO(cypt4): Remove after s->t transaction support.
-  CHECK(!transaction_.orchard_part().outputs.empty());
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       *state_tree_bytes, spends_bundle, transaction_.orchard_part().outputs);
 
