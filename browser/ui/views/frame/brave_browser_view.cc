@@ -312,7 +312,8 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         std::make_unique<ReaderModeToolbarView>(browser_->profile()));
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
-            contents_container_view_, lens_overlay_view_, reader_mode_toolbar_,
+            GetActiveContentsContainerView(), lens_overlay_view_,
+            reader_mode_toolbar_,
             /*scrim_view=*/nullptr));
   }
 #endif
@@ -1253,10 +1254,11 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
         }
       };
 
-  if (contents_container_view_) {
-    update_corner_radius(contents_container_view_->contents_view(),
-                         contents_container_view_->devtools_web_view(),
-                         contents_container_view_->devtools_docked_placement(),
+  auto* contents_container_view = GetActiveContentsContainerView();
+  if (contents_container_view) {
+    update_corner_radius(contents_container_view->contents_view(),
+                         contents_container_view->devtools_web_view(),
+                         contents_container_view->devtools_docked_placement(),
                          corners);
   }
 }
