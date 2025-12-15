@@ -78,7 +78,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             ObservableSupplier<@AutocompleteRequestType Integer> autocompleteRequestTypeSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
-            @Nullable MultiInstanceManager multiInstanceManager) {
+            @Nullable MultiInstanceManager multiInstanceManager,
+            LocationBarEmbedder locationBarEmbedder) {
         super(
                 context,
                 locationBarLayout,
@@ -101,7 +102,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 autocompleteRequestTypeSupplier,
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
-                multiInstanceManager);
+                multiInstanceManager,
+                locationBarEmbedder);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {

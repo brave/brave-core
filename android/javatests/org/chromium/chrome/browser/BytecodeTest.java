@@ -1730,7 +1730,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
-                        MultiInstanceManager.class));
+                        MultiInstanceManager.class,
+                        LocationBarEmbedder.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
