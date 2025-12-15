@@ -1222,6 +1222,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
+    // Replace this static method to avoid leftMargin override to 0 at
+    // NewTabPageLayout.updateMvtOnTablet on tablets and avoid
+    // misalign of MVT area.
+    public static boolean isInNarrowWindowOnTablet(boolean isTablet, UiConfig uiConfig) {
+        return isTablet;
+    }
+
     protected boolean useFixedMVTLayout() {
         return !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
