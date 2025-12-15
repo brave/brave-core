@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/hub/internal/BUILD.gn b/chrome/browser/hub/internal/BUILD.gn
-index f2250a35fbb7674e87f86f178ffd28d5c0b4bd8f..e5b8c14545d8521d8f88c536a6530d18fd753327 100644
+index f2250a35fbb7674e87f86f178ffd28d5c0b4bd8f..014490935a5d5868fd6c35d3a3cf4dce829d2852 100644
 --- a/chrome/browser/hub/internal/BUILD.gn
 +++ b/chrome/browser/hub/internal/BUILD.gn
 @@ -66,6 +66,7 @@ android_library("java") {
@@ -10,3 +10,11 @@ index f2250a35fbb7674e87f86f178ffd28d5c0b4bd8f..e5b8c14545d8521d8f88c536a6530d18
    deps = [
      ":java_resources",
      "//base:base_java",
+@@ -102,6 +103,7 @@ android_library("java") {
+     "//ui/edge_to_edge:java",
+     "//url:url_java",
+   ]
++  deps += brave_browser_hub_internal_java_deps
+ }
+ 
+ android_resources("java_resources") {

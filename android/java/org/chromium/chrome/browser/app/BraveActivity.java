@@ -136,6 +136,8 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.ephemeral_storage.BraveEphemeralStorageUtils;
+import org.chromium.chrome.browser.ephemeral_storage.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -181,7 +183,6 @@ import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
-import org.chromium.chrome.browser.shields.BraveEphemeralStorageUtils;
 import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.shields.CreateCustomFiltersFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -261,7 +262,8 @@ public abstract class BraveActivity extends ChromeActivity
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate,
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
-                OnSharedPreferenceChangeListener {
+                OnSharedPreferenceChangeListener,
+                FirstPartyStorageCleanerInterface {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -538,7 +540,7 @@ public abstract class BraveActivity extends ChromeActivity
                     braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
                     braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else if (id == R.id.brave_shred_id) {
-            openBraveShred();
+            shredData(currentTab);
         } else {
             return false;
         }
@@ -2207,13 +2209,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    public void openBraveShred() {
-        Tab currentTab = getActivityTabProvider().get();
-        if (currentTab != null) {
-            shredData(currentTab);
-        }
-    }
-
     public void showRewardsPage() {
         getBraveToolbarLayout().showRewardsPage();
     }
@@ -2642,6 +2637,14 @@ public abstract class BraveActivity extends ChromeActivity
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();
+    }
+
+    @Override
+    public void shredSiteData() {
+        Tab currentTab = getActivityTab();
+        if (currentTab != null) {
+            shredData(currentTab);
+        }
     }
 
     private void shredData(Tab currentTab) {

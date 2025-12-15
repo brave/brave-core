@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
-index 943892a524e9c19d8595511ac640f06960ccd540..2a675f197bd819c1025fb135a7a2fd3645bd1c29 100644
+index 943892a524e9c19d8595511ac640f06960ccd540..922034b963fb906f95508f8338b44504e75042fb 100644
 --- a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 +++ b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
 @@ -21,7 +21,7 @@ found in the LICENSE file.
@@ -11,7 +11,15 @@ index 943892a524e9c19d8595511ac640f06960ccd540..2a675f197bd819c1025fb135a7a2fd36
      android:id="@+id/hub_toolbar"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-@@ -150,5 +150,5 @@ found in the LICENSE file.
+@@ -108,6 +108,7 @@ found in the LICENSE file.
+             android:tooltipText="@string/accessibility_search_loupe_tooltip_text"
+             style="@style/ToolbarMenuButton"
+             app:tint="@color/default_icon_color_tint_list"  />
++        <include layout="@layout/brave_shred_data_button" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+         <include layout="@layout/menu_button" />
+       </LinearLayout>
+ 
+@@ -150,5 +151,5 @@ found in the LICENSE file.
          android:gravity="top"
          android:importantForAccessibility="no"
          android:visibility="gone"/>

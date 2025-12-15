@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+assert(is_android)
+
+android_library("java") {
+  resources_package = "org.chromium.chrome.browser.ephemeral_storage"
+  sources = [
+    "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveEphemeralStorageUtils.java",
+    "java/src/org/chromium/chrome/browser/ephemeral_storage/FirstPartyStorageCleanerInterface.java",
+  ]
+
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//chrome/browser/tab:java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+
+  srcjar_deps = [ ":jni_headers" ]
+}
+
+# Brave-specific resources.
+android_resources("java_resources") {
+  sources = [ "java/brave-res/layout/brave_shred_data_button.xml" ]
+}
+
+generate_jni("jni_headers") {
+  sources = [ "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveEphemeralStorageUtils.java" ]
+}

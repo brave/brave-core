@@ -6,10 +6,10 @@
 #include <cstddef>
 
 #include "base/android/jni_android.h"
+#include "brave/browser/ephemeral_storage/android/jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
-#include "chrome/android/chrome_jni_headers/BraveEphemeralStorageUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
 #include "content/public/browser/site_instance.h"
 

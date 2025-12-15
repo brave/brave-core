@@ -9,3 +9,6 @@ brave_browser_hub_internal_java_sources = [
   "//brave/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubManagerImpl.java",
   "//brave/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubToolbarView.java",
 ]
+
+brave_browser_hub_internal_java_deps =
+    [ "//brave/browser/ephemeral_storage/android:java" ]

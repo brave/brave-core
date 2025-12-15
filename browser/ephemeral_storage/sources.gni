@@ -28,4 +28,7 @@ brave_browser_ephemeral_storage_deps = [
 if (is_android) {
   brave_browser_ephemeral_storage_sources +=
       [ "//brave/browser/ephemeral_storage/android/ephemeral_storage_utils.cc" ]
+
+  brave_browser_ephemeral_storage_deps +=
+      [ "//brave/browser/ephemeral_storage/android:jni_headers" ]
 }

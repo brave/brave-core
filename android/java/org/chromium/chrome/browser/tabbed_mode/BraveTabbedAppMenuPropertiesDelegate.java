@@ -653,7 +653,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // Shred
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
             Tab tab = mActivityTabProvider.get();
-            if (tab != null && !tab.isIncognito() && tab.getWebContents()) {
+            if (tab != null && !tab.isIncognito() && tab.getWebContents() != null) {
                 GURL lastCommittedUrl = tab.getWebContents().getLastCommittedUrl();
                 if (!lastCommittedUrl.getScheme().equals(BraveUrlConstants.BRAVE_SCHEME)
                         && !lastCommittedUrl.getScheme().equals(UrlConstants.CHROME_SCHEME)
