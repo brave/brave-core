@@ -217,6 +217,14 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
       expected_content.Set("image_url", std::move(image_url_dict));
       break;
     }
+    case mojom::ContentBlock::Tag::kFileContentBlock: {
+      const auto& file = original_block->get_file_content_block();
+      base::Value::Dict file_dict;
+      file_dict.Set("file_data", file->file_data.spec());
+      file_dict.Set("filename", file->filename);
+      expected_content.Set("file", std::move(file_dict));
+      break;
+    }
     case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
       const auto& tone = original_block->get_change_tone_content_block();
       expected_content.Set("text", "");
@@ -267,6 +275,13 @@ INSTANTIATE_TEST_SUITE_P(
                       GURL("data:image/png;base64,abc123")));
             }),
             "image_url"},
+        ContentBlockTestParam{
+            "File", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileContentBlock(
+                  mojom::FileContentBlock::New(
+                      GURL("data:application/pdf;base64,abc123"), "filename"));
+            }),
+            "file"},
         ContentBlockTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(

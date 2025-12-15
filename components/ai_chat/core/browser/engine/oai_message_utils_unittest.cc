@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -310,6 +311,313 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
             mojom::ContentBlock::Tag::kTextContentBlock);
   EXPECT_EQ(messages[1].content[1]->get_text_content_block()->text,
             "Second question");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
+  // Build a conversation history:
+  // [0] User message 1: 2 images, no page content or selected text
+  // [1] Assistant message 1
+  // [2] User message 2: 2 screenshots, with page content, without selected text
+  // [3] Assistant message 2
+  // [4] User message 3: 2 pdfs, without page content, with selected text
+  // [5] Assistant message 3
+  // [6] User message 4: 2 images, 2 screenshots, 2 pdfs, without page contents
+  // or selected text
+  // [7] Assistant message 4
+  // [8] User message 5: 2 images, 2 screenshots, 2 pdfs, with page contents and
+  // selected text
+  // [9] Assistant message 5
+  auto history = CreateSampleChatHistory(5);
+
+  // Create uploaded files
+  auto images = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
+  auto screenshots =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kScreenshot);
+  auto pdfs = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // Clear filename from second PDF to test the default filename behavior
+  pdfs[1]->filename.clear();
+
+  auto image_url1 = GURL(EngineConsumer::GetImageDataURL(images[0]->data));
+  auto image_url2 = GURL(EngineConsumer::GetImageDataURL(images[1]->data));
+  auto screenshot_url1 =
+      GURL(EngineConsumer::GetImageDataURL(screenshots[0]->data));
+  auto screenshot_url2 =
+      GURL(EngineConsumer::GetImageDataURL(screenshots[1]->data));
+  auto pdf_url1 = GURL(EngineConsumer::GetPdfDataURL(pdfs[0]->data));
+  auto pdf_url2 = GURL(EngineConsumer::GetPdfDataURL(pdfs[1]->data));
+  auto pdf_filename1 = pdfs[0]->filename;
+  // pdfs[1]->filename was cleared, so it will use default "uploaded.pdf"
+
+  // Build all_files by cloning and combining all file types
+  auto images_clone = Clone(images);
+  auto screenshots_clone = Clone(screenshots);
+  auto pdfs_clone = Clone(pdfs);
+
+  std::vector<mojom::UploadedFilePtr> all_files;
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(images_clone.begin()),
+                   std::make_move_iterator(images_clone.end()));
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(screenshots_clone.begin()),
+                   std::make_move_iterator(screenshots_clone.end()));
+  all_files.insert(all_files.end(), std::make_move_iterator(pdfs_clone.begin()),
+                   std::make_move_iterator(pdfs_clone.end()));
+
+  // Create page contents
+  PageContent page_content1("Page content 1", false);
+  PageContent page_content2("Page content 2", false);
+
+  PageContentsMap page_contents_map;
+  // User message 1: 2 images, no page content or selected text
+  history[0]->uploaded_files = Clone(images);
+  // User message 2: 2 screenshots, with page content, without selected text
+  history[2]->uploaded_files = Clone(screenshots);
+  page_contents_map[*history[2]->uuid] = {std::cref(page_content1)};
+  // User message 3: 2 pdfs, without page content, with selected text
+  history[4]->uploaded_files = Clone(pdfs);
+  history[4]->selected_text = "selected_text";
+  // User message 4: 2 images, 2 screenshots, 2 pdfs, without page contents or
+  // selected text
+  history[6]->uploaded_files = Clone(all_files);
+  // User message 5: 2 images, 2 screenshots, 2 pdfs, with page contents and
+  // selected text
+  history[8]->uploaded_files = Clone(all_files);
+  history[8]->selected_text = "selected_text";
+  page_contents_map[*history[8]->uuid] = {std::cref(page_content2)};
+
+  // Update assistant turn texts for testing
+  history[1]->text = "response0";
+  history[3]->text = "response1";
+  history[5]->text = "response2";
+  history[7]->text = "response3";
+  history[9]->text = "response4";
+
+  // Build OAI messages
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), history, 10000, [](std::string&) {});
+
+  // Should have 10 messages (5 human, 5 assistant)
+  ASSERT_EQ(messages.size(), 10u);
+
+  // Message 1: Human turn with 2 images
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: images intro text + 2 images + prompt = 4 blocks
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  ASSERT_EQ(messages[0].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[0].content[0]->get_text_content_block()->text,
+            "These images are uploaded by the user");
+  ASSERT_EQ(messages[0].content[1]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[0].content[1]->get_image_content_block()->image_url,
+            image_url1);
+  ASSERT_EQ(messages[0].content[2]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[0].content[2]->get_image_content_block()->image_url,
+            image_url2);
+  ASSERT_EQ(messages[0].content[3]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[0].content[3]->get_text_content_block()->text, "query0");
+
+  // Message 2: Assistant turn
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  ASSERT_EQ(messages[1].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
+            "response0");
+
+  // Message 3: Human turn with 2 screenshots, page content
+  EXPECT_EQ(messages[2].role, "user");
+  // Content: page + screenshots intro + 2 screenshots + prompt = 5 blocks
+  ASSERT_EQ(messages[2].content.size(), 5u);
+  ASSERT_EQ(messages[2].content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[2].content[0]->get_page_text_content_block()->text,
+            "Page content 1");
+  ASSERT_EQ(messages[2].content[1]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[2].content[1]->get_text_content_block()->text,
+            "These images are screenshots");
+  ASSERT_EQ(messages[2].content[2]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[2].content[2]->get_image_content_block()->image_url,
+            screenshot_url1);
+  ASSERT_EQ(messages[2].content[3]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[2].content[3]->get_image_content_block()->image_url,
+            screenshot_url2);
+  ASSERT_EQ(messages[2].content[4]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[2].content[4]->get_text_content_block()->text, "query1");
+
+  // Message 4: Assistant turn
+  EXPECT_EQ(messages[3].role, "assistant");
+  ASSERT_EQ(messages[3].content.size(), 1u);
+  ASSERT_EQ(messages[3].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[3].content[0]->get_text_content_block()->text,
+            "response1");
+
+  // Message 5: Human turn with 2 PDFs and selected text
+  EXPECT_EQ(messages[4].role, "user");
+  // Content: PDFs intro text + 2 PDFs + selected text + prompt = 5 blocks
+  ASSERT_EQ(messages[4].content.size(), 5u);
+  ASSERT_EQ(messages[4].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[4].content[0]->get_text_content_block()->text,
+            "These PDFs are uploaded by the user");
+  ASSERT_EQ(messages[4].content[1]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[4].content[1]->get_file_content_block()->file_data,
+            pdf_url1);
+  EXPECT_EQ(messages[4].content[1]->get_file_content_block()->filename,
+            pdf_filename1);
+  ASSERT_EQ(messages[4].content[2]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[4].content[2]->get_file_content_block()->file_data,
+            pdf_url2);
+  // Second PDF should have default filename since we cleared it
+  EXPECT_EQ(messages[4].content[2]->get_file_content_block()->filename,
+            "uploaded.pdf");
+  ASSERT_EQ(messages[4].content[3]->which(),
+            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(messages[4].content[3]->get_page_excerpt_content_block()->text,
+            "selected_text");
+  ASSERT_EQ(messages[4].content[4]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[4].content[4]->get_text_content_block()->text, "query2");
+
+  // Message 6: Assistant turn
+  EXPECT_EQ(messages[5].role, "assistant");
+  ASSERT_EQ(messages[5].content.size(), 1u);
+  ASSERT_EQ(messages[5].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[5].content[0]->get_text_content_block()->text,
+            "response2");
+
+  // Message 7: Human turn with all file types, without page content, without
+  // selected text
+  EXPECT_EQ(messages[6].role, "user");
+  // Content: images intro + 2 images + screenshots intro + 2 screenshots +
+  // PDFs intro + 2 PDFs + prompt = 10 blocks
+  ASSERT_EQ(messages[6].content.size(), 10u);
+  ASSERT_EQ(messages[6].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[6].content[0]->get_text_content_block()->text,
+            "These images are uploaded by the user");
+  ASSERT_EQ(messages[6].content[1]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[6].content[1]->get_image_content_block()->image_url,
+            image_url1);
+  ASSERT_EQ(messages[6].content[2]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[6].content[2]->get_image_content_block()->image_url,
+            image_url2);
+  ASSERT_EQ(messages[6].content[3]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[6].content[3]->get_text_content_block()->text,
+            "These images are screenshots");
+  ASSERT_EQ(messages[6].content[4]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[6].content[4]->get_image_content_block()->image_url,
+            screenshot_url1);
+  ASSERT_EQ(messages[6].content[5]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[6].content[5]->get_image_content_block()->image_url,
+            screenshot_url2);
+  ASSERT_EQ(messages[6].content[6]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[6].content[6]->get_text_content_block()->text,
+            "These PDFs are uploaded by the user");
+  ASSERT_EQ(messages[6].content[7]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[6].content[7]->get_file_content_block()->file_data,
+            pdf_url1);
+  EXPECT_EQ(messages[6].content[7]->get_file_content_block()->filename,
+            pdf_filename1);
+  ASSERT_EQ(messages[6].content[8]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[6].content[8]->get_file_content_block()->file_data,
+            pdf_url2);
+  EXPECT_EQ(messages[6].content[8]->get_file_content_block()->filename,
+            "uploaded.pdf");
+  ASSERT_EQ(messages[6].content[9]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[6].content[9]->get_text_content_block()->text, "query3");
+
+  // Message 8: Assistant turn
+  EXPECT_EQ(messages[7].role, "assistant");
+  ASSERT_EQ(messages[7].content.size(), 1u);
+  ASSERT_EQ(messages[7].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[7].content[0]->get_text_content_block()->text,
+            "response3");
+
+  // Message 9: Human turn with all file types, page content, selected text
+  EXPECT_EQ(messages[8].role, "user");
+  // Content: page + images intro + 2 images + screenshots intro +
+  // 2 screenshots + PDFs intro + 2 PDFs + selected text + prompt = 12 blocks
+  ASSERT_EQ(messages[8].content.size(), 12u);
+  ASSERT_EQ(messages[8].content[0]->which(),
+            mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(messages[8].content[0]->get_page_text_content_block()->text,
+            "Page content 2");
+  ASSERT_EQ(messages[8].content[1]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[8].content[1]->get_text_content_block()->text,
+            "These images are uploaded by the user");
+  ASSERT_EQ(messages[8].content[2]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[8].content[2]->get_image_content_block()->image_url,
+            image_url1);
+  ASSERT_EQ(messages[8].content[3]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[8].content[3]->get_image_content_block()->image_url,
+            image_url2);
+  ASSERT_EQ(messages[8].content[4]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[8].content[4]->get_text_content_block()->text,
+            "These images are screenshots");
+  ASSERT_EQ(messages[8].content[5]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[8].content[5]->get_image_content_block()->image_url,
+            screenshot_url1);
+  ASSERT_EQ(messages[8].content[6]->which(),
+            mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(messages[8].content[6]->get_image_content_block()->image_url,
+            screenshot_url2);
+  ASSERT_EQ(messages[8].content[7]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[8].content[7]->get_text_content_block()->text,
+            "These PDFs are uploaded by the user");
+  ASSERT_EQ(messages[8].content[8]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[8].content[8]->get_file_content_block()->file_data,
+            pdf_url1);
+  EXPECT_EQ(messages[8].content[8]->get_file_content_block()->filename,
+            pdf_filename1);
+  ASSERT_EQ(messages[8].content[9]->which(),
+            mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(messages[8].content[9]->get_file_content_block()->file_data,
+            pdf_url2);
+  EXPECT_EQ(messages[8].content[9]->get_file_content_block()->filename,
+            "uploaded.pdf");
+  ASSERT_EQ(messages[8].content[10]->which(),
+            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(messages[8].content[10]->get_page_excerpt_content_block()->text,
+            "selected_text");
+  ASSERT_EQ(messages[8].content[11]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[8].content[11]->get_text_content_block()->text, "query4");
+
+  // Message 10: Assistant turn
+  EXPECT_EQ(messages[9].role, "assistant");
+  ASSERT_EQ(messages[9].content.size(), 1u);
+  ASSERT_EQ(messages[9].content[0]->which(),
+            mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(messages[9].content[0]->get_text_content_block()->text,
+            "response4");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {

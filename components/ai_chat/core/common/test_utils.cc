@@ -23,7 +23,7 @@ std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
     crypto::RandBytes(file_data);
     uploaded_files.emplace_back(
         mojom::UploadedFile::New("filename" + base::NumberToString(i),
-                                 sizeof(file_data), file_data, type));
+                                 file_data.size(), file_data, type));
   }
   return uploaded_files;
 }
