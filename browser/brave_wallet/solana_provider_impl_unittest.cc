@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"

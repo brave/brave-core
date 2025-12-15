@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/values_util.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/util/callback_helpers.h"

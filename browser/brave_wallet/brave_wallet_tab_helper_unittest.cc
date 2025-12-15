@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"

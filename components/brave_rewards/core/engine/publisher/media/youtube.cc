@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/containers/map_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"

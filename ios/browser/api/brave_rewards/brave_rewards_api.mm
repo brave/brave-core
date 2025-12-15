@@ -12,6 +12,7 @@
 #include "base/apple/foundation_util.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_helpers.h"
 #include "base/ios/ios_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"

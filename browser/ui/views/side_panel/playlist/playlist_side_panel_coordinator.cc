@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
