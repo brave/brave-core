@@ -1140,6 +1140,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletCreateAccountToBuyDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION},
     {"braveWalletAccountName", IDS_BRAVE_WALLET_ACCOUNT_NAME},
+    {"braveWalletMinimumAmount", IDS_BRAVE_WALLET_MINIMUM_AMOUNT},
+    {"braveWalletMaximumAmount", IDS_BRAVE_WALLET_MAXIMUM_AMOUNT},
     {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
     {"braveWalletBuyWithStripe", IDS_BRAVE_WALLET_BUY_WITH_STRIPE},
     {"braveWalletBuyWithCoinbase", IDS_BRAVE_WALLET_BUY_WITH_COINBASE},

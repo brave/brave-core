@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import { color, font } from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import { Column } from '../../../../../components/shared/style'
+import { Column, Text } from '../../../../../components/shared/style'
 import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
 import {
   layoutPanelWidth, //
@@ -16,6 +16,7 @@ import {
 
 export const Wrapper = styled(Column)`
   align-items: flex-end;
+  width: 210px;
   @media (max-width: ${layoutPanelWidth}px) {
     align-items: flex-start;
     width: 100%;
@@ -25,9 +26,7 @@ export const Wrapper = styled(Column)`
 export const ButtonWrapper = styled(Column)`
   align-items: flex-end;
   @media (max-width: ${layoutPanelWidth}px) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
   }
 `
@@ -40,13 +39,16 @@ export const CurrencyCode = styled.span`
 `
 
 export const AmountInput = styled(Input).attrs({
-  hasError: false,
   type: 'number',
 })`
-  color: ${color.text.primary};
   font: ${font.heading.h1};
-  text-align: left;
-  width: 60px;
+  text-align: right;
+  field-sizing: content;
+  width: auto;
+  max-width: 100px;
+  @media (max-width: ${layoutPanelWidth}px) {
+    max-width: 140px;
+  }
 `
 
 export const AmountEstimate = styled.span`
@@ -60,4 +62,12 @@ export const AmountEstimate = styled.span`
 export const SwapVerticalIcon = styled(Icon).attrs({ name: 'swap-vertical' })`
   --leo-icon-color: ${color.icon.interactive};
   --leo-icon-size: 20px;
+`
+
+export const ErrorText = styled(Text)`
+  word-wrap: break-word;
+  text-align: right;
+  @media (max-width: ${layoutPanelWidth}px) {
+    text-align: left;
+  }
 `

@@ -675,6 +675,8 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_TITLE" desc="Create account modal title">Do you want to create a <ph name="ACCOUNT_TYPE">$1<ex>Zcash</ex></ph> account?</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION" desc="Create account modal description">In order to receive <ph name="TOKEN_SYMBOL">$1<ex>ZEC</ex></ph> you will need a <ph name="ACCOUNT_TYPE">$2<ex>Zcash</ex></ph> account.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME" desc="Account name input label">Account name</message>
+  <message name="IDS_BRAVE_WALLET_MINIMUM_AMOUNT" desc="Minimum amount error label">Minimum amount: <ph name="AMOUNT">$1<ex>$2 USD</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_MAXIMUM_AMOUNT" desc="Maximum amount error label">Maximum amount: <ph name="AMOUNT">$1<ex>$1000 USD</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Buy with Transak option label">Buy with Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_STRIPE" desc="Buy with Stripe option label">Buy with Link</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_COINBASE" desc="Buy with Coinbase Pay option label">Buy with Coinbase Pay</message>

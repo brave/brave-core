@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 
@@ -58,6 +58,7 @@ import {
   getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
+import { getLocale } from '../../../../../common/locale'
 
 export type BuyParamOverrides = {
   country?: string
@@ -67,6 +68,10 @@ export type BuyParamOverrides = {
   amount?: string
   receiveAddress?: string
 }
+
+const DEFAULT_AMOUNT = '100'
+const MIN_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is below'
+const MAX_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is above'
 
 const DEFAULT_ASSET: MeldCryptoCurrency = {
   'currencyCode': 'ETH',
@@ -120,16 +125,20 @@ export const useBuy = () => {
   const chainId = query.get('chainId') ?? undefined
   const currencyCode = query.get('currencyCode') ?? undefined
 
+  // Refs to track previous URL param values for detecting navigation resets
+  const prevCurrencyCodeRef = useRef<string | undefined>(currencyCode)
+
   // State
   const [selectedCurrency, setSelectedCurrency] = useState<
     MeldFiatCurrency | undefined
   >(undefined)
-  const [amount, setAmount] = useState<string>('100')
+  const [amount, setAmount] = useState<string>(DEFAULT_AMOUNT)
   const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
   const [isFetchingQuotes, setIsFetchingQuotes] = useState(false)
   const [hasQuoteError, setHasQuoteError] = useState<boolean>(false)
+  const [amountError, setAmountError] = useState<string | undefined>(undefined)
   const [quotes, setQuotes] = useState<MeldCryptoQuote[]>([])
   const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
     number | undefined
@@ -261,6 +270,7 @@ export const useBuy = () => {
     setSelectedCurrency(undefined)
     setAmount('')
     setHasQuoteError(false)
+    setAmountError(undefined)
     setQuotes([])
     setTimeUntilNextQuote(undefined)
 
@@ -269,6 +279,46 @@ export const useBuy = () => {
       setAbortController(undefined)
     }
   }, [abortController])
+
+  const parseQuoteErrorResponse = useCallback((error: string) => {
+    const match = /(\d+(?:\.\d+)?)\s*([A-Z]{3})/.exec(error)
+    const extractedAmount = match?.[1]
+    const extractedCurrencyCode = match?.[2]
+    const formatedAmount =
+      extractedAmount && extractedCurrencyCode
+        ? new Amount(extractedAmount ?? '').formatAsFiat(
+            extractedCurrencyCode,
+            2,
+          )
+        : ''
+    const formattedAmountWithCurrency = `${formatedAmount} ${extractedCurrencyCode}`
+
+    if (
+      error.startsWith(MIN_QUOTE_RESPONSE_IDENTIFIER)
+      && extractedAmount
+      && extractedCurrencyCode
+    ) {
+      setAmountError(
+        getLocale('braveWalletMinimumAmount').replace(
+          '$1',
+          formattedAmountWithCurrency,
+        ),
+      )
+      return
+    }
+    if (
+      error.startsWith(MAX_QUOTE_RESPONSE_IDENTIFIER)
+      && extractedAmount
+      && extractedCurrencyCode
+    ) {
+      setAmountError(
+        getLocale('braveWalletMaximumAmount').replace(
+          '$1',
+          formattedAmountWithCurrency,
+        ),
+      )
+    }
+  }, [])
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: BuyParamOverrides) => {
@@ -301,6 +351,7 @@ export const useBuy = () => {
       setAbortController(controller)
       setIsFetchingQuotes(true)
       setHasQuoteError(false)
+      setAmountError(undefined)
 
       let quoteResponse
       try {
@@ -325,6 +376,7 @@ export const useBuy = () => {
 
       if (quoteResponse?.error) {
         console.error('quoteResponse.error', quoteResponse.error)
+        parseQuoteErrorResponse(quoteResponse.error[0])
         setHasQuoteError(true)
       }
 
@@ -344,6 +396,7 @@ export const useBuy = () => {
       selectedCurrency?.currencyCode,
       selectedPaymentMethod,
       receiveAddress,
+      parseQuoteErrorResponse,
     ],
   )
 
@@ -362,6 +415,8 @@ export const useBuy = () => {
       }
 
       setQuotes([])
+      setHasQuoteError(false)
+      setAmountError(undefined)
 
       await handleQuoteRefresh({
         amount: value,
@@ -374,6 +429,8 @@ export const useBuy = () => {
     async (countryCode: string) => {
       setSelectedCountryCode(countryCode)
       setQuotes([])
+      setHasQuoteError(false)
+      setAmountError(undefined)
 
       await handleQuoteRefresh({
         country: countryCode,
@@ -389,6 +446,8 @@ export const useBuy = () => {
         ?? DEFAULT_PAYMENT_METHOD
       setSelectedPaymentMethod(foundMethod)
       setQuotes([])
+      setHasQuoteError(false)
+      setAmountError(undefined)
 
       await handleQuoteRefresh({
         paymentMethod: foundMethod,
@@ -400,6 +459,8 @@ export const useBuy = () => {
   const onSelectCurrency = useCallback(
     async (currency: MeldFiatCurrency) => {
       setSelectedCurrency(currency)
+      setHasQuoteError(false)
+      setAmountError(undefined)
 
       await handleQuoteRefresh({
         sourceCurrencyCode: currency.currencyCode,
@@ -426,6 +487,9 @@ export const useBuy = () => {
       setPendingSelectedToken(undefined)
       history.replace(makeFundWalletRoute(asset, accountToUse))
       setQuotes([])
+      setHasQuoteError(false)
+      setAmountError(undefined)
+      prevCurrencyCodeRef.current = asset?.currencyCode
 
       await handleQuoteRefresh({
         destinationCurrencyCode: asset?.currencyCode,
@@ -545,19 +609,17 @@ export const useBuy = () => {
     // Reset quotes and triggers a new fetch if state is reset
     // back to defaults on the page.
     if (
-      selectedMeldAsset.currencyCode === DEFAULT_ASSET.currencyCode
-      && ((hasQuoteError && quotes.length === 0)
-        || (quotes.length !== 0
-          && quotes[0].destinationCurrencyCode
-            !== selectedMeldAsset.currencyCode))
+      prevCurrencyCodeRef.current !== undefined
       && currencyCode === undefined
       && chainId === undefined
     ) {
       setQuotes([])
       setHasQuoteError(false)
+      setAmountError(undefined)
+      setAmount(DEFAULT_AMOUNT)
       setTimeUntilNextQuote(undefined)
     }
-  }, [selectedMeldAsset, currencyCode, chainId, quotes, hasQuoteError])
+  }, [currencyCode, chainId])
 
   useEffect(() => {
     if (
@@ -608,5 +670,6 @@ export const useBuy = () => {
     showCreateAccount,
     onCloseCreateAccount,
     pendingSelectedToken,
+    amountError,
   }
 }

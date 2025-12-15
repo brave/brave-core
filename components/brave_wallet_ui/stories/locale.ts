@@ -709,6 +709,8 @@ provideStrings({
   braveWalletCreateAccountToBuyDescription:
     'In order to receive $1 you will need a $2 account.',
   braveWalletAccountName: 'Account name',
+  braveWalletMinimumAmount: 'Minimum amount: $1',
+  braveWalletMaximumAmount: 'Maximum amount: $1',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle:
