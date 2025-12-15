@@ -14,22 +14,22 @@ import App from './components/app'
 import store from './store'
 import * as adblockActions from './actions/adblock_actions'
 
-function getCustomFilters () {
+function getCustomFilters() {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.getCustomFilters()
 }
 
-function getRegionalLists () {
+function getRegionalLists() {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.getRegionalLists()
 }
 
-function getListSubscriptions () {
+function getListSubscriptions() {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.getListSubscriptions()
 }
 
-function initialize () {
+function initialize() {
   getCustomFilters()
   getRegionalLists()
   getListSubscriptions()
@@ -37,20 +37,21 @@ function initialize () {
     <Provider store={store}>
       <App />
     </Provider>,
-    document.getElementById('root'))
+    document.getElementById('root'),
+  )
 }
 
-function onGetCustomFilters (customFilters: string) {
+function onGetCustomFilters(customFilters: string) {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.onGetCustomFilters(customFilters)
 }
 
-function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
+function onGetRegionalLists(regionalLists: AdBlock.FilterList[]) {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.onGetRegionalLists(regionalLists)
 }
 
-function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) {
+function onGetListSubscriptions(listSubscriptions: AdBlock.SubscriptionInfo[]) {
   const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
   actions.onGetListSubscriptions(listSubscriptions)
 }
@@ -61,7 +62,7 @@ function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) 
 window.brave_adblock = {
   onGetCustomFilters,
   onGetRegionalLists,
-  onGetListSubscriptions
+  onGetListSubscriptions,
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

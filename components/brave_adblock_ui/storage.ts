@@ -10,8 +10,8 @@ export const defaultState: AdBlock.State = {
   settings: {
     customFilters: '',
     regionalLists: [],
-    listSubscriptions: []
-  }
+    listSubscriptions: [],
+  },
 }
 
 export const load = (): AdBlock.State => {
