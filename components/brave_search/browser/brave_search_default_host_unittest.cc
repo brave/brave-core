@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 
-#include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"

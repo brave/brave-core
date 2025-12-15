@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
 #include <algorithm>
-#include <map>
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

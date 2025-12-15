@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_contribution_queue.h"
 
-#include <map>
 #include <memory>
 #include <utility>
 

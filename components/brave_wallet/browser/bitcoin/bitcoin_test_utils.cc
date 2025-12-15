@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>

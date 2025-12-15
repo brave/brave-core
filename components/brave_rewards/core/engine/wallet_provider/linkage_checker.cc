@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/wallet_provider/linkage_checker.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check.h"

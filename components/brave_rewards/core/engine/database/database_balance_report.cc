@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_balance_report.h"
 
-#include <map>
 #include <utility>
 
 #include "base/types/cxx23_to_underlying.h"

@@ -6,7 +6,6 @@
 #include "brave/components/playlist/core/common/playlist_render_frame_observer_helper.h"
 
 #include <optional>
-#include <string>
 #include <utility>
 
 #include "base/json/values_util.h"

@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 
-#include <map>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"

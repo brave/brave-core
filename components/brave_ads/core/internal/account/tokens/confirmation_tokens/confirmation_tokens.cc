@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 
 #include <algorithm>
-#include <vector>
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"

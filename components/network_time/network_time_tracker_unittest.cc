@@ -6,7 +6,6 @@
 #include "components/network_time/network_time_tracker.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/compiler_specific.h"

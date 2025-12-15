@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
 #include <algorithm>
-#include <map>
 #include <optional>
 
 #include "base/check.h"

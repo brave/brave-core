@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_news/browser/network.h"
 
-#include <string>
-
 #include "base/time/time.h"
 
 namespace brave_news {

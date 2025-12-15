@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 
-#include <string>
-
 #include "base/containers/span.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

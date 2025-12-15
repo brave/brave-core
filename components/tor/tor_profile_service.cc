@@ -5,8 +5,6 @@
 
 #include "brave/components/tor/tor_profile_service.h"
 
-#include <string>
-
 #include "base/time/time.h"
 #include "brave/components/tor/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"

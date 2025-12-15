@@ -9,7 +9,6 @@
 #include <optional>
 #include <unordered_map>
 #include <utility>
-#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"

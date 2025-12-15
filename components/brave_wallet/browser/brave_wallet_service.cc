@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <algorithm>
-#include <map>
 #include <memory>
 #include <optional>
 #include <vector>

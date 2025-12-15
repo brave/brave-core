@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_sku_order_items.h"
 
-#include <map>
 #include <utility>
 
 #include "base/check.h"

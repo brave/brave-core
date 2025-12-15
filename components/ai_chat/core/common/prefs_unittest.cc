@@ -7,7 +7,6 @@
 
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/json/values_util.h"
 #include "base/time/time.h"

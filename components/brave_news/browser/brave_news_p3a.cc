@@ -6,7 +6,6 @@
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 
 #include <string>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/flat_set.h"

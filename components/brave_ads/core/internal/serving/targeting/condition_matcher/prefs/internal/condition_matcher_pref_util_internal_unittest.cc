@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/internal/condition_matcher_pref_util_internal.h"
 
-#include <string>
-
 #include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h"

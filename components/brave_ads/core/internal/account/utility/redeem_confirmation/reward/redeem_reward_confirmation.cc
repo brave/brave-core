@@ -8,7 +8,6 @@
 #include <optional>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"

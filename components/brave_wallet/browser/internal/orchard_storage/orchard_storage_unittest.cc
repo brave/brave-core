@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"

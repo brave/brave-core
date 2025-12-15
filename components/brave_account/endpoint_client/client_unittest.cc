@@ -10,7 +10,6 @@
 #include <string_view>
 #include <tuple>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_deref.h"

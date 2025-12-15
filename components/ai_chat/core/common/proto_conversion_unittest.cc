@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/common/proto_conversion.h"
 
-#include <string>
 #include <utility>
 #include <vector>
 

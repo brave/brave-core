@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/ollama/ollama_model_fetcher.h"
 
 #include <algorithm>
-#include <map>
 #include <set>
 #include <string>
 #include <utility>

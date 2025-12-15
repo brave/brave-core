@@ -8,7 +8,6 @@
 #include <limits>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/contains.h"

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
-#include <string>
-
 namespace brave_shields {
 
 AdBlockResourceProvider::AdBlockResourceProvider() = default;

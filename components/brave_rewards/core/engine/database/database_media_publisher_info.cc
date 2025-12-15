@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_media_publisher_info.h"
 
-#include <map>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"

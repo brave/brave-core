@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
-#include <string>
-
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/confirmation_token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/payment_token_issuer_util.h"
