@@ -32,6 +32,9 @@
 "AGMpus" = "Genvejskonfiguration";
 
 /* (No Comment) */
+"bUHTuL" = "Spørg Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Type statistik";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Lige for at bekræfte, du ville have 'Spørg Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Lige for at bekræfte, du ville have 'Spørg Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Der er ${count} indstillinger, der matcher 'Spørg Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Lige for at bekræfte, du ville have 'Spørg Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Der er ${count} indstillinger, der matcher 'Spørg Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Der er ${count} indstillinger, der matcher 'Spørg Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Lige for at bekræfte, du ville have \"Ny fane\"?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Lige for at bekræfte, du ville have 'Spørg Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Der er ${count} indstillinger, der matcher \"Ny fane\".";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Der er ${count} indstillinger, der matcher 'Spørg Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";

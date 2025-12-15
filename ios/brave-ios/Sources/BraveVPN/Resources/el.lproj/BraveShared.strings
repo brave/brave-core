@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Σφάλμα App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Ανεξάρτητα έλεγχος ασφάλειας";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Αστραπιαίες ταχύτητες σύνδεσης";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Αποκρύψτε το IP σας και αλλάξτε την τοποθεσία σας";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Πολιτική χωρίς καταγραφή";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Επιπλέον απόρρητο και ασφάλεια στο διαδίκτυο";

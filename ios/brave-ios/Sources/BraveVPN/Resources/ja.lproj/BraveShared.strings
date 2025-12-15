@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Storeとの接続時にエラーが発生しました";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "独立した監査済み";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "超高速の接続スピード";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "IPの非表示・位置情報の変更";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "ログなしポリシー";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "高度なプライバシーとオンラインセキュリティ";

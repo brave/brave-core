@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Помилка з’єднання з App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Перевірено незалежним аудитором";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Блискавична швидкість з’єднання";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Приховайте свою IP-адресу й змініть своє місцезнаходження";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Політика відсутності логів";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Додаткова приватність і безпека онлайн";

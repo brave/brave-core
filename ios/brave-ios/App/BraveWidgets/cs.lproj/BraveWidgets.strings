@@ -32,6 +32,9 @@
 "AGMpus" = "Konfigurace zkratek";
 
 /* (No Comment) */
+"bUHTuL" = "Zeptat se Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Druh statistiky";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Jen pro potvrzení, chtěli jste „Nová karta“?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Jen pro potvrzení, chtěli jste „Zeptejte se Brave“?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Jen pro potvrzení, chtěli jste „Nová karta“?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Jen pro potvrzení, chtěli jste „Zeptejte se Brave“?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Existují/existuje ${count} možnosti/možností odpovídající „Zeptejte se Brave“.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Jen pro potvrzení, chtěli jste „Nová karta“?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Jen pro potvrzení, chtěli jste „Zeptejte se Brave“?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Existují/existuje ${count} možnosti/možností odpovídající „Zeptejte se Brave“.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Existují/existuje ${count} možnosti/možností odpovídající „Zeptejte se Brave“.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Jen pro potvrzení, chtěli jste „Nová karta“?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Jen pro potvrzení, chtěli jste „Zeptejte se Brave“?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Jen pro potvrzení, chtěli jste „Záložky“?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Existují/existuje ${počet} možnosti/možností odpovídající „Nová karta“.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Existují/existuje ${count} možnosti/možností odpovídající „Zeptejte se Brave“.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Existují/existuje ${počet} možnosti/možností odpovídající „Záložky“.";
