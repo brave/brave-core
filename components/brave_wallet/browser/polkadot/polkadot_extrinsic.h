@@ -36,8 +36,10 @@ namespace brave_wallet {
 class PolkadotChainMetadata {
  public:
   PolkadotChainMetadata() = delete;
-  PolkadotChainMetadata(PolkadotChainMetadata&&);
+  PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept;
   ~PolkadotChainMetadata();
+
+  PolkadotChainMetadata& operator=(PolkadotChainMetadata&&) noexcept;
 
   // Fallibly retrieve the metadata associated with the provided chain spec.
   static std::optional<PolkadotChainMetadata> FromChainName(
