@@ -380,7 +380,16 @@ void TxService::ApproveTransaction(mojom::CoinType coin_type,
                                    const std::string& chain_id,
                                    const std::string& tx_meta_id,
                                    ApproveTransactionCallback callback) {
-  GetTxManager(coin_type)->ApproveTransaction(tx_meta_id, std::move(callback));
+  switch (coin_type) {
+    case mojom::CoinType::DOT:
+      return static_cast<PolkadotTxManager*>(GetTxManager(coin_type))
+          ->ApprovePolkadotTransaction(chain_id, tx_meta_id,
+                                       std::move(callback));
+
+    default:
+      return GetTxManager(coin_type)->ApproveTransaction(tx_meta_id,
+                                                         std::move(callback));
+  }
 }
 
 void TxService::RejectTransaction(mojom::CoinType coin_type,

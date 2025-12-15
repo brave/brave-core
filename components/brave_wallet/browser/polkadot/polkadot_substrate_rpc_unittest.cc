@@ -1711,4 +1711,134 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<std::optional<std::string>, std::optional<std::string>>
+      future;
+
+  const char extrinsic[] =
+      R"(3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01349d7c183c26b13a2aba6e18fc6322c90695568b9b543f20779a9fa53d6b5d4162f5769f74b05c81aeb958d7a4be2fdc307bd1cd676ff19701f1592913995984b5012800000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4842514b00)";
+
+  {
+    // Successful RPC call, using the extrinsic submitted here:
+    // https://westend.subscan.io/extrinsic/29271137-2
+
+    polkadot_substrate_rpc_->SubmitExtrinsic(chain_id, extrinsic,
+                                             future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "author_submitExtrinsic",
+        "params": ["3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c01349d7c183c26b13a2aba6e18fc6322c90695568b9b543f20779a9fa53d6b5d4162f5769f74b05c81aeb958d7a4be2fdc307bd1cd676ff19701f1592913995984b5012800000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4842514b00"]
+      })";
+
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d"
+      })");
+
+    auto [transaction_hash, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(
+        transaction_hash,
+        "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
+  }
+
+  {
+    // Failed RPC call, extrinsic is invalid.
+
+    url_loader_factory_.ClearResponses();
+
+    polkadot_substrate_rpc_->SubmitExtrinsic(chain_id, extrinsic,
+                                             future.GetCallback());
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "error":{
+          "code": 1010,
+          "message": "Invalid Transaction",
+          "data":"Transaction has a bad signature"
+        }
+      })");
+
+    auto [transaction_hash, error] = future.Take();
+
+    EXPECT_EQ(error, "Invalid Transaction");
+    EXPECT_EQ(transaction_hash, std::nullopt);
+  }
+
+  {
+    // Error because we received something not-a-string.
+
+    url_loader_factory_.ClearResponses();
+
+    polkadot_substrate_rpc_->SubmitExtrinsic(chain_id, extrinsic,
+                                             future.GetCallback());
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": 1234
+      })");
+
+    auto [transaction_hash, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(transaction_hash, std::nullopt);
+  }
+
+  {
+    // Error because we have no result.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "body": {}
+      })");
+
+    polkadot_substrate_rpc_->SubmitExtrinsic(chain_id, extrinsic,
+                                             future.GetCallback());
+
+    auto [transaction_hash, error] = future.Take();
+
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(transaction_hash, std::nullopt);
+  }
+}
+
 }  // namespace brave_wallet

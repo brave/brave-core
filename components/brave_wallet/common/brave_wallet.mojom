@@ -152,6 +152,12 @@ enum CardanoProviderError {
   kInternalError = JsonRpcError.kInternalError,
 };
 
+enum PolkadotProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+  kUnknown = ProviderError.kUnknown,
+  kInternalError = JsonRpcError.kInternalError,
+};
+
 union ProviderErrorUnion {
   ProviderError provider_error;
   SolanaProviderError solana_provider_error;
@@ -159,6 +165,7 @@ union ProviderErrorUnion {
   BitcoinProviderError bitcoin_provider_error;
   ZCashProviderError zcash_provider_error;
   CardanoProviderError cardano_provider_error;
+  PolkadotProviderError polkadot_provider_error;
 };
 
 // Result struct for some EthereumProvider's methods.

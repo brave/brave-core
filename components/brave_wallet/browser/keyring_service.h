@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -285,6 +286,9 @@ class KeyringService : public mojom::KeyringService {
   // Polkadot
   std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
   GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>>
+  SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
+                               base::span<const uint8_t> message);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);

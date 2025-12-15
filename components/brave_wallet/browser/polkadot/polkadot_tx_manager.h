@@ -12,6 +12,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/origin.h"
@@ -56,6 +57,10 @@ class PolkadotTxManager : public TxManager,
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback callback) override;
 
+  void ApprovePolkadotTransaction(const std::string& chain_id,
+                                  const std::string& tx_meta_id,
+                                  ApproveTransactionCallback);
+
   void SpeedupOrCancelTransaction(
       const std::string& tx_meta_id,
       bool cancel,
@@ -71,6 +76,8 @@ class PolkadotTxManager : public TxManager,
 
   mojom::CoinType GetCoinType() const override;
 
+  std::unique_ptr<PolkadotTxMeta> GetPolkadotTx(const std::string& tx_meta_id);
+
  private:
   friend class PolkadotTxManagerUnitTest;
   FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnLatestBlock);
@@ -80,6 +87,11 @@ class PolkadotTxManager : public TxManager,
       mojom::NewPolkadotTransactionParamsPtr params,
       AddUnapprovedPolkadotTransactionCallback callback,
       const base::expected<PolkadotChainMetadata, std::string>& chain_metadata);
+
+  void OnApprovePolkadotTransaction(
+      std::unique_ptr<PolkadotTxMeta> tx_metadata,
+      ApproveTransactionCallback callback,
+      base::expected<std::string, std::string> tx_hash);
 
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;
