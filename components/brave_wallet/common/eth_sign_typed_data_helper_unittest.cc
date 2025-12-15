@@ -496,6 +496,10 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
       "bytes16", base::Value("0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbBdeadbee"
                              "fdeadbeefdeadbeefdeadbeef1234")));
   EXPECT_FALSE(helper->EncodeField("bytes5", base::Value("0xdeadbeef")));
+  // Mismatched length should be rejected
+  EXPECT_FALSE(helper->EncodeField("bytes18", base::Value("0x")));
+  // Empty should be rejected for fixed-length bytesN
+  EXPECT_FALSE(helper->EncodeField("bytes0", base::Value("0x")));
   {
     auto encoded_field =
         helper->EncodeField("bytes5", base::Value("0xdeadbeef11"));
@@ -509,9 +513,6 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::HexEncodeLower(*encoded_field),
         "000102030405060708090a0b0c0d0e0f10110000000000000000000000000000");
-
-    // Empty should be rejected for fixed-length bytesN
-    EXPECT_FALSE(helper->EncodeField("bytes18", base::Value("0x")));
   }
 
   // uint8 - uint256
