@@ -137,7 +137,8 @@ TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
   auto tx_data_union = mojom::TxDataUnion::NewPolkadotTxData(
-      mojom::PolkadotTxdata::New("", mojom::uint128::New(0, 0), false, 0));
+      mojom::PolkadotTxdata::New("", Uint128ToMojom(uint128_t{0}),
+                                 Uint128ToMojom(uint128_t{0}), false));
 
   auto account_id = mojom::AccountId::New();
   account_id->coin = mojom::CoinType::DOT;
@@ -215,12 +216,20 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
               EXPECT_EQ(err_str, "");
 
               const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
-              const auto* tx = txs.Find(tx_meta_id);
+              const auto* tx = txs.FindDict(tx_meta_id);
               EXPECT_TRUE(tx);
 
+              const auto* polkadot_tx = tx->FindDict("tx");
+
               EXPECT_EQ(
-                  *tx->GetDict().FindString("extrinsic"),
-                  R"(98040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)");
+                  *polkadot_tx->FindString("recipient"),
+                  R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
+              EXPECT_EQ(*polkadot_tx->FindString("amount"),
+                        "d2040000000000000000000000000000");
+              EXPECT_EQ(*polkadot_tx->FindString("fee"),
+                        "00000000000000000000000000000000");
+              EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
+              EXPECT_EQ(polkadot_tx->FindInt("ss58_prefix"), std::nullopt);
 
               quit_closure.Run();
             },
@@ -250,12 +259,20 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
               EXPECT_EQ(err_str, "");
 
               const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
-              const auto* tx = txs.Find(tx_meta_id);
+              const auto* tx = txs.FindDict(tx_meta_id);
               EXPECT_TRUE(tx);
 
+              const auto* polkadot_tx = tx->FindDict("tx");
+
               EXPECT_EQ(
-                  *tx->GetDict().FindString("extrinsic"),
-                  R"(d4040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4833ffffffffffffffffffffffffffffffff)");
+                  *polkadot_tx->FindString("recipient"),
+                  R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
+              EXPECT_EQ(*polkadot_tx->FindString("amount"),
+                        "ffffffffffffffffffffffffffffffff");
+              EXPECT_EQ(*polkadot_tx->FindString("fee"),
+                        "00000000000000000000000000000000");
+              EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
+              EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
 
               quit_closure.Run();
             },
