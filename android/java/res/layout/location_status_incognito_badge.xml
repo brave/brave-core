@@ -14,4 +14,4 @@
     android:paddingStart="@dimen/incognito_badge_lateral_padding_start"
     android:paddingEnd="@dimen/incognito_badge_lateral_padding_end"
     android:contentDescription="@string/accessibility_incognito_badge"
-    android:src="@drawable/incognito_simple" />
+    android:src="@drawable/ic_incognito_fill_24dp" />
