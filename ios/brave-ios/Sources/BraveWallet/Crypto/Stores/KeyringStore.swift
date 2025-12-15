@@ -151,6 +151,9 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
 
   /// A list of default account with all support coin types
   @Published var defaultAccounts: [BraveWallet.AccountInfo] = []
+  
+  /// A boolean value indicates user has backed up wallet via webui
+  @Published var isWalletWebUIBackedUp: Bool = false
 
   var passwordToSaveInBiometric: String?
 
@@ -265,6 +268,9 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       },
       _backedUp: { [weak self] in
         self?.updateInfo()
+        if FeatureList.kBraveWalletWebUIIOS?.enabled == true {
+          self?.isWalletWebUIBackedUp = true
+        }
       },
       _accountsChanged: { [weak self] in
         self?.updateInfo()
