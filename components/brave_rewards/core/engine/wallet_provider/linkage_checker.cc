@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"

@@ -44,7 +44,9 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include <string>
+
 #include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/tor/tor_constants.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile_attributes_init_params.h"

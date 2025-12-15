@@ -10,7 +10,7 @@
 
 #define RegisterWidevineCdmComponent(cus) \
   RegisterWidevineCdmComponent(           \
-      cus, base::OnceCallback<void()> callback = base::DoNothing())
+      cus, base::OnceCallback<void()> callback = base::OnceClosure())
 
 #include <chrome/browser/component_updater/widevine_cdm_component_installer.h>  // IWYU pragma: export
 
