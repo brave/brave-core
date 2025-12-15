@@ -23,4 +23,4 @@ def Run(_original_function, **kwargs):
     node_args += ['--ignore-pattern', '!.*']
     node_args += kwargs['args']
 
-    return brave_node.RunNode(node_args)
+    return brave_node.RunNodeRaw(node_args)
