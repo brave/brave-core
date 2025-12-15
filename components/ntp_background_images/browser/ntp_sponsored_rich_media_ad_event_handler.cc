@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
