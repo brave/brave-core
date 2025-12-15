@@ -667,6 +667,7 @@ source_set("ui") {
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
+      "//chrome/browser/ui/tabs/alert:tab_alert",
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/download",
