@@ -678,6 +678,451 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_WithMemoryEvent) {
+  auto* mock_api_client = GetMockConversationAPIClient();
+
+  // Test with user customization enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "John Doe");
+    customizations_dict.Set("job", "Software Engineer");
+    customizations_dict.Set("tone", "Professional");
+    customizations_dict.Set("other", "Loves coding");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
+
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    std::string expected_events = R"([
+      {"content": "", "memory": {"name": "John Doe", "job": "Software Engineer",
+       "tone": "Professional", "other": "Loves coding"}, "role": "user",
+       "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with user memory enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    base::Value::List memories;
+    memories.Append("I prefer concise explanations");
+    memories.Append("I work in the tech industry");
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+    std::string expected_events = R"([
+      {"content": "",
+       "memory":{
+         "memories": [
+           "I prefer concise explanations",
+           "I work in the tech industry"
+         ]
+       },
+       "role": "user", "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with both customization and memory enabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    base::Value::Dict customizations_dict;
+    customizations_dict.Set("name", "Alice");
+    customizations_dict.Set("job", "Designer");
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(customizations_dict));
+
+    base::Value::List memories;
+    memories.Append("I like creative solutions");
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+    std::string expected_events = R"([
+      {"content": "",
+       "memory": {
+         "name": "Alice", "job": "Designer",
+         "memories": ["I like creative solutions"]},
+         "role": "user", "type": "userMemory"},
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 3u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with both customization and memory disabled
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with customization enabled but empty values
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+    // Set empty customizations dict
+    base::Value::Dict empty_customizations_dict;
+    prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                   std::move(empty_customizations_dict));
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+
+  // Test with memory enabled but empty values
+  {
+    prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+    prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+    // Set empty memories list
+    base::Value::List empty_memories;
+    prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(empty_memories));
+
+    std::string expected_events = R"([
+      {"role": "user", "type": "pageText",
+       "content": "This is a test page content."},
+      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+    ])";
+
+    EXPECT_CALL(*mock_api_client, PerformRequest)
+        .WillOnce([&](std::vector<ConversationEvent> conversation,
+                      const std::string& selected_language,
+                      std::optional<base::Value::List> oai_tool_definitions,
+                      const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
+                      EngineConsumer::GenerationDataCallback data_callback,
+                      EngineConsumer::GenerationCompletedCallback callback,
+                      const std::optional<std::string>& model_name) {
+          EXPECT_EQ(conversation.size(), 2u);
+          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                    FormatComparableEventsJson(expected_events));
+          auto completion_event =
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Test response"));
+          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(completion_event), std::nullopt)));
+        });
+
+    std::vector<mojom::ConversationTurnPtr> history;
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+    turn->uuid = "turn-1";
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->text = "What is this about?";
+    history.push_back(std::move(turn));
+
+    base::RunLoop run_loop;
+    PageContent page_content("This is a test page content.", false);
+    engine_->GenerateAssistantResponse(
+        {{"turn-1", {page_content}}}, std::move(history), "", false, {},
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+        base::BindLambdaForTesting(
+            [&run_loop](EngineConsumer::GenerationResult) {
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(mock_api_client);
+  }
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_TemporaryChatExcludesMemory) {
+  auto* mock_api_client = GetMockConversationAPIClient();
+
+  // Setup user memory to ensure it's available but should be excluded
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::Value::Dict customizations_dict;
+  customizations_dict.Set("name", "John Doe");
+  customizations_dict.Set("job", "Software Engineer");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::Value::List memories;
+  memories.Append("I prefer concise explanations");
+  memories.Append("I work in the tech industry");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Expect NO memory event when is_temporary_chat=true
+  std::string expected_events = R"([
+    {"role": "user", "type": "pageText",
+     "content": "This is a test page content."},
+    {"role": "user", "type": "chatMessage", "content": "What is this about?"}
+  ])";
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Should only have 2 events: page content and user message
+        // NO memory event should be present
+        EXPECT_EQ(conversation.size(), 2u);
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("Test response"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "What is this about?";
+  history.push_back(std::move(turn));
+
+  base::RunLoop run_loop;
+  PageContent page_content("This is a test page content.", false);
+  engine_->GenerateAssistantResponse(
+      {{"turn-1", {page_content}}}, std::move(history), "",
+      true,  // is_temporary_chat = true
+      {}, std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 TEST_F(EngineConsumerConversationAPIV2UnitTest,
        GenerateAssistantResponse_WithModelKeyOverride) {
   auto* mock_api_client = GetMockConversationAPIV2Client();
