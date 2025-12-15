@@ -60,8 +60,9 @@ __debug = False
 
 # Main configuration function that sets up SISO for Brave-specific build
 # requirements by adjusting step configurations and registering custom handlers.
-def __configure(ctx, step_config, handlers):
+def __configure(ctx, step_config, filegroups, handlers):
     __remove_rules(step_config)
+    __adjust_filegroups(filegroups)
     __adjust_handlers(ctx, step_config, handlers)
     __remove_labels_from_platforms(step_config)
 
@@ -86,6 +87,17 @@ def __remove_rules(step_config):
         rule for rule in step_config["rules"]
         if not should_remove(rule["name"])
     ]
+
+
+def __adjust_filegroups(filegroups):
+    # Exclude vecLib.framework, a broken symlink that breaks remote execution.
+    # This symlink is not needed for the build and can be safely excluded.
+    for _, filegroup in filegroups.items():
+        includes = filegroup.get("includes", [])
+        if "*.framework" in includes:
+            excludes = filegroup.get("excludes", [])
+            excludes.append("vecLib.framework")
+            filegroup["excludes"] = excludes
 
 
 # Configures handlers to handle chromium_src overrides and disable remote

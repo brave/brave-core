@@ -1,0 +1,242 @@
+# Brave's Siso Build System Customization
+
+This document explains how we customize the upstream Chromium Siso build system
+to support our build requirements, particularly the `chromium_src` override
+mechanism.
+
+## Overview
+
+Siso is Chromium's distributed build execution system that enables remote
+compilation and caching. We extend Siso to handle our build architecture where
+files in `brave/chromium_src/` can override corresponding upstream Chromium
+files without modifying the upstream source tree.
+
+## 1. Integration Point in `//build/config/siso/main.star`
+
+The entry point for our customization is:
+
+```python
+brave_siso_config.configure(ctx, step_config, filegroups, handlers)
+```
+
+This call happens **after** all upstream Chromium configurations have been
+applied:
+
+- Platform-specific configurations (Linux, macOS, Windows)
+- Mojo code generation rules
+- Rust compilation rules
+- Blink/web platform rules
+
+By hooking in at this stage, we can modify the final configuration that Siso
+will use, ensuring our customizations take precedence over upstream defaults.
+
+## 2. Configuration Customizations
+
+### 2.1 Step Configuration (`step_config`)
+
+The step configuration defines rules for build steps to run remotely by Siso.
+Rules can adjust remote execution behavior, inputs, outputs, timeouts, and more.
+We make several adjustments to make the build system work for us:
+
+#### Rule Removal
+
+- **TypeScript rules are disabled** because our `chromium_src` mechanism
+  requires special handling of TypeScript inputs/outputs that needs to be
+  implemented. See https://github.com/brave/brave-browser/issues/48135
+- **Rust rules are disabled on non-Linux hosts** for remote execution. Unlike
+  Clang (where we can use Linux toolchains for cross-compilation), Rust's Linux
+  toolchain doesn't include cross-compilation support for macOS and Windows
+  targets. Running these remotely requires Windows and macOS workers, which we
+  don't have.
+
+#### Timeout Adjustments
+
+Build nodes are typically single-core, so we give some build steps extra time to
+complete.
+
+- **Clang rules get 10-minute timeouts**
+- **Mojo and Blink Python rules get 15-minute timeouts**
+
+#### Platform Label Cleanup
+
+The current remote execution backend we use doesn't support certain Chromium
+platform labels like `action_default` and `action_large`. Removing these
+prevents remote execution failures due to unrecognized labels.
+
+### 2.2 Filegroup Customizations
+
+Siso includes all macOS and iOS frameworks by default. We exclude some
+frameworks that are not actually used by the build, but lead to remote execution
+failures:
+
+- `vecLib.framework` from macOS frameworks. This is a non-canonical symlink in
+  the macOS SDK that prevents remote system from correctly setting up remote
+  workspace. Since it's not used by the build, we can safely exclude it.
+
+### 2.3 Handler Customizations
+
+Handlers are the custom logic that processes individual build actions. We add
+two handlers:
+
+#### The `redirect_cc` Handler
+
+This handler intercepts C/C++/Objective-C compilation commands and checks if a
+corresponding override file exists in `brave/chromium_src/`.
+
+For example, when compiling `chrome/browser/ui/browser.cc`:
+
+1. Siso receives a compilation command with input
+   `../../chrome/browser/ui/browser.cc`
+2. The `redirect_cc` handler checks if
+   `../../brave/chromium_src/chrome/browser/ui/browser.cc` exists
+3. If it exists, the handler:
+   - Replaces the source file argument with the override path
+   - Adds the override file to the action's input list (so it gets uploaded for
+     remote execution)
+   - Updates the command accordingly
+
+On macOS and Windows development machines, the handler also:
+
+- Sets up a remote wrapper script that ensures Linux clang toolchain is used
+  instead of the macOS/Windows toolchain
+- Adds the Linux clang binary as an executable input
+
+This enables remote compilation on Linux workers even when building from
+non-Linux hosts.
+
+#### The `chromium_src_inputs` Handler (for Python actions)
+
+Python-based build actions can have chromium_src overrides. Overrides can exist
+for python files and also for input files. This handler ensures that the build
+system knows about all the potential file overrides and uploads them for remote
+execution:
+
+1. Scans all Python action inputs for files with supported extensions (`.mojom`,
+   `.pdl`, `.json`, `.html`, etc.)
+2. For each input file, checks if a `brave/chromium_src/` override exists
+3. Adds all found overrides to the action's input list
+4. Ensures Brave utility scripts (`brave_chromium_utils.py`,
+   `override_utils.py`) are uploaded for remote execution
+
+The handler also attaches a remote wrapper script that:
+
+- Sets `PYTHONPATH` to include Brave's script directories
+- Fixes path separators when commands originate from Windows hosts
+
+## 3. Siso Configuration Files: `.sisoenv` and `.sisorc`
+
+### `.sisoenv` - Remote Execution Service Configuration
+
+This file is generated by upstream Chromium's `configure_siso.py` script during
+`gclient runhooks`. The configuration comes from `custom_vars` in the `.gclient`
+file:
+
+```python
+solutions = [
+  {
+    "custom_vars": {
+      "reapi_address": "remotebuild.example.com:443",
+      "reapi_backend_config_path": "/path/to/backend.star",
+      "reapi_instance": "default",
+    },
+  }
+]
+```
+
+The `reapi_backend_config_path` is required and specifies which backend
+configuration to use. This Starlark file defines platform properties like the
+Docker image to use for remote workers. We currently use `google.star` which
+comes with upstream Chromium. This allows us to:
+
+- Use the same remote execution Docker image as Chromium
+- Automatically get updates when Chromium updates their toolchain requirements
+- Avoid maintaining our own backend configuration
+
+During `npm run sync`, we generate the `.gclient` file and set these
+`custom_vars` based on the `rbe_service` variable in `brave/.env`. This results
+in a `.sisoenv` file like:
+
+```bash
+SISO_REAPI_INSTANCE=default
+SISO_REAPI_ADDRESS=remotebuild.example.com:443
+```
+
+This file tells Siso:
+
+- **Where to connect** for remote execution (the cluster address)
+- **Which instance to use** on that cluster
+
+Without this configuration, Siso would try to use Chromium's default remote
+execution service (Google's RBE).
+
+### `.sisorc` - Ninja/Siso Runtime Flags
+
+This file is generated by `brave_custom.py` in the `configure_sisorc()` function
+during `gclient runhooks` (via `npm run sync`). It configures Siso's behavior
+for the `ninja` subcommand:
+
+```bash
+ninja -reapi_keep_exec_stream -cache_dir "/path/to/cache" -local_cache_enable
+```
+
+This file configures Siso's behavior for `ninja` subcommand:
+
+- **`-reapi_keep_exec_stream`**: Keeps the connection to the remote execution
+  service alive continuously. Our backend requires this; without it, Siso would
+  disconnect every minute, aborting long-running remote compilations.
+
+- **`-cache_dir` and `-local_cache_enable`**: Enables a local disk cache for
+  remote execution results if the `SISO_CACHE_DIR` environment variable is set.
+  The cache directory is created automatically if it doesn't exist.
+
+The reason to pass these flags via `.sisorc` instead of `npm run build` is to
+allow `autoninja` to work directly.
+
+## Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Developer runs: npm run sync                                   │
+│    └─> generates .gclient with custom_vars                      │
+│          ├─> reapi_address (from rbe_service .env var)          │
+│          └─> reapi_backend_config_path ('google.star')          │
+│          ├─> reapi_instance ('default')                         │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  gclient runhooks                                               │
+│    ├─> configure_siso.py (upstream Chromium)                    │
+│    │     ├─> write .sisoenv (from .gclient custom_vars)         │
+│    │     └─> copy /path/to/backend.star → backend.star          │
+│    └─> reclient configurator                                    │
+│          └─> brave_custom.py callbacks                          │
+│                ├─> generate python_remote_wrapper               │
+│                └─> write .sisorc (ninja flags from env vars)    │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Developer runs: ninja -C out/Component                         │
+│    └─> siso                                                     │
+│          ├─> reads .sisoenv (RBE cluster and instance config)   │
+│          ├─> reads .sisorc (runtime flags)                      │
+│          └─> loads main.star                                    │
+│                └─> calls brave_siso_config.configure()          │
+│                      ├─> adjusts step_config (rules/timeouts)   │
+│                      ├─> adjusts filegroups (exclusions)        │
+│                      └─> installs handlers                      │
+│                            ├─> redirect_cc (C++ overrides)      │
+│                            └─> chromium_src_inputs (Py actions) │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  For each build action:                                         │
+│    ├─> Handler checks for brave/chromium_src/ overrides         │
+│    ├─> Adds overrides to inputs                                 │
+│    ├─> Uploads inputs to remote worker                          │
+│    ├─> Executes remotely (or locally if disabled)               │
+│    └─> Caches results locally and remotely                      │
+└─────────────────────────────────────────────────────────────────┘
+```

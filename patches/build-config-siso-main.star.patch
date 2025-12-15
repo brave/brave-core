@@ -1,5 +1,5 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index 34bb20173df31840d95ff57bafd4efb63b3d5010..1b828a0e67a597efaa77e65c98c833034556a858 100644
+index 34bb20173df31840d95ff57bafd4efb63b3d5010..567ae154c4a42e44ee8ec2a947e2756b885d06da 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
 @@ -20,6 +20,7 @@ load("./reproxy.star", "reproxy")
@@ -14,7 +14,7 @@ index 34bb20173df31840d95ff57bafd4efb63b3d5010..1b828a0e67a597efaa77e65c98c83303
      handlers.update(simple.handlers)
      handlers.update(reproxy.handlers)
  
-+    brave_siso_config.configure(ctx, step_config, handlers)
++    brave_siso_config.configure(ctx, step_config, filegroups, handlers)
      return module(
          "config",
          step_config = json.encode(step_config),

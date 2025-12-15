@@ -181,6 +181,8 @@ const Config = function () {
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.gClientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
+  this.gClientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
@@ -206,6 +208,18 @@ const Config = function () {
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
+  if (this.rbeService) {
+    this.reapiAddress = this.rbeService
+    this.reapiBackendConfigPath = path.join(
+      this.srcDir,
+      'build',
+      'config',
+      'siso',
+      'backend_config',
+      'google.star',
+    )
+    this.reapiInstance = 'default'
+  }
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
@@ -225,6 +239,7 @@ const Config = function () {
   this.extraGnGenOpts = getEnvConfig(['brave_extra_gn_gen_opts']) || ''
   this.extraNinjaOpts = []
   this.sisoJobsLimit = undefined
+  this.sisoCacheDir = getEnvConfig(['siso_cache_dir'])
   this.braveAndroidSafeBrowsingApiKey = getEnvConfig([
     'brave_safebrowsing_api_key',
   ])
@@ -240,8 +255,9 @@ const Config = function () {
   this.braveAndroidPkcs11Provider = ''
   this.braveAndroidPkcs11Alias = ''
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
-  this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
-  this.offline = getEnvConfig(['offline']) || false
+  this.useRemoteExec = getEnvConfig(['use_remoteexec'], false)
+  this.useReclient = getEnvConfig(['use_reclient'], this.useRemoteExec)
+  this.offline = getEnvConfig(['offline'], false)
   this.use_libfuzzer = false
   this.androidAabToApk = false
   this.useBraveHermeticToolchain = getEnvConfig(
@@ -427,7 +443,7 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     use_remoteexec: this.useRemoteExec,
-    use_reclient: this.useRemoteExec,
+    use_reclient: this.useReclient,
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
@@ -1180,12 +1196,17 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
         env.RBE_use_application_default_credentials =
           env.RBE_use_application_default_credentials || true
       }
+      if (this.sisoCacheDir) {
+        // This variable is handled inside the script during sync stage:
+        // brave/third_party/reclient_configs/brave_custom/brave_custom.py
+        env.SISO_CACHE_DIR = this.sisoCacheDir
+      }
     }
 
     // These env vars are required during `build` stage.
     if (this.useRemoteExec) {
-      // Restrict remote execution to 160 parallel jobs.
-      const kRemoteLimit = 160
+      // Restrict remote execution jobs.
+      const kRemoteLimit = getEnvConfig(['rbe_jobs_limit'], 160)
 
       // Prevent depot_tools from setting lower timeouts.
       const kRbeTimeout = '10m'
