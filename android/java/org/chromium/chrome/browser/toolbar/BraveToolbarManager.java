@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -444,12 +444,12 @@ public class BraveToolbarManager extends ToolbarManager
     @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     @Override
     public void initializeWithNative(
-            @NonNull LayoutManagerImpl layoutManager,
+            LayoutManagerImpl layoutManager,
             @Nullable StripLayoutHelperManager stripLayoutHelperManager,
-            Runnable openGridTabSwitcherHandler,
-            OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler,
-            @Nullable ObservableSupplier<Integer> archivedTabCountSupplier,
+            @Nullable Runnable openGridTabSwitcherHandler,
+            @Nullable OnClickListener bookmarkClickHandler,
+            @Nullable OnClickListener customTabsBackClickHandler,
+            @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
             ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
             @Nullable UndoBarThrottle undoBarThrottle) {
 
