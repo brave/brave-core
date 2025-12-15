@@ -18,15 +18,11 @@ import {
   ConfirmTransactionPanel, //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
-import {
-  DecryptRequestPanel, //
-} from '../components/extension/encryption-key-panel/index'
 
 import { StyledExtensionWrapperLonger, StyledWelcomPanel } from './style'
 
 // mocks
 import { mockTransactionInfo } from './mock-data/mock-transaction-info'
-import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
@@ -368,16 +364,6 @@ export const _ConfirmTransaction = {
           <ConfirmTransactionPanel />
         </StyledExtensionWrapperLonger>
       </Provider>
-    )
-  },
-}
-
-export const _ReadEncryptedMessage = {
-  render: () => {
-    return (
-      <StyledExtensionWrapperLonger>
-        <DecryptRequestPanel payload={mockDecryptRequest} />
-      </StyledExtensionWrapperLonger>
     )
   },
 }

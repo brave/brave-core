@@ -54,3 +54,16 @@ export const MessageText = styled(Text)`
   flex-wrap: wrap;
   word-break: break-word;
 `
+
+export const DecryptMessageBox = styled(Column)`
+  background-color: ${leo.color.container.interactive};
+  border-radius: ${leo.radius.l};
+  height: 166px;
+`
+
+export const URLText = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  max-width: 80%;
+  word-break: break-word;
+`

@@ -28,8 +28,8 @@ import {
   ProvidePublicEncryptionKeyPanel, //
 } from '../components/extension/public_encryption_key_panels/provide_public_encryption_key_panel'
 import {
-  DecryptRequestPanel, //
-} from '../components/extension/encryption-key-panel/index'
+  DecryptMessageRequestPanel, //
+} from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 
 import {
   StyledExtensionWrapper,
@@ -279,10 +279,11 @@ function Container() {
 
   if (decryptRequest) {
     return (
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <DecryptRequestPanel payload={decryptRequest} />
-        </LongWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <DecryptMessageRequestPanel payload={decryptRequest} />
       </PanelWrapper>
     )
   }
