@@ -47,9 +47,9 @@ public class BraveSetDefaultBrowserUtils {
     public static boolean isBottomSheetVisible;
 
     /**
-     * Checks if any Brave browser variant (Production, Beta, or Nightly) is set as the default
-     * browser. For production builds, only checks if production Brave is default. For other builds
-     * (Beta/Nightly), checks if any Brave variant is default.
+     * Checks if any Brave browser variant (Production, Beta, Nightly or Debug) is set as the
+     * default browser. For production builds, only checks if production Brave is default. For other
+     * builds (Beta/Nightly/Debug), checks if any Brave variant is default.
      *
      * @param context The application context
      * @return true if appropriate Brave variant is set as default browser, false otherwise
@@ -71,11 +71,13 @@ public class BraveSetDefaultBrowserUtils {
                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME);
         } else {
             return resolveInfo.activityInfo.packageName.equals(
-                           BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+                            BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(
                             BraveConstants.BRAVE_BETA_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(
-                            BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME);
+                            BraveConstants.BRAVE_NIGHTLY_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(
+                            BraveConstants.BRAVE_DEBUG_PACKAGE_NAME);
         }
     }
 

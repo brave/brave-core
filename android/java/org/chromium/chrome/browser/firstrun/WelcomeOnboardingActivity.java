@@ -79,13 +79,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private static final float LEAF_SCALE_ANIMATION = 1.5f;
 
-    // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
-    // from the same thread, so no need to use extra locks
-    private boolean mInitializeViewsDone;
-    private boolean mInvokePostWorkAtInitializeViews;
-
     private boolean mIsTablet;
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
 
     private View mVLeafAlignTop;
@@ -117,25 +111,83 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
      * click listeners, and performing first-run setup tasks.
      */
     private void initializeViews() {
-        assert !mInitializeViewsDone;
-
         setContentView(R.layout.activity_welcome_onboarding);
 
-        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
-
-        initViews();
-
-        onClickViews();
-
-        mInitializeViewsDone = true;
-
-        if (mInvokePostWorkAtInitializeViews) {
-            finishNativeInitializationPostWork();
+        mIvLeafTop = findViewById(R.id.iv_leaf_top);
+        mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
+        mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
+        mVLeafAlignBottom = findViewById(R.id.view_leaf_bottom_align);
+        mIvBrave = findViewById(R.id.iv_brave);
+        mIvArrowDown = findViewById(R.id.iv_arrow_down);
+        mLayoutCard = findViewById(R.id.layout_card);
+        mTvCard = findViewById(R.id.tv_card);
+        mTvDefault = findViewById(R.id.tv_default);
+        mCheckboxCrash = findViewById(R.id.checkbox_crash);
+        mCheckboxP3a = findViewById(R.id.checkbox_p3a);
+        mBtnPositive = findViewById(R.id.btn_positive);
+        mBtnNegative = findViewById(R.id.btn_negative);
+        LinearLayout layoutData = findViewById(R.id.layout_data);
+        LayoutTransition layoutTransition = new LayoutTransition();
+        layoutTransition.setDuration(1000);
+        if (layoutData != null) {
+            layoutData.setLayoutTransition(layoutTransition);
         }
 
-        checkReferral();
+        int margin = mIsTablet ? 200 : 50;
 
-        maybeUpdateFirstRunDefaultValues();
+        if (mVLeafAlignTop != null) {
+            ViewGroup.MarginLayoutParams topLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
+            topLeafParams.bottomMargin = margin;
+            mVLeafAlignTop.setLayoutParams(topLeafParams);
+        }
+
+        if (mVLeafAlignBottom != null) {
+            ViewGroup.MarginLayoutParams bottomLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
+            bottomLeafParams.topMargin = margin;
+            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        }
+
+        if (mBtnPositive != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mBtnPositive);
+        }
+        if (mCheckboxCrash != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxCrash);
+        }
+        if (mCheckboxP3a != null) {
+            BraveTouchUtils.ensureMinTouchTarget(mCheckboxP3a);
+        }
+
+        if (mBtnPositive != null) {
+            mBtnPositive.setOnClickListener(
+                    view -> {
+                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
+                            setDefaultBrowser(this);
+                        } else {
+                            enableWebDiscoverPreference();
+                            nextOnboardingStep();
+                        }
+                    });
+        }
+
+        if (mBtnNegative != null) {
+            mBtnNegative.setOnClickListener(
+                    view -> {
+                        if (mCurrentOnboardingPage
+                                == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
+                            CustomTabActivity.showInfoPage(this, P3A_URL);
+                        } else {
+                            nextOnboardingStep();
+                        }
+                    });
+        }
+        checkReferral();
+        if (PackageUtils.isFirstInstall(this)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE, false);
+        }
     }
 
     private void checkReferral() {
@@ -187,84 +239,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 });
     }
 
-    private void initViews() {
-        mIvLeafTop = findViewById(R.id.iv_leaf_top);
-        mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
-        mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
-        mVLeafAlignBottom = findViewById(R.id.view_leaf_bottom_align);
-        mIvBrave = findViewById(R.id.iv_brave);
-        mIvArrowDown = findViewById(R.id.iv_arrow_down);
-        mLayoutCard = findViewById(R.id.layout_card);
-        mTvCard = findViewById(R.id.tv_card);
-        mTvDefault = findViewById(R.id.tv_default);
-        mCheckboxCrash = findViewById(R.id.checkbox_crash);
-        mCheckboxP3a = findViewById(R.id.checkbox_p3a);
-        mBtnPositive = findViewById(R.id.btn_positive);
-        mBtnNegative = findViewById(R.id.btn_negative);
-        LinearLayout layoutData = findViewById(R.id.layout_data);
-        LayoutTransition layoutTransition = new LayoutTransition();
-        layoutTransition.setDuration(1000);
-        if (layoutData != null) {
-            layoutData.setLayoutTransition(layoutTransition);
-        }
-
-        int margin = mIsTablet ? 200 : 50;
-
-        if (mVLeafAlignTop != null) {
-            ViewGroup.MarginLayoutParams topLeafParams =
-                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
-            topLeafParams.bottomMargin = margin;
-            mVLeafAlignTop.setLayoutParams(topLeafParams);
-        }
-
-        if (mVLeafAlignBottom != null) {
-            ViewGroup.MarginLayoutParams bottomLeafParams =
-                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
-            bottomLeafParams.topMargin = margin;
-            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
-        }
-
-        if (mBtnPositive != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mBtnPositive);
-        }
-        if (mCheckboxCrash != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mCheckboxCrash);
-        }
-        if (mCheckboxP3a != null) {
-            BraveTouchUtils.ensureMinTouchTarget(mCheckboxP3a);
-        }
-    }
-
     private void enableWebDiscoverPreference() {
         if (isWDPSettingAvailable() && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
-        }
-    }
-
-    private void onClickViews() {
-        if (mBtnPositive != null) {
-            mBtnPositive.setOnClickListener(
-                    view -> {
-                        if (mCurrentStep == 0 && !isBraveSetAsDefaultBrowser(this)) {
-                            setDefaultBrowser(this);
-                        } else {
-                            enableWebDiscoverPreference();
-                            nextOnboardingStep();
-                        }
-                    });
-        }
-
-        if (mBtnNegative != null) {
-            mBtnNegative.setOnClickListener(
-                    view -> {
-                        if (mCurrentOnboardingPage
-                                == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
-                            CustomTabActivity.showInfoPage(this, P3A_URL);
-                        } else {
-                            nextOnboardingStep();
-                        }
-                    });
         }
     }
 
@@ -565,24 +543,21 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (isActivityFinishingOrDestroyed()) return;
+        assert requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE;
         nextOnboardingStep();
     }
 
-    private void finishNativeInitializationPostWork() {
-        assert mInitializeViewsDone;
-        nextOnboardingStep();
+    @Override
+    protected void performPreInflationStartup() {
+        super.performPreInflationStartup();
+        mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
     }
 
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        if (mInitializeViewsDone) {
-            finishNativeInitializationPostWork();
-        } else {
-            mInvokePostWorkAtInitializeViews = true;
-        }
+        nextOnboardingStep();
     }
 
     @Override
@@ -593,23 +568,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     @Override
     public void triggerLayoutInflation() {
         super.triggerLayoutInflation();
-
-        mFirstRunFlowSequencer =
-                new BraveFirstRunFlowSequencer(getProfileProviderSupplier()) {
-                    @Override
-                    public void onFlowIsKnown(boolean isChild) {
-                        initializeViews();
-                    }
-                };
-        mFirstRunFlowSequencer.start();
+        initializeViews();
         onInitialLayoutInflationComplete();
-    }
-
-    private void maybeUpdateFirstRunDefaultValues() {
-        if (PackageUtils.isFirstInstall(this)) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(
-                            BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE, false);
-        }
     }
 }

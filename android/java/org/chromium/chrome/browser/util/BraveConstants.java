@@ -20,6 +20,7 @@ public final class BraveConstants {
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
     public static final String BRAVE_NIGHTLY_PACKAGE_NAME = "com.brave.browser_nightly";
+    public static final String BRAVE_DEBUG_PACKAGE_NAME = "com.brave.browser_default";
 
     // used in BraveNtpAdapter
     public static final String BRAVE_REF_URL = "https://brave.com/r/";
