@@ -4,16 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
@@ -30,11 +26,7 @@ class BraveTabsSearchButtonTest : public InProcessBrowserTest,
   ~BraveTabsSearchButtonTest() override = default;
 };
 
-#if BUILDFLAG(IS_WIN)
-IN_PROC_BROWSER_TEST_P(BraveTabsSearchButtonTest, HideShowSettingTest) {
-#else
 IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
-#endif
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(prefs->GetBoolean(kTabsSearchShow));
 
@@ -54,9 +46,3 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   prefs->SetBoolean(kTabsSearchShow, true);
   EXPECT_TRUE(button->GetVisible());
 }
-
-#if BUILDFLAG(IS_WIN)
-INSTANTIATE_TEST_SUITE_P(BraveTabsSearchButtonTest,
-                         BraveTabsSearchButtonTest,
-                         ::testing::Bool());
-#endif
