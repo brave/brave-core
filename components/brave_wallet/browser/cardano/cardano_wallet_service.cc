@@ -188,7 +188,6 @@ void CardanoWalletService::SignAndPostTransaction(
     return;
   }
 
-  CHECK(cardano_transaction.IsSigned());
   auto serialized_transaction =
       CardanoTransactionSerializer::SerializeTransaction(cardano_transaction);
   if (!serialized_transaction) {
@@ -239,7 +238,7 @@ bool CardanoWalletService::SignTransactionInternal(
 
   tx.SetWitnesses(std::move(witnesses));
 
-  return tx.IsSigned();
+  return true;
 }
 
 void CardanoWalletService::OnPostTransaction(

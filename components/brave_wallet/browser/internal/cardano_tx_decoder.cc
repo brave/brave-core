@@ -8,6 +8,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
@@ -252,7 +253,8 @@ CardanoTxDecoder::~CardanoTxDecoder() = default;
 
 // static
 void CardanoTxDecoder::SetUseSetTagForTesting(bool enable) {
-  use_set_tag_for_testing(enable);
+  CHECK_IS_TEST();
+  use_set_tag_for_testing(enable);  // IN-TEST
 }
 
 // static

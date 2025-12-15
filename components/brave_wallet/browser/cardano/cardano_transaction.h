@@ -21,9 +21,6 @@
 
 namespace brave_wallet {
 
-inline constexpr uint32_t kCardanoSignatureSize = 64u;
-inline constexpr uint32_t kCardanoPubKeySize = 32u;
-
 // This class is used to make Cardano transactions for sending to blockchain.
 class CardanoTransaction {
  public:
@@ -117,9 +114,6 @@ class CardanoTransaction {
   base::Value::Dict ToValue() const;
   static std::optional<CardanoTransaction> FromValue(
       const base::Value::Dict& value);
-
-  // All inputs are signed.
-  bool IsSigned() const;
 
   // Sum of all inputs' amounts.
   base::CheckedNumeric<uint64_t> GetTotalInputsAmount() const;

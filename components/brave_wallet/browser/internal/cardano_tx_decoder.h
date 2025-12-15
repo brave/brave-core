@@ -12,11 +12,12 @@
 
 #include "base/containers/span.h"
 #include "base/numerics/safe_conversions.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 
 namespace brave_wallet {
 
 inline constexpr uint32_t kCardanoTxHashSize = 32u;
+inline constexpr uint32_t kCardanoPubKeySize = 32u;
+inline constexpr uint32_t kCardanoSignatureSize = 64u;
 
 // Wrapper class for Cardano transaction decoding functionality
 // This class provides a C++ interface to the Rust cardano_tx_decoder
@@ -69,8 +70,8 @@ class CardanoTxDecoder {
     SerializableVkeyWitness(SerializableVkeyWitness&&);
     SerializableVkeyWitness& operator=(SerializableVkeyWitness&&);
 
-    std::array<uint8_t, kEd25519SignatureSize> signature_bytes = {};
-    std::array<uint8_t, kEd25519PublicKeySize> public_key = {};
+    std::array<uint8_t, kCardanoSignatureSize> signature_bytes = {};
+    std::array<uint8_t, kCardanoPubKeySize> public_key = {};
   };
 
   struct SerializableTxWitness {

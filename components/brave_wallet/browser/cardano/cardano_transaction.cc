@@ -235,7 +235,7 @@ std::optional<CardanoTransaction::TxWitness>
 CardanoTransaction::TxWitness::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxWitness result;
 
-  // Try to reading from legacy witness_bytes first.
+  // Try to read from legacy witness_bytes first.
   std::array<uint8_t, kCardanoPubKeySize + kCardanoSignatureSize>
       witness_bytes = {};
   if (base::OptionalUnwrapTo(
@@ -430,14 +430,6 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
       value.FindBool("sending_max_amount").value_or(false);
 
   return result;
-}
-
-bool CardanoTransaction::IsSigned() const {
-  if (inputs_.empty()) {
-    return false;
-  }
-
-  return inputs_.size() == witnesses_.size();
 }
 
 base::CheckedNumeric<uint64_t> CardanoTransaction::GetTotalInputsAmount()
