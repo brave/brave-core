@@ -8,5 +8,5 @@ import { combineReducers } from 'redux'
 import adblockReducer from './adblock_reducer'
 
 export default combineReducers<AdBlock.ApplicationState>({
-  adblockData: adblockReducer
+  adblockData: adblockReducer,
 })

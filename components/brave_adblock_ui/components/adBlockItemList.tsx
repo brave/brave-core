@@ -14,33 +14,27 @@ interface Props {
 }
 
 export class AdBlockItemList extends React.Component<Props, {}> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
   }
 
-  render () {
+  render() {
     const regionalLists = this.props.resources.map((resource) => (
       <AdBlockItem
         actions={this.props.actions}
         key={resource.uuid}
         resource={resource}
-      />)
-    )
+      />
+    ))
     return (
       <div>
-        <div
-          style={{ fontSize: '18px', marginTop: '20px' }}
-        >
+        <div style={{ fontSize: '18px', marginTop: '20px' }}>
           {getLocale('additionalFiltersTitle')}
         </div>
-        <div
-          style={{ fontWeight: 'bold' }}
-        >
+        <div style={{ fontWeight: 'bold' }}>
           {getLocale('additionalFiltersWarning')}
         </div>
-        <div style={{ marginTop: '10px' }} >
-          {regionalLists}
-        </div>
+        <div style={{ marginTop: '10px' }}>{regionalLists}</div>
       </div>
     )
   }
