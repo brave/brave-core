@@ -489,6 +489,8 @@ extension TabBrowserData: BraveWalletEventsListener {
       // We keep the same as Metamask, that, we will reload tab on chain changes.
       emitEthereumEvent(.ethereumChainChanged(chainId: chainId))
       await updateEthereumProperties()
+      // don't need to reload if it's a brave wallet webui
+      if tab.visibleURL?.isWalletWebUIURL == true { return }
       tab.reload()
     }
   }

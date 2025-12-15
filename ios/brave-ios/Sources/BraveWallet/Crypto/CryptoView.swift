@@ -350,7 +350,7 @@ public struct CryptoView: View {
         break
       }
     }
-    .onChange(of: keyringStore.isWalletBackedUp) { oldValue, newValue in
+    .onChange(of: keyringStore.isWalletWebUIBackedUp) { oldValue, newValue in
       // back up wallet from wallet webui
       if FeatureList.kBraveWalletWebUIIOS?.enabled == true,
         case .webUI(let action) = presentingContext,
