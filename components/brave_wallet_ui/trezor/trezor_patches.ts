@@ -15,10 +15,16 @@
 // window.open('', ...args).location.href = url
 window.open = new Proxy(window.open, {
   apply(target, thisArg, [url, ...rest]) {
-    const result = Reflect.apply(target, thisArg, ['', ...rest])
-    if (result && url) {
-      result.location.href = url
+    const urlObj = URL.parse(url)
+    if (urlObj && urlObj.origin === 'https://connect.trezor.io') {
+      const result = Reflect.apply(target, thisArg, ['', ...rest])
+      if (result && url) {
+        result.location.href = url
+      }
+      return result
     }
-    return result
+
+    // Use the default window.open behavior for non-matching URLs
+    return Reflect.apply(target, thisArg, [url, ...rest])
   },
 })
