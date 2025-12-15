@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store-hiba";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Függetlenül auditált";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Villámgyors kapcsolati sebesség";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Az IP-cím elrejtése és a tartózkodási hely módosítása";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Naplók nélküli szabályzat";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Fejlettebb online adatvédelem és biztonság";

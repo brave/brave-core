@@ -32,6 +32,9 @@
 "AGMpus" = "Parancsikonok konfigurációja";
 
 /* (No Comment) */
+"bUHTuL" = "Kérdezz a Brave-tól";
+
+/* (No Comment) */
 "bUXzTx" = "Stat. típusa";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Csak megerősítésképp, az „Új lap” kifejezést kereste?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Csak megerősítésképp, a „Kérdezze Brave-et” kifejezést kereste?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Csak megerősítésképp, a „Könyvjelzők” kifejezést kereste?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Csak megerősítésképp, az „Új lap” kifejezést kereste?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Csak megerősítésképp, a „Kérdezze Brave-et” kifejezést kereste?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Csak megerősítésképp, a „Könyvjelzők” kifejezést kereste?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "${count} beállítás felel meg az „Új lap” kifejezésnek";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "${count} beállítás felel meg a „Kérdezze Brave-et” kifejezésnek";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "${count} beállítás felel meg a „Könyvjelzők” kifejezésnek";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Csak megerősítésképp, az „Új lap” kifejezést kereste?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Csak megerősítésképp, a „Kérdezze Brave-et” kifejezést kereste?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Csak megerősítésképp, a „Könyvjelzők” kifejezést kereste?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "${count} beállítás felel meg az „Új lap” kifejezésnek";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "${count} beállítás felel meg a „Kérdezze Brave-et” kifejezésnek";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "${count} beállítás felel meg a „Könyvjelzők” kifejezésnek";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "${count} beállítás felel meg az „Új lap” kifejezésnek";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "${count} beállítás felel meg a „Kérdezze Brave-et” kifejezésnek";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "${count} beállítás felel meg a „Könyvjelzők” kifejezésnek";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Csak megerősítésképp, az „Új lap” kifejezést kereste?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Csak megerősítésképp, a „Kérdezze Brave-et” kifejezést kereste?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Csak megerősítésképp, a „Könyvjelzők” kifejezést kereste?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "${count} beállítás felel meg az „Új lap” kifejezésnek";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "${count} beállítás felel meg a „Kérdezze Brave-et” kifejezésnek";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "${count} beállítás felel meg a „Könyvjelzők” kifejezésnek";

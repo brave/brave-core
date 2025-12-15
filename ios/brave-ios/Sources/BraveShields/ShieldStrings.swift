@@ -442,7 +442,7 @@ extension Strings.Shields {
   /// A message for a confirmation window that appears when a user clicks on 'Shred' with multiple
   /// tabs selected.
   public static let shredSiteSelectedTabsConfirmationMessage = NSLocalizedString(
-    "ShredSiteDataConfirmationMessage",
+    "shredSiteSelectedTabsConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
     value:

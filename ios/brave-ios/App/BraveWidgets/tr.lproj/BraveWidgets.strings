@@ -32,6 +32,9 @@
 "AGMpus" = "Kısayol Yapılandırması";
 
 /* (No Comment) */
+"bUHTuL" = "Brave'e Sor";
+
+/* (No Comment) */
 "bUXzTx" = "İstatistik Türü";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Sadece onaylamak için soruyorum, \"Yeni Sekme\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Sadece onaylamak için soruyorum, \"Brave'e Sor\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Sadece onaylamak için soruyorum, \"Yeni Sekme\" bölümünü mü istediniz?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Sadece onaylamak için soruyorum, \"Brave'e Sor\" bölümünü mü istediniz?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "\"Brave'e Sor\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Sadece onaylamak için soruyorum, \"Yeni Sekme\" bölümünü mü istediniz?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Sadece onaylamak için soruyorum, \"Brave'e Sor\" bölümünü mü istediniz?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "\"Brave'e Sor\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "\"Brave'e Sor\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Sadece onaylamak için soruyorum, \"Yeni Sekme\" bölümünü mü istediniz?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Sadece onaylamak için soruyorum, \"Brave'e Sor\" bölümünü mü istediniz?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Sadece onaylamak için soruyorum, \"Yer İşaretleri\" bölümünü mü istediniz?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "\"Yeni Sekme\" ile eşleşen ${count} seçenek var.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "\"Brave'e Sor\" ile eşleşen ${count} seçenek var.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "\"Yer İşaretleri\" ile eşleşen ${count} seçenek var.";

@@ -1,3 +1,6 @@
+/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
+"widgets.askBrave" = "Preguntarle a Brave";
+
 /* Title for bookmarks menu item */
 "widgets.BookmarksMenuItem" = "Marcadores";
 

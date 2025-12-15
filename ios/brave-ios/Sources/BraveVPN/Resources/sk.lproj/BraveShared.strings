@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Chyba obchodu App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Nezávisle auditované";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Mimoriadne rýchle pripojenie";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Skryte svoju IP adresu, zmeňte svoju polohu";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Politika bez záznamov";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Viac online súkromia a bezpečnosti";

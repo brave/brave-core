@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "La session de votre compte Brave a expiré. Veuillez accéder à la page de votre compte pour l'actualiser, puis revenir pour utiliser les fonctionnalités premium.prends";
+"aichat.accountSessionExpiredDescription" = "La session de votre compte Brave a expiré. Veuillez accéder à la page de votre compte pour l'actualiser, puis revenir pour utiliser les fonctionnalités premium.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Donner mon avis";
@@ -137,7 +137,7 @@
 "aichat.feedbackViewMainTitle" = "Partagez votre avis sur l'IA Brave";
 
 /* The button title for opening paywall screen */
-"aichat.goPremiumButtonTitle" = "Passer à la version Premium";
+"aichat.goPremiumButtonTitle" = "Passer à la version premium";
 
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Façonner les réponses en fonction du contenu de la page";
@@ -173,7 +173,7 @@
 "aichat.introMessageGemmaPurposeDescription" = "Discussions générales et analyse d'images";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA proposé par Brave. Je suis optimisé par %@. Demandez-moi tout ce que vous voulez et je ferai de mon mieux pour répondre à votre question.";
+"aichat.introMessageGenericMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA proposé par Brave. Je suis alimenté par %@. Demandez-moi tout ce que vous voulez et je ferai de mon mieux pour répondre à votre question.";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageLlamaMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 3.1 8B, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama est hébergé par Brave sur une infrastructure interne et sécurisée.";
@@ -299,22 +299,22 @@
 "aichat.paywallUpsellAccuracyTopicSubTitle" = "Obtenez des réponses plus précises pour des conversations plus nuancées.";
 
 /* The title accuracy entry in paywall upsell screen */
-"aichat.paywallUpsellAccuracyTopicTitle" = "Gardez le fil";
+"aichat.paywallUpsellAccuracyTopicTitle" = "Gardez le fil de la conversation";
 
 /* The subtitle chat length entry in paywall upsell screen */
-"aichat.paywallUpsellChatLengthTopicSubTitle" = "Obtenez des limites de taux plus élevées pour des conversations plus longues.";
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Bénéficiez de limites de taux plus élevées pour des conversations plus longues.";
 
 /* The title chat length entry in paywall upsell screen */
 "aichat.paywallUpsellChatLengthTopicTitle" = "Discutez plus longtemps";
 
 /* The subtitle creativity entry in paywall upsell screen */
-"aichat.paywallUpsellCreativityTopicSubTitle" = "Accédez à des modèles mieux adaptés aux tâches créatives et à la génération de contenu.";
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Accédez à des modèles plus adaptés aux tâches créatives et à la génération de contenu.";
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Débloquez votre créativité";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Accès prioritaire à des modèles puissants avec différentes compétences.";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Profitez d'un accès prioritaire à des modèles avancés avec des capacités diverses.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Explorez différents modèles d'IA";
@@ -350,7 +350,7 @@
 "aichat.quickMenuAdvancedSettingsActionTitle" = "Paramètres avancés";
 
 /* The title of action for quick menu which presents payment screen for premium */
-"aichat.quickMenuGoPremiumActionTitle" = "Passer à la version Premium";
+"aichat.quickMenuGoPremiumActionTitle" = "Passer à la version premium";
 
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Gérer les abonnements";
