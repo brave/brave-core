@@ -22,9 +22,18 @@ bool IsBoxNonNull(const rust::Box<CxxPolkadotChainMetadata>& chain_metadata) {
 
 }  // namespace
 
-PolkadotChainMetadata::PolkadotChainMetadata(PolkadotChainMetadata&&) = default;
+PolkadotChainMetadata::PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept =
+    default;
 
 PolkadotChainMetadata::~PolkadotChainMetadata() = default;
+
+PolkadotChainMetadata& PolkadotChainMetadata::operator=(
+    PolkadotChainMetadata&& rhs) noexcept {
+  if (this != &rhs) {
+    chain_metadata_ = std::move(rhs.chain_metadata_);
+  }
+  return *this;
+}
 
 std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
     std::string_view chain_name) {
