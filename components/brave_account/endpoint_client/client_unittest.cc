@@ -179,7 +179,8 @@ class ClientTest : public testing::TestWithParam<TestCase<Request, Response>> {
     if (!resource_request.request_body) {
       return ADD_FAILURE() << "resource_request.request_body is nullptr!";
     }
-    const auto* elements = resource_request.request_body->elements();
+    const std::vector<network::DataElement>* elements =
+        resource_request.request_body->elements();
     if (!elements) {
       return ADD_FAILURE() << "elements is nullptr!";
     }

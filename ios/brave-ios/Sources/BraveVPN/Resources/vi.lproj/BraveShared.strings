@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "Lỗi App Store";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "Được kiểm toán độc lập";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "Tốc độ kết nối cực nhanh";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "Ẩn IP & thay đổi vị trí của bạn";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "Chính sách không lưu nhật ký";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "Quyền riêng tư & bảo mật online bổ sung";

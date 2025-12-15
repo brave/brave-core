@@ -32,6 +32,9 @@
 "AGMpus" = "Configuração de atalhos";
 
 /* (No Comment) */
+"bUHTuL" = "Perguntar ao Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Tipo de estatística";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Só para confirmar: você queria a opção \"Perguntar ao Brave\"?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Só para confirmar: você queria a opção \"Perguntar ao Brave\"?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Há ${count} opções que correspondem a \"Perguntar ao Brave\".";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Só para confirmar: você queria a opção \"Perguntar ao Brave\"?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Há ${count} opções que correspondem a \"Perguntar ao Brave\".";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Há ${count} opções que correspondem a \"Perguntar ao Brave\".";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Só para confirmar: você queria a opção \"Perguntar ao Brave\"?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Há ${count} opções que correspondem a \"Perguntar ao Brave\".";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";

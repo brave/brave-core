@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "نوع المورد";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "إذا كان يجب على Shred إزالة عناصر السجل.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred يزيل السجل";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "تحديث Auto Shred وتعديل البيانات المراد حذفها.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "حذف";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "حذف";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "عنوان URL المصدر";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "حذف بيانات الموقع بشكل نهائي";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق جميع علامات التبويب المفتوحة على هذا الموقع، وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "حذف بيانات الموقع بشكل نهائي الآن";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق علامات التبويب المحددة وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "الموقع غير آمن";

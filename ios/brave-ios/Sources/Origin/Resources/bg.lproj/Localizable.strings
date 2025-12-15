@@ -1,1 +1,42 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Реклами";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Анализ";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin е абонаментен начин за деактивиране на генериращите приходи функции, които иначе поддържат Brave като бизнес. Абонатите на Brave Origin ще продължат да се възползват от нашите водещи в индустрията функции за защита на личните данни, блокиране на реклами и скорост (чрез Brave защити), както и от редовните актуализации на софтуера, Chromium кръпки и подобренията в сигурността и защитата на личните данни. Те също така ще отключат възможността за деактивиране на функции като Brave Leo, Новини, Rewards, Wallet, VPN, Web3 домейни и др.\n\nАбонатите ще видят нов контролен панел в менюто за настройки на браузъра. Съществуващите функции – както и всички нови функции, които ще доставим в бъдеще – ще се появят тук и ще бъдат изключени по подразбиране.\n\n**Забележка: Brave Origin няма да деактивира функциите на браузъра, които използвате в момента, и няма да засегне функциите на Brave търсене или рекламите на Brave търсене.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Функции";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Новини";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Плейлист";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Анализи за запазване на поверителността";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Възстановяване на настройките по подразбиране";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Награди";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Отчитане на статистически данни";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Портфейл";
 

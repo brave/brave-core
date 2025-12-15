@@ -26,6 +26,9 @@
 "vpn.errorCantGetPricesTitle" = "App Store 오류";
 
 /* Information shown to users for using Brave VPN */
+"vpn.infoCheckAudition" = "독립적으로 감시됨";
+
+/* Information shown to users for using Brave VPN */
 "vpn.infoCheckConnectionSpeed" = "빛처럼 빠른 연결 속도";
 
 /* Information shown to users for using Brave VPN */
@@ -33,6 +36,9 @@
 
 /* Information Text shown to users for using Brave VPN */
 "vpn.infoCheckLocation" = "IP 숨기기 및 위치 변경";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckNoLogs" = "무로그 정책";
 
 /* Information text shown to users for using Brave VPN */
 "vpn.infoCheckPrivacy" = "더욱 든든한 온라인 프라이버시 및 보안";

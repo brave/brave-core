@@ -32,6 +32,9 @@
 "AGMpus" = "Configurazione dei comandi rapidi";
 
 /* (No Comment) */
+"bUHTuL" = "Chiedi a Brave";
+
+/* (No Comment) */
 "bUXzTx" = "Tipo di statistica";
 
 /* (No Comment) */
@@ -42,6 +45,9 @@
 
 /* (No Comment) */
 "e13lS3-0W40Cl" = "Solo per conferma, volevi “Nuova scheda”?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Solo per conferma, volevi 'Chiedi a Brave'?";
 
 /* (No Comment) */
 "e13lS3-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "EvESs0-0W40Cl" = "Solo per conferma, volevi “Nuova scheda”?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Solo per conferma, volevi 'Chiedi a Brave'?";
 
 /* (No Comment) */
 "EvESs0-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
@@ -131,6 +140,9 @@
 "L1fziM-0W40Cl" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda”.";
 
 /* (No Comment) */
+"L1fziM-bUHTuL" = "Ci sono ${count} opzioni che corrispondono a 'Chiedi a Brave'.";
+
+/* (No Comment) */
 "L1fziM-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
@@ -176,6 +188,9 @@
 "r2EI05-0W40Cl" = "Solo per conferma, volevi “Nuova scheda”?";
 
 /* (No Comment) */
+"r2EI05-bUHTuL" = "Solo per conferma, volevi 'Chiedi a Brave'?";
+
+/* (No Comment) */
 "r2EI05-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
@@ -218,6 +233,9 @@
 "tNCrcE-0W40Cl" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda”.";
 
 /* (No Comment) */
+"tNCrcE-bUHTuL" = "Ci sono ${count} opzioni che corrispondono a 'Chiedi a Brave'.";
+
+/* (No Comment) */
 "tNCrcE-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
 
 /* (No Comment) */
@@ -252,6 +270,9 @@
 
 /* (No Comment) */
 "TxuMja-0W40Cl" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda”.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Ci sono ${count} opzioni che corrispondono a 'Chiedi a Brave'.";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";
@@ -314,6 +335,9 @@
 "YQiQuz-0W40Cl" = "Solo per conferma, volevi “Nuova scheda”?";
 
 /* (No Comment) */
+"YQiQuz-bUHTuL" = "Solo per conferma, volevi 'Chiedi a Brave'?";
+
+/* (No Comment) */
 "YQiQuz-crhbMy" = "Solo per conferma, volevi “Segnalibri”?";
 
 /* (No Comment) */
@@ -345,6 +369,9 @@
 
 /* (No Comment) */
 "z517nu-0W40Cl" = "Ci sono ${count} opzioni che corrispondono a “Nuova scheda”.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Ci sono ${count} opzioni che corrispondono a 'Chiedi a Brave'.";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "Ci sono ${count} opzioni che corrispondono a “Segnalibri”.";

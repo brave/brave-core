@@ -181,6 +181,21 @@
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Loại tài nguyên";
 
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Nếu Shred nên xóa các mục lịch sử.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred Xóa Lịch sử";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Cập nhật Shred Tự động và điều chỉnh dữ liệu được shred.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Hủy";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Hủy";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL nguồn";
 
@@ -202,8 +217,7 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Hủy dữ liệu trang";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Thao tác hủy sẽ đóng tất cả thẻ đang mở của trang này, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -211,6 +225,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred' w
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Hủy dữ liệu trang ngay";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Thao tác hủy sẽ đóng các thẻ được chọn, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Trang web không bảo mật";
