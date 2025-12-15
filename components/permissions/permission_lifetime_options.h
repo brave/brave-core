@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_PERMISSIONS_PERMISSION_LIFETIME_OPTIONS_H_
 
 #include <optional>
-#include <vector>
 
 #include "base/time/time.h"
 

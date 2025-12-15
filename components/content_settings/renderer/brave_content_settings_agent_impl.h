@@ -7,9 +7,7 @@
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
 
 #include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"

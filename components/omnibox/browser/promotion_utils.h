@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_UTILS_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_UTILS_H_
 
-#include <string>
 
 class AutocompleteInput;
 class AutocompleteResult;

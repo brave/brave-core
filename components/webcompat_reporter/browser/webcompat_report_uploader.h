@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"

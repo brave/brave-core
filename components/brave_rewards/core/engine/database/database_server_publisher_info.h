@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/engine/database/database_server_publisher_banner.h"

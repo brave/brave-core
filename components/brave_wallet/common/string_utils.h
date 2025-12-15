@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 

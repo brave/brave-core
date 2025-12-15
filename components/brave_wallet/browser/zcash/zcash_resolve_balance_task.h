@@ -8,7 +8,6 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/types/expected.h"

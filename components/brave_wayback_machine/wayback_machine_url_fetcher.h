@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_
 
 #include <memory>
-#include <string>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"

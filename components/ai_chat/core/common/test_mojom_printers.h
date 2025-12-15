@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_MOJOM_PRINTERS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_MOJOM_PRINTERS_H_
 
-#include <string>
-
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 

@@ -7,9 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_ANDROID_BRAVE_REFERRER_H_
 
 #include <jni.h>
-#include <memory>
-#include <string>
-#include <vector>
 
 #include "base/android/scoped_java_ref.h"
 #include "net/base/completion_once_callback.h"
@@ -20,7 +17,7 @@ using InitReferrerCallback = base::OnceCallback<void()>;
 
 class BraveReferrer {
  public:
-  explicit BraveReferrer();
+  BraveReferrer();
   ~BraveReferrer();
 
   BraveReferrer(const BraveReferrer&) = delete;

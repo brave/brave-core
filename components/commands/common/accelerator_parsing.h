@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_COMMANDS_COMMON_ACCELERATOR_PARSING_H_
 
 #include <string>
-#include <vector>
 
 #include "base/component_export.h"
 #include "ui/base/accelerators/accelerator.h"

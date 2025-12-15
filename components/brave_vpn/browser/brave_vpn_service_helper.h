@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"

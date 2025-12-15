@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_SCRIPT_INJECTOR_RENDERER_SCRIPT_INJECTOR_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_SCRIPT_INJECTOR_RENDERER_SCRIPT_INJECTOR_RENDER_FRAME_OBSERVER_H_
 
-#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
-
-#include <string>
-
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"

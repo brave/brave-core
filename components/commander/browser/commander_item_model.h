@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_COMMANDER_BROWSER_COMMANDER_ITEM_MODEL_H_
 #define BRAVE_COMPONENTS_COMMANDER_BROWSER_COMMANDER_ITEM_MODEL_H_
 
-#include <string>
 #include <vector>
 
 #include "base/component_export.h"

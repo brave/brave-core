@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_INFOBARS_CORE_BRAVE_CONFIRM_INFOBAR_DELEGATE_H_
 
 #include <cstddef>
-#include <string>
 #include <vector>
 
 #include "components/infobars/core/confirm_infobar_delegate.h"

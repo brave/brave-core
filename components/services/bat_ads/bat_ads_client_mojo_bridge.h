@@ -8,7 +8,6 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"

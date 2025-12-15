@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_ACTION_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_ACTION_H_
 
-#include <string>
-
 #include "components/omnibox/browser/actions/omnibox_action.h"
 
 class LeoAction : public OmniboxAction {

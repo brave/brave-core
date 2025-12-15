@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_TEST_TEST_REWARDS_ENGINE_CLIENT_H_
 
 #include <list>
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>

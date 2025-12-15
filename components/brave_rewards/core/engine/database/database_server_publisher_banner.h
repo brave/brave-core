@@ -8,7 +8,6 @@
 
 #include <map>
 #include <string>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/core/engine/database/database_server_publisher_links.h"

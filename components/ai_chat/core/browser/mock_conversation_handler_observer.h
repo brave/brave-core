@@ -8,7 +8,6 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "base/scoped_multi_source_observation.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"

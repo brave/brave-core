@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"

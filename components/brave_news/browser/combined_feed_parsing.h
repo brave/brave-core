@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_COMBINED_FEED_PARSING_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_COMBINED_FEED_PARSING_H_
 
-#include <string>
 #include <vector>
 
 #include "base/values.h"
