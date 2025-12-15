@@ -7,12 +7,14 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import * as React from 'react'
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
-import hljsStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/ir-black'
+import lightStyle from './light_style'
+import darkStyle from './dark_style'
 import cpp from 'react-syntax-highlighter/dist/esm/languages/hljs/cpp'
 import javascript from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python'
 import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json'
 import { getLocale } from '$web-common/locale'
+import useMediaQuery from '$web-common/useMediaQuery'
 import styles from './style.module.scss'
 
 SyntaxHighlighter.registerLanguage('cpp', cpp)
@@ -37,6 +39,7 @@ function Inline(props: CodeInlineProps) {
 }
 
 function Block(props: CodeBlockProps) {
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const [hasCopied, setHasCopied] = React.useState(false)
 
   const handleCopy = () => {
@@ -65,7 +68,7 @@ function Block(props: CodeBlockProps) {
       </div>
       <SyntaxHighlighter
         language={props.lang}
-        style={hljsStyle}
+        style={isDarkMode ? darkStyle : lightStyle}
         wrapLines
         wrapLongLines
         codeTagProps={{ style: { wordBreak: 'break-word' } }}
