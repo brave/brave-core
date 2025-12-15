@@ -14,19 +14,13 @@ namespace brave_wallet {
 
 PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
                                const PolkadotChainMetadata& chain_metadata,
-                               const PolkadotUnsignedExtrinsic& extrinsic) {
+                               const PolkadotUnsignedTransfer& extrinsic) {
   set_from(from.Clone());
 
-  auto encoded_extrinsic = extrinsic.Encode(chain_metadata);
+  encoded_extrinsic_ = extrinsic.Encode(chain_metadata);
 
-  if (auto transfer =
-          PolkadotUnsignedExtrinsic::Decode<PolkadotUnsignedTransfer>(
-              chain_metadata, encoded_extrinsic)) {
-    recipient_ = base::HexEncodeLower(transfer->recipient());
-    amount_ = transfer->send_amount();
-  }
-
-  encoded_extrinsic_ = std::move(encoded_extrinsic);
+  recipient_ = base::HexEncodeLower(extrinsic.recipient());
+  amount_ = extrinsic.send_amount();
 }
 
 PolkadotTxMeta::~PolkadotTxMeta() = default;

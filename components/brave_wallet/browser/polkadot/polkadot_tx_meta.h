@@ -18,7 +18,7 @@ class PolkadotTxMeta : public TxMeta {
  public:
   PolkadotTxMeta(const mojom::AccountIdPtr& from,
                  const PolkadotChainMetadata& chain_metadata,
-                 const PolkadotUnsignedExtrinsic& extrinsic);
+                 const PolkadotUnsignedTransfer& extrinsic);
   ~PolkadotTxMeta() override;
 
   PolkadotTxMeta(const PolkadotTxMeta&) = delete;
