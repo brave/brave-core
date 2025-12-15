@@ -20,8 +20,7 @@ class MODULES_EXPORT Brave final : public ScriptWrappable,
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static constexpr auto kSupplementIndex =
-      NavigatorBase::Supplements::kBraveNavigator;
+  static const char kSupplementName[];
 
   static Brave* brave(NavigatorBase& navigator);
 
