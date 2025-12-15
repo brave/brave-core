@@ -341,6 +341,9 @@ static void AssignSecurityOriginToNodeDOMRoot(
 }  // namespace
 
 // static
+const char PageGraph::kSupplementName[] = "PageGraph";
+
+// static
 PageGraph* PageGraph::From(LocalFrame& frame) {
   return Supplement<LocalFrame>::From<PageGraph>(frame);
 }
