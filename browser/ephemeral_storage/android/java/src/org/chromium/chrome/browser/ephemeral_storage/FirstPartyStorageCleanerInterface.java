@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.ephemeral_storage;
 
+import org.chromium.build.annotations.NullMarked;
+
 @NullMarked
 public interface FirstPartyStorageCleanerInterface {
     void shredSiteData();
