@@ -69,14 +69,6 @@ void BraveWaybackMachineTabHelper::FetchWaybackURL() {
 
 void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
     WaybackStateChangedCallback callback) {
-  // callback should be set only once.
-  // And it should be cleared only when there is existing one.
-  if (callback) {
-    CHECK(!wayback_state_changed_callback_);
-  } else {
-    CHECK(wayback_state_changed_callback_);
-  }
-
   wayback_state_changed_callback_ = std::move(callback);
 }
 
