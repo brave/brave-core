@@ -348,15 +348,19 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
     if (selection.new_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.new_contents)
-          ->AddObserver(this);
+      auto* tab_helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
+          selection.new_contents);
+      if (tab_helper && !tab_helper->HasObserver(this)) {
+        tab_helper->AddObserver(this);
+      }
     }
 
     if (selection.old_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.old_contents)
-          ->RemoveObserver(this);
+      auto* tab_helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
+          selection.old_contents);
+      if (tab_helper && tab_helper->HasObserver(this)) {
+        tab_helper->RemoveObserver(this);
+      }
     }
     UpdateIconState();
   }
