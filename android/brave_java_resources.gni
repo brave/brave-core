@@ -74,7 +74,7 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/omnibox_https_valid_lock.png",
   "java/res/drawable-xxxhdpi/plus.png",
   "java/res/drawable-xxxhdpi/share_icon.png",
-  "java/res/drawable/ic_add.xml",
+  "java/res/drawable/ic_add_24dp.xml",
   "java/res/drawable/ic_arrow_down.xml",
   "java/res/drawable/ic_download.xml",
   "java/res/drawable/ic_open_in_new.xml",
