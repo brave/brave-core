@@ -51,9 +51,9 @@ class PathChecksumPair:
         if not self.path.exists():
             return None
         checksum_generator = hashlib.sha256()
-        with self.path.open('rb') as file:
-            for chunk in iter(lambda: file.read(4096), b""):
-                checksum_generator.update(chunk)
+        with self.path.open('r', encoding='utf-8') as file:
+            for chunk in iter(lambda: file.read(4096), ""):
+                checksum_generator.update(chunk.encode())
         return checksum_generator.hexdigest()
 
     def save_if_changed(self, new_content: str, dry_run: bool = False) -> bool:
@@ -77,6 +77,7 @@ class PathChecksumPair:
         logging.debug('Saving: %s', self.path)
         if not dry_run:
             self.path.write_text(new_content, encoding='utf-8')
+            assert (new_checksum == self.calculate_file_checksum())
         self.checksum = new_checksum
         return True
 

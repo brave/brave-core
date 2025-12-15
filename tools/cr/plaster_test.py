@@ -228,6 +228,7 @@ class PlasterTest(unittest.TestCase):
             plaster_file = plaster.PlasterFile(rewrite_path)
             plaster_file.apply()
             rewrite_paths.append(rewrite_path)
+
         # Check should succeed first
         class DummyArgs:
 
