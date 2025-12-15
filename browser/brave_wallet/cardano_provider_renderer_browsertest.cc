@@ -5,6 +5,7 @@
 
 #include <optional>
 
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"

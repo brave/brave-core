@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"

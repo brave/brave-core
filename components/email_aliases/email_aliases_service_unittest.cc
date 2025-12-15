@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -170,7 +171,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   }
 
   void SetupAuth(bool auth = true) {
-    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()));
+    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                              base::DoNothing());
     if (auth) {
       settings.SetAuthForTesting("token456");
     } else {
