@@ -35,7 +35,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         switch (contentType) {
             case ContentSettingsType.AUTOPLAY:
                 return new ResourceItem(
-                        R.drawable.ic_volume_up_grey600_24dp,
+                        R.drawable.ic_volume_up_fill_24dp,
                         R.string.autoplay_title,
                         ContentSetting.ALLOW,
                         ContentSetting.BLOCK,
