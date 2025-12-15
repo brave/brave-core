@@ -12,17 +12,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
@@ -111,7 +112,8 @@ public class BraveToolbarManager extends ToolbarManager
     private static final String TAG = "BraveToolbarManager";
 
     // To delete in bytecode, members from parent class will be used instead.
-    private ObservableSupplierImpl<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
+    private SettableObservableSupplier<BottomControlsCoordinator>
+            mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
     private BottomControlsStacker mBottomControlsStacker;
     private FullscreenManager mFullscreenManager;
@@ -444,12 +446,12 @@ public class BraveToolbarManager extends ToolbarManager
     @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     @Override
     public void initializeWithNative(
-            @NonNull LayoutManagerImpl layoutManager,
+            LayoutManagerImpl layoutManager,
             @Nullable StripLayoutHelperManager stripLayoutHelperManager,
-            Runnable openGridTabSwitcherHandler,
-            OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler,
-            @Nullable ObservableSupplier<Integer> archivedTabCountSupplier,
+            @Nullable Runnable openGridTabSwitcherHandler,
+            @Nullable OnClickListener bookmarkClickHandler,
+            @Nullable OnClickListener customTabsBackClickHandler,
+            @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
             ObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
             @Nullable UndoBarThrottle undoBarThrottle) {
 
