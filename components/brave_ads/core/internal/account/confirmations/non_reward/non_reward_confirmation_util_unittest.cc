@@ -76,8 +76,8 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   ASSERT_TRUE(confirmation);
 
   // Assert
-  EXPECT_DEATH_IF_SUPPORTED(*confirmation,
-                            "Check failed: transaction.IsValid*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      { auto value = *confirmation; }, "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -94,8 +94,9 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   ASSERT_TRUE(confirmation);
 
   // Assert
-  EXPECT_DEATH_IF_SUPPORTED(*confirmation,
-                            "Check failed: !UserHasJoinedBraveRewards*");
+  EXPECT_DEATH_IF_SUPPORTED(
+      { auto value = *confirmation; },
+      "Check failed: !UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads
