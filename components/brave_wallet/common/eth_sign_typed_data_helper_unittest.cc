@@ -495,26 +495,23 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField(
       "bytes16", base::Value("0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbBdeadbee"
                              "fdeadbeefdeadbeefdeadbeef1234")));
+  EXPECT_FALSE(helper->EncodeField("bytes5", base::Value("0xdeadbeef")));
   {
     auto encoded_field =
-        helper->EncodeField("bytes5", base::Value("0xdeadbeef"));
+        helper->EncodeField("bytes5", base::Value("0xdeadbeef11"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
         base::HexEncodeLower(*encoded_field),
-        "deadbeef00000000000000000000000000000000000000000000000000000000");
-    encoded_field = helper->EncodeField("bytes18", base::Value("0xdeadbeef"));
+        "deadbeef11000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField(
+        "bytes18", base::Value("0x000102030405060708090a0b0c0d0e0f1011"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
         base::HexEncodeLower(*encoded_field),
-        "deadbeef00000000000000000000000000000000000000000000000000000000");
+        "000102030405060708090a0b0c0d0e0f10110000000000000000000000000000");
 
-    // "0x" is treated as empty, for some reason MM doesn't allow empty here
-    // but does for "bytes"
-    encoded_field = helper->EncodeField("bytes18", base::Value("0x"));
-    ASSERT_TRUE(encoded_field);
-    EXPECT_EQ(
-        base::HexEncodeLower(*encoded_field),
-        "0000000000000000000000000000000000000000000000000000000000000000");
+    // Empty should be rejected for fixed-length bytesN
+    EXPECT_FALSE(helper->EncodeField("bytes18", base::Value("0x")));
   }
 
   // uint8 - uint256
