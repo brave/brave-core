@@ -15,6 +15,7 @@
 #include "chrome/common/chrome_paths.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "base/functional/callback_helpers.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"

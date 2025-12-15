@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"

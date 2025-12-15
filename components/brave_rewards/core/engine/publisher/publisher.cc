@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/containers/map_util.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"

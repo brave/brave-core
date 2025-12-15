@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/command_line.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/notreached.h"
 #include "base/path_service.h"

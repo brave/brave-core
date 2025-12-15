@@ -21,7 +21,7 @@ class EmailAliasesAuth {
 
   explicit EmailAliasesAuth(PrefService* prefs_service,
                             os_crypt_async::Encryptor encryptor,
-                            OnChangedCallback on_changed = base::DoNothing());
+                            OnChangedCallback on_changed);
   ~EmailAliasesAuth();
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
