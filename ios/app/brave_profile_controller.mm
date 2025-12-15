@@ -6,6 +6,7 @@
 #include "brave/ios/app/brave_profile_controller.h"
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat+private.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_delegate.h"

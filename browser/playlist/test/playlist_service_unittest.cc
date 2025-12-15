@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
