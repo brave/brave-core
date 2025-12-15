@@ -76,18 +76,20 @@ export const SelectAccountType = ({
         </SelectAccountItemWrapper>
       ))}
 
-      <Row
-        margin='32px 0px 0px 0px'
-        justifyContent='flex-start'
-      >
-        <Text
-          textSize='12px'
-          isBold={true}
-          textColor='primary'
+      {testnetAccountOptions.length > 0 && (
+        <Row
+          margin='32px 0px 0px 0px'
+          justifyContent='flex-start'
         >
-          {getLocale('braveWalletTestnetAccounts')}
-        </Text>
-      </Row>
+          <Text
+            textSize='12px'
+            isBold={true}
+            textColor='primary'
+          >
+            {getLocale('braveWalletTestnetAccounts')}
+          </Text>
+        </Row>
+      )}
 
       {testnetAccountOptions.map((network, index) => (
         <SelectAccountItemWrapper key={network.name}>
