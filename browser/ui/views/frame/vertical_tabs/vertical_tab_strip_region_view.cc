@@ -945,13 +945,11 @@ void BraveVerticalTabStripRegionView::OnMouseExited(
 void BraveVerticalTabStripRegionView::OnMouseExited() {
   DCHECK(GetWidget())
       << "As widget is the event sink, this is expected to be true.";
-#if BUILDFLAG(IS_WIN)
   if (GetWidget()->GetRootView()->IsMouseHovered() && !mouse_events_for_test_) {
     // On Windows, when mouse moves into the area which intersects with web
     // view, OnMouseExited() is invoked even mouse is on this view.
     return;
   }
-#endif  // BUILDFLAG(IS_WIN)
 
   mouse_enter_timer_.Stop();
   if (state_ == State::kFloating) {
