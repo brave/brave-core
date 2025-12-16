@@ -7,7 +7,6 @@
 
 #include <ostream>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/notreached.h"

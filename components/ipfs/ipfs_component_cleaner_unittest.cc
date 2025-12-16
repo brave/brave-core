@@ -6,7 +6,6 @@
 #include "brave/components/ipfs/ipfs_component_cleaner.h"
 
 #include <fstream>
-#include <string>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"

@@ -5,7 +5,6 @@
 
 #include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check.h"

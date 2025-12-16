@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_account/endpoints/verify_result.h"
 
-#include <string>
-
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"

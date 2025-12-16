@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
 #include <ios>
-#include <map>
 #include <ostream>
 #include <string>
 #include <string_view>

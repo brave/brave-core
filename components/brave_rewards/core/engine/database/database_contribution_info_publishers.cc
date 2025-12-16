@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_contribution_info_publishers.h"
 
-#include <map>
 #include <utility>
 
 #include "base/check.h"

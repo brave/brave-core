@@ -7,7 +7,6 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"

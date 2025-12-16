@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 
-#include <string>
 #include <string_view>
 
 #include "brave/components/ai_chat/core/browser/utils.h"

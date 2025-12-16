@@ -7,7 +7,6 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "base/check.h"
 #include "base/feature_list.h"

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/get_ui_cards.h"
 
-#include <string>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"

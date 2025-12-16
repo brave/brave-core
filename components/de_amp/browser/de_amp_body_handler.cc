@@ -8,7 +8,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/json/json_reader.h"

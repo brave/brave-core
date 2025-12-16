@@ -7,7 +7,6 @@
 
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/test/bind.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"

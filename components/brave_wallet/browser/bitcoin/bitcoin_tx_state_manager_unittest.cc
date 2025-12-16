@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"

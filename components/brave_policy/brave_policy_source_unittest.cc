@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <optional>
-#include <string>
 
 #include "base/values.h"
 #include "components/policy/core/common/policy_map.h"

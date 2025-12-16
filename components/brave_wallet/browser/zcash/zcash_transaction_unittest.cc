@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"

@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 
 #include <memory>
-#include <string>
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"

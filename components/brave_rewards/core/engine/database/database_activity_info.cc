@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_activity_info.h"
 
-#include <map>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"

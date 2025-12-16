@@ -5,7 +5,6 @@
 
 #include "brave/components/omnibox/browser/commander_provider.h"
 
-#include <string>
 #include <utility>
 
 #include "base/check.h"

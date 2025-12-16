@@ -6,7 +6,6 @@
 #include "brave/components/local_ai/browser/local_models_updater.h"
 
 #include <memory>
-#include <string>
 
 #include "base/feature_list.h"
 #include "base/files/file_path.h"

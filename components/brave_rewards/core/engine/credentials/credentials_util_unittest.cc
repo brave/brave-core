@@ -6,9 +6,7 @@
 #include "brave/components/brave_rewards/core/engine/credentials/credentials_util.h"
 
 #include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"

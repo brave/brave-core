@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 
-#include <map>
 #include <optional>
 #include <tuple>
 #include <utility>

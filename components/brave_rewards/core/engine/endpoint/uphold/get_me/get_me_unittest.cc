@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/endpoint/uphold/get_me/get_me.h"
 
-#include <string>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"

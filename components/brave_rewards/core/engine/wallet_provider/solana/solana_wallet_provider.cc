@@ -7,7 +7,6 @@
 
 #include <cmath>
 #include <utility>
-#include <vector>
 
 #include "base/base64url.h"
 #include "base/check.h"

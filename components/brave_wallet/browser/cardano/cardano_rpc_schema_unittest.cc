@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 
 #include <array>
-#include <string>
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"

@@ -5,9 +5,6 @@
 
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 
-#include <string>
-#include <vector>
-
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/components/skus/common/features.h"

@@ -6,7 +6,6 @@
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 
 #include <string>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/contains.h"

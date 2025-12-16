@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_recurring_tip.h"
 
-#include <map>
 #include <optional>
 #include <utility>
 #include <vector>

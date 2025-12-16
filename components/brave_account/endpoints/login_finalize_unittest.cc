@@ -6,7 +6,6 @@
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 
 #include <optional>
-#include <string>
 
 #include "base/no_destructor.h"
 #include "base/types/expected.h"

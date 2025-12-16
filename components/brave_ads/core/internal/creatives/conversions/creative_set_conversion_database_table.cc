@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <iterator>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"

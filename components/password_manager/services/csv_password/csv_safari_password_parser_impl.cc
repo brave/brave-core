@@ -6,7 +6,6 @@
 #include "brave/components/password_manager/services/csv_password/csv_safari_password_parser_impl.h"
 
 #include <utility>
-#include <vector>
 
 #include "brave/components/password_manager/core/browser/import/csv_safari_password.h"
 #include "brave/components/password_manager/core/browser/import/csv_safari_password_sequence.h"

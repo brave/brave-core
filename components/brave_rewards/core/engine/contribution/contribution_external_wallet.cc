@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_external_wallet.h"
 
 #include <utility>
-#include <vector>
 
 #include "brave/components/brave_rewards/core/engine/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"

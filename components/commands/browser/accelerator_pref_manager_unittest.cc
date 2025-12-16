@@ -4,9 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
-
-#include <string>
-
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"

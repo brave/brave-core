@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"

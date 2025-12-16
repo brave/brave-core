@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_builder.h"
 
 #include <memory>
-#include <vector>
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"

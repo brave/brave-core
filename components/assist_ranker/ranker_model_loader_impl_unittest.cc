@@ -7,7 +7,6 @@
 
 #include <initializer_list>
 #include <memory>
-#include <vector>
 
 #include "base/notreached.h"
 #include "base/test/bind.h"

@@ -7,7 +7,6 @@
 
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/map_util.h"

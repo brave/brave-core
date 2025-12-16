@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/common/utils.h"
 
-#include <string>
 #include <string_view>
 
 #include "testing/gtest/include/gtest/gtest.h"

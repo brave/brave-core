@@ -5,8 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 
-#include <string>
-
 #include "base/logging.h"
 #include "base/numerics/safe_math.h"
 #include "brave/components/ai_chat/core/common/features.h"
