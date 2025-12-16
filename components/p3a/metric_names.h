@@ -201,6 +201,7 @@ inline constexpr auto kCollectedExpressHistograms =
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kGeneralPlatform, MetricAttribute::kSubregion, MetricAttribute::kVersion},
       .record_activation_date = true,
     }},
+    {"Brave.Core.PrivateWindowUsed", MetricConfig{.ephemeral = true}},
     {"Brave.Core.UsageDaily", {}},
     {"Brave.DayZero.Variant", MetricConfig{
       .ephemeral = true,
