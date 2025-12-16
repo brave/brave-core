@@ -14,13 +14,17 @@ namespace brave_wallet {
 
 PolkadotTxMeta::PolkadotTxMeta(const mojom::AccountIdPtr& from,
                                const PolkadotChainMetadata& chain_metadata,
-                               const PolkadotUnsignedTransfer& extrinsic) {
+                               const PolkadotUnsignedTransfer& extrinsic)
+    : recipient_(base::HexEncodeLower(extrinsic.recipient())),
+      encoded_extrinsic_(extrinsic.Encode(chain_metadata)) {
   set_from(from.Clone());
 
-  encoded_extrinsic_ = extrinsic.Encode(chain_metadata);
-
-  recipient_ = base::HexEncodeLower(extrinsic.recipient());
-  amount_ = extrinsic.send_amount();
+  // The only way this code winds up dying is if somehow we're trying to save an
+  // invalid transaction. Currently the front-end only permits transferring
+  // uint64s so if we hit this codepath it means there's a bug either in our
+  // front-end interactions or we're attempting to save an invalid transaction
+  // and we have a bug.
+  amount_ = base::checked_cast<uint64_t>(extrinsic.send_amount());
 }
 
 PolkadotTxMeta::~PolkadotTxMeta() = default;
