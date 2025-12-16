@@ -45,6 +45,10 @@ class HDKeySr25519 {
   static HDKeySr25519 GenerateFromSeed(
       base::span<const uint8_t, kSr25519SeedSize> seed);
 
+  // Create a keypair from the provided pkcs8 key.
+  static HDKeySr25519 CreateFromPkcs8(
+      base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key);
+
   // Get the public key portion of the keypair as a simple 32-byte array.
   std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey() const;
   // Get the secret key portion of the keypair as a simple 32-byte array.

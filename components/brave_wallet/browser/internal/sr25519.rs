@@ -12,6 +12,7 @@ mod ffi {
         type CxxSchnorrkelKeyPair;
 
         fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
+        fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
 
@@ -61,6 +62,14 @@ fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>
         keypair: mini_key.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
         use_mock_rng: false,
     })
+}
+
+fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+    assert!(pkcs8.len() == 117);
+    let secret_key =
+        schnorrkel::SecretKey::from_bytes(&pkcs8[PAIR_HDR.len()..PAIR_HDR.len() + 64]).unwrap();
+    let keypair = schnorrkel::Keypair::from(secret_key);
+    Box::new(CxxSchnorrkelKeyPair { keypair, use_mock_rng: false })
 }
 
 impl CxxSchnorrkelKeyPair {

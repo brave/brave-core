@@ -18,6 +18,10 @@ static_assert(kSecretboxNonceSize == crypto_secretbox_NONCEBYTES,
               "kSecretboxNonceSize must equal crypto_secretbox_NONCEBYTES");
 static_assert(kScryptKeyBytes == crypto_secretbox_KEYBYTES,
               "kScryptKeyBytes must be equal crypto_secretbox_KEYBYTES");
+static_assert(kSecretboxAuthTagSize ==
+                  crypto_secretbox_ZEROBYTES - crypto_secretbox_BOXZEROBYTES,
+              "kSecretboxAuthTagSize must equal crypto_secretbox_ZEROBYTES - "
+              "crypto_secretbox_BOXZEROBYTES");
 
 std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
     base::span<const uint8_t> plaintext,
@@ -70,7 +74,7 @@ std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
   return base::ToVector(payload);
 }
 
-std::optional<std::array<uint8_t, crypto_secretbox_KEYBYTES>> ScryptDeriveKey(
+std::optional<std::array<uint8_t, kScryptKeyBytes>> ScryptDeriveKey(
     std::string_view password,
     base::span<const uint8_t> salt,
     const crypto::kdf::ScryptParams& scrypt_params) {

@@ -40,6 +40,13 @@ HDKeySr25519 HDKeySr25519::GenerateFromSeed(
   return HDKeySr25519(std::move(mk));
 }
 
+HDKeySr25519 HDKeySr25519::CreateFromPkcs8(
+    base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key) {
+  auto pkcs8_key_slice = base::SpanToRustSlice(pkcs8_key);
+  auto mk = create_sr25519_keypair_from_pkcs8(pkcs8_key_slice);
+  return HDKeySr25519(std::move(mk));
+}
+
 std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() const {
   CHECK(IsBoxNonNull(keypair_));
   return keypair_->get_public_key();
