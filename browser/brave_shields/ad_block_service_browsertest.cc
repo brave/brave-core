@@ -116,8 +116,6 @@ using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 namespace {
 
-constexpr char kDefaultAdBlockComponentUuid[] = "default";
-
 void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
                             const std::string& selector) {
   static constexpr char kTemplate[] =
@@ -285,7 +283,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   auto& component_providers =
       component_service_manager()->component_filters_providers();
 
-  auto& provider = component_providers.at(kDefaultAdBlockComponentUuid);
+  auto& provider =
+      component_providers.at(brave_shields::kDefaultAdblockFiltersListUuid);
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
@@ -3346,7 +3345,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
   // AdBlockOnlyMode is disabled by default, so all filter lists are enabled.
   {
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
-        kDefaultAdBlockComponentUuid));
+        brave_shields::kDefaultAdblockFiltersListUuid));
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kCookieListUuid));
 
@@ -3361,7 +3360,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
                               true);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
-        kDefaultAdBlockComponentUuid));
+        brave_shields::kDefaultAdblockFiltersListUuid));
     EXPECT_FALSE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kCookieListUuid));
 
@@ -3376,7 +3375,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
                               false);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
-        kDefaultAdBlockComponentUuid));
+        brave_shields::kDefaultAdblockFiltersListUuid));
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kCookieListUuid));
 
@@ -3405,7 +3404,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsWithFeatureDisabledTest,
   // Check filters lists before AdBlockOnlyMode preference is enabled.
   {
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
-        kDefaultAdBlockComponentUuid));
+        brave_shields::kDefaultAdblockFiltersListUuid));
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kCookieListUuid));
 
@@ -3421,7 +3420,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsWithFeatureDisabledTest,
                               true);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
-        kDefaultAdBlockComponentUuid));
+        brave_shields::kDefaultAdblockFiltersListUuid));
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kCookieListUuid));
 

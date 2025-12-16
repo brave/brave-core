@@ -107,6 +107,9 @@ inline constexpr char kCosmeticResourcesProceduralActions[] =
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
 
+inline constexpr char kDefaultAdblockFiltersListUuid[] = "default";
+inline constexpr char kFirstPartyAdblockFiltersListUuid[] =
+    "E99CBD02-FFD1-4651-9BDD-6A9ED7B87819";
 inline constexpr char kCookieListUuid[] =
     "AC023D22-AE88-4060-A978-4FEEEC4221693";
 inline constexpr char kMobileNotificationsListUuid[] =
@@ -147,7 +150,8 @@ inline constexpr char kCookieListPromptHistogram[] =
 
 // The list of UUIDs of filter lists that will be loaded by AdBlockOnlyMode.
 inline constexpr auto kAdblockOnlyModeFilerListUUIDs =
-    base::MakeFixedFlatSet<std::string_view>({"default"});
+    base::MakeFixedFlatSet<std::string_view>(
+        {kDefaultAdblockFiltersListUuid, kFirstPartyAdblockFiltersListUuid});
 
 // The list of language codes that are supported by Ad Block Only mode.
 inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
