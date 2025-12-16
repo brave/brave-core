@@ -10,6 +10,7 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -65,24 +66,20 @@ TEST_P(BuildOAIRewriteSuggestionMessagesTest,
   ASSERT_EQ(message.content.size(), 2u);
 
   // First block should be page excerpt with the text
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-  EXPECT_EQ(message.content[0]->get_page_excerpt_content_block()->text,
-            kTestText);
+  VerifyPageExcerptBlock(FROM_HERE, message.content[0], kTestText);
 
   // Second block should be the action-specific content
   ASSERT_EQ(message.content[1]->which(), param.expected_content_type);
 
   switch (param.expected_content_type.value()) {
     case mojom::ContentBlock::Tag::kChangeToneContentBlock:
-      EXPECT_EQ(message.content[1]->get_change_tone_content_block()->tone,
-                param.expected_payload);
+      VerifyChangeToneBlock(FROM_HERE, message.content[1], "",
+                            param.expected_payload);
       break;
     case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
-      const auto& request =
-          message.content[1]->get_simple_request_content_block();
       ASSERT_TRUE(param.expected_simple_request_type.has_value());
-      EXPECT_EQ(request->type, param.expected_simple_request_type.value());
+      VerifySimpleRequestBlock(FROM_HERE, message.content[1],
+                               param.expected_simple_request_type.value());
       break;
     }
     default:
@@ -133,9 +130,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAISeedMessage) {
 
   EXPECT_EQ(message.role, "assistant");
   ASSERT_EQ(message.content.size(), 1u);
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(message.content[0]->get_text_content_block()->text, kSeedText);
+  VerifyTextBlock(FROM_HERE, message.content[0], kSeedText);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
@@ -200,59 +195,34 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   // Message 1: Human turn with all content types
   EXPECT_EQ(messages[0].role, "user");
   ASSERT_EQ(messages[0].content.size(), 4u);
-  ASSERT_EQ(messages[0].content[0]->which(),
-            mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
-  EXPECT_EQ(messages[0].content[0]->get_video_transcript_content_block()->text,
-            "Video transcript 1");
+  VerifyVideoTranscriptBlock(FROM_HERE, messages[0].content[0],
+                             "Video transcript 1");
 
-  ASSERT_EQ(messages[0].content[1]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[0].content[1]->get_page_text_content_block()->text,
-            "Page content 1");
+  VerifyPageTextBlock(FROM_HERE, messages[0].content[1], "Page content 1");
 
-  ASSERT_EQ(messages[0].content[2]->which(),
-            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-  EXPECT_EQ(messages[0].content[2]->get_page_excerpt_content_block()->text,
-            "Selected excerpt");
+  VerifyPageExcerptBlock(FROM_HERE, messages[0].content[2], "Selected excerpt");
 
-  ASSERT_EQ(messages[0].content[3]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[0].content[3]->get_text_content_block()->text,
-            "What is this?");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "What is this?");
 
   // Message 2: Assistant turn with no page contents
   EXPECT_EQ(messages[1].role, "assistant");
   ASSERT_EQ(messages[1].content.size(), 1u);
-  ASSERT_EQ(messages[1].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
-            "This is the answer.");
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "This is the answer.");
 
   // Message 3: Human turn with SUMMARIZE_PAGE action
   EXPECT_EQ(messages[2].role, "user");
   ASSERT_EQ(messages[2].content.size(), 2u);
-  ASSERT_EQ(messages[2].content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[2].content[0]->get_page_text_content_block()->text,
-            "Page content 3");
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[0], "Page content 3");
 
-  ASSERT_EQ(messages[2].content[1]->which(),
-            mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
-  EXPECT_EQ(messages[2].content[1]->get_simple_request_content_block()->type,
-            mojom::SimpleRequestType::kRequestSummary);
+  VerifySimpleRequestBlock(FROM_HERE, messages[2].content[1],
+                           mojom::SimpleRequestType::kRequestSummary);
 
   // Message 4: Human turn with page content, no selected_text
   EXPECT_EQ(messages[3].role, "user");
   ASSERT_EQ(messages[3].content.size(), 2u);
-  ASSERT_EQ(messages[3].content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[3].content[0]->get_page_text_content_block()->text,
-            "Page content 4");
+  VerifyPageTextBlock(FROM_HERE, messages[3].content[0], "Page content 4");
 
-  ASSERT_EQ(messages[3].content[1]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[3].content[1]->get_text_content_block()->text,
-            "Another question");
+  VerifyTextBlock(FROM_HERE, messages[3].content[1], "Another question");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
@@ -294,23 +264,14 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   // Message 1: Older turn - should have NO page content (dropped)
   EXPECT_EQ(messages[0].role, "user");
   ASSERT_EQ(messages[0].content.size(), 1u);
-  ASSERT_EQ(messages[0].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[0].content[0]->get_text_content_block()->text,
-            "First question");
+  VerifyTextBlock(FROM_HERE, messages[0].content[0], "First question");
 
   // Message 2: Newer turn - should have full page content
   EXPECT_EQ(messages[1].role, "user");
   ASSERT_EQ(messages[1].content.size(), 2u);
-  ASSERT_EQ(messages[1].content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[1].content[0]->get_page_text_content_block()->text,
-            "New content");
+  VerifyPageTextBlock(FROM_HERE, messages[1].content[0], "New content");
 
-  ASSERT_EQ(messages[1].content[1]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[1].content[1]->get_text_content_block()->text,
-            "Second question");
+  VerifyTextBlock(FROM_HERE, messages[1].content[1], "Second question");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
@@ -403,98 +364,49 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   EXPECT_EQ(messages[0].role, "user");
   // Content: images intro text + 2 images + prompt = 4 blocks
   ASSERT_EQ(messages[0].content.size(), 4u);
-  ASSERT_EQ(messages[0].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[0].content[0]->get_text_content_block()->text,
-            "These images are uploaded by the user");
-  ASSERT_EQ(messages[0].content[1]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[0].content[1]->get_image_content_block()->image_url,
-            image_url1);
-  ASSERT_EQ(messages[0].content[2]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[0].content[2]->get_image_content_block()->image_url,
-            image_url2);
-  ASSERT_EQ(messages[0].content[3]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[0].content[3]->get_text_content_block()->text, "query0");
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[0].content[1], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[0].content[2], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
 
   // Message 2: Assistant turn
   EXPECT_EQ(messages[1].role, "assistant");
   ASSERT_EQ(messages[1].content.size(), 1u);
-  ASSERT_EQ(messages[1].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[1].content[0]->get_text_content_block()->text,
-            "response0");
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "response0");
 
   // Message 3: Human turn with 2 screenshots, page content
   EXPECT_EQ(messages[2].role, "user");
   // Content: page + screenshots intro + 2 screenshots + prompt = 5 blocks
   ASSERT_EQ(messages[2].content.size(), 5u);
-  ASSERT_EQ(messages[2].content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[2].content[0]->get_page_text_content_block()->text,
-            "Page content 1");
-  ASSERT_EQ(messages[2].content[1]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[2].content[1]->get_text_content_block()->text,
-            "These images are screenshots");
-  ASSERT_EQ(messages[2].content[2]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[2].content[2]->get_image_content_block()->image_url,
-            screenshot_url1);
-  ASSERT_EQ(messages[2].content[3]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[2].content[3]->get_image_content_block()->image_url,
-            screenshot_url2);
-  ASSERT_EQ(messages[2].content[4]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[2].content[4]->get_text_content_block()->text, "query1");
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[0], "Page content 1");
+  VerifyTextBlock(FROM_HERE, messages[2].content[1],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[2].content[2], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[2].content[3], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[2].content[4], "query1");
 
   // Message 4: Assistant turn
   EXPECT_EQ(messages[3].role, "assistant");
   ASSERT_EQ(messages[3].content.size(), 1u);
-  ASSERT_EQ(messages[3].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[3].content[0]->get_text_content_block()->text,
-            "response1");
+  VerifyTextBlock(FROM_HERE, messages[3].content[0], "response1");
 
   // Message 5: Human turn with 2 PDFs and selected text
   EXPECT_EQ(messages[4].role, "user");
   // Content: PDFs intro text + 2 PDFs + selected text + prompt = 5 blocks
   ASSERT_EQ(messages[4].content.size(), 5u);
-  ASSERT_EQ(messages[4].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[4].content[0]->get_text_content_block()->text,
-            "These PDFs are uploaded by the user");
-  ASSERT_EQ(messages[4].content[1]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[4].content[1]->get_file_content_block()->file_data,
-            pdf_url1);
-  EXPECT_EQ(messages[4].content[1]->get_file_content_block()->filename,
-            pdf_filename1);
-  ASSERT_EQ(messages[4].content[2]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[4].content[2]->get_file_content_block()->file_data,
-            pdf_url2);
+  VerifyTextBlock(FROM_HERE, messages[4].content[0],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[4].content[1], pdf_url1, pdf_filename1);
   // Second PDF should have default filename since we cleared it
-  EXPECT_EQ(messages[4].content[2]->get_file_content_block()->filename,
-            "uploaded.pdf");
-  ASSERT_EQ(messages[4].content[3]->which(),
-            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-  EXPECT_EQ(messages[4].content[3]->get_page_excerpt_content_block()->text,
-            "selected_text");
-  ASSERT_EQ(messages[4].content[4]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[4].content[4]->get_text_content_block()->text, "query2");
+  VerifyFileBlock(FROM_HERE, messages[4].content[2], pdf_url2, "uploaded.pdf");
+  VerifyPageExcerptBlock(FROM_HERE, messages[4].content[3], "selected_text");
+  VerifyTextBlock(FROM_HERE, messages[4].content[4], "query2");
 
   // Message 6: Assistant turn
   EXPECT_EQ(messages[5].role, "assistant");
   ASSERT_EQ(messages[5].content.size(), 1u);
-  ASSERT_EQ(messages[5].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[5].content[0]->get_text_content_block()->text,
-            "response2");
+  VerifyTextBlock(FROM_HERE, messages[5].content[0], "response2");
 
   // Message 7: Human turn with all file types, without page content, without
   // selected text
@@ -502,122 +414,50 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   // Content: images intro + 2 images + screenshots intro + 2 screenshots +
   // PDFs intro + 2 PDFs + prompt = 10 blocks
   ASSERT_EQ(messages[6].content.size(), 10u);
-  ASSERT_EQ(messages[6].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[6].content[0]->get_text_content_block()->text,
-            "These images are uploaded by the user");
-  ASSERT_EQ(messages[6].content[1]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[6].content[1]->get_image_content_block()->image_url,
-            image_url1);
-  ASSERT_EQ(messages[6].content[2]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[6].content[2]->get_image_content_block()->image_url,
-            image_url2);
-  ASSERT_EQ(messages[6].content[3]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[6].content[3]->get_text_content_block()->text,
-            "These images are screenshots");
-  ASSERT_EQ(messages[6].content[4]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[6].content[4]->get_image_content_block()->image_url,
-            screenshot_url1);
-  ASSERT_EQ(messages[6].content[5]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[6].content[5]->get_image_content_block()->image_url,
-            screenshot_url2);
-  ASSERT_EQ(messages[6].content[6]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[6].content[6]->get_text_content_block()->text,
-            "These PDFs are uploaded by the user");
-  ASSERT_EQ(messages[6].content[7]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[6].content[7]->get_file_content_block()->file_data,
-            pdf_url1);
-  EXPECT_EQ(messages[6].content[7]->get_file_content_block()->filename,
-            pdf_filename1);
-  ASSERT_EQ(messages[6].content[8]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[6].content[8]->get_file_content_block()->file_data,
-            pdf_url2);
-  EXPECT_EQ(messages[6].content[8]->get_file_content_block()->filename,
-            "uploaded.pdf");
-  ASSERT_EQ(messages[6].content[9]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[6].content[9]->get_text_content_block()->text, "query3");
+  VerifyTextBlock(FROM_HERE, messages[6].content[0],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[6].content[1], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[6].content[2], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[6].content[3],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[6].content[4], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[6].content[5], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[6].content[6],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[6].content[7], pdf_url1, pdf_filename1);
+  VerifyFileBlock(FROM_HERE, messages[6].content[8], pdf_url2, "uploaded.pdf");
+  VerifyTextBlock(FROM_HERE, messages[6].content[9], "query3");
 
   // Message 8: Assistant turn
   EXPECT_EQ(messages[7].role, "assistant");
   ASSERT_EQ(messages[7].content.size(), 1u);
-  ASSERT_EQ(messages[7].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[7].content[0]->get_text_content_block()->text,
-            "response3");
+  VerifyTextBlock(FROM_HERE, messages[7].content[0], "response3");
 
   // Message 9: Human turn with all file types, page content, selected text
   EXPECT_EQ(messages[8].role, "user");
   // Content: page + images intro + 2 images + screenshots intro +
   // 2 screenshots + PDFs intro + 2 PDFs + selected text + prompt = 12 blocks
   ASSERT_EQ(messages[8].content.size(), 12u);
-  ASSERT_EQ(messages[8].content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(messages[8].content[0]->get_page_text_content_block()->text,
-            "Page content 2");
-  ASSERT_EQ(messages[8].content[1]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[8].content[1]->get_text_content_block()->text,
-            "These images are uploaded by the user");
-  ASSERT_EQ(messages[8].content[2]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[8].content[2]->get_image_content_block()->image_url,
-            image_url1);
-  ASSERT_EQ(messages[8].content[3]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[8].content[3]->get_image_content_block()->image_url,
-            image_url2);
-  ASSERT_EQ(messages[8].content[4]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[8].content[4]->get_text_content_block()->text,
-            "These images are screenshots");
-  ASSERT_EQ(messages[8].content[5]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[8].content[5]->get_image_content_block()->image_url,
-            screenshot_url1);
-  ASSERT_EQ(messages[8].content[6]->which(),
-            mojom::ContentBlock::Tag::kImageContentBlock);
-  EXPECT_EQ(messages[8].content[6]->get_image_content_block()->image_url,
-            screenshot_url2);
-  ASSERT_EQ(messages[8].content[7]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[8].content[7]->get_text_content_block()->text,
-            "These PDFs are uploaded by the user");
-  ASSERT_EQ(messages[8].content[8]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[8].content[8]->get_file_content_block()->file_data,
-            pdf_url1);
-  EXPECT_EQ(messages[8].content[8]->get_file_content_block()->filename,
-            pdf_filename1);
-  ASSERT_EQ(messages[8].content[9]->which(),
-            mojom::ContentBlock::Tag::kFileContentBlock);
-  EXPECT_EQ(messages[8].content[9]->get_file_content_block()->file_data,
-            pdf_url2);
-  EXPECT_EQ(messages[8].content[9]->get_file_content_block()->filename,
-            "uploaded.pdf");
-  ASSERT_EQ(messages[8].content[10]->which(),
-            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-  EXPECT_EQ(messages[8].content[10]->get_page_excerpt_content_block()->text,
-            "selected_text");
-  ASSERT_EQ(messages[8].content[11]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[8].content[11]->get_text_content_block()->text, "query4");
+  VerifyPageTextBlock(FROM_HERE, messages[8].content[0], "Page content 2");
+  VerifyTextBlock(FROM_HERE, messages[8].content[1],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[8].content[2], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[8].content[3], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[8].content[4],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[8].content[5], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[8].content[6], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[8].content[7],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[8].content[8], pdf_url1, pdf_filename1);
+  VerifyFileBlock(FROM_HERE, messages[8].content[9], pdf_url2, "uploaded.pdf");
+  VerifyPageExcerptBlock(FROM_HERE, messages[8].content[10], "selected_text");
+  VerifyTextBlock(FROM_HERE, messages[8].content[11], "query4");
 
   // Message 10: Assistant turn
   EXPECT_EQ(messages[9].role, "assistant");
   ASSERT_EQ(messages[9].content.size(), 1u);
-  ASSERT_EQ(messages[9].content[0]->which(),
-            mojom::ContentBlock::Tag::kTextContentBlock);
-  EXPECT_EQ(messages[9].content[0]->get_text_content_block()->text,
-            "response4");
+  VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
@@ -649,27 +489,17 @@ TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
 
   // Content is processed in reverse order, so third content comes first
   // Third content (text) should be included in full
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
-            "Short text");
+  VerifyPageTextBlock(FROM_HERE, message.content[0], "Short text");
 
   // Second content (video) should be included in full
-  ASSERT_EQ(message.content[1]->which(),
-            mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
-  EXPECT_EQ(message.content[1]->get_video_transcript_content_block()->text,
-            "Short video");
+  VerifyVideoTranscriptBlock(FROM_HERE, message.content[1], "Short video");
 
   // First content (text) should be truncated due to max_length
-  ASSERT_EQ(message.content[2]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text, "Th");
+  VerifyPageTextBlock(FROM_HERE, message.content[2], "Th");
 
   // Last block is request questions
-  ASSERT_EQ(message.content[3]->which(),
-            mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
-  EXPECT_EQ(message.content[3]->get_simple_request_content_block()->type,
-            mojom::SimpleRequestType::kRequestQuestions);
+  VerifySimpleRequestBlock(FROM_HERE, message.content[3],
+                           mojom::SimpleRequestType::kRequestQuestions);
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
@@ -691,10 +521,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
   ASSERT_EQ(message.content.size(), 1u);
 
   // Should only have a request title block with first turn's text.
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
-  EXPECT_EQ(message.content[0]->get_request_title_content_block()->text,
-            history[0]->text);
+  VerifyRequestTitleBlock(FROM_HERE, message.content[0], history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -723,22 +550,14 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(message.content.size(), 3u);
 
   // First block should be a page text block with page content text.
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
-            "Test page content");
+  VerifyPageTextBlock(FROM_HERE, message.content[0], "Test page content");
 
   // Second block should be a page excerpt block with selected text.
-  ASSERT_EQ(message.content[1]->which(),
-            mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-  EXPECT_EQ(message.content[1]->get_page_excerpt_content_block()->text,
-            "Selected text excerpt");
+  VerifyPageExcerptBlock(FROM_HERE, message.content[1],
+                         "Selected text excerpt");
 
   // Third block should be a request title block with first turn's text.
-  ASSERT_EQ(message.content[2]->which(),
-            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
-  EXPECT_EQ(message.content[2]->get_request_title_content_block()->text,
-            history[0]->text);
+  VerifyRequestTitleBlock(FROM_HERE, message.content[2], history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -771,10 +590,7 @@ TEST_F(OAIMessageUtilsTest,
 
   // Request title block should use assistant response as the text when there
   // are upload files.
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
-  EXPECT_EQ(message.content[0]->get_request_title_content_block()->text,
-            history[1]->text);
+  VerifyRequestTitleBlock(FROM_HERE, message.content[0], history[1]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
@@ -809,36 +625,18 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(message.content.size(), 4u);
 
   // Content 4 (newest): normal, included fully
-  ASSERT_EQ(message.content[0]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text.size(),
-            500u);
-  EXPECT_EQ(message.content[0]->get_page_text_content_block()->text,
-            std::string(500, 'd'));
+  VerifyPageTextBlock(FROM_HERE, message.content[0], std::string(500, 'd'));
 
   // Content 3: truncated to 1200 due to max_per_content limit
-  ASSERT_EQ(message.content[1]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[1]->get_page_text_content_block()->text.size(),
-            1200u);
-  EXPECT_EQ(message.content[1]->get_page_text_content_block()->text,
-            std::string(1200, 'c'));
+  VerifyPageTextBlock(FROM_HERE, message.content[1], std::string(1200, 'c'));
 
   // Content 2: truncated to 100 due to remaining_length
-  ASSERT_EQ(message.content[2]->which(),
-            mojom::ContentBlock::Tag::kPageTextContentBlock);
-  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text.size(),
-            100u);
-  EXPECT_EQ(message.content[2]->get_page_text_content_block()->text,
-            std::string(100, 'b'));
+  VerifyPageTextBlock(FROM_HERE, message.content[2], std::string(100, 'b'));
 
   // Content 1 is dropped (not included)
 
   // kRequestTitle block
-  ASSERT_EQ(message.content[3]->which(),
-            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
-  EXPECT_EQ(message.content[3]->get_request_title_content_block()->text,
-            history[0]->text);
+  VerifyRequestTitleBlock(FROM_HERE, message.content[3], history[0]->text);
 }
 
 TEST_F(OAIMessageUtilsTest,
