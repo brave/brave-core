@@ -169,15 +169,14 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
     chromium_grd_strings = get_grd_strings(
         chromium_grd_file_path, validate_tags=False)
     # Special treatment for brave_strings.grd
-    brave_strings_string_ids = []
+    extra_brave_strings_string_ids = []
     if os.path.basename(grd_file_path) == 'brave_strings.grd':
         assert len(grd_strings) == len(chromium_grd_strings) + \
             len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
             len(INSTALLER_STRINGS)
-        brave_strings_string_ids = remove_installer_strings(
-            remove_google_chrome_strings(grd_strings,
-                                         GOOGLE_CHROME_STRINGS_MIGRATION_MAP),
-            INSTALLER_STRINGS)
+        extra_brave_strings_string_ids = remove_google_chrome_strings(
+            grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
+            remove_installer_strings(grd_strings, INSTALLER_STRINGS)
     assert len(grd_strings) == len(chromium_grd_strings), (
         f'String count in {grd_file_path} and in {chromium_grd_file_path} do' +
         f'not match: {len(grd_strings)} vs {len(chromium_grd_strings)}.')
@@ -222,8 +221,8 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
 
         # Special treatment for brave_strings.grd
         if os.path.basename(grd_file_path) == 'brave_strings.grd':
-            add_google_chrome_translations(xtb_file, xml_tree,
-                                           brave_strings_string_ids)
+            add_extra_translations_from_brave_xtb(
+                xtb_file, xml_tree, extra_brave_strings_string_ids)
 
         transformed_content = (b'<?xml version="1.0" ?>\n' +
             lxml.etree.tostring(xml_tree, pretty_print=True,
@@ -428,8 +427,8 @@ def remove_installer_strings(brave_grd_strings, installer_string):
     return string_ids
 
 
-def add_google_chrome_translations(brave_strings_xtb_file, xml_tree,
-                                   string_ids):
+def add_extra_translations_from_brave_xtb(brave_strings_xtb_file, xml_tree,
+                                          string_ids):
     brave_xtb_tree = lxml.etree.parse(brave_strings_xtb_file)
     translationbundle = xml_tree.xpath('//translationbundle')[0]
     for string_id in string_ids:
