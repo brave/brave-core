@@ -525,7 +525,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
                             buildModelForStandardMenuItem(
-                                    R.id.brave_shred_id, R.string.menu_shred_text, 0)));
+                                    R.id.brave_shred_id, R.string.brave_menu_shred_text, 0)));
         }
 
         // Read aloud
@@ -864,7 +864,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 AppMenuHandler.AppMenuItemType.STANDARD,
                 buildModelForStandardMenuItem(
                         R.id.brave_shred_id,
-                        R.string.menu_shred_text,
+                        R.string.brave_menu_shred_text,
                         shouldShowIconBeforeItem() ? R.drawable.ic_brave_shred : 0));
     }
 

@@ -3692,7 +3692,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Shred site data?
     </message>
     <message name="IDS_BRAVE_SHRED_DATA_CONFIRMATION" desc="A confirmation shown on shred site data">
-      Shredding will delete site data and close all tabs '<ph name="SITE_NAME">%1$s</ph>'. This cannot be undone.
+      Shredding will delete site data and close all '<ph name="SITE_NAME">%1$s</ph>' tabs. This cannot be undone.
+    </message>
+    <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
+      Shred
     </message>
     <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
       Shred data

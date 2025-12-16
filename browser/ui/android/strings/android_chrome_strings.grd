@@ -4719,9 +4719,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SHOW_READING_MODE_TEXT" desc="Message shown on the reader mode button bar, to invite the user to tap to open a reading mode. Reading mode extracts content and removes clutter from a web page and puts the result in a panel making it easier to read. This is used when &quot;Reader Mode for Accessibility&quot; is available.">
         Show Reading mode
       </message>
-      <message name="IDS_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
-        Shred
-      </message>
       <message name="IDS_HIDE_READING_MODE_TEXT" desc="Message shown on the reader mode button bar, to invite the user to tap to close reading mode. Returns user to a non-distilled version of the same web page.">
         Hide Reading mode
       </message>
