@@ -144,15 +144,12 @@ void VerifyMemoryBlock(
     ASSERT_EQ(actual_value->which(), expected_value->which());
 
     // Verify based on type
-    switch (expected_value->which()) {
-      case mojom::MemoryValue::Tag::kStringValue:
-        EXPECT_EQ(actual_value->get_string_value(),
-                  expected_value->get_string_value());
-        break;
-      case mojom::MemoryValue::Tag::kListValue:
-        EXPECT_EQ(actual_value->get_list_value(),
-                  expected_value->get_list_value());
-        break;
+    if (expected_value->is_string_value()) {
+      EXPECT_EQ(actual_value->get_string_value(),
+                expected_value->get_string_value());
+    } else if (expected_value->is_list_value()) {
+      EXPECT_EQ(actual_value->get_list_value(),
+                expected_value->get_list_value());
     }
   }
 }
