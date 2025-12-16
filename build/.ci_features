@@ -2,3 +2,4 @@
 # conditionally enable them on CI. Use lower_snake_case naming.
 
 siso_native_rbe
+generate_about_credits
