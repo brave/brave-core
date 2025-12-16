@@ -14,18 +14,22 @@ type CustomArgs = {
   isInteractive: boolean
   hasAssessment: boolean
   hasPlan: boolean
+  hasImplications: boolean
 }
 
 const args: CustomArgs = {
   isInteractive: true,
   hasAssessment: true,
   hasPlan: false,
+  hasImplications: true,
 }
 
 export const _ToolPermissionChallenge = {
   render: (args: CustomArgs) => {
     const toolUseEvent: Mojom.ToolUseEvent = {
-      toolName: 'toolName',
+      toolName: args.hasImplications
+        ? Mojom.TAB_MANAGEMENT_TOOL_NAME
+        : Mojom.CODE_EXECUTION_TOOL_NAME,
       id: 'toolId',
       argumentsJson: 'toolArguments',
       output: undefined,

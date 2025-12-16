@@ -13,9 +13,12 @@
 #include <utility>
 #include <vector>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -26,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -292,7 +296,10 @@ std::string_view TabManagementTool::Description() const {
          "waiting for the answer. Every time this tool needs to be used, if "
          "there has been a user message since the last time it has been used "
          "then the list of tabs should be read again as there has been a gap "
-         "in time and the list might have changed significantly.";
+         "in time and the list might have changed significantly.\nThe list "
+         "operation should be the first operation as every other operation "
+         "requires IDs found in the list of tabs and windows. You must provide "
+         "the plan parameter when using the list operation.";
 }
 
 std::optional<base::Value::Dict> TabManagementTool::InputProperties() const {
@@ -301,6 +308,12 @@ std::optional<base::Value::Dict> TabManagementTool::InputProperties() const {
                                  std::vector<std::string>{
                                      "list", "move", "close", "create_group",
                                      "update_group", "remove_from_group"})},
+       {"plan",
+        StringProperty("Human readable plan of what the assistant intends to "
+                       "do with the list of tabs and with the tab management "
+                       "tool. This should be provided during the very first "
+                       "list operation in a conversation and allows the user "
+                       "to approve or deny the tab management operations.")},
        {"tab_ids",
         ArrayProperty("List of tab IDs to operate on (for move, "
                       "close, create_group, remove_from_group). Cannot be used "
@@ -340,54 +353,72 @@ bool TabManagementTool::IsAgentTool() const {
   return true;
 }
 
-bool TabManagementTool::RequiresUserInteractionBeforeHandling() const {
-  return !user_has_granted_permission_;
+std::variant<bool, mojom::PermissionChallengePtr>
+TabManagementTool::RequiresUserInteractionBeforeHandling(
+    const mojom::ToolUseEvent& tool_use) const {
+  if (user_has_granted_permission_) {
+    return false;
+  }
+  // Provide PermissionChallenge only if input is valid and we were provided
+  // with a plan. If it isn't valid, it will be rejected by UseTool.
+  auto input = base::JSONReader::ReadDict(tool_use.arguments_json,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+
+  if (!input.has_value()) {
+    return false;
+  }
+
+  const auto* plan = input->FindString("plan");
+  if (!plan || plan->empty()) {
+    return false;
+  }
+
+  return mojom::PermissionChallenge::New(std::nullopt, *plan);
+}
+
+void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {
+  user_has_granted_permission_ = true;
 }
 
 void TabManagementTool::UseTool(const std::string& input_json,
-                                std::optional<base::Value> client_data,
                                 UseToolCallback callback) {
   // TODO: keep sidebar open to a AI Chat conversation if it's open in the
   // active window so that user can follow along. Or open in a full page if
   // we're going to remove the active window with the active conversation.
-  if (client_data && client_data->is_bool()) {
-    bool granted = client_data->GetBool();
-    if (!granted) {
-      // Let the AI know, so that the conversation can proceed. The AI
-      // might have asked to use this tool and the user did not expect
-      // it.
-      std::move(callback).Run(CreateContentBlocksForText(
-          "User has not granted permission to use this tool. Perhaps the use "
-          "of this tool was not expected "
-          "by the user."));
-      return;
-    }
-    user_has_granted_permission_ = true;
-  }
 
-  CHECK(user_has_granted_permission_)
-      << "This tool should not be called unless by the client with the correct "
-         "permission format, or automatically after "
-         "RequiresUserInteractionBeforeHandling() "
-         "returns false";
+  auto input = base::JSONReader::ReadDict(input_json,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
-  data_decoder::DataDecoder::ParseJsonIsolated(
-      input_json,
-      base::BindOnce(&TabManagementTool::OnParseJson,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void TabManagementTool::OnParseJson(
-    UseToolCallback callback,
-    data_decoder::DataDecoder::ValueOrError result) {
-  if (!result.has_value() || !result->is_dict()) {
+  if (!input.has_value()) {
     std::move(callback).Run(
         CreateContentBlocksForText("Failed to parse input JSON. Please provide "
                                    "valid JSON with an 'action' field."));
     return;
   }
 
-  const auto& dict = result->GetDict();
+  const auto& dict = input.value();
+
+  // Verify we have permission
+  if (!user_has_granted_permission_) {
+    // Report to LLM as to why we couldn't grant permission yet
+    auto* plan = dict.FindString("plan");
+    if (!plan || plan->empty()) {
+      // No plan provided, so we can't grant permission
+      std::move(callback).Run(CreateContentBlocksForText(
+          "No plan provided which the user will be asked to approve. Provide a "
+          "plan for the first use of this tool."));
+      return;
+    }
+    // If valid permission, we shouldn't be here
+    base::debug::DumpWithoutCrashing();
+    // Still provide output so the conversation can proceed without running this
+    // tool.
+    std::move(callback).Run(CreateContentBlocksForText("Unknown error"));
+    return;
+  }
+
+  CHECK(user_has_granted_permission_);
+
   const auto* action = dict.FindString("action");
 
   if (!action) {

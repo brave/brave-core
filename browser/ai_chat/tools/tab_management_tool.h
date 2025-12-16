@@ -35,9 +35,11 @@ class TabManagementTool : public Tool {
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   bool IsAgentTool() const override;
-  bool RequiresUserInteractionBeforeHandling() const override;
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override;
+  void UserPermissionGranted(const std::string& tool_use_id) override;
   void UseTool(const std::string& input_json,
-               std::optional<base::Value> client_data,
                UseToolCallback callback) override;
 
  private:

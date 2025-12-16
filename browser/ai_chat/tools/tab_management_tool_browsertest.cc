@@ -49,14 +49,12 @@ std::string ExtractToolOutputText(
 }
 
 // Helper to run the tool with optional client_data and return the output text
-std::string RunToolAndGetText(
-    base::Location location,
-    TabManagementTool* tool,
-    const std::string& input_json,
-    std::optional<base::Value> client_data = std::nullopt) {
+std::string RunToolAndGetText(base::Location location,
+                              TabManagementTool* tool,
+                              const std::string& input_json) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
-  tool->UseTool(input_json, std::move(client_data), future.GetCallback());
+  tool->UseTool(input_json, future.GetCallback());
   return ExtractToolOutputText(future.Get());
 }
 
@@ -260,6 +258,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // of the Tool, such as pre-operation validation, should be unit tested.
   TabManagementTool tool(profile());
 
+  tool.UserPermissionGranted("");
+
   // Setup: create tabs across two windows
   Browser* b1 = browser();
   int initial_b1_count = b1->tab_strip_model()->count();
@@ -284,8 +284,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // current profile window set.
   // First operation, so grant permission
   {
-    std::string response = RunToolAndGetText(
-        FROM_HERE, &tool, R"JSON({"action":"list"})JSON", base::Value(true));
+    std::string response =
+        RunToolAndGetText(FROM_HERE, &tool, R"JSON({"action":"list"})JSON");
 
     ExpectOutputMatchesWindowSkeleton(FROM_HERE, response, profile());
 
@@ -645,8 +645,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
       "action": "close",
       "tab_ids": [%d, %d]
     })JSON",
-                                                 b_handle, c_handle),
-                                             std::nullopt);
+                                                 b_handle, c_handle));
 
     base::Value::Dict response_dict = base::test::ParseJsonDict(response);
     EXPECT_THAT(response_dict,
