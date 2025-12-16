@@ -626,12 +626,17 @@ pub struct Gemma3Model {
     pad_token_id: u32,
     pool: Pool,
 
+    dense1: Linear,
+    dense2: Linear,
+
     dtype: DType,
 }
 
 impl Gemma3Model {
     pub fn load(
         vb: VarBuilder,
+        vb_dense1: VarBuilder,
+        vb_dense2: VarBuilder,
         config: &Gemma3Config,
         model_type: ModelType,
     ) -> candle_core::Result<Self> {
@@ -667,6 +672,14 @@ impl Gemma3Model {
         let rotary_cache_local_attention =
             get_cos_sin(config.max_position_embeddings, &inv_freqs_local, vb.dtype(), true)?;
 
+        let dense1_weight = 
+            vb_dense1.pp("linear").get((4*config.hidden_size, config.hidden_size), "weight")?;
+        let dense1 = Linear::new(dense1_weight, None, None);
+
+        let dense2_weight = 
+            vb_dense2.pp("linear").get((config.hidden_size, config.hidden_size*4), "weight")?;
+        let dense2 = Linear::new(dense2_weight, None, None);
+
         Ok(Self {
             embed_tokens,
             layers,
@@ -675,13 +688,15 @@ impl Gemma3Model {
             rotary_cache_local_attention,
             rotary_dim,
             pool,
+            dense1,
+            dense2,
             pad_token_id: config.pad_token_id,
             num_attention_heads: config.num_attention_heads,
             dtype: vb.dtype(),
         })
     }
 
-    pub fn forward(&self, batch: Batch) -> candle_core::Result<(Option<Tensor>, Option<Tensor>)> {
+    pub fn forward(&self, batch: Batch) -> candle_core::Result<Option<Tensor>> {
         let batch_size = batch.len();
         let max_length = batch.max_length as usize;
 
@@ -784,7 +799,6 @@ impl Gemma3Model {
         let (outputs, _) = self.norm.forward(&hidden_states, None)?;
 
         let has_pooling_requests = !batch.pooled_indices.is_empty();
-        let has_raw_requests = !batch.raw_indices.is_empty();
 
         let pooled_embeddings = if has_pooling_requests {
             match self.pool {
@@ -801,7 +815,7 @@ impl Gemma3Model {
                             .map(|&i| {
                                 let i = i as usize;
                                 let length = input_lengths[i];
-                                let embeddings = outputs.i((i, ..length))?;
+                                let embeddings = outputs.i((i, 0..length))?;
                                 embeddings.sum_keepdim(0)? / (length as f64)
                             })
                             .collect();
@@ -809,7 +823,7 @@ impl Gemma3Model {
                         Some(Tensor::cat(&results?, 0)?)
                     } else {
                         let length = input_lengths[0];
-                        let embeddings = outputs.i((0, ..length))?;
+                        let embeddings = outputs.i((0, 0..length))?;
                         Some((embeddings.sum_keepdim(0)? / (length as f64))?)
                     }
                 }
@@ -818,53 +832,15 @@ impl Gemma3Model {
             None
         };
 
-        let raw_embeddings = if has_raw_requests {
-            if batch_size > 1 && has_pooling_requests {
-                let mut final_embeddings = Vec::new();
-                for &i in &batch.raw_indices {
-                    let i = i as usize;
-                    let length = input_lengths[i];
-                    final_embeddings.push(outputs.i((i, ..length))?);
-                }
-                Some(Tensor::cat(&final_embeddings, 0)?)
-            } else {
-                // Single batch or all raw requests
-                if batch_size == 1 {
-                    let length = input_lengths[0];
-                    Some(outputs.i((0, ..length))?)
-                } else {
-                    // Multiple sequences, all raw
-                    let mut all_embeddings = Vec::new();
-                    for (i, &length) in input_lengths.iter().enumerate().take(batch_size) {
-                        all_embeddings.push(outputs.i((i, ..length))?);
-                    }
-                    Some(Tensor::cat(&all_embeddings, 0)?)
-                }
-            }
-        } else {
-            None
-        };
+        let dense1_hidden = self.dense1.forward(pooled_embeddings.as_ref().unwrap())?;
+        let output_before_norm = self.dense2.forward(&dense1_hidden)?;
 
-        Ok((pooled_embeddings, raw_embeddings))
-    }
+        // L2 normalize the tensor (before converting to Vec)
+        let norm = output_before_norm.sqr()?.sum_keepdim(1)?.sqrt()?;
+        let normalized = output_before_norm.broadcast_div(&norm)?;
 
-    pub fn embed(&self, input_ids: &Tensor) -> candle_core::Result<Tensor> {
-        // Convert a single input tensor into a Batch
-        let vec_ids: Vec<u32> = input_ids.to_vec1::<u32>()?;
-        let vec_ids_len = vec_ids.len();
-
-        let batch = Batch {
-            input_ids: vec_ids.clone(),
-            token_type_ids: vec![0; vec_ids_len],
-            position_ids: (0..vec_ids_len as u32).collect(),
-            cumulative_seq_lengths: vec![0, vec_ids_len as u32],
-            max_length: vec_ids_len as u32,
-            pooled_indices: vec![0], // ask for one pooled embedding
-            raw_indices: vec![],
-        };
-
-        let (pooled, _) = self.forward(batch)?;
-        pooled.ok_or_else(|| candle_core::Error::Msg("no pooled embedding returned".to_string()))
+        // Return normalized tensor
+        Ok(Some(normalized))
     }
 }
 
@@ -880,6 +856,8 @@ impl Gemma3Embedder {
     #[wasm_bindgen(constructor)]
     pub fn new(
         weights: Vec<u8>,
+        weights_dense1: Vec<u8>,
+        weights_dense2: Vec<u8>,
         tokenizer: Vec<u8>,
         config: Vec<u8>,
     ) -> Result<Gemma3Embedder, JsError> {
@@ -894,7 +872,13 @@ impl Gemma3Embedder {
         let vb = VarBuilder::from_buffered_safetensors(weights, DType::F32, &Device::Cpu)
             .map_err(|e| JsError::new(&e.to_string()))?;
 
-        let model = Gemma3Model::load(vb, &config, ModelType::Embedding(Pool::Mean))
+        let vb_dense1 = VarBuilder::from_buffered_safetensors(weights_dense1, DType::F32, &Device::Cpu)
+            .map_err(|e| JsError::new(&e.to_string()))?;
+
+        let vb_dense2 = VarBuilder::from_buffered_safetensors(weights_dense2, DType::F32, &Device::Cpu)
+            .map_err(|e| JsError::new(&e.to_string()))?;
+
+        let model = Gemma3Model::load(vb, vb_dense1, vb_dense2, &config, ModelType::Embedding(Pool::Mean))
             .map_err(|e| JsError::new(&e.to_string()))?;
 
         Ok(Self { model, tokenizer })
@@ -903,17 +887,23 @@ impl Gemma3Embedder {
     /// Embed a single sentence
     pub fn embed(&self, text: &str) -> Result<Vec<f32>, JsError> {
         let batch = self.encode_batch(&[text.to_string()])?;
-        let (pooled, _) = self.model.forward(batch).map_err(|e| JsError::new(&e.to_string()))?;
-        let pooled = pooled.ok_or_else(|| JsError::new("Mean pooling failed"))?;
-        let pooled = pooled.to_vec2::<f32>().map_err(|e| JsError::new(&e.to_string()))?;
-        let mut emb = pooled[0].clone();
+        let normed_output = self.model.forward(batch).map_err(|e| JsError::new(&e.to_string()))?;
+        let normed_output = normed_output.ok_or_else(|| JsError::new("Embedding generation failed!"))?;
+        let normed_output = normed_output.to_vec2::<f32>().map_err(|e| JsError::new(&e.to_string()))?;
+        let emb = normed_output[0].clone();
 
-        // L2 normalization
-        let norm: f32 = emb.iter().map(|x| x * x).sum::<f32>().sqrt();
-        for x in emb.iter_mut() {
-            *x /= norm;
-        }
         Ok(emb)
+    }
+
+    /// Embed multiple sentences - returns flattened array
+    pub fn embed_batch(&self, texts: Vec<String>) -> Result<Vec<f32>, JsError> {
+        let batch = self.encode_batch(&texts)?;
+        let normed_output = self.model.forward(batch).map_err(|e| JsError::new(&e.to_string()))?;
+        let normed_output = normed_output.ok_or_else(|| JsError::new("Embedding generation failed!"))?;
+        let embeddings = normed_output.to_vec2::<f32>().map_err(|e| JsError::new(&e.to_string()))?;
+        
+        // Flatten: [batch_size, 768] -> [batch_size * 768]
+        Ok(embeddings.into_iter().flatten().collect())
     }
 
     /// Internal helper: convert texts -> Batch
