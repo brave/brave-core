@@ -427,7 +427,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         modelList.add(buildBraveNewsItem());
         modelList.add(buildExitItem());
-
         return modelList;
     }
 
@@ -521,11 +520,14 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.translate_id, R.string.menu_translate, 0)));
 
         // Shred
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.brave_shred_id, R.string.menu_shred_text, 0)));
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+            modelList.add(
+                    new MVCListAdapter.ListItem(
+                            AppMenuHandler.AppMenuItemType.STANDARD,
+                            buildModelForStandardMenuItem(
+                                    R.id.brave_shred_id, R.string.menu_shred_text, 0)));
+        }
+
         // Read aloud
         modelList.add(
                 new MVCListAdapter.ListItem(

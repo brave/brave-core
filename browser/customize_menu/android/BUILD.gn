@@ -18,6 +18,7 @@ android_library("java") {
     "//brave/build/android:android_brave_strings_grd",
     "//brave/third_party/android_deps:com_brave_playlist_java",
     "//chrome/android:chrome_app_java_resources",
+    "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/settings:java",
     "//chrome/browser/ui/android/appmenu:java",

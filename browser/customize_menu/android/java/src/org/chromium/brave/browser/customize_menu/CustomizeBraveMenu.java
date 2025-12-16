@@ -26,11 +26,13 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
@@ -74,7 +76,6 @@ import java.util.Locale;
  */
 @NullMarked
 public class CustomizeBraveMenu {
-
     public static final String KEY_MAIN_MENU_ITEM_LIST =
             "org.chromium.brave.browser.customize_menu.KEY_MAIN_MENU_ITEM_LIST";
     public static final String KEY_PAGE_ACTION_ITEM_LIST =
@@ -144,7 +145,9 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.paint_preview_show_id, R.drawable.ic_photo_camera);
         MENU_ICON_MAP.put(R.id.get_image_descriptions_id, R.drawable.ic_image_descriptions);
         MENU_ICON_MAP.put(R.id.listen_to_feed_id, R.drawable.ic_play_circle);
-        MENU_ICON_MAP.put(R.id.brave_shred_id, R.drawable.ic_brave_shred);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
+            MENU_ICON_MAP.put(R.id.brave_shred_id, R.drawable.ic_brave_shred);
+        }
     }
 
     /**
@@ -256,7 +259,6 @@ public class CustomizeBraveMenu {
             final Bundle bundle,
             final MVCListAdapter.ModelList menuItems,
             final MVCListAdapter.ModelList pageActions) {
-
         // Convert menu items to parcelable data.
         final ArrayList<MenuItemData> menuItemDataList = new ArrayList<>();
         populateMenuItemData(resources, menuItemDataList, menuItems);

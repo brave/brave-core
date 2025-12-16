@@ -27,8 +27,10 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.annotation.Config;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.build.BuildConfig;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
@@ -37,6 +39,10 @@ import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.ArrayList;
+
+@DisableFeatures({
+    BraveFeatureList.BRAVE_SHRED,
+})
 
 /** Unit tests for {@link CustomizeBraveMenu}. */
 @RunWith(BaseRobolectricTestRunner.class)
