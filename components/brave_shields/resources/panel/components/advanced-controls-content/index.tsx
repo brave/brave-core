@@ -47,7 +47,11 @@ const httpsUpgradeModeOptions = [
   { value: HttpsUpgradeMode.DISABLED_MODE, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
-export function GlobalSettings () {
+interface Props {
+  showAdblockLists: boolean
+}
+
+export function GlobalSettings (props: Props) {
   const onAdBlockListsClick = () => {
     chrome.tabs.create({ url: 'chrome://settings/shields/filters', active: true })
   }
@@ -59,14 +63,16 @@ export function GlobalSettings () {
   return (
     <S.FooterActionBox>
       <div>
-        <button
-          onClick={onAdBlockListsClick}
-        >
-          <i>
-          <svg aria-hidden="true" width="18" height="14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M17.01 2.41H4.26a.709.709 0 0 1 0-1.418h12.75a.709.709 0 0 1 0 1.417ZM.717 11.616h1.416v1.417H.718v-1.417Zm0-3.541h1.416v1.416H.718V8.076Zm0-3.542h1.416v1.417H.718V4.534Zm0-3.542h1.416V2.41H.718V.992Zm3.541 3.542h9.917a.709.709 0 0 1 0 1.417H4.26a.709.709 0 0 1 0-1.417Zm0 3.542h12.75a.709.709 0 0 1 0 1.416H4.26a.709.709 0 0 1 0-1.416Zm0 3.541h9.917a.709.709 0 0 1 0 1.417H4.26a.709.709 0 0 1 0-1.417Z"/></svg>
-          </i>
-          {getLocale('braveShieldsCustomizeAdblockLists')}
-        </button>
+        {props.showAdblockLists && (
+          <button
+            onClick={onAdBlockListsClick}
+          >
+            <i>
+            <svg aria-hidden="true" width="18" height="14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M17.01 2.41H4.26a.709.709 0 0 1 0-1.418h12.75a.709.709 0 0 1 0 1.417ZM.717 11.616h1.416v1.417H.718v-1.417Zm0-3.541h1.416v1.416H.718V8.076Zm0-3.542h1.416v1.417H.718V4.534Zm0-3.542h1.416V2.41H.718V.992Zm3.541 3.542h9.917a.709.709 0 0 1 0 1.417H4.26a.709.709 0 0 1 0-1.417Zm0 3.542h12.75a.709.709 0 0 1 0 1.416H4.26a.709.709 0 0 1 0-1.416Zm0 3.541h9.917a.709.709 0 0 1 0 1.417H4.26a.709.709 0 0 1 0-1.417Z"/></svg>
+            </i>
+            {getLocale('braveShieldsCustomizeAdblockLists')}
+          </button>
+        )}
         <button
           onClick={onSettingsClick}>
           <i>
@@ -301,7 +307,7 @@ function AdvancedControlsContent () {
           <p>*{getLocale('braveShieldSettingsDescription')}</p>
         </S.SettingsDesc>
       </S.SettingsBox>
-      <GlobalSettings />
+      <GlobalSettings showAdblockLists={true} />
   </section>
   )
 }

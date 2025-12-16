@@ -78,7 +78,7 @@ function AdBlockOnlyModeControlsContent(
   return (
     <section id='global-controls-content'>
       <IsTheSiteWorkingCorrectlyNowAdBlockOnlyModeNotice />
-      {showGlobalSettings && <GlobalSettings />}
+      {showGlobalSettings && <GlobalSettings showAdblockLists={false} />}
     </section>
   )
 }
