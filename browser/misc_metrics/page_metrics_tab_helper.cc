@@ -6,6 +6,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 
 #include "base/check_is_test.h"
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -23,12 +24,12 @@ constexpr char kBraveSearchPath[] = "/search";
 
 PageMetricsTabHelper::PageMetricsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<PageMetricsTabHelper>(*web_contents) {
-  page_metrics_ = ProfileMiscMetricsServiceFactory::GetServiceForContext(
-                      web_contents->GetBrowserContext())
-                      ->GetPageMetrics();
-  if (!page_metrics_) {
-    CHECK_IS_TEST();
+      content::WebContentsUserData<PageMetricsTabHelper>(*web_contents),
+      browser_context_(web_contents->GetBrowserContext()) {
+  auto* profile_misc_metrics_service =
+      ProfileMiscMetricsServiceFactory::GetServiceForContext(browser_context_);
+  if (profile_misc_metrics_service) {
+    page_metrics_ = profile_misc_metrics_service->GetPageMetrics();
   }
 }
 
@@ -36,9 +37,6 @@ PageMetricsTabHelper::~PageMetricsTabHelper() = default;
 
 void PageMetricsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!page_metrics_) {
-    return;
-  }
   if (!CheckNavigationEvent(navigation_handle)) {
     return;
   }
@@ -61,16 +59,21 @@ void PageMetricsTabHelper::DidFinishNavigation(
 
 bool PageMetricsTabHelper::CheckNavigationEvent(
     content::NavigationHandle* navigation_handle) {
-  if (!page_metrics_) {
-    return false;
-  }
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->GetURL().SchemeIsHTTPOrHTTPS() ||
       navigation_handle->IsSameDocument() ||
-      navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+      navigation_handle->GetRestoreType() == content::RestoreType::kRestored ||
+      !navigation_handle->HasCommitted()) {
     return false;
   }
-  if (!navigation_handle->HasCommitted()) {
+
+  if (browser_context_ && browser_context_->IsOffTheRecord()) {
+    if (!browser_context_->IsTor()) {
+      UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
+    }
+    return false;
+  }
+  if (!page_metrics_) {
     return false;
   }
   return true;
