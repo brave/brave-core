@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("local_ai") {
+  sources = [
+    "candle_service_factory.cc",
+    "candle_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/local_ai/browser",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+  ]
+}

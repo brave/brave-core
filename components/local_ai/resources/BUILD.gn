@@ -31,5 +31,23 @@ pack_web_resources("candle_embedding_gemma_bridge_generated") {
     "//brave/ui/webui/resources:candle_embedding_gemma",
   ]
 }
-# Trusted WebUI at chrome://local-ai-internals (just static HTML,
-# no build needed)
+
+# Trusted WebUI at chrome://local-ai-internals
+transpile_web_ui("local_ai_internals_ui") {
+  entry_points = [ [
+        "local_ai",
+        rebase_path("local_ai.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "local_ai"
+
+  imports_from = [ "//brave/components/local_ai/resources/" ]
+
+  deps = [ "//brave/components/local_ai/common:local_ai_internals_js" ]
+}
+
+pack_web_resources("local_ai_internals_generated") {
+  resource_name = "local_ai"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":local_ai_internals_ui" ]
+}

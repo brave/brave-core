@@ -3,10 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("browser") {
+# Shared updater code used by both desktop and iOS
+source_set("local_models_updater") {
   sources = [
-    "candle_service.cc",
-    "candle_service.h",
     "local_models_updater.cc",
     "local_models_updater.h",
   ]
@@ -16,15 +15,34 @@ static_library("browser") {
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/local_ai/common",
-    "//brave/components/local_ai/common:mojom",
     "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
     "//components/update_client",
     "//crypto",
-    "//mojo/public/cpp/bindings",
-    "//ui/base",
   ]
+}
+
+# Desktop (non-iOS) implementation - uses //content
+if (!is_ios) {
+  static_library("browser") {
+    sources = [
+      "candle_service.cc",
+      "candle_service.h",
+    ]
+
+    public_deps = [ "//base" ]
+
+    deps = [
+      ":local_models_updater",
+      "//brave/components/constants",
+      "//brave/components/local_ai/common:mojom",
+      "//components/keyed_service/core",
+      "//content/public/browser",
+      "//mojo/public/cpp/bindings",
+      "//ui/base",
+    ]
+  }
 }
 
 source_set("unit_tests") {
@@ -32,7 +50,7 @@ source_set("unit_tests") {
   sources = [ "local_models_updater_unittest.cc" ]
 
   deps = [
-    ":browser",
+    ":local_models_updater",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
