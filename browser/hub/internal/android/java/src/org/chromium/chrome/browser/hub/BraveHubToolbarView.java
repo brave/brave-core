@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.first_party_storage_cleaner.FirstPartyStorageCleanerInterface;
+import org.chromium.chrome.browser.ephemeral_storage.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
@@ -39,7 +39,7 @@ public class BraveHubToolbarView extends HubToolbarView {
 
         mActionButton = findViewById(R.id.toolbar_action_button);
         mShredButton =
-                findViewById(org.chromium.chrome.browser.first_party_storage_cleaner.R.id.shred_data_button);
+                findViewById(org.chromium.chrome.browser.ephemeral_storage.R.id.shred_data_button);
         mMenuButton = findViewById(R.id.menu_button_wrapper);
 
         mShredButton.setOnClickListener(
