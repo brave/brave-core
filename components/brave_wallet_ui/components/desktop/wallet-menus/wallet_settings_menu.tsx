@@ -227,7 +227,7 @@ export const WalletSettingsMenu = (props: Props) => {
         <PopupButton onClick={onClickBackup}>
           <ButtonIcon name='safe' />
           <PopupButtonText>
-            {getLocale('braveWalletBackupButton')}
+            {getLocale('braveWalletWalletPopupBackup')}
           </PopupButtonText>
         </PopupButton>
 

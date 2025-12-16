@@ -358,7 +358,7 @@ provideStrings({
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
   braveWalletWalletPopupLock: 'Lock wallet',
-  braveWalletWalletPopupBackup: 'Backup Wallet',
+  braveWalletWalletPopupBackup: 'Backup wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
   braveWalletWalletPopupHideBalances: 'Balances',
   braveWalletWalletPopupShowGraph: 'Graph',
