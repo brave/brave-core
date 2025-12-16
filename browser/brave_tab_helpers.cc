@@ -205,15 +205,15 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 
-  if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
-    misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
+  misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
+
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
-    if (base::FeatureList::IsEnabled(
-            request_otr::features::kBraveRequestOTRTab)) {
-      RequestOTRTabHelper::CreateForWebContents(web_contents);
-    }
-#endif
+  if (!web_contents->GetBrowserContext()->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    RequestOTRTabHelper::CreateForWebContents(web_contents);
   }
+#endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_service =
