@@ -9,7 +9,6 @@ import Placeholder from '../assets/svg-icons/nft-placeholder.svg'
 // utils
 import { DISPLAY_MODES, DisplayMode } from './nft-ui-messages'
 import { NFTMetadataReturnType } from '../constants/types'
-import { stripChromeImageURL } from '../utils/string-utils'
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -26,21 +25,32 @@ const nftMetadata = nftMetadataParam
 const mediaUrl =
   nftMetadata?.animationURL || nftMetadata?.imageURL || Placeholder
 
-const imageUrlParam = decodeURI(urlParams.get('icon') || '') || undefined
-const imageUrl = imageUrlParam
-  ? imageUrlParam.endsWith('/')
-    ? imageUrlParam.slice(0, imageUrlParam.length - 1)
-    : imageUrlParam
-  : undefined
-const imageSrc = stripChromeImageURL(imageUrl) ?? Placeholder
+// Get the raw image URL from the icon parameter
+const iconImageUrl = urlParams.get('icon') || undefined
 
 function render() {
   const imgEl = document.getElementById('nft-image') as HTMLImageElement
-  // update img src
-  imgEl.src =
-    displayMode === 'details' && nftMetadata
-      ? `chrome-untrusted://image?url=${encodeURIComponent(mediaUrl)}`
-      : imageSrc
+
+  // Show placeholder if the image fails to load (e.g., due to size limits)
+  imgEl.onerror = () => {
+    imgEl.src = Placeholder
+  }
+
+  // Determine the image source based on display mode
+  let imageSrc: string
+  if (displayMode === 'details' && nftMetadata) {
+    imageSrc =
+      `chrome-untrusted://image?url=`
+      + `${encodeURIComponent(mediaUrl)}&staticEncode=true`
+  } else if (iconImageUrl) {
+    imageSrc =
+      `chrome-untrusted://image?url=`
+      + `${encodeURIComponent(iconImageUrl)}&staticEncode=true`
+  } else {
+    imageSrc = Placeholder
+  }
+
+  imgEl.src = imageSrc
 }
 
 document.addEventListener('DOMContentLoaded', render)
