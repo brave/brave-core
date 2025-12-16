@@ -11,13 +11,13 @@ import org.jni_zero.NativeMethods;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.tab.Tab;
 
-@JNINamespace("ephemeral_storage")
+@JNINamespace("brave_shields")
 @NullMarked
-public class BraveEphemeralStorageUtils {
-    private static final String TAG = "EphemeralStorageUtil";
+public class BraveFirstPartyStorageCleanerUtils {
+    private static final String TAG = "FirstPartyStorageCleanerUtils";
 
     public static void cleanupTLDFirstPartyStorage(Tab tab) {
-        BraveEphemeralStorageUtilsJni.get().cleanupTLDFirstPartyStorage(tab);
+        BraveFirstPartyStorageCleanerUtilsJni.get().cleanupTLDFirstPartyStorage(tab);
     }
 
     @NativeMethods

@@ -6,16 +6,14 @@
 #include <cstddef>
 
 #include "base/android/jni_android.h"
-#include "brave/browser/ephemeral_storage/android/jni_headers/BraveEphemeralStorageUtils_jni.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/android/jni_headers/BraveFirstPartyStorageCleanerUtils_jni.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "chrome/browser/android/tab_android.h"
-#include "content/public/browser/site_instance.h"
 
-namespace ephemeral_storage {
+namespace brave_shields {
 
-static void JNI_BraveEphemeralStorageUtils_CleanupTLDFirstPartyStorage(
+static void JNI_BraveFirstPartyStorageCleanerUtils_CleanupTLDFirstPartyStorage(
     JNIEnv* env,
     const jni_zero::JavaRef<jobject>& tab_object) {
   CHECK(env);
@@ -31,16 +29,13 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDFirstPartyStorage(
     return;
   }
 
-  auto* ephemeral_storage_service =
-      EphemeralStorageServiceFactory::GetForContext(
-          web_contents->GetBrowserContext());
-  if (!ephemeral_storage_service) {
+  brave_shields::BraveShieldsTabHelper* brave_shields_tab_helper =
+      brave_shields::BraveShieldsTabHelper::GetOrCreateForWebContents(web_contents);
+  if (!brave_shields_tab_helper) {
     return;
   }
 
-  ephemeral_storage_service->CleanupTLDFirstPartyStorage(
-      web_contents->GetLastCommittedURL(),
-      web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
+  brave_shields_tab_helper->EnforceSiteDataCleanup();
 }
 
-}  // namespace ephemeral_storage
+}  // namespace brave_shields

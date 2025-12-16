@@ -136,7 +136,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
-import org.chromium.chrome.browser.ephemeral_storage.BraveEphemeralStorageUtils;
+import org.chromium.chrome.browser.ephemeral_storage.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.ephemeral_storage.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -2654,7 +2654,7 @@ public abstract class BraveActivity extends ChromeActivity
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
                     if (button == AlertDialog.BUTTON_POSITIVE) {
-                        BraveEphemeralStorageUtils.cleanupTLDFirstPartyStorage(currentTab);
+                        BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(currentTab);
                     } else {
                         dialog.dismiss();
                     }

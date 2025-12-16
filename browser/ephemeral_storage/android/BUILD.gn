@@ -11,7 +11,7 @@ assert(is_android)
 android_library("java") {
   resources_package = "org.chromium.chrome.browser.ephemeral_storage"
   sources = [
-    "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveEphemeralStorageUtils.java",
+    "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveFirstPartyStorageCleanerUtils.java",
     "java/src/org/chromium/chrome/browser/ephemeral_storage/FirstPartyStorageCleanerInterface.java",
   ]
 
@@ -31,5 +31,5 @@ android_resources("java_resources") {
 }
 
 generate_jni("jni_headers") {
-  sources = [ "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveEphemeralStorageUtils.java" ]
+  sources = [ "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveFirstPartyStorageCleanerUtils.java" ]
 }
