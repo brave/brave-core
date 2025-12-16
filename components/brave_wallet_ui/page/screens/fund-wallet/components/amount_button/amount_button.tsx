@@ -15,6 +15,7 @@ import {
   SwapVerticalIcon,
   Wrapper,
   ButtonWrapper,
+  ErrorText,
 } from './amount_button.style'
 
 interface SelectAccountProps {
@@ -22,6 +23,7 @@ interface SelectAccountProps {
   amount?: string
   currencyCode?: string
   estimatedCryptoAmount?: string
+  amountError?: string
   onChange: (amount: string) => void
   onClick: () => void
 }
@@ -31,6 +33,7 @@ export const AmountButton = ({
   currencyCode,
   amount,
   estimatedCryptoAmount,
+  amountError,
   onChange,
   onClick,
 }: SelectAccountProps) => {
@@ -56,7 +59,7 @@ export const AmountButton = ({
             spellCheck={false}
             onChange={onInputChange}
             value={amount}
-            hasError={false}
+            hasError={!!amountError}
             autoFocus={true}
           />
           <WrapperButton onClick={onClick}>
@@ -80,6 +83,19 @@ export const AmountButton = ({
           </Row>
         ) : null}
       </ButtonWrapper>
+      {amountError ? (
+        <Row
+          width='unset'
+          justifyContent='flex-end'
+        >
+          <ErrorText
+            textColor='error'
+            textSize='12px'
+          >
+            {amountError}
+          </ErrorText>
+        </Row>
+      ) : null}
     </Wrapper>
   )
 }

@@ -106,6 +106,7 @@ export const FundWalletScreen = () => {
     showCreateAccount,
     onCloseCreateAccount,
     pendingSelectedToken,
+    amountError,
   } = useBuy()
 
   // Redux
@@ -173,6 +174,7 @@ export const FundWalletScreen = () => {
               }}
               onChange={onSetAmount}
               estimatedCryptoAmount={formattedCryptoEstimate}
+              amountError={amountError}
             />
           </ControlPanel>
           <ServiceProvidersWrapper
