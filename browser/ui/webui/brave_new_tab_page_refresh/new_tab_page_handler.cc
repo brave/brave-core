@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -29,6 +30,10 @@
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 namespace brave_new_tab_page_refresh {
 
@@ -438,15 +443,19 @@ void NewTabPageHandler::GetShieldsStats(GetShieldsStatsCallback callback) {
   std::move(callback).Run(std::move(stats));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
 void NewTabPageHandler::GetShowTalkWidget(GetShowTalkWidgetCallback callback) {
-  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowBraveTalk));
+  std::move(callback).Run(
+      pref_service_->GetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk));
 }
 
 void NewTabPageHandler::SetShowTalkWidget(bool show_talk_widget,
                                           SetShowTalkWidgetCallback callback) {
-  pref_service_->SetBoolean(kNewTabPageShowBraveTalk, show_talk_widget);
+  pref_service_->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk,
+                            show_talk_widget);
   std::move(callback).Run();
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 void NewTabPageHandler::GetShowRewardsWidget(
     GetShowRewardsWidgetCallback callback) {
@@ -535,7 +544,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       page_->OnShieldsStatsUpdated();
       break;
     case UpdateObserver::Source::kTalk:
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
       page_->OnTalkStateUpdated();
+#endif
       break;
     case UpdateObserver::Source::kRewards:
       page_->OnRewardsStateUpdated();

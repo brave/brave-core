@@ -85,6 +85,7 @@ include_rules += [
   "+brave/components/commander/common",
   "+brave/components/commands/common",
   "+brave/components/brave_sync",
+  "+brave/components/brave_talk",
   "+brave/components/ipfs",
   "+brave/components/tor",
   "-brave/components/tor/renderer",

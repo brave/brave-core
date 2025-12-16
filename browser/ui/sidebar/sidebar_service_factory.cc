@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -71,6 +72,13 @@ std::vector<SidebarItem::BuiltInItemType>
 SidebarServiceFactory::GetBuiltInItemTypesForProfile(Profile* profile) const {
   std::vector<SidebarItem::BuiltInItemType> types;
   for (const auto& type : kDefaultBuiltInItemTypes) {
+#if !BUILDFLAG(ENABLE_BRAVE_TALK)
+    // Skip Brave Talk if the feature is not compiled in.
+    if (type == SidebarItem::BuiltInItemType::kBraveTalk) {
+      continue;
+    }
+#endif
+
     if (profile->IsGuestSession()) {
       if (!IsDisabledItemForGuest(type)) {
         types.push_back(type);

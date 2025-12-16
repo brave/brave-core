@@ -11,11 +11,16 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 namespace brave_new_tab_page_refresh {
 
@@ -49,7 +54,9 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(brave_perf_predictor::prefs::kBandwidthSavedBytes,
                   Source::kShieldsStats);
 
-  AddPrefListener(kNewTabPageShowBraveTalk, Source::kTalk);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  AddPrefListener(brave_talk::prefs::kNewTabPageShowBraveTalk, Source::kTalk);
+#endif
 
   AddPrefListener(kNewTabPageShowRewards, Source::kRewards);
 

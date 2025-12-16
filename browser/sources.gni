@@ -43,6 +43,7 @@ import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -190,6 +191,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:features",
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
+  "//brave/components/brave_talk/buildflags",
   "//brave/components/brave_user_agent/browser",
   "//brave/components/brave_user_agent/common",
   "//brave/components/brave_vpn/common/buildflags",
@@ -378,6 +380,10 @@ if (enable_containers) {
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
   ]
+}
+
+if (enable_brave_talk) {
+  brave_chrome_browser_deps += [ "//brave/components/brave_talk" ]
 }
 
 if (enable_commander) {

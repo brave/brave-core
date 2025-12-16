@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -50,6 +51,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 namespace brave_new_tab_page_refresh {
@@ -168,8 +173,12 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       news_feed_update_enabled &&
           !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   source_->AddBoolean("talkFeatureEnabled",
-                      !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
+                      !prefs->GetBoolean(brave_talk::prefs::kDisabledByPolicy));
+#else
+  source_->AddBoolean("talkFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
   source_->AddInteger("maxCustomTopSites", ntp_tiles::kMaxNumCustomLinks);
 }
@@ -232,7 +241,9 @@ void NewTabPageInitializer::MaybeMigrateHideAllWidgetsPref() {
     prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
 
     prefs->SetBoolean(kNewTabPageShowRewards, false);
-    prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    prefs->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk, false);
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
 #endif

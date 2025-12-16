@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
@@ -18,6 +19,7 @@ source_set("prefs") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
@@ -43,5 +45,8 @@ source_set("prefs") {
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/decentralized_dns/core",
     ]
+  }
+  if (enable_brave_talk) {
+    deps += [ "//brave/components/brave_talk" ]
   }
 }

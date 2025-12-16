@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -54,6 +55,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -1277,9 +1282,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+      profile->GetPrefs()->GetBoolean(brave_talk::prefs::kDisabledByPolicy));
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",

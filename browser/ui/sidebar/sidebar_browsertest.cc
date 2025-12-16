@@ -37,6 +37,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -283,6 +284,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     }
 #endif
 
+#if !BUILDFLAG(ENABLE_BRAVE_TALK)
+    item_count -= 1;
+#endif
+
 #if !BUILDFLAG(ENABLE_BRAVE_WALLET)
     item_count -= 1;
 #endif
@@ -342,12 +347,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
   EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
 
-  // Get first index of item that opens in panel.
+  // Get first index of item that opens in a new tab (not panel).
+  // Note: Web-type items (kBraveTalk, kWallet) may not exist if their
+  // respective features are disabled.
   const size_t first_web_item_index = GetFirstWebItemIndex();
-  const auto item = model()->GetAllSidebarItems()[first_web_item_index];
-  EXPECT_FALSE(item.open_in_panel);
-  controller()->ActivateItemAt(first_web_item_index);
   int active_item_index = first_panel_item_index;
+  if (first_web_item_index < model()->GetAllSidebarItems().size()) {
+    const auto item = model()->GetAllSidebarItems()[first_web_item_index];
+    EXPECT_FALSE(item.open_in_panel);
+    controller()->ActivateItemAt(first_web_item_index);
+  }
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
