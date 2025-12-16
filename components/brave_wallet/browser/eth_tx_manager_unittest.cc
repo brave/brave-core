@@ -24,7 +24,6 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"

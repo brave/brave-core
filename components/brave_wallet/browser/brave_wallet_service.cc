@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"

@@ -18,7 +18,6 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"

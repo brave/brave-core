@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"

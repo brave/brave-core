@@ -30,7 +30,6 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"

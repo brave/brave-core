@@ -41,7 +41,6 @@
 #include "ui/gfx/switches.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
