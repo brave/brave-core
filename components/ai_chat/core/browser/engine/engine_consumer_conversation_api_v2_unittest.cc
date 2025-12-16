@@ -2328,6 +2328,70 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponse_WithSkill) {
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+
+  // Create conversation history with skill entry
+  EngineConsumer::ConversationHistory conversation_history;
+  auto skill_entry =
+      mojom::SkillEntry::New("summarize", "Please summarize the content");
+  conversation_history.push_back(mojom::ConversationTurn::New(
+      "uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "/summarize What is artificial intelligence?", std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */));
+
+  MockConversationAPIClient* mock_client = GetMockConversationAPIClient();
+
+  // Expect that PerformRequest is called with conversation events that include
+  // both skill definition message and the main user message
+  EXPECT_CALL(*mock_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        // Should have 2 events: skill definition + main user message
+        ASSERT_EQ(conversation.size(), 2u);
+
+        // First event should be the skill definition
+        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[0].type, ConversationEventType::kChatMessage);
+        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
+                  "When handling the request, interpret '/summarize' as "
+                  "'Please summarize the content'");
+
+        // Second event should be the actual user message
+        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
+        EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
+        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
+                  "/summarize What is artificial intelligence?");
+
+        // Mock successful response
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("AI is a technology..."));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GenerateAssistantResponse(
+      {}, conversation_history, "en-US", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating([](EngineConsumer::GenerationResultData) {}),
+      future.GetCallback());
+
+  // Wait for the response
+  auto result = future.Take();
+  EXPECT_TRUE(result.has_value());
+}
+
 TEST_F(EngineConsumerConversationAPIV2UnitTest, GenerateQuestionSuggestions) {
   PageContent page_content("Sample page content.", false);
   PageContent video_content("Sample video content.", true);
