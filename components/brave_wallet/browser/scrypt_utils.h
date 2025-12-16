@@ -23,6 +23,8 @@ inline constexpr uint8_t kSecretboxNonceSize = 24u;
 // NaCl secretbox key size (24 bytes) equal to tweetnacl
 // crypto_secretbox_KEYBYTES.
 inline constexpr uint8_t kScryptKeyBytes = 32u;
+// Size of encoded data prefix.
+inline constexpr uint8_t kSecretboxAuthTagSize = 16u;
 
 // Encrypts data using xsalsa20-poly1305 encryption with the provided key.
 std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(

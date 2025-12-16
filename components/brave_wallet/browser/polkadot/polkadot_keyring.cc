@@ -8,7 +8,9 @@
 #include "base/base64.h"
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/containers/span_writer.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
@@ -72,6 +74,13 @@ std::array<uint8_t, kSr25519PublicKeySize> PolkadotKeyring::GetPublicKey(
     uint32_t account_index) {
   auto const& keypair = EnsureKeyPair(account_index);
   return keypair.GetPublicKey();
+}
+
+std::array<uint8_t, kSr25519Pkcs8Size>
+PolkadotKeyring::GetPkcs8KeyForTesting(  // IN-TEST
+    uint32_t account_index) {
+  CHECK_IS_TEST();
+  return EnsureKeyPair(account_index).GetExportKeyPkcs8();
 }
 
 std::string PolkadotKeyring::GetAddress(uint32_t account_index,
@@ -232,6 +241,114 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   }
 
   return json_string;
+}
+
+// static
+std::optional<std::array<uint8_t, kSr25519Pkcs8Size>>
+PolkadotKeyring::DecodePrivateKeyFromExport(std::string_view json_export,
+                                            std::string_view password) {
+  if (password.empty()) {
+    return std::nullopt;
+  }
+
+  auto json_dict = base::JSONReader::ReadDict(json_export, 0);
+  if (!json_dict) {
+    return std::nullopt;
+  }
+
+  const std::string* encoded_str = json_dict->FindString("encoded");
+  if (!encoded_str) {
+    return std::nullopt;
+  }
+
+  const base::Value::Dict* encoding_dict = json_dict->FindDict("encoding");
+
+  // Validate "type" JSON field.
+  const base::Value::List* type_list = encoding_dict->FindList("type");
+  if (!type_list || type_list->size() != 2) {
+    return std::nullopt;
+  }
+
+  if (!type_list->contains("scrypt") ||
+      !type_list->contains("xsalsa20-poly1305")) {
+    return std::nullopt;
+  }
+
+  // Validate "content" JSON field.
+  const base::Value::List* content_list = encoding_dict->FindList("content");
+  if (!content_list || content_list->size() != 2) {
+    return std::nullopt;
+  }
+
+  if (!content_list->contains("pkcs8") || !content_list->contains("sr25519")) {
+    return std::nullopt;
+  }
+
+  // Validate "version" JSON field.
+  const std::string* version = encoding_dict->FindString("version");
+  if (!version || *version != "3") {
+    return std::nullopt;
+  }
+
+  std::string encoded_bytes;
+  if (!base::Base64Decode(*encoded_str, &encoded_bytes)) {
+    return std::nullopt;
+  }
+
+  if (encoded_bytes.size() != kScryptSaltSize + 4 * 3 + kSecretboxAuthTagSize +
+                                  kSr25519Pkcs8Size + kSecretboxNonceSize) {
+    return std::nullopt;
+  }
+
+  base::SpanReader reader(base::as_byte_span(encoded_bytes));
+
+  std::array<uint8_t, kScryptSaltSize> salt;
+  if (auto salt_span = reader.Read(kScryptSaltSize)) {
+    base::span(salt).copy_from_nonoverlapping(*salt_span);
+  } else {
+    return std::nullopt;
+  }
+
+  uint32_t scrypt_n, scrypt_r, scrypt_p;
+  if (!reader.ReadU32LittleEndian(scrypt_n) ||
+      !reader.ReadU32LittleEndian(scrypt_p) ||
+      !reader.ReadU32LittleEndian(scrypt_r)) {
+    return std::nullopt;
+  }
+
+  crypto::kdf::ScryptParams scrypt_params = {
+      .cost = scrypt_n,
+      .block_size = scrypt_r,
+      .parallelization = scrypt_p,
+      .max_memory_bytes = 64 * 1024 * 1024,  // 64 MB
+  };
+
+  auto scrypt_key = ScryptDeriveKey(password, salt, scrypt_params);
+  if (!scrypt_key) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, kSecretboxNonceSize> nonce;
+  if (auto nonce_span = reader.Read(kSecretboxNonceSize)) {
+    base::span(nonce).copy_from_nonoverlapping(*nonce_span);
+  } else {
+    return std::nullopt;
+  }
+
+  auto encrypted_data = reader.remaining_span();
+  if (encrypted_data.size() != kSr25519Pkcs8Size + kSecretboxAuthTagSize) {
+    return std::nullopt;
+  }
+
+  auto decrypt_result = XSalsaPolyDecrypt(encrypted_data, nonce, *scrypt_key);
+  if (!decrypt_result || decrypt_result->size() != kSr25519Pkcs8Size) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, kSr25519Pkcs8Size> secret_key;
+  base::span(secret_key).copy_from_nonoverlapping(base::span(*decrypt_result));
+
+  return secret_key;
 }
 
 }  // namespace brave_wallet

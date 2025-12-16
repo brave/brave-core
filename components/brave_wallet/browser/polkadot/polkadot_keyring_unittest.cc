@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -459,6 +460,271 @@ TEST(PolkadotKeyring, EncodePrivateKeyForExport_Testnet) {
   {
     auto empty_password_result = keyring.EncodePrivateKeyForExport(0, "");
     EXPECT_FALSE(empty_password_result.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Roundtrip) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  // Test account 0: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    // Get the original secret key
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+
+    // Decode the exported JSON
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    // Verify the secret keys match
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+
+    // Verify we can create a keypair from the decoded secret key
+    auto decoded_keypair =
+        HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
+    auto decoded_public_key = decoded_keypair.GetPublicKey();
+    auto original_public_key = keyring.GetPublicKey(0);
+    EXPECT_EQ(decoded_public_key, original_public_key);
+  }
+
+  // Test account 1: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(1, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(1);
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_WrongPassword) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+  const std::string kWrongPassword = "wrong_password";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  // Try to decode with wrong password - should fail
+  auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
+      *encoded_json, kWrongPassword);
+  EXPECT_FALSE(decoded_secret_key.has_value());
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_EmptyPassword) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet);
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  // Try to decode with empty password - should fail
+  auto decoded_secret_key =
+      PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, "");
+  EXPECT_FALSE(decoded_secret_key.has_value());
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_InvalidJSON) {
+  const std::string kPassword = "test_password_123";
+
+  // Test with invalid JSON
+  {
+    const std::string invalid_json = "{ invalid json }";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(invalid_json, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with empty JSON
+  {
+    const std::string empty_json = "";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(empty_json, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with JSON missing "encoded" field
+  {
+    const std::string json_missing_encoded = R"({"address":"test"})";
+    auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
+        json_missing_encoded, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+
+  // Test with JSON where "encoded" is not a string
+  {
+    const std::string json_wrong_type = R"({"encoded":123})";
+    auto decoded_secret_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(json_wrong_type, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_InvalidBase64) {
+  const std::string kPassword = "test_password_123";
+
+  // Test with invalid base64 in "encoded" field
+  {
+    const std::string json_invalid_base64 =
+        R"({"encoded":"!!!invalid base64!!!","encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"},"address":"test"})";
+    auto decoded_secret_key = PolkadotKeyring::DecodePrivateKeyFromExport(
+        json_invalid_base64, kPassword);
+    EXPECT_FALSE(decoded_secret_key.has_value());
+  }
+}
+
+TEST(PolkadotKeyring, DecodePrivateKeyFromExport_Testnet) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotTestnet);
+
+  // Test roundtrip for testnet
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+    auto decoded_pkcs8_key =
+        PolkadotKeyring::DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+  }
+}
+
+TEST(PolkadotKeyring, MissingParts) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  const std::string kPassword = "test_password_123";
+
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotTestnet);
+
+  // Missing pkcs8 in content.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing sr25519 in content.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing scrypt in type.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing xsalsa20-poly1305 in type.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Version mismatch.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"2"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing content.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing encoding.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing type.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Missing encoded.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Corrupted encoded.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
+  }
+
+  // Corrupted encoded - wrong length.
+  {
+    constexpr const char json[] =
+        R"({
+            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "encoding":{"content":["pkcs8", "sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_FALSE(PolkadotKeyring::DecodePrivateKeyFromExport(json, kPassword));
   }
 }
 
