@@ -6,9 +6,9 @@
 #include <cstddef>
 
 #include "base/android/jni_android.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ephemeral_storage/android/jni_headers/BraveFirstPartyStorageCleanerUtils_jni.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "chrome/browser/android/tab_android.h"
 
 namespace brave_shields {
@@ -30,7 +30,8 @@ static void JNI_BraveFirstPartyStorageCleanerUtils_CleanupTLDFirstPartyStorage(
   }
 
   brave_shields::BraveShieldsTabHelper* brave_shields_tab_helper =
-      brave_shields::BraveShieldsTabHelper::GetOrCreateForWebContents(web_contents);
+      brave_shields::BraveShieldsTabHelper::GetOrCreateForWebContents(
+          web_contents);
   if (!brave_shields_tab_helper) {
     return;
   }
