@@ -1,6 +1,0 @@
-specific_include_rules = {
-  "polkadot_keyring\.h": [
-    "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
-  ],
-}
-

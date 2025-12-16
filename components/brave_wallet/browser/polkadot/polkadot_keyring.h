@@ -8,13 +8,12 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
+#include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 
 namespace brave_wallet {
 
 inline constexpr size_t kPolkadotSeedSize = 32u;
-inline constexpr uint8_t kPolkadotEncryptionSaltSize = 32u;
 
 class PolkadotKeyring {
  public:
@@ -64,8 +63,8 @@ class PolkadotKeyring {
 
   // Sets random bytes for testing for private key export.
   void SetRandBytesForTesting(
-      const std::array<uint8_t, 32>& seed_bytes,
-      const std::array<uint8_t, crypto_secretbox_NONCEBYTES>& nonce_bytes);
+      const std::array<uint8_t, kScryptSaltSize>& seed_bytes,
+      const std::array<uint8_t, kSecretboxNonceSize>& nonce_bytes);
 
  private:
   HDKeySr25519& EnsureKeyPair(uint32_t account_index);
@@ -74,9 +73,9 @@ class PolkadotKeyring {
   mojom::KeyringId keyring_id_;
   base::flat_map<uint32_t, HDKeySr25519> secondary_keys_;
 
-  std::optional<std::array<uint8_t, kPolkadotEncryptionSaltSize>>
+  std::optional<std::array<uint8_t, kScryptSaltSize>>
       rand_seed_bytes_for_testing_;
-  std::optional<std::array<uint8_t, crypto_secretbox_NONCEBYTES>>
+  std::optional<std::array<uint8_t, kSecretboxNonceSize>>
       rand_nonce_bytes_for_testing_;
 };
 }  // namespace brave_wallet
