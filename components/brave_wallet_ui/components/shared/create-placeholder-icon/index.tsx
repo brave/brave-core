@@ -115,13 +115,18 @@ export function withPlaceholderIcon<
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
     const remoteImage = React.useMemo(() => {
+      // If the token is a non-fungible token, return the token image URL
+      // chrome-untrusted://image?url=... will be applied in nft_script.ts.
+      if (isNonFungibleToken) {
+        return tokenImageURL
+      }
       if (isRemoteURL) {
         return `chrome://image?url=${encodeURIComponent(
           tokenImageURL,
         )}&staticEncode=true`
       }
       return ''
-    }, [isRemoteURL, tokenImageURL])
+    }, [isRemoteURL, tokenImageURL, isNonFungibleToken])
 
     // render
     if (!asset) {
