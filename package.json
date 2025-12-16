@@ -54,7 +54,8 @@
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
     "build_rust_toolchain_aux": "node ./build/commands/scripts/buildRustToolchainAux.js",
     "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js",
-    "coverage_report": "node ./build/commands/scripts/commands.js coverage_report"
+    "coverage_report": "node ./build/commands/scripts/commands.js coverage_report",
+    "generate_about_credits": "node ./build/commands/scripts/generateAboutCredits.js"
   },
   "repository": {
     "type": "git",
