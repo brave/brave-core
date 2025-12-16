@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/browser/local_ai/candle_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/local_ai/browser/candle_service.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_gemma_bridge_generated.h"
@@ -60,7 +61,11 @@ WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedCandleEmbeddingGemmaUI)
 
 void UntrustedCandleEmbeddingGemmaUI::BindInterface(
     mojo::PendingReceiver<mojom::CandleService> receiver) {
-  CandleService::GetInstance()->BindReceiver(std::move(receiver));
+  auto* browser_context = web_ui()->GetWebContents()->GetBrowserContext();
+  auto* service = CandleServiceFactory::GetForBrowserContext(browser_context);
+  if (service) {
+    service->BindReceiver(std::move(receiver));
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

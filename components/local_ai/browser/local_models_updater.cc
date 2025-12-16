@@ -123,6 +123,19 @@ LocalModelsUpdaterState* LocalModelsUpdaterState::GetInstance() {
   return instance.get();
 }
 
+void LocalModelsUpdaterState::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+
+  // If component is already ready, notify immediately
+  if (!install_dir_.empty()) {
+    observer->OnComponentReady(install_dir_);
+  }
+}
+
+void LocalModelsUpdaterState::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   if (install_dir.empty()) {
     return;
@@ -135,6 +148,11 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaConfigFile);
   embeddinggemma_tokenizer_path_ =
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaTokenizerFile);
+
+  // Notify all observers that the component is ready
+  for (auto& observer : observers_) {
+    observer.OnComponentReady(install_dir_);
+  }
 }
 
 const base::FilePath& LocalModelsUpdaterState::GetInstallDir() const {
