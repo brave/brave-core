@@ -247,6 +247,15 @@ std::vector<OAIMessage> BuildOAIMessages(
               mojom::PageExcerptContentBlock::New(*message->selected_text)));
     }
 
+    // Add Skill definition content block if this turn has one
+    if (message->character_type == mojom::CharacterType::HUMAN &&
+        message->skill) {
+      std::string skill_definition =
+          EngineConsumer::BuildSkillDefinitionMessage(message->skill);
+      oai_message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+          mojom::TextContentBlock::New(skill_definition)));
+    }
+
     // Build the main content block
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
       oai_message.content.push_back(
