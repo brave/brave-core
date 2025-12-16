@@ -134,6 +134,65 @@ std::vector<OAIMessage> BuildOAIMessages(
       }
     }
 
+    if (message->uploaded_files) {
+      std::vector<mojom::ContentBlockPtr> uploaded_images_content_blocks;
+      std::vector<mojom::ContentBlockPtr> screenshots_content_blocks;
+      std::vector<mojom::ContentBlockPtr> uploaded_pdfs_content_blocks;
+
+      uploaded_images_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+              "These images are uploaded by the user")));
+      screenshots_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New("These images are screenshots")));
+      uploaded_pdfs_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+              "These PDFs are uploaded by the user")));
+
+      for (const auto& uploaded_file : *message->uploaded_files) {
+        if (uploaded_file->type == mojom::UploadedFileType::kImage ||
+            uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
+          auto image = mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(
+                  GURL(EngineConsumer::GetImageDataURL(uploaded_file->data))));
+          if (uploaded_file->type == mojom::UploadedFileType::kImage) {
+            uploaded_images_content_blocks.push_back(std::move(image));
+          } else {
+            screenshots_content_blocks.push_back(std::move(image));
+          }
+        } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
+          uploaded_pdfs_content_blocks.push_back(
+              mojom::ContentBlock::NewFileContentBlock(
+                  mojom::FileContentBlock::New(
+                      GURL(EngineConsumer::GetPdfDataURL(uploaded_file->data)),
+                      uploaded_file->filename.empty()
+                          ? "uploaded.pdf"
+                          : uploaded_file->filename)));
+        }
+      }
+
+      if (uploaded_images_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_images_content_blocks.begin()),
+            std::make_move_iterator(uploaded_images_content_blocks.end()));
+      }
+
+      if (screenshots_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(screenshots_content_blocks.begin()),
+            std::make_move_iterator(screenshots_content_blocks.end()));
+      }
+
+      if (uploaded_pdfs_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_pdfs_content_blocks.begin()),
+            std::make_move_iterator(uploaded_pdfs_content_blocks.end()));
+      }
+    }
+
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {
       oai_message.content.push_back(

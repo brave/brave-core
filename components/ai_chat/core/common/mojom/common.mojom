@@ -115,6 +115,12 @@ struct SkillEntry {
   string prompt;
 };
 
+struct FileContentBlock {
+  // base64 encoded data uri
+  url.mojom.Url file_data;
+  string filename;
+};
+
 struct ImageContentBlock {
   // Only base64 encoded data uri is supported
   url.mojom.Url image_url;
@@ -170,6 +176,7 @@ union ContentBlock {
   // Standard OpenAI content blocks
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
+  FileContentBlock file_content_block;
 
   // Brave customized content blocks
   PageExcerptContentBlock page_excerpt_content_block;

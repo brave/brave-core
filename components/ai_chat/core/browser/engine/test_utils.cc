@@ -10,6 +10,7 @@
 
 #include "base/numerics/clamped_math.h"
 #include "base/time/time.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
@@ -59,6 +60,85 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       "chat-basic", nullptr /* near_verification_status */));
 
   return history;
+}
+
+void VerifyTextBlock(const base::Location& location,
+                     const mojom::ContentBlockPtr& block,
+                     std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kTextContentBlock);
+  EXPECT_EQ(block->get_text_content_block()->text, expected_text);
+}
+
+void VerifyImageBlock(const base::Location& location,
+                      const mojom::ContentBlockPtr& block,
+                      const GURL& expected_url) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kImageContentBlock);
+  EXPECT_EQ(block->get_image_content_block()->image_url, expected_url);
+}
+
+void VerifyFileBlock(const base::Location& location,
+                     const mojom::ContentBlockPtr& block,
+                     const GURL& expected_url,
+                     std::string_view expected_filename) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kFileContentBlock);
+  EXPECT_EQ(block->get_file_content_block()->file_data, expected_url);
+  EXPECT_EQ(block->get_file_content_block()->filename, expected_filename);
+}
+
+void VerifyPageTextBlock(const base::Location& location,
+                         const mojom::ContentBlockPtr& block,
+                         std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kPageTextContentBlock);
+  EXPECT_EQ(block->get_page_text_content_block()->text, expected_text);
+}
+
+void VerifyPageExcerptBlock(const base::Location& location,
+                            const mojom::ContentBlockPtr& block,
+                            std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kPageExcerptContentBlock);
+  EXPECT_EQ(block->get_page_excerpt_content_block()->text, expected_text);
+}
+
+void VerifyVideoTranscriptBlock(const base::Location& location,
+                                const mojom::ContentBlockPtr& block,
+                                std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kVideoTranscriptContentBlock);
+  EXPECT_EQ(block->get_video_transcript_content_block()->text, expected_text);
+}
+
+void VerifyRequestTitleBlock(const base::Location& location,
+                             const mojom::ContentBlockPtr& block,
+                             std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kRequestTitleContentBlock);
+  EXPECT_EQ(block->get_request_title_content_block()->text, expected_text);
+}
+
+void VerifyChangeToneBlock(const base::Location& location,
+                           const mojom::ContentBlockPtr& block,
+                           std::string_view expected_text,
+                           std::string_view expected_tone) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kChangeToneContentBlock);
+  EXPECT_EQ(block->get_change_tone_content_block()->text, expected_text);
+  EXPECT_EQ(block->get_change_tone_content_block()->tone, expected_tone);
+}
+
+void VerifySimpleRequestBlock(const base::Location& location,
+                              const mojom::ContentBlockPtr& block,
+                              mojom::SimpleRequestType expected_type) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
+  EXPECT_EQ(block->get_simple_request_content_block()->type, expected_type);
 }
 
 }  // namespace ai_chat
