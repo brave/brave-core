@@ -221,8 +221,11 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang,
     chromium_grd_strings = get_grd_strings(
         chromium_grd_file_path, validate_tags=False)
     # Special treatment for brand strings files (brave_strings.grd, etc.)
+    # Check if this is a brand strings file by detecting brand from filename
     brave_strings_string_ids = []
-    if brand and os.path.basename(grd_file_path) == f'{brand}_strings.grd':
+    file_brand = get_brand_from_grd_name(grd_file_path)
+    if file_brand and os.path.basename(
+            grd_file_path) == f'{file_brand}_strings.grd':
         assert len(grd_strings) == len(chromium_grd_strings) + \
             len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
             len(INSTALLER_STRINGS)
@@ -273,7 +276,8 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang,
                     # print(f'fp: {old_fp} -> {new_fp}')
 
         # Special treatment for brand strings files (brave_strings.grd, etc.)
-        if brand and os.path.basename(grd_file_path) == f'{brand}_strings.grd':
+        if file_brand and os.path.basename(
+                grd_file_path) == f'{file_brand}_strings.grd':
             add_google_chrome_translations(xtb_file, xml_tree,
                                            brave_strings_string_ids)
 
