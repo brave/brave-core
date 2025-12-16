@@ -11,6 +11,7 @@ export const style = scoped.css`
     --leo-icon-size: var(--search-engine-icon-size, 16px);
     height: var(--leo-icon-size);
     width: var(--leo-icon-size);
+    display: block;
   }
 
   .engine-picker-button {
