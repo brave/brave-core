@@ -154,14 +154,32 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
 
     private void launchReviewFlow() {
         if (mReviewManager != null && mReviewInfo != null && mContext instanceof Activity) {
-            // We can get the ReviewInfo object
-            Task<Void> flow = mReviewManager.launchReviewFlow((Activity) mContext, mReviewInfo);
-            flow.addOnCompleteListener(task1
-                    -> {
+            try {
+                // We can get the ReviewInfo object
+                Task<Void> flow = mReviewManager.launchReviewFlow((Activity) mContext, mReviewInfo);
+                flow.addOnCompleteListener(
+                        task1 -> {
+                            if (!task1.isSuccessful() && task1.getException() != null) {
+                                // Handle failures in the review flow. Fall back to opening Play
+                                // Store directly if the review flow fails for any reason.
+                                Exception exception = task1.getException();
+                                Log.e(
+                                        TAG,
+                                        "Review flow failed: " + exception.getMessage(),
+                                        exception);
+                                RateUtils.getInstance().openPlaystore(mContext);
+                            }
                             // The flow has finished. The API does not indicate whether the user
                             // reviewed or not, or even whether the review dialog was shown.
                             // Thus, no matter the result, we continue our app flow.
-                    });
+                        });
+            } catch (RuntimeException e) {
+                // Catch BadParcelableException wrapped in RuntimeException that can occur when
+                // PlayCoreDialogWrapperActivity tries to deserialize ReviewInfo from Intent extras.
+                // Fall back to opening Play Store directly.
+                Log.e(TAG, "Failed to launch review flow: " + e.getMessage(), e);
+                RateUtils.getInstance().openPlaystore(mContext);
+            }
         } else {
             // if case fails then open play store app page
             RateUtils.getInstance().openPlaystore(mContext);

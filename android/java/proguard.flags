@@ -101,3 +101,11 @@
 -keep class org.chromium.ui.base.Clipboard {
     *** clear(...);
 }
+
+# Keep Play Core Review classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.review.** { *; }
+-keep class com.google.android.play.core.common.** { *; }
+
+# Keep Play Core App Update classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.appupdate.** { *; }
+-keep class com.google.android.play.core.install.** { *; }
