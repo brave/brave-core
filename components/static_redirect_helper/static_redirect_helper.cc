@@ -56,8 +56,6 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix3);
   static base::NoDestructor<URLPattern> crlSet_pattern4(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
-  static base::NoDestructor<URLPattern> crxDownload_pattern(
-      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
   static base::NoDestructor<URLPattern> autofill_pattern(
       URLPattern::SCHEME_HTTPS, kAutofillPrefix);
   static base::NoDestructor<URLPattern> favicon_pattern(
@@ -102,13 +100,6 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
   if (!safebrowsing_endpoint.empty() &&
       safebrowsingcrxlist_pattern->MatchesHost(request_url)) {
     replacements.SetHostStr(kBraveSafeBrowsing2Proxy);
-    *new_url = request_url.ReplaceComponents(replacements);
-    return;
-  }
-
-  if (crxDownload_pattern->MatchesURL(request_url)) {
-    replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crxdownload.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return;
   }

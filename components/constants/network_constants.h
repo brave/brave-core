@@ -21,8 +21,6 @@ inline constexpr char kBraveStaticProxy[] = "static1.brave.com";
 
 inline constexpr char kAutofillPrefix[] = "https://www.gstatic.com/autofill/*";
 inline constexpr char kClients4Prefix[] = "*://clients4.google.com/";
-inline constexpr char kCRXDownloadPrefix[] =
-    "*://clients2.googleusercontent.com/crx/blobs/*crx*";
 inline constexpr char kEmptyDataURI[] = "data:text/plain,";
 inline constexpr char kEmptyImageDataURI[] =
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///"
