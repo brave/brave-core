@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 
 import {
   TopSitesState,
@@ -13,7 +13,7 @@ import {
 } from '../state/top_sites_state'
 
 export function createTopSitesHandler(
-  store: Store<TopSitesState>,
+  store: StateStore<TopSitesState>,
 ): TopSitesActions {
   let lastRemovedSite: TopSite | null = null
 

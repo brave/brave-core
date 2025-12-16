@@ -5,11 +5,13 @@
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import { debounce } from '$web-common/debounce'
 import { NewTabState, NewTabActions } from './new_tab_state'
 
-export function createNewTabHandler(store: Store<NewTabState>): NewTabActions {
+export function createNewTabHandler(
+  store: StateStore<NewTabState>,
+): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
 

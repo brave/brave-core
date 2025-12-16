@@ -6,7 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
 import { NewTabPageProxy } from './new_tab_page_proxy'
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import { debounce } from '$web-common/debounce'
 
 import {
@@ -63,7 +63,9 @@ function storeEnabledSearchEngines(engines: Set<string>) {
   localStorage.setItem(enabledSearchEnginesStorageKey, JSON.stringify(record))
 }
 
-export function createSearchHandler(store: Store<SearchState>): SearchActions {
+export function createSearchHandler(
+  store: StateStore<SearchState>,
+): SearchActions {
   if (!loadTimeData.getBoolean('ntpSearchFeatureEnabled')) {
     return defaultSearchActions()
   }

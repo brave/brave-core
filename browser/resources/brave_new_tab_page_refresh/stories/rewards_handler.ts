@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 
 import {
   RewardsState,
@@ -12,7 +12,7 @@ import {
 } from '../state/rewards_state'
 
 export function createRewardsHandler(
-  store: Store<RewardsState>,
+  store: StateStore<RewardsState>,
 ): RewardsActions {
   store.update({
     initialized: true,

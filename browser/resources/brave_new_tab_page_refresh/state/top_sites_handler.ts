@@ -10,11 +10,11 @@ import {
   TopSitesActions,
   TopSitesListKind,
 } from './top_sites_state'
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import { debounce } from '$web-common/debounce'
 
 export function createTopSitesHandler(
-  store: Store<TopSitesState>,
+  store: StateStore<TopSitesState>,
 ): TopSitesActions {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy

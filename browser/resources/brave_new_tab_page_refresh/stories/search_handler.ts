@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 import {
   SearchState,
   SearchActions,
   defaultSearchActions,
 } from '../state/search_state'
 
-export function createSearchHandler(store: Store<SearchState>): SearchActions {
+export function createSearchHandler(
+  store: StateStore<SearchState>,
+): SearchActions {
   store.update({
     initialized: true,
 

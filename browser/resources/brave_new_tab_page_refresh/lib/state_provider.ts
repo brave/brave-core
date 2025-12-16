@@ -5,15 +5,96 @@
 
 import * as React from 'react'
 
-import { Store, createStore } from './store'
+import { StateStore, createStateStore } from './state_store'
 
+/**
+ * Creates a React context provider component for managing application state.
+ * The returned Provider component has `useState` and `useActions` hooks
+ * attached as static methods for accessing state and actions within the
+ * provider tree.
+ *
+ * @param initialState - The initial state object for the store.
+ * @param createHandler - A function that receives the state store and returns
+ *   an action handler. Action handlers typically call `store.update()` to
+ *   modify state.
+ * @returns A Provider component with attached `useState` and `useActions`
+ *   hooks.
+ *
+ * @example
+ * // 1. Define state and actions:
+ *
+ * interface AppState {
+ *   count: number
+ *   name: string
+ * }
+ *
+ * function defaultState(): AppState {
+ *   return { count: 0, name: 'test' }
+ * }
+ *
+ * interface AppActions {
+ *   increment(): void
+ *   setName(name: string): void
+ * }
+ *
+ * function createHandler(store: StateStore<AppState>): AppActions {
+ *   return {
+ *     increment() {
+ *       store.update((s) => ({ count: s.count + 1 }))
+ *     },
+ *     setName(name) {
+ *       store.update({ name })
+ *     },
+ *   }
+ * }
+ *
+ * // 2. Create the provider:
+ *
+ * export const AppStateProvider = createStateProvider(
+ *   defaultState(),
+ *   createHandler
+ * )
+ *
+ * // Export hooks for convenience:
+ *
+ * export const useAppState = AppStateProvider.useState
+ * export const useAppActions = AppStateProvider.useActions
+ *
+ * // Wrap your app with the provider. The optional `name` prop exposes the
+ * // store to `window.appState[name]` for debugging.
+ *
+ * function App() {
+ *   return (
+ *     <AppStateProvider name='myApp'>
+ *       <MyComponent />
+ *     </AppStateProvider>
+ *   )
+ * }
+ *
+ * // Use hooks in components to access state and actions:
+ *
+ * function MyComponent() {
+ *   // Select specific state values with a mapping function.
+ *   const count = useAppState((s) => s.count)
+ *   const name = useAppState((s) => s.name)
+ *
+ *   // Get actions to update state.
+ *   const actions = useAppActions()
+ *
+ *   return (
+ *     <button onClick={() => actions.increment()}>
+ *       {count}
+ *     </button>
+ *   )
+ * }
+ */
 export function createStateProvider<State, Actions>(
   initialState: State,
-  createHandler: (store: Store<State>) => Actions,
+  createHandler: (store: StateStore<State>) => Actions,
 ) {
   interface ContextValue {
-    store: Store<State>
-    handler: Actions
+    store: StateStore<State>
+    actions: Actions
   }
 
   const context = React.createContext<ContextValue | null>(null)
@@ -27,7 +108,7 @@ export function createStateProvider<State, Actions>(
   }
 
   function useActions(): Actions {
-    return useContextValue().handler
+    return useContextValue().actions
   }
 
   function useState<T>(map: (state: State) => T): T {
@@ -44,15 +125,15 @@ export function createStateProvider<State, Actions>(
 
   interface ProviderProps {
     name?: string
-    createHandler?: (store: Store<State>) => Actions
+    createHandler?: (store: StateStore<State>) => Actions
     children: React.ReactNode
   }
 
   function Provider(props: ProviderProps) {
     const value = React.useMemo(() => {
-      const store = createStore(initialState)
-      const handler = (props.createHandler ?? createHandler)(store)
-      return { store, handler }
+      const store = createStateStore(initialState)
+      const actions = (props.createHandler ?? createHandler)(store)
+      return { store, actions }
     }, [props.createHandler])
 
     React.useEffect(() => {

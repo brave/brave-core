@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Store } from '../lib/store'
+import { StateStore } from '../lib/state_store'
 
 import {
   VpnState,
@@ -12,7 +12,7 @@ import {
   ConnectionState,
 } from '../state/vpn_state'
 
-export function createVpnHandler(store: Store<VpnState>): VpnActions {
+export function createVpnHandler(store: StateStore<VpnState>): VpnActions {
   store.update({
     initialized: true,
     vpnFeatureEnabled: true,
