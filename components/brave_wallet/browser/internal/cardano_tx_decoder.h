@@ -33,7 +33,7 @@ class CardanoTxDecoder {
     ~SerializableTxInput();
 
     std::array<uint8_t, kCardanoTxHashSize> tx_hash = {};
-    base::StrictNumeric<uint32_t> index = 0u;
+    uint32_t index = 0;
   };
 
   struct SerializableTxOutput {
@@ -45,7 +45,7 @@ class CardanoTxDecoder {
     ~SerializableTxOutput();
 
     std::vector<uint8_t> address_bytes;
-    base::StrictNumeric<uint64_t> amount = 0u;
+    uint64_t amount = 0u;
   };
 
   struct SerializableTxBody {
@@ -58,7 +58,7 @@ class CardanoTxDecoder {
 
     std::vector<SerializableTxInput> inputs;
     std::vector<SerializableTxOutput> outputs;
-    base::StrictNumeric<uint64_t> fee = 0u;
+    uint64_t fee = 0u;
     std::optional<base::StrictNumeric<uint64_t>> ttl;
   };
 
@@ -111,18 +111,27 @@ class CardanoTxDecoder {
   CardanoTxDecoder();
   ~CardanoTxDecoder();
 
+  // Do not use CBOR Tag for encoding some Cardano values. Need this for legacy
+  // tests.
   static void SetUseSetTagForTesting(bool enable);
 
+  // Returns CBOR encoded transaction.
   static std::optional<std::vector<uint8_t>> EncodeTransaction(
       const SerializableTx& tx);
+
+  // Returns CBOR encoded transaction output.
   static std::optional<std::vector<uint8_t>> EncodeTransactionOutput(
       const SerializableTxOutput& output);
+
+  // Returns tx hash calculated from tx body.
   static std::optional<std::array<uint8_t, kCardanoTxHashSize>>
   GetTransactionHash(const SerializableTx& tx);
-
+  // Decode transaction from CBOR bytes.
   static std::optional<DecodedTx> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);
 
+  // Decodes tx into a cbor value, then adds vk witnesses into it. Returns cbor
+  // encoded tx with added witnesses. Need this for dApp signing.
   static std::optional<std::vector<uint8_t>> AddWitnessesToTransaction(
       const std::vector<uint8_t>& unsigned_tx_bytes,
       const SerializableTxWitness& witness);
