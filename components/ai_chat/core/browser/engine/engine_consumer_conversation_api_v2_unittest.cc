@@ -678,9 +678,9 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest,
-       GenerateAssistantResponse_WithMemoryEvent) {
-  auto* mock_api_client = GetMockConversationAPIClient();
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_WithMemoryBlock) {
+  auto* mock_api_client = GetMockConversationAPIV2Client();
 
   // Test with user customization enabled
   {
@@ -696,17 +696,29 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
-    std::string expected_events = R"([
-      {"content": "", "memory": {"name": "John Doe", "job": "Software Engineer",
-       "tone": "Professional", "other": "Loves coding"}, "role": "user",
-       "type": "userMemory"},
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "brave-user-memory",
+                "memory": {
+                  "job": "Software Engineer",
+                  "name": "John Doe",
+                  "other": "Loves coding",
+                  "tone": "Professional"
+                }
+              },
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -714,15 +726,24 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
-          EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 3u);
+
+          auto expected_memory =
+              BuildExpectedMemory({{"job", "Software Engineer"},
+                                   {"name", "John Doe"},
+                                   {"other", "Loves coding"},
+                                   {"tone", "Professional"}},
+                                  {});
+          VerifyMemoryBlock(FROM_HERE, messages[0].content[0], expected_memory);
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[1],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[2],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -760,22 +781,29 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     memories.Append("I work in the tech industry");
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
-    std::string expected_events = R"([
-      {"content": "",
-       "memory":{
-         "memories": [
-           "I prefer concise explanations",
-           "I work in the tech industry"
-         ]
-       },
-       "role": "user", "type": "userMemory"},
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "brave-user-memory",
+                "memory": {
+                  "memories": [
+                    "I prefer concise explanations",
+                    "I work in the tech industry"
+                  ]
+                }
+              },
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -783,11 +811,22 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 3u);
+
+          auto expected_memory =
+              BuildExpectedMemory({}, {{"memories",
+                                        {"I prefer concise explanations",
+                                         "I work in the tech industry"}}});
+          VerifyMemoryBlock(FROM_HERE, messages[0].content[0], expected_memory);
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[1],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[2],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -830,19 +869,28 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     memories.Append("I like creative solutions");
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
-    std::string expected_events = R"([
-      {"content": "",
-       "memory": {
-         "name": "Alice", "job": "Designer",
-         "memories": ["I like creative solutions"]},
-         "role": "user", "type": "userMemory"},
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "brave-user-memory",
+                "memory": {
+                  "job": "Designer",
+                  "memories": ["I like creative solutions"],
+                  "name": "Alice"
+                }
+              },
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -850,11 +898,21 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 3u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kUserMemory);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 3u);
+
+          auto expected_memory = BuildExpectedMemory(
+              {{"job", "Designer"}, {"name", "Alice"}},
+              {{"memories", {"I like creative solutions"}}});
+          VerifyMemoryBlock(FROM_HERE, messages[0].content[0], expected_memory);
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[1],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[2],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -887,14 +945,20 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
     prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
-    std::string expected_events = R"([
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -902,13 +966,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 2u);
+
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -946,14 +1014,20 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
                    std::move(empty_customizations_dict));
 
-    std::string expected_events = R"([
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -961,13 +1035,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 2u);
+
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -1004,14 +1082,20 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     base::Value::List empty_memories;
     prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(empty_memories));
 
-    std::string expected_events = R"([
-      {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
-      {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-    ])";
+    std::string expected_messages = absl::StrFormat(
+        R"([
+          {
+            "role": "user",
+            "content": [
+              {"type": "brave-page-text", "text": "%s"},
+              {"type": "text", "text": "%s"}
+            ]
+          }
+        ])",
+        "This is a test page content.", "What is this about?");
 
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<ConversationEvent> conversation,
+        .WillOnce([&](std::vector<OAIMessage> messages,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
@@ -1019,13 +1103,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
-          EXPECT_EQ(conversation.size(), 2u);
-          EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
-          EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-          EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
-          EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                    FormatComparableEventsJson(expected_events));
+          ASSERT_EQ(messages.size(), 1u);
+          EXPECT_EQ(messages[0].role, "user");
+          ASSERT_EQ(messages[0].content.size(), 2u);
+
+          VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                              "This is a test page content.");
+          VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                          "What is this about?");
+
+          EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                    FormatComparableMessagesJson(expected_messages));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("Test response"));
@@ -1054,9 +1142,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   }
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest,
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
        GenerateAssistantResponse_TemporaryChatExcludesMemory) {
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
 
   // Setup user memory to ensure it's available but should be excluded
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
@@ -1072,15 +1160,21 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   memories.Append("I work in the tech industry");
   prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
 
-  // Expect NO memory event when is_temporary_chat=true
-  std::string expected_events = R"([
-    {"role": "user", "type": "pageText",
-     "content": "This is a test page content."},
-    {"role": "user", "type": "chatMessage", "content": "What is this about?"}
-  ])";
+  // Expect NO memory content block when is_temporary_chat=true
+  std::string expected_messages = absl::StrFormat(
+      R"([
+        {
+          "role": "user",
+          "content": [
+            {"type": "brave-page-text", "text": "%s"},
+            {"type": "text", "text": "%s"}
+          ]
+        }
+      ])",
+      "This is a test page content.", "What is this about?");
 
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -1088,15 +1182,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
-        // Should only have 2 events: page content and user message
-        // NO memory event should be present
-        EXPECT_EQ(conversation.size(), 2u);
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
-        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
-                  FormatComparableEventsJson(expected_events));
+        // Should only have 1 message with 2 content blocks
+        // NO memory content block should be present
+        ASSERT_EQ(messages.size(), 1u);
+        EXPECT_EQ(messages[0].role, "user");
+        ASSERT_EQ(messages[0].content.size(), 2u);
+
+        VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                            "This is a test page content.");
+        VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                        "What is this about?");
+
+        EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
+                  FormatComparableMessagesJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New("Test response"));
@@ -2500,12 +2598,8 @@ TEST_P(EngineConsumerConversationAPIV2UnitTest_GenerateRewrite,
             ASSERT_GE(first_message.content.size(), 2u);
 
             // First content block should be the page excerpt
-            ASSERT_EQ(first_message.content[0]->which(),
-                      mojom::ContentBlock::Tag::kPageExcerptContentBlock);
-            EXPECT_EQ(first_message.content[0]
-                          ->get_page_excerpt_content_block()
-                          ->text,
-                      test_text);
+            VerifyPageExcerptBlock(FROM_HERE, first_message.content[0],
+                                   test_text);
 
             // Second content block should be the action type
             ASSERT_EQ(first_message.content[1]->which(),
