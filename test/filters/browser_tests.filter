@@ -2458,6 +2458,7 @@
 
 # These tests fail because we disable kAimEnabled.
 -ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
+-ChromeAimEligibilityServiceOffTheRecordBrowserTest.IsCreateImagesEligibleReturnsFalseForOffTheRecord
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 
 # This test fails because we add our own item to omnibox contextual search
