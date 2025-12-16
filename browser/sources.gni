@@ -43,6 +43,7 @@ import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -168,7 +169,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_education:buildflags",
   "//brave/components/brave_new_tab_ui:mojom",
-  "//brave/components/brave_news/common:mojom",
+  "//brave/components/brave_news/common/buildflags",
   "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_policy",
@@ -335,8 +336,15 @@ if (!is_android) {
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
-    "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/ui/webui/brave_welcome_page",
+  ]
+
+  if (enable_brave_news) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
+  }
+
+  brave_chrome_browser_deps += [
     "//brave/browser/user_education:features",
     "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/regional_capabilities",
@@ -619,7 +627,9 @@ if (is_mac) {
 
 brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
-brave_chrome_browser_sources += brave_browser_brave_news_sources
+if (enable_brave_news) {
+  brave_chrome_browser_sources += brave_browser_brave_news_sources
+}
 brave_chrome_browser_sources += brave_browser_brave_referrals_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
@@ -647,7 +657,10 @@ brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
-brave_chrome_browser_deps += brave_browser_brave_news_deps
+if (enable_brave_news) {
+  brave_chrome_browser_deps += brave_browser_brave_news_deps
+  brave_chrome_browser_deps += [ "//brave/components/brave_news/common:mojom" ]
+}
 brave_chrome_browser_deps += brave_browser_brave_referrals_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps

@@ -8,7 +8,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -26,6 +26,10 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
@@ -130,8 +134,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowSidePanelButton] = settings_api::PrefType::kBoolean;
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   (*s_brave_allowlist)[brave_news::prefs::kShouldShowToolbarButton] =
       settings_api::PrefType::kBoolean;
+#endif
   (*s_brave_allowlist)[kLocationBarIsWide] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kAutocompleteEnabled] =
       settings_api::PrefType::kBoolean;

@@ -16,7 +16,9 @@ import NavigationItem from '@brave/leo/react/navigationItem'
 import NavigationMenu from '@brave/leo/react/navigationMenu'
 
 import { getLocale } from '$web-common/locale'
+// <if expr="enable_brave_news">
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
+// </if>
 import { loadTimeData } from '$web-common/loadTimeData'
 import Dialog from '@brave/leo/react/dialog'
 
@@ -80,7 +82,9 @@ export enum TabType {
   BackgroundImage = 'backgroundImage',
   BraveStats = 'braveStats',
   TopSites = 'topSites',
+  // <if expr="enable_brave_news">
   BraveNews = 'braveNews',
+  // </if>
   Clock = 'clock',
   Cards = 'cards',
   Search = 'search'
@@ -91,7 +95,9 @@ const tabTypes = Object.values(TabType)
 type TabMap<T> = { [P in TabType]: T }
 const tabIcons: TabMap<string> = {
   [TabType.BackgroundImage]: 'image',
+  // <if expr="enable_brave_news">
   [TabType.BraveNews]: 'product-brave-news',
+  // </if>
   [TabType.BraveStats]: 'bar-chart',
   [TabType.Clock]: 'clock',
   [TabType.TopSites]: 'window-content',
@@ -101,7 +107,9 @@ const tabIcons: TabMap<string> = {
 
 const tabTranslationKeys: TabMap<string> = {
   [TabType.BackgroundImage]: 'backgroundImageTitle',
-  [TabType.BraveNews]: S.BRAVE_NEWS_SETTINGS_TITLE,
+  // <if expr="enable_brave_news">
+  [TabType.BraveNews]: 'braveNewsTitle',
+  // </if>
   [TabType.BraveStats]: 'statsTitle',
   [TabType.Clock]: 'clockTitle',
   [TabType.TopSites]: 'topSitesTitle',
@@ -113,23 +121,36 @@ const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget
 export default function Settings(props: Props) {
   const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
     (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
-    (featureFlagSearchWidget || t !== TabType.Search) &&
-    (!props.newTabData.isBraveNewsDisabledByPolicy ||
+    (featureFlagSearchWidget || t !== TabType.Search)
+    // <if expr="enable_brave_news">
+    && (!props.newTabData.isBraveNewsDisabledByPolicy ||
       t !== TabType.BraveNews)
+    // </if>
   ), [
     props.allowBackgroundCustomization,
+    // <if expr="enable_brave_news">
     props.newTabData.isBraveNewsDisabledByPolicy
+    // </if>
   ])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
     ? TabType.BackgroundImage
     : TabType.BraveStats)
+  // <if expr="enable_brave_news">
   const { customizePage, setCustomizePage } = useBraveNews()
+  // </if>
+
+  let backdropCloses = true
+  // <if expr="enable_brave_news">
+  backdropCloses = !customizePage
+  // </if>
 
   const changeTab = React.useCallback((tab: TabType) => {
+    // <if expr="enable_brave_news">
     if (tab === TabType.BraveNews) {
       setCustomizePage('news')
       return
     }
+    // </if>
 
     setActiveTab(tab)
   }, [])
@@ -144,7 +165,7 @@ export default function Settings(props: Props) {
     isOpen={props.showSettingsMenu}
     showClose
     onClose={() => { props.onClose?.() }}
-    backdropClickCloses={!customizePage}
+    backdropClickCloses={backdropCloses}
   >
     <SettingsTitle slot='title'>
       {getLocale('dashboardSettingsTitle')}

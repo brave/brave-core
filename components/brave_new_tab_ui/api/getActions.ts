@@ -8,7 +8,9 @@ import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
+// <if expr="enable_brave_news">
 import * as todayActions from '../actions/today_actions'
+// </if>
 import * as braveVPNActions from '../actions/brave_vpn_actions'
 import { NewTabActions } from '../constants/new_tab_types'
 import store from '../store'
@@ -30,7 +32,9 @@ export function getActionsForDispatch (dispatch: Dispatch) {
   const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, rewardsActions)
   return {
     ...bindActionCreators(allActions, dispatch),
+    // <if expr="enable_brave_news">
     today: bindActionCreators(todayActions, dispatch),
+    // </if>
     braveVPN: bindActionCreators(braveVPNActions, dispatch)
   }
 }

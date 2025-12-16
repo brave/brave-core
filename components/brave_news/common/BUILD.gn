@@ -4,7 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(enable_brave_news)
 
 source_set("unit_tests") {
   testonly = true
@@ -38,7 +41,10 @@ static_library("common") {
     "switches.h",
   ]
 
-  public_deps = [ ":mojom" ]
+  public_deps = [
+    ":mojom",
+    "//brave/components/brave_news/common/buildflags",
+  ]
 
   deps = [
     "//base",

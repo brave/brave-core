@@ -3,20 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//testing/libfuzzer/fuzzer_test.gni")
 import("//third_party/libprotobuf-mutator/fuzzable_proto_library.gni")
 
 assert(use_libfuzzer)
 
-fuzzer_test("brave_news_parse_feed_bytes_fuzzer") {
-  sources = [ "brave_news/parse_feed_bytes_fuzzer.cc" ]
-  deps = [
-    "//base",
-    "//brave/components/brave_news/browser:rust_lib",
-  ]
+if (enable_brave_news) {
+  fuzzer_test("brave_news_parse_feed_bytes_fuzzer") {
+    sources = [ "brave_news/parse_feed_bytes_fuzzer.cc" ]
+    deps = [
+      "//base",
+      "//brave/components/brave_news/browser:rust_lib",
+    ]
 
-  seed_corpus = "brave_news/corpus/parse_feed_bytes_fuzzer/"
-  dict = "//third_party/libxml/fuzz/xml.dict"
+    seed_corpus = "brave_news/corpus/parse_feed_bytes_fuzzer/"
+    dict = "//third_party/libxml/fuzz/xml.dict"
+  }
 }
 
 fuzzer_test("brave_wallet_utils_fuzzer") {
@@ -78,8 +81,11 @@ group("brave_fuzzers") {
   deps = [
     ":adblock_engine_matches_fuzzer",
     ":adblock_engine_useresources_fuzzer",
-    ":brave_news_parse_feed_bytes_fuzzer",
     ":brave_wallet_utils_fuzzer",
     ":speedreader_rewriter_fuzzer",
   ]
+
+  if (enable_brave_news) {
+    deps += [ ":brave_news_parse_feed_bytes_fuzzer" ]
+  }
 }

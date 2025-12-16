@@ -4,7 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//testing/test.gni")
+
+assert(enable_brave_news)
 
 source_set("brave_news_unit_tests") {
   testonly = true

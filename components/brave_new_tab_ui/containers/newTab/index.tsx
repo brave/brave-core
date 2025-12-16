@@ -14,7 +14,6 @@ import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
@@ -29,38 +28,36 @@ import isReadableOnBackground from '../../helpers/colorUtil'
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
+// <if expr="enable_brave_news">
 import { BraveNewsState } from '../../reducers/today'
+// </if>
 import { BraveVPNState } from '../../reducers/brave_vpn'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
 import Settings, { TabType as SettingsTabType } from './settings'
 
-import { BraveNewsContextProvider } from '../../../brave_news/browser/resources/shared/Context'
-import BraveNewsModal from '../../../brave_news/browser/resources/customize/Modal'
-import BraveNewsHint from '../../components/default/braveNews/hint'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 import GridWidget from './gridWidget'
 
 import Icon from '@brave/leo/react/icon'
 
 import * as style from './style'
-import { defaultState } from '../../storage/new_tab_storage'
 import { EngineContextProvider } from '../../components/search/EngineContext'
 import {
   SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
 } from './sponsored_rich_media_background'
 
-const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
 
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  // <if expr="enable_brave_news">
   todayData: BraveNewsState
+  // </if>
   braveVPNData: BraveVPNState
   actions: NewTabActions
-  getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
@@ -79,7 +76,9 @@ interface State {
   targetTopSiteForEditing?: NewTab.Site
   backgroundHasLoaded: boolean
   activeSettingsTab: SettingsTabType | null
+  // <if expr="enable_brave_news">
   isPromptingBraveNews: boolean
+  // </if>
   showSearchPromotion: boolean
   forceToHideWidget: boolean
 }
@@ -150,32 +149,24 @@ function GetShouldShowBrandedWallpaperNotification (props: Props) {
     !props.newTabData.isBrandedWallpaperNotificationDismissed
 }
 
-interface NewsProviderProps {
-  disabled: boolean
-  children: React.ReactNode
-}
-
-function NewsProvider(props: NewsProviderProps) {
-  if (props.disabled) {
-    return <>{props.children}</>
-  }
-  return <BraveNewsContextProvider>{props.children}</BraveNewsContextProvider>
-}
-
 class NewTabPage extends React.Component<Props, State> {
   state: State = {
     showSettingsMenu: false,
     showEditTopSite: false,
     backgroundHasLoaded: false,
     activeSettingsTab: null,
+    // <if expr="enable_brave_news">
     isPromptingBraveNews: false,
+    // </if>
     showSearchPromotion: false,
     forceToHideWidget: false
   }
 
   imgCache: HTMLImageElement
+  // <if expr="enable_brave_news">
   braveNewsPromptTimerId: number
   hasInitBraveNews: boolean = false
+  // </if>
   imageSource?: string = undefined
   sponsoredRichMediaBackgroundInfo?: SponsoredRichMediaBackgroundInfo = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
@@ -206,15 +197,19 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   componentWillUnmount () {
+    // <if expr="enable_brave_news">
     if (this.braveNewsPromptTimerId) {
       window.clearTimeout(this.braveNewsPromptTimerId)
     }
+    // </if>
     window.removeEventListener('resize', this.handleResize)
     window.navigation.removeEventListener('currententrychange', this.checkShouldOpenSettings)
   }
 
   componentDidUpdate (prevProps: Props) {
+    // <if expr="enable_brave_news">
     this.maybePeekBraveNews()
+    // </if>
     const oldImageSource = GetBackgroundImageSrc(prevProps)
     const newImageSource = GetBackgroundImageSrc(this.props)
     this.imageSource = newImageSource
@@ -250,6 +245,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
+  // <if expr="enable_brave_news">
   maybePeekBraveNews () {
     const hasPromptedBraveNews = !!this.braveNewsPromptTimerId
     const shouldPromptBraveNews =
@@ -274,6 +270,7 @@ class NewTabPage extends React.Component<Props, State> {
       }, 1700)
     }
   }
+  // </if>
 
   shouldOverrideReadabilityColor (newTabData: NewTab.State) {
     return !newTabData.brandedWallpaper && newTabData.backgroundWallpaper?.type === 'color' && !isReadableOnBackground(newTabData.backgroundWallpaper)
@@ -710,10 +707,8 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
-        hasSponsoredRichMediaBackground={hasSponsoredRichMediaBackground}
-        data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
+        hasSponsoredRichMediaBackground={hasSponsoredRichMediaBackground}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
-        <NewsProvider disabled={newTabData.isBraveNewsDisabledByPolicy}>
         <EngineContextProvider>
 
         {
@@ -835,42 +830,8 @@ class NewTabPage extends React.Component<Props, State> {
                   && <React.Suspense fallback={null}>
                     <SearchPlaceholder />
                   </React.Suspense>}
-                                {newTabData.showToday &&
-                  !newTabData.isBraveNewsDisabledByPolicy && (
-                  defaultState.featureFlagBraveNewsFeedV2Enabled
-                  ? <React.Suspense fallback={null}>
-                    <BraveNewsPeek/>
-                  </React.Suspense>
-                  : <BraveNewsHint />
-                )}
               </Page.GridItemPageFooter>
           </Page.Page>
-        { newTabData.showToday && !newTabData.isBraveNewsDisabledByPolicy &&
-        <BraveNews
-          feed={this.props.todayData.feed}
-          articleToScrollTo={this.props.todayData.articleScrollTo}
-          displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
-          displayedPageCount={this.props.todayData.currentPageIndex}
-          publishers={this.props.todayData.publishers}
-          isFetching={this.props.todayData.isFetching === true}
-          hasInteracted={this.props.todayData.hasInteracted}
-          isPrompting={this.state.isPromptingBraveNews}
-          isUpdateAvailable={this.props.todayData.isUpdateAvailable}
-          onRefresh={this.props.actions.today.refresh}
-          onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
-          onFeedItemViewedCountChanged={
-            this.props.actions.today.feedItemViewedCountChanged
-          }
-          onCustomizeBraveNews={() => { this.openSettings(SettingsTabType.BraveNews) }}
-          onReadFeedItem={this.props.actions.today.readFeedItem}
-          onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
-          onSetPublisherPref={this.props.actions.today.setPublisherPref}
-          onCheckForUpdate={this.props.actions.today.checkForUpdate}
-          onViewedDisplayAd={this.props.actions.today.displayAdViewed}
-          onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
-          getDisplayAd={this.props.getBraveNewsDisplayAd}
-        />
-        }
         <Settings
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
@@ -911,9 +872,7 @@ class NewTabPage extends React.Component<Props, State> {
               onSave={this.saveNewTopSite}
             /> : null
         }
-        <BraveNewsModal/>
         </EngineContextProvider>
-        </NewsProvider>
       </Page.App>
     )
   }

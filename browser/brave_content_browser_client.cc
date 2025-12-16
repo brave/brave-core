@@ -50,6 +50,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -280,7 +281,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
-#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -288,9 +288,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+#endif
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
@@ -731,14 +735,19 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
           .Add<brave_rewards::mojom::RewardsPageHandler>()
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
           .Add<brave_news::mojom::BraveNewsController>()
+#endif
           .Add<
               ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
 
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()
           .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
-          .Add<brave_news::mojom::BraveNewsController>();
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+          .Add<brave_news::mojom::BraveNewsController>()
+#endif
+      ;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
@@ -752,12 +761,14 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
         .Add<brave_news::mojom::BraveNewsController>()
         .Add<brave_news::mojom::BraveNewsInternals>();
   }
+#endif
 
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIDesktop>()
