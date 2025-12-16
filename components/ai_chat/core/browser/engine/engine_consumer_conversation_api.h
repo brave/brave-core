@@ -92,12 +92,6 @@ class EngineConsumerConversationAPI : public EngineConsumer {
                     const std::string& topic,
                     GetFocusTabsCallback callback) override;
 
-  // A helper function to extract vector of strings from tab organization
-  // related responses (e.g. GetSuggestedTopics and GetFocusTabs).
-  static base::expected<std::vector<std::string>, mojom::APIError>
-  GetStrArrFromTabOrganizationResponses(
-      std::vector<EngineConsumer::GenerationResult>& results);
-
  private:
   // Processes the tab chunks and sends the merge callback with the results.
   // Used by GetSuggestedTopics and GetFocusTabs where the tabs are split into

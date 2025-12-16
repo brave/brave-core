@@ -155,6 +155,11 @@ class EngineConsumer {
   static std::string BuildSkillDefinitionMessage(
       const mojom::SkillEntryPtr& skill);
 
+  // A helper function to extract vector of strings from tab organization
+  // related responses (e.g. GetSuggestedTopics and GetFocusTabs).
+  static base::expected<std::vector<std::string>, mojom::APIError>
+  GetStrArrFromTabOrganizationResponses(std::vector<GenerationResult>& results);
+
  protected:
   // Check if we should call GenerationCompletedCallback early based on the
   // conversation history. Ex. empty history, or if the last entry is not a

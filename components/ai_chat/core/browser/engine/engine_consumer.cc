@@ -9,12 +9,20 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
+
+namespace {
+
+constexpr char kArrayPattern[] = R"((\[.*?\]))";
+
+}  // namespace
 
 EngineConsumer::GenerationResultData::GenerationResultData(
     mojom::ConversationEntryEventPtr event,
@@ -115,6 +123,63 @@ void EngineConsumer::OnConversationTitleGenerated(
 
   GenerationResultData title_result(std::move(title_event), std::nullopt);
   std::move(completion_callback).Run(std::move(title_result));
+}
+
+// static
+base::expected<std::vector<std::string>, mojom::APIError>
+EngineConsumer::GetStrArrFromTabOrganizationResponses(
+    std::vector<GenerationResult>& results) {
+  // Use RE2 to extract the array from the response, then use rust JSON::Reader
+  // to safely parse the array.
+  std::vector<std::string> str_arr;
+  mojom::APIError error = mojom::APIError::None;
+  for (auto& result : results) {
+    // Fail the operation if server returns an error, such as rate limiting.
+    // On the other hand, ignore the result which cannot be parsed as expected.
+    if (!result.has_value()) {
+      error = result.error();
+      break;
+    }
+
+    // Skip empty results.
+    if (!result->event || !result->event->is_completion_event() ||
+        result->event->get_completion_event()->completion.empty()) {
+      continue;
+    }
+
+    std::string strArr = "";
+    if (!RE2::PartialMatch(result->event->get_completion_event()->completion,
+                           kArrayPattern, &strArr)) {
+      continue;
+    }
+    auto value = base::JSONReader::Read(strArr, base::JSON_PARSE_RFC);
+    if (!value) {
+      continue;
+    }
+
+    auto* list = value->GetIfList();
+    if (!list) {
+      continue;
+    }
+
+    for (const auto& item : *list) {
+      auto* str = item.GetIfString();
+      if (!str || str->empty()) {
+        continue;
+      }
+      str_arr.push_back(*str);
+    }
+  }
+
+  if (error != mojom::APIError::None) {
+    return base::unexpected(error);
+  }
+
+  if (str_arr.empty()) {
+    return base::unexpected(mojom::APIError::InternalError);
+  }
+
+  return str_arr;
 }
 
 }  // namespace ai_chat

@@ -19,7 +19,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -37,7 +36,6 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
 
@@ -48,7 +46,6 @@ using ConversationEventType = ConversationAPIClient::ConversationEventType;
 using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
 
 constexpr size_t kTabListChunkSize = 75;
-constexpr char kArrayPattern[] = R"((\[.*?\]))";
 
 }  // namespace
 
@@ -71,63 +68,6 @@ EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
 
 void EngineConsumerConversationAPI::ClearAllQueries() {
   api_->ClearAllQueries();
-}
-
-// static
-base::expected<std::vector<std::string>, mojom::APIError>
-EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-    std::vector<EngineConsumer::GenerationResult>& results) {
-  // Use RE2 to extract the array from the response, then use rust JSON::Reader
-  // to safely parse the array.
-  std::vector<std::string> str_arr;
-  mojom::APIError error = mojom::APIError::None;
-  for (auto& result : results) {
-    // Fail the operation if server returns an error, such as rate limiting.
-    // On the other hand, ignore the result which cannot be parsed as expected.
-    if (!result.has_value()) {
-      error = result.error();
-      break;
-    }
-
-    // Skip empty results.
-    if (!result->event || !result->event->is_completion_event() ||
-        result->event->get_completion_event()->completion.empty()) {
-      continue;
-    }
-
-    std::string strArr = "";
-    if (!RE2::PartialMatch(result->event->get_completion_event()->completion,
-                           kArrayPattern, &strArr)) {
-      continue;
-    }
-    auto value = base::JSONReader::Read(strArr, base::JSON_PARSE_RFC);
-    if (!value) {
-      continue;
-    }
-
-    auto* list = value->GetIfList();
-    if (!list) {
-      continue;
-    }
-
-    for (const auto& item : *list) {
-      auto* str = item.GetIfString();
-      if (!str || str->empty()) {
-        continue;
-      }
-      str_arr.push_back(*str);
-    }
-  }
-
-  if (error != mojom::APIError::None) {
-    return base::unexpected(error);
-  }
-
-  if (str_arr.empty()) {
-    return base::unexpected(mojom::APIError::InternalError);
-  }
-
-  return str_arr;
 }
 
 std::optional<ConversationEvent> ActionToRewriteEvent(
@@ -600,8 +540,7 @@ void EngineConsumerConversationAPI::DedupeTopics(
             std::vector<EngineConsumer::GenerationResult> results;
             results.emplace_back(std::move(result));
             std::move(callback).Run(
-                EngineConsumerConversationAPI::
-                    GetStrArrFromTabOrganizationResponses(results));
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
           },
           std::move(callback)));
 }
@@ -652,8 +591,7 @@ void EngineConsumerConversationAPI::MergeSuggestTopicsResults(
   if (results.size() == 1) {
     // No need to dedupe topics if there is only one result.
     std::move(callback).Run(
-        EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-            results));
+        EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
     return;
   }
 
@@ -688,8 +626,7 @@ void EngineConsumerConversationAPI::GetFocusTabs(
             // Merge the results and call callback with tab IDs or
             // error.
             std::move(callback).Run(
-                EngineConsumerConversationAPI::
-                    GetStrArrFromTabOrganizationResponses(results));
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
           },
           std::move(callback)),
       topic);
