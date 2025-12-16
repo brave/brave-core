@@ -225,7 +225,7 @@
   <message name="IDS_BRAVE_WALLET_UNLOCK_ANDROID_DESCRIPTION" desc="Unlock android wallet screen description">Your wallet is locked for your security. Unlock wallet to continue.</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SETTINGS" desc="Wallet popup settings button">Settings</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock wallet</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES" desc="Wallet popup hide balances checkbox">Balances</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH" desc="Wallet popup show graph checkbox">Graph</message>
