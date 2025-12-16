@@ -2328,7 +2328,7 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest,
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
        GenerateAssistantResponse_WithSkill) {
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2344,12 +2344,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       std::nullopt /* uploaded_files */, std::move(skill_entry), false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */));
 
-  MockConversationAPIClient* mock_client = GetMockConversationAPIClient();
+  MockConversationAPIV2Client* mock_client = GetMockConversationAPIV2Client();
 
-  // Expect that PerformRequest is called with conversation events that include
-  // both skill definition message and the main user message
+  // Expect that PerformRequest is called with a message containing both
+  // skill definition and main user query as content blocks
   EXPECT_CALL(*mock_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -2357,21 +2357,22 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
-        // Should have 2 events: skill definition + main user message
-        ASSERT_EQ(conversation.size(), 2u);
+        // Should have 1 message with 2 content blocks: skill
+        // definition + query
+        ASSERT_EQ(messages.size(), 1u);
 
-        // First event should be the skill definition
-        EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[0].type, ConversationEventType::kChatMessage);
-        EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "When handling the request, interpret '/summarize' as "
-                  "'Please summarize the content'");
+        // Should have 1 user message
+        EXPECT_EQ(messages[0].role, "user");
+        ASSERT_EQ(messages[0].content.size(), 2u);
 
-        // Second event should be the actual user message
-        EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
-        EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
-        EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
-                  "/summarize What is artificial intelligence?");
+        // First content block should be the skill definition
+        VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                        "When handling the request, interpret '/summarize' as "
+                        "'Please summarize the content'");
+
+        // Second content block should be the actual user message
+        VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                        "/summarize What is artificial intelligence?");
 
         // Mock successful response
         auto completion_event =
