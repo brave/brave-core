@@ -11,11 +11,14 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
@@ -33,13 +36,42 @@ constexpr int kDialogWidth = 500;
 constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
 
+// Tracks whether a Brave Account dialog is open for a WebContents.
+// This prevents multiple dialogs from being created via rapid clicks.
+class BraveAccountDialogTracker
+    : public content::WebContentsUserData<BraveAccountDialogTracker> {
+ public:
+  ~BraveAccountDialogTracker() override = default;
+
+ private:
+  friend class content::WebContentsUserData<BraveAccountDialogTracker>;
+
+  explicit BraveAccountDialogTracker(content::WebContents* web_contents)
+      : content::WebContentsUserData<BraveAccountDialogTracker>(*web_contents) {
+  }
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+};
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
+
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
-  BraveAccountDialogDelegate() {
+  explicit BraveAccountDialogDelegate(content::WebContents* web_contents)
+      : web_contents_(CHECK_DEREF(web_contents)) {
+    BraveAccountDialogTracker::CreateForWebContents(web_contents);
+
     set_delete_on_close(false);
     set_dialog_content_url(GURL(kBraveAccountURL));
     set_show_dialog_title(false);
   }
+
+  ~BraveAccountDialogDelegate() override {
+    web_contents_->RemoveUserData(BraveAccountDialogTracker::UserDataKey());
+  }
+
+ private:
+  const raw_ref<content::WebContents> web_contents_;
 };
 
 }  // namespace
@@ -96,15 +128,20 @@ BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
 }
 
 void ShowBraveAccountDialog(content::WebUI* web_ui) {
-  DCHECK(web_ui);
+  auto* web_contents = CHECK_DEREF(web_ui).GetWebContents();
+  CHECK(web_contents);
+
+  if (BraveAccountDialogTracker::FromWebContents(web_contents)) {
+    return;
+  }
+
   auto* delegate = ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui),
-      std::make_unique<BraveAccountDialogDelegate>(), web_ui->GetWebContents(),
+      std::make_unique<BraveAccountDialogDelegate>(web_contents), web_contents,
       kDialogMinSize, kDialogMaxSize);
 
-  DCHECK(delegate);
-  auto* widget =
-      views::Widget::GetWidgetForNativeWindow(delegate->GetNativeDialog());
+  auto* widget = views::Widget::GetWidgetForNativeWindow(
+      CHECK_DEREF(delegate).GetNativeDialog());
   if (!widget) {
     return;
   }
