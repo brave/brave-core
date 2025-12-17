@@ -33,11 +33,25 @@ namespace {
 
 mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk(
     const base::FilePath& weights_path,
+    const base::FilePath& weights_dense1_path,
+    const base::FilePath& weights_dense2_path,
     const base::FilePath& tokenizer_path,
     const base::FilePath& config_path) {
   auto weights_opt = base::ReadFileToBytes(weights_path);
   if (!weights_opt) {
     DVLOG(0) << "Failed to read model weights from: " << weights_path;
+    return nullptr;
+  }
+
+  auto weights_dense1_opt = base::ReadFileToBytes(weights_dense1_path);
+  if (!weights_dense1_opt) {
+    DVLOG(0) << "Failed to read dense1 weights from: " << weights_dense1_path;
+    return nullptr;
+  }
+
+  auto weights_dense2_opt = base::ReadFileToBytes(weights_dense2_path);
+  if (!weights_dense2_opt) {
+    DVLOG(0) << "Failed to read dense2 weights from: " << weights_dense2_path;
     return nullptr;
   }
 
@@ -54,6 +68,8 @@ mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk(
   }
 
   DVLOG(1) << "Loaded weights, size: " << weights_opt->size();
+  DVLOG(1) << "Loaded weights_dense1, size: " << weights_dense1_opt->size();
+  DVLOG(1) << "Loaded weights_dense2, size: " << weights_dense2_opt->size();
   DVLOG(1) << "Loaded tokenizer, size: " << tokenizer_opt->size();
   DVLOG(1) << "Loaded config, size: " << config_opt->size();
 
@@ -61,6 +77,10 @@ mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk(
   // large data (> 64KB)
   auto model_files = mojom::ModelFiles::New();
   model_files->weights = mojo_base::BigBuffer(std::move(*weights_opt));
+  model_files->weights_dense1 =
+      mojo_base::BigBuffer(std::move(*weights_dense1_opt));
+  model_files->weights_dense2 =
+      mojo_base::BigBuffer(std::move(*weights_dense2_opt));
   model_files->tokenizer = mojo_base::BigBuffer(std::move(*tokenizer_opt));
   model_files->config = mojo_base::BigBuffer(std::move(*config_opt));
 
@@ -153,6 +173,8 @@ void CandleService::GetDefaultModelPath(GetDefaultModelPathCallback callback) {
 }
 
 void CandleService::LoadModelFiles(const base::FilePath& weights_path,
+                                   const base::FilePath& weights_dense1_path,
+                                   const base::FilePath& weights_dense2_path,
                                    const base::FilePath& tokenizer_path,
                                    const base::FilePath& config_path,
                                    LoadModelFilesCallback callback) {
@@ -164,6 +186,8 @@ void CandleService::LoadModelFiles(const base::FilePath& weights_path,
 
   DVLOG(1) << "Loading Embedding Gemma model files from specified paths...";
   DVLOG(1) << "Weights: " << weights_path;
+  DVLOG(1) << "Weights Dense1: " << weights_dense1_path;
+  DVLOG(1) << "Weights Dense2: " << weights_dense2_path;
   DVLOG(1) << "Tokenizer: " << tokenizer_path;
   DVLOG(1) << "Config: " << config_path;
 
@@ -173,7 +197,8 @@ void CandleService::LoadModelFiles(const base::FilePath& weights_path,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&LoadEmbeddingGemmaModelFilesFromDisk, weights_path,
-                     tokenizer_path, config_path),
+                     weights_dense1_path, weights_dense2_path, tokenizer_path,
+                     config_path),
       base::BindOnce(&CandleService::OnEmbeddingGemmaModelFilesLoaded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -315,6 +340,10 @@ void CandleService::OnGotDefaultModelPath(
   // Build paths for model files - use the files from local_models_updater
   base::FilePath weights_path =
       LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModel();
+  base::FilePath weights_dense1_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense1();
+  base::FilePath weights_dense2_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense2();
   base::FilePath tokenizer_path =
       LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaTokenizer();
   base::FilePath config_path =
@@ -325,10 +354,13 @@ void CandleService::OnGotDefaultModelPath(
            << "):";
   DVLOG(3) << "  Weights: " << weights_path;
   DVLOG(3) << "  Tokenizer: " << tokenizer_path;
+  DVLOG(3) << "  Weights Dense1: " << weights_dense1_path;
+  DVLOG(3) << "  Weights Dense2: " << weights_dense2_path;
   DVLOG(3) << "  Config: " << config_path;
 
   // Load the model files
-  LoadModelFiles(weights_path, tokenizer_path, config_path,
+  LoadModelFiles(weights_path, weights_dense1_path, weights_dense2_path,
+                 tokenizer_path, config_path,
                  base::BindOnce(&CandleService::OnModelFilesLoaded,
                                 weak_ptr_factory_.GetWeakPtr()));
 }

@@ -34,6 +34,9 @@ inline constexpr char kEmbeddingGemmaModelDir[] = "embeddinggemma-300m";
 inline constexpr char kEmbeddingGemmaModelFile[] = "model.gguf";
 inline constexpr char kEmbeddingGemmaConfigFile[] = "config.json";
 inline constexpr char kEmbeddingGemmaTokenizerFile[] = "tokenizer.json";
+inline constexpr char kEmbeddingGemmaDense1Dir[] = "2_Dense";
+inline constexpr char kEmbeddingGemmaDense2Dir[] = "3_Dense";
+inline constexpr char kEmbeddingGemmaDenseModelFile[] = "model.safetensors";
 
 // Exposed for testing - follows upstream Chromium pattern.
 class LocalModelsComponentInstallerPolicy
@@ -87,6 +90,8 @@ class LocalModelsUpdaterState {
 
   const base::FilePath& GetEmbeddingGemmaModelDir() const;
   const base::FilePath& GetEmbeddingGemmaModel() const;
+  const base::FilePath& GetEmbeddingGemmaDense1() const;
+  const base::FilePath& GetEmbeddingGemmaDense2() const;
   const base::FilePath& GetEmbeddingGemmaConfig() const;
   const base::FilePath& GetEmbeddingGemmaTokenizer() const;
 
@@ -98,6 +103,8 @@ class LocalModelsUpdaterState {
   base::FilePath install_dir_;
   base::FilePath embeddinggemma_model_dir_;
   base::FilePath embeddinggemma_model_path_;
+  base::FilePath embeddinggemma_dense1_path_;
+  base::FilePath embeddinggemma_dense2_path_;
   base::FilePath embeddinggemma_config_path_;
   base::FilePath embeddinggemma_tokenizer_path_;
 
