@@ -52,6 +52,8 @@ PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
   base::span(recipient_).copy_from_nonoverlapping(recipient);
 }
 
+PolkadotUnsignedExtrinsic::~PolkadotUnsignedExtrinsic() = default;
+
 std::string PolkadotUnsignedTransfer::Encode(
     const PolkadotChainMetadata& chain_metadata) const {
   std::array<uint8_t, 16> send_amount_bytes = {};

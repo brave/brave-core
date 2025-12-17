@@ -84,8 +84,8 @@ TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedTransaction) {
-  auto tx_data_union =
-      mojom::TxDataUnion::NewPolkadotTxData(mojom::PolkadotTxdata::New(""));
+  auto tx_data_union = mojom::TxDataUnion::NewPolkadotTxData(
+      mojom::PolkadotTxdata::New("", 0, false, 0));
 
   auto account_id = mojom::AccountId::New();
   account_id->coin = mojom::CoinType::DOT;

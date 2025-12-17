@@ -6,18 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 
-#include "base/time/time.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "url/origin.h"
 
 namespace brave_wallet {
 
 // Polkadot transaction metadata class
 class PolkadotTxMeta : public TxMeta {
  public:
-  PolkadotTxMeta();
+  PolkadotTxMeta(const mojom::AccountIdPtr& from,
+                 const PolkadotChainMetadata& chain_metadata,
+                 const PolkadotUnsignedTransfer& extrinsic);
   ~PolkadotTxMeta() override;
 
   PolkadotTxMeta(const PolkadotTxMeta&) = delete;
@@ -27,6 +29,11 @@ class PolkadotTxMeta : public TxMeta {
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
   mojom::CoinType GetCoinType() const override;
+
+ private:
+  std::string recipient_;
+  std::string encoded_extrinsic_;
+  base::StrictNumeric<uint64_t> amount_ = uint64_t{0};
 };
 
 }  // namespace brave_wallet

@@ -627,4 +627,32 @@ TEST(PolkadotExtrinsics, SignedExtrinsic) {
   EXPECT_EQ(extrinsic, expected_extrinsic);
 }
 
+TEST(PolkadotExtrinsics, UnsignedExtrinsicBase) {
+  // Test that our UnsignedExtrinsic base class enables us to encode the
+  // transfer extrinsic and that we can also decode it trivially.
+
+  std::string_view testnet_extrinsic =
+      R"(98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
+
+  auto testnet_metadata =
+      PolkadotChainMetadata::FromChainName(kWestendChainType).value();
+
+  auto transfer_extrinsic =
+      PolkadotUnsignedTransfer::Decode(testnet_metadata, testnet_extrinsic);
+
+  EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.value().recipient()), kBob);
+
+  PolkadotUnsignedExtrinsic& base = *transfer_extrinsic;
+
+  EXPECT_EQ(base.Encode(testnet_metadata), testnet_extrinsic);
+
+  transfer_extrinsic =
+      PolkadotUnsignedExtrinsic::Decode<PolkadotUnsignedTransfer>(
+          testnet_metadata, base.Encode(testnet_metadata));
+
+  EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.value().recipient()), kBob);
+}
+
 }  // namespace brave_wallet
