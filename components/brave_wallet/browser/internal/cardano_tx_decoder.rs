@@ -371,6 +371,7 @@ fn encode_tx_outputs(outputs: &[CxxSerializableTxOutput]) -> CborValue {
     CborValue::Array(outputs_cbor)
 }
 
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L112
 fn encode_tx_body(body: &CxxSerializableTxBody) -> CborValue {
     let mut body_map = Vec::new();
 

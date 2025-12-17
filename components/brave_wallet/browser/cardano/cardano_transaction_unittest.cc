@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -84,6 +85,30 @@ TEST(CardanoTransaction, TxOutput_Value) {
   EXPECT_EQ(*parsed, output);
   EXPECT_EQ(parsed->address, output.address);
   EXPECT_EQ(parsed->amount, output.amount);
+}
+
+TEST(CardanoTransaction, TxWitness_Value) {
+  CardanoTransaction::TxWitness witness;
+  witness.public_key = test::HexToArray<32>(
+      "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
+  witness.signature = test::HexToArray<64>(
+      "4f2a3bc19e6df1726715ab8c03fe15d848a2c9e7f28416b5e8ce397d06aad4eb"
+      "deadbeefcafebabe1234567890abcdefabcdef1234567890deadbeefcafebabe");
+
+  auto parsed = CardanoTransaction::TxWitness::FromValue(witness.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed, witness);
+  EXPECT_EQ(parsed->public_key, witness.public_key);
+  EXPECT_EQ(parsed->signature, witness.signature);
+
+  base::Value::Dict legacy_format;
+  legacy_format.Set(
+      "witness_bytes",
+      "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98"
+      "4f2a3bc19e6df1726715ab8c03fe15d848a2c9e7f28416b5e8ce397d06aad4eb"
+      "deadbeefcafebabe1234567890abcdefabcdef1234567890deadbeefcafebabe");
+
+  EXPECT_EQ(CardanoTransaction::TxWitness::FromValue(legacy_format), witness);
 }
 
 TEST(CardanoTransaction, Value) {
