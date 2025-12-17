@@ -12,6 +12,8 @@ namespace email_aliases::features {
 
 BASE_DECLARE_FEATURE(kEmailAliases);
 
+bool IsEmailAliasesEnabled();
+
 }  // namespace email_aliases::features
 
 #endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_FEATURES_H_

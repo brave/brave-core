@@ -18,6 +18,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/test_utils.h"
@@ -40,7 +41,9 @@ using AuthenticationStatus = email_aliases::mojom::AuthenticationStatus;
 class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
-    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    feature_list_.InitWithFeatures({email_aliases::features::kEmailAliases,
+                                    brave_account::features::kBraveAccount},
+                                   {});
     EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
   }
 
@@ -312,7 +315,9 @@ TEST_F(EmailAliasesServiceTest,
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
+    feature_list_.InitWithFeatures({email_aliases::features::kEmailAliases,
+                                    brave_account::features::kBraveAccount},
+                                   {});
     EmailAliasesService::RegisterProfilePrefs(prefs_.registry());
     os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting();
     service_ = std::make_unique<EmailAliasesService>(
@@ -529,6 +534,8 @@ class EmailAliasesAPITest : public ::testing::Test {
     service_->AddObserver(std::move(remote));
   }
 
+  base::test::ScopedFeatureList brave_account_feature_list_{
+      brave_account::features::kBraveAccount};
   base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
