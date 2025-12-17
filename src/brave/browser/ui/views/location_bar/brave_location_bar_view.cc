@@ -42,6 +42,12 @@ void BraveLocationBarView::SetTemporaryVisibilityInFullscreen(bool visible) {
   if (!toolbar)
     return;
 
+  // In fullscreen mode, toolbar visibility is managed temporarily here
+  // to allow omnibox interaction without changing fullscreen state.
+  // This is safe because:
+  // 1. Visibility is only changed when explicitly in fullscreen
+  // 2. Toolbar is automatically hidden on blur (OnOmniboxBlurred)
+  // 3. Does not interfere with normal fullscreen controller behavior
   if (visible) {
     toolbar->SetVisible(true);
     toolbar->Layout();

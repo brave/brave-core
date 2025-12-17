@@ -5,10 +5,12 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/location_bar/location_bar.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "ui/views/view.h"
 
 namespace brave {
 
@@ -16,17 +18,23 @@ void FocusLocationBarInFullscreen(Browser* browser) {
   if (!browser || !browser->window() || !browser->window()->IsFullscreen())
     return;
 
-  LocationBar* location_bar = browser->window()->GetLocationBar();
-  if (!location_bar)
+  // Safely access BraveLocationBarView via BrowserView to avoid unsafe casts
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view)
     return;
 
-  BraveLocationBarView* brave_location_bar = 
-      static_cast<BraveLocationBarView*>(location_bar);
-  
-  if (brave_location_bar) {
-    brave_location_bar->SetTemporaryVisibilityInFullscreen(true);
-    location_bar->FocusLocation(false);
-  }
+  ToolbarView* toolbar = browser_view->toolbar();
+  if (!toolbar)
+    return;
+
+  // Use views::AsViewClass for safe type checking
+  BraveLocationBarView* brave_location_bar =
+      views::AsViewClass<BraveLocationBarView>(toolbar->location_bar());
+  if (!brave_location_bar)
+    return;
+
+  brave_location_bar->SetTemporaryVisibilityInFullscreen(true);
+  brave_location_bar->FocusLocation(false);
 }
 
 }  // namespace brave
