@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -13,8 +14,8 @@ namespace brave_wallet {
 namespace {
 
 base::expected<PolkadotChainMetadata, std::string> ParseChainMetadataReponse(
-    const std::optional<std::string>& chain_name,
-    const std::optional<std::string>& err_str) {
+    base::optional_ref<const std::string> chain_name,
+    base::optional_ref<const std::string> err_str) {
   if (err_str) {
     return base::unexpected(*err_str);
   }
