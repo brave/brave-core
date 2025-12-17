@@ -42,7 +42,6 @@ import {
   getAssetIdKey,
   GetBlockchainTokenIdArg,
   getDeletedTokenIds,
-  getHiddenTokenIds,
   isNativeAsset,
 } from '../../utils/asset-utils'
 import {
@@ -577,11 +576,6 @@ export async function makeTokensRegistry({
 }) {
   const locallyDeletedTokenIds: string[] =
     listType === 'user' ? getDeletedTokenIds() : []
-  const locallyHiddenTokenIds: string[] =
-    listType === 'user' ? getHiddenTokenIds() : []
-  const locallyRemovedTokenIds = locallyDeletedTokenIds.concat(
-    locallyHiddenTokenIds,
-  )
 
   const nonFungibleTokenIds: string[] = []
   const fungibleTokenIds: string[] = []
@@ -654,7 +648,7 @@ export async function makeTokensRegistry({
         const tokenId = getAssetIdKey(token)
         const { visible } = token
         const isNft = token.isNft || token.isErc1155 || token.isErc721
-        const isHidden = !visible || locallyRemovedTokenIds.includes(tokenId)
+        const isHidden = !visible || locallyDeletedTokenIds.includes(tokenId)
 
         idsByChainId[networkId].push(tokenId)
 

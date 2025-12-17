@@ -39,6 +39,12 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
           walletApi.endpoints.invalidateTransactionsCache.initiate(),
         )
       },
+      onTokenVisibilityChanged(token) {
+        store.dispatch(
+          walletApi.endpoints.invalidateUserTokensRegistry.initiate(),
+        )
+        store.dispatch(WalletActions.refreshNetworksAndTokens())
+      },
     })
   return braveWalletServiceTokenObserverReceiver
 }
