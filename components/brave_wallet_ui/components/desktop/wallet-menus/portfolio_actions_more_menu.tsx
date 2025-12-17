@@ -9,10 +9,17 @@ import * as React from 'react'
 import { NavOption } from '../../../constants/types'
 
 // Options
-import { BuySendSwapDepositOptions } from '../../../options/nav-options'
+import {
+  BuySendSwapDepositOptions,
+  BuySendSwapDepositIOSOptions,
+} from '../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Styled Components
 import {
@@ -27,11 +34,16 @@ interface Props {
 }
 
 export const PortfolioAccountMenu = (props: Props) => {
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
+  const options = isIOS
+    ? BuySendSwapDepositIOSOptions
+    : BuySendSwapDepositOptions
+
   const { onClick } = props
 
   return (
     <StyledWrapper yPosition={56}>
-      {BuySendSwapDepositOptions.slice(3).map((option) => (
+      {options.slice(3).map((option) => (
         <PopupButton
           key={option.id}
           onClick={() => onClick(option)}

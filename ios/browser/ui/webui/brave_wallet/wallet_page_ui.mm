@@ -62,6 +62,7 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
 
   source->AddBoolean("isMobile", true);
+  source->AddBoolean("isIOS", true);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);

@@ -12,6 +12,7 @@ export const selectedPendingTransactionId = ({ ui }: State) =>
   ui.selectedPendingTransactionId
 export const isPanel = ({ ui }: State) => ui.isPanel
 export const isMobile = ({ ui }: State) => ui.isMobile
+export const isIOS = ({ ui }: State) => ui.isIOS
 
 // unsafe
 export const transactionProviderErrorRegistry = ({ ui }: State) =>

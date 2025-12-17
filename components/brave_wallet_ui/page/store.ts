@@ -40,6 +40,7 @@ export const store = configureStore({
     ui: {
       ...defaultUIState,
       isMobile: loadTimeData.getBoolean('isMobile') || false,
+      isIOS: loadTimeData.getBoolean('isIOS') || false,
     },
   },
   middleware: (getDefaultMiddleware) =>

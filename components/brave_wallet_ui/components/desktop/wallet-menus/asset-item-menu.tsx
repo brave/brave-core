@@ -11,9 +11,10 @@ import { BraveWallet } from '../../../constants/types'
 
 // Selectors
 import {
-  useSafeWalletSelector, //
+  useSafeWalletSelector,
+  useSafeUISelector,
 } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { WalletSelectors, UISelectors } from '../../../common/selectors'
 
 // Queries
 import {
@@ -76,6 +77,7 @@ export const AssetItemMenu = (props: Props) => {
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
     WalletSelectors.isZCashShieldedTransactionsEnabled,
   )
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   // Mutations
   const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
@@ -200,10 +202,14 @@ export const AssetItemMenu = (props: Props) => {
             <ButtonIcon name='currency-exchange' />
             <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
           </PopupButton>
-          <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
-            <ButtonIcon name='web3-bridge' />
-            <PopupButtonText>{getLocale('braveWalletBridge')}</PopupButtonText>
-          </PopupButton>
+          {!isIOS && (
+            <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
+              <ButtonIcon name='web3-bridge' />
+              <PopupButtonText>
+                {getLocale('braveWalletBridge')}
+              </PopupButtonText>
+            </PopupButton>
+          )}
         </>
       )}
       <PopupButton onClick={onClickDeposit}>
