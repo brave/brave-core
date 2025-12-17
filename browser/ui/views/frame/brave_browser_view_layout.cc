@@ -123,7 +123,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_MAC)
-  insets = AdjustInsetsConsideringFrameBorder(insets);
+  insets = AddVerticalTabFrameBorderInsets(insets);
 #endif
 
   if (insets.IsEmpty()) {
@@ -138,17 +138,6 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
   }
   vertical_tab_strip_bounds.set_width(width);
-
-#if BUILDFLAG(IS_MAC)
-  // If host's final width is zero, it means vertical tab is hidden or in
-  // floating mode. In floating mode, vertical tab refers host's origin and
-  // height and update width from it.
-  // To prevent overlap with frame border, set insets for frame border width.
-  if (width == 0 && !IsFullscreenForBrowser()) {
-    vertical_tab_strip_bounds.Inset(GetFrameBorderInsetsForVerticalTab());
-  }
-#endif
-
   vertical_tab_strip_host_->SetBoundsRect(vertical_tab_strip_bounds);
 }
 
@@ -170,7 +159,9 @@ void BraveBrowserViewLayout::LayoutBookmarkBar(gfx::Rect& available_bounds) {
 
   // Set insets for vertical tab and restore after finishing infobar layout.
   // Each control's layout will consider vertical tab.
-  const auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  // On macOS, it can have bottom insets but it doesn't need for bookmarks bar.
+  auto insets_for_vertical_tab = GetVerticalTabInsets();
+  insets_for_vertical_tab.set_bottom(0);
   available_bounds.Inset(insets_for_vertical_tab);
   BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
   gfx::Outsets outsets_for_restore_insets;
@@ -187,7 +178,9 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 
   // Set insets for vertical tab and restore after finishing infobar layout.
   // Each control's layout will consider vertical tab.
-  const auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
+  // On macOS, it can have bottom insets but it doesn't need for info bar.
+  auto insets_for_vertical_tab = GetVerticalTabInsets();
+  insets_for_vertical_tab.set_bottom(0);
   available_bounds.Inset(insets_for_vertical_tab);
   BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
   gfx::Outsets outsets_for_restore_insets;
@@ -207,7 +200,7 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
     CHECK(!tabs::IsVerticalTabsFeatureEnabled());
-    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
+    contents_container_bounds.Inset(GetVerticalTabInsets());
   }
 
   if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
@@ -455,7 +448,7 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
          delegate_->IsBookmarkBarVisible();
 }
 
-gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
+gfx::Insets BraveBrowserViewLayout::GetVerticalTabInsets() const {
   CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
   gfx::Insets insets;
@@ -464,36 +457,55 @@ gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
   } else {
     insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
   }
+
 #if BUILDFLAG(IS_MAC)
-  insets = AdjustInsetsConsideringFrameBorder(insets);
+  insets = AddFrameBorderInsets(insets);
 #endif
 
   return insets;
 }
 
 #if BUILDFLAG(IS_MAC)
-gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
-    const gfx::Insets& insets) {
+gfx::Insets BraveBrowserViewLayout::AddFrameBorderInsets(
+    const gfx::Insets& insets) const {
+  // We need more care about frame border when vertical tab is visible.
+  // Frame border is not drawn in fullscreen.
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
-      (vertical_tab_strip_host_ &&
-       vertical_tab_strip_host_->GetPreferredSize().width() == 0) ||
       (browser_view && browser_view->IsFullscreen())) {
     return insets;
   }
 
-  // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
-  // that line
-  return insets + GetFrameBorderInsetsForVerticalTab();
+  // Frame border is drawn on this 1px padding as we set insets to
+  // contents container. Otherwise, frame border is drawn on the contents.
+  // Why we need this? When vertical tab is floating, vertical tab widget
+  // is moved by 1px from the border to prevent overlap with frame border.
+  // If the frame border is drawn over the contents, vertical tab widget seems
+  // like floating on the contents. See the screenshot at
+  // https://github.com/brave/brave-browser/issues/51464. If we give this insets
+  // to contents container, frame border is drawn over the background color. So,
+  // floated vertical tab widget seems like attached to windows border.
+  return insets + gfx::Insets::TLBR(0, 1, 1, 1);
 }
 
-gfx::Insets BraveBrowserViewLayout::GetFrameBorderInsetsForVerticalTab() const {
+gfx::Insets BraveBrowserViewLayout::AddVerticalTabFrameBorderInsets(
+    const gfx::Insets& insets) const {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+      (browser_view && browser_view->IsFullscreen())) {
+    return insets;
+  }
+
+  // For frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
+  // that line.
   gfx::Insets insets_for_frame_border;
   if (tabs::utils::IsVerticalTabOnRight(browser())) {
     insets_for_frame_border.set_right(1);
   } else {
     insets_for_frame_border.set_left(1);
   }
-  return insets_for_frame_border;
+  insets_for_frame_border.set_bottom(1);
+
+  return insets + insets_for_frame_border;
 }
 #endif
