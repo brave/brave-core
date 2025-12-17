@@ -160,6 +160,23 @@ struct MemoryContentBlock {
   map<string, MemoryValue> memory;
 };
 
+struct FilterTabsContentBlock {
+  string text;  // tabs
+  string topic;
+};
+
+struct SuggestFocusTopicsContentBlock {
+  string text;  // tabs
+};
+
+struct SuggestFocusTopicsWithEmojiContentBlock {
+  string text;  // tabs
+};
+
+struct ReduceFocusTopicsContentBlock {
+  string text;  // topics
+};
+
 enum SimpleRequestType {
   kParaphrase,
   kImprove,
@@ -194,6 +211,13 @@ union ContentBlock {
   RequestTitleContentBlock request_title_content_block;
   ChangeToneContentBlock change_tone_content_block;
   MemoryContentBlock memory_content_block;
+
+  // Brave customized content blocks for tab focus
+  FilterTabsContentBlock filter_tabs_content_block;
+  SuggestFocusTopicsContentBlock suggest_focus_topics_content_block;
+  SuggestFocusTopicsWithEmojiContentBlock
+    suggest_focus_topics_with_emoji_content_block;
+  ReduceFocusTopicsContentBlock reduce_focus_topics_content_block;
 
   // Brave customized content blocks which does not have any data payloads.
   SimpleRequestContentBlock simple_request_content_block;

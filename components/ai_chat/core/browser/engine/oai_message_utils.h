@@ -13,6 +13,7 @@
 #include "base/functional/function_ref.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
@@ -57,6 +58,19 @@ BuildOAIGenerateConversationTitleMessages(
     base::FunctionRef<void(std::string&)> sanitize_input);
 
 OAIMessage BuildOAISeedMessage(const std::string& text);
+
+// Tab organization message building functions
+
+// Build OAI messages for deduping topics.
+std::vector<OAIMessage> BuildOAIDedupeTopicsMessages(
+    const std::vector<std::string>& topics);
+
+// Given a list of tabs, split them into chunks and build messages for each
+// chunk. Topic is non-empty for getting focus tabs (filter tabs based on a
+// topic), otherwise it's empty for getting suggested topics.
+std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
+    const std::vector<Tab>& tabs,
+    const std::string& topic = "");
 
 }  // namespace ai_chat
 

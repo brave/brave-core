@@ -66,6 +66,11 @@ inline constexpr size_t kReservedTokensForMaxNewTokens = 400;
 inline constexpr uint32_t kMaxContextCharsForTitleGeneration = 1200u;
 inline constexpr uint32_t kMaxTitleLength = 100u;
 
+// Tab organization constants
+// Maximum number of tabs to process in a single chunk for tab organization
+// operations (GetSuggestedTopics, GetFocusTabs).
+inline constexpr size_t kTabListChunkSize = 75;
+
 // Model name to send to the server for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
 // Model name to send to the server for Claude Sonnet model.

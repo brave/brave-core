@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
@@ -162,17 +163,89 @@ void EngineConsumerConversationAPIV2::GenerateConversationTitle(
           weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback)));
 }
 
+void EngineConsumerConversationAPIV2::DedupeTopics(
+    base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+    GetSuggestedTopicsCallback callback) {
+  if (!topics_result.has_value() || topics_result->empty()) {
+    std::move(callback).Run(topics_result);
+    return;
+  }
+
+  auto messages = BuildOAIDedupeTopicsMessages(*topics_result);
+
+  api_->PerformRequest(
+      std::move(messages), "" /* selected_language */, std::nullopt,
+      std::nullopt, mojom::ConversationCapability::CHAT,
+      base::NullCallback() /* data_received_callback */,
+      base::BindOnce(
+          [](GetSuggestedTopicsCallback callback,
+             EngineConsumer::GenerationResult result) {
+            // Return deduped topics from the response.
+            std::vector<EngineConsumer::GenerationResult> results;
+            results.emplace_back(std::move(result));
+            std::move(callback).Run(
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+          },
+          std::move(callback)));
+}
+
+void EngineConsumerConversationAPIV2::MergeSuggestTopicsResults(
+    GetSuggestedTopicsCallback callback,
+    std::vector<GenerationResult> results) {
+  if (results.size() == 1) {
+    // No need to dedupe topics if there is only one result.
+    std::move(callback).Run(
+        EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+    return;
+  }
+
+  // Merge the result and send another request to dedupe topics.
+  DedupeTopics(GetStrArrFromTabOrganizationResponses(results),
+               std::move(callback));
+}
+
 void EngineConsumerConversationAPIV2::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
-  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  const auto barrier_callback = base::BarrierCallback<GenerationResult>(
+      chunked_messages.size(),
+      base::BindOnce(
+          &EngineConsumerConversationAPIV2::MergeSuggestTopicsResults,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  for (auto& messages : chunked_messages) {
+    api_->PerformRequest(std::move(messages), "" /* selected_language */,
+                         std::nullopt, std::nullopt,
+                         mojom::ConversationCapability::CHAT,
+                         base::NullCallback() /* data_received_callback */,
+                         barrier_callback /* data_completed_callback */);
+  }
 }
 
 void EngineConsumerConversationAPIV2::GetFocusTabs(
     const std::vector<Tab>& tabs,
     const std::string& topic,
-    GetFocusTabsCallback callback) {
-  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    EngineConsumer::GetFocusTabsCallback callback) {
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  const auto barrier_callback = base::BarrierCallback<GenerationResult>(
+      chunked_messages.size(),
+      base::BindOnce(
+          [](EngineConsumer::GetFocusTabsCallback callback,
+             std::vector<GenerationResult> results) {
+            // Merge the results and call callback with tab IDs or error.
+            std::move(callback).Run(
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+          },
+          std::move(callback)));
+
+  for (auto& messages : chunked_messages) {
+    api_->PerformRequest(std::move(messages), "" /* selected_language */,
+                         std::nullopt, std::nullopt,
+                         mojom::ConversationCapability::CHAT,
+                         base::NullCallback() /* data_received_callback */,
+                         barrier_callback /* data_completed_callback */);
+  }
 }
 
 }  // namespace ai_chat

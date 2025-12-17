@@ -28,6 +28,7 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -44,8 +45,6 @@ namespace {
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
-
-constexpr size_t kTabListChunkSize = 75;
 
 }  // namespace
 

@@ -105,6 +105,14 @@ std::string_view GetContentBlockTypeString(
       return "brave-request-change-tone";
     case mojom::ContentBlock::Tag::kMemoryContentBlock:
       return "brave-user-memory";
+    case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock:
+      return "brave-suggest-focus-topics";
+    case mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock:
+      return "brave-suggest-focus-topics-emoji";
+    case mojom::ContentBlock::Tag::kFilterTabsContentBlock:
+      return "brave-filter-tabs";
+    case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock:
+      return "brave-reduce-focus-topics";
     case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
       const auto& request = block->get_simple_request_content_block();
       auto it = kSimpleRequestTypeMap.find(request->type);
@@ -201,6 +209,29 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           content_block_dict.Set("memory", std::move(memory_dict));
           break;
         }
+
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock:
+          content_block_dict.Set(
+              "text", block->get_suggest_focus_topics_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock:
+          content_block_dict.Set(
+              "text",
+              block->get_suggest_focus_topics_with_emoji_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kFilterTabsContentBlock: {
+          const auto& filter_tabs = block->get_filter_tabs_content_block();
+          content_block_dict.Set("text", filter_tabs->text);
+          content_block_dict.Set("topic", filter_tabs->topic);
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock:
+          content_block_dict.Set(
+              "text", block->get_reduce_focus_topics_content_block()->text);
+          break;
 
         case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
           // Server currently requires the empty text field to be passed.
