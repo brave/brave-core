@@ -24,7 +24,9 @@ import {
 import { getLocale } from '../../../../../../../common/locale'
 
 // Selectors
-import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
+import {
+  useSafeUISelector, //
+} from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Components
