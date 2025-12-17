@@ -6,7 +6,7 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-import { AppModelContext, useAppState } from '../lib/app_model_context'
+import { useAppState, useAppActions } from '../lib/app_context'
 import { EventHubContext } from '../lib/event_hub'
 import { useRoute } from '../lib/router'
 import { useBreakpoint } from '../lib/breakpoint'
@@ -32,7 +32,7 @@ import * as routes from '../lib/app_routes'
 import { style } from './app.style'
 
 export function App() {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const eventHub = React.useContext(EventHubContext)
 
   const loading = useAppState((state) => state.loading)
@@ -112,7 +112,7 @@ export function App() {
 
     if (showResetModal) {
       const onReset = () => {
-        model.resetRewards()
+        actions.resetRewards()
         setShowResetModal(false)
       }
       return (
@@ -140,7 +140,7 @@ export function App() {
       return (
         <CaptchaModal
           captchaInfo={captchaInfo}
-          onCaptchaResult={(success) => model.onCaptchaResult(success)}
+          onCaptchaResult={(success) => actions.onCaptchaResult(success)}
           onClose={() => setHideCaptcha(true)}
         />
       )
@@ -149,7 +149,7 @@ export function App() {
     if (tosUpdateRequired) {
       return (
         <TosUpdateModal
-          onAccept={() => model.acceptTermsOfServiceUpdate()}
+          onAccept={() => actions.acceptTermsOfServiceUpdate()}
           onReset={() => setShowResetModal(true)}
         />
       )
@@ -163,10 +163,10 @@ export function App() {
       return (
         <SelfCustodyInviteModal
           onDismiss={() => {
-            model.dismissSelfCustodyInvite()
+            actions.dismissSelfCustodyInvite()
           }}
           onConnect={() => {
-            model.dismissSelfCustodyInvite()
+            actions.dismissSelfCustodyInvite()
             connectAccount()
           }}
         />

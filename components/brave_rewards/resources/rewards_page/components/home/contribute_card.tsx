@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState } from '../../lib/app_context'
+import { useLocale } from '../../lib/locale_context'
 import { EventHubContext } from '../../lib/event_hub'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
@@ -20,7 +20,7 @@ import {
 import { style } from './contribute_card.style'
 
 export function ContributeCard() {
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
   const tabOpener = React.useContext(TabOpenerContext)
   const eventHub = React.useContext(EventHubContext)
 

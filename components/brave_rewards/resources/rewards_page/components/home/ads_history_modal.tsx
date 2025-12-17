@@ -7,9 +7,9 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useLocale } from '../../lib/locale_context'
 import { AdsHistoryItem } from '../../lib/app_state'
-import { AppModelContext } from '../../lib/app_model_context'
+import { useAppActions } from '../../lib/app_context'
 import { Modal } from '../common/modal'
 
 import { style } from './ads_history_modal.style'
@@ -59,7 +59,7 @@ interface AdsHistoryItemViewProps {
 }
 
 function AdsHistoryItemView(props: AdsHistoryItemViewProps) {
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
   const tabOpener = React.useContext(TabOpenerContext)
   const [showMenu, setShowMenu] = React.useState(false)
   const { item } = props
@@ -129,16 +129,16 @@ interface Props {
 }
 
 export function AdsHistoryModal(props: Props) {
-  const { getString } = useLocaleContext()
-  const model = React.useContext(AppModelContext)
+  const { getString } = useLocale()
+  const actions = useAppActions()
 
   const [adsHistory, setAdsHistory] = React.useState<AdsHistoryItem[] | null>(
     null,
   )
 
   React.useEffect(() => {
-    model.getAdsHistory().then(setAdsHistory)
-  }, [model])
+    actions.getAdsHistory().then(setAdsHistory)
+  }, [actions])
 
   const groups = groupItems(adsHistory || [])
 
@@ -148,24 +148,24 @@ export function AdsHistoryModal(props: Props) {
 
     // An action that updates a single Ad history item may have an effect on
     // other history items. Update the Ads history to pick up these changes.
-    model.getAdsHistory().then(setAdsHistory)
+    actions.getAdsHistory().then(setAdsHistory)
   }
 
   function toggleLike(item: AdsHistoryItem) {
     const likeStatus = item.likeStatus === 'liked' ? '' : 'liked'
-    model.setAdLikeStatus(item.id, likeStatus)
+    actions.setAdLikeStatus(item.id, likeStatus)
     updateItem(item, { likeStatus })
   }
 
   function toggleDislike(item: AdsHistoryItem) {
     const likeStatus = item.likeStatus === 'disliked' ? '' : 'disliked'
-    model.setAdLikeStatus(item.id, likeStatus)
+    actions.setAdLikeStatus(item.id, likeStatus)
     updateItem(item, { likeStatus })
   }
 
   function toggleInappropriate(item: AdsHistoryItem) {
     const value = !item.inappropriate
-    model.setAdInappropriate(item.id, value)
+    actions.setAdInappropriate(item.id, value)
     updateItem(item, { inappropriate: value })
   }
 

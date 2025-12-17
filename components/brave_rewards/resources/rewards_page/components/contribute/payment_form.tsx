@@ -9,8 +9,8 @@ import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import RadioButton from '@brave/leo/react/radioButton'
 
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState, useAppActions } from '../../lib/app_context'
+import { useLocale } from '../../lib/locale_context'
 import { formatString } from '$web-common/formatString'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
@@ -41,8 +41,8 @@ interface Props {
 }
 
 export function PaymentForm(props: Props) {
-  const { getString } = useLocaleContext()
-  const model = React.useContext(AppModelContext)
+  const { getString } = useLocale()
+  const actions = useAppActions()
   const tabOpener = React.useContext(TabOpenerContext)
 
   const creator = useAppState((state) => state.currentCreator)
@@ -164,7 +164,7 @@ export function PaymentForm(props: Props) {
         <div className='actions'>
           <Button
             onClick={() => {
-              model.beginExternalWalletLogin(provider)
+              actions.beginExternalWalletLogin(provider)
             }}
           >
             {formatString(getString('contributeLoginButtonLabel'), [

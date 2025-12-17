@@ -4,20 +4,20 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { AppModelContext, useAppState } from './app_model_context'
+import { useAppState, useAppActions } from './app_context'
 import { RouterContext } from './router'
 
 import * as routes from './app_routes'
 import * as urls from '../../shared/lib/rewards_urls'
 
 export function useConnectAccountRouter() {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const router = React.useContext(RouterContext)
   const isBubble = useAppState((state) => state.embedder.isBubble)
 
   return () => {
     if (isBubble) {
-      model.openTab(urls.connectURL)
+      actions.openTab(urls.connectURL)
     } else {
       router.setRoute(routes.connectAccount)
     }
@@ -25,13 +25,13 @@ export function useConnectAccountRouter() {
 }
 
 export function useSwitchAccountRouter() {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const router = React.useContext(RouterContext)
   const isBubble = useAppState((state) => state.embedder.isBubble)
 
   return () => {
     if (isBubble) {
-      model.openTab(urls.switchAccountURL)
+      actions.openTab(urls.switchAccountURL)
     } else {
       router.setRoute(routes.switchAccount)
     }

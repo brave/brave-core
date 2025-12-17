@@ -9,8 +9,8 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 
 import { RecurringContribution } from '../../lib/app_state'
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useAppState, useAppActions } from '../../lib/app_context'
+import { useLocale } from '../../lib/locale_context'
 import {
   getCreatorIconSrc,
   getCreatorPlatformIcon,
@@ -32,8 +32,8 @@ const exchangeFormatter = new Intl.NumberFormat(undefined, {
 const nextContributionFormatter = new Intl.DateTimeFormat(undefined)
 
 export function RecurringContributionCard() {
-  const { getString } = useLocaleContext()
-  const model = React.useContext(AppModelContext)
+  const { getString } = useLocale()
+  const actions = useAppActions()
 
   const externalWallet = useAppState((state) => state.externalWallet)
   const contributions = useAppState((state) => state.recurringContributions)
@@ -88,7 +88,7 @@ export function RecurringContributionCard() {
               <Icon name='more-vertical' />
             </button>
             <leo-menu-item
-              onClick={() => model.removeRecurringContribution(site.id)}
+              onClick={() => actions.removeRecurringContribution(site.id)}
             >
               <Icon name='trash' />
               {getString('removeButtonLabel')}

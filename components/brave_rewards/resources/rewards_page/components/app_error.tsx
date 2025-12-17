@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocaleContext } from '../lib/locale_strings'
+import { useLocale } from '../lib/locale_context'
 
 import { style } from './app_error.style'
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function AppError(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
   return (
     <div data-css-scope={style.scope}>
       <div className='image'>

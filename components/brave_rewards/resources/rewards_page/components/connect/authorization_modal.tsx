@@ -9,9 +9,9 @@ import ProgressRing from '@brave/leo/react/progressRing'
 
 import { RouterContext } from '../../lib/router'
 import { ConnectExternalWalletResult } from '../../lib/app_state'
-import { AppModelContext } from '../../lib/app_model_context'
+import { useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useLocale } from '../../lib/locale_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
 import * as routes from '../../lib/app_routes'
@@ -26,8 +26,8 @@ import { style } from './authorization_modal.style'
 
 export function AuthorizationModal() {
   const router = React.useContext(RouterContext)
-  const model = React.useContext(AppModelContext)
-  const { getString } = useLocaleContext()
+  const actions = useAppActions()
+  const { getString } = useLocale()
 
   const [result, setResult] =
     React.useState<ConnectExternalWalletResult | null>(null)
@@ -55,14 +55,14 @@ export function AuthorizationModal() {
     const params = new URLSearchParams(location.search)
     const args = Object.fromEntries(params.entries())
 
-    model.connectExternalWallet(provider, args).then((result) => {
+    actions.connectExternalWallet(provider, args).then((result) => {
       if (result === 'success') {
         onClose()
       } else {
         setResult(result)
       }
     })
-  }, [model])
+  }, [actions])
 
   function errorTitle() {
     switch (result) {

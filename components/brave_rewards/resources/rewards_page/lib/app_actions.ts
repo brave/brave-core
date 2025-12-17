@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-  AppState,
   AdsHistoryItem,
   AdLikeStatus,
   AdType,
@@ -12,17 +11,11 @@ import {
   ExternalWalletProvider,
   AvailableCountryInfo,
   ConnectExternalWalletResult,
-  defaultState,
 } from './app_state'
 
-export type AppStateListener = (state: AppState) => void
-
-export interface AppModel {
-  getState: () => AppState
-  addListener: (callback: AppStateListener) => () => void
+export interface AppActions {
   onAppRendered: () => void
   openTab: (url: string) => void
-  getString: (key: string) => string
   getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
   setWebDiscoveryProjectEnabled: (enabled: boolean) => Promise<void>
@@ -55,82 +48,44 @@ export interface AppModel {
   recordOfferView: () => Promise<void>
 }
 
-export function defaultModel(): AppModel {
-  const state = defaultState()
+export function defaultActions(): AppActions {
   return {
-    getState() {
-      return state
-    },
-
-    addListener() {
-      return () => {}
-    },
-
     onAppRendered() {},
-
     openTab() {},
-
-    getString(key) {
+    async getPluralString() {
       return ''
     },
-
-    async getPluralString(key, count) {
-      return ''
-    },
-
-    async enableRewards(countryCode) {
+    async enableRewards() {
       return 'unexpected-error'
     },
-
-    async setWebDiscoveryProjectEnabled(enabled) {},
-
+    async setWebDiscoveryProjectEnabled() {},
     async getAvailableCountries() {
-      return {
-        countryCodes: [],
-        defaultCountryCode: '',
-      }
+      return { countryCodes: [], defaultCountryCode: '' }
     },
-
-    async beginExternalWalletLogin(provider) {
+    async beginExternalWalletLogin() {
       return true
     },
-
-    async connectExternalWallet(provider, args) {
+    async connectExternalWallet() {
       return 'unexpected-error'
     },
-
     async resetRewards() {},
-
-    async setAdTypeEnabled(adType, enabled) {},
-
-    async setNotificationAdsPerHour(adsPerHour) {},
-
-    async setAdsSubdivision(subdivision) {},
-
+    async setAdTypeEnabled() {},
+    async setNotificationAdsPerHour() {},
+    async setAdsSubdivision() {},
     async getAdsHistory() {
       return []
     },
-
-    async setAdLikeStatus(id, status) {},
-
-    async setAdInappropriate(id, value) {},
-
-    async removeRecurringContribution(id) {},
-
-    async sendContribution(creatorID, amount, recurring) {
+    async setAdLikeStatus() {},
+    async setAdInappropriate() {},
+    async removeRecurringContribution() {},
+    async sendContribution() {
       return false
     },
-
     async acceptTermsOfServiceUpdate() {},
-
     async dismissSelfCustodyInvite() {},
-
-    async onCaptchaResult(success) {},
-
-    async clearNotification(id: string) {},
-
+    async onCaptchaResult() {},
+    async clearNotification() {},
     async recordOfferClick() {},
-
     async recordOfferView() {},
   }
 }

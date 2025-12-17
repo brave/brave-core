@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocaleContext } from '../../lib/locale_strings'
-import { useAppState } from '../../lib/app_model_context'
+import { useLocale } from '../../lib/locale_context'
+import { useAppState } from '../../lib/app_context'
 import {
   TabOpenerContext,
   NewTabLink,
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export function PaymentSelection(props: Props) {
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
   const tabOpener = React.useContext(TabOpenerContext)
 
   const creator = useAppState((state) => state.currentCreator)

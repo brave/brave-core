@@ -5,10 +5,11 @@
 
 import * as React from 'react'
 
-import { LocaleContext } from '../../shared/lib/locale_context'
+import { Locale, LocaleProvider } from '../lib/locale_context'
 import { scoped } from '$web-common/scoped_css'
-import { AppModelContext } from '../lib/app_model_context'
-import { createModel } from './storybook_model'
+import { AppProvider } from '../lib/app_context'
+import { createAppHandler } from './app_handler'
+import { localeStrings } from './storybook_strings'
 import { App } from '../components/app'
 
 export default {
@@ -22,15 +23,20 @@ const style = scoped.css`
   }
 `
 
+const locale: Locale = {
+  getString(key) {
+    return localeStrings[key]
+  },
+}
+
 export function RewardsPage() {
-  const model = React.useMemo(() => createModel(), [])
   return (
-    <LocaleContext.Provider value={model}>
-      <AppModelContext.Provider value={model}>
+    <LocaleProvider value={locale}>
+      <AppProvider createHandler={createAppHandler}>
         <div data-css-scope={style.scope}>
           <App />
         </div>
-      </AppModelContext.Provider>
-    </LocaleContext.Provider>
+      </AppProvider>
+    </LocaleProvider>
   )
 }

@@ -6,12 +6,12 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-import { useLocaleContext } from '../../lib/locale_strings'
+import { useLocale } from '../../lib/locale_context'
 
 import { style } from './sending.style'
 
 export function Sending() {
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
   return (
     <div data-css-scope={style.scope}>
       <ProgressRing />

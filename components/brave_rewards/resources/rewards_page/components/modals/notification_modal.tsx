@@ -8,8 +8,8 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import { Notification, OpenLinkNotificationAction } from '../../lib/app_state'
-import { useLocaleContext } from '../../lib/locale_strings'
-import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { useLocale } from '../../lib/locale_context'
+import { useAppState, useAppActions } from '../../lib/app_context'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { Modal } from '../common/modal'
 
@@ -47,13 +47,13 @@ function Body(props: NotificationBodyProps) {
 }
 
 function Action(props: NotificationActionViewProps) {
-  const { getString } = useLocaleContext()
-  const model = React.useContext(AppModelContext)
+  const { getString } = useLocale()
+  const actions = useAppActions()
   const tabOpener = React.useContext(TabOpenerContext)
   const externalWallet = useAppState((state) => state.externalWallet)
 
   function onActionClick() {
-    model.clearNotification(props.notification.id)
+    actions.clearNotification(props.notification.id)
     if (props.action) {
       switch (props.action.type) {
         case 'open-link':
@@ -61,7 +61,7 @@ function Action(props: NotificationActionViewProps) {
           break
         case 'reconnect-external-wallet':
           if (externalWallet && !externalWallet.authenticated) {
-            model.beginExternalWalletLogin(externalWallet.provider)
+            actions.beginExternalWalletLogin(externalWallet.provider)
           }
           break
       }
@@ -97,12 +97,12 @@ interface Props {
 }
 
 export function NotificationModal(props: Props) {
-  const model = React.useContext(AppModelContext)
+  const actions = useAppActions()
   const autoDismiss = useAutoDismissCheck(props.notification)
   const View = getNotificationView(props.notification)
 
   function dismiss() {
-    model.clearNotification(props.notification.id)
+    actions.clearNotification(props.notification.id)
   }
 
   React.useEffect(() => {

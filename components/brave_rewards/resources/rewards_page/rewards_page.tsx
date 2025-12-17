@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
+
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
-import { LocaleContext } from '../shared/lib/locale_context'
-import { AppModelContext } from './lib/app_model_context'
-import { createModel } from './webui/webui_model'
-import { TabOpenerContext } from '../shared/components/new_tab_link'
+import { Locale, LocaleProvider } from './lib/locale_context'
+import { AppProvider } from './lib/app_context'
+import { TabOpenerProvider } from './lib/tab_opener_context'
 import { ShowHandler } from './components/common/show_handler'
 import { App } from './components/app'
 import * as routes from './lib/app_routes'
@@ -42,21 +43,26 @@ function whenDocumentReady() {
   })
 }
 
+const locale: Locale = {
+  getString(key) {
+    return loadTimeData.getString(key)
+  },
+}
+
 whenDocumentReady().then(() => {
   handleLegacyURLs()
 
-  const model = createModel()
   const root = createRoot(document.getElementById('root')!)
 
   root.render(
-    <TabOpenerContext.Provider value={model}>
-      <LocaleContext.Provider value={model}>
-        <AppModelContext.Provider value={model}>
+    <LocaleProvider value={locale}>
+      <AppProvider>
+        <TabOpenerProvider>
           <ShowHandler>
             <App />
           </ShowHandler>
-        </AppModelContext.Provider>
-      </LocaleContext.Provider>
-    </TabOpenerContext.Provider>,
+        </TabOpenerProvider>
+      </AppProvider>
+    </LocaleProvider>,
   )
 })

@@ -9,8 +9,8 @@ import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatString } from '$web-common/formatString'
-import { useAppState } from '../../lib/app_model_context'
-import { useLocaleContext, usePluralString } from '../../lib/locale_strings'
+import { useAppState } from '../../lib/app_context'
+import { useLocale, usePluralString } from '../../lib/locale_context'
 import { useConnectAccountRouter } from '../../lib/connect_account_router'
 import { shouldResetExternalWallet } from '../../../shared/lib/external_wallet'
 import { PayoutStatusView } from './payout_status_view'
@@ -26,7 +26,7 @@ import { style } from './earning_card.style'
 
 export function EarningCard() {
   const connectAccount = useConnectAccountRouter()
-  const { getString } = useLocaleContext()
+  const { getString } = useLocale()
 
   const externalWallet = useAppState((state) => state.externalWallet)
   const adsInfo = useAppState((state) => state.adsInfo)

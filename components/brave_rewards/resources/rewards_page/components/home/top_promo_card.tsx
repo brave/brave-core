@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { useAppState } from '../../lib/app_model_context'
+import { useAppState } from '../../lib/app_context'
 import { CardView } from '../explore/card_view'
 
 export function TopPromoCard() {
