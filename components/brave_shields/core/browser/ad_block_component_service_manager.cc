@@ -247,9 +247,8 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(local_state_);
 
   if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
-      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
-      !IsAdBlockOnlyModeFilterList(uuid)) {
-    return false;
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled)) {
+    return IsAdBlockOnlyModeFilterList(uuid);
   }
 
   // Retrieve user's setting for the list from preferences
@@ -304,8 +303,7 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   }
 
   if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
-      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
-      !IsAdBlockOnlyModeFilterList(uuid)) {
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled)) {
     return;
   }
 
