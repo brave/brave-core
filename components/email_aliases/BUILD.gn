@@ -30,7 +30,10 @@ static_library("features") {
     "features.h",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//brave/components/brave_account:features",
+  ]
 }
 
 source_set("auth") {

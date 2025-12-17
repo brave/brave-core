@@ -1213,7 +1213,7 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
-  if (!base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+  if (!email_aliases::features::IsEmailAliasesEnabled()) {
     return;
   }
   html_source->AddLocalizedStrings(webui::kEmailAliasesStrings);

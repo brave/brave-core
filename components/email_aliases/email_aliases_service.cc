@@ -130,7 +130,7 @@ EmailAliasesService::EmailAliasesService(
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
       verify_result_url_(GetAccountsServiceVerifyResultURL()),
       email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {
-  CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
+  CHECK(features::IsEmailAliasesEnabled());
   CHECK(pref_service_);
 
   os_crypt_async->GetInstance(base::BindOnce(

@@ -12,6 +12,7 @@
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_auth.h"
@@ -345,9 +346,14 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {
  public:
+  EmailAliasesBrowserTest() {
+    feature_list_.InitWithFeatures({{email_aliases::features::kEmailAliases},
+                                    brave_account::features::kBraveAccount},
+                                   {});
+  }
+
  private:
-  base::test::ScopedFeatureList feature_list_{
-      email_aliases::features::kEmailAliases};
+  base::test::ScopedFeatureList feature_list_;
 };
 
 class EmailAliasesBrowserNoFeatureTest : public EmailAliasesBrowserTestBase {

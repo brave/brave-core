@@ -659,7 +659,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<BraveSettingsUI>()
         .Add<commands::mojom::CommandsService>();
   }
-  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<email_aliases::mojom::EmailAliasesService>();
   }
@@ -764,7 +764,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
-  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<EmailAliasesPanelUI>()
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesPanelHandler>();

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -30,6 +31,8 @@ class BraveSettingsEmailAliasesRowBrowserTest
   bool FeatureEnabled() { return GetParam(); }
 
  private:
+  base::test::ScopedFeatureList brave_account_feature_list_{
+      brave_account::features::kBraveAccount};
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

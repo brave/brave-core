@@ -783,7 +783,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
     }
   }
-  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
     if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
         email_aliases && email_aliases->IsAvailableFor(params_)) {
       menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);

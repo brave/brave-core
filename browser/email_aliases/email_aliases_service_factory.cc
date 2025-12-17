@@ -20,7 +20,7 @@ namespace email_aliases {
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
-  if (!base::FeatureList::IsEnabled(features::kEmailAliases)) {
+  if (!features::IsEmailAliasesEnabled()) {
     return nullptr;
   }
   return static_cast<EmailAliasesService*>(
