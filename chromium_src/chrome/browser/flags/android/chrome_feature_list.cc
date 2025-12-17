@@ -87,6 +87,7 @@
     &brave_ads::kNewTabPageAdFeature,                                          \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_account::features::kBraveAccount,                                   \
+    &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin
 
 // clang-format on

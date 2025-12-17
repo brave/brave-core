@@ -13,8 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
 /**
@@ -23,6 +26,7 @@ import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
  */
 public class BraveHubToolbarView extends HubToolbarView {
     private Button mActionButton;
+    private Button mShredButton;
     private FrameLayout mMenuButton;
 
     public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
@@ -34,7 +38,19 @@ public class BraveHubToolbarView extends HubToolbarView {
         super.onFinishInflate();
 
         mActionButton = findViewById(R.id.toolbar_action_button);
+        mShredButton =
+                findViewById(org.chromium.chrome.browser.brave_shields.R.id.shred_data_button);
         mMenuButton = findViewById(R.id.menu_button_wrapper);
+
+        mShredButton.setOnClickListener(
+                v -> {
+                    Context context = getContext();
+                    if (context instanceof FirstPartyStorageCleanerInterface) {
+                        FirstPartyStorageCleanerInterface fpCleaner =
+                                (FirstPartyStorageCleanerInterface) context;
+                        fpCleaner.shredSiteData();
+                    }
+                });
     }
 
     @Override
@@ -71,5 +87,9 @@ public class BraveHubToolbarView extends HubToolbarView {
 
         mActionButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
         mMenuButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
+
+        final boolean shouldShowShredButton =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
+        mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);
     }
 }

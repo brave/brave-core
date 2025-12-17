@@ -121,6 +121,7 @@ import java.util.List;
     ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
     ChromeFeatureList.PROPAGATE_DEVICE_CONTENT_FILTERS_TO_SUPERVISED_USER,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
+    BraveFeatureList.BRAVE_SHRED,
 })
 @EnableFeatures({
     BraveFeatureList.AI_CHAT,

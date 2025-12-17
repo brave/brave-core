@@ -46,4 +46,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_ACCOUNT = "BraveAccount";
     public static final String BRAVE_ANDROID_DYNAMIC_COLORS = "BraveAndroidDynamicColors";
     public static final String BRAVE_ORIGIN = "BraveOrigin";
+    public static final String BRAVE_SHRED = "BraveShredFeature";
 }

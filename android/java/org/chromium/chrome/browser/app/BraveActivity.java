@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -118,6 +119,8 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
+import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
@@ -235,6 +238,7 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -258,7 +262,8 @@ public abstract class BraveActivity extends ChromeActivity
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate,
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
-                OnSharedPreferenceChangeListener {
+                OnSharedPreferenceChangeListener,
+                FirstPartyStorageCleanerInterface {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -534,6 +539,8 @@ public abstract class BraveActivity extends ChromeActivity
                     this,
                     braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
                     braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+        } else if (id == R.id.brave_shred_id) {
+            shredData(currentTab);
         } else {
             return false;
         }
@@ -2627,6 +2634,47 @@ public abstract class BraveActivity extends ChromeActivity
                         .setView(view)
                         .setPositiveButton(R.string.brave_action_yes, onClickListener)
                         .setNegativeButton(R.string.brave_action_no, onClickListener)
+                        .create();
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.show();
+    }
+
+    @Override
+    public void shredSiteData() {
+        Tab currentTab = getActivityTab();
+        if (currentTab != null) {
+            shredData(currentTab);
+        }
+    }
+
+    private void shredData(Tab currentTab) {
+        LayoutInflater inflater =
+                (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.brave_shred_data_confirmation, null);
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(currentTab);
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
+        GURL lastCommittedUrl = currentTab.getWebContents().getLastCommittedUrl();
+        TextView confirmationTextView =
+                view.findViewById(R.id.brave_shred_data_confirmation_dialog);
+        confirmationTextView.setText(
+                getString(
+                        R.string.brave_shred_data_confirmation,
+                        lastCommittedUrl.getOrigin().getSpec()));
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(this, R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        AlertDialog alertDialog =
+                alert.setTitle(R.string.brave_shred_data_dialog_title)
+                        .setView(view)
+                        .setPositiveButton(
+                                R.string.brave_shred_data_dialog_ok_button_text, onClickListener)
+                        .setNegativeButton(R.string.brave_cancel, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();

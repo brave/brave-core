@@ -3688,7 +3688,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_EXIT_CONFIRMATION" desc="A confirmation shown on Exit Brave">
       Are you sure you want to exit Brave?
     </message>
-    <message name="IDS_BRAVE_CLEAR_AI_HISTORY_TITLE" desc="A title to delete Leo AI history">
+    <message name="IDS_BRAVE_SHRED_DATA_DIALOG_TITLE" desc="Shred data confirmation dialog title">
+      Shred site data?
+    </message>
+    <message name="IDS_BRAVE_SHRED_DATA_CONFIRMATION" desc="A confirmation shown on shred site data">
+      Shredding will delete site data and close all '<ph name="SITE_NAME">%1$s</ph>' tabs. This cannot be undone.
+    </message>
+    <message name="IDS_BRAVE_MENU_SHRED_TEXT" desc="Shred menu item text to delete browsing data securely.">
+      Shred
+    </message>
+    <message name="IDS_BRAVE_SHRED_DATA_DIALOG_OK_BUTTON_TEXT" desc="Shred data confirmation dialog OK button text">
+      Shred data
+    </message>
+     <message name="IDS_BRAVE_CLEAR_AI_HISTORY_TITLE" desc="A title to delete Leo AI history">
       Leo AI
     </message>
     <message name="IDS_BRAVE_CLEAR_AI_HISTORY_SUMMARY" desc="A summary to delete Leo AI history">
