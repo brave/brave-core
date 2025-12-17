@@ -11,4 +11,4 @@ brave_browser_hub_internal_java_sources = [
 ]
 
 brave_browser_hub_internal_java_deps =
-    [ "//brave/browser/ephemeral_storage/android:java" ]
+    [ "//brave/browser/brave_shields/android:java" ]

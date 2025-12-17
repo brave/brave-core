@@ -30,5 +30,5 @@ if (is_android) {
       [ "//brave/browser/brave_shields/android/ephemeral_storage_utils.cc" ]
 
   brave_browser_ephemeral_storage_deps +=
-      [ "//brave/browser/ephemeral_storage/android:jni_headers" ]
+      [ "//brave/browser/brave_shields/android:jni_headers" ]
 }

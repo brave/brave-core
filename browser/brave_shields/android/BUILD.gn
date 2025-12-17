@@ -9,10 +9,10 @@ import("//third_party/jni_zero/jni_zero.gni")
 assert(is_android)
 
 android_library("java") {
-  resources_package = "org.chromium.chrome.browser.ephemeral_storage"
+  resources_package = "org.chromium.chrome.browser.brave_shields"
   sources = [
-    "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveFirstPartyStorageCleanerUtils.java",
-    "java/src/org/chromium/chrome/browser/ephemeral_storage/FirstPartyStorageCleanerInterface.java",
+    "java/src/org/chromium/chrome/browser/brave_shields/BraveFirstPartyStorageCleanerUtils.java",
+    "java/src/org/chromium/chrome/browser/brave_shields/FirstPartyStorageCleanerInterface.java",
   ]
 
   deps = [
@@ -31,5 +31,5 @@ android_resources("java_resources") {
 }
 
 generate_jni("jni_headers") {
-  sources = [ "java/src/org/chromium/chrome/browser/ephemeral_storage/BraveFirstPartyStorageCleanerUtils.java" ]
+  sources = [ "java/src/org/chromium/chrome/browser/brave_shields/BraveFirstPartyStorageCleanerUtils.java" ]
 }
