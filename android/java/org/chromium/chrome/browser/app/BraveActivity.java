@@ -38,6 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -120,6 +121,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -2654,6 +2656,7 @@ public abstract class BraveActivity extends ChromeActivity
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
                     if (button == AlertDialog.BUTTON_POSITIVE) {
+                        FirstPartyStorageCleanerAnimationFragment.show(BraveActivity.this);
                         BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(currentTab);
                     } else {
                         dialog.dismiss();

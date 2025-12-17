@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Full-screen Lottie Animation View -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/brave_1p_storage_cleaner_animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        app:lottie_renderMode="automatic"/>
+        
+    <!-- Optional: Add a subtle overlay for better visibility if needed -->
+    <!--
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#10000000"
+        android:clickable="false"
+        android:focusable="false" />
+    -->
+
+</FrameLayout>
