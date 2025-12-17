@@ -40,6 +40,10 @@ def parse_args():
 def main():
     args = parse_args()
     channel = args.channel
+    # TODO(https://github.com/brave/brave-browser/issues/51497): Generate
+    # separate XTB files for brave_origin brand instead of sharing with brave.
+    # For now, always use 'brave' brand.
+    brand = 'brave'
     print(f'[pull-l10n] Channel: {channel}')
     dump_path = None
     if args.debug:
@@ -77,7 +81,7 @@ def main():
         else:
             print('No Crowdin override.')
 
-        update_xtbs_locally(source_string_path, BRAVE_SOURCE_ROOT, lang)
+        update_xtbs_locally(source_string_path, BRAVE_SOURCE_ROOT, lang, brand)
         if override_exists:
             combine_override_xtb_into_original(source_string_path, lang)
 
