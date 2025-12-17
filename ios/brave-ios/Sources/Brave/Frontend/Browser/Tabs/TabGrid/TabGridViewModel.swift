@@ -157,7 +157,10 @@ class TabGridViewModel {
   }
 
   var isSelectedTabShredAvailable: Bool {
-    tabManager.selectedTab?.visibleURL?.isShredAvailable == true
+    guard let selectedTab = tabManager.selectedTab,
+      selectedTab.isPrivate == isPrivateBrowsing
+    else { return false }
+    return selectedTab.visibleURL?.isShredAvailable == true
   }
 
   func isShredAvailableForSelectedTabs(_ tabs: Set<TabState.ID>) -> Bool {
