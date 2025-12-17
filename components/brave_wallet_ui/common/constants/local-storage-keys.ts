@@ -28,7 +28,6 @@ export const LOCAL_STORAGE_KEYS = {
   TOKEN_BALANCES: 'BRAVE_WALLET_TOKEN_BALANCES4',
   SPAM_TOKEN_BALANCES: 'SPAM_TOKEN_BALANCES3',
   SAVED_SESSION_ROUTE: 'BRAVE_WALLET_SAVED_SESSION_ROUTE',
-  USER_HIDDEN_TOKEN_IDS: 'BRAVE_WALLET_USER_HIDDEN_TOKEN_IDS2',
   USER_DELETED_TOKEN_IDS: 'BRAVE_WALLET_USER_DELETED_TOKEN_IDS2',
   HIDE_UNOWNED_NFTS: 'HIDE_UNOWNED_NFTS',
   GROUP_PORTFOLIO_NFTS_BY_COLLECTION: 'GROUP_PORTFOLIO_NFTS_BY_COLLECTION',
@@ -59,6 +58,7 @@ const LOCAL_STORAGE_KEYS_DEPRECATED = {
     'BRAVE_WALLET_USER_REMOVED_FUNGIBLE_TOKEN_IDS',
   USER_DELETED_TOKEN_IDS: 'BRAVE_WALLET_USER_DELETED_TOKEN_IDS',
   USER_HIDDEN_TOKEN_IDS: 'BRAVE_WALLET_USER_HIDDEN_TOKEN_IDS',
+  USER_HIDDEN_TOKEN_IDS2: 'BRAVE_WALLET_USER_HIDDEN_TOKEN_IDS2',
   NFT_COLLECTION_NAMES_REGISTRY: 'NFT_COLLECTION_NAMES_REGISTRY',
   IS_IPFS_BANNER_HIDDEN: 'BRAVE_WALLET_IS_IPFS_BANNER_HIDDEN',
   IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN:
@@ -79,22 +79,10 @@ export const runLocalStorageMigrations = () => {
 }
 
 function migrateTokenIds() {
-  const oldUserHiddenTokenIds: string[] = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_HIDDEN_TOKEN_IDS)
-      || '[]',
-  )
   const oldUserDeletedTokenIds: string[] = JSON.parse(
     localStorage.getItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_DELETED_TOKEN_IDS)
       || '[]',
   )
-  if (oldUserHiddenTokenIds.length) {
-    const newKeys = oldUserHiddenTokenIds.map((entry) => entry.toLowerCase())
-    localStorage.setItem(
-      LOCAL_STORAGE_KEYS.USER_HIDDEN_TOKEN_IDS,
-      JSON.stringify(newKeys),
-    )
-    localStorage.removeItem(LOCAL_STORAGE_KEYS_DEPRECATED.USER_HIDDEN_TOKEN_IDS)
-  }
   if (oldUserDeletedTokenIds.length) {
     const newKeys = oldUserDeletedTokenIds.map((entry) => entry.toLowerCase())
     localStorage.setItem(
