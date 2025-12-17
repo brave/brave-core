@@ -31,7 +31,11 @@ export function SearchEnginePicker(props: Props) {
           kind='plain-faint'
           slot='anchor-content'
         >
-          {selectedEngine && <EngineIcon engine={selectedEngine} />}
+          {selectedEngine ? (
+            <EngineIcon engine={selectedEngine} />
+          ) : (
+            <span className='engine-icon' />
+          )}
         </Button>
         {searchEngines.map((engine) => (
           <leo-menu-item
