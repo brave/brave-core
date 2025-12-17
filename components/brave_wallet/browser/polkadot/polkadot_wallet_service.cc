@@ -53,21 +53,6 @@ bool PolkadotWalletService::IsInitialized() const {
   return testnet_chain_metadata_ && mainnet_chain_metadata_;
 }
 
-const base::expected<PolkadotChainMetadata, std::string>&
-PolkadotWalletService::testnet_chain_metadata() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  CHECK(testnet_chain_metadata_);
-  return *testnet_chain_metadata_;
-}
-const base::expected<PolkadotChainMetadata, std::string>&
-PolkadotWalletService::mainnet_chain_metadata() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  CHECK(mainnet_chain_metadata_);
-  return *mainnet_chain_metadata_;
-}
-
 void PolkadotWalletService::InitializeChainMetadata() {
   polkadot_substrate_rpc_.GetChainName(
       mojom::kPolkadotTestnet,
