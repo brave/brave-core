@@ -10,7 +10,7 @@ import {
   getCurrentBackground,
 } from '../state/background_state'
 import { createBackgroundHandler } from '../state/background_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const BackgroundProvider = createStateProvider(
   defaultBackgroundState(),

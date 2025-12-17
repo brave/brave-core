@@ -5,7 +5,7 @@
 
 import { defaultNewTabState } from '../state/new_tab_state'
 import { createNewTabHandler } from '../state/new_tab_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const NewTabProvider = createStateProvider(
   defaultNewTabState(),

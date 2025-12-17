@@ -10,7 +10,7 @@ import {
   TopSitesActions,
   TopSitesListKind,
 } from './top_sites_state'
-import { StateStore } from '../lib/state_store'
+import { StateStore } from '$web-common/state_store'
 import { debounce } from '$web-common/debounce'
 
 export function createTopSitesHandler(

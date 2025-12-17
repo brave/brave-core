@@ -5,7 +5,7 @@
 
 import { defaultSearchState } from '../state/search_state'
 import { createSearchHandler } from '../state/search_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const SearchProvider = createStateProvider(
   defaultSearchState(),

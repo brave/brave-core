@@ -5,7 +5,7 @@
 
 import { defaultRewardsState } from '../state/rewards_state'
 import { createRewardsHandler } from '../state/rewards_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const RewardsProvider = createStateProvider(
   defaultRewardsState(),
