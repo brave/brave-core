@@ -79,16 +79,36 @@ class EmbeddingGemmaInterfaceImpl {
       // Extract all model files from BigBuffer
       console.log('Extracting model files from BigBuffer...')
       const weightsData = extractBigBuffer(modelFiles.weights, 'Weights')
+      const weightsDense1Data = extractBigBuffer(
+        modelFiles.weightsDense1,
+        'WeightsDense1',
+      )
+      const weightsDense2Data = extractBigBuffer(
+        modelFiles.weightsDense2,
+        'WeightsDense2',
+      )
       const tokenizerData = extractBigBuffer(modelFiles.tokenizer, 'Tokenizer')
       const configData = extractBigBuffer(modelFiles.config, 'Config')
 
-      if (!weightsData || !tokenizerData || !configData) {
+      if (
+        !weightsData
+        || !weightsDense1Data
+        || !weightsDense2Data
+        || !tokenizerData
+        || !configData
+      ) {
         console.error('Failed to extract model files')
         return { success: false }
       }
 
       console.log('Creating Gemma3Embedder instance...')
-      this.embedder = new Gemma3Embedder(weightsData, tokenizerData, configData)
+      this.embedder = new Gemma3Embedder(
+        weightsData,
+        weightsDense1Data,
+        weightsDense2Data,
+        tokenizerData,
+        configData,
+      )
       this.isInitialized = true
       this.initTime = performance.now() - startTime
       console.log(
@@ -180,10 +200,18 @@ window.addEventListener('message', async (event) => {
   console.log('[Candle WASM] Received message from parent:', event.data)
 
   if (event.data.type === 'loadModel') {
-    const { weightsPath, tokenizerPath, configPath } = event.data
+    const {
+      weightsPath,
+      weightsDense1Path,
+      weightsDense2Path,
+      tokenizerPath,
+      configPath,
+    } = event.data
 
     console.log('[Candle WASM] Loading model from paths:')
     console.log('  Weights:', weightsPath)
+    console.log('  Weights Dense1:', weightsDense1Path)
+    console.log('  Weights Dense2:', weightsDense2Path)
     console.log('  Tokenizer:', tokenizerPath)
     console.log('  Config:', configPath)
 
@@ -193,6 +221,8 @@ window.addEventListener('message', async (event) => {
     try {
       const result = await candleService.loadModelFiles(
         { path: weightsPath },
+        { path: weightsDense1Path },
+        { path: weightsDense2Path },
         { path: tokenizerPath },
         { path: configPath },
       )

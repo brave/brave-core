@@ -47,6 +47,8 @@ class CandleService : public KeyedService,
   void GetDefaultModelPath(GetDefaultModelPathCallback callback) override;
 
   void LoadModelFiles(const base::FilePath& weights_path,
+                      const base::FilePath& weights_dense1_path,
+                      const base::FilePath& weights_dense2_path,
                       const base::FilePath& tokenizer_path,
                       const base::FilePath& config_path,
                       LoadModelFilesCallback callback) override;
