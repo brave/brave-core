@@ -40,8 +40,8 @@
     Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN.
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Ad Block Only mode.">
-    Enable Ad Block Only mode
+  <message name="IDS_BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE" desc="A button label to enable Adblock-Only mode.">
+    Enable Adblock-Only mode
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_DISMISS_ALERT" desc="A button label to dismiss the alert.">
@@ -64,12 +64,12 @@
     Report site
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Ad Block Only mode is enabled.">
-    Ad Block Only mode enabled
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE" desc="Title for the alert to indicate Adblock-Only mode is enabled.">
+    Adblock-Only mode enabled
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Ad Block Only mode is enabled.">
-    You're currently using Ad Blocking Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.
+  <message name="IDS_BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC" desc="Description for the alert to indicate Adblock-Only mode is enabled.">
+    You're currently using Adblock-Only mode. This mode only offers ad blocking protection. If you wish to return to full Shields mode, disable this mode from settings.
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADS_BLOCKED_NOTE" desc="Description to convey advertisements are being blocked.">

@@ -1276,8 +1276,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       },                                                                       \
       {                                                                        \
           "brave-ad-block-only-mode",                                          \
-          "Enable Ad Block Only Mode",                                         \
-          "Ad Block Only mode retains core ad blocking rules of Brave "        \
+          "Enable Adblock-Only Mode",                                          \
+          "Adblock-Only mode retains core ad blocking rules of Brave "         \
           "Shields. Warning: removes all privacy protections. Please note "    \
           "that for individual websites broken by Brave's privacy "            \
           "protections, you can set Shields to DOWN. This is an experimental " \

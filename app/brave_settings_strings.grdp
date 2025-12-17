@@ -688,24 +688,24 @@
     Show Brave Rewards button
   </message>
 
-  <!-- Settings / Ad block only mode -->
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE" desc="Title for an item in the 'Ad block only mode' section of Shields Settings">
-    Ad Block Only mode
+  <!-- Settings / Adblock-Only mode -->
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE" desc="Title for an item in the 'Adblock-Only mode' section of Shields Settings">
+    Adblock-Only mode
   </message>
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL" desc="The text for settings option to enable shields ad block only mode">
-    Use Ad Block Only mode
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL" desc="The text for settings option to enable shields Adblock-Only mode">
+    Use Adblock-Only mode
   </message>
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC" desc="The description for settings option to enable shields ad block only mode">
-    Ad Block Only mode retains core ad blocking rules of Brave Shields. Warning: removes all privacy protections. Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN. This is an experimental mode. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC" desc="The description for settings option to enable shields Adblock-Only mode">
+    Adblock-Only mode retains core ad blocking rules of Brave Shields. Warning: removes all privacy protections. Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN. This is an experimental mode. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TITLE" desc="Title for the alert shown when ad block only mode is enabled">
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TITLE" desc="Title for the alert shown when Adblock-Only mode is enabled">
     Shields options are currently disabled.
   </message>
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_DESC" desc="Description for the alert shown when ad block only mode is enabled">
-    Ad Block Only mode retains core ad blocking rules of Brave Shields and turns off privacy protections. If you would like to enable standard Shields, please disable this mode.
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_DESC" desc="Description for the alert shown when Adblock-Only mode is enabled">
+    Adblock-Only mode retains core ad blocking rules of Brave Shields and turns off privacy protections. If you would like to enable standard Shields, please disable this mode.
   </message>
-  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TURN_OFF_BUTTON" desc="Alert button text to turn off ad block only mode">
-    Turn off Ad Block Only mode
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TURN_OFF_BUTTON" desc="Alert button text to turn off Adblock-Only mode">
+    Turn off Adblock-Only mode
   </message>
 
   <!-- Settings / Social media blocking -->
