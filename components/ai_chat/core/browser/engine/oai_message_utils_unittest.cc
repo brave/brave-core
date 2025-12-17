@@ -629,6 +629,67 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
   VerifyTextBlock(FROM_HERE, messages[0].content[1], "query0");
 }
 
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Skills) {
+  // Create conversation history with 2 pairs (4 turns)
+  // Turn 0: Human with skill + page content + selected text
+  // Turn 1: Assistant
+  // Turn 2: Human without skill
+  // Turn 3: Assistant
+  auto history = CreateSampleChatHistory(2);
+
+  // Add skill to first human turn (turn 0)
+  history[0]->skill =
+      mojom::SkillEntry::New("summarize", "Please summarize the content");
+
+  // Add selected text to first human turn (turn 0)
+  history[0]->selected_text = "This is selected text";
+
+  // Set text for assistant turns (CreateSampleChatHistory creates them with
+  // empty text)
+  history[1]->text = "response0";
+  history[3]->text = "response1";
+
+  // Create page content for first human turn (turn 0)
+  PageContent page_content("This is page content", false);
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, false,
+                       10000, [](std::string&) {});
+
+  // Should have 4 OAI messages (2 human + 2 assistant)
+  ASSERT_EQ(messages.size(), 4u);
+
+  // Message 0 (turn 0 - human with skill): 4 content blocks
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                      "This is page content");
+  VerifyPageExcerptBlock(FROM_HERE, messages[0].content[1],
+                         "This is selected text");
+  VerifyTextBlock(FROM_HERE, messages[0].content[2],
+                  "When handling the request, interpret '/summarize' as "
+                  "'Please summarize the content'");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+
+  // Message 1 (turn 1 - assistant): 1 content block
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "response0");
+
+  // Message 2 (turn 2 - human without skill): 1 content block
+  EXPECT_EQ(messages[2].role, "user");
+  ASSERT_EQ(messages[2].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[2].content[0], "query1");
+
+  // Message 3 (turn 3 - assistant): 1 content block
+  EXPECT_EQ(messages[3].role, "assistant");
+  ASSERT_EQ(messages[3].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[3].content[0], "response1");
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
   PageContent text_content1(
       "This is a very long first text content that will be truncated", false);

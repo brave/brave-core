@@ -152,6 +152,8 @@ class EngineConsumer {
 
   static std::string GetImageDataURL(base::span<uint8_t> image_data);
   static std::string GetPdfDataURL(base::span<uint8_t> pdf_data);
+  static std::string BuildSkillDefinitionMessage(
+      const mojom::SkillEntryPtr& skill);
 
  protected:
   // Check if we should call GenerationCompletedCallback early based on the
@@ -159,9 +161,6 @@ class EngineConsumer {
   // human message.
   bool CanPerformCompletionRequest(
       const ConversationHistory& conversation_history) const;
-
-  static std::string BuildSkillDefinitionMessage(
-      const mojom::SkillEntryPtr& skill);
 
   void OnConversationTitleGenerated(
       GenerationCompletedCallback completion_callback,
