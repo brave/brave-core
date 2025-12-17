@@ -18,7 +18,7 @@ template("build_crate") {
     executable_outputs = [ target_name ]
   }
 
-  cargo_target_dir = "$root_build_dir/brave_tools_crates"
+  cargo_target_dir = "$root_gen_dir/brave/tools/crates/$target_name"
   cargo_profile = "release"
 
   executable_output_paths = []
