@@ -233,9 +233,9 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
           kFailedToInitializeMetaTable;
     }
 
-    memory_pressure_listener_registration_ =
-        std::make_unique<base::MemoryPressureListenerRegistration>(
-            FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase, this);
+    // memory_pressure_listener_registration_ =
+    //     std::make_unique<base::MemoryPressureListenerRegistration>(
+    //         FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase, this);
 
     is_initialized_ = true;
   }
