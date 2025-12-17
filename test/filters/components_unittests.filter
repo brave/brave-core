@@ -126,6 +126,10 @@
 # GetUkmSourceId override.
 -Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
 
+# This tests fails because we disable safe browsing enhanced protection and
+# patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-TriggerManagerTest.ReportSentWhenEsbIsEnabled
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
