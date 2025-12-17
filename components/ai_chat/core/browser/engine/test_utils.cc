@@ -104,6 +104,56 @@ void VerifyPageExcerptBlock(const base::Location& location,
   EXPECT_EQ(block->get_page_excerpt_content_block()->text, expected_text);
 }
 
+base::flat_map<std::string, mojom::MemoryValuePtr> BuildExpectedMemory(
+    const base::flat_map<std::string, std::string>& string_values,
+    const base::flat_map<std::string, std::vector<std::string>>& list_values) {
+  base::flat_map<std::string, mojom::MemoryValuePtr> result;
+
+  for (const auto& [key, value] : string_values) {
+    result[key] = mojom::MemoryValue::NewStringValue(value);
+  }
+
+  for (const auto& [key, value] : list_values) {
+    result[key] = mojom::MemoryValue::NewListValue(value);
+  }
+
+  return result;
+}
+
+void VerifyMemoryBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    const base::flat_map<std::string, mojom::MemoryValuePtr>& expected_memory) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kMemoryContentBlock);
+
+  const auto& memory_block = block->get_memory_content_block();
+  const auto& actual_memory = memory_block->memory;
+
+  // Verify map sizes match
+  ASSERT_EQ(actual_memory.size(), expected_memory.size());
+
+  // Verify each key-value pair
+  for (const auto& [key, expected_value] : expected_memory) {
+    // Verify key exists
+    ASSERT_TRUE(actual_memory.contains(key)) << "Key not found: " << key;
+
+    const auto& actual_value = actual_memory.at(key);
+
+    // Verify both values have the same type (union tag)
+    ASSERT_EQ(actual_value->which(), expected_value->which());
+
+    // Verify based on type
+    if (expected_value->is_string_value()) {
+      EXPECT_EQ(actual_value->get_string_value(),
+                expected_value->get_string_value());
+    } else if (expected_value->is_list_value()) {
+      EXPECT_EQ(actual_value->get_list_value(),
+                expected_value->get_list_value());
+    }
+  }
+}
+
 void VerifyVideoTranscriptBlock(const base::Location& location,
                                 const mojom::ContentBlockPtr& block,
                                 std::string_view expected_text) {

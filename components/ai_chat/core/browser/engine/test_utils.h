@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/location.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -41,6 +42,16 @@ void VerifyPageTextBlock(const base::Location& location,
 void VerifyPageExcerptBlock(const base::Location& location,
                             const mojom::ContentBlockPtr& block,
                             std::string_view expected_text);
+
+// Helper to build expected memory for testing
+base::flat_map<std::string, mojom::MemoryValuePtr> BuildExpectedMemory(
+    const base::flat_map<std::string, std::string>& string_values,
+    const base::flat_map<std::string, std::vector<std::string>>& list_values);
+
+void VerifyMemoryBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    const base::flat_map<std::string, mojom::MemoryValuePtr>& expected_memory);
 
 void VerifyVideoTranscriptBlock(const base::Location& location,
                                 const mojom::ContentBlockPtr& block,

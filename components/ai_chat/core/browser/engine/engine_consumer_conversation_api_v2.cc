@@ -88,8 +88,8 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
   }
 
   auto messages =
-      BuildOAIMessages(std::move(page_contents), conversation_history,
-                       max_associated_content_length_,
+      BuildOAIMessages(std::move(page_contents), conversation_history, prefs_,
+                       is_temporary_chat, max_associated_content_length_,
                        [this](std::string& input) { SanitizeInput(input); });
 
   // Override model_name to be used if model_key existed, used when

@@ -14,7 +14,10 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -37,6 +40,32 @@ class OAIMessageUtilsTest : public testing::Test {
  public:
   OAIMessageUtilsTest() = default;
   ~OAIMessageUtilsTest() override = default;
+
+  void SetUp() override { prefs::RegisterProfilePrefs(prefs_.registry()); }
+
+ protected:
+  void TestNoMemoryInMessages(const base::Location& location,
+                              PrefService* prefs,
+                              bool is_temporary_chat) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+
+    // Create simple 1 human turn history (no selected text, no page content)
+    auto history = CreateSampleChatHistory(1);
+    history.pop_back();  // Remove assistant turn
+
+    // Call BuildOAIMessages
+    std::vector<OAIMessage> messages =
+        BuildOAIMessages(PageContentsMap(), history, prefs, is_temporary_chat,
+                         10000, [](std::string&) {});
+
+    // Verify: Should have 1 human message with NO memory block
+    ASSERT_EQ(messages.size(), 1u);
+    EXPECT_EQ(messages[0].role, "user");
+    ASSERT_EQ(messages[0].content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, messages[0].content[0], "query0");
+  }
+
+  sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
 class BuildOAIRewriteSuggestionMessagesTest
@@ -184,7 +213,7 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
 
   bool sanitize_input_called = false;
   std::vector<OAIMessage> messages = BuildOAIMessages(
-      std::move(page_contents_map), history, 10000,
+      std::move(page_contents_map), history, nullptr, true, 10000,
       [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
 
   EXPECT_TRUE(sanitize_input_called);
@@ -255,8 +284,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   history.push_back(std::move(turn2));
 
   // Set max_length to fit newer content but not both
-  std::vector<OAIMessage> messages = BuildOAIMessages(
-      std::move(page_contents_map), history, 11, [](std::string&) {});
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true, 11,
+                       [](std::string&) {});
 
   // Should have 2 messages
   ASSERT_EQ(messages.size(), 2u);
@@ -354,8 +384,9 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   history[9]->text = "response4";
 
   // Build OAI messages
-  std::vector<OAIMessage> messages = BuildOAIMessages(
-      std::move(page_contents_map), history, 10000, [](std::string&) {});
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
 
   // Should have 10 messages (5 human, 5 assistant)
   ASSERT_EQ(messages.size(), 10u);
@@ -458,6 +489,144 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   EXPECT_EQ(messages[9].role, "assistant");
   ASSERT_EQ(messages[9].content.size(), 1u);
   VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_TempChat) {
+  // Enable customization and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::Value::Dict customizations_dict;
+  customizations_dict.Set("name", "John Doe");
+  customizations_dict.Set("job", "Software Engineer");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::Value::List memories;
+  memories.Append("I prefer concise explanations");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Verify no memory in temp chat
+  TestNoMemoryInMessages(FROM_HERE, &prefs_, true);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_NullPrefs) {
+  TestNoMemoryInMessages(FROM_HERE, nullptr, false);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Disabled) {
+  // Disable both customization and memory prefs
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  TestNoMemoryInMessages(FROM_HERE, &prefs_, false);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
+  // Enable customization and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::Value::Dict customizations_dict;
+  customizations_dict.Set("name", "John Doe");
+  customizations_dict.Set("job", "Software Engineer");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::Value::List memories;
+  memories.Append("I prefer concise explanations");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Create history with 2 human turns and 1 assistant turns
+  auto history = CreateSampleChatHistory(2);
+  history.pop_back();
+
+  // Set up page content and selected text for last human turn only
+  PageContent page_content("Page content for last turn", false);
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[2]->uuid] = {std::cref(page_content)};
+  history[2]->selected_text = "Selected excerpt";
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, &prefs_, false,
+                       10000, [](std::string&) {});
+
+  // Should have 3 messages
+  ASSERT_EQ(messages.size(), 3u);
+
+  // Message 0: First human turn - NO memory (not the last human turn)
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0], "query0");
+
+  // Message 1: First assistant turn
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+
+  // Message 2: Last human turn - HAS memory as FIRST block
+  EXPECT_EQ(messages[2].role, "user");
+  ASSERT_EQ(messages[2].content.size(), 4u);
+
+  // Verify memory block is first (index 0)
+  auto expected_memory =
+      BuildExpectedMemory({{"job", "Software Engineer"}, {"name", "John Doe"}},
+                          {{"memories", {"I prefer concise explanations"}}});
+  VerifyMemoryBlock(FROM_HERE, messages[2].content[0], expected_memory);
+
+  // Verify page content is second (index 1)
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[1],
+                      "Page content for last turn");
+
+  // Verify selected text is third (index 2)
+  VerifyPageExcerptBlock(FROM_HERE, messages[2].content[2], "Selected excerpt");
+
+  // Verify main text is fourth (index 3)
+  VerifyTextBlock(FROM_HERE, messages[2].content[3], "query1");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
+  // Enable customization with HTML tags that need escaping
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::Value::Dict customizations_dict;
+  customizations_dict.Set("name", "John <tag>Doe</tag>");
+  customizations_dict.Set("other", "<user_memory>special</user_memory>");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory with HTML/script tags that need escaping
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::Value::List memories;
+  memories.Append("I like <b>bold</b> text");
+  memories.Append("<script>alert('xss')</script>");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Create simple history with 1 human turn
+  auto history = CreateSampleChatHistory(1);
+  history.pop_back();
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, &prefs_, false, 10000, [](std::string&) {});
+
+  // Should have 1 human message
+  ASSERT_EQ(messages.size(), 1u);
+
+  // First message: Human turn with memory block containing escaped HTML
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 2u);
+
+  // Verify memory block has HTML-escaped values
+  auto expected_memory = BuildExpectedMemory(
+      {{"name", "John &lt;tag&gt;Doe&lt;/tag&gt;"},
+       {"other", "&lt;user_memory&gt;special&lt;/user_memory&gt;"}},
+      {{"memories",
+        {"I like &lt;b&gt;bold&lt;/b&gt; text",
+         "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;"}}});
+  VerifyMemoryBlock(FROM_HERE, messages[0].content[0], expected_memory);
+
+  // Verify text block
+  VerifyTextBlock(FROM_HERE, messages[0].content[1], "query0");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {

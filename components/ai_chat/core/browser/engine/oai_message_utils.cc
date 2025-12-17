@@ -6,7 +6,10 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
 #include "base/containers/adapters.h"
+#include "base/strings/escape.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
+#include "components/prefs/pref_service.h"
 
 namespace ai_chat {
 
@@ -65,6 +68,37 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
   return blocks;
 }
 
+std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
+    PrefService* prefs,
+    bool is_temporary_chat) {
+  if (is_temporary_chat || !prefs) {
+    return std::nullopt;
+  }
+
+  auto memories = prefs::GetUserMemoryDictFromPrefs(*prefs);
+  if (!memories) {
+    return std::nullopt;
+  }
+
+  base::flat_map<std::string, mojom::MemoryValuePtr> result;
+  for (const auto [key, value] : *memories) {
+    if (value.is_string()) {
+      result[key] = mojom::MemoryValue::NewStringValue(
+          base::EscapeForHTML(value.GetString()));
+    } else if (value.is_list()) {
+      std::vector<std::string> escaped_list;
+      for (const auto& item : value.GetList()) {
+        if (item.is_string()) {
+          escaped_list.push_back(base::EscapeForHTML(item.GetString()));
+        }
+      }
+      result[key] = mojom::MemoryValue::NewListValue(std::move(escaped_list));
+    }
+  }
+
+  return mojom::MemoryContentBlock::New(std::move(result));
+}
+
 }  // namespace
 
 OAIMessage::OAIMessage() = default;
@@ -78,6 +112,8 @@ OAIMessage::~OAIMessage() = default;
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
     const EngineConsumer::ConversationHistory& conversation_history,
+    PrefService* prefs,
+    bool is_temporary_chat,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
   std::vector<OAIMessage> oai_messages;
@@ -122,6 +158,17 @@ std::vector<OAIMessage> BuildOAIMessages(
     oai_message.role = message->character_type == mojom::CharacterType::HUMAN
                            ? "user"
                            : "assistant";
+
+    // Add memory content block for latest human turn.
+    if (message->character_type == mojom::CharacterType::HUMAN &&
+        message_index == conversation_history.size() - 1) {
+      auto memory_block = BuildMemoryContentBlock(prefs, is_temporary_chat);
+      if (memory_block) {
+        oai_message.content.push_back(
+            mojom::ContentBlock::NewMemoryContentBlock(
+                std::move(*memory_block)));
+      }
+    }
 
     // Append associated content for the message (if any).
     // Note: We don't create the blocks here because we want to keep the newest

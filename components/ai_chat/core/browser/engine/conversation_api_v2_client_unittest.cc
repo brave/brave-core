@@ -35,6 +35,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 using ::testing::_;
 using ::testing::Sequence;
@@ -53,7 +54,7 @@ constexpr char kTestContent[] = "test content";
 struct ContentBlockTestParam {
   std::string name;
   base::RepeatingCallback<mojom::ContentBlockPtr()> get_test_content_block;
-  std::string expected_type;
+  std::string expected_json;
 };
 
 std::pair<std::vector<OAIMessage>, base::Value::Dict>
@@ -179,6 +180,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
        SerializeOAIMessages_ContentBlocks) {
   ContentBlockTestParam params = GetParam();
 
+  // Create message with content block
   mojom::ContentBlockPtr block = params.get_test_content_block.Run();
   std::vector<OAIMessage> messages;
   OAIMessage message;
@@ -188,75 +190,11 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
 
   base::Value::List serialized =
       ConversationAPIV2Client::SerializeOAIMessages(std::move(messages));
+  std::string expected_json = absl::StrFormat(
+      R"([{"role": "user", "content": [%s]}])", params.expected_json);
 
-  ASSERT_EQ(serialized.size(), 1u);
-  const base::Value::Dict* message_dict = serialized[0].GetIfDict();
-  ASSERT_TRUE(message_dict);
-
-  const std::string* role = message_dict->FindString("role");
-  ASSERT_TRUE(role);
-  EXPECT_EQ(*role, "user");
-
-  const base::Value::List* content_list = message_dict->FindList("content");
-  ASSERT_TRUE(content_list);
-  ASSERT_EQ(content_list->size(), 1u);
-
-  const base::Value::Dict* content_dict = (*content_list)[0].GetIfDict();
-  ASSERT_TRUE(content_dict);
-
-  // Build expected content based on block type
-  base::Value::Dict expected_content;
-  expected_content.Set("type", params.expected_type);
-
-  mojom::ContentBlockPtr original_block = params.get_test_content_block.Run();
-  switch (original_block->which()) {
-    case mojom::ContentBlock::Tag::kImageContentBlock: {
-      const auto& img = original_block->get_image_content_block();
-      base::Value::Dict image_url_dict;
-      image_url_dict.Set("url", img->image_url.spec());
-      expected_content.Set("image_url", std::move(image_url_dict));
-      break;
-    }
-    case mojom::ContentBlock::Tag::kFileContentBlock: {
-      const auto& file = original_block->get_file_content_block();
-      base::Value::Dict file_dict;
-      file_dict.Set("file_data", file->file_data.spec());
-      file_dict.Set("filename", file->filename);
-      expected_content.Set("file", std::move(file_dict));
-      break;
-    }
-    case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
-      const auto& tone = original_block->get_change_tone_content_block();
-      expected_content.Set("text", "");
-      expected_content.Set("tone", tone->tone);
-      break;
-    }
-    case mojom::ContentBlock::Tag::kTextContentBlock:
-      expected_content.Set("text",
-                           original_block->get_text_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
-      expected_content.Set(
-          "text", original_block->get_page_excerpt_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kPageTextContentBlock:
-      expected_content.Set("text",
-                           original_block->get_page_text_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
-      expected_content.Set(
-          "text", original_block->get_video_transcript_content_block()->text);
-      break;
-    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
-      expected_content.Set("text", "");
-      break;
-    case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
-      expected_content.Set(
-          "text", original_block->get_request_title_content_block()->text);
-      break;
-  }
-
-  EXPECT_EQ(*content_dict, expected_content);
+  // Compare using IsJson matcher
+  EXPECT_THAT(serialized, base::test::IsJson(expected_json));
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -267,94 +205,133 @@ INSTANTIATE_TEST_SUITE_P(
                                 return mojom::ContentBlock::NewTextContentBlock(
                                     mojom::TextContentBlock::New(kTestContent));
                               }),
-                              "text"},
+                              R"({"type": "text", "text": "test content"})"},
         ContentBlockTestParam{
             "Image", base::BindRepeating([]() {
               return mojom::ContentBlock::NewImageContentBlock(
                   mojom::ImageContentBlock::New(
                       GURL("data:image/png;base64,abc123")));
             }),
-            "image_url"},
+            R"({
+              "type": "image_url",
+              "image_url": {"url": "data:image/png;base64,abc123"}
+            })"},
         ContentBlockTestParam{
             "File", base::BindRepeating([]() {
               return mojom::ContentBlock::NewFileContentBlock(
                   mojom::FileContentBlock::New(
                       GURL("data:application/pdf;base64,abc123"), "filename"));
             }),
-            "file"},
+            R"({
+              "type": "file",
+              "file": {
+                "filename": "filename",
+                "file_data": "data:application/pdf;base64,abc123"
+              }
+            })"},
         ContentBlockTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(
                   mojom::PageExcerptContentBlock::New(kTestContent));
             }),
-            "brave-page-excerpt"},
+            R"({"type": "brave-page-excerpt", "text": "test content"})"},
         ContentBlockTestParam{
             "PageText", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageTextContentBlock(
                   mojom::PageTextContentBlock::New("test page content"));
             }),
-            "brave-page-text"},
+            R"({"type": "brave-page-text", "text": "test page content"})"},
         ContentBlockTestParam{
             "VideoTranscript", base::BindRepeating([]() {
               return mojom::ContentBlock::NewVideoTranscriptContentBlock(
                   mojom::VideoTranscriptContentBlock::New(
                       "test video transcript"));
             }),
-            "brave-video-transcript"},
+            R"({
+              "type": "brave-video-transcript",
+              "text": "test video transcript"
+            })"},
         ContentBlockTestParam{
             "SimpleRequest_Paraphrase", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kParaphrase));
             }),
-            "brave-request-paraphrase"},
+            R"({"type": "brave-request-paraphrase", "text": ""})"},
         ContentBlockTestParam{
             "SimpleRequest_Improve", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kImprove));
             }),
-            "brave-request-improve-excerpt-language"},
+            R"({
+              "type": "brave-request-improve-excerpt-language",
+              "text": ""
+            })"},
         ContentBlockTestParam{
             "SimpleRequest_Shorten", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kShorten));
             }),
-            "brave-request-shorten"},
+            R"({"type": "brave-request-shorten", "text": ""})"},
         ContentBlockTestParam{
             "SimpleRequest_Expand", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kExpand));
             }),
-            "brave-request-expansion"},
+            R"({"type": "brave-request-expansion", "text": ""})"},
         ContentBlockTestParam{
             "SimpleRequest_RequestSummary", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kRequestSummary));
             }),
-            "brave-request-summary"},
+            R"({"type": "brave-request-summary", "text": ""})"},
         ContentBlockTestParam{
             "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
               return mojom::ContentBlock::NewSimpleRequestContentBlock(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kRequestQuestions));
             }),
-            "brave-request-questions"},
+            R"({"type": "brave-request-questions", "text": ""})"},
         ContentBlockTestParam{
             "RequestTitle", base::BindRepeating([]() {
               return mojom::ContentBlock::NewRequestTitleContentBlock(
                   mojom::RequestTitleContentBlock::New(kTestContent));
             }),
-            "brave-conversation-title"},
+            R"({
+              "type": "brave-conversation-title",
+              "text": "test content"
+            })"},
         ContentBlockTestParam{
             "ChangeTone", base::BindRepeating([]() {
               return mojom::ContentBlock::NewChangeToneContentBlock(
                   mojom::ChangeToneContentBlock::New("", "professional"));
             }),
-            "brave-request-change-tone"}),
+            R"({
+              "type": "brave-request-change-tone",
+              "text": "",
+              "tone": "professional"
+            })"},
+        ContentBlockTestParam{
+            "Memory", base::BindRepeating([]() {
+              base::flat_map<std::string, mojom::MemoryValuePtr> memory;
+              memory["job"] =
+                  mojom::MemoryValue::NewStringValue("software engineer");
+              std::vector<std::string> memories = {"mem1", "mem2"};
+              memory["memories"] = mojom::MemoryValue::NewListValue(memories);
+              return mojom::ContentBlock::NewMemoryContentBlock(
+                  mojom::MemoryContentBlock::New(std::move(memory)));
+            }),
+            R"({
+              "type": "brave-user-memory",
+              "memory": {
+                "job": "software engineer",
+                "memories": ["mem1", "mem2"]
+              }
+            })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;
     });

@@ -103,6 +103,8 @@ std::string_view GetContentBlockTypeString(
       return "brave-conversation-title";
     case mojom::ContentBlock::Tag::kChangeToneContentBlock:
       return "brave-request-change-tone";
+    case mojom::ContentBlock::Tag::kMemoryContentBlock:
+      return "brave-user-memory";
     case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
       const auto& request = block->get_simple_request_content_block();
       auto it = kSimpleRequestTypeMap.find(request->type);
@@ -179,6 +181,24 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
           // Server currently requires the empty text field to be passed.
           content_block_dict.Set("text", tone->text);
           content_block_dict.Set("tone", tone->tone);
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kMemoryContentBlock: {
+          const auto& memory_block = block->get_memory_content_block();
+          base::Value::Dict memory_dict;
+          for (const auto& [key, memory_value] : memory_block->memory) {
+            if (memory_value->is_string_value()) {
+              memory_dict.Set(key, memory_value->get_string_value());
+            } else if (memory_value->is_list_value()) {
+              base::Value::List list;
+              for (const auto& val : memory_value->get_list_value()) {
+                list.Append(val);
+              }
+              memory_dict.Set(key, std::move(list));
+            }
+          }
+          content_block_dict.Set("memory", std::move(memory_dict));
           break;
         }
 
