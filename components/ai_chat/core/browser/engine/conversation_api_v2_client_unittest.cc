@@ -331,6 +331,48 @@ INSTANTIATE_TEST_SUITE_P(
                 "job": "software engineer",
                 "memories": ["mem1", "mem2"]
               }
+            })"},
+        ContentBlockTestParam{
+            "SuggestFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSuggestFocusTopicsContentBlock(
+                  mojom::SuggestFocusTopicsContentBlock::New(
+                      R"([{"id":"1","title":"Tab 1"}])"));
+            }),
+            R"({
+              "type": "brave-suggest-focus-topics",
+              "text": "[{\"id\":\"1\",\"title\":\"Tab 1\"}]"
+            })"},
+        ContentBlockTestParam{
+            "SuggestFocusTopicsWithEmoji", base::BindRepeating([]() {
+              return mojom::ContentBlock::
+                  NewSuggestFocusTopicsWithEmojiContentBlock(
+                      mojom::SuggestFocusTopicsWithEmojiContentBlock::New(
+                          R"([{"id":"2","title":"Tab 2"}])"));
+            }),
+            R"({
+              "type": "brave-suggest-focus-topics-emoji",
+              "text": "[{\"id\":\"2\",\"title\":\"Tab 2\"}]"
+            })"},
+        ContentBlockTestParam{
+            "FilterTabs", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFilterTabsContentBlock(
+                  mojom::FilterTabsContentBlock::New(
+                      R"([{"id":"3","title":"Shopping"}])", "Shopping"));
+            }),
+            R"({
+              "type": "brave-filter-tabs",
+              "text": "[{\"id\":\"3\",\"title\":\"Shopping\"}]",
+              "topic": "Shopping"
+            })"},
+        ContentBlockTestParam{
+            "ReduceFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewReduceFocusTopicsContentBlock(
+                  mojom::ReduceFocusTopicsContentBlock::New(
+                      R"(["Shopping","News"])"));
+            }),
+            R"({
+              "type": "brave-reduce-focus-topics",
+              "text": "[\"Shopping\",\"News\"]"
             })"}),
     [](const testing::TestParamInfo<ContentBlockTestParam>& info) {
       return info.param.name;
