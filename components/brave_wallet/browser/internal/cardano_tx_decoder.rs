@@ -14,7 +14,6 @@
 //! new ones.
 
 use std::fmt;
-use std::sync::atomic::{AtomicBool, Ordering};
 
 use blake2b_simd::Params as Blake2bParams;
 use ciborium::{de::from_reader, Value as CborValue};
@@ -43,14 +42,6 @@ const TTL_KEY: u8 = 3;
 const VK_WITNESS_KEY: u8 = 0;
 // https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/conway/impl/cddl-files/conway.cddl#L154
 const SET_TAG: u64 = 258;
-
-// Global variable to control whether SET_TAG is used (for testing purposes)
-static USE_SET_TAG: AtomicBool = AtomicBool::new(true);
-
-/// Sets a global variable to control whether SET_TAG is used.
-pub fn use_set_tag_for_testing(enable: bool) {
-    USE_SET_TAG.store(enable, Ordering::Relaxed);
-}
 
 #[macro_export]
 macro_rules! impl_result {
@@ -147,8 +138,6 @@ mod ffi {
         type CxxEncodedCardanoTransactionOutputResult;
         type CxxDecodedCardanoTransactionResult;
         type CxxSignedCardanoTransactionResult;
-
-        fn use_set_tag_for_testing(enable: bool);
 
         fn encode_cardano_transaction(
             tx: &CxxSerializableTx,
@@ -343,19 +332,9 @@ fn encode_tx_input(input: &CxxSerializableTxInput) -> CborValue {
 }
 
 fn encode_tx_inputs(inputs: &[CxxSerializableTxInput]) -> CborValue {
-    // Sort inputs as it is required to produce same binary form for the same
-    // transaction.
-    let mut sorted_inputs: Vec<_> = inputs.iter().collect();
-    sorted_inputs.sort_by_key(|input| (&input.tx_hash, input.index));
+    let inputs_cbor: Vec<CborValue> = inputs.iter().map(|input| encode_tx_input(input)).collect();
 
-    let inputs_cbor: Vec<CborValue> =
-        sorted_inputs.iter().map(|input| encode_tx_input(input)).collect();
-
-    if USE_SET_TAG.load(Ordering::Relaxed) {
-        CborValue::Tag(SET_TAG, Box::new(CborValue::Array(inputs_cbor)))
-    } else {
-        CborValue::Array(inputs_cbor)
-    }
+    CborValue::Array(inputs_cbor)
 }
 
 fn encode_tx_output(output: &CxxSerializableTxOutput) -> CborValue {
@@ -400,19 +379,10 @@ fn encode_tx_vkey_witness(witness: &CxxSerializableVkeyWitness) -> CborValue {
 }
 
 fn encode_tx_vkey_witness_set(vkey_witnesses: &[CxxSerializableVkeyWitness]) -> CborValue {
-    // Spec does't require any sorting of vkey witnesses, but we sort them to
-    // produce same binary form for the same transaction.
-    let mut sorted_witnesses: Vec<_> = vkey_witnesses.iter().collect();
-    sorted_witnesses.sort_by_key(|w| w.pubkey);
-
     let witness_cbor: Vec<CborValue> =
-        sorted_witnesses.into_iter().map(|witness| encode_tx_vkey_witness(witness)).collect();
+        vkey_witnesses.into_iter().map(|witness| encode_tx_vkey_witness(witness)).collect();
 
-    if USE_SET_TAG.load(Ordering::Relaxed) {
-        CborValue::Tag(SET_TAG, Box::new(CborValue::Array(witness_cbor)))
-    } else {
-        CborValue::Array(witness_cbor)
-    }
+    CborValue::Array(witness_cbor)
 }
 
 fn encode_tx_witness(witness: &CxxSerializableTxWitness) -> CborValue {

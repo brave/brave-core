@@ -26,8 +26,8 @@ constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
 constexpr int kFeeSearchMaxIterations = 10;
 
 void SetupDummyWitnessSet(CardanoTransaction& tx) {
-  tx.SetWitnesses(std::vector<CardanoTransaction::TxWitness>(
-      tx.GetInputAddresses().size()));
+  tx.SetWitnesses(
+      std::vector<CardanoTransaction::TxWitness>(tx.inputs().size()));
 }
 
 }  // namespace

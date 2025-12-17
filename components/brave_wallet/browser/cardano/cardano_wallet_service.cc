@@ -222,11 +222,11 @@ bool CardanoWalletService::SignTransactionInternal(
   }
 
   std::vector<CardanoTransaction::TxWitness> witnesses;
-  for (const auto& input_address : tx.GetInputAddresses()) {
-    if (!address_map->contains(input_address)) {
+  for (const auto& input : tx.inputs()) {
+    if (!address_map->contains(input.utxo_address)) {
       return false;
     }
-    auto& key_id = address_map->at(input_address);
+    auto& key_id = address_map->at(input.utxo_address);
 
     auto signature_pair = keyring_service().SignMessageByCardanoKeyring(
         account_id, key_id, *hash);

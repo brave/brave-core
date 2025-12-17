@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/numerics/checked_math.h"
 #include "base/values.h"
@@ -139,7 +138,6 @@ class CardanoTransaction {
   void AddInput(TxInput input);
   void AddInputs(std::vector<TxInput> input);
   void ClearInputs();
-  base::flat_set<CardanoAddress> GetInputAddresses() const;
 
   const std::vector<TxWitness>& witnesses() const { return witnesses_; }
   void SetWitnesses(std::vector<TxWitness> witnesses);
