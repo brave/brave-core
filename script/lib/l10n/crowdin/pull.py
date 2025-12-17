@@ -220,35 +220,61 @@ def create_xtb_format_translationbundle_tag(lang):
     return translationbundle_tag
 
 
+def check_plural_string_clauses(all_text, clauses_text):
+    """Validates clauses of a plural ICU string"""
+    clause_pattern = re.compile(
+        r"(zero|one|two|few|many|other|=\d+)\s*\{([^{}]+|\{[^{}]+\})+\}")
+    clause_counts = {}
+    unmatched_parts = []
+    last_end = 0
+    for match in clause_pattern.finditer(clauses_text):
+        keyword = match.group(1)
+        clause_counts[keyword] = clause_counts.get(keyword, 0) + 1
+        start, end = match.span()
+        unmatched_parts.append(clauses_text[last_end:start])
+        last_end = end
+    unmatched_parts.append(clauses_text[last_end:])
+    unmatched_text = (' '.join(unmatched_parts).strip()).strip()
+    if len(unmatched_text):
+        error = (f"Plural string has invalid format:\n{'-' * 10}\n"
+                 f"{all_text}\n{'-' * 10}\nUnmatched parts:\n"
+                 f"{unmatched_text}\n{'-' * 10}")
+        raise ValueError(error)
+    dups = [(key, value) for key, value in clause_counts.items() if value > 1]
+    if dups:
+        dups_details = ', '.join(f"'{key}' ({value} of them)"
+                                 for key, value in dups)
+        error = (f"Plural string has duplicate clauses: {dups_details}\n"
+                 f"{'-' * 10}\n{all_text}\n{'-' * 10}")
+        raise ValueError(error)
+    # This is also a fall through when clause_counts is empty.
+    if 'other' not in clause_counts:
+        error = ("Plural string is missing the required 'other' clause:\n"
+                 f"{'-' * 10}\n{all_text}\n{'-' * 10}")
+        raise ValueError(error)
+
+
 def check_plural_string_formatting(grd_string_content, translation_content):
     """Checks 'plural' string formatting in translations"""
-    pattern = re.compile(r"\s*{(.*,\s*plural,)(\s*offset:[0-2])?"
-                         r"(\s*(=0|zero)\s*{(.*)})?"
-                         r"(\s*(=1|one)\s*{(.*)})?"
-                         r"(\s*(=2|two)\s*{(.*)})?"
-                         r"(\s*(few)\s*{(.*)})?"
-                         r"(\s*(many)\s*{(.*)})?"
-                         r"(\s*other\s*{(.*)})?"
-                         r"\s*}\s*$")
-    if pattern.match(grd_string_content) is not None:
-        if pattern.match(translation_content) is None:
-            error = ('Translation of plural string:\n'
-                     '-----------\n'
-                     f"{grd_string_content}\n"
-                     '-----------\n'
-                     'does not match:\n'
-                     '-----------\n'
-                     f"{translation_content}\n"
-                     '-----------\n')
+    outer_pattern = re.compile(
+        r"^\s*\{\s*([^,]*,\s*plural,)(\s*offset:[0-2])?(.*)\}\s*$", re.DOTALL)
+    match = outer_pattern.match(grd_string_content)
+    if match:
+        check_plural_string_clauses(grd_string_content, match.group(3))
+        translation_match = outer_pattern.match(translation_content)
+        if not translation_match:
+            error = (f"Translation of plural string:\n{'-' * 10}\n"
+                     f"{grd_string_content}\n{'-' * 10}\ndoes not match:\n"
+                     f"{'-' * 10}\n{translation_content}\n{'-' * 10}")
             raise ValueError(error)
+        check_plural_string_clauses(translation_content,
+                                    translation_match.group(3))
     else:
         # This finds plural strings that the pattern above doesn't catch
         leading_pattern = re.compile(r"\s*{.*,\s*plural,.*")
         if leading_pattern.match(grd_string_content) is not None:
-            error = ('Uncaught plural pattern:\n'
-                     '-----------\n'
-                     f"{grd_string_content}\n"
-                     '-----------\n')
+            error = (f"Uncaught plural pattern:\n{'-' * 10}\n"
+                     f"{grd_string_content}\n{'-' * 10}\n")
             raise ValueError(error)
 
 
