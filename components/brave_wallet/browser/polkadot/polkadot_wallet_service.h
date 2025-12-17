@@ -53,8 +53,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // Obtain a const reference to the initialized testnet chain metadata.
   const base::expected<PolkadotChainMetadata, std::string>&
   testnet_chain_metadata() const {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
     CHECK(testnet_chain_metadata_);
     return *testnet_chain_metadata_;
   }
@@ -62,8 +60,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // Obtain a const reference to the initialized mainnet chain metadata.
   const base::expected<PolkadotChainMetadata, std::string>&
   mainnet_chain_metadata() const {
-    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
     CHECK(mainnet_chain_metadata_);
     return *mainnet_chain_metadata_;
   }
