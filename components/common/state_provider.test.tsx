@@ -19,8 +19,8 @@ function defaultState(): TestState {
 }
 
 interface TestActions {
-  increment(): void
-  setName(name: string): void
+  increment: () => void
+  setName: (name: string) => void
 }
 
 function createHandler(store: StateStore<TestState>): TestActions {

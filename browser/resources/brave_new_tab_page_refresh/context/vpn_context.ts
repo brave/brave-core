@@ -5,7 +5,7 @@
 
 import { defaultVpnState } from '../state/vpn_state'
 import { createVpnHandler } from '../state/vpn_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const VpnProvider = createStateProvider(
   defaultVpnState(),

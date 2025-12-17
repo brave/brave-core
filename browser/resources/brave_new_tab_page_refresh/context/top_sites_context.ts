@@ -5,7 +5,7 @@
 
 import { defaultTopSitesState } from '../state/top_sites_state'
 import { createTopSitesHandler } from '../state/top_sites_handler'
-import { createStateProvider } from '../lib/state_provider'
+import { createStateProvider } from '$web-common/state_provider'
 
 export const TopSitesProvider = createStateProvider(
   defaultTopSitesState(),
