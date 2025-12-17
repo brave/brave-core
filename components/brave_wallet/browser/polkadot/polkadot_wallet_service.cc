@@ -38,8 +38,6 @@ PolkadotWalletService::PolkadotWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
       polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
 
@@ -49,11 +47,12 @@ PolkadotWalletService::PolkadotWalletService(
 PolkadotWalletService::~PolkadotWalletService() = default;
 
 bool PolkadotWalletService::IsInitialized() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return testnet_chain_metadata_ && mainnet_chain_metadata_;
 }
 
 void PolkadotWalletService::InitializeChainMetadata() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   polkadot_substrate_rpc_.GetChainName(
       mojom::kPolkadotTestnet,
       base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
