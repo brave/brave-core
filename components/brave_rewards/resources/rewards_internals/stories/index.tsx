@@ -5,10 +5,13 @@
 
 import * as React from 'react'
 
-import { AppModelContext } from '../lib/app_model_context'
-import { createModel } from './storybook_model'
+import { AppProvider } from '../components/app_context'
+import { LocaleProvider } from '../components/locale_context'
+import { createAppHandler } from './app_handler'
+import { localeStrings } from './storybook_strings'
 import { scoped } from '$web-common/scoped_css'
 import { App } from '../components/app'
+import { StringKey } from '../lib/locale_strings'
 
 export default {
   title: 'Rewards/Internals',
@@ -21,13 +24,20 @@ const style = scoped.css`
   }
 `
 
+const locale = {
+  getString(key: StringKey) {
+    return localeStrings[key]
+  },
+}
+
 export function RewardsInternals() {
-  const model = React.useMemo(() => createModel(), [])
   return (
-    <AppModelContext.Provider value={model}>
-      <div data-css-scope={style.scope}>
-        <App />
-      </div>
-    </AppModelContext.Provider>
+    <LocaleProvider value={locale}>
+      <AppProvider createHandler={createAppHandler}>
+        <div data-css-scope={style.scope}>
+          <App />
+        </div>
+      </AppProvider>
+    </LocaleProvider>
   )
 }

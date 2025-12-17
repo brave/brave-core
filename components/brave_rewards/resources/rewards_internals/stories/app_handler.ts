@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStateManager } from '../../shared/lib/state_manager'
-import { AppState, defaultState } from '../lib/app_state'
-import { AppModel } from '../lib/app_model'
-import { localeStrings } from './storybook_strings'
+import { StateStore } from '$web-common/state_store'
+import { AppState } from '../lib/app_state'
+import { AppActions } from '../lib/app_actions'
 
 const sampleLog = `\
 --------------------------------------------------------------------------------
@@ -19,9 +18,8 @@ const sampleLog = `\
 [Mar 13, 2025 12:57:34.2 PM GMT:INFO:database_migration.cc(154)] DB: Migrated to version 6
 `
 
-export function createModel(): AppModel {
-  const stateManager = createStateManager<AppState>({
-    ...defaultState(),
+export function createAppHandler(store: StateStore<AppState>): AppActions {
+  store.update({
     externalWallet: {
       provider: 'uphold',
       authenticated: true,
@@ -46,24 +44,18 @@ export function createModel(): AppModel {
   })
 
   return {
-    getString(key) {
-      return localeStrings[key]
-    },
-    getState: stateManager.getState,
-    addListener: stateManager.addListener,
-
     setAdDiagnosticId(diagnosticId) {
-      stateManager.update({ adDiagnosticId: diagnosticId })
+      store.update({ adDiagnosticId: diagnosticId })
     },
 
     clearRewardsLog() {
-      stateManager.update({
+      store.update({
         rewardsLog: '',
       })
     },
 
     loadRewardsLog() {
-      stateManager.update({
+      store.update({
         rewardsLog: sampleLog,
       })
     },
@@ -73,7 +65,7 @@ export function createModel(): AppModel {
     },
 
     loadContributions() {
-      stateManager.update({
+      store.update({
         contributions: [
           {
             id: '812e6649-ba2b-4b8e-8925-163e401007c8',
@@ -122,7 +114,7 @@ export function createModel(): AppModel {
     },
 
     loadRewardsEvents() {
-      stateManager.update({
+      store.update({
         rewardsEvents: [
           {
             id: '1',

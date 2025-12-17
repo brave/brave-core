@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { useLocale } from '../lib/app_model_context'
+import { useLocale } from './locale_context'
 import { useRoute, useRouter } from '../../rewards_page/lib/router'
 import { GeneralInfo } from './general_info'
 import { RewardsLog } from './rewards_log'

@@ -7,7 +7,8 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Toggle from '@brave/leo/react/toggle'
 
-import { useAppState, useAppActions, useLocale } from '../lib/app_model_context'
+import { useAppState, useAppActions } from './app_context'
+import { useLocale } from './locale_context'
 
 import { style } from './rewards_log.style'
 

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { ContributionInfo } from '../lib/app_state'
-import { useAppState, useAppActions } from '../lib/app_model_context'
+import { useAppState, useAppActions } from './app_context'
 
 import { style } from './contributions.style'
 

@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { AppState } from './app_state'
-import { AppActions } from './app_actions'
+import * as React from 'react'
+
 import { Locale } from '../lib/locale_strings'
 
-export interface AppModel extends AppActions, Locale {
-  getState: () => AppState
-  addListener: (listener: (state: AppState) => void) => () => void
+const LocaleContext = React.createContext<Locale | null>(null)
+
+export const LocaleProvider = LocaleContext.Provider
+
+export function useLocale(): Locale {
+  const locale = React.useContext(LocaleContext)
+  return locale ?? { getString: () => '' }
 }
