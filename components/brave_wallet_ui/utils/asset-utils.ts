@@ -290,20 +290,10 @@ export function tokenNameToNftCollectionName(
   return token.name || token.symbol
 }
 
-export const getHiddenTokenIds = (): string[] => {
-  return JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_KEYS.USER_HIDDEN_TOKEN_IDS) || '[]',
-  )
-}
-
 export const getDeletedTokenIds = (): string[] => {
   return JSON.parse(
     localStorage.getItem(LOCAL_STORAGE_KEYS.USER_DELETED_TOKEN_IDS) || '[]',
   )
-}
-
-export const getHiddenOrDeletedTokenIdsList = () => {
-  return getDeletedTokenIds().concat(getHiddenTokenIds())
 }
 
 export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {

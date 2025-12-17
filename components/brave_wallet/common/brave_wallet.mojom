@@ -2810,6 +2810,9 @@ interface BraveWalletServiceTokenObserver {
   OnTokenAdded(BlockchainToken token);
 
   OnTokenRemoved(BlockchainToken token);
+
+  // Fired when a token's visibility is changed
+  OnTokenVisibilityChanged(BlockchainToken token);
 };
 
 // https://eips.ethereum.org/EIPS/eip-191
