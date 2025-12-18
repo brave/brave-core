@@ -22,6 +22,5 @@ testing.addTest(async () => {
   ])
   continueButton.click()
 
-  await waitForElement('.onboarding-success')
-
+  await waitForElement('.app-home')
 })

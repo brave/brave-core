@@ -15,7 +15,6 @@ import { AppFrame } from './app_frame'
 import { HomeView } from './home/home_view'
 import { ExploreView } from './explore/explore_view'
 import { Onboarding } from './onboarding/onboarding'
-import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ConnectAccount } from './connect/connect_account'
 import { UnsupportedRegionView } from './unsupported_region_view'
 import { AuthorizationModal } from './connect/authorization_modal'
@@ -51,8 +50,6 @@ export function App() {
     React.useState(false)
   const [showContributeModal, setShowContributeModal] = React.useState(false)
   const [hideCaptcha, setHideCaptcha] = React.useState(false)
-  const [showOnboardingSuccess, setShowOnboardingSuccess] =
-    React.useState(false)
 
   const route = useRoute((route, router) => {
     if (route === routes.reset) {
@@ -111,14 +108,6 @@ export function App() {
   function renderModal() {
     if (route.endsWith(routes.authorization)) {
       return <AuthorizationModal />
-    }
-
-    if (showOnboardingSuccess) {
-      return (
-        <OnboardingSuccessModal
-          onClose={() => setShowOnboardingSuccess(false)}
-        />
-      )
     }
 
     if (showResetModal) {
@@ -212,11 +201,7 @@ export function App() {
           />
         )
       }
-      return (
-        <Onboarding
-          onOnboardingCompleted={() => setShowOnboardingSuccess(true)}
-        />
-      )
+      return <Onboarding onOnboardingCompleted={() => {}} />
     }
 
     if (route === routes.connectAccount) {
@@ -226,7 +211,10 @@ export function App() {
     return (
       <>
         <AppFrame>
-          <div data-app-route={routes.home}>
+          <div
+            data-app-route={routes.home}
+            className='app-home'
+          >
             <HomeView />
           </div>
           <div data-app-route={routes.explore}>
