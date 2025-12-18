@@ -23,15 +23,12 @@
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_renderMode="automatic"/>
-        
-    <!-- Optional: Add a subtle overlay for better visibility if needed -->
-    <!--
+
     <View
+        android:id="@+id/black_fade_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#10000000"
-        android:clickable="false"
-        android:focusable="false" />
-    -->
-
+        android:background="@android:color/black"
+        android:visibility="gone"
+        android:alpha="1.0" />
 </FrameLayout>

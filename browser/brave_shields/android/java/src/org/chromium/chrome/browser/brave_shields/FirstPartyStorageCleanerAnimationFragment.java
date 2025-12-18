@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_shields;
 
 import android.animation.Animator;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,48 +16,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.content.Context;
-
-import org.chromium.build.annotations.NullMarked;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.airbnb.lottie.LottieAnimationView;
+
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 
 @NullMarked
 public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
     private static final String TAG = "FPStorageCleanerAnimFrag";
-    private static final String ANIMATION_FILE = "brave_first_party_storage_clean_animation.json";
 
-    private LottieAnimationView mAnimationView;
-    private OnAnimationCompleteListener mAnimationCompleteListener;
+    private static final String ANIMATION_FILE = "brave_first_party_storage_clean_animation.json";
+    private static final int FADE_OUT_DURATION_MS = 400;
+    private static final int FADE_OUT_START_DELAY_MS = 0;
+    private static final int ANIMATION_REPEAT_COUNT = 0;
+
+    private @Nullable LottieAnimationView mAnimationView;
+    private @Nullable View mBlackFadeOverlay;
 
     public interface OnAnimationCompleteListener {
         void onAnimationComplete();
     }
 
     public static void show(Context context) {
-        FragmentManager fragmentManager =
-                ((FragmentActivity) context).getSupportFragmentManager();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FirstPartyStorageCleanerAnimationFragment fragment =
                 new FirstPartyStorageCleanerAnimationFragment();
         fragment.show(fragmentManager, TAG);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Use full-screen dialog style
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        // Make dialog full-screen with transparent background
         Window window = dialog.getWindow();
         if (window != null) {
             window.setLayout(
@@ -72,62 +74,77 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(
                 R.layout.brave_first_party_storage_cleaner_animation, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mAnimationView = view.findViewById(R.id.brave_1p_storage_cleaner_animation_view);
+
+        if (mAnimationView == null) {
+            return;
+        }
+
+        mBlackFadeOverlay = view.findViewById(R.id.black_fade_overlay);
+
         mAnimationView.setAnimation(ANIMATION_FILE);
+        mAnimationView.setRepeatCount(ANIMATION_REPEAT_COUNT);
+        mAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
 
-        // Configure animation properties
-        mAnimationView.setRepeatCount(0);
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                hideAnimationAndStartFadeOut();
+            }
 
-        // Add animation listener
-        mAnimationView.addAnimatorListener(
-                new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        // Animation started
-                    }
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        // Auto-dismiss after animation completes
-                        dismiss();
-                        if (mAnimationCompleteListener != null) {
-                            mAnimationCompleteListener.onAnimationComplete();
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        // Animation cancelled
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-                        // Animation repeated (for looping animations)
-                    }
-                });
-
-        // Allow clicking outside to dismiss (optional)
-        view.setOnClickListener(
-                v -> {
-                    if (mAnimationView.isAnimating()) {
-                        mAnimationView.cancelAnimation();
-                    }
-                    dismiss();
-                });
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
 
         // Start animation
+        mAnimationView.playAnimation();
+    }
+
+    private void hideAnimationAndStartFadeOut() {
         if (mAnimationView != null) {
-            mAnimationView.playAnimation();
+        // Hide the animation view since it's finished
+            mAnimationView.setVisibility(View.GONE);
+        }
+        if (mBlackFadeOverlay != null) {
+            mBlackFadeOverlay.setVisibility(View.VISIBLE);
+            mBlackFadeOverlay.animate()
+                    .alpha(0.0f)
+                    .setDuration(FADE_OUT_DURATION_MS)
+                    .setStartDelay(FADE_OUT_START_DELAY_MS)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            // Close the dialog fragment
+                            dismiss();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {}
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {}
+                    })
+                    .start();
         }
     }
 }
