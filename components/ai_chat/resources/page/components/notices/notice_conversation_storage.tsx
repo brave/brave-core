@@ -28,7 +28,7 @@ export default function NoticeConversationStorage() {
         <p>
           <button
             className={styles.learnMoreLink}
-            onClick={() => aiChatContext.uiHandler?.openStorageSupportUrl()}
+            onClick={() => aiChatContext.api.uiHandler.openStorageSupportUrl()}
           >
             {getLocale(S.CHAT_UI_LEARN_MORE)}
           </button>
