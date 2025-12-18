@@ -2393,7 +2393,8 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   EXPECT_TRUE(result.has_value());
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUse) {
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
@@ -2421,38 +2422,50 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */));
 
-  std::string expected_events = R"([
+  std::string expected_messages = R"([
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is the weather in Santa Barbara?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "toolCalls",
-      "content": "First I'll look up the weather...",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
       "tool_calls": [
         {
           "id": "call_123",
           "type": "function",
           "function": {
             "name": "get_weather",
-            "arguments": "{\"location\":\"Santa Barbara\"}",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
           }
-        },
-      ],
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_123",
-      "content": [{"type": "text", "text": "{ \"temperature\":\"75F\" }"}],
-    },
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
+    }
   ])";
   base::RunLoop run_loop;
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -2461,9 +2474,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // One user turn, one assistant turn, one tool turn
-        EXPECT_EQ(conversation.size(), 3u);
-        EXPECT_THAT(mock_api_client->GetEventsJson(std::move(conversation)),
-                    base::test::IsJson(base::test::ParseJson(expected_events)));
+        EXPECT_EQ(messages.size(), 3u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
@@ -2480,7 +2494,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUse) {
   // Responses can contain multiple tool use events
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
@@ -2519,23 +2534,31 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */));
 
-  std::string expected_events = R"([
+  std::string expected_messages = R"([
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is the weather in Santa Barbara?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "toolCalls",
-      "content": "First I'll look up the weather...",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ],
       "tool_calls": [
         {
           "id": "call_123",
           "type": "function",
           "function": {
             "name": "get_temperature",
-            "arguments": "{\"location\":\"Santa Barbara\"}",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
           }
         },
         {
@@ -2543,33 +2566,36 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
           "type": "function",
           "function": {
             "name": "get_wind",
-            "arguments": "{\"location\":\"Santa Barbara\"}",
+            "arguments": "{\"location\":\"Santa Barbara\"}"
           }
-        },
-      ],
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_123",
-      "content": [{"type": "text", "text": "{ \"temperature\":\"75F\" }"}],
+      "content": [
+        {
+          "type": "text",
+          "text": "{ \"temperature\":\"75F\" }"
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_1234",
       "content": [
         {
           "type": "text",
           "text": "{ \"speed\":\"25mph\", \"direction\":\"NW\" }"
         }
-      ],
-    },
+      ]
+    }
   ])";
   base::RunLoop run_loop;
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -2578,10 +2604,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
         // One user turn, one assistant turn, two tool turns
-        EXPECT_EQ(conversation.size(), 4u);
-        EXPECT_THAT(base::test::ParseJson(mock_api_client->GetEventsJson(
-                        std::move(conversation))),
-                    base::test::IsJson(expected_events));
+        EXPECT_EQ(messages.size(), 4u);
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
@@ -2598,8 +2624,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest,
-       GenerateEvents_MultipleToolUseWithLargeContent) {
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_MultipleToolUseWithLargeContent) {
   EngineConsumer::ConversationHistory history;
 
   // Generate 3 tool use requests and the first one should be removed
@@ -2652,111 +2678,156 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         nullptr /* near_verification_status */));
   }
 
-  std::string expected_events = R"([
+  std::string expected_messages = R"([
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is this web page about?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "toolCalls",
-      "content": "First I'll look up the page...",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
       "tool_calls": [
         {
           "id": "call_1230",
           "type": "function",
           "function": {
             "name": "get_page_content",
-            "arguments": "{}",
+            "arguments": "{}"
           }
-        },
-      ],
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_1230",
-      "content": "[Large result removed to save space for subsequent results]",
+      "content": [
+        {
+          "type": "text",
+          "text": "[Large result removed to save space for subsequent results]"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
-      "content": "The page has some great content"
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
     },
-
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is this web page about?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "toolCalls",
-      "content": "First I'll look up the page...",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
       "tool_calls": [
         {
           "id": "call_1231",
           "type": "function",
           "function": {
             "name": "get_page_content",
-            "arguments": "{}",
+            "arguments": "{}"
           }
-        },
-      ],
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_1231",
-      "content": [{"type": "text", "text": ")" +
-                                large_text_content + R"("}],
+      "content": [
+        {
+          "type": "text",
+          "text": ")" + large_text_content +
+                                  R"("
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
-      "content": "The page has some great content"
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
     },
-
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is this web page about?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is this web page about?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "toolCalls",
-      "content": "First I'll look up the page...",
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the page..."
+        }
+      ],
       "tool_calls": [
         {
           "id": "call_1232",
           "type": "function",
           "function": {
             "name": "get_page_content",
-            "arguments": "{}",
+            "arguments": "{}"
           }
-        },
-      ],
+        }
+      ]
     },
     {
       "role": "tool",
-      "type": "toolUse",
       "tool_call_id": "call_1232",
       "content": [
-        { "type": "image_url",
-          "image_url": { "url": "data:image/png;base64,ABC=" } }
-      ],
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,ABC="
+          }
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
-      "content": "The page has some great content"
-    },
+      "content": [
+        {
+          "type": "text",
+          "text": "The page has some great content"
+        }
+      ]
+    }
   ])";
   base::RunLoop run_loop;
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -2764,9 +2835,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
-        EXPECT_THAT(base::test::ParseJson(mock_api_client->GetEventsJson(
-                        std::move(conversation))),
-                    base::test::IsJson(expected_events));
+        EXPECT_THAT(base::test::ParseJson(
+                        mock_api_client->GetMessagesJson(std::move(messages))),
+                    base::test::IsJson(expected_messages));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
@@ -2783,7 +2854,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
+TEST_F(EngineConsumerConversationAPIV2UnitTest,
+       GenerateAssistantResponse_ToolUseNoOutput) {
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
@@ -2810,22 +2882,30 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
   // If somehow the conversation is sent without the tool output, the
   // request should not include the tool request, since most LLM APIs will fail
   // in that scenario. This should be prevented by the callers.
-  std::string expected_events = R"([
+  std::string expected_messages = R"([
     {
       "role": "user",
-      "type": "chatMessage",
-      "content": "What is the weather in Santa Barbara?"
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the weather in Santa Barbara?"
+        }
+      ]
     },
     {
       "role": "assistant",
-      "type": "chatMessage",
-      "content": "First I'll look up the weather..."
+      "content": [
+        {
+          "type": "text",
+          "text": "First I'll look up the weather..."
+        }
+      ]
     }
   ])";
   base::RunLoop run_loop;
-  auto* mock_api_client = GetMockConversationAPIClient();
+  auto* mock_api_client = GetMockConversationAPIV2Client();
   EXPECT_CALL(*mock_api_client, PerformRequest)
-      .WillOnce([&](std::vector<ConversationEvent> conversation,
+      .WillOnce([&](std::vector<OAIMessage> messages,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
@@ -2833,9 +2913,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
-        EXPECT_EQ(conversation.size(), 2u);
-        EXPECT_THAT(mock_api_client->GetEventsJson(std::move(conversation)),
-                    base::test::IsJson(base::test::ParseJson(expected_events)));
+        EXPECT_EQ(messages.size(), 2u);
+        EXPECT_THAT(
+            mock_api_client->GetMessagesJson(std::move(messages)),
+            base::test::IsJson(base::test::ParseJson(expected_messages)));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(""));
