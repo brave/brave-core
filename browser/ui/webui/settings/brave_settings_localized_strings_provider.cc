@@ -1237,6 +1237,8 @@ void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL},
       {"braveAccountCancelRegistrationButtonLabel",
        IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL},
+      {"braveAccountLoggedInRowTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE},
       {"braveAccountLogOutButtonLabel",
        IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL},
   };
