@@ -22,8 +22,10 @@ import subprocess
 parser = argparse.ArgumentParser(description='Compile Rust packages to WASM')
 parser.add_argument('--wasm_bindgen_cli_path', required=True)
 parser.add_argument('--wasm_opt_path', required=True)
+parser.add_argument('--rust_path', required=True)
 args, wasm_pack_args = parser.parse_known_args()
 env = os.environ.copy()
 env['PATH'] = args.wasm_bindgen_cli_path + os.pathsep + args.wasm_opt_path + os.pathsep + env[
     'PATH']
+env['PATH'] = args.rust_path + os.pathsep + env['PATH']
 subprocess.check_call(wasm_pack_args, env=env)
