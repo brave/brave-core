@@ -111,6 +111,9 @@ def configure_sisorc():
         # execution, otherwise siso terminates it each minute which aborts
         # remote exec in EngFlow backend.
         ninja_flags.append('-reapi_keep_exec_stream')
+        # Increase fs_min_flush_timeout to allow for more time for blobs to be
+        # downloaded on slow connection.
+        ninja_flags.append('-fs_min_flush_timeout 300s')
 
     if cache_dir := os.environ.get('SISO_CACHE_DIR'):
         # `-cache_dir` and `-local_cache_enable` to use a local disk cache for
