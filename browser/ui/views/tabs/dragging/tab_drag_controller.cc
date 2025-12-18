@@ -225,7 +225,7 @@ void TabDragController::DetachAndAttachToNewContext(
 
   vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   // Relayout tabs with expanded bounds.
-  attached_context_->ForceLayout();
+  attached_context_->GetPositioningDelegate()->ForceLayout();
 }
 
 gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
