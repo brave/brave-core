@@ -38,10 +38,6 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
     private @Nullable LottieAnimationView mAnimationView;
     private @Nullable View mBlackFadeOverlay;
 
-    public interface OnAnimationCompleteListener {
-        void onAnimationComplete();
-    }
-
     public static void show(Context context) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FirstPartyStorageCleanerAnimationFragment fragment =
