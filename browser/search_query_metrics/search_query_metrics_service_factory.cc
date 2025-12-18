@@ -57,7 +57,9 @@ SearchQueryMetricsServiceFactory::GetInstance() {
 SearchQueryMetricsServiceFactory::SearchQueryMetricsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SearchQueryMetricsService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(TemplateURLServiceFactory::GetInstance());
+}
 
 SearchQueryMetricsServiceFactory::~SearchQueryMetricsServiceFactory() = default;
 
