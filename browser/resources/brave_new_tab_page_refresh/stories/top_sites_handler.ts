@@ -108,6 +108,6 @@ export function createTopSitesHandler(
       })
     },
 
-    notifyTopSiteClicked(topSite) {},
+    notifyTopSiteClicked() {},
   }
 }

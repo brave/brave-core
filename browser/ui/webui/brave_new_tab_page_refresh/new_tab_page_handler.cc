@@ -362,7 +362,7 @@ void NewTabPageHandler::IncludeMostVisitedTopSite(
   std::move(callback).Run();
 }
 
-void NewTabPageHandler::NotifyTopSiteClicked(mojom::TopSitePtr top_site) {
+void NewTabPageHandler::NotifyTopSiteClicked() {
   auto* tab_helper = metrics::SearchQueryMetricsTabHelper::FromWebContents(
       base::to_address(web_contents_));
   if (tab_helper) {

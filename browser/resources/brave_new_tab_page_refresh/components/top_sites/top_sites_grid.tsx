@@ -166,7 +166,7 @@ export function TopSitesGrid(props: Props) {
                       canDrag={props.canReorderSites}
                       onContextMenu={contextMenuHandler(tile)}
                       onClick={() => {
-                        actions.notifyTopSiteClicked(tile)
+                        actions.notifyTopSiteClicked()
                       }}
                     />
                   ),

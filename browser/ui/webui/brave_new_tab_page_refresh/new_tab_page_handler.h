@@ -147,7 +147,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void IncludeMostVisitedTopSite(
       const std::string& url,
       IncludeMostVisitedTopSiteCallback callback) override;
-  void NotifyTopSiteClicked(mojom::TopSitePtr top_site) override;
+  void NotifyTopSiteClicked() override;
   void GetShowClock(GetShowClockCallback callback) override;
   void SetShowClock(bool show_clock, SetShowClockCallback callback) override;
   void GetClockFormat(GetClockFormatCallback callback) override;

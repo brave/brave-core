@@ -117,8 +117,8 @@ export function createTopSitesHandler(
       })
     },
 
-    notifyTopSiteClicked(topSite) {
-      handler.notifyTopSiteClicked(topSite)
+    notifyTopSiteClicked() {
+      handler.notifyTopSiteClicked()
     },
   }
 }
