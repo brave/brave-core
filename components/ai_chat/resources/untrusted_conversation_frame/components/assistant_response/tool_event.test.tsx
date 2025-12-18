@@ -114,11 +114,9 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={
-          {
-            processPermissionChallenge: mockProcessPermissionChallenge,
-          } as unknown as Mojom.UntrustedConversationHandlerRemote
-        }
+        conversationHandler={{
+          processPermissionChallenge: mockProcessPermissionChallenge,
+        }}
       >
         <ToolEvent
           toolUseEvent={{
@@ -159,11 +157,9 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={
-          {
-            processPermissionChallenge: mockProcessPermissionChallenge,
-          } as unknown as Mojom.UntrustedConversationHandlerRemote
-        }
+        conversationHandler={{
+          processPermissionChallenge: mockProcessPermissionChallenge,
+        }}
       >
         <ToolEvent
           toolUseEvent={{
@@ -202,11 +198,9 @@ describe('ToolEvent', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
       <MockContext
-        conversationHandler={
-          {
-            processPermissionChallenge: mockProcessPermissionChallenge,
-          } as unknown as Mojom.UntrustedConversationHandlerRemote
-        }
+        conversationHandler={{
+          processPermissionChallenge: mockProcessPermissionChallenge,
+        }}
       >
         <ToolEvent
           toolUseEvent={{

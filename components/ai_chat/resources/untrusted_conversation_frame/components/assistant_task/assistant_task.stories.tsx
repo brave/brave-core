@@ -9,6 +9,7 @@ import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
 import * as Mojom from '../../../common/mojom'
 import { taskConversationEntries } from '../../../page/stories/story_utils/history'
 import MockContext from '../../mock_untrusted_conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantTask from './assistant_task'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
@@ -28,30 +29,40 @@ const args: CustomArgs = {
   toolUseTaskState: 'kNone' satisfies keyof typeof Mojom.TaskState,
 }
 
+const THUMBNAIL_TAB_ID = 1
+const THUMBNAIL_DATA_URI =
+  'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAGUlEQVR4nGKpOP+JATdgwiM3gqUBAQAA//+9LAJQNrjO2wAAAABJRU5ErkJggg=='
+
+function ThumbnailSetup({
+  hasContentThumbnail,
+}: {
+  hasContentThumbnail: boolean
+}) {
+  const ctx = useUntrustedConversationContext()
+  React.useEffect(() => {
+    if (!hasContentThumbnail) return
+    ctx.api.emitEvent('contentTaskStarted', [THUMBNAIL_TAB_ID])
+    ctx.api.emitEvent('thumbnailUpdated', [
+      THUMBNAIL_TAB_ID,
+      THUMBNAIL_DATA_URI,
+    ])
+  }, [hasContentThumbnail, ctx.api])
+  return null
+}
+
 export const _AssistantTask = {
   render: (args: CustomArgs) => {
     return (
       <MockContext
-        contentTaskTabId={args.hasContentThumbnail ? 1 : undefined}
-        isGenerating={args.isGenerating}
-        isToolExecuting={args.isToolExecuting}
-        toolUseTaskState={Mojom.TaskState[args.toolUseTaskState]}
-        uiObserver={
-          {
-            thumbnailUpdated: {
-              addListener: (
-                listener: (tabId: number, dataURI: string) => void,
-              ) => {
-                listener(
-                  1,
-                  'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAGUlEQVR4nGKpOP+JATdgwiM3gqUBAQAA//+9LAJQNrjO2wAAAABJRU5ErkJggg==',
-                )
-              },
-            },
-            removeListener: () => true,
-          } as unknown as Mojom.UntrustedUICallbackRouter
-        }
+        initialState={{
+          conversationEntriesState: {
+            isGenerating: args.isGenerating,
+            isToolExecuting: args.isToolExecuting,
+            toolUseTaskState: Mojom.TaskState[args.toolUseTaskState],
+          },
+        }}
       >
+        <ThumbnailSetup hasContentThumbnail={args.hasContentThumbnail} />
         <AssistantTask
           assistantEntries={taskConversationEntries}
           isActiveTask={args.isActiveTask}

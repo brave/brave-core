@@ -6,14 +6,17 @@
 import * as React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import MockContext from '../../mock_untrusted_conversation_context'
 import { RenderLink } from '.'
 
 test('RenderLink component with allowed links.', async () => {
   render(
-    <RenderLink
-      a={{ href: 'https://example.com', children: 'Test Link' }}
-      allowedLinks={['https://example.com']}
-    />,
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={['https://example.com']}
+      />
+    </MockContext>,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('A')
@@ -22,10 +25,12 @@ test('RenderLink component with allowed links.', async () => {
 
 test('RenderLink component with disallowed links.', async () => {
   render(
-    <RenderLink
-      a={{ href: 'https://example.com', children: 'Test Link' }}
-      allowedLinks={['https://brave.com']}
-    />,
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('SPAN')
@@ -34,10 +39,12 @@ test('RenderLink component with disallowed links.', async () => {
 
 test('RenderLink component with citations.', async () => {
   render(
-    <RenderLink
-      a={{ href: 'https://brave.com', children: '1' }}
-      allowedLinks={['https://brave.com']}
-    />,
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://brave.com', children: '1' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
   )
 
   // Make sure the label is visible
@@ -57,11 +64,13 @@ test('RenderLink component with citations.', async () => {
 
 test('RenderLink component with disableLinkRestrictions.', async () => {
   render(
-    <RenderLink
-      a={{ href: 'https://example.com', children: 'Test Link' }}
-      allowedLinks={[]}
-      disableLinkRestrictions={true}
-    />,
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={[]}
+        disableLinkRestrictions={true}
+      />
+    </MockContext>,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('A')
@@ -71,11 +80,13 @@ test('RenderLink component with disableLinkRestrictions.', async () => {
 // HTTP links should never be allowed
 test('RenderLink component with http links.', async () => {
   render(
-    <RenderLink
-      a={{ href: 'http://example.com', children: 'Test Link' }}
-      allowedLinks={['http://example.com']}
-      disableLinkRestrictions={true}
-    />,
+    <MockContext>
+      <RenderLink
+        a={{ href: 'http://example.com', children: 'Test Link' }}
+        allowedLinks={['http://example.com']}
+        disableLinkRestrictions={true}
+      />
+    </MockContext>,
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
   expect(screen.getByText('Test Link').tagName).toBe('SPAN')

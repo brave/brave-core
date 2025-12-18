@@ -165,7 +165,7 @@ export function MockContext(props: MockContextProps) {
       // Ensure that this effect is followed by the state.update effect so
       // we re-populate with intended data.
     }
-  }, [deps])
+  }, [deps, aiChatApi.api, conversationApi.api])
 
   React.useLayoutEffect(() => {
     // Update anything that doesn't have a query and is provided via events
@@ -192,6 +192,8 @@ export function MockContext(props: MockContextProps) {
     initialState.isStandalone,
     initialState.tabs,
     initialState.conversationState,
+    aiChatApi.api,
+    conversationApi.api,
   ])
 
   return (

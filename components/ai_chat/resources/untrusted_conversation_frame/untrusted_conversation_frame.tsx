@@ -22,28 +22,39 @@ function onTapElsewhereDismissMenus() {
   UntrustedConversationFrameAPI.getInstance().parentUIFrame.dismissMenus()
 }
 // </if>
+import {
+  bindUntrustedConversation,
+  BoundUntrustedConversation,
+} from './api/bind_untrusted_conversation'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 // Set up drag handling at module level
 untrustedFrameDragHandlingSetup()
 
-function App() {
+interface AppProps {
+  boundConversation: BoundUntrustedConversation
+}
+
+function App(props: AppProps) {
   // <if expr="is_ios">
   // One-tap fix for iframe menus; notify parent when user taps on
   // non-interactive content so parent can close menus.
   useIOSOneTapFix({ onTapElsewhere: onTapElsewhereDismissMenus })
   // </if>
   return (
-    <UntrustedConversationContextProvider>
+    <UntrustedConversationContextProvider api={props.boundConversation.api}>
       <ConversationEntries />
     </UntrustedConversationContextProvider>
   )
 }
 
-function initialize() {
+async function initialize() {
+  // Bind the conversation and initialize the API
+  const boundConversation = await bindUntrustedConversation()
+
   const root = createRoot(document.getElementById('mountPoint')!)
-  root.render(<App />)
+  root.render(<App boundConversation={boundConversation} />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

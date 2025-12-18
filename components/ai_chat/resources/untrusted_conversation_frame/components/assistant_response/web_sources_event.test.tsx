@@ -5,21 +5,24 @@
 
 import * as React from 'react'
 import { act, render, screen } from '@testing-library/react'
+import MockContext from '../../mock_untrusted_conversation_context'
 import WebSourcesEvent from './web_sources_event'
 
 test('WebSourcesEvent shows chrome-untrusted:// favicon URL as-is', () => {
   render(
-    <WebSourcesEvent
-      sources={[
-        {
-          faviconUrl: {
-            url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+    <MockContext>
+      <WebSourcesEvent
+        sources={[
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            url: { url: 'https://example.com' },
+            title: 'Example Site',
           },
-          url: { url: 'https://example.com' },
-          title: 'Example Site',
-        },
-      ]}
-    />,
+        ]}
+      />
+    </MockContext>,
   )
 
   const img = screen.getByRole('img')
@@ -33,15 +36,17 @@ test('WebSourcesEvent sanitizes non-chrome-untrusted favicon URL', () => {
   const faviconUrl = 'https://imgs.search.brave.com/favicon.ico'
 
   render(
-    <WebSourcesEvent
-      sources={[
-        {
-          faviconUrl: { url: faviconUrl },
-          url: { url: 'https://example.com' },
-          title: 'Example Site',
-        },
-      ]}
-    />,
+    <MockContext>
+      <WebSourcesEvent
+        sources={[
+          {
+            faviconUrl: { url: faviconUrl },
+            url: { url: 'https://example.com' },
+            title: 'Example Site',
+          },
+        ]}
+      />
+    </MockContext>,
   )
 
   const img = screen.getByRole('img')
@@ -53,24 +58,26 @@ test('WebSourcesEvent sanitizes non-chrome-untrusted favicon URL', () => {
 
 test('Unhidden WebSourcesEvent has index citation number', () => {
   render(
-    <WebSourcesEvent
-      sources={[
-        {
-          faviconUrl: {
-            url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+    <MockContext>
+      <WebSourcesEvent
+        sources={[
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            url: { url: 'https://example.com' },
+            title: 'Example Site',
           },
-          url: { url: 'https://example.com' },
-          title: 'Example Site',
-        },
-        {
-          faviconUrl: {
-            url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+          {
+            faviconUrl: {
+              url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+            },
+            url: { url: 'https://example2.com' },
+            title: 'Example Site 2',
           },
-          url: { url: 'https://example2.com' },
-          title: 'Example Site 2',
-        },
-      ]}
-    />,
+        ]}
+      />
+    </MockContext>,
   )
   expect(screen.getByText('1 - example.com')).toBeInTheDocument()
   expect(screen.getByText('2 - example2.com')).toBeInTheDocument()
@@ -78,15 +85,17 @@ test('Unhidden WebSourcesEvent has index citation number', () => {
 
 test('Hidden WebSourcesEvent citation numbers continue after expand', () => {
   render(
-    <WebSourcesEvent
-      sources={[1, 2, 3, 4, 5, 6].map((source) => ({
-        faviconUrl: {
-          url: 'chrome-untrusted://resources/brave-icons/globe.svg',
-        },
-        url: { url: `https://example${source}.com` },
-        title: `Example Site ${source}`,
-      }))}
-    />,
+    <MockContext>
+      <WebSourcesEvent
+        sources={[1, 2, 3, 4, 5, 6].map((source) => ({
+          faviconUrl: {
+            url: 'chrome-untrusted://resources/brave-icons/globe.svg',
+          },
+          url: { url: `https://example${source}.com` },
+          title: `Example Site ${source}`,
+        }))}
+      />
+    </MockContext>,
   )
 
   // Test first 4 unhidden sources

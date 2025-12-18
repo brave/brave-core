@@ -3,21 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { untrustedFrameDragHandlingSetup } from './useUntrustedFrameDragHandling'
+import {
+  untrustedFrameDragHandlingSetup,
+  registerDragStartCallback,
+} from './useUntrustedFrameDragHandling'
 
-// Mock the UntrustedConversationFrameAPI
-const mockAPI = {
-  parentUIFrame: {
-    dragStart: jest.fn(),
-  },
+// Mock parentUIFrame
+const mockParentUIFrame = {
+  dragStart: jest.fn(),
 }
-
-jest.mock('../untrusted_conversation_frame_api', () => ({
-  __esModule: true,
-  default: {
-    getInstance: () => mockAPI,
-  },
-}))
 
 describe('untrustedFrameDragHandlingSetup', () => {
   beforeEach(() => {
@@ -50,6 +44,9 @@ describe('untrustedFrameDragHandlingSetup', () => {
       dragEnterHandler = addEventListenerCalls.find(
         (call) => call[0] === 'dragenter',
       )?.[1]
+
+      // Register the drag start callback
+      registerDragStartCallback(mockParentUIFrame as any)
     })
 
     describe('dragenter handling', () => {
@@ -60,7 +57,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
 
         dragEnterHandler(mockEvent)
 
-        expect(mockAPI.parentUIFrame.dragStart).toHaveBeenCalledTimes(1)
+        expect(mockParentUIFrame.dragStart).toHaveBeenCalledTimes(1)
       })
 
       it('does not call dragStart for non-file drags', () => {
@@ -70,7 +67,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
 
         dragEnterHandler(mockEvent)
 
-        expect(mockAPI.parentUIFrame.dragStart).not.toHaveBeenCalled()
+        expect(mockParentUIFrame.dragStart).not.toHaveBeenCalled()
       })
 
       it('calls dragStart for each dragenter event', () => {
@@ -82,7 +79,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
         dragEnterHandler(mockEvent)
         dragEnterHandler(mockEvent)
 
-        expect(mockAPI.parentUIFrame.dragStart).toHaveBeenCalledTimes(3)
+        expect(mockParentUIFrame.dragStart).toHaveBeenCalledTimes(3)
       })
     })
 
@@ -96,7 +93,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
           dragEnterHandler(mockEvent)
         }).not.toThrow()
 
-        expect(mockAPI.parentUIFrame.dragStart).not.toHaveBeenCalled()
+        expect(mockParentUIFrame.dragStart).not.toHaveBeenCalled()
       })
 
       it('handles missing types array', () => {
@@ -108,8 +105,35 @@ describe('untrustedFrameDragHandlingSetup', () => {
           dragEnterHandler(mockEvent)
         }).not.toThrow()
 
-        expect(mockAPI.parentUIFrame.dragStart).not.toHaveBeenCalled()
+        expect(mockParentUIFrame.dragStart).not.toHaveBeenCalled()
       })
+    })
+  })
+
+  describe('before callback registration', () => {
+    it('does not throw when drag event occurs before callback is registered', () => {
+      // Reset the module to clear any previously registered callback
+      jest.resetModules()
+      const {
+        untrustedFrameDragHandlingSetup: setupFresh,
+      } = require('./useUntrustedFrameDragHandling')
+
+      setupFresh()
+
+      const addEventListenerCalls = (document.addEventListener as jest.Mock)
+        .mock.calls
+      const dragEnterHandler = addEventListenerCalls.find(
+        (call: any[]) => call[0] === 'dragenter',
+      )?.[1]
+
+      const mockEvent = {
+        dataTransfer: { types: ['Files'] },
+      } as DragEvent
+
+      // Should not throw even if callback is not registered
+      expect(() => {
+        dragEnterHandler(mockEvent)
+      }).not.toThrow()
     })
   })
 })
