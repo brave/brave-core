@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -254,16 +255,63 @@ OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
 
 void EngineConsumerOAIRemote::SanitizeInput(std::string& input) {}
 
+void EngineConsumerOAIRemote::DedupeTopics(
+    base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+    GetSuggestedTopicsCallback callback) {
+  if (!topics_result.has_value() || topics_result->empty()) {
+    std::move(callback).Run(topics_result);
+    return;
+  }
+
+  auto messages = BuildOAIDedupeTopicsMessages(*topics_result);
+
+  api_->PerformRequest(
+      model_options_, std::move(messages), base::NullCallback(),
+      base::BindOnce(
+          [](GetSuggestedTopicsCallback callback, GenerationResult result) {
+            // Return deduped topics from the response.
+            std::vector<GenerationResult> results;
+            results.emplace_back(std::move(result));
+            std::move(callback).Run(
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+          },
+          std::move(callback)));
+}
+
 void EngineConsumerOAIRemote::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
-  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  const auto barrier_callback = base::BarrierCallback<GenerationResult>(
+      chunked_messages.size(),
+      base::BindOnce(&EngineConsumerOAIRemote::MergeSuggestTopicsResults,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  for (auto& messages : chunked_messages) {
+    api_->PerformRequest(model_options_, std::move(messages),
+                         base::NullCallback(), barrier_callback);
+  }
 }
 
 void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
                                            const std::string& topic,
                                            GetFocusTabsCallback callback) {
-  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  const auto barrier_callback = base::BarrierCallback<GenerationResult>(
+      chunked_messages.size(),
+      base::BindOnce(
+          [](GetFocusTabsCallback callback,
+             std::vector<GenerationResult> results) {
+            // Merge the results and call callback with tab IDs or error.
+            std::move(callback).Run(
+                EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+          },
+          std::move(callback)));
+
+  for (auto& messages : chunked_messages) {
+    api_->PerformRequest(model_options_, std::move(messages),
+                         base::NullCallback(), barrier_callback);
+  }
 }
 
 }  // namespace ai_chat

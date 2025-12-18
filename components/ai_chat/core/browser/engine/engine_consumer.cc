@@ -125,6 +125,21 @@ void EngineConsumer::OnConversationTitleGenerated(
   std::move(completion_callback).Run(std::move(title_result));
 }
 
+void EngineConsumer::MergeSuggestTopicsResults(
+    GetSuggestedTopicsCallback callback,
+    std::vector<GenerationResult> results) {
+  if (results.size() == 1) {
+    // No need to dedupe topics if there is only one result.
+    std::move(callback).Run(
+        EngineConsumer::GetStrArrFromTabOrganizationResponses(results));
+    return;
+  }
+
+  // Merge the result and send another request to dedupe topics.
+  DedupeTopics(GetStrArrFromTabOrganizationResponses(results),
+               std::move(callback));
+}
+
 // static
 base::expected<std::vector<std::string>, mojom::APIError>
 EngineConsumer::GetStrArrFromTabOrganizationResponses(

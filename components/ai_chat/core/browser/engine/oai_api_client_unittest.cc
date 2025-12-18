@@ -73,6 +73,7 @@ base::Value ParseOrStringValue(const std::string& json) {
 struct LocalizedText {
   int message_id = 0;
   std::optional<std::string> format_arg;
+  std::optional<std::string> format_arg2;
 };
 
 struct ContentBlockSerializationTestParam {
@@ -423,12 +424,19 @@ TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
   // Compute expected text at runtime
   std::string expected_text;
   if (params.localized_text) {
-    expected_text =
-        params.localized_text->format_arg
-            ? l10n_util::GetStringFUTF8(
-                  params.localized_text->message_id,
-                  base::UTF8ToUTF16(*params.localized_text->format_arg))
-            : l10n_util::GetStringUTF8(params.localized_text->message_id);
+    if (params.localized_text->format_arg2) {
+      expected_text = l10n_util::GetStringFUTF8(
+          params.localized_text->message_id,
+          base::UTF8ToUTF16(*params.localized_text->format_arg),
+          base::UTF8ToUTF16(*params.localized_text->format_arg2));
+    } else {
+      expected_text =
+          params.localized_text->format_arg
+              ? l10n_util::GetStringFUTF8(
+                    params.localized_text->message_id,
+                    base::UTF8ToUTF16(*params.localized_text->format_arg))
+              : l10n_util::GetStringUTF8(params.localized_text->message_id);
+    }
   } else if (params.literal_text) {
     expected_text = *params.literal_text;
   }
@@ -600,7 +608,44 @@ INSTANTIATE_TEST_SUITE_P(
                       "document.pdf"));
             }),
             "file", std::nullopt, std::nullopt, "document.pdf",
-            "data:application/pdf;base64,abc123"}),
+            "data:application/pdf;base64,abc123"},
+        ContentBlockSerializationTestParam{
+            "SuggestFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSuggestFocusTopicsContentBlock(
+                  mojom::SuggestFocusTopicsContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS, kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SuggestFocusTopicsWithEmoji", base::BindRepeating([]() {
+              return mojom::ContentBlock::
+                  NewSuggestFocusTopicsWithEmojiContentBlock(
+                      mojom::SuggestFocusTopicsWithEmojiContentBlock::New(
+                          kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS_WITH_EMOJI,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "FilterTabs", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFilterTabsContentBlock(
+                  mojom::FilterTabsContentBlock::New(kTestContent,
+                                                     "test_topic"));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS, kTestContent,
+                          "test_topic"},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "ReduceFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewReduceFocusTopicsContentBlock(
+                  mojom::ReduceFocusTopicsContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_REDUCE_TOPICS, kTestContent},
+            std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
       return info.param.name;
     });

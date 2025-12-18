@@ -224,6 +224,51 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
           break;
         }
 
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock: {
+          content_block_dict.Set("type", "text");
+          const auto& block_data =
+              block->get_suggest_focus_topics_content_block();
+          content_block_dict.Set(
+              "text",
+              l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS,
+                                        base::UTF8ToUTF16(block_data->text)));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::
+            kSuggestFocusTopicsWithEmojiContentBlock: {
+          content_block_dict.Set("type", "text");
+          const auto& block_data =
+              block->get_suggest_focus_topics_with_emoji_content_block();
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS_WITH_EMOJI,
+                          base::UTF8ToUTF16(block_data->text)));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kFilterTabsContentBlock: {
+          content_block_dict.Set("type", "text");
+          const auto& block_data = block->get_filter_tabs_content_block();
+          content_block_dict.Set(
+              "text",
+              l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS,
+                                        base::UTF8ToUTF16(block_data->text),
+                                        base::UTF8ToUTF16(block_data->topic)));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock: {
+          content_block_dict.Set("type", "text");
+          const auto& block_data =
+              block->get_reduce_focus_topics_content_block();
+          content_block_dict.Set(
+              "text",
+              l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_REDUCE_TOPICS,
+                                        base::UTF8ToUTF16(block_data->text)));
+          break;
+        }
+
         default:
           DVLOG(2) << "Unsupported block type: "
                    << static_cast<int>(block->which());

@@ -103,17 +103,11 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
       const std::string& topic);
 
-  // Merges the result from multiple GetSuggestedTopics requests, which would
-  // then trigger DedupeTopics below to get the final topic list with an emoji
-  // appended to each topic.
-  void MergeSuggestTopicsResults(GetSuggestedTopicsCallback callback,
-                                 std::vector<GenerationResult> results);
-
   // Given a list of results from GetSuggestedTopics, send another request to
   // the server to dedupe the topics.
   void DedupeTopics(
       base::expected<std::vector<std::string>, mojom::APIError> topics_result,
-      GetSuggestedTopicsCallback callback);
+      GetSuggestedTopicsCallback callback) override;
 
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,

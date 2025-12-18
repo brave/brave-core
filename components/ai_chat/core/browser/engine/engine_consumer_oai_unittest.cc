@@ -13,6 +13,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
+#include "base/json/string_escape.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
@@ -1734,5 +1735,237 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<GenerateRewriteTestParam>& info) {
       return info.param.name;
     });
+
+TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, false);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  auto* client = GetClient();
+
+  // Compute expected localized texts for each chunk and
+  // JSON-escape them for embedding in expected JSON templates.
+  std::string chunk1_text =
+      l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS,
+                                base::UTF8ToUTF16(tabs_json_strings[0]));
+  std::string chunk1_escaped;
+  base::EscapeJSONString(chunk1_text, false, &chunk1_escaped);
+
+  std::string chunk2_text =
+      l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS,
+                                base::UTF8ToUTF16(tabs_json_strings[1]));
+  std::string chunk2_escaped;
+  base::EscapeJSONString(chunk2_text, false, &chunk2_escaped);
+
+  // Build expected dedupe topics JSON matching how
+  // BuildOAIDedupeTopicsMessages serializes merged topics.
+  base::ListValue topic_list;
+  for (const auto& t : {"topic1", "topic2", "topic3", "topic7", "topic3",
+                        "topic4", "topic5", "topic6"}) {
+    topic_list.Append(t);
+  }
+  std::string dedupe_text = l10n_util::GetStringFUTF8(
+      IDS_AI_CHAT_TAB_FOCUS_REDUCE_TOPICS,
+      base::UTF8ToUTF16(base::WriteJson(topic_list).value_or("")));
+  std::string dedupe_escaped;
+  base::EscapeJSONString(dedupe_text, false, &dedupe_escaped);
+
+  std::string expected_messages1 = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      chunk1_escaped);
+  std::string expected_messages2 = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      chunk2_escaped);
+  std::string expected_messages3 = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      dedupe_escaped);
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+      .Times(3)
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages1));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                        "\"topic7\"] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          })
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages2));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"topics\": [\n  \"topic3\",\n  \"topic4\",\n  "
+                        "\"topic5\",\n  \"topic6\"\n] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          })
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages3));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"topics\": [\"topic1\", \"topic3\", \"topic4\", "
+                        "\"topic5\", "
+                        "\"topic7\"] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>(
+                      {"topic1", "topic3", "topic4", "topic5", "topic7"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics_SingleTabChunk) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(1, false);
+  ASSERT_EQ(tabs.size(), 1u);
+  ASSERT_EQ(tabs_json_strings.size(), 1u);
+
+  auto* client = GetClient();
+
+  std::string expected_text =
+      l10n_util::GetStringFUTF8(IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS_WITH_EMOJI,
+                                base::UTF8ToUTF16(tabs_json_strings[0]));
+  std::string expected_escaped;
+  base::EscapeJSONString(expected_text, false, &expected_escaped);
+  std::string expected_messages = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      expected_escaped);
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"topics\": [\n  \"topic1\",\n  "
+                        "\"topic2\"\n] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>({"topic1", "topic2"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, false);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  auto* client = GetClient();
+
+  std::string chunk1_text = l10n_util::GetStringFUTF8(
+      IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS,
+      base::UTF8ToUTF16(tabs_json_strings[0]), u"test_topic");
+  std::string chunk1_escaped;
+  base::EscapeJSONString(chunk1_text, false, &chunk1_escaped);
+
+  std::string chunk2_text = l10n_util::GetStringFUTF8(
+      IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS,
+      base::UTF8ToUTF16(tabs_json_strings[1]), u"test_topic");
+  std::string chunk2_escaped;
+  base::EscapeJSONString(chunk2_text, false, &chunk2_escaped);
+
+  std::string expected_messages1 = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      chunk1_escaped);
+  std::string expected_messages2 = absl::StrFormat(
+      R"([{"role":"user","content":[{"type":"text","text":"%s"}]}])",
+      chunk2_escaped);
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+      .Times(2)
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages1));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"tab_ids\": [\"id1\", \"id2\"] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          })
+      .WillOnce(
+          [&](const mojom::CustomModelOptions&,
+              std::vector<OAIMessage> messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            EXPECT_EQ(client->GetMessagesJson(std::move(messages)),
+                      FormatComparableMessagesJson(expected_messages2));
+            auto completion_event =
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New(
+                        "{ \"tab_ids\": [\n  \"id75\",\n  "
+                        "\"id76\"\n] }"));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    std::move(completion_event), std::nullopt)));
+          });
+
+  engine_->GetFocusTabs(
+      tabs, "test_topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>({"id1", "id2", "id75", "id76"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(client);
+}
 
 }  // namespace ai_chat
