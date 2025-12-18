@@ -128,30 +128,70 @@ exports.update = () => {
     path.join(braveAppDir, 'theme', 'default_200_percent', 'common'),
     path.join(chromeAppDir, 'theme', 'default_200_percent', 'common'),
   ])
+  // Copy product_logo for version UI (about:version page).
+  // product_logo_name_48.png is renamed to product_logo.png during copy.
   fileMap.add([
-    path.join(braveComponentsDir, 'resources', 'default_100_percent'),
-    path.join(chromeComponentsDir, 'resources', 'default_100_percent'),
-  ])
-  fileMap.add([
-    path.join(braveComponentsDir, 'resources', 'default_100_percent', 'brave'),
+    path.join(
+      braveAppDir,
+      'theme',
+      'default_100_percent',
+      'brave',
+      'product_logo_name_48.png',
+    ),
     path.join(
       chromeComponentsDir,
       'resources',
       'default_100_percent',
       'chromium',
+      'product_logo.png',
     ),
   ])
   fileMap.add([
-    path.join(braveComponentsDir, 'resources', 'default_200_percent'),
-    path.join(chromeComponentsDir, 'resources', 'default_200_percent'),
+    path.join(
+      braveAppDir,
+      'theme',
+      'default_100_percent',
+      'brave',
+      'product_logo_white.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_100_percent',
+      'chromium',
+      'product_logo_white.png',
+    ),
   ])
   fileMap.add([
-    path.join(braveComponentsDir, 'resources', 'default_200_percent', 'brave'),
+    path.join(
+      braveAppDir,
+      'theme',
+      'default_200_percent',
+      'brave',
+      'product_logo_name_48.png',
+    ),
     path.join(
       chromeComponentsDir,
       'resources',
       'default_200_percent',
       'chromium',
+      'product_logo.png',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      braveAppDir,
+      'theme',
+      'default_200_percent',
+      'brave',
+      'product_logo_white.png',
+    ),
+    path.join(
+      chromeComponentsDir,
+      'resources',
+      'default_200_percent',
+      'chromium',
+      'product_logo_white.png',
     ),
   ])
   fileMap.add([
