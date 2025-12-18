@@ -398,4 +398,130 @@ describe('TabsMenu', () => {
     expect(queryByText('Brave Search')).not.toBeInTheDocument()
     expect(await findByText('GitHub')).toBeInTheDocument()
   })
+
+  describe('attachment insertion', () => {
+    it('should insert attachment in place of @ trigger when selecting', async () => {
+      const associateTab = jest.fn()
+
+      // Create a simple editor element
+      const editor = document.createElement('div')
+      editor.setAttribute('data-editor', 'true')
+      editor.contentEditable = 'true'
+      editor.textContent = '@test'
+      document.body.appendChild(editor)
+
+      // Set up selection at the end of the text
+      const range = document.createRange()
+      const textNode = editor.firstChild!
+      range.setStart(textNode, 5) // after '@test'
+      range.setEnd(textNode, 5)
+      const selection = window.getSelection()
+      selection?.removeAllRanges()
+      selection?.addRange(range)
+
+      const tab1 = {
+        contentId: 1,
+        title: 'Test Tab',
+        url: { url: 'https://test.com' },
+        id: 1,
+      }
+
+      const { container } = await act(async () => render(
+        <MockContext
+          conversationUuid='1'
+          inputText={['@test']}
+          uiHandler={
+            {
+              associateTab,
+              ...defaultAIChatContext.uiHandler,
+            } as any
+          }
+          tabs={[tab1]}
+        >
+          <TabsMenu />
+        </MockContext>,
+      ))
+
+      // Find and click the menu item
+      const menuItem = container.querySelector('leo-menu-item')
+      expect(menuItem).toBeTruthy()
+      menuItem?.click()
+
+      // Check that attachment was associated
+      expect(associateTab).toHaveBeenCalledWith(tab1, '1')
+
+      // Check that editor content was replaced with attachment
+      const attachmentNode = editor.querySelector('[data-type="attachment"]')
+      expect(attachmentNode).toBeTruthy()
+      expect(attachmentNode?.textContent).toBe('Test Tab')
+      expect(attachmentNode?.getAttribute('data-id')).toBe('1')
+
+      // Check that @ trigger is gone
+      expect(editor.textContent?.includes('@test')).toBe(false)
+
+      // Cleanup
+      document.body.removeChild(editor)
+    })
+
+    it('should insert attachment after existing text', async () => {
+      const associateTab = jest.fn()
+
+      // Create editor with text before the trigger
+      const editor = document.createElement('div')
+      editor.setAttribute('data-editor', 'true')
+      editor.contentEditable = 'true'
+      editor.textContent = 'Hello @my'
+      document.body.appendChild(editor)
+
+      // Set up selection at the end
+      const range = document.createRange()
+      const textNode = editor.firstChild!
+      range.setStart(textNode, 9) // after 'Hello @my'
+      range.setEnd(textNode, 9)
+      const selection = window.getSelection()
+      selection?.removeAllRanges()
+      selection?.addRange(range)
+
+      const tab1 = {
+        contentId: 1,
+        title: 'My Tab',
+        url: { url: 'https://example.com' },
+        id: 1,
+      }
+
+      const { container } = await act(async () => render(
+        <MockContext
+          conversationUuid='1'
+          inputText={['Hello @my']}
+          uiHandler={
+            {
+              associateTab,
+              ...defaultAIChatContext.uiHandler,
+            } as any
+          }
+          tabs={[tab1]}
+        >
+          <TabsMenu />
+        </MockContext>,
+      ))
+
+      // Find and click the menu item
+      const menuItem = container.querySelector('leo-menu-item')
+      expect(menuItem).toBeTruthy()
+      menuItem?.click()
+
+      // Check that 'Hello ' remains and attachment was inserted
+      expect(editor.textContent?.startsWith('Hello ')).toBe(true)
+
+      const attachmentNode = editor.querySelector('[data-type="attachment"]')
+      expect(attachmentNode).toBeTruthy()
+      expect(attachmentNode?.textContent).toBe('My Tab')
+
+      // Check that @my trigger is gone
+      expect(editor.textContent?.includes('@my')).toBe(false)
+
+      // Cleanup
+      document.body.removeChild(editor)
+    })
+  })
 })

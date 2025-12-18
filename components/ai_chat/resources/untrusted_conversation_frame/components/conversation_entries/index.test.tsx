@@ -11,7 +11,7 @@ import { getCompletionEvent } from '../../../common/test_data_utils'
 import MockContext from '../../mock_untrusted_conversation_context'
 import { UntrustedConversationContext } from '../../untrusted_conversation_context'
 import type { AssistantResponseProps } from '../assistant_response'
-import ConversationEntries from '.'
+import ConversationEntries, { highlightRichText } from '.'
 
 const assistantResponseMock = jest.fn((props: AssistantResponseProps) => (
   <div />
@@ -614,5 +614,125 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     expect(document.querySelector('.richLabel')).not.toHaveTextContent(
       'and additional text',
     )
+  })
+})
+
+describe('highlightRichText', () => {
+  test('should highlight associated content mentions', () => {
+    const associatedContent: Mojom.AssociatedContent[] = [
+      {
+        conversationTurnUuid: '1',
+        contentId: 1,
+        title: 'Test Page',
+        url: { url: 'https://test.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '1',
+      },
+    ]
+
+    const text = 'Check out [mention(Test Page)] for more info'
+    const result = highlightRichText(text, undefined, associatedContent)
+
+    // Render into a container to test
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain('Check out Test Page for more info')
+
+    // Check that richLabel span exists and wraps the mention
+    const richLabel = container.querySelector('.richLabel')
+    expect(richLabel).toBeInTheDocument()
+    expect(richLabel).toHaveTextContent('Test Page')
+
+    // Check that the mention text is inside the richLabel
+    const richLabelTitle = richLabel?.querySelector('.richLabelTitle')
+    expect(richLabelTitle).toBeInTheDocument()
+    expect(richLabelTitle).toHaveTextContent('Test Page')
+
+    // Check that the image has the correct favicon URL
+    const img = richLabel?.querySelector('img')
+    expect(img?.src).toContain('test.com')
+  })
+
+  test('should highlight multiple mentions', () => {
+    const associatedContent: Mojom.AssociatedContent[] = [
+      {
+        conversationTurnUuid: '1',
+        contentId: 1,
+        title: 'Page One',
+        url: { url: 'https://one.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '1',
+      },
+      {
+        conversationTurnUuid: '1',
+        contentId: 2,
+        title: 'Page Two',
+        url: { url: 'https://two.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '2',
+      },
+    ]
+
+    const text = 'See [mention(Page One)] and [mention(Page Two)] for details'
+    const result = highlightRichText(text, undefined, associatedContent)
+
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain('See Page One and Page Two for details')
+
+    // Check that we have two richLabel spans wrapping the mentions
+    const richLabels = container.querySelectorAll('.richLabel')
+    expect(richLabels.length).toBe(2)
+    expect(richLabels[0]).toHaveTextContent('Page One')
+    expect(richLabels[1]).toHaveTextContent('Page Two')
+
+    // Check that each richLabel has a richLabelTitle
+    const richLabelTitles = container.querySelectorAll('.richLabelTitle')
+    expect(richLabelTitles.length).toBe(2)
+    expect(richLabelTitles[0]).toHaveTextContent('Page One')
+    expect(richLabelTitles[1]).toHaveTextContent('Page Two')
+
+    // Check favicon URLs
+    const images = container.querySelectorAll('img')
+    expect(images[0]?.src).toContain('one.com')
+    expect(images[1]?.src).toContain('two.com')
+  })
+
+  test('should return plain text when no mentions exist', () => {
+    const text = 'Just plain text'
+    const result = highlightRichText(text, undefined, [])
+
+    expect(result).toBe(text)
+  })
+
+  test('should handle skill mentions at the beginning', () => {
+    const skill: Mojom.SkillEntry = {
+      shortcut: 'test',
+      prompt: 'Test prompt',
+    }
+
+    const text = '/test some query'
+    const result = highlightRichText(text, skill, [])
+
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain('/test')
+    expect(container.textContent).toContain('some query')
+
+    // Check that richLabel span exists for the skill and wraps it
+    const richLabel = container.querySelector('.richLabel')
+    expect(richLabel).toBeInTheDocument()
+    expect(richLabel).toHaveTextContent('/test')
+
+    // Check that the skill shortcut is wrapped in richLabelTitle
+    const richLabelTitle = richLabel?.querySelector('.richLabelTitle')
+    expect(richLabelTitle).toBeInTheDocument()
+    expect(richLabelTitle).toHaveTextContent('/test')
   })
 })

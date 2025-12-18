@@ -36,7 +36,7 @@ import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
 
 const escape = (text: string): string => (RegExp as any).escape(text)
-const highlightRichText = (
+export const highlightRichText = (
   text: string,
   skill: Mojom.SkillEntry | undefined,
   associatedContent: Mojom.AssociatedContent[],
