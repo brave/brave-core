@@ -732,7 +732,6 @@ if (current_toolchain == host_toolchain) {
     output = "$target_gen_dir/audit_deps.json"
 
     deps = [ ":cargo-audit" ]
-    cargo_audit_outputs = get_target_outputs(":cargo-audit")
 
     # Action must have outputs, and these outputs must be created, otherwise
     # SISO will fail.
@@ -740,7 +739,8 @@ if (current_toolchain == host_toolchain) {
 
     args = [
       "--source_root=" + rebase_path("//brave"),
-      "--cargo_audit_exe=" + rebase_path(cargo_audit_outputs[0]),
+      "--cargo_audit_exe=" +
+          rebase_path("$root_build_dir/cargo-audit$host_exe_suffix"),
       "--output=" + rebase_path(output),
     ]
 
