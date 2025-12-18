@@ -242,6 +242,33 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     }
     message_dict.Set("content", std::move(content_list));
 
+    // Tool calls
+    if (!event.tool_calls.empty()) {
+      // For some reason the server currently expects chat messages that contain
+      // tool calls as well as regular content to have a different type.
+      event_dict.Set("type", "toolCalls");
+      base::Value::List tool_call_dicts;
+      for (const auto& tool_event : event.tool_calls) {
+        base::Value::Dict tool_call_dict;
+        tool_call_dict.Set("id", tool_event->id);
+        tool_call_dict.Set("type", "function");
+
+        base::Value::Dict function_dict;
+        function_dict.Set("name", tool_event->tool_name);
+
+        function_dict.Set("arguments", tool_event->arguments_json);
+
+        tool_call_dict.Set("function", std::move(function_dict));
+        tool_call_dicts.Append(std::move(tool_call_dict));
+      }
+
+      event_dict.Set("tool_calls", std::move(tool_call_dicts));
+    }
+
+    if (!event.tool_call_id.empty()) {
+      event_dict.Set("tool_call_id", event.tool_call_id);
+    }
+
     serialized_messages.Append(std::move(message_dict));
   }
 
@@ -308,6 +335,10 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
+
+  if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
+    dict.Set("tools", std::move(oai_tool_definitions.value()));
+  }
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
