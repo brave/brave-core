@@ -130,11 +130,13 @@ export const style = scoped.css`
     > * {
       transition:
         opacity var(--search-transition-duration),
-        transform var(--search-transition-duration);
+        transform var(--search-transition-duration),
+        visibility var(--search-transition-duration) allow-discrete;
 
       .search-box-expanded & {
         opacity: 0;
         transform: scale(0.9);
+        visibility: hidden;
       }
     }
   }
@@ -152,6 +154,7 @@ export const style = scoped.css`
     .search-box-expanded & {
       opacity: 1;
       transform: none;
+      visibility: visible;
     }
   }
 
