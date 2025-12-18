@@ -85,6 +85,7 @@ export default function TabsMenu() {
           ?.replaceSelectedRange({
             id: attachment.id.toString(),
             text: attachment.title,
+            url: attachment.url.url,
             type: 'attachment',
           });
       }

@@ -65,7 +65,7 @@ export const highlightRichText = (
     parts.push(text.substring(lastIndex, match.index))
     lastIndex = match.index + match[0].length
     parts.push(
-      <span className={styles.richLabel}>
+      <span className={styles.richLabel} title={content?.url.url}>
         {content && (
           <img
             src={`chrome-untrusted://favicon2?size=64&pageUrl=${encodeURIComponent(content?.url.url)}`}

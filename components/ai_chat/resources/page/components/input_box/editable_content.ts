@@ -16,6 +16,7 @@ export type ContentNode =
       type: 'attachment'
       id: string
       text: string
+      url: string
     }
 
 // Content of the component should be an array which can mix strings and block types.
@@ -84,6 +85,11 @@ const createDOMNodeRepresentation = (node: ContentNode) => {
     el.dataset.type = node.type
     el.dataset.id = node.id
     el.textContent = node.text
+
+    if (node.type === 'attachment') {
+      el.dataset.url = node.url
+      el.setAttribute('title', node.url)
+    }
 
     return el
   }
