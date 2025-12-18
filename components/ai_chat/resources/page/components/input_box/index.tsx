@@ -329,14 +329,15 @@ function InputBox(props: InputBoxProps) {
           })}
           ref={attachmentWrapperRef}
         >
-          {pendingContent.map((content) => (
-            <AttachmentPageItem
-              key={content.contentId}
-              title={content.title}
-              url={content.url.url}
-              remove={() => props.context.disassociateContent(content)}
-            />
-          ))}
+          {!props.context.isGenerating
+            && pendingContent.map((content) => (
+              <AttachmentPageItem
+                key={content.contentId}
+                title={content.title}
+                url={content.url.url}
+                remove={() => props.context.disassociateContent(content)}
+              />
+            ))}
           {props.context.isUploadingFiles && (
             <AttachmentSpinnerItem
               title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)}
