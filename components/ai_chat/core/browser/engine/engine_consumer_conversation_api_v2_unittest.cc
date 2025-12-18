@@ -2906,4 +2906,628 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
   EXPECT_EQ(result.error(), mojom::APIError::InternalError);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  std::string expected_events1 = R"([
+    {"role": "user", "type": "suggestFocusTopics", "content": ")" +
+                                 tabs_json_strings[0] + R"("}])";
+  std::string expected_events2 = R"([
+    {"role": "user", "type": "suggestFocusTopics", "content": ")" +
+                                 tabs_json_strings[1] + R"("}])";
+  std::string expected_events3 = R"([
+    {"role": "user", "type": "dedupeFocusTopics", "content": "[\"topic1\",\"topic2\",\"topic3\",\"topic7\",\"topic3\",\"topic4\",\"topic5\",\"topic6\"]"}])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(3)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
+                    "\"topic6\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events3));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic3\", \"topic4\", "
+                    "\"topic5\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>(
+                      {"topic1", "topic3", "topic4", "topic5", "topic7"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Any server error during getting suggested topics or get dudupe topics
+  // would fail the request.
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(3)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
+                    "\"topic6\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events3));
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // GetSuggestedTopics response with unexpected structure would be skipped.
+  std::string expected_events3_skipped_invalid_response = R"([
+    {"role": "user", "type": "dedupeFocusTopics", "content": "[\"topic1\",\"topic2\",\"topic3\",\"topic7\"]"}])";
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(3)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("not well structured"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(
+                      expected_events3_skipped_invalid_response));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>(
+                               {"topic1", "topic2", "topic3", "topic7"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Test dedupe response is not well structured.
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(3)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
+                    "\"topic7\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
+                    "\"topic6\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events3));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": \"not an array of strings\" }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Test calling DedupeTopics with empty topics.
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillRepeatedly([&](std::vector<ConversationEvent> conversation,
+                          const std::string& selected_language,
+                          std::optional<base::Value::List> oai_tool_definitions,
+                          const std::optional<std::string>& preferred_tool_name,
+                          mojom::ConversationCapability conversation_capability,
+                          EngineConsumer::GenerationDataCallback data_callback,
+                          EngineConsumer::GenerationCompletedCallback callback,
+                          const std::optional<std::string>& model_name) {
+        ASSERT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(conversation[0].type,
+                  ConversationEventType::kGetSuggestedTopicsForFocusTabs);
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("\"topics\": []"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  EXPECT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::InternalError);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GetSuggestedTopics_SingleTabChunk) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(1, true);
+  ASSERT_EQ(tabs.size(), 1u);
+  ASSERT_EQ(tabs_json_strings.size(), 1u);
+
+  std::string expected_events = R"([
+    {"role": "user", "type": "suggestAndDedupeFocusTopics", "content": ")" +
+                                tabs_json_strings[0] + R"("}])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"topics\": [\"topic1\", \"topic2\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>({"topic1", "topic2"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
+  // Get two full chunks of tabs for testing.
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  std::string expected_events1 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                                 tabs_json_strings[0] +
+                                 R"(", "topic": "test_topic"}
+  ])";
+  std::string expected_events2 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                                 tabs_json_strings[1] +
+                                 R"(", "topic": "test_topic"}
+  ])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id1\", \"id2\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GetFocusTabs(
+      tabs, "test_topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>({"id1", "id2", "id75", "id76"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Test 1 full chunk of tabs and 1 partial chunk of tabs.
+  auto [tabs2, tabs_json_strings2] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize + 5, true);
+  ASSERT_EQ(tabs2.size(), kTabListChunkSize + 5);
+  ASSERT_EQ(tabs_json_strings2.size(), 2u);
+
+  expected_events1 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                     tabs_json_strings2[0] + R"(", "topic": "test_topic2"}
+  ])";
+  expected_events2 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                     tabs_json_strings2[1] + R"(", "topic": "test_topic2"}
+  ])";
+
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events1));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
+                  FormatComparableEventsJson(expected_events2));
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>({"id3", "id5", "id75", "id76"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Any server error would fail the request.
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Entry with unexpected structure would be skipped.
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .Times(2)
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      })
+      .WillOnce([&](std::vector<ConversationEvent> conversation,
+                    const std::string& selected_language,
+                    std::optional<base::Value::List> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        auto completion_event =
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New(
+                    "I don't follow human instructions."));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            std::move(completion_event), std::nullopt)));
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>({"id3", "id5"}));
+      }));
+
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 }  // namespace ai_chat
