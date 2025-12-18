@@ -38,7 +38,7 @@ class BraveAccountRowHandler : public mojom::RowHandler {
   void GetAccountState(GetAccountStateCallback callback) override;
   void OpenDialog() override;
 
-  mojom::AccountState GetAccountState() const;
+  mojom::AccountStatePtr GetAccountState() const;
   void OnPrefChanged();
 
   mojo::Receiver<mojom::RowHandler> row_handler_;

@@ -28,7 +28,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      state: { type: Number },
+      state: { type: Object },
     }
   }
 

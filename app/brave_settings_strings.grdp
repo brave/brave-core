@@ -51,6 +51,9 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL" translateable="false" desc="Label for the button that cancels the pending registration when clicked">
     Cancel registration
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_IN_ROW_TITLE" translateable="false" desc="Title shown when user is logged in">
+    Email address
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked">
     Sign out
   </message>
