@@ -1,0 +1,252 @@
+name: Rust CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        backend_feature:
+          - --features ristretto255-voprf
+          -
+          - --features curve25519,ristretto255-voprf
+          - --features curve25519
+        frontend_feature:
+          -
+          - --features argon2
+          - --features serde
+        toolchain:
+          - stable
+          - 1.74.0
+    name: test
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@main
+
+      - name: Install ${{ matrix.toolchain }} toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --no-default-features ${{ matrix.backend_feature }} ${{ matrix.frontend_feature }}
+
+      - name: Run cargo test with std
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --no-default-features --features std ${{ matrix.backend_feature }} ${{ matrix.frontend_feature }}
+
+  cross-test:
+    name: Test on ${{ matrix.target }} (using cross)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          # 32-bit x86
+          - i686-unknown-linux-gnu
+        backend_feature:
+          - --features ristretto255-voprf
+          -
+          - curve25519,ristretto255-voprf
+          - curve25519
+    steps:
+      - uses: actions/checkout@main
+      - uses: hecrj/setup-rust-action@v2
+      - run: cargo install cross
+      # Note: just use `cross` as you would `cargo`, but always
+      # pass the `--target=${{ matrix.target }}` arg. (Yes, really).
+      - run: cross test --verbose --target=${{ matrix.target }} --no-default-features ${{ matrix.backend_feature }}
+      - run: cross test --verbose --target=${{ matrix.target }} --no-default-features --features std ${{ matrix.backend_feature }}
+
+  simple-login-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - stable
+          - 1.74.0
+    name: test simple_login command-line example
+    steps:
+      - name: install expect
+        run: sudo apt-get install expect
+      - name: Checkout sources
+        uses: actions/checkout@main
+      - name: install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+      - name: Run expect (which then runs cargo run)
+        run: expect -f scripts/simple_login.exp
+
+  digital-locker-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - stable
+          - 1.74.0
+    name: test digital_locker command-line example
+    steps:
+      - name: install expect
+        run: sudo apt-get install expect
+      - name: Checkout sources
+        uses: actions/checkout@main
+      - name: install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+      - name: Run expect (which then runs cargo run)
+        run: expect -f scripts/digital_locker.exp
+
+  build-no-std:
+    name: Build with no-std on ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          # for wasm
+          - wasm32-unknown-unknown
+          # for any no_std target
+          - thumbv6m-none-eabi
+        backend_feature:
+          - ristretto255-voprf
+          -
+          - curve25519,ristretto255-voprf
+          - curve25519
+        frontend_feature:
+          - argon2
+          - serde
+    steps:
+      - uses: actions/checkout@main
+      - uses: hecrj/setup-rust-action@v2
+      - run: rustup target add ${{ matrix.target }}
+      - run: cargo build --verbose --target=${{ matrix.target }} --no-default-features --features ${{ matrix.frontend_feature }},${{ matrix.backend_feature }}
+
+  benches:
+    name: cargo bench compilation
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        backend_feature:
+          - --features ristretto255-voprf
+          -
+          - --features curve25519,ristretto255-voprf
+          - --features curve25519
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@main
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Run cargo bench --no-run
+        uses: actions-rs/cargo@v1
+        with:
+          command: bench
+          args: --no-default-features ${{ matrix.backend_feature }} --no-run
+
+  clippy:
+    name: cargo clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@main
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy
+
+      - name: Run cargo clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --all-targets --features argon2,std,curve25519 -- -D warnings
+
+      - name: Run cargo doc
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTDOCFLAGS: -D warnings
+        with:
+          command: doc
+          args: --no-deps --document-private-items --features argon2,std,curve25519
+
+  format:
+    name: cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@main
+
+      - name: Install nightly toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: rustfmt
+
+      - name: Run cargo fmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  taplo:
+    name: Taplo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/.crates.toml
+            ~/.cargo/.crates2.json
+            ~/.cargo/bin/taplo
+          key: taplo
+
+      - name: Install Taplo
+        # Adding the --locked flag because of
+        # https://github.com/tamasfe/taplo/issues/242
+        run: cargo install taplo-cli --locked
+
+      - name: Checkout sources
+        uses: actions/checkout@main
+
+      - name: Run Taplo
+        run: taplo fmt --check
+
+  deny-check:
+    name: cargo-deny check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: EmbarkStudios/cargo-deny-action@v2
