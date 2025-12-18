@@ -10,13 +10,13 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import styled, { StyleSheetManager } from 'styled-components'
 import Command from './components/Command'
-import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
 import { getLocale } from '$web-common/locale'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
+import { createCommandsApi } from './utils/commandsApi'
 setIconBasePath('chrome://resources/brave-icons')
 
 const Container = styled.div`
@@ -67,19 +67,10 @@ const SearchIcon = styled(Icon)`
   transform: translateY(-50%);
 `
 
-export const commandsCache = new CommandsCache()
+export const commandsApi = createCommandsApi(CommandsMojo.CommandsService.getRemote())
 export function useCommands() {
-  const [commands, setCommands] = React.useState<{
-    [id: number]: CommandsMojo.Command
-  }>({})
-  React.useEffect(() => {
-    const listener = (l: { [command: number]: CommandsMojo.Command }) => {
-      setCommands(l)
-    }
-    commandsCache.addListener(listener)
-    return () => commandsCache.removeListener(listener)
-  }, [])
-  return commands
+  // Note: I don't think data should be getting the `| undefined` type here as I give it a default value.
+  return commandsApi.useCommands().data!
 }
 
 function App() {
@@ -91,6 +82,7 @@ function App() {
     () => Object.values(commands)?.filter((c) => match(filter, c)),
     [filter, commands]
   )
+  console.log(commandsApi)
   return (
     <Container>
       <CommandsContainer>
@@ -108,7 +100,7 @@ function App() {
           <Command key={c.id} command={c} />
         ))}
       </CommandsContainer>
-      <Button kind="plain-faint" onClick={() => commandsCache.resetAll()}>
+      <Button kind="plain-faint" onClick={commandsApi.resetAccelerators}>
         {getLocale(S.SHORTCUTS_PAGE_RESET_ALL)}
       </Button>
     </Container>
