@@ -59,26 +59,176 @@ struct ContentBlockTestParam {
 
 std::pair<std::vector<OAIMessage>, base::Value::Dict>
 GetMockMessagesAndExpectedContent() {
-  std::vector<OAIMessage> messages;
+  std::pair<std::vector<ConversationAPIClient::ConversationEvent>, std::string>
+      mock_events_and_expected_events_body;
 
-  // Create a simple user message with text content
-  OAIMessage message;
-  message.role = "user";
-  message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
-      mojom::TextContentBlock::New("test message")));
-  messages.push_back(std::move(message));
+  std::vector<ConversationAPIClient::ConversationEvent> events;
+  events.emplace_back(
+      ConversationEventRole::kUser, ConversationEventType::kUserMemory,
+      std::vector<std::string>{}, "",
+      base::Value::Dict()
+          .Set("name", "Jane")
+          .Set("memories",
+               base::Value::List().Append("memory1").Append("memory2")));
+  events.emplace_back(
+      ConversationEventRole::kUser, ConversationEventType::kPageText,
+      std::vector<std::string>{"This is a page about The Mandalorian."});
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kPageExcerpt,
+                      std::vector<std::string>{"The Mandalorian"});
+  events.emplace_back(
+      ConversationEventRole::kUser, ConversationEventType::kChatMessage,
+      std::vector<std::string>{"Est-ce lié à une série plus large?"});
 
-  // Create expected messages dict for verification
-  base::Value::Dict expected_content;
-  expected_content.Set("role", "user");
-  base::Value::List content_list;
-  base::Value::Dict content_dict;
-  content_dict.Set("type", "text");
-  content_dict.Set("text", "test message");
-  content_list.Append(std::move(content_dict));
-  expected_content.Set("content", std::move(content_list));
+  // Two tool use requests from the assistant
+  events.emplace_back(
+      ConversationEventRole::kAssistant, ConversationEventType::kChatMessage,
+      std::vector<std::string>{"Going to use a tool..."}, "", std::nullopt,
+      MakeToolUseEvents({mojom::ToolUseEvent::New("get_weather", "123",
+                                                  "{\"location\":\"New York\"}",
+                                                  std::nullopt, nullptr),
+                         mojom::ToolUseEvent::New("get_screenshot", "456",
+                                                  "{\"type\":\"tab\"}",
+                                                  std::nullopt, nullptr)}));
 
-  return std::make_pair(std::move(messages), std::move(expected_content));
+  // First answer from a tool
+  events.emplace_back(
+      ConversationEventRole::kTool, ConversationEventType::kToolUse,
+      MakeContentBlocks(
+          {mojom::ContentBlock::NewTextContentBlock(
+               mojom::TextContentBlock::New(
+                   "The temperature in New York is 60 degrees.")),
+           mojom::ContentBlock::NewTextContentBlock(
+               mojom::TextContentBlock::New(
+                   "The wind in New York is 5 mph from the SW."))}),
+      "", std::nullopt, MakeToolUseEvents({}), "123");
+
+  // Second answer from a tool
+  events.emplace_back(
+      ConversationEventRole::kTool, ConversationEventType::kToolUse,
+      MakeContentBlocks({mojom::ContentBlock::NewImageContentBlock(
+          mojom::ImageContentBlock::New(
+              GURL("data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                   "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")))}),
+      "", std::nullopt, MakeToolUseEvents({}), "456");
+
+  events.emplace_back(
+      ConversationEventRole::kUser,
+      ConversationEventType::kGetSuggestedTopicsForFocusTabs,
+      std::vector<std::string>{"GetSuggestedTopicsForFocusTabs"});
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kDedupeTopics,
+                      std::vector<std::string>{"DedupeTopics"});
+  events.emplace_back(ConversationEventRole::kUser,
+                      ConversationEventType::kGetFocusTabsForTopic,
+                      std::vector<std::string>{"GetFocusTabsForTopics"}, "C++");
+  events.emplace_back(
+      ConversationEventRole::kUser, ConversationEventType::kUploadImage,
+      std::vector<std::string>{"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                               "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                               "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                               "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"});
+
+  const std::string expected_events_body = R"([
+    {
+      "role": "user",
+      "type": "userMemory",
+      "content": "",
+      "memory": {"name": "Jane", "memories": ["memory1", "memory2"]}
+    },
+    {
+      "role": "user",
+      "type": "pageText",
+      "content": "This is a page about The Mandalorian."
+    },
+    {
+      "role": "user",
+      "type": "pageExcerpt",
+      "content": "The Mandalorian"
+    },
+    {
+      "role": "user",
+      "type": "chatMessage",
+      "content": "Est-ce lié à une série plus large?"
+    },
+    {
+      "role": "assistant",
+      "type": "toolCalls",
+      "content": "Going to use a tool...",
+      "tool_calls": [
+        {
+          "id": "123",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"location\":\"New York\"}"
+          }
+        },
+        {
+          "id": "456",
+          "type": "function",
+          "function": {
+            "name": "get_screenshot",
+            "arguments": "{\"type\":\"tab\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "text",
+          "text": "The temperature in New York is 60 degrees."
+        },
+        {
+          "type": "text",
+          "text": "The wind in New York is 5 mph from the SW."
+        }
+      ],
+      "tool_call_id": "123"
+    },
+    {
+      "role": "tool",
+      "type": "toolUse",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          }
+        }
+      ],
+      "tool_call_id": "456"
+    },
+    {
+      "role": "user",
+      "type": "suggestFocusTopics",
+      "content": "GetSuggestedTopicsForFocusTabs"
+    },
+    {
+      "role": "user",
+      "type": "dedupeFocusTopics",
+      "content": "DedupeTopics"
+    },
+    {
+      "role": "user",
+      "type": "classifyTabs",
+      "content": "GetFocusTabsForTopics",
+      "topic": "C++"
+    },
+    {
+      "role": "user",
+      "type": "uploadImage",
+      "content": [
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      ]
+    }
+  ])";
+
+  return std::make_pair(std::move(events), expected_events_body);
 }
 
 class MockCallbacks {
