@@ -60,6 +60,9 @@ export default function AssistantTask(props: Props) {
   const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
   const conversationContext = useUntrustedConversationContext()
 
+  const contentTaskTabId =
+    conversationContext.api.useCurrentContentTaskStarted().data?.[0]
+
   React.useEffect(() => {
     // We only currently support a single task per conversation - only show or
     // update a thumbnail if this task is active otherwise it will seem like
@@ -67,34 +70,35 @@ export default function AssistantTask(props: Props) {
     // TODO(https://github.com/brave/brave-browser/issues/49258): support a
     // tab-per-ToolUseEvent and keep track of which tool uses are for which tab
     // when multi-tab agent conversations are supported.
-    if (!conversationContext.contentTaskTabId || !props.isActiveTask) {
+    if (!contentTaskTabId || !props.isActiveTask) {
       return
     }
 
     // Task is active task - if we get thumbnails for a related Tab, display
     // it.
-    const id = conversationContext.uiObserver?.thumbnailUpdated.addListener(
-      (tabId: number, dataURI: string) => {
-        if (tabId === conversationContext.contentTaskTabId) {
-          setTaskThumbnail(dataURI)
-        }
-      },
-    )
+    const thumbnailUnsubscribe =
+      conversationContext.api.subscribeToThumbnailUpdated(
+        (tabId: number, dataURI: string) => {
+          if (tabId === conversationContext.contentTaskTabId) {
+            setTaskThumbnail(dataURI)
+          }
+        },
+      )
 
     // Let the thumbnail tracker know we want to track the thumbnail of
     // the active task's tab.
-    conversationContext.uiHandler?.addTabToThumbnailTracker(
-      conversationContext.contentTaskTabId,
+    conversationContext.api.actions.uiHandler.addTabToThumbnailTracker(
+      contentTaskTabId,
     )
 
     // Stop listening for thumbnails when we stop being the active task.
     return () => {
-      conversationContext.uiObserver?.removeListener(id)
-      conversationContext.uiHandler?.removeTabFromThumbnailTracker(
-        conversationContext.contentTaskTabId!,
+      thumbnailUnsubscribe()
+      conversationContext.api.actions.uiHandler.removeTabFromThumbnailTracker(
+        contentTaskTabId,
       )
     }
-  }, [props.isActiveTask, conversationContext.contentTaskTabId])
+  }, [props.isActiveTask, contentTaskTabId])
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
