@@ -157,6 +157,9 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   }
   CHECK(result.witnesses().empty());
 
+  // Add dummy witness set based on number of signatures we need. This ensures
+  // result transaction could be encoded to its final size and we can calculate
+  // correct fee for it.
   SetupDummyWitnessSet(result);
 
   // This is starting fee based on minimum size of tx as fee and outputs are 0.
@@ -193,6 +196,7 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
     // on its binary size).
     if (*required_fee <= result.fee()) {
       if (ValidateAmounts(result, epoch_parameters)) {
+        // Remove dummy witness set.
         result.SetWitnesses({});
         return result;
       }

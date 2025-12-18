@@ -311,6 +311,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 6000000 - 177161u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
+    EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Slightly adjust output - doesn't work as inputs outputs and fee don't
     // match and we dont's have change.
@@ -337,6 +338,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u);
     EXPECT_EQ(found_tx->ChangeOutput()->amount, 4819979u);
+    EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Slightly adjust output - still works.
     tx_with_change.TargetOutput()->amount = 1000000u + 123u;
@@ -348,6 +350,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 1000000u + 123u);
     EXPECT_EQ(found_tx->ChangeOutput()->amount, 4819979u - 123u);
+    EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Adjust output so it is larger than inputs we have - failure.
     tx_with_change.TargetOutput()->amount = 10000000u;
@@ -373,6 +376,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
     EXPECT_EQ(found_tx->TargetOutput()->amount, 5822839u);
     EXPECT_EQ(found_tx->ChangeOutput(), nullptr);
+    EXPECT_EQ(found_tx->witnesses().size(), 0u);
 
     // Single input is not enough to cover fee.
     CardanoTransaction::TxInput input4;
