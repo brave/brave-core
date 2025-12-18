@@ -1194,7 +1194,7 @@ class VerticalTabStripDragAndDropBrowserTest
   }
 
   bool IsDraggingTabStrip(Browser* b) {
-    return GetTabStrip(b)->GetDragContext()->IsDragSessionActive();
+    return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
   // VerticalTabStripBrowserTest:
