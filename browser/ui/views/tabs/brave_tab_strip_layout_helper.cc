@@ -210,7 +210,9 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
   int x = 0;
   int y = 0;
   for (const TabSlotView* view : views) {
-    auto width = tab_strip->GetDragContext()->GetTabDragAreaWidth();
+    auto width = tab_strip->GetDragContext()
+                     ->GetPositioningDelegate()
+                     ->GetTabDragAreaWidth();
     const int height = view->height();
     const bool is_slot_tab =
         view->GetTabSlotViewType() == TabSlotView::ViewType::kTab;
