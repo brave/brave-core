@@ -744,8 +744,12 @@ const util = {
         const sisoOutput = fs.readFileSync(sisoOutputFile, 'utf8')
         Log.error(`Siso output from ${sisoOutputFile}:`)
         // Split the output into lines to correctly display on Teamcity.
-        for (const line of sisoOutput.split('\n')) {
-          Log.error(line)
+        const lines = sisoOutput.split('\n')
+        // Output starting from the first "FAILED:" line, or full file.
+        const failedIndex = lines.findIndex(line => line.startsWith('FAILED:'))
+        const startIndex = failedIndex !== -1 ? failedIndex : 0
+        for (let i = startIndex; i < lines.length; i++) {
+          Log.error(lines[i])
         }
       }
       console.error(e.message)
