@@ -74,7 +74,9 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(
                 R.layout.brave_first_party_storage_cleaner_animation, container, false);
@@ -94,24 +96,22 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
 
         mAnimationView.setAnimation(ANIMATION_FILE);
         mAnimationView.setRepeatCount(ANIMATION_REPEAT_COUNT);
-        mAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
+        mAnimationView.addAnimatorListener(
+                new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                hideAnimationAndStartFadeOut();
-            }
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        hideAnimationAndStartFadeOut();
+                    }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                });
 
         // Start animation
         mAnimationView.playAnimation();
@@ -119,31 +119,33 @@ public class FirstPartyStorageCleanerAnimationFragment extends DialogFragment {
 
     private void hideAnimationAndStartFadeOut() {
         if (mAnimationView != null) {
-        // Hide the animation view since it's finished
+            // Hide the animation view since it's finished
             mAnimationView.setVisibility(View.GONE);
         }
         if (mBlackFadeOverlay != null) {
             mBlackFadeOverlay.setVisibility(View.VISIBLE);
-            mBlackFadeOverlay.animate()
+            mBlackFadeOverlay
+                    .animate()
                     .alpha(0.0f)
                     .setDuration(FADE_OUT_DURATION_MS)
                     .setStartDelay(FADE_OUT_START_DELAY_MS)
-                    .setListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {}
+                    .setListener(
+                            new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {}
 
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            // Close the dialog fragment
-                            dismiss();
-                        }
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    // Close the dialog fragment
+                                    dismiss();
+                                }
 
-                        @Override
-                        public void onAnimationCancel(Animator animation) {}
+                                @Override
+                                public void onAnimationCancel(Animator animation) {}
 
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {}
-                    })
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {}
+                            })
                     .start();
         }
     }
