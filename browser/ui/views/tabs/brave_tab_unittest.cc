@@ -44,7 +44,7 @@ class BraveTabTest : public ChromeViewsTestBase {
 
 TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
 
   // Our tab should have extra padding always.
   // See the comment at BraveTab::GetInsets().
@@ -58,7 +58,7 @@ TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
 // Check tab's region inside of vertical padding.
 TEST_F(BraveTabTest, TabHeightTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
   tab.SetBoundsRect({0, 0, 100, GetLayoutConstant(TAB_STRIP_HEIGHT)});
   EXPECT_EQ(tab.GetLocalBounds().height() -
                 GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
@@ -93,7 +93,7 @@ TEST_F(BraveTabTest, TabHeightTest) {
 
 TEST_F(BraveTabTest, TabStyleTest) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
 
   // We use same width for split and non-split tab.
   auto* tab_style = tab.tab_style();
@@ -137,7 +137,8 @@ class BraveTabRenamingUnitTest : public BraveTabTest {
 
   void SetUp() override {
     BraveTabTest::SetUp();
-    tab_ = std::make_unique<BraveTab>(&tab_slot_controller_);
+    tab_ =
+        std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller_);
     LayoutAndCheckBorder(tab_.get(), {0, 0, 100, 50});
   }
 
@@ -275,7 +276,7 @@ TEST_F(BraveTabRenamingUnitTest, ClickingOutsideRenamingTabCommitsRename) {
 
 TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
   FakeTabSlotController tab_slot_controller;
-  BraveTab tab(&tab_slot_controller);
+  BraveTab tab(tabs::TabHandle(1), &tab_slot_controller);
   tab_slot_controller.set_active_tab(&tab);
 
   ASSERT_FALSE(tab_slot_controller.ShouldAlwaysHideCloseButton());
@@ -292,7 +293,8 @@ TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
 TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
   testing::NiceMock<BraveTabRenamingUnitTest::MockTabSlotController>
       tab_slot_controller;
-  auto tab = std::make_unique<BraveTab>(&tab_slot_controller);
+  auto tab =
+      std::make_unique<BraveTab>(tabs::TabHandle(2), &tab_slot_controller);
   tab_slot_controller.set_active_tab(tab.get());
 
   // Create a widget to host the tab
