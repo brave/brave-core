@@ -56,10 +56,18 @@ export type EthereumAccessList = {
   storageKeys: string[]
 }
 
+export class Branded<T extends string> {
+  __type!: T
+}
+
+export type DeviceState = {}
+
+export type DeviceUniquePath = string & Branded<'DeviceUniquePath'>
+
 export interface CommonParams {
   device?: {
-    path: string
-    state?: string
+    path?: DeviceUniquePath
+    state?: DeviceState
     instance?: number
   }
   useEmptyPassphrase?: boolean

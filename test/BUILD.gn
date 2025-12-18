@@ -1083,6 +1083,12 @@ test("brave_browser_tests") {
       "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
       "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
     ]
+
+    if (!is_android) {
+      sources += [
+        "//brave/browser/ui/webui/brave_wallet/trezor/trezor_ui_browsertest.cc",
+      ]
+    }
   }
 
   if (enable_ai_chat) {
