@@ -10,6 +10,7 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.EnsuresNonNull;
@@ -57,7 +58,7 @@ public class BraveNewTabPage extends NewTabPage {
 
     private @Nullable Supplier<Toolbar> mToolbarSupplier;
     private @Nullable BottomSheetController mBottomSheetController;
-    private @Nullable ObservableSupplier<Integer> mTabStripHeightSupplier;
+    private @Nullable NonNullObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
@@ -78,7 +79,7 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Toolbar> toolbarSupplier,
             @Nullable HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
-            ObservableSupplier<Integer> tabStripHeightSupplier,
+            NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
