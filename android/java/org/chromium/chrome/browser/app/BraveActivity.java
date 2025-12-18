@@ -172,6 +172,7 @@ import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelpe
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_query_metrics.SearchQueryMetricsUtils;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -2760,6 +2761,11 @@ public abstract class BraveActivity extends ChromeActivity
                         == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT) {
             BraveLeoUtils.openLeoQuery(getActivityTab().getWebContents(), "", query, true);
         } else {
+            WebContents webContents = getActivityTab().getWebContents();
+            if (webContents != null) {
+                SearchQueryMetricsUtils.markEntryPointAsQuickSearch(webContents);
+            }
+
             String quickSearchEngineUrl =
                     GOOGLE_SEARCH_ENGINE_KEYWORD.equals(quickSearchEnginesModel.getKeyword())
                             ? QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_URL

@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.search_query_metrics.SearchQueryMetricsUtils;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.OmniboxSuggestionType;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -32,6 +34,35 @@ class BraveAutocompleteMediatorBase {
                 (LocationBarDataProvider)
                         BraveReflectionUtil.getField(
                                 AutocompleteMediator.class, "mDataProvider", this);
+
+        Tab tab = dataProvider != null ? dataProvider.getTab() : null;
+        if (tab != null && tab.getWebContents() != null) {
+            switch (suggestion.getType()) {
+                case OmniboxSuggestionType.URL_WHAT_YOU_TYPED:
+                case OmniboxSuggestionType.HISTORY_URL:
+                case OmniboxSuggestionType.NAVSUGGEST:
+                    SearchQueryMetricsUtils.markEntryPointAsDirect(tab.getWebContents());
+                    break;
+                case OmniboxSuggestionType.SEARCH_HISTORY:
+                    SearchQueryMetricsUtils.markEntryPointAsOmniboxHistory(tab.getWebContents());
+                    break;
+                case OmniboxSuggestionType.SEARCH_SUGGEST:
+                case OmniboxSuggestionType.SEARCH_SUGGEST_ENTITY:
+                case OmniboxSuggestionType.SEARCH_SUGGEST_TAIL:
+                case OmniboxSuggestionType.SEARCH_SUGGEST_PERSONALIZED:
+                case OmniboxSuggestionType.SEARCH_SUGGEST_PROFILE:
+                    SearchQueryMetricsUtils.markEntryPointAsOmniboxSuggestion(tab.getWebContents());
+                    break;
+                case OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED:
+                    SearchQueryMetricsUtils.markEntryPointAsOmniboxSearch(tab.getWebContents());
+                    break;
+                case OmniboxSuggestionType.SEARCH_OTHER_ENGINE:
+                    SearchQueryMetricsUtils.markEntryPointAsShortcut(tab.getWebContents());
+                    break;
+                default:
+                    break;
+            }
+        }
 
         if (dataProvider != null
                 && !dataProvider.isIncognito()

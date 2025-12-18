@@ -355,6 +355,7 @@ source_set("ui") {
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
+      "//brave/browser/search_query_metrics",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",

@@ -108,6 +108,12 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "static.ads.brave.com", "pins": "brave"},
     { "name": "static.ads.bravesoftware.com", "pins": "brave"},
 
+    // Search query metrics
+    { "name": "anonymous.metrics.brave.com", "pins": "brave"},
+    { "name": "anonymous.metrics.bravesoftware.com", "pins": "brave"},
+    { "name": "ohttp.metrics.brave.com", "pins": "brave"},
+    { "name": "ohttp.metrics.bravesoftware.com", "pins": "brave"},
+
     // Search
     { "name": "search.brave.com", "pins": "brave"},
     { "name": "cdn.search.brave.com", "pins": "brave"},
@@ -491,6 +497,28 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
     },
     {
       "name": "star.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Search query metrics
+    {
+      "name": "anonymous.metrics.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "anonymous.metrics.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.metrics.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.metrics.bravesoftware.com",
       "mode": "force-https",
       "policy": "custom"
     },

@@ -1,0 +1,107 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("search_query_metrics") {
+  sources = [
+    "locale/language_code.h",
+    "locale/locale_util.cc",
+    "locale/locale_util.h",
+    "network_client/network_client.cc",
+    "network_client/network_client.h",
+    "network_client/network_client_callback.h",
+    "network_client/network_client_util.cc",
+    "network_client/network_client_util.h",
+    "network_client/oblivious_http_client_impl.cc",
+    "network_client/oblivious_http_client_impl.h",
+    "network_client/oblivious_http_constants.h",
+    "network_client/oblivious_http_feature.cc",
+    "network_client/oblivious_http_feature.h",
+    "network_client/oblivious_http_key_config.cc",
+    "network_client/oblivious_http_key_config.h",
+    "pref_names.h",
+    "pref_registry.cc",
+    "pref_registry.h",
+    "search_engine/search_engine_constants.h",
+    "search_engine/search_engine_info.h",
+    "search_engine/search_engine_util.cc",
+    "search_engine/search_engine_util.h",
+    "search_query_metrics_allowed_lists.h",
+    "search_query_metrics_entry_point_type.h",
+    "search_query_metrics_environment_util.cc",
+    "search_query_metrics_environment_util.h",
+    "search_query_metrics_feature.cc",
+    "search_query_metrics_feature.h",
+    "search_query_metrics_queue_item_info.h",
+    "search_query_metrics_service.cc",
+    "search_query_metrics_service.h",
+    "search_query_metrics_service_delegate.h",
+    "search_query_metrics_service_impl.cc",
+    "search_query_metrics_service_impl.h",
+    "search_query_metrics_url_util.cc",
+    "search_query_metrics_url_util.h",
+  ]
+
+  if (is_android) {
+    sources += [ "locale/language_code_android.cc" ]
+  }
+
+  if (is_linux) {
+    sources += [ "locale/language_code_linux.cc" ]
+  }
+
+  if (is_mac) {
+    sources += [ "locale/language_code_mac.mm" ]
+  }
+
+  if (is_ios) {
+    sources += [ "locale/language_code_ios.mm" ]
+  }
+
+  if (is_win) {
+    sources += [ "locale/language_code_win.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//brave/components/version_info",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/search_engines",
+    "//components/variations",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//third_party/re2",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "locale/locale_util_unittest.cc",
+    "locale/scoped_locale_for_testing.cc",
+    "locale/scoped_locale_for_testing.h",
+    "network_client/network_client_util_unittest.cc",
+    "network_client/oblivious_http_feature_unittest.cc",
+    "search_engine/search_engine_util_unittest.cc",
+    "search_query_metrics_allowed_lists_unittest.cc",
+    "search_query_metrics_environment_util_unittest.cc",
+    "search_query_metrics_feature_unittest.cc",
+    "search_query_metrics_url_util_unittest.cc",
+  ]
+
+  deps = [
+    ":search_query_metrics",
+    "//base",
+    "//net",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/re2",
+    "//url",
+  ]
+}

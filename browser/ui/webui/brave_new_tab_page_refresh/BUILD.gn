@@ -47,6 +47,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
+    "//brave/browser/search_query_metrics",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_perf_predictor/common",

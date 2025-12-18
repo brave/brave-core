@@ -1,0 +1,13 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_search_query_metrics_android_sources = [ "//brave/browser/search_query_metrics/android/search_query_metrics_utils_android.cc" ]
+
+brave_browser_search_query_metrics_android_deps = [
+  "//base",
+  "//brave/browser/search_query_metrics",
+  "//chrome/android:jni_headers",
+  "//content/public/browser",
+]

@@ -1,0 +1,31 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_SEARCH_QUERY_METRICS_NETWORK_CLIENT_NETWORK_CLIENT_UTIL_H_
+#define BRAVE_COMPONENTS_SEARCH_QUERY_METRICS_NETWORK_CLIENT_NETWORK_CLIENT_UTIL_H_
+
+class GURL;
+
+namespace net {
+struct NetworkTrafficAnnotationTag;
+}  // namespace net
+
+namespace metrics {
+
+// Returns the OHTTP key config URL corresponding to the staging or production
+// environment, depending on `use_staging`.
+GURL ObliviousHttpKeyConfigUrl(bool use_staging);
+
+// Returns the OHTTP relay URL corresponding to the staging or production
+// environment, depending on `use_staging`.
+GURL ObliviousHttpRelayUrl(bool use_staging);
+
+// Returns the network traffic annotation tag used to identify and audit network
+// requests.
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag();
+
+}  // namespace metrics
+
+#endif  // BRAVE_COMPONENTS_SEARCH_QUERY_METRICS_NETWORK_CLIENT_NETWORK_CLIENT_UTIL_H_

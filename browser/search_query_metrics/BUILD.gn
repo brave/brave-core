@@ -1,0 +1,57 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("search_query_metrics") {
+  sources = [
+    "search_query_metrics_service_delegate_impl.cc",
+    "search_query_metrics_service_delegate_impl.h",
+    "search_query_metrics_service_factory.cc",
+    "search_query_metrics_service_factory.h",
+    "search_query_metrics_tab_helper.cc",
+    "search_query_metrics_tab_helper.h",
+    "search_query_metrics_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/constants",
+    "//brave/components/search_query_metrics",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/search_engines",
+    "//components/sessions",
+    "//components/variations",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/mojom",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (!is_android) {
+    sources += [ "search_query_metrics_utils_desktop.cc" ]
+
+    deps += [ "//chrome/browser:shell_integration" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "search_query_metrics_service_factory_unittest.cc" ]
+
+  deps = [
+    ":search_query_metrics",
+    "//base/test:test_support",
+    "//brave/components/search_query_metrics",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

@@ -1,0 +1,9 @@
+include_rules = [
+  "+components/keyed_service",
+  "+components/prefs",
+  "+components/search_engines",
+  "+components/variations",
+  "+brave/components/version_info",
+  "+services/network/public",
+  "+third_party/re2/src/re2",
+]

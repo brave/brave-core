@@ -26,6 +26,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/search_query_metrics/search_query_metrics_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -119,6 +120,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   BraveRendererUpdaterFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
+  metrics::SearchQueryMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();

@@ -30,7 +30,9 @@ import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordi
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_query_metrics.SearchQueryMetricsUtils;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -42,6 +44,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.util.function.Supplier;
@@ -134,6 +137,8 @@ public class BraveNewTabPage extends NewTabPage {
                 TemplateUrlServiceFactory.getForProfile(
                         Profile.fromWebContents(assertNonNull(mTab.getWebContents())));
         templateUrlService.addObserver(this);
+
+        addMostVisitedTileClickObserver(new BraveMostVisitedTileClickObserver());
     }
 
     @Override
@@ -190,5 +195,15 @@ public class BraveNewTabPage extends NewTabPage {
         // Search provider logo is not used in Brave's NTP.
         mSearchProviderHasLogo = false;
         return false;
+    }
+
+    private static class BraveMostVisitedTileClickObserver implements MostVisitedTileClickObserver {
+        @Override
+        public void onMostVisitedTileClicked(Tile tile, Tab tab) {
+            WebContents webContents = tab.getWebContents();
+            if (webContents != null) {
+                SearchQueryMetricsUtils.markEntryPointAsTopSite(webContents);
+            }
+        }
     }
 }

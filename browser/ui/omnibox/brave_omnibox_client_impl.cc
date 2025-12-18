@@ -13,6 +13,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/search_query_metrics/search_query_metrics_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -22,6 +23,7 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
@@ -74,6 +76,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
                                                Browser* browser,
                                                Profile* profile)
     : ChromeOmniboxClient(location_bar, browser, profile),
+      location_bar_(location_bar),
       profile_(profile),
       search_engine_tracker_(
           SearchEngineTrackerFactory::GetForBrowserContext(profile)),
@@ -151,6 +154,48 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     }
 #endif
   }
+
+  if (auto* search_query_metrics_tab_helper =
+          metrics::SearchQueryMetricsTabHelper::FromWebContents(
+              location_bar_->GetWebContents())) {
+    switch (match_type) {
+      case AutocompleteMatchType::URL_WHAT_YOU_TYPED:
+      case AutocompleteMatchType::HISTORY_URL:
+      case AutocompleteMatchType::NAVSUGGEST: {
+        search_query_metrics_tab_helper->MarkEntryPointAsDirect();
+        break;
+      }
+
+      case AutocompleteMatchType::SEARCH_HISTORY: {
+        search_query_metrics_tab_helper->MarkEntryPointAsOmniboxHistory();
+        break;
+      }
+
+      case AutocompleteMatchType::SEARCH_SUGGEST:
+      case AutocompleteMatchType::SEARCH_SUGGEST_ENTITY:
+      case AutocompleteMatchType::SEARCH_SUGGEST_TAIL:
+      case AutocompleteMatchType::SEARCH_SUGGEST_PERSONALIZED:
+      case AutocompleteMatchType::SEARCH_SUGGEST_PROFILE: {
+        search_query_metrics_tab_helper->MarkEntryPointAsOmniboxSuggestion();
+        break;
+      }
+
+      case AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED: {
+        search_query_metrics_tab_helper->MarkEntryPointAsOmniboxSearch();
+        break;
+      }
+
+      case AutocompleteMatchType::SEARCH_OTHER_ENGINE: {
+        search_query_metrics_tab_helper->MarkEntryPointAsShortcut();
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
+
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,
       match_selection_timestamp, destination_url_entered_without_scheme,

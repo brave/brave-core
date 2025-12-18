@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #include "components/prefs/pref_change_registrar.h"
 
+class LocationBar;
 class PrefRegistrySimple;
 class Profile;
 class SearchEngineTracker;
@@ -51,6 +52,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  private:
   void RecordSearchEventP3A();
 
+  raw_ptr<LocationBar> location_bar_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<SearchEngineTracker> search_engine_tracker_ = nullptr;
   raw_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;

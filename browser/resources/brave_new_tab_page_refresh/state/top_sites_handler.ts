@@ -116,5 +116,9 @@ export function createTopSitesHandler(
         return { topSites: [...topSites] }
       })
     },
+
+    markEntryPointAsTopSite(topSite) {
+      handler.markEntryPointAsTopSite(topSite)
+    },
   }
 }

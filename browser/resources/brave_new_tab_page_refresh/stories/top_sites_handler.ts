@@ -107,5 +107,7 @@ export function createTopSitesHandler(
         return { topSites: [...topSites] }
       })
     },
+
+    markEntryPointAsTopSite(topSite) {},
   }
 }

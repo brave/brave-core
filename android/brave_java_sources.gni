@@ -321,6 +321,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rewards/adaptive_captcha/AdaptiveCaptchaHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/NoGooglePlayServicesDialog.java",
+  "../../brave/android/java/org/chromium/chrome/browser/search_query_metrics/SearchQueryMetricsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/searchwidget/SearchWidgetProviderActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/BraveSetDefaultBrowserUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/SetDefaultBrowserBottomSheetFragment.java",

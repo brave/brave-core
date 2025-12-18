@@ -165,6 +165,9 @@ export function TopSitesGrid(props: Props) {
                       topSite={tile}
                       canDrag={props.canReorderSites}
                       onContextMenu={contextMenuHandler(tile)}
+                      onClick={() => {
+                        actions.markEntryPointAsTopSite(tile)
+                      }}
                     />
                   ),
                 )}

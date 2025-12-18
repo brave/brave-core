@@ -133,6 +133,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "//brave/android/java/org/chromium/chrome/browser/referrer/BraveReferrer.java",
+  "//brave/android/java/org/chromium/chrome/browser/search_query_metrics/SearchQueryMetricsUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",

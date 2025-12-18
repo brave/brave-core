@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/to_address.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
+#include "brave/browser/search_query_metrics/search_query_metrics_tab_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
@@ -282,6 +283,12 @@ void NewTabPageHandler::ReportSearchEngineUsage(
 void NewTabPageHandler::ReportSearchResultUsage(
     int64_t engine_prepopulate_id,
     ReportSearchResultUsageCallback callback) {
+  auto* tab_helper = metrics::SearchQueryMetricsTabHelper::FromWebContents(
+      base::to_address(web_contents_));
+  if (tab_helper) {
+    tab_helper->MarkEntryPointAsNewTabPage();
+  }
+
   new_tab_metrics_->ReportNTPSearchUsage(engine_prepopulate_id);
   std::move(callback).Run();
 }
@@ -353,6 +360,14 @@ void NewTabPageHandler::IncludeMostVisitedTopSite(
     IncludeMostVisitedTopSiteCallback callback) {
   top_sites_facade_->IncludeMostVisitedTopSite(url);
   std::move(callback).Run();
+}
+
+void NewTabPageHandler::MarkEntryPointAsTopSite(mojom::TopSitePtr top_site) {
+  auto* tab_helper = metrics::SearchQueryMetricsTabHelper::FromWebContents(
+      base::to_address(web_contents_));
+  if (tab_helper) {
+    tab_helper->MarkEntryPointAsTopSite();
+  }
 }
 
 void NewTabPageHandler::SetCustomTopSitePosition(

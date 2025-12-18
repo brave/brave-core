@@ -56,6 +56,7 @@
 #include "brave/components/query_filter/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/search_query_metrics/pref_registry.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -560,6 +561,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif  // defined(TOOLKIT_VIEWS)
 
   brave_ads::RegisterProfilePrefs(registry);
+  metrics::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefs(registry);
 
   webcompat_reporter::prefs::RegisterProfilePrefs(registry);
