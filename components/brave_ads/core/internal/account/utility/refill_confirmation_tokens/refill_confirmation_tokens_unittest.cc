@@ -144,8 +144,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))},
         {net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
                                    test::kRequestSignedTokensNonce),
@@ -204,8 +204,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
                                    test::kRequestSignedTokensNonce),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))},
         {net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
