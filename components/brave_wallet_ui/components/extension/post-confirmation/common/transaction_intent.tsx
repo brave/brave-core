@@ -330,6 +330,7 @@ export const TransactionIntent = (props: Props) => {
     isERC20Approval,
     isSOLSwapOrBridge,
     isShieldingFunds,
+    isUnshieldingFunds,
     isSolanaATACreation,
   ])
 
