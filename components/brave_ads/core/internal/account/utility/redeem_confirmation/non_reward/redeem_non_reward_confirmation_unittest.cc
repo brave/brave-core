@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation.h"
 
 #include <optional>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -66,8 +67,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   const test::URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(confirmation->transaction_id),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)}}}};
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
