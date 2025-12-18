@@ -18,6 +18,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_strings.h"

@@ -12,6 +12,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
+#include "content/public/browser/web_contents_user_data.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 

@@ -15,6 +15,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/reading_list/read_later_side_panel_web_view.h"
