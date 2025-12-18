@@ -26,8 +26,10 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -50,36 +52,6 @@ namespace ai_chat {
 namespace {
 
 constexpr int kTestingMaxAssociatedContentLength = 100;
-constexpr size_t kChunkSize = 75;
-
-std::pair<std::vector<Tab>, std::vector<std::string>>
-GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
-  size_t num_chunks = (num_tabs + kChunkSize - 1) / kChunkSize;
-  std::vector<Tab> tabs;
-  std::vector<std::string> tabs_json_strings;
-  for (size_t i = 0; i < num_chunks; i++) {
-    std::string tabs_json_string = "[";
-    size_t start_suffix = i * kChunkSize;
-    for (size_t j = start_suffix;
-         j < std::min(kChunkSize + start_suffix, num_tabs); j++) {
-      std::string id = base::StrCat({"id", base::NumberToString(j)});
-      std::string title = base::StrCat({"title", base::NumberToString(j)});
-      std::string url = base::StrCat(
-          {"https://www.example", base::NumberToString(j), ".com"});
-      tabs.push_back({id, title, url::Origin::Create(GURL(url))});
-      base::StrAppend(&tabs_json_string,
-                      {R"({\"id\":\")", id, R"(\",\"title\":\")", title,
-                       R"(\",\"url\":\")", url, R"(\"},)"});
-    }
-
-    if (!tabs_json_string.empty() && tabs_json_string.back() == ',') {
-      tabs_json_string.pop_back();  // Remove comma
-    }
-    base::StrAppend(&tabs_json_string, {"]"});
-    tabs_json_strings.push_back(tabs_json_string);
-  }
-  return {tabs, tabs_json_strings};
-}
 
 // Helper function to create base64 data URL from uploaded file data
 std::string CreateDataURLFromUploadedFile(const mojom::UploadedFilePtr& file,
@@ -1193,8 +1165,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   auto [tabs, tabs_json_strings] =
-      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
-  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
   ASSERT_EQ(tabs_json_strings.size(), 2u);
 
   std::string expected_events1 = R"([
@@ -1559,7 +1531,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GetSuggestedTopics_SingleTabChunk) {
-  auto [tabs, tabs_json_strings] = GetMockTabsAndExpectedTabsJsonString(1);
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(1, true);
   ASSERT_EQ(tabs.size(), 1u);
   ASSERT_EQ(tabs_json_strings.size(), 1u);
 
@@ -1601,8 +1574,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   // Get two full chunks of tabs for testing.
   auto [tabs, tabs_json_strings] =
-      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
-  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
   ASSERT_EQ(tabs_json_strings.size(), 2u);
 
   std::string expected_events1 = R"([
@@ -1668,8 +1641,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
 
   // Test 1 full chunk of tabs and 1 partial chunk of tabs.
   auto [tabs2, tabs_json_strings2] =
-      GetMockTabsAndExpectedTabsJsonString(kChunkSize + 5);
-  ASSERT_EQ(tabs2.size(), kChunkSize + 5);
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize + 5, true);
+  ASSERT_EQ(tabs2.size(), kTabListChunkSize + 5);
   ASSERT_EQ(tabs_json_strings2.size(), 2u);
 
   expected_events1 = R"([
