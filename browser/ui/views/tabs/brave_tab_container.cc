@@ -64,13 +64,13 @@ using BrowserRootView::DropIndex::RelativeToIndex::kReplaceIndex;
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
     TabHoverCardController* hover_card_controller,
-    TabDragContextBase* drag_context,
+    TabDragPositioningDelegateBase* drag_position_delegate,
     TabSlotController& tab_slot_controller)
     : TabContainerImpl(controller,
                        hover_card_controller,
-                       drag_context,
+                       drag_position_delegate,
                        tab_slot_controller),
-      drag_context_(drag_context),
+      drag_context_(drag_position_delegate->GetContext()),
       tab_style_(TabStyle::Get()),
       controller_(controller) {
   auto* browser = tab_slot_controller_->GetBrowser();
