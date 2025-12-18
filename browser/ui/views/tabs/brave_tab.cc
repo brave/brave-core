@@ -103,7 +103,8 @@ void BraveTab::RenameTextfield::MouseMovedOutOfHost() {
 BEGIN_METADATA(BraveTab, RenameTextfield)
 END_METADATA
 
-BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
+BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
+    : Tab(std::move(handle), controller) {
   if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     return;
   }
