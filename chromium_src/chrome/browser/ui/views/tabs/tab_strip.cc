@@ -25,7 +25,7 @@
 // Overrides TabContainer::TabInsertionParams construction in
 // TabStrip::AddTabsAt
 #define param(TAB, MODEL_INDEX, PINNED) \
-  param(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
+  param(std::make_unique<BraveTab>(tab_data.handle, this), MODEL_INDEX, PINNED)
 
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
