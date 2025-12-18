@@ -71,12 +71,12 @@ async function RunCommand() {
   // --target_os, --target_arch as lists make sense only for `init/sync`
   // commands. Handle comma-separated values here and only pass the first value
   // to the config.update() call.
-  const targetOSList = program.target_os?.split(',')
-  if (targetOSList) {
+  const targetOSList = commaSeparatedToList(program.target_os)
+  if (targetOSList.length > 0) {
     program.target_os = targetOSList[0]
   }
-  const targetArchList = program.target_arch?.split(',')
-  if (targetArchList) {
+  const targetArchList = commaSeparatedToList(program.target_arch)
+  if (targetArchList.length > 0) {
     program.target_arch = targetArchList[0]
   }
 
@@ -89,6 +89,7 @@ async function RunCommand() {
     || program.target_os
     || program.target_arch
     || !fs.existsSync(config.defaultGClientFile)
+    || config.isCI
   ) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
   }
@@ -122,6 +123,10 @@ async function RunCommand() {
       util.runGClient(['runhooks'])
     })
   }
+}
+
+function commaSeparatedToList(value) {
+  return value?.split(',').filter(Boolean) || []
 }
 
 RunCommand().catch((err) => {

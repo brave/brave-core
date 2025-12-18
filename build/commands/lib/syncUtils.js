@@ -11,6 +11,10 @@ const Log = require('./logging')
 const util = require('./util')
 
 function toGClientConfigItem(name, value, pretty = true) {
+  if (value === undefined) {
+    return ''
+  }
+
   const valueMap = {
     true: '%True%',
     false: '%False%',
@@ -32,32 +36,38 @@ function buildDefaultGClientConfig(
   targetArchList,
   onlyChromium = false,
 ) {
-  const items = [
-    {
-      managed: false,
-      name: 'src',
-      url: config.chromiumRepo,
-      custom_deps: {
-        // wasm_corpus has around 50k files, not used in the build.
-        'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
-        // chromium-variations .git takes ~4 GB, not used in the build.
-        'src/third_party/chromium-variations': null,
-        ...config.gClientCustomDeps,
+  const gClientConfig = {
+    solutions: [
+      {
+        managed: false,
+        name: 'src',
+        url: config.chromiumRepo,
+        custom_deps: {
+          // wasm_corpus has around 50k files, not used in the build.
+          'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
+          // chromium-variations .git takes ~4 GB, not used in the build.
+          'src/third_party/chromium-variations': null,
+          ...config.gClientCustomDeps,
+        },
+        custom_vars: {
+          'checkout_clang_coverage_tools': true,
+          'checkout_pgo_profiles': config.isBraveReleaseBuild(),
+          'download_reclient': true,
+          'reapi_address': config.reapiAddress,
+          'reapi_backend_config_path': config.reapiBackendConfigPath,
+          'reapi_instance': config.reapiInstance,
+          ...config.gClientCustomVars,
+        },
       },
-      custom_vars: {
-        'checkout_clang_coverage_tools': true,
-        'checkout_pgo_profiles': config.isBraveReleaseBuild(),
-        'download_reclient': true,
-        'reapi_address': config.reapiAddress,
-        'reapi_backend_config_path': config.reapiBackendConfigPath,
-        'reapi_instance': config.reapiInstance,
-        ...config.gClientCustomVars,
-      },
-    },
-  ]
+    ],
+    cache_dir: process.env.GIT_CACHE_PATH,
+    target_os: targetOSList,
+    target_cpu: targetArchList,
+  }
 
+  // Add brave-core as a non-managed solution to handle DEPS.
   if (!onlyChromium) {
-    items.push({
+    gClientConfig.solutions.push({
       managed: false,
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
@@ -66,16 +76,15 @@ function buildDefaultGClientConfig(
     })
   }
 
-  let out = toGClientConfigItem('solutions', items)
-
-  if (process.env.GIT_CACHE_PATH) {
-    out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)
-  }
-  if (targetOSList) {
-    out += toGClientConfigItem('target_os', targetOSList, false)
-  }
-  if (targetArchList) {
-    out += toGClientConfigItem('target_cpu', targetArchList, false)
+  // Generate the gclient config file.
+  let out = ''
+  for (const [key, value] of Object.entries(gClientConfig)) {
+    const singleLineValue = toGClientConfigItem(key, value, false)
+    if (singleLineValue.length > 80) {
+      out += toGClientConfigItem(key, value, true)
+    } else {
+      out += singleLineValue
+    }
   }
 
   util.writeFileIfModified(config.defaultGClientFile, out)
