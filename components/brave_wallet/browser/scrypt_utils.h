@@ -20,43 +20,29 @@ inline constexpr uint8_t kScryptSaltSize = 32u;
 // NaCl secretbox nonce size (24 bytes) equal to tweetnacl
 // crypto_secretbox_NONCEBYTES.
 inline constexpr uint8_t kSecretboxNonceSize = 24u;
+// NaCl secretbox key size (24 bytes) equal to tweetnacl
+// crypto_secretbox_KEYBYTES.
+inline constexpr uint8_t kScryptKeyBytes = 32u;
 
-// Result structure containing encrypted data, nonce, and salt.
-struct ScryptEncryptResult {
-  ScryptEncryptResult();
-  ~ScryptEncryptResult();
-  ScryptEncryptResult(const ScryptEncryptResult&);
-  ScryptEncryptResult& operator=(const ScryptEncryptResult&);
-  ScryptEncryptResult(ScryptEncryptResult&&);
-  ScryptEncryptResult& operator=(ScryptEncryptResult&&);
-
-  // Encrypted ciphertext without zero bytes prefix (skips BOXZEROBYTES).
-  std::vector<uint8_t> data;
-  // Nonce used for xsalsa20-poly1305 encryption.
-  std::array<uint8_t, kSecretboxNonceSize> nonce;
-  // Salt used for scrypt key derivation.
-  std::array<uint8_t, kScryptSaltSize> salt;
-};
-
-// Encrypts data using scrypt key derivation and xsalsa20-poly1305 encryption.
-// Returns a structure containing the ciphertext, nonce, and salt.
-// If salt or nonce are provided (for testing), they will be used instead of
-// generating random ones.
-std::optional<ScryptEncryptResult> ScryptEncrypt(
+// Encrypts data using xsalsa20-poly1305 encryption with the provided key.
+std::optional<std::vector<uint8_t>> ScryptEncrypt(
     base::span<const uint8_t> plaintext,
-    std::string_view password,
-    const crypto::kdf::ScryptParams& scrypt_params,
-    std::optional<base::span<const uint8_t, kScryptSaltSize>> salt =
-        std::nullopt,
-    std::optional<base::span<const uint8_t, kSecretboxNonceSize>> nonce =
-        std::nullopt);
+    base::span<const uint8_t, kScryptKeyBytes> key,
+    base::span<const uint8_t, kSecretboxNonceSize> nonce);
 
 // Decrypts data encrypted with ScryptEncrypt.
 // Returns the decrypted plaintext, or std::nullopt if decryption fails
-// (e.g., wrong password, wrong scrypt params, corrupted data).
+// (e.g., wrong key, corrupted data).
 std::optional<std::vector<uint8_t>> ScryptDecrypt(
-    const ScryptEncryptResult& encrypted,
+    base::span<const uint8_t> data,
+    base::span<const uint8_t, kSecretboxNonceSize> nonce,
+    base::span<const uint8_t, kScryptKeyBytes> key);
+
+// Derives an encryption key from a password using scrypt key derivation.
+// Returns the derived key, or std::nullopt if key derivation fails.
+std::optional<std::array<uint8_t, kScryptKeyBytes>> ScryptDeriveKey(
     std::string_view password,
+    base::span<const uint8_t, kScryptSaltSize> salt,
     const crypto::kdf::ScryptParams& scrypt_params);
 
 }  // namespace brave_wallet

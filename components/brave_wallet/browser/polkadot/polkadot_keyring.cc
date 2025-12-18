@@ -115,10 +115,10 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
 }
 
 void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
-    const std::array<uint8_t, kScryptSaltSize>& seed_bytes,
+    const std::array<uint8_t, kScryptSaltSize>& salt_bytes,
     const std::array<uint8_t, kSecretboxNonceSize>& nonce_bytes) {
   CHECK_IS_TEST();
-  rand_seed_bytes_for_testing_ = seed_bytes;
+  rand_salt_bytes_for_testing_ = salt_bytes;
   rand_nonce_bytes_for_testing_ = nonce_bytes;
 }
 
@@ -143,10 +143,30 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
       .max_memory_bytes = 64 * 1024 * 1024,  // 64 MB
   };
 
-  // Encrypt using ScryptEncrypt
-  auto encrypt_result = ScryptEncrypt(pkcs8_key, password, scrypt_params,
-                                      rand_seed_bytes_for_testing_,
-                                      rand_nonce_bytes_for_testing_);
+  std::array<uint8_t, kScryptSaltSize> salt_bytes;
+  if (rand_salt_bytes_for_testing_.has_value()) {
+    base::span(salt_bytes)
+        .copy_from_nonoverlapping(*rand_salt_bytes_for_testing_);
+  } else {
+    crypto::RandBytes(salt_bytes);
+  }
+
+  std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
+  if (rand_nonce_bytes_for_testing_.has_value()) {
+    base::span(nonce_bytes)
+        .copy_from_nonoverlapping(*rand_nonce_bytes_for_testing_);
+  } else {
+    crypto::RandBytes(base::span(nonce_bytes));
+  }
+
+  // Derive encryption key from password using scrypt.
+  auto derived_key = ScryptDeriveKey(password, salt_bytes, scrypt_params);
+  if (!derived_key.has_value()) {
+    return std::nullopt;
+  }
+
+  // Encrypt message.
+  auto encrypt_result = ScryptEncrypt(pkcs8_key, *derived_key, nonce_bytes);
   if (!encrypt_result.has_value()) {
     return std::nullopt;
   }
@@ -155,14 +175,13 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   // encrypted. scryptToU8a encodes: salt (32 bytes) + n (4 bytes LE) + r
   // (4 bytes LE) + p (4 bytes LE).
   // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/keyring/src/pair/encode.ts#L14
-  std::vector<uint8_t> encoded_bytes(encrypt_result->salt.size() + 4 * 3 +
-                                         encrypt_result->nonce.size() +
-                                         encrypt_result->data.size(),
-                                     0);
+  std::vector<uint8_t> encoded_bytes(
+      kScryptSaltSize + 4 * 3 + kSecretboxNonceSize + encrypt_result->size(),
+      0);
   auto encoded_bytes_span_writer = base::SpanWriter(base::span(encoded_bytes));
 
   // Add salt (32 bytes)
-  encoded_bytes_span_writer.Write(encrypt_result->salt);
+  encoded_bytes_span_writer.Write(salt_bytes);
 
   // Add scrypt parameters as 32-bit little-endian integers.
   encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.cost);
@@ -170,10 +189,10 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   encoded_bytes_span_writer.WriteU32LittleEndian(scrypt_params.block_size);
 
   // Add nonce.
-  encoded_bytes_span_writer.Write(encrypt_result->nonce);
+  encoded_bytes_span_writer.Write(nonce_bytes);
 
   // Add encrypted data (ciphertext from ScryptEncrypt).
-  encoded_bytes_span_writer.Write(encrypt_result->data);
+  encoded_bytes_span_writer.Write(*encrypt_result);
   CHECK_EQ(encoded_bytes_span_writer.remaining(), 0u);
 
   // Encode as base64 for the "encoded" field.

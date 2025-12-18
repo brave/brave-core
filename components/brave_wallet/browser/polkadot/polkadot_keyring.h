@@ -74,7 +74,7 @@ class PolkadotKeyring {
   base::flat_map<uint32_t, HDKeySr25519> secondary_keys_;
 
   std::optional<std::array<uint8_t, kScryptSaltSize>>
-      rand_seed_bytes_for_testing_;
+      rand_salt_bytes_for_testing_;
   std::optional<std::array<uint8_t, kSecretboxNonceSize>>
       rand_nonce_bytes_for_testing_;
 };
