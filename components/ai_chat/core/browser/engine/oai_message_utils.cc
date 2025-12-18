@@ -471,6 +471,12 @@ std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
     mojom::ContentBlockPtr content_block;
     if (topic.empty()) {
       // Suggest topics (with or without emoji based on chunk count)
+      // Single chunk: Create SuggestFocusTopicsWithEmojiContentBlock to get
+      // topics with an emoji appended to each topic in one single request.
+      // Multiple chunks: Create SuggestFocusTopicsContentBlock to get topics
+      // without emoji in multiple requests, and EngineConsumer would trigger
+      // DedupeTopics with results from all requests to get the final set of
+      // topics with an emoji appended to each topic.
       content_block =
           num_chunks == 1u
               ? mojom::ContentBlock::NewSuggestFocusTopicsWithEmojiContentBlock(
