@@ -28,12 +28,7 @@ PolkadotChainMetadata::PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept =
 PolkadotChainMetadata::~PolkadotChainMetadata() = default;
 
 PolkadotChainMetadata& PolkadotChainMetadata::operator=(
-    PolkadotChainMetadata&& rhs) noexcept {
-  if (this != &rhs) {
-    chain_metadata_ = std::move(rhs.chain_metadata_);
-  }
-  return *this;
-}
+    PolkadotChainMetadata&&) noexcept = default;
 
 std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
     std::string_view chain_name) {
