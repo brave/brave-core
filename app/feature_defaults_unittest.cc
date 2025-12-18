@@ -198,7 +198,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
+#if !BUILDFLAG(IS_ANDROID)
       &legion::kLegion,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
