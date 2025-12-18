@@ -178,11 +178,11 @@ const Config = function () {
     'repository',
     'url',
   ])
-  this.defaultGClientFile = path.join(this.rootDir, '.gclient')
-  this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
-  this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
-  this.gClientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
-  this.gClientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+  this.rootGclientFile = path.join(this.rootDir, '.gclient')
+  this.gclientFile = process.env.BRAVE_GCLIENT_FILE || this.rootGclientFile
+  this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
+  this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
@@ -935,7 +935,7 @@ Config.prototype.updateInternal = function (options) {
   }
 
   if (options.gclient_file && options.gclient_file !== 'default') {
-    this.gClientFile = options.gclient_file
+    this.gclientFile = options.gclient_file
   }
 
   if (options.channel) {
@@ -992,7 +992,7 @@ Config.prototype.updateInternal = function (options) {
   }
 
   if (options.gclient_verbose) {
-    this.gClientVerbose = options.gclient_verbose
+    this.gclientVerbose = options.gclient_verbose
   }
 
   if (options.ignore_compile_failure) {
