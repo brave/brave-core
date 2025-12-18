@@ -10,6 +10,7 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -19,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
@@ -900,6 +902,86 @@ TEST_F(OAIMessageUtilsTest,
         PageContentsMap(), history, 10000, [](std::string&) {});
 
     EXPECT_FALSE(messages);
+  }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIDedupeTopicsMessages) {
+  // Create test topics
+  std::vector<std::string> topics = {"Shopping", "News", "Entertainment",
+                                     "Technology"};
+
+  // Build messages
+  auto messages = BuildOAIDedupeTopicsMessages(topics);
+
+  // Verify structure
+  ASSERT_EQ(messages.size(), 1u);
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+
+  // Verify topics JSON
+  VerifyReduceFocusTopicsBlock(
+      FROM_HERE, messages[0].content[0],
+      "[\"Shopping\",\"News\",\"Entertainment\",\"Technology\"]");
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildChunkedTabFocusMessages_SuggestTopics_SingleChunk) {
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 1u);
+
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs);
+
+  // Should have 1 chunk with emoji variant
+  ASSERT_EQ(chunked_messages.size(), 1u);
+  ASSERT_EQ(chunked_messages[0].size(), 1u);
+  EXPECT_EQ(chunked_messages[0][0].role, "user");
+  ASSERT_EQ(chunked_messages[0][0].content.size(), 1u);
+  VerifySuggestFocusTopicsWithEmojiBlock(FROM_HERE,
+                                         chunked_messages[0][0].content[0],
+                                         expected_chunked_tabs_json[0]);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildChunkedTabFocusMessages_SuggestTopics_MultipleChunks) {
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize * 2, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 2u);
+
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs);
+
+  // Should have 2 chunks without emoji
+  ASSERT_EQ(chunked_messages.size(), 2u);
+
+  // Verify both chunks use SuggestFocusTopicsBlock (no emoji variant)
+  for (size_t i = 0; i < chunked_messages.size(); ++i) {
+    ASSERT_EQ(chunked_messages[i].size(), 1u);
+    EXPECT_EQ(chunked_messages[i][0].role, "user");
+    ASSERT_EQ(chunked_messages[i][0].content.size(), 1u);
+    VerifySuggestFocusTopicsBlock(FROM_HERE, chunked_messages[i][0].content[0],
+                                  expected_chunked_tabs_json[i]);
+  }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildChunkedTabFocusMessages_WithTopic) {
+  std::string topic = "Shopping";
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize * 2 - 5, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 2u);
+
+  // Test GetFocusTabs (non-empty topic)
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+
+  // Should have 2 chunks
+  ASSERT_EQ(chunked_messages.size(), 2u);
+
+  // Verify both chunks use FilterTabsContentBlock with correct topic and tabs
+  for (size_t i = 0; i < chunked_messages.size(); ++i) {
+    ASSERT_EQ(chunked_messages[i].size(), 1u);
+    EXPECT_EQ(chunked_messages[i][0].role, "user");
+    ASSERT_EQ(chunked_messages[i][0].content.size(), 1u);
+    VerifyFilterTabsBlock(FROM_HERE, chunked_messages[i][0].content[0],
+                          expected_chunked_tabs_json[i], topic);
   }
 }
 

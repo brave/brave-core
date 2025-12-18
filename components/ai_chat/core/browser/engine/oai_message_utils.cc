@@ -6,7 +6,10 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
 #include "base/containers/adapters.h"
+#include "base/containers/span.h"
+#include "base/json/json_writer.h"
 #include "base/strings/escape.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/pref_service.h"
@@ -14,6 +17,17 @@
 namespace ai_chat {
 
 namespace {
+
+std::string SerializeTabsToJson(base::span<const Tab> tabs) {
+  base::Value::List tab_value_list;
+  for (const auto& tab : tabs) {
+    tab_value_list.Append(base::Value::Dict()
+                              .Set("id", tab.id)
+                              .Set("title", tab.title)
+                              .Set("url", tab.origin.Serialize()));
+  }
+  return base::WriteJson(tab_value_list).value_or("");
+}
 
 mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
     const PageContent& content,
@@ -413,6 +427,79 @@ OAIMessage BuildOAISeedMessage(const std::string& text) {
   message.content.push_back(mojom::ContentBlock::NewTextContentBlock(
       mojom::TextContentBlock::New(text)));
   return message;
+}
+
+std::vector<OAIMessage> BuildOAIDedupeTopicsMessages(
+    const std::vector<std::string>& topics) {
+  // Serialize topics to JSON array
+  base::Value::List topic_list;
+  for (const auto& topic : topics) {
+    topic_list.Append(topic);
+  }
+
+  std::string topics_json = base::WriteJson(topic_list).value_or("");
+
+  // Create ReduceFocusTopicsContentBlock
+  auto content_block = mojom::ContentBlock::NewReduceFocusTopicsContentBlock(
+      mojom::ReduceFocusTopicsContentBlock::New(topics_json));
+
+  // Build and return message
+  OAIMessage message;
+  message.role = "user";
+  message.content.push_back(std::move(content_block));
+
+  std::vector<OAIMessage> messages;
+  messages.push_back(std::move(message));
+  return messages;
+}
+
+std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
+    const std::vector<Tab>& tabs,
+    const std::string& topic) {
+  std::vector<std::vector<OAIMessage>> chunked_messages;
+  size_t num_chunks = (tabs.size() + kTabListChunkSize - 1) / kTabListChunkSize;
+
+  for (size_t chunk = 0; chunk < num_chunks; ++chunk) {
+    size_t start = chunk * kTabListChunkSize;
+    size_t end = std::min((chunk + 1) * kTabListChunkSize, tabs.size());
+    base::span<const Tab> chunk_tabs =
+        base::span(tabs).subspan(start, end - start);
+
+    std::string tabs_json = SerializeTabsToJson(chunk_tabs);
+
+    // Create appropriate content block
+    mojom::ContentBlockPtr content_block;
+    if (topic.empty()) {
+      // Suggest topics (with or without emoji based on chunk count)
+      // Single chunk: Create SuggestFocusTopicsWithEmojiContentBlock to get
+      // topics with an emoji appended to each topic in one single request.
+      // Multiple chunks: Create SuggestFocusTopicsContentBlock to get topics
+      // without emoji in multiple requests, and EngineConsumer would trigger
+      // DedupeTopics with results from all requests to get the final set of
+      // topics with an emoji appended to each topic.
+      content_block =
+          num_chunks == 1u
+              ? mojom::ContentBlock::NewSuggestFocusTopicsWithEmojiContentBlock(
+                    mojom::SuggestFocusTopicsWithEmojiContentBlock::New(
+                        tabs_json))
+              : mojom::ContentBlock::NewSuggestFocusTopicsContentBlock(
+                    mojom::SuggestFocusTopicsContentBlock::New(tabs_json));
+    } else {
+      // Filter tabs by topic
+      content_block = mojom::ContentBlock::NewFilterTabsContentBlock(
+          mojom::FilterTabsContentBlock::New(tabs_json, topic));
+    }
+
+    OAIMessage message;
+    message.role = "user";
+    message.content.push_back(std::move(content_block));
+
+    std::vector<OAIMessage> messages;
+    messages.push_back(std::move(message));
+    chunked_messages.push_back(std::move(messages));
+  }
+
+  return chunked_messages;
 }
 
 }  // namespace ai_chat

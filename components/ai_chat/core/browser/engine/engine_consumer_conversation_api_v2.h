@@ -106,6 +106,16 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
+  // Tab organization helper methods
+  void MergeSuggestTopicsResults(GetSuggestedTopicsCallback callback,
+                                 std::vector<GenerationResult> results);
+
+  // Given a list of results from GetSuggestedTopics, send another request to
+  // the server to dedupe the topics.
+  void DedupeTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+      GetSuggestedTopicsCallback callback);
+
   std::unique_ptr<ConversationAPIV2Client> api_ = nullptr;
 
   base::WeakPtrFactory<EngineConsumerConversationAPIV2> weak_ptr_factory_{this};

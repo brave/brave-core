@@ -18,6 +18,8 @@
 
 namespace ai_chat {
 
+struct Tab;
+
 // Returns the history with a modified server reply in edits.
 std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply();
 
@@ -69,6 +71,34 @@ void VerifyChangeToneBlock(const base::Location& location,
 void VerifySimpleRequestBlock(const base::Location& location,
                               const mojom::ContentBlockPtr& block,
                               mojom::SimpleRequestType expected_type);
+
+void VerifyReduceFocusTopicsBlock(const base::Location& location,
+                                  const mojom::ContentBlockPtr& block,
+                                  std::string_view expected_topics_json);
+
+void VerifySuggestFocusTopicsWithEmojiBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    std::string_view expected_tabs_json);
+
+void VerifySuggestFocusTopicsBlock(const base::Location& location,
+                                   const mojom::ContentBlockPtr& block,
+                                   std::string_view expected_tabs_json);
+
+void VerifyFilterTabsBlock(const base::Location& location,
+                           const mojom::ContentBlockPtr& block,
+                           std::string_view expected_tabs_json,
+                           std::string_view expected_topic);
+
+// Returns mock tabs and their JSON string representation.
+// - escape_for_json_string=true: Returns escaped JSON (e.g., {\"id\":\"0\"})
+// - escape_for_json_string=false: Returns normal JSON (e.g., {"id":"0"})
+// We need to support escaped JSON too because when we serialize the final API
+// client request, tabs JSON is embedded as a string inside the request body
+// JSON.
+std::pair<std::vector<Tab>, std::vector<std::string>>
+GetMockTabsAndExpectedTabsJsonString(size_t num_tabs,
+                                     bool escape_for_json_string);
 
 }  // namespace ai_chat
 
