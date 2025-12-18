@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h"
 
 #include <optional>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -108,7 +109,8 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
       {BuildFetchPaymentTokenUrlPath(confirmation->transaction_id),
-       {{net::HTTP_NOT_FOUND, net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
+       {{net::HTTP_NOT_FOUND,
+         std::string(net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
@@ -144,7 +146,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
       {BuildFetchPaymentTokenUrlPath(confirmation->transaction_id),
        {{net::HTTP_BAD_REQUEST,
-         net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
+         std::string(net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
@@ -215,7 +217,8 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
       {BuildFetchPaymentTokenUrlPath(confirmation->transaction_id),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR)}}}};
+         std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 
 #include <memory>
+#include <string>
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
@@ -150,7 +151,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND))},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
