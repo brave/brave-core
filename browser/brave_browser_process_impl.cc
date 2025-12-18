@@ -60,6 +60,11 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+#include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
+#include "chrome/browser/extensions/chrome_extensions_browser_client.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
@@ -164,6 +169,19 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
+
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+  // ChromeComponentExtensionResourceManager's Data needs to be LazyInit'ed on
+  // the UI thread (due to pdf_extension_util::AddStrings calling
+  // g_browser_process->GetApplicationLocale() that has a DCHECK to that
+  // regard). However, it can't be done in the ExtensionBrowserClient::Init
+  // because ApplicationLocaleStorage hasn't been initialized yet and it's
+  // needed by pdf_extension_util::AddStrings. ApplicationLocaleStorage gets
+  // initialized at the very end of BrowserProcessImpl::Init.
+  std::ignore =
+      extensions_browser_client_->GetComponentExtensionResourceManager()
+          ->GetTemplateReplacementsForExtension("");
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
