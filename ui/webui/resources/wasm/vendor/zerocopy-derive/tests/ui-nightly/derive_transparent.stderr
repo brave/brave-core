@@ -2,8 +2,13 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::TryFromBytes` is not satis
   --> tests/ui-nightly/derive_transparent.rs:34:23
    |
 34 | util_assert_impl_all!(TransparentStruct<NotZerocopy>: TryFromBytes);
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::TryFromBytes` is not implemented for `NotZerocopy`
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::TryFromBytes` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(TryFromBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::TryFromBytes`:
              ()
@@ -31,8 +36,13 @@ error[E0277]: the trait bound `NotZerocopy: FromZeros` is not satisfied
   --> tests/ui-nightly/derive_transparent.rs:35:23
    |
 35 | util_assert_impl_all!(TransparentStruct<NotZerocopy>: FromZeros);
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `FromZeros` is not implemented for `NotZerocopy`
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `FromZeros` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(FromZeros)]` to `NotZerocopy`
    = help: the following other types implement trait `FromZeros`:
              ()
@@ -60,8 +70,13 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::FromBytes` is not satisfie
   --> tests/ui-nightly/derive_transparent.rs:36:23
    |
 36 | util_assert_impl_all!(TransparentStruct<NotZerocopy>: FromBytes);
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::FromBytes` is not implemented for `NotZerocopy`
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::FromBytes` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(FromBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::FromBytes`:
              ()
@@ -89,8 +104,13 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::IntoBytes` is not satisfie
   --> tests/ui-nightly/derive_transparent.rs:37:23
    |
 37 | util_assert_impl_all!(TransparentStruct<NotZerocopy>: IntoBytes);
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::IntoBytes` is not implemented for `NotZerocopy`
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::IntoBytes` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(IntoBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::IntoBytes`:
              ()
@@ -118,8 +138,13 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::Unaligned` is not satisfie
   --> tests/ui-nightly/derive_transparent.rs:38:23
    |
 38 | util_assert_impl_all!(TransparentStruct<NotZerocopy>: Unaligned);
-   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::Unaligned` is not implemented for `NotZerocopy`
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::Unaligned` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(Unaligned)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::Unaligned`:
              ()

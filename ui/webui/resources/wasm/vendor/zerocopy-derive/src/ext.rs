@@ -11,11 +11,11 @@ use quote::ToTokens;
 use syn::{Data, DataEnum, DataStruct, DataUnion, Field, Ident, Index, Type, Visibility};
 
 pub(crate) trait DataExt {
-    /// Extracts the names and types of all fields. For enums, extracts the names
-    /// and types of fields from each variant. For tuple structs, the names are
-    /// the indices used to index into the struct (ie, `0`, `1`, etc).
+    /// Extracts the names and types of all fields. For enums, extracts the
+    /// names and types of fields from each variant. For tuple structs, the
+    /// names are the indices used to index into the struct (ie, `0`, `1`, etc).
     ///
-    /// TODO: Extracting field names for enums doesn't really make sense. Types
+    /// FIXME: Extracting field names for enums doesn't really make sense. Types
     /// makes sense because we don't care about where they live - we just care
     /// about transitive ownership. But for field names, we'd only use them when
     /// generating is_bit_valid, which cares about where they live.

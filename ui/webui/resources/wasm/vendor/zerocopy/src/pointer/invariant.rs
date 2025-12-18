@@ -145,7 +145,7 @@ unsafe impl Validity for Uninit {}
 /// Formally: uninitialized bytes may only be present in `Ptr<T>`'s referent
 /// where they are guaranteed to be present in `T`. This is a dynamic property:
 /// if, at a particular byte offset, a valid enum discriminant is set, the
-/// subsequent bytes may only have uninitialized bytes as specificed by the
+/// subsequent bytes may only have uninitialized bytes as specified by the
 /// corresponding enum.
 ///
 /// Formally, given `len = size_of_val_raw(ptr)`, at every byte offset, `b`, in
@@ -201,7 +201,7 @@ unsafe impl<ST: ?Sized, DT: ?Sized> CastableFrom<ST, Initialized, Initialized> f
 /// [`Ptr`](crate::Ptr) referents that permit unsynchronized read operations.
 ///
 /// `T: Read<A, R>` implies that a pointer to `T` with aliasing `A` permits
-/// unsynchronized read oeprations. This can be because `A` is [`Exclusive`] or
+/// unsynchronized read operations. This can be because `A` is [`Exclusive`] or
 /// because `T` does not permit interior mutation.
 ///
 /// # Safety

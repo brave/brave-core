@@ -1,0 +1,6 @@
+Name: serde
+URL: https://crates.io/crates/serde
+Version: 1.0
+License: MIT OR Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/serde/LICENSE-MIT
+Description: A framework for serializing and deserializing Rust data structures efficiently and generically.

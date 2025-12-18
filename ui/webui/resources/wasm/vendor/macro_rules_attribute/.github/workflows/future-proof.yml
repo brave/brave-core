@@ -1,0 +1,58 @@
+# Templated by `cargo-generate` using https://github.com/danielhenrymantilla/proc-macro-template
+name: Cron CI
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 8 * * 1,5'
+
+jobs:
+  # == TEST == #
+  test-no-ui:
+    name: (Check & Build &) Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        rust-toolchains:
+          - 1.78.0
+          - stable
+          - beta
+          - nightly
+        cargo-locked: ["--locked", ""]
+    steps:
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: default
+          override: true
+          toolchain: ${{ matrix.rust-toolchains }}
+
+      - name: Clone repo
+        uses: actions/checkout@v2
+
+      - name: Update `Cargo.lock`
+        if: matrix.cargo-locked != '--locked'
+        run: cargo update -v
+
+      - name: Cargo test
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTDOCFLAGS: '-Zcrate-attr=feature(macro_attributes_in_derive_output)'
+          RUSTFLAGS: '-Zcrate-attr=feature(macro_attributes_in_derive_output)'
+          RUSTC_BOOTSTRAP: '1'
+        with:
+          command: test
+          args: ${{ matrix.cargo-locked }}
+
+      # - name: Cargo test (embed `README.md` + UI)
+      #   if: matrix.rust-toolchains != '1.78.0'
+      #   uses: actions-rs/cargo@v1
+      #   with:
+      #     command: test-ui
