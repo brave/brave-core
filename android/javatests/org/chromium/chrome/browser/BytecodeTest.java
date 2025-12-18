@@ -44,6 +44,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -1511,7 +1512,7 @@ public class BytecodeTest {
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
