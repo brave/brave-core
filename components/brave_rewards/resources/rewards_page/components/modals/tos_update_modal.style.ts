@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { color } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
@@ -18,7 +19,11 @@ export const style = scoped.css`
   }
 
   button {
-    text-decoration: underline;
     cursor: pointer;
+    color: ${color.text.interactive};
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `
