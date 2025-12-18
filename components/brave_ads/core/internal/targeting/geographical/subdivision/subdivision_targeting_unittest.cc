@@ -239,8 +239,8 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))},
         {net::HTTP_OK,
          test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
