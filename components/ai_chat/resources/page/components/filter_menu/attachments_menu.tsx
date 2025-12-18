@@ -11,7 +11,6 @@ import { useExtractedQuery, matches } from './query'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import usePromise from '$web-common/usePromise'
 import { FuzzyFinder } from './fuzzy_finder'
 import { makeEdit, stringifyContent } from '../input_box/editable_content'
 import Icon from '@brave/leo/react/icon'
@@ -67,12 +66,12 @@ export default function TabsMenu() {
     (attachment: Attachment) => {
       setIsOpen(false)
       if ('contentId' in attachment) {
-        aiChat.uiHandler?.associateTab(
+        aiChat.api.actions.uiHandler.associateTab(
           attachment,
           conversation.conversationUuid!,
         )
       } else {
-        aiChat.uiHandler?.associateUrlContent(
+        aiChat.api.actions.uiHandler.associateUrlContent(
           attachment.url,
           attachment.title,
           conversation.conversationUuid!,
@@ -95,7 +94,7 @@ export default function TabsMenu() {
     [aiChat.tabs, conversation.associatedContentInfo],
   )
 
-  const { result: bookmarks = [] } = usePromise(aiChat.getBookmarks, [])
+  const bookmarks = aiChat.api.useGetBookmarksData()
 
   // Filter out content that is already associated with the conversation.
   const unselectedBookmarks = React.useMemo(
@@ -109,10 +108,7 @@ export default function TabsMenu() {
     [bookmarks, conversation.associatedContentInfo],
   )
 
-  const { result: history = [] } = usePromise(
-    () => aiChat.getHistory(query ?? ''),
-    [query],
-  )
+  const history = aiChat.api.useGetHistoryData(query ?? '', null)
 
   // Filter out content that is already associated with the conversation.
   const unselectedHistory = React.useMemo(

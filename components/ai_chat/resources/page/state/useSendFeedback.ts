@@ -5,8 +5,9 @@
 
 import * as React from 'react'
 import { showAlert } from '@brave/leo/react/alertCenter'
-import * as Mojom from '../../common/mojom'
 import { getLocale } from '$web-common/locale'
+import { ConversationAPI } from '../api/conversation_api'
+import { useAIChat } from './ai_chat_context'
 
 /**
  * State needed for UI to embed a feedback form
@@ -44,9 +45,10 @@ export const defaultSendFeedbackState: SendFeedbackState = {
  * be implemented in the parent frame UI.
  */
 export default function useSendFeedback(
-  conversationHandler: Mojom.ConversationHandlerRemote,
-  conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter,
+  api: ConversationAPI,
 ): SendFeedbackState {
+  const aiChat = useAIChat()
+
   const feedbackId = React.useRef<string | null>(null)
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] =
     React.useState(false)
@@ -55,6 +57,10 @@ export default function useSendFeedback(
     turnUuid: string
   }>()
 
+  // Only allows a rating to be sent once the user has accepted
+  // the privacy dialog. When called a second time, it will
+  // send the rating. To cancel, set handleCloseRateMessagePrivacyModal.
+  // Also further allows a feedback form after a negative rating.
   const handleRateMessage = React.useCallback(
     async (turnUuid: string, isLiked: boolean) => {
       // Reset feedback form
@@ -69,7 +75,7 @@ export default function useSendFeedback(
       }
 
       // Rate the message.
-      const response = await conversationHandler?.rateMessage(isLiked, turnUuid)
+      const response = await api.actions.rateMessage(isLiked, turnUuid)
       if (!response.ratingId) {
         showAlert({
           type: 'error',
@@ -106,20 +112,11 @@ export default function useSendFeedback(
       }
       setRatingTurnUuid(undefined)
     },
-    [conversationHandler, ratingTurnUuid],
+    [api, ratingTurnUuid],
   )
 
   // Listen to ratings requests from the child frame
-  React.useEffect(() => {
-    const listenerId =
-      conversationEntriesFrameObserver.rateMessage.addListener(
-        handleRateMessage,
-      )
-
-    return () => {
-      conversationEntriesFrameObserver.removeListener(listenerId)
-    }
-  }, [conversationEntriesFrameObserver, handleRateMessage])
+  aiChat.api.useRateMessage(handleRateMessage, [])
 
   function handleFeedbackFormCancel() {
     setIsFeedbackFormVisible(false)
@@ -135,7 +132,7 @@ export default function useSendFeedback(
     shouldSendUrl: boolean,
   ) {
     if (feedbackId.current) {
-      const response = await conversationHandler?.sendFeedback(
+      const response = await api.actions.sendFeedback(
         selectedCategory,
         feedbackText,
         feedbackId.current,

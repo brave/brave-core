@@ -17,10 +17,6 @@ interface ElementProps {
 export default function ErrorInvalidAPIKey(props: ElementProps) {
   const aiChatContext = useAIChat()
 
-  const handleConfigureClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
-  }
-
   return (
     <div className={styles.alert}>
       <Alert type='warning'>
@@ -28,7 +24,7 @@ export default function ErrorInvalidAPIKey(props: ElementProps) {
         <Button
           slot='actions'
           kind='filled'
-          onClick={handleConfigureClick}
+          onClick={aiChatContext.api.actions.uiHandler.openAIChatSettings}
         >
           {getLocale(S.CHAT_UI_MODIFY_CONFIGURATION_LABEL)}
         </Button>

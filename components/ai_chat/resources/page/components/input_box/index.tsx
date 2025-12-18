@@ -73,9 +73,10 @@ type Props = Pick<
     | 'isAIChatAgentProfile'
     | 'hasAcceptedAgreement'
     | 'getPluralString'
+    | 'processImageFile'
     | 'openAIChatAgentProfile'
     | 'skills'
-    | 'uiHandler'
+    | 'openURL'
   >
 
 export interface InputBoxProps {
@@ -161,7 +162,9 @@ function InputBox(props: InputBoxProps) {
 
     try {
       const uploadedFiles = await Promise.all(
-        files.map((file) => convertFileToUploadedFile(file)),
+        files.map((file) =>
+          convertFileToUploadedFile(file, props.context.processImageFile),
+        ),
       )
       props.context.attachImages(uploadedFiles)
     } catch (error) {
@@ -220,8 +223,8 @@ function InputBox(props: InputBoxProps) {
   const handleLearnMoreClicked = React.useCallback(() => {
     const mojomUrl = new Url()
     mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
-    props.context.uiHandler?.openURL(mojomUrl)
-  }, [props.context.uiHandler])
+    props.context.openURL(mojomUrl)
+  }, [props.context.openURL])
 
   return (
     <form

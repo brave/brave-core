@@ -100,7 +100,8 @@ function Main() {
 
   const showAttachments = !!conversationContext.attachmentsDialog
 
-  const showTemporaryChatInfo = conversationContext.isTemporaryChat
+  const showTemporaryChatInfo =
+    conversationContext.api.useGetState().data.temporary
 
   let currentErrorElement = null
 
@@ -164,20 +165,26 @@ function Main() {
     [conversationContext.isGenerating],
   )
 
-  const handleConversationEntriesHeightChanged = () => {
-    if (
-      !scrollElement.current
-      || !scrollIsAtBottom.current
-      || !scrollAnchor.current
-    ) {
-      return
-    }
-    scrollElement.current.scrollTop =
-      scrollAnchor.current.offsetTop
-      + scrollAnchor.current?.offsetHeight
-      - scrollElement.current.clientHeight
-      + SCROLL_BOTTOM_PADDING
-  }
+  // When iframe content height changes, and we're generating, that means new content
+  // has been added, so scroll to the bottom if we have that requirement.
+  aiChatContext.api.useChildHeightChanged(
+    (entriesFrameHeight) => {
+      if (
+        !scrollElement.current
+        || !scrollIsAtBottom.current
+        || !scrollAnchor.current
+      ) {
+        return
+      }
+
+      scrollElement.current.scrollTop =
+        scrollAnchor.current.offsetTop
+        + scrollAnchor.current?.offsetHeight
+        - scrollElement.current.clientHeight
+        + SCROLL_BOTTOM_PADDING
+    },
+    [conversationContext.isGenerating],
+  )
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
@@ -209,7 +216,7 @@ function Main() {
       && !conversationContext.isGenerating
       && conversationContext.conversationHistory.length === 0
     ) {
-      aiChatContext.uiHandler?.showSoftKeyboard()
+      aiChatContext.api.actions.uiHandler.showSoftKeyboard()
       return true
     }
     return false
@@ -345,7 +352,6 @@ function Main() {
                 {!!conversationContext.conversationUuid && (
                   <aiChatContext.conversationEntriesComponent
                     onIsContentReady={setIsContentReady}
-                    onHeightChanged={handleConversationEntriesHeightChanged}
                   />
                 )}
               </div>

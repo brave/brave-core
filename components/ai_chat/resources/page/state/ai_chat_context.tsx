@@ -4,143 +4,177 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import useAPIState from '../../common/useAPIState'
-import * as Mojom from '../../common/mojom'
-import getAPI, * as AIChat from '../api'
+import generateReactContextForAPI from '$web-common/api/react_api'
+import { loadTimeData } from '$web-common/loadTimeData'
 import useMediaQuery from '$web-common/useMediaQuery'
+import * as Mojom from '../../common/mojom'
+import { AIChatAPI } from '../api'
 
 export interface ConversationEntriesProps {
   onIsContentReady: (isContentReady: boolean) => void
-  onHeightChanged: () => void
 }
 
 type AIChatContextProps = {
+  api: AIChatAPI['api']
   conversationEntriesComponent: (
     props: ConversationEntriesProps,
   ) => React.ReactElement
 }
 
-type AIChatContextInternal = AIChatContextProps & {
-  initialized: boolean
-  goPremium: () => void
-  managePremium: () => void
-  handleAgreeClick: () => void
-  enableStoragePref: () => void
-  dismissStorageNotice: () => void
-  dismissPremiumPrompt: () => void
-  userRefreshPremiumSession: () => void
-  openAIChatAgentProfile: () => void
-  getPluralString: (key: string, count: number) => Promise<string>
-  uiHandler?: Mojom.AIChatUIHandlerRemote
-  service?: Mojom.ServiceRemote
-
-  editingConversationId: string | null
-  setEditingConversationId: (uuid: string | null) => void
-  deletingConversationId: string | null
-  setDeletingConversationId: (uuid: string | null) => void
-  skillDialog: Mojom.Skill | null
-  setSkillDialog: (skill: Mojom.Skill | null) => void
-
-  showSidebar: boolean
-  toggleSidebar: () => void
-
-  getBookmarks: () => Promise<Mojom.Bookmark[]>
-  getHistory: (search?: string) => Promise<Mojom.HistoryEntry[]>
-}
-
-export type AIChatContext = AIChat.State & AIChatContextInternal
-
-export const defaultContext: AIChatContext = {
-  ...AIChat.defaultUIState,
-  initialized: false,
-  getPluralString: async () => '',
-  goPremium: () => {},
-  managePremium: () => {},
-  handleAgreeClick: () => {},
-  enableStoragePref: () => {},
-  dismissStorageNotice: () => {},
-  dismissPremiumPrompt: () => {},
-  userRefreshPremiumSession: () => {},
-  openAIChatAgentProfile: () => {},
-
-  editingConversationId: null,
-  setEditingConversationId: () => {},
-  deletingConversationId: null,
-  setDeletingConversationId: () => {},
-  skillDialog: null,
-  setSkillDialog: () => {},
-
-  showSidebar: false,
-  toggleSidebar: () => {},
-
-  conversationEntriesComponent: () => <></>,
-
-  async getBookmarks() {
-    return []
-  },
-  async getHistory() {
-    return []
-  },
-}
-
-export const AIChatReactContext =
-  React.createContext<AIChatContext>(defaultContext)
-
 export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
 
-export function AIChatContextProvider(
-  props: React.PropsWithChildren<AIChatContextProps>,
-) {
-  const api = getAPI()
-  const context = useAPIState(api, defaultContext)
+export default function useProvideAIChatContext(props: AIChatContextProps) {
+  // This hook should only have any state or anything
+  // worth memoizing across the app.
+  // Anything that changes will cause the entire tree underneath
+  // to re-render.
+  const { api } = props
+
   const [editingConversationId, setEditingConversationId] = React.useState<
     string | null
   >(null)
   const [deletingConversationId, setDeletingConversationId] = React.useState<
     string | null
   >(null)
-  const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
+  const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
 
-  const store: AIChatContext = {
-    ...context,
-    goPremium: () => api.uiHandler.goPremium(),
-    getPluralString: (key, count) =>
-      api.uiHandler.getPluralString(key, count).then((r) => r.pluralString),
-    managePremium: () => api.uiHandler.managePremium(),
-    dismissStorageNotice: () => api.service.dismissStorageNotice(),
-    enableStoragePref: () => api.service.enableStoragePref(),
-    dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
-    userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
-    handleAgreeClick: () => api.service.markAgreementAccepted(),
-    openAIChatAgentProfile: () => api.uiHandler.openAIChatAgentProfile(),
-    uiHandler: api.uiHandler,
-    service: api.service,
+  const { getConversationsData, isPlaceholderData: isConversationsLoading } =
+    api.useGetConversations()
+
+  const [defaultTabContentId, setDefaultTabContentId] = React.useState<number>()
+
+  api.useOnNewDefaultConversation((contentId) => {
+    setDefaultTabContentId(contentId)
+  })
+
+  const store = {
+    api: props.api,
+    initialized:
+      api.isStandalone.current !== undefined && !isConversationsLoading,
+    isMobile: loadTimeData.getBoolean('isMobile'),
+    isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+    isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
+      'isAIChatAgentProfileFeatureEnabled',
+    ),
+    isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
+
+    // TODO(petemill): consumers should consume directly from
+    // api's hooks for better performance, so that every component
+    // is not re-rendered when the state of every endpoint changes.
+
+    /**
+     * @deprecated use api.useTabs() instead
+     */
+    tabs: api.useTabs().data!,
+
+    /**
+     * @deprecated use api.useSkills() instead
+     */
+    skills: api.useGetSkills().data!,
+
+    /**
+     * @deprecated use api.useState() instead
+     */
+    ...api.useState().data!,
+
+    /**
+     * @deprecated use api.useGetPremiumStatus() instead
+     */
+    ...api.useGetPremiumStatus().data!,
+
+    /**
+     * @deprecated use api.useGetPremiumStatus() instead
+     */
+    actionList: api.useGetActionMenuList().data,
+
+    isStandalone: api.useIsStandalone().data,
+
+    /**
+     * @deprecated use api.useGetConversations() instead
+     */
+    conversations: getConversationsData,
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    goPremium: () => api.actions.uiHandler.goPremium(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    managePremium: () => api.actions.uiHandler.managePremium(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    dismissStorageNotice: () => api.actions.service.dismissStorageNotice(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    enableStoragePref: () => api.actions.service.enableStoragePref(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    dismissPremiumPrompt: () => api.actions.service.dismissPremiumPrompt(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    userRefreshPremiumSession: () =>
+      api.actions.uiHandler.refreshPremiumSession(),
+
+    /**
+     * @deprecated use api.[action] directly instead
+     */
+    handleAgreeClick: () => api.actions.service.markAgreementAccepted(),
+
+    /**
+     *
+     * @deprecated use api.endpoints.useGetPluralString directly instead
+     */
+    getPluralString(key: string, amount: number) {
+      return api.endpoints.getPluralString.fetch(key, amount)
+    },
+
+    // Note: we might want to show progress during image processing,
+    // and we can do that via monitoring the mutation in the provided hook.
+    processImageFile: api.endpoints.processImageFile.mutate,
+
+    /**
+     * @deprecated use api.actions.uiHandler.openAIChatAgentProfile directly instead
+     */
+    openAIChatAgentProfile: () =>
+      api.actions.uiHandler.openAIChatAgentProfile(),
+
+    /**
+     * @deprecated use api.actions.uiHandler.openURL directly instead
+     */
+    openURL: api.actions.uiHandler.openURL,
+
+    defaultTabContentId,
     editingConversationId,
     setEditingConversationId,
     deletingConversationId,
     setDeletingConversationId,
-    skillDialog,
-    setSkillDialog,
     showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
+    skillDialog,
+    setSkillDialog,
     conversationEntriesComponent: props.conversationEntriesComponent,
-    getBookmarks: () =>
-      api.bookmarksService.getBookmarks().then((r) => r.bookmarks),
-    getHistory: (query: string | null = null) =>
-      api.historyService.getHistory(query, null).then((r) => r.history),
   }
 
-  return (
-    <AIChatReactContext.Provider value={store}>
-      {props.children}
-    </AIChatReactContext.Provider>
-  )
+  return store
 }
 
-export function useAIChat() {
-  return React.useContext(AIChatReactContext)
-}
+export type AIChatContext = ReturnType<typeof useProvideAIChatContext>
+
+export const { useAPI: useAIChat, Provider: AIChatProvider } =
+  generateReactContextForAPI<AIChatContextProps, AIChatContext>(
+    useProvideAIChatContext,
+  )

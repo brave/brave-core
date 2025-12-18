@@ -65,7 +65,7 @@ export default function ModelIntro() {
                       <button
                         key={content}
                         onClick={() =>
-                          aiChatContext.uiHandler?.openModelSupportUrl()
+                          aiChatContext.api.actions.uiHandler.openModelSupportUrl()
                         }
                       >
                         {content}

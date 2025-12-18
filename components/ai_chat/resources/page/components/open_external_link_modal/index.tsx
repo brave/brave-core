@@ -26,7 +26,7 @@ export default function OpenExternalLinkModal() {
       conversationContext.setIgnoreExternalLinkWarning()
     }
     if (conversationContext.generatedUrlToBeOpened) {
-      aiChatContext.uiHandler?.openURL(
+      aiChatContext.api.actions.uiHandler.openURL(
         conversationContext.generatedUrlToBeOpened,
       )
     }
@@ -36,7 +36,7 @@ export default function OpenExternalLinkModal() {
     conversationContext.generatedUrlToBeOpened,
     conversationContext.setIgnoreExternalLinkWarning,
     conversationContext.setGeneratedUrlToBeOpened,
-    aiChatContext.uiHandler,
+    aiChatContext.api.actions.uiHandler.openURL,
   ])
 
   return (

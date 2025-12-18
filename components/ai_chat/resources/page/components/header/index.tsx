@@ -7,7 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { Conversation } from '../../../common/mojom'
-import getAPI from '../../api'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
 } from '../feature_button_menu'
@@ -126,8 +125,8 @@ export const ConversationHeader = React.forwardRef(function (
                 aria-label={openFullPageButtonLabel}
                 title={openFullPageButtonLabel}
                 onClick={() =>
-                  getAPI().uiHandler.openConversationFullPage(
-                    conversationContext.conversationUuid!,
+                  aiChatContext.api.actions.uiHandler.openConversationFullPage(
+                    conversationContext.conversationUuid,
                   )
                 }
               >
@@ -142,7 +141,7 @@ export const ConversationHeader = React.forwardRef(function (
                 aria-label={closeButtonLabel}
                 title={closeButtonLabel}
                 className={styles.closeButton}
-                onClick={() => getAPI().uiHandler.closeUI()}
+                onClick={() => aiChatContext.api.actions.uiHandler.closeUI()}
               >
                 <Icon name='close' />
               </Button>
