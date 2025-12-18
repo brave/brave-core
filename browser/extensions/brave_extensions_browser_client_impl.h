@@ -18,8 +18,6 @@ class BraveExtensionsBrowserClientImpl : public ChromeExtensionsBrowserClient {
   BraveExtensionsBrowserClientImpl& operator=(
       const BraveExtensionsBrowserClientImpl&) = delete;
   ~BraveExtensionsBrowserClientImpl() override = default;
-
-  void Init() override;
 };
 
 }  // namespace extensions
