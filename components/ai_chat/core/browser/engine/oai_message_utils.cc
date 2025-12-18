@@ -11,8 +11,10 @@
 #include "base/strings/escape.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
 
@@ -321,7 +323,7 @@ std::vector<OAIMessage> BuildOAIMessages(
           mojom::TextContentBlock::New(skill_definition)));
     }
 
-    // Add tool calls to the main event
+    // Add tool calls to assistant message
     if (message->character_type == mojom::CharacterType::ASSISTANT &&
         message->events.has_value() && !message->events->empty()) {
       for (size_t event_index = 0; event_index < message->events->size();
@@ -333,7 +335,7 @@ std::vector<OAIMessage> BuildOAIMessages(
 
         const auto& tool_event = message_event->get_tool_use_event();
         if (tool_event->output.has_value()) {
-          event.tool_calls.emplace_back(tool_event->Clone());
+          oai_message.tool_calls.push_back(tool_event->Clone());
         }
       }
     }
@@ -350,7 +352,10 @@ std::vector<OAIMessage> BuildOAIMessages(
               EngineConsumer::GetPromptForEntry(message))));
     }
 
-    // Add tool results after the main message
+    // Add the assistant message first
+    oai_messages.emplace_back(std::move(oai_message));
+
+    // Add tool results as separate tool messages
     if (message->character_type == mojom::CharacterType::ASSISTANT &&
         message->events.has_value() && !message->events->empty()) {
       for (size_t event_index = 0; event_index < message->events->size();
@@ -365,31 +370,31 @@ std::vector<OAIMessage> BuildOAIMessages(
           continue;
         }
 
-        ConversationEvent tool_result;
-        tool_result.role = ConversationEventRole::kTool;
-        tool_result.type = ConversationEventType::kToolUse;
-        tool_result.tool_call_id = tool_event->id;
+        // Create separate OAIMessage for tool result
+        OAIMessage tool_result_message;
+        tool_result_message.role = "tool";
+        tool_result_message.tool_call_id = tool_event->id;
 
         // Check if we should keep the full content for this large tool result
         bool should_keep_full_content = !large_tool_result_remove_set.contains(
             {message_index, event_index});
 
         if (should_keep_full_content) {
-          std::vector<mojom::ContentBlockPtr> tool_result_content;
           for (const auto& item : tool_event->output.value()) {
-            tool_result_content.push_back(item.Clone());
+            tool_result_message.content.push_back(item.Clone());
           }
-          tool_result.content = std::move(tool_result_content);
         } else {
-          tool_result.content = std::vector<std::string>{
-              "[Large result removed to save space for subsequent results]"};
+          // Add text block for truncated result
+          tool_result_message.content.push_back(
+              mojom::ContentBlock::NewTextContentBlock(
+                  mojom::TextContentBlock::New(
+                      "[Large result removed to save space for "
+                      "subsequent results]")));
         }
 
-        conversation.emplace_back(std::move(tool_result));
+        oai_messages.emplace_back(std::move(tool_result_message));
       }
     }
-
-    oai_messages.emplace_back(std::move(oai_message));
   }
 
   return oai_messages;

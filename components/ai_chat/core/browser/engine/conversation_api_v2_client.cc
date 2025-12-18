@@ -243,12 +243,9 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
     message_dict.Set("content", std::move(content_list));
 
     // Tool calls
-    if (!event.tool_calls.empty()) {
-      // For some reason the server currently expects chat messages that contain
-      // tool calls as well as regular content to have a different type.
-      event_dict.Set("type", "toolCalls");
+    if (!message.tool_calls.empty()) {
       base::Value::List tool_call_dicts;
-      for (const auto& tool_event : event.tool_calls) {
+      for (const auto& tool_event : message.tool_calls) {
         base::Value::Dict tool_call_dict;
         tool_call_dict.Set("id", tool_event->id);
         tool_call_dict.Set("type", "function");
@@ -262,11 +259,11 @@ base::Value::List ConversationAPIV2Client::SerializeOAIMessages(
         tool_call_dicts.Append(std::move(tool_call_dict));
       }
 
-      event_dict.Set("tool_calls", std::move(tool_call_dicts));
+      message_dict.Set("tool_calls", std::move(tool_call_dicts));
     }
 
-    if (!event.tool_call_id.empty()) {
-      event_dict.Set("tool_call_id", event.tool_call_id);
+    if (!message.tool_call_id.empty()) {
+      message_dict.Set("tool_call_id", message.tool_call_id);
     }
 
     serialized_messages.Append(std::move(message_dict));
@@ -466,19 +463,26 @@ void ConversationAPIV2Client::OnQueryDataReceived(
     return;
   }
 
+  auto& result_params = result->GetDict();
   if (auto result_data =
-          ParseOAICompletionResponse(result->GetDict(), model_service_)) {
+          ParseOAICompletionResponse(result_params, model_service_)) {
     callback.Run(std::move(*result_data));
   }
 
-  // Tool calls - they may happen individually or combined with a response event
-  if (const base::Value::List* tool_calls =
-          result_params.FindList("tool_calls")) {
-    // Provide any valid tool use events to the callback
-    for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
-      auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-          std::move(tool_use_event));
-      callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+  // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
+  // or choices[0].message.tool_calls
+  const base::Value::Dict* content_container =
+      GetOAIContentContainer(result_params);
+  if (content_container) {
+    if (const base::Value::List* tool_calls =
+            content_container->FindList("tool_calls")) {
+      // Provide any valid tool use events to the callback
+      for (auto& tool_use_event :
+           ToolUseEventFromToolCallsResponse(tool_calls)) {
+        auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
+            std::move(tool_use_event));
+        callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
+      }
     }
   }
 }
