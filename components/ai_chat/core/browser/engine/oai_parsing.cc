@@ -125,13 +125,12 @@ std::optional<base::Value::List> ToolApiDefinitionsFromTools(
   return tools_list;
 }
 
-std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
-    const base::Value::Dict& response,
-    ModelService* model_service) {
+const base::Value::Dict* GetOAIContentContainer(
+    const base::Value::Dict& response) {
   const base::Value::List* choices = response.FindList("choices");
   if (!choices || choices->empty() || !choices->front().is_dict()) {
     VLOG(2) << "No choices list found in response, or it is empty.";
-    return std::nullopt;
+    return nullptr;
   }
 
   const base::Value::Dict& choice = choices->front().GetDict();
@@ -142,13 +141,20 @@ std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
     content_container = choice.FindDict("message");
   }
 
+  return content_container;
+}
+
+std::optional<EngineConsumer::GenerationResultData> ParseOAICompletionResponse(
+    const base::Value::Dict& response,
+    ModelService* model_service) {
+  const base::Value::Dict* content_container = GetOAIContentContainer(response);
   if (!content_container) {
     VLOG(2) << "No delta or message info found in first completion choice.";
     return std::nullopt;
   }
 
   const std::string* content = content_container->FindString("content");
-  if (!content) {
+  if (!content || content->empty()) {
     return std::nullopt;
   }
 
