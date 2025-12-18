@@ -109,15 +109,6 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
     faviconBlockHandler(attributes);
   };
 
-  // First, return a default image.
-  FaviconAttributes* attributes = [FaviconAttributes
-      attributesWithMonogram:base::SysUTF16ToNSString(
-                                 favicon::GetFallbackIconText(block_page_url))
-                   textColor:UIColorFromRGB(kFallbackIconDefaultTextColor)
-             backgroundColor:UIColor.clearColor
-      defaultBackgroundColor:YES];
-  faviconBlockHandler(attributes);
-
   // Now fetch the favicon image.
   GetIconRawBitmapForPageUrl(favicon_service_, page_url,
                              scale * min_size_in_points, scale * size_in_points,
