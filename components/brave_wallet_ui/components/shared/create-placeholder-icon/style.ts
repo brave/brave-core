@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
 
 export type AssetIconSizes = 'extra-big' | 'big' | 'medium' | 'small' | 'tiny'
 
@@ -52,4 +54,29 @@ export const PlaceholderText = styled.span<{
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
+`
+
+export const NFTPlaceholderWrapper = styled.div<{
+  marginLeft: number
+  marginRight: number
+  size: AssetIconSizes
+}>`
+  --size: ${(p) => sizeNameToPixels(p.size)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: var(--size);
+  height: var(--size);
+  margin-right: ${(p) => `${p.marginRight}px`};
+  margin-left: ${(p) => `${p.marginLeft}px`};
+  background-color: ${leo.color.container.highlight};
+  border-radius: 8px;
+`
+
+export const NFTPlacholderIcon = styled(Icon).attrs({
+  name: 'nft',
+})`
+  --leo-icon-size: calc(var(--size) * 0.75);
+  color: ${leo.color.icon.default};
 `

@@ -99,6 +99,13 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
   height: 'auto',
 })
 
+export const NftIconWrapper = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: '40px',
+  borderRadius: '8px',
+  objectFit: 'scale-down',
+})
+
 export const CheckboxRow = styled.div`
   display: flex;
   align-items: center;
