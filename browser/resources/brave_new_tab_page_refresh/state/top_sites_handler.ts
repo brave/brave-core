@@ -117,8 +117,8 @@ export function createTopSitesHandler(
       })
     },
 
-    markEntryPointAsTopSite(topSite) {
-      handler.markEntryPointAsTopSite(topSite)
+    notifyTopSiteClicked(topSite) {
+      handler.notifyTopSiteClicked(topSite)
     },
   }
 }

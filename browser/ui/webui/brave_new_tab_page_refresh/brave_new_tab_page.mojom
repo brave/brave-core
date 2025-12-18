@@ -194,7 +194,7 @@ interface NewTabPageHandler {
   UndoCustomTopSiteAction() => ();
 
   // Notifies the browser that the user has clicked a top site.
-  MarkEntryPointAsTopSite(TopSite top_site);
+  NotifyTopSiteClicked(TopSite top_site);
 
   // Excludes a site from the "most visited" top sites list.
   ExcludeMostVisitedTopSite(string url) => ();

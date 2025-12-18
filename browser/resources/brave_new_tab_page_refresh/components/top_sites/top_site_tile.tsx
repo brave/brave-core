@@ -38,11 +38,7 @@ export function TopSitesTile(props: Props) {
       className='top-site-tile'
       href={sanitizeTileURL(url)}
       draggable={props.canDrag}
-      onClick={(event) => {
-        if (props.onClick) {
-          props.onClick()
-        }
-      }}
+      onClick={props.onClick}
       onDragStart={(event) => {
         event.dataTransfer.setData('text/uri-list', url)
       }}

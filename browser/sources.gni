@@ -696,6 +696,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+  "//brave/browser/search_query_metrics",
 ]
 
 if (enable_ai_chat) {

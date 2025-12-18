@@ -108,6 +108,6 @@ export function createTopSitesHandler(
       })
     },
 
-    markEntryPointAsTopSite(topSite) {},
+    notifyTopSiteClicked(topSite) {},
   }
 }

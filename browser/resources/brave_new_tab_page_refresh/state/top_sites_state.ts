@@ -36,7 +36,7 @@ export interface TopSitesActions {
   removeTopSite: (url: string) => void
   undoRemoveTopSite: () => void
   setTopSitePosition: (url: string, pos: number) => void
-  markEntryPointAsTopSite: (topSite: TopSite) => void
+  notifyTopSiteClicked: (topSite: TopSite) => void
 }
 
 export function defaultTopSitesActions(): TopSitesActions {
@@ -48,6 +48,6 @@ export function defaultTopSitesActions(): TopSitesActions {
     removeTopSite(url) {},
     undoRemoveTopSite() {},
     setTopSitePosition(url, pos) {},
-    markEntryPointAsTopSite(topSite) {},
+    notifyTopSiteClicked(topSite) {},
   }
 }
