@@ -151,6 +151,12 @@ def create_cargo_config():
             'vendored-sources': {
                 'directory': 'vendor'
             }
+        },
+        'profile': {
+            'release': {
+                'opt-level': 1,
+                'lto': 'off'
+            }
         }
     }
 

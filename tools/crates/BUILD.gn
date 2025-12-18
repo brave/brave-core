@@ -4,20 +4,20 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/tools/crates/build_crate.gni")
-import("//brave/tools/crates/config.gni")
 
-build_crate("cargo_audit") {
+build_crate("cargo-audit") {
 }
 
-build_crate("wasm_bindgen_cli") {
-}
+build_crate("wasm_crates") {
+  crates = [
+    "wasm-bindgen-cli",
+    "wasm-opt",
+    "wasm-pack",
+  ]
 
-build_crate("wasm_opt") {
-}
-
-build_crate("wasm_pack") {
-  deps = [
-    ":build_wasm_bindgen_cli($host_toolchain)",
-    ":build_wasm_opt($host_toolchain)",
+  executable_outputs = [
+    "wasm-bindgen",
+    "wasm-opt",
+    "wasm-pack",
   ]
 }

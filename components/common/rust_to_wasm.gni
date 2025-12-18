@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/tools/crates/config.gni")
+import("//brave/build/host_os_constants.gni")
 
 template("rust_to_wasm") {
   assert(defined(invoker.rust_packages),
@@ -16,19 +16,24 @@ template("rust_to_wasm") {
   }
 
   action_foreach(target_name) {
-    deps = [ "//brave/tools/crates:build_wasm_pack($host_toolchain)" ]
+    deps = [ "//brave/tools/crates:wasm_crates($host_toolchain)" ]
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }
 
-    inputs = [ wasm_pack_exe ]
+    inputs = [
+      "$root_build_dir/wasm-bindgen$host_exe_suffix",
+      "$root_build_dir/wasm-pack$host_exe_suffix",
+      "$root_build_dir/wasm-opt$host_exe_suffix",
+    ]
     sources = invoker.rust_packages
     inputs += sources
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
 
-    script = "//brave/script/rust_to_wasm.py"
+    script = "//brave/build/gn_run_rsp.py"
+    args = [ "{{response_file_name}}" ]
 
     wasm_pack_target = "bundler"
     if (defined(invoker.wasm_pack_target)) {
@@ -40,14 +45,9 @@ template("rust_to_wasm") {
     # or via `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
-    args = [
-      "--wasm_bindgen_cli_path",
-      get_path_info(rebase_path(wasm_bindgen_cli_exe), "dir"),
-      "--wasm_opt_path",
-      get_path_info(rebase_path(wasm_opt_exe), "dir"),
-
-      # below will be forwarded to wasm-pack (above will be added to $PATH)
-      rebase_path(wasm_pack_exe),
+    response_file_contents = [
+      "PATH=./" + host_path_sep + getenv("PATH"),
+      rebase_path("$root_build_dir/wasm-pack$host_exe_suffix"),
       "--log-level",
       "warn",
       "build",
