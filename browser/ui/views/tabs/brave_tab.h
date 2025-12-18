@@ -24,7 +24,7 @@ class BraveTab : public Tab, public views::TextfieldController {
   METADATA_HEADER(BraveTab, Tab)
 
  public:
-  explicit BraveTab(TabSlotController* controller);
+  explicit BraveTab(tabs::TabHandle handle, TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
   ~BraveTab() override;
