@@ -799,11 +799,6 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
     return size;
   }
 
-  // No border for hide completely mode.
-  if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
-    return size;
-  }
-
   // In rounded corners, border is changed on floating.
   // If we calculated preferred size with |include_border|,
   // it gives different size because of border change.
