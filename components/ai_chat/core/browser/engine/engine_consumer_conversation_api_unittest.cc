@@ -1211,11 +1211,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         EXPECT_EQ(conversation.size(), 1u);
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "{ \"topics\": [\n  \"topic3\",\n  \"topic4\",\n  "
+                    "\"topic5\",\n  \"topic6\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1621,10 +1622,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         EXPECT_EQ(conversation.size(), 1u);
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+                    "{ \"tab_ids\": [\n  \"id75\",\n  \"id76\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });

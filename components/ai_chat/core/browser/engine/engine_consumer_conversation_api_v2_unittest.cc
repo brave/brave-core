@@ -2983,11 +2983,12 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetSuggestedTopics) {
         EXPECT_EQ(messages.size(), 1u);
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
                   FormatComparableMessagesJson(expected_messages2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "{ \"topics\": [\n  \"topic3\",\n  \"topic4\",\n  "
+                    "\"topic5\",\n  \"topic6\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -3344,10 +3345,11 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest,
         EXPECT_EQ(messages.size(), 1u);
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
                   FormatComparableMessagesJson(expected_messages));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": [\"topic1\", \"topic2\"] }"));
+                    "{ \"topics\": [\n  \"topic1\",\n  \"topic2\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -3430,10 +3432,11 @@ TEST_F(EngineConsumerConversationAPIV2UnitTest, GetFocusTabs) {
         EXPECT_EQ(messages.size(), 1u);
         EXPECT_EQ(mock_api_client->GetMessagesJson(std::move(messages)),
                   FormatComparableMessagesJson(expected_messages2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+                    "{ \"tab_ids\": [\n  \"id75\",\n  \"id76\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });

@@ -20,7 +20,7 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kArrayPattern[] = R"((\[.*?\]))";
+constexpr char kArrayPattern[] = R"((?s)(\[.*?\]))";
 
 }  // namespace
 
