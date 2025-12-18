@@ -1,0 +1,5 @@
+Name: schnorrkel
+URL: https://crates.io/crates/schnorrkel
+Version: 0.11.4
+License: BSD-3.0
+License File: //brave/ui/webui/resources/wasm/vendor/schnorrkel/LICENSE
