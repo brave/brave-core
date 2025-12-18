@@ -724,14 +724,11 @@ if (is_mac) {
 }
 
 if (current_toolchain == host_toolchain) {
-  build_crate("cargo-audit") {
-  }
-
   action("audit_deps") {
     script = "//brave/script/audit_deps.py"
     output = "$target_gen_dir/audit_deps.json"
 
-    deps = [ ":cargo-audit" ]
+    deps = [ "//brave/tools/crates:cargo-audit" ]
 
     # Action must have outputs, and these outputs must be created, otherwise
     # SISO will fail.

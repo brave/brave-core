@@ -5,6 +5,9 @@
 
 import("//brave/tools/crates/build_crate.gni")
 
+build_crate("cargo-audit") {
+}
+
 build_crate("wasm_crates") {
   crates = [
     "wasm-bindgen-cli",
