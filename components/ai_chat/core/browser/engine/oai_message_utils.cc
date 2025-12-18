@@ -139,9 +139,24 @@ std::vector<OAIMessage> BuildOAIMessages(
   base::flat_map<std::string, std::vector<mojom::ContentBlockPtr>>
       page_contents_blocks;
 
+  // We're going to iterate over the conversation entries and
+  // build a list of events for the remote API.
+  // We largely want to send the full conversation with all events back to the
+  // model in order to preserve the context of the conversation. However, some
+  // tool results are extremely large (especially for images), and repetitive.
+  // We need a way to remove the noise in order to 1) not overwhelm the model
+  // and 2) not surpass the max token limit. For now, this is a rudimentary
+  // approach that only keeps the most recent large tool results. Use a two-pass
+  // approach: first identify which large tool results to keep, then build the
+  // conversation in chronological order.
+
   // Step 1:
+  //   - identify large tool results and remember which ones to remove.
   //   - generate content blocks for the page contents which we're going to
   //   keep.
+  absl::flat_hash_set<std::pair<size_t, size_t>> large_tool_result_remove_set;
+  size_t large_tool_count = 0;
+
   for (size_t message_index = conversation_history.size(); message_index > 0;
        --message_index) {
     const auto& message = conversation_history[message_index - 1];
@@ -158,8 +173,44 @@ std::vector<OAIMessage> BuildOAIMessages(
           page_content_it->second, remaining_length, sanitize_input);
     }
 
-    if (remaining_length == 0) {
-      break;
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = message->events->size(); event_index > 0;
+           --event_index) {
+        const auto& message_event = message->events.value()[event_index - 1];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value() || tool_event->output->empty()) {
+          continue;
+        }
+
+        // Check if this tool result is large
+        bool is_large = false;
+        size_t content_size = 0;
+        for (const auto& content : tool_event->output.value()) {
+          if (content->is_image_content_block()) {
+            is_large = true;
+            break;
+          } else if (content->is_text_content_block()) {
+            content_size += content->get_text_content_block()->text.size();
+            if (content_size >= features::kContentSizeLargeToolUseEvent.Get()) {
+              is_large = true;
+              break;
+            }
+          }
+        }
+
+        if (is_large) {
+          large_tool_count++;
+          if (large_tool_count > features::kMaxCountLargeToolUseEvents.Get()) {
+            large_tool_result_remove_set.insert(
+                {message_index - 1, event_index - 1});
+          }
+        }
+      }
     }
   }
 
@@ -270,6 +321,23 @@ std::vector<OAIMessage> BuildOAIMessages(
           mojom::TextContentBlock::New(skill_definition)));
     }
 
+    // Add tool calls to the main event
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (tool_event->output.has_value()) {
+          event.tool_calls.emplace_back(tool_event->Clone());
+        }
+      }
+    }
+
     // Build the main content block
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
       oai_message.content.push_back(
@@ -280,6 +348,45 @@ std::vector<OAIMessage> BuildOAIMessages(
       oai_message.content.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
               EngineConsumer::GetPromptForEntry(message))));
+    }
+
+    // Add tool results after the main message
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      for (size_t event_index = 0; event_index < message->events->size();
+           ++event_index) {
+        const auto& message_event = message->events.value()[event_index];
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        const auto& tool_event = message_event->get_tool_use_event();
+        if (!tool_event->output.has_value()) {
+          continue;
+        }
+
+        ConversationEvent tool_result;
+        tool_result.role = ConversationEventRole::kTool;
+        tool_result.type = ConversationEventType::kToolUse;
+        tool_result.tool_call_id = tool_event->id;
+
+        // Check if we should keep the full content for this large tool result
+        bool should_keep_full_content = !large_tool_result_remove_set.contains(
+            {message_index, event_index});
+
+        if (should_keep_full_content) {
+          std::vector<mojom::ContentBlockPtr> tool_result_content;
+          for (const auto& item : tool_event->output.value()) {
+            tool_result_content.push_back(item.Clone());
+          }
+          tool_result.content = std::move(tool_result_content);
+        } else {
+          tool_result.content = std::vector<std::string>{
+              "[Large result removed to save space for subsequent results]"};
+        }
+
+        conversation.emplace_back(std::move(tool_result));
+      }
     }
 
     oai_messages.emplace_back(std::move(oai_message));
