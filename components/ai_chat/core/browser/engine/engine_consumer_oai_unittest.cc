@@ -158,10 +158,11 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   auto* client = GetClient();
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce([&run_loop, this](
                     const mojom::CustomModelOptions& model_options,
-                    base::Value::List, EngineConsumer::GenerationDataCallback,
+                    std::vector<OAIMessage>,
+                    EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback,
                     const std::optional<std::vector<std::string>>&) {
         EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
@@ -188,9 +189,9 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   run_loop.Run();
 
   base::RunLoop run_loop2;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce([&run_loop2](const mojom::CustomModelOptions& model_options,
-                             base::Value::List,
+                             std::vector<OAIMessage>,
                              EngineConsumer::GenerationDataCallback,
                              EngineConsumer::GenerationCompletedCallback,
                              const std::optional<std::vector<std::string>>&) {
@@ -215,42 +216,40 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   std::string expected_response =
       "<question>Question 1</question><question>Question 2</question>"
       "<question>Question 3</question>";
-  std::string expected_page_content_text =
-      l10n_util::GetStringFUTF8(IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT,
-                                base::UTF8ToUTF16(test_content));
-  std::string expected_question_prompt =
-      "Propose up to 3 very short questions that a reader may ask about the "
-      "content. Wrap each in <question> tags.";
   std::string expected_seed =
       "Here are three questions the user may ask about the content "
       "in <question> tags:\n";
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+  EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions& options,
-              base::Value::List messages,
+              std::vector<OAIMessage> messages,
               EngineConsumer::GenerationDataCallback data_callback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>& stop_sequences) {
             // Verify message structure
-            ASSERT_EQ(messages.size(), 3u);
+            ASSERT_EQ(messages.size(), 2u);
 
-            // First message: page content wrapped with localized prompt
-            const auto& first_message = messages[0].GetDict();
-            EXPECT_EQ(*first_message.FindString("role"), "user");
-            EXPECT_EQ(*first_message.FindString("content"),
-                      expected_page_content_text);
+            // First message: user message with page content and request
+            const auto& first_message = messages[0];
+            EXPECT_EQ(first_message.role, "user");
+            ASSERT_EQ(first_message.content.size(), 2u);
 
-            // Second message: question prompt
-            const auto& second_message = messages[1].GetDict();
-            EXPECT_EQ(*second_message.FindString("role"), "user");
-            EXPECT_EQ(*second_message.FindString("content"),
-                      expected_question_prompt);
+            // First block: PageTextContentBlock with wrapped page content
+            VerifyPageTextBlock(FROM_HERE, first_message.content[0],
+                                test_content);
 
-            // Third message: assistant seed
-            const auto& third_message = messages[2].GetDict();
-            EXPECT_EQ(*third_message.FindString("role"), "assistant");
-            EXPECT_EQ(*third_message.FindString("content"), expected_seed);
+            // Second block: SimpleRequestContentBlock
+            VerifySimpleRequestBlock(
+                FROM_HERE, first_message.content[1],
+                mojom::SimpleRequestType::kRequestQuestions);
+
+            // Second message: assistant seed
+            const auto& second_message = messages[1];
+            EXPECT_EQ(second_message.role, "assistant");
+            ASSERT_EQ(second_message.content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, second_message.content[0],
+                            expected_seed);
 
             // Verify no stop sequences
             EXPECT_FALSE(stop_sequences.has_value());
@@ -292,11 +291,11 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
             "This is a video transcript:\n\n\u003Ctranscript>\nThis is content "
-            "2 and a video\n\u003C/transcript>\n\n");
+            "2 and a video\n\u003C/transcript>");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
+            "1\n\u003C/page>");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
@@ -313,11 +312,11 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
             "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
+            "1\n\u003C/page>");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>\n\n");
+            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>");
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
@@ -336,11 +335,11 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nThis is co\n</page>\n\n");
+            "This is the text of a web page:\n<page>\nThis is co\n</page>");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[1].GetDict().Find("content"),
             "This is a video "
-            "transcript:\n\n<transcript>\nThis is co\n</transcript>\n\n");
+            "transcript:\n\n<transcript>\nThis is co\n</transcript>");
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
@@ -360,7 +359,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_EQ(message.size(), 1u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   std::string expected_content = "This is the text of a web page:\n<page>\n" +
-                                 std::string(15, 'y') + "\n</page>\n\n";
+                                 std::string(15, 'y') + "\n</page>";
   EXPECT_EQ(*message[0].GetDict().Find("content"), expected_content);
 }
 
@@ -380,11 +379,11 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nShort\n</page>\n\n");
+            "This is the text of a web page:\n<page>\nShort\n</page>");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(
       *message[1].GetDict().Find("content"),
-      "This is a video transcript:\n\n<transcript>\nVideo\n</transcript>\n\n");
+      "This is a video transcript:\n\n<transcript>\nVideo\n</transcript>");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
@@ -394,9 +393,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result doesn't have a value
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
         .WillOnce(
-            [](const mojom::CustomModelOptions&, base::Value::List,
+            [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
@@ -422,9 +421,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
         .WillOnce(
-            [](const mojom::CustomModelOptions&, base::Value::List,
+            [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
@@ -451,9 +450,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has a non-completion event
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
         .WillOnce(
-            [](const mojom::CustomModelOptions&, base::Value::List,
+            [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
@@ -483,9 +482,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
   // Test error case: result has an empty completion
   {
     base::RunLoop run_loop;
-    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+    EXPECT_CALL(*client, PerformRequestWithOAIMessages(_, _, _, _, _))
         .WillOnce(
-            [](const mojom::CustomModelOptions&, base::Value::List,
+            [](const mojom::CustomModelOptions&, std::vector<OAIMessage>,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback completed_callback,
                const std::optional<std::vector<std::string>>&) {
@@ -586,7 +585,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web "
-                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>\n\n");
+                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>");
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"), human_input);
@@ -1159,7 +1158,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>\n\n");
+                      "page.\n</page>");
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"),
                       "Tell me more about this page");
@@ -1744,7 +1743,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto get_page_content_event = [](char c, int length) {
     return "This is the text of a web "
            "page:\n<page>\n" +
-           std::string(length, c) + "\n</page>\n\n";
+           std::string(length, c) + "\n</page>";
   };
 
   auto test_content_truncation = [&](uint32_t max_length,
@@ -1991,7 +1990,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string expected_content1 =
                 "This is a video transcript:\n\n<transcript>\n" +
                 std::string(kMaxContextCharsForTitleGeneration, 'c') +
-                "\n</transcript>\n\n";
+                "\n</transcript>";
             EXPECT_EQ(*content1, expected_content1);
 
             // Second message: content2 (page, 1200 chars) - should NOT be
@@ -2002,7 +2001,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string expected_content2 =
                 "This is the text of a web page:\n<page>\n" +
                 std::string(kMaxContextCharsForTitleGeneration, 'b') +
-                "\n</page>\n\n";
+                "\n</page>";
             EXPECT_EQ(*content2, expected_content2);
 
             // Third message: content1 (page, 1199 chars) - should NOT be
@@ -2013,7 +2012,7 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string expected_content3 =
                 "This is the text of a web page:\n<page>\n" +
                 std::string(kMaxContextCharsForTitleGeneration - 1, 'a') +
-                "\n</page>\n\n";
+                "\n</page>";
             EXPECT_EQ(*content3, expected_content3);
 
             std::move(completed_callback)
