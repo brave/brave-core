@@ -132,7 +132,10 @@ rust_static_library("cardano_tx_decoder_rs") {
   sources = [ "cardano_tx_decoder.rs" ]
   cxx_bindings = [ "cardano_tx_decoder.rs" ]
 
-  deps = [ "//brave/third_party/rust/ciborium/v0_2:lib" ]
+  deps = [
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/ciborium/v0_2:lib",
+  ]
 }
 
 source_set("cardano_tx_decoder") {

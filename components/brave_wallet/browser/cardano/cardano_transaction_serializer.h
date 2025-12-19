@@ -11,37 +11,23 @@
 
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "components/cbor/values.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 
 namespace brave_wallet {
 
 // Utility class for serializing Cardano transactions and related functionality.
 class CardanoTransactionSerializer {
  public:
-  // Serialization options flags.
-  struct Options {
-    // Used to estimate transaction size which is not signed yet.
-    bool use_dummy_witness_set = false;
-  };
-
   CardanoTransactionSerializer();
-  explicit CardanoTransactionSerializer(Options options);
 
   // Serializes a Cardano transaction into a byte vector (CBOR format).
-  std::vector<uint8_t> SerializeTransaction(const CardanoTransaction& tx);
-
-  // Calculates the size (in bytes) of the serialized transaction.
-  uint32_t CalcTransactionSize(const CardanoTransaction& tx);
+  static std::optional<std::vector<uint8_t>> SerializeTransaction(
+      const CardanoTransaction& tx);
 
   // Computes the transaction hash (Blake2b-256 hash of the serialized
   // transaction body)
-  std::array<uint8_t, kCardanoTxHashSize> GetTxHash(
+  static std::optional<std::array<uint8_t, kCardanoTxHashSize>> GetTxHash(
       const CardanoTransaction& tx);
-
-  // Calculates minimum transaction fee based on its size and epoch parameters.
-  uint64_t CalcMinTransactionFee(
-      const CardanoTransaction& tx,
-      const cardano_rpc::EpochParameters& epoch_parameters);
 
   // Validate minimum ADA required for the output.
   static bool ValidateMinValue(
@@ -64,22 +50,20 @@ class CardanoTransactionSerializer {
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest,
                            CalcMinAdaRequired);
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest, ValidateMinValue);
+  FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest,
+                           CalcMinTransactionFee);
+
+  // Calculates minimum transaction fee based on its size and epoch parameters.
+  static std::optional<uint64_t> CalcMinTransactionFee(
+      const CardanoTransaction& tx,
+      const cardano_rpc::EpochParameters& epoch_parameters);
 
   // Calculates minimum ADA required for the output.
-  std::optional<uint64_t> CalcMinAdaRequired(
+  static std::optional<uint64_t> CalcMinAdaRequired(
       const CardanoTransaction::TxOutput& output,
       const cardano_rpc::EpochParameters& epoch_parameters);
 
-  Options options_ = {};
-
-  cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx);
-  cbor::Value::ArrayValue SerializeOutput(
-      const CardanoTransaction::TxOutput& output);
-  cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx);
-  cbor::Value SerializeTxBody(const CardanoTransaction& tx);
-  cbor::Value SerializeWitnessSet(const CardanoTransaction& tx);
-
-  std::optional<uint64_t> CalcRequiredCoin(
+  static std::optional<uint64_t> CalcRequiredCoin(
       const CardanoTransaction::TxOutput& output,
       const cardano_rpc::EpochParameters& epoch_parameters);
 };

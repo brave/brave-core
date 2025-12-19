@@ -11,8 +11,13 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
 
 namespace brave_wallet {
+
+inline constexpr uint32_t kCardanoTxHashSize = 32u;
+inline constexpr uint32_t kCardanoPubKeySize = 32u;
+inline constexpr uint32_t kCardanoSignatureSize = 64u;
 
 // Wrapper class for Cardano transaction decoding functionality
 // This class provides a C++ interface to the Rust cardano_tx_decoder
@@ -27,7 +32,7 @@ class CardanoTxDecoder {
     SerializableTxInput& operator=(SerializableTxInput&&);
     ~SerializableTxInput();
 
-    std::array<uint8_t, 32u> tx_hash = {};
+    std::array<uint8_t, kCardanoTxHashSize> tx_hash = {};
     uint32_t index = 0;
   };
 
@@ -40,7 +45,7 @@ class CardanoTxDecoder {
     ~SerializableTxOutput();
 
     std::vector<uint8_t> address_bytes;
-    uint64_t amount = 0;
+    uint64_t amount = 0u;
   };
 
   struct SerializableTxBody {
@@ -53,6 +58,8 @@ class CardanoTxDecoder {
 
     std::vector<SerializableTxInput> inputs;
     std::vector<SerializableTxOutput> outputs;
+    uint64_t fee = 0u;
+    std::optional<base::StrictNumeric<uint64_t>> ttl;
   };
 
   struct SerializableVkeyWitness {
@@ -63,8 +70,8 @@ class CardanoTxDecoder {
     SerializableVkeyWitness(SerializableVkeyWitness&&);
     SerializableVkeyWitness& operator=(SerializableVkeyWitness&&);
 
-    std::array<uint8_t, 64u> signature_bytes;
-    std::array<uint8_t, 32u> public_key;
+    std::array<uint8_t, kCardanoSignatureSize> signature_bytes = {};
+    std::array<uint8_t, kCardanoPubKeySize> public_key = {};
   };
 
   struct SerializableTxWitness {
@@ -87,6 +94,7 @@ class CardanoTxDecoder {
     SerializableTx& operator=(SerializableTx&&);
 
     SerializableTxBody tx_body;
+    SerializableTxWitness tx_witness;
   };
 
   struct DecodedTx {
@@ -103,9 +111,24 @@ class CardanoTxDecoder {
   CardanoTxDecoder();
   ~CardanoTxDecoder();
 
+  // Returns CBOR encoded transaction.
+  static std::optional<std::vector<uint8_t>> EncodeTransaction(
+      const SerializableTx& tx);
+
+  // Returns CBOR encoded transaction output.
+  static std::optional<std::vector<uint8_t>> EncodeTransactionOutput(
+      const SerializableTxOutput& output);
+
+  // Returns tx hash calculated from tx body.
+  static std::optional<std::array<uint8_t, kCardanoTxHashSize>>
+  GetTransactionHash(const SerializableTx& tx);
+
+  // Decode transaction from CBOR bytes.
   static std::optional<DecodedTx> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);
 
+  // Decodes tx into a cbor value, then adds vk witnesses into it. Returns cbor
+  // encoded tx with added witnesses. Need this for dApp signing.
   static std::optional<std::vector<uint8_t>> AddWitnessesToTransaction(
       const std::vector<uint8_t>& unsigned_tx_bytes,
       const SerializableTxWitness& witness);

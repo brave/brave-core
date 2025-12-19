@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 
 #include "base/containers/span.h"
-#include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
@@ -87,8 +86,9 @@ CardanoTransaction GetSignedReferenceTransaction() {
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness;
-  witness.witness_bytes = test::HexToArray<96>(
-      "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af"
+  witness.public_key = test::HexToArray<32>(
+      "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af");
+  witness.signature = test::HexToArray<64>(
       "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161"
       "b7b3609bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802");
 
@@ -109,7 +109,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
 
-  auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(*tx_bytes);
   EXPECT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result.value().tx;
@@ -139,7 +139,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_MaxSizeLimit) {
     auto input = tx.inputs()[0];
     input.utxo_outpoint.index = i + 100;
     tx.AddInput(input);
-    auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+    auto tx_bytes = *CardanoTransactionSerializer().SerializeTransaction(tx);
     if (tx_bytes.size() > 16 * 1024) {
       break;
     }
@@ -147,7 +147,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_MaxSizeLimit) {
     EXPECT_TRUE(decode_result.has_value());
   }
 
-  auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+  auto tx_bytes = *CardanoTransactionSerializer().SerializeTransaction(tx);
   EXPECT_GT(tx_bytes.size(), 16u * 1024u);
   auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
   EXPECT_FALSE(decode_result.has_value());
@@ -246,11 +246,7 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& sign_result : tx_witness.vkey_witness_set) {
     CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-
-    span_writer.Write(sign_result.public_key);
-    span_writer.Write(sign_result.signature_bytes);
-    witnesses.push_back(witness);
+    witnesses.emplace_back(sign_result.public_key, sign_result.signature_bytes);
   }
   tx_with_signatures.SetWitnesses(witnesses);
 
@@ -258,7 +254,7 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
       CardanoTransactionSerializer().SerializeTransaction(tx_with_signatures);
 
   auto result =
-      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, tx_witness);
+      CardanoTxDecoder::AddWitnessesToTransaction(*tx_bytes, tx_witness);
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(expected_signed_bytes, result.value());
 }
@@ -309,8 +305,8 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_EmptySignatures) {
 
   CardanoTxDecoder::SerializableTxWitness empty_sign_results;
 
-  auto result =
-      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, empty_sign_results);
+  auto result = CardanoTxDecoder::AddWitnessesToTransaction(*tx_bytes,
+                                                            empty_sign_results);
 
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(tx_bytes, result.value());
@@ -508,7 +504,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_OutputWithExcessElements) {
   // clang-format off
   std::vector<uint8_t> cbor_with_excess_output = {
       0x82,        // Main array: [transaction_body, witness_set]
-      0xa2,        // Transaction body map with 2 entries
+      0xa3,        // Transaction body map with 3 entries
       0x00,        // Key 0: inputs
       0x81,        // Array with 1 input
       0x82,        // Input array with 2 elements [tx_hash, index]
@@ -527,6 +523,8 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_OutputWithExcessElements) {
       0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
       0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
       0x61, 0x78,  // Extra element: text string "x"
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,  // Fee: 10000
       0xa0,        // Empty witness set
   };
   // clang-format on
@@ -540,7 +538,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
   // clang-format off
   std::vector<uint8_t> valid_minimal_cbor = {
       0x82,        // Main array: [transaction_body, witness_set]
-      0xa2,        // Transaction body map with 2 entries
+      0xa3,        // Transaction body map with 3 entries
       0x00,        // Key 0: inputs
       0x81,        // Array with 1 input
       0x82,        // Input array with 2 elements [tx_hash, index]
@@ -558,6 +556,8 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
       0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,  // Fee: 10000
       0xa0,        // Empty witness set
   };
   // clang-format on
@@ -586,7 +586,7 @@ TEST(CardanoTxDecoderTest,
   // clang-format off
   std::vector<uint8_t> valid_multi_cbor = {
       0x82,        // Main array: [transaction_body, witness_set]
-      0xa2,        // Transaction body map with 2 entries
+      0xa3,        // Transaction body map with 2 entries
       0x00,        // Key 0: inputs
       0x82,        // Array with 2 inputs
       0x82,        // First input array with 2 elements [tx_hash, index]
@@ -617,6 +617,8 @@ TEST(CardanoTxDecoderTest,
       0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
       0x22, 0x22, 0x22, 0x22,  // 28-byte address (all 0x22)
       0x1a, 0x00, 0x0f, 0x42, 0x40,  // Amount: 1000000
+      0x02,        // Key 2: fee
+      0x1a, 0x00, 0x00, 0x27, 0x10,  // Fee: 10000
       0xa0,        // Empty witness set
   };
   // clang-format on

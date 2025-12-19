@@ -9,169 +9,82 @@
 #include <cstdint>
 #include <limits>
 #include <optional>
-#include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
+#include "base/containers/flat_set.h"
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
-#include "components/cbor/values.h"
-#include "components/cbor/writer.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 
 namespace brave_wallet {
+
+namespace {
 
 // https://github.com/Emurgo/cardano-serialization-lib/blob/c8bb8f43a916d804b89c3e226560265b65f1689a/rust/src/utils.rs#L791
 constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
 constexpr int kFeeSearchMaxIterations = 10;
 
-namespace {
-
-constexpr std::array<uint8_t, kCardanoWitnessSize> kDummyTxWitnessBytes = {};
-
-// Chromium's cbor component does not support uint64_t values, only int64_t. We
-// need to be able to store uint64_t amounts in cbor.
-// Casting it to int64_t is safe as total amount of lovelace supply is 45*10^15
-// and is less than max(UINT_64) ~ 1.84 * 10^19.
-int64_t AmountToInt64ForCbor(uint64_t amount) {
-  return base::checked_cast<int64_t>(amount);
+void SetupDummyWitnessSet(CardanoTransaction& tx) {
+  tx.SetWitnesses(
+      std::vector<CardanoTransaction::TxWitness>(tx.inputs().size()));
 }
 
 }  // namespace
 
 CardanoTransactionSerializer::CardanoTransactionSerializer() = default;
-CardanoTransactionSerializer::CardanoTransactionSerializer(
-    CardanoTransactionSerializer::Options options)
-    : options_(options) {}
 
-cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeInputs(
+// static
+std::optional<std::vector<uint8_t>>
+CardanoTransactionSerializer::SerializeTransaction(
     const CardanoTransaction& tx) {
-  cbor::Value::ArrayValue result;
-  for (const auto& input : tx.inputs()) {
-    cbor::Value::ArrayValue input_value;
-    input_value.emplace_back(input.utxo_outpoint.txid);
-    input_value.emplace_back(
-        base::strict_cast<int64_t>(input.utxo_outpoint.index));
-    result.emplace_back(std::move(input_value));
+  auto serializable_tx = tx.ToSerializableTx();
+  if (!serializable_tx) {
+    return std::nullopt;
+  }
+  return CardanoTxDecoder::EncodeTransaction(*serializable_tx);
+}
+
+// static
+std::optional<std::array<uint8_t, kCardanoTxHashSize>>
+CardanoTransactionSerializer::GetTxHash(const CardanoTransaction& tx) {
+  auto serializable_tx = tx.ToSerializableTx();
+  if (!serializable_tx) {
+    return std::nullopt;
   }
 
-  return result;
+  return CardanoTxDecoder::GetTransactionHash(*serializable_tx);
 }
 
-cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutput(
-    const CardanoTransaction::TxOutput& output) {
-  cbor::Value::ArrayValue output_value;
-  output_value.emplace_back(output.address.ToCborBytes());
-  output_value.emplace_back(AmountToInt64ForCbor(output.amount));
-
-  return output_value;
-}
-
-cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutputs(
-    const CardanoTransaction& tx) {
-  cbor::Value::ArrayValue result;
-  for (const auto& output : tx.outputs()) {
-    result.emplace_back(SerializeOutput(output));
-  }
-
-  return result;
-}
-
-cbor::Value CardanoTransactionSerializer::SerializeTxBody(
-    const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionBody/TransactionBody.ts#L75-L250
-
-  cbor::Value::MapValue body_map;
-
-  body_map.emplace(0, SerializeInputs(tx));
-  body_map.emplace(1, SerializeOutputs(tx));
-  body_map.emplace(2, AmountToInt64ForCbor(tx.fee()));                  // fee
-  body_map.emplace(3, base::strict_cast<int64_t>(tx.invalid_after()));  // ttl
-
-  return cbor::Value(body_map);
-}
-
-cbor::Value CardanoTransactionSerializer::SerializeWitnessSet(
-    const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionWitnessSet/TransactionWitnessSet.ts#L49-L116
-
-  cbor::Value::MapValue witness_map;
-
-  // Verification Key Witness array
-  cbor::Value::ArrayValue vk_witness_array;
-
-  if (options_.use_dummy_witness_set) {
-    // Serialize with dummy signatures for size calculation.
-    for (const auto& _ : tx.inputs()) {
-      cbor::Value::ArrayValue input_array;
-      auto [pubkey, signature] =
-          base::span(kDummyTxWitnessBytes).split_at<kEd25519PublicKeySize>();
-      input_array.emplace_back(pubkey);
-      input_array.emplace_back(signature);
-      vk_witness_array.emplace_back(std::move(input_array));
-    }
-  } else {
-    for (const auto& witness : tx.witnesses()) {
-      cbor::Value::ArrayValue input_array;
-      auto [pubkey, signature] =
-          base::span(witness.witness_bytes).split_at<kEd25519PublicKeySize>();
-      input_array.emplace_back(pubkey);
-      input_array.emplace_back(signature);
-      vk_witness_array.emplace_back(std::move(input_array));
-    }
-  }
-
-  witness_map.emplace(0, std::move(vk_witness_array));
-
-  return cbor::Value(witness_map);
-}
-
-std::vector<uint8_t> CardanoTransactionSerializer::SerializeTransaction(
-    const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/Transaction.ts#L59-L84
-
-  cbor::Value::ArrayValue transaction_array;
-  transaction_array.push_back(SerializeTxBody(tx));
-  transaction_array.push_back(SerializeWitnessSet(tx));
-  transaction_array.emplace_back(true);  // Valid flag.
-  transaction_array.emplace_back(
-      cbor::Value::SimpleValue::NULL_VALUE);  // Auxilary data.
-
-  std::optional<std::vector<uint8_t>> cbor_bytes =
-      cbor::Writer::Write(cbor::Value(std::move(transaction_array)));
-  CHECK(cbor_bytes);
-  return *cbor_bytes;
-}
-
-uint32_t CardanoTransactionSerializer::CalcTransactionSize(
-    const CardanoTransaction& tx) {
-  return SerializeTransaction(tx).size();
-}
-
-std::array<uint8_t, kCardanoTxHashSize> CardanoTransactionSerializer::GetTxHash(
-    const CardanoTransaction& tx) {
-  auto cbor_bytes = cbor::Writer::Write(SerializeTxBody(tx));
-  CHECK(cbor_bytes);
-  return Blake2bHash<kCardanoTxHashSize>({*cbor_bytes});
-}
-
-uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(
+// static
+std::optional<uint64_t> CardanoTransactionSerializer::CalcMinTransactionFee(
     const CardanoTransaction& tx,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  base::CheckedNumeric<uint64_t> tx_size = CalcTransactionSize(tx);
+  auto serialized_transaction =
+      CardanoTransactionSerializer::SerializeTransaction(tx);
+  if (!serialized_transaction) {
+    return std::nullopt;
+  }
+
+  base::CheckedNumeric<uint64_t> tx_size = serialized_transaction->size();
   base::CheckedNumeric<uint64_t> fee =
       tx_size * epoch_parameters.min_fee_coefficient +
       epoch_parameters.min_fee_constant;
-  return fee.ValueOrDie();
+  if (fee.IsValid()) {
+    return fee.ValueOrDie();
+  }
+  return std::nullopt;
 }
 
+// static
 std::optional<uint64_t> CardanoTransactionSerializer::CalcRequiredCoin(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  auto cbor_bytes = cbor::Writer::Write(
-      cbor::Value(CardanoTransactionSerializer().SerializeOutput(output)));
-  CHECK(cbor_bytes);
+  auto cbor_bytes = CardanoTxDecoder::EncodeTransactionOutput(
+      output.ToSerializableTxOutput());
+  if (!cbor_bytes) {
+    return std::nullopt;
+  }
 
   uint64_t required_coin = 0;
   if (!base::CheckMul<uint64_t>(
@@ -185,6 +98,7 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcRequiredCoin(
   return required_coin;
 }
 
+// static
 std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
@@ -218,7 +132,7 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
 bool CardanoTransactionSerializer::ValidateMinValue(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  auto min_ada_required = CardanoTransactionSerializer().CalcMinAdaRequired(
+  auto min_ada_required = CardanoTransactionSerializer::CalcMinAdaRequired(
       output, epoch_parameters);
   return min_ada_required && output.amount >= min_ada_required.value();
 }
@@ -241,12 +155,20 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
   if (result.sending_max_amount()) {
     CHECK_EQ(result.TargetOutput()->amount, 0u);
   }
+  CHECK(result.witnesses().empty());
+
+  // Add dummy witness set based on number of signatures we need. This ensures
+  // result transaction could be encoded to its final size and we can calculate
+  // correct fee for it.
+  SetupDummyWitnessSet(result);
 
   // This is starting fee based on minimum size of tx as fee and outputs are 0.
-  uint64_t start_fee =
-      CardanoTransactionSerializer({.use_dummy_witness_set = true})
-          .CalcMinTransactionFee(result, epoch_parameters);
-  result.set_fee(start_fee);
+  if (auto start_fee = CardanoTransactionSerializer::CalcMinTransactionFee(
+          result, epoch_parameters)) {
+    result.set_fee(*start_fee);
+  } else {
+    return std::nullopt;
+  }
 
   for (int i = 0; i < kFeeSearchMaxIterations; i++) {
     // Adjust outputs based on current tx fee.
@@ -263,22 +185,26 @@ CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
       }
     }
 
-    auto required_fee =
-        CardanoTransactionSerializer({.use_dummy_witness_set = true})
-            .CalcMinTransactionFee(result, epoch_parameters);
+    auto required_fee = CardanoTransactionSerializer::CalcMinTransactionFee(
+        result, epoch_parameters);
+    if (!required_fee) {
+      return std::nullopt;
+    }
 
     // Break search loop if required fee is less than or equal to current fee.
     // That means current tx fee is enough to cover the transaction costs(based
     // on its binary size).
-    if (required_fee <= result.fee()) {
+    if (*required_fee <= result.fee()) {
       if (ValidateAmounts(result, epoch_parameters)) {
+        // Remove dummy witness set.
+        result.SetWitnesses({});
         return result;
       }
       return std::nullopt;
     }
 
     // Run the loop again with larger fee.
-    result.set_fee(required_fee);
+    result.set_fee(*required_fee);
   }
 
   return std::nullopt;

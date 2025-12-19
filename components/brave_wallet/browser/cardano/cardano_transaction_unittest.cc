@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -86,6 +87,30 @@ TEST(CardanoTransaction, TxOutput_Value) {
   EXPECT_EQ(parsed->amount, output.amount);
 }
 
+TEST(CardanoTransaction, TxWitness_Value) {
+  CardanoTransaction::TxWitness witness;
+  witness.public_key = test::HexToArray<32>(
+      "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
+  witness.signature = test::HexToArray<64>(
+      "4f2a3bc19e6df1726715ab8c03fe15d848a2c9e7f28416b5e8ce397d06aad4eb"
+      "deadbeefcafebabe1234567890abcdefabcdef1234567890deadbeefcafebabe");
+
+  auto parsed = CardanoTransaction::TxWitness::FromValue(witness.ToValue());
+  ASSERT_TRUE(parsed);
+  EXPECT_EQ(*parsed, witness);
+  EXPECT_EQ(parsed->public_key, witness.public_key);
+  EXPECT_EQ(parsed->signature, witness.signature);
+
+  base::Value::Dict legacy_format;
+  legacy_format.Set(
+      "witness_bytes",
+      "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98"
+      "4f2a3bc19e6df1726715ab8c03fe15d848a2c9e7f28416b5e8ce397d06aad4eb"
+      "deadbeefcafebabe1234567890abcdefabcdef1234567890deadbeefcafebabe");
+
+  EXPECT_EQ(CardanoTransaction::TxWitness::FromValue(legacy_format), witness);
+}
+
 TEST(CardanoTransaction, Value) {
   CardanoTransaction tx;
 
@@ -114,9 +139,11 @@ TEST(CardanoTransaction, Value) {
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness1;
-  witness1.witness_bytes = {};
+  witness1.public_key.fill(2);
+  witness1.signature.fill(1);
   CardanoTransaction::TxWitness witness2;
-  witness2.witness_bytes = {1};
+  witness2.public_key.fill(4);
+  witness2.signature.fill(3);
   tx.SetWitnesses({witness1, witness2});
 
   tx.set_to(*CardanoAddress::FromString(kAddress1));
@@ -142,35 +169,6 @@ TEST(CardanoTransaction, Value) {
   value_no_fee.Remove("fee");
   auto parsed_no_fee = CardanoTransaction::FromValue(value_no_fee);
   EXPECT_EQ(parsed_no_fee->fee(), 555667277u);
-}
-
-TEST(CardanoTransaction, IsSigned) {
-  CardanoTransaction tx;
-  EXPECT_FALSE(tx.IsSigned());
-
-  CardanoTransaction::TxInput input1;
-  input1.utxo_address = *CardanoAddress::FromString(kAddress1);
-  input1.utxo_outpoint.index = 123;
-  base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
-  tx.AddInput(std::move(input1));
-
-  EXPECT_FALSE(tx.IsSigned());
-  tx.SetWitnesses({CardanoTransaction::TxWitness()});
-  EXPECT_TRUE(tx.IsSigned());
-
-  CardanoTransaction::TxInput input2;
-  input2.utxo_address = *CardanoAddress::FromString(kAddress2);
-  input2.utxo_outpoint.index = 7;
-  base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
-
-  tx.AddInput(std::move(input2));
-
-  EXPECT_FALSE(tx.IsSigned());
-  tx.SetWitnesses(
-      {CardanoTransaction::TxWitness(), CardanoTransaction::TxWitness()});
-  EXPECT_TRUE(tx.IsSigned());
 }
 
 TEST(CardanoTransaction, TotalInputsAmount) {
