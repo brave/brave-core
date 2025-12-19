@@ -19,8 +19,8 @@
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -95,8 +95,7 @@ CommandSource::CommandResults WindowCommandSource::GetCommands(
     const std::u16string& input,
     Browser* browser) const {
   CommandSource::CommandResults results;
-  BrowserList* browser_list = BrowserList::GetInstance();
-  if (browser_list->size() < 2) {
+  if (GlobalBrowserCollection::GetInstance()->GetSize() < 2) {
     return results;
   }
   FuzzyFinder finder(input);
