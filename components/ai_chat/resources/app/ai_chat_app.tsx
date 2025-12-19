@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-
+import './load_time_data'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -28,24 +28,62 @@ import Metrics from './api/metrics'
 import BookmarksPageHandler from './api/bookmarks_page_handler'
 import HistoryUIHandler from './api/history_ui_handler'
 import UIHandler from './api/ui_handler'
-import './load_time_data'
+import ModelStore from './api/stores/model_store'
+import MemoryStore from './api/stores/memory_store'
+
 import type { ConversationBindings } from '../page/api/bind_conversation'
 import createConversationAPI from '../page/api/conversation_api'
 import { UntrustedConversationContextProvider } from '../untrusted_conversation_frame/untrusted_conversation_context'
 import ConversationEntries from '../untrusted_conversation_frame/components/conversation_entries'
 import createUntrustedConversationApi from '../untrusted_conversation_frame/api/untrusted_conversation_api'
 import { Closable } from '$web-common/api'
+import { V1EngineConfig } from './api/engine/v1/v1_engine'
+
+import '@brave/leo/tokens/css/variables.css'
+import '../../../../ui/webui/resources/css/reset.css'
+import '../../../../ui/webui/resources/fonts/manrope.css'
+import '../../../../ui/webui/resources/fonts/poppins.css'
+import '../../../../ui/webui/resources/fonts/inter.css'
+import '../page/styles.css'
+import ConversationHandler from './api/conversation_handler'
 
 setIconBasePath('/nala-icons')
 
 console.log('AI Chat App: Starting up...')
 
+// Create shared stores
+const modelStore = new ModelStore()
+const memoryStore = new MemoryStore()
+
+// Engine configuration - uses the shared stores
+const engineConfig: V1EngineConfig = {
+  apiEndpoint: 'http://127.0.0.1:8000/v1/conversation',
+  contentSizeLargeToolUseEvent: 10000,
+  maxCountLargeToolUseEvents: 2,
+
+  modelStore,
+  memoryStore,
+
+  modelName: modelStore.getModelNameByKey(modelStore.getDefaultModelKey())!,
+
+  // Get SKU credential
+  getCredential: undefined,
+
+  // Will default to US
+  systemLanguage: undefined,
+}
+
 // Create app versions of Interfaces
-const service = new Service()
+const service = new Service({
+  engineConfig,
+  modelStore,
+})
 const metrics = new Metrics()
 const bookmarksPageHandler = new BookmarksPageHandler()
 const historyUIHandler = new HistoryUIHandler()
-const uiHandler = new UIHandler()
+const uiHandler = new UIHandler({
+  memoryStore,
+})
 
 // Feed to API factory
 const aiChat = createAIChatAPI(
@@ -72,6 +110,7 @@ function bindNewConversation(aiChat: AIChatAPI['api']): ConversationBindings {
   conversationHandler.setObserver(conversationAPI.conversationUIObserver)
 
   return {
+    conversationUuid: conversationHandler.conversationUuid,
     conversationHandler,
     close: conversationAPI.close,
     api: conversationAPI.api,
@@ -86,12 +125,17 @@ function bindConversation(
     throw new Error('tab-default conversation not supported on this platform')
   }
 
-  const conversationHandler = service.getConversationHandler(id)
+  let conversationHandler = service.getConversationHandler(id)
+  if (!conversationHandler) {
+    console.warn(`No conversation with ID ${id}, making a new one`)
+    conversationHandler = service.newConversation()
+  }
   const conversationAPI = createConversationAPI(conversationHandler)
 
   conversationHandler.setObserver(conversationAPI.conversationUIObserver)
 
   return {
+    conversationUuid: conversationHandler.conversationUuid,
     conversationHandler,
     close: conversationAPI.close,
     api: conversationAPI.api,
@@ -147,11 +191,16 @@ function ConversationEntriesApp(props: ConversationEntriesProps) {
   const activeChat = useActiveChat()
 
   const conversationEntriesApi = React.useMemo(() => {
-    return createUntrustedConversationApi(
-      activeChat.conversationHandler as unknown as Closable<Mojom.UntrustedConversationHandlerInterface>,
+    const conversationHandler =
+      activeChat.conversationHandler as unknown as ConversationHandler
+    const api = createUntrustedConversationApi(
+      conversationHandler,
       uiHandler,
       aiChat.conversationEntriesFrameObserver as Closable<Mojom.ParentUIFrameInterface>,
     )
+    conversationHandler.setEntriesObserver(api.conversationObserver)
+    uiHandler.bindUntrustedUIInterface(api.uiObserver)
+    return api
   }, [activeChat.conversationHandler])
 
   React.useEffect(() => {
