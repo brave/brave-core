@@ -158,33 +158,40 @@ void CandleService::BindEmbeddingGemma(
   TryLoadModel();
 }
 
-void CandleService::GetDefaultModelPath(GetDefaultModelPathCallback callback) {
-  // Use the local_models_updater to get the model path
+void CandleService::LoadModelFiles() {
+  if (!embedding_gemma_remote_) {
+    DVLOG(0) << "Embedding Gemma interface not bound";
+    OnModelFilesLoaded(false);
+    return;
+  }
+
+  // Get model file paths from LocalModelsUpdaterState
+  base::FilePath weights_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModel();
+  base::FilePath weights_dense1_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense1();
+  base::FilePath weights_dense2_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense2();
+  base::FilePath tokenizer_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaTokenizer();
+  base::FilePath config_path =
+      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaConfig();
+
   const base::FilePath& model_dir =
       LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModelDir();
 
   if (model_dir.empty()) {
-    DVLOG(1) << "CandleService: Model directory not set in updater state";
-    std::move(callback).Run(std::nullopt);
+    DVLOG(0) << "CandleService: Model directory not set in updater state";
+    OnModelFilesLoaded(false);
     return;
   }
 
-  std::move(callback).Run(model_dir);
-}
+  // Store model directory for potential retries
+  pending_model_path_ = model_dir;
 
-void CandleService::LoadModelFiles(const base::FilePath& weights_path,
-                                   const base::FilePath& weights_dense1_path,
-                                   const base::FilePath& weights_dense2_path,
-                                   const base::FilePath& tokenizer_path,
-                                   const base::FilePath& config_path,
-                                   LoadModelFilesCallback callback) {
-  if (!embedding_gemma_remote_) {
-    DVLOG(0) << "Embedding Gemma interface not bound";
-    std::move(callback).Run(false);
-    return;
-  }
-
-  DVLOG(1) << "Loading Embedding Gemma model files from specified paths...";
+  DVLOG(1) << "Loading Embedding Gemma model files (attempt "
+           << (model_load_retry_count_ + 1) << "/" << kMaxModelLoadRetries
+           << "):";
   DVLOG(1) << "Weights: " << weights_path;
   DVLOG(1) << "Weights Dense1: " << weights_dense1_path;
   DVLOG(1) << "Weights Dense2: " << weights_dense2_path;
@@ -200,7 +207,7 @@ void CandleService::LoadModelFiles(const base::FilePath& weights_path,
                      weights_dense1_path, weights_dense2_path, tokenizer_path,
                      config_path),
       base::BindOnce(&CandleService::OnEmbeddingGemmaModelFilesLoaded,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CandleService::Embed(const std::string& text, EmbedCallback callback) {
@@ -221,18 +228,19 @@ void CandleService::Embed(const std::string& text, EmbedCallback callback) {
 }
 
 void CandleService::OnEmbeddingGemmaModelFilesLoaded(
-    LoadModelFilesCallback callback,
     mojom::ModelFilesPtr model_files) {
   DVLOG(3) << "CandleService::OnEmbeddingGemmaModelFilesLoaded called";
 
   if (!model_files) {
     DVLOG(0) << "Failed to load embedding gemma model files from disk";
-    std::move(callback).Run(false);
+    OnModelFilesLoaded(false);
     return;
   }
 
   DVLOG(3) << "Calling embedding_gemma_remote_->Init()...";
-  embedding_gemma_remote_->Init(std::move(model_files), std::move(callback));
+  embedding_gemma_remote_->Init(
+      std::move(model_files), base::BindOnce(&CandleService::OnModelFilesLoaded,
+                                             weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CandleService::DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -279,7 +287,7 @@ void CandleService::TryLoadModel() {
   }
 
   DVLOG(3) << "CandleService: Both WASM and component ready, loading model...";
-  LoadWasmModel();
+  LoadModelFiles();
 }
 
 void CandleService::Shutdown() {
@@ -317,54 +325,6 @@ void CandleService::CloseWasmWebContents() {
   }
 }
 
-void CandleService::LoadWasmModel() {
-  DVLOG(3) << "CandleService: Loading EmbeddingGemma model files...";
-
-  // Get default model path and load model files
-  GetDefaultModelPath(base::BindOnce(&CandleService::OnGotDefaultModelPath,
-                                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void CandleService::OnGotDefaultModelPath(
-    const std::optional<base::FilePath>& model_path) {
-  if (!model_path.has_value()) {
-    DVLOG(0) << "CandleService: No default model path provided";
-    return;
-  }
-
-  DVLOG(3) << "CandleService: Default model path: " << model_path.value();
-
-  // Store model path for potential retries
-  pending_model_path_ = model_path.value();
-
-  // Build paths for model files - use the files from local_models_updater
-  base::FilePath weights_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaModel();
-  base::FilePath weights_dense1_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense1();
-  base::FilePath weights_dense2_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaDense2();
-  base::FilePath tokenizer_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaTokenizer();
-  base::FilePath config_path =
-      LocalModelsUpdaterState::GetInstance()->GetEmbeddingGemmaConfig();
-
-  DVLOG(3) << "CandleService: Loading model files (attempt "
-           << (model_load_retry_count_ + 1) << "/" << kMaxModelLoadRetries
-           << "):";
-  DVLOG(3) << "  Weights: " << weights_path;
-  DVLOG(3) << "  Tokenizer: " << tokenizer_path;
-  DVLOG(3) << "  Weights Dense1: " << weights_dense1_path;
-  DVLOG(3) << "  Weights Dense2: " << weights_dense2_path;
-  DVLOG(3) << "  Config: " << config_path;
-
-  // Load the model files
-  LoadModelFiles(weights_path, weights_dense1_path, weights_dense2_path,
-                 tokenizer_path, config_path,
-                 base::BindOnce(&CandleService::OnModelFilesLoaded,
-                                weak_ptr_factory_.GetWeakPtr()));
-}
-
 void CandleService::OnModelFilesLoaded(bool success) {
   DVLOG(3) << "CandleService::OnModelFilesLoaded called with success="
            << success;
@@ -388,7 +348,7 @@ void CandleService::OnModelFilesLoaded(bool success) {
       DVLOG(1) << "CandleService: Failed to load model (attempt "
                << model_load_retry_count_ << "/" << kMaxModelLoadRetries
                << "). Retrying in 100ms...";
-      RetryLoadWasmModel();
+      RetryLoadModel();
     } else {
       DVLOG(0) << "CandleService: Failed to load EmbeddingGemma model after "
                << kMaxModelLoadRetries << " attempts. "
@@ -400,12 +360,12 @@ void CandleService::OnModelFilesLoaded(bool success) {
   }
 }
 
-void CandleService::RetryLoadWasmModel() {
+void CandleService::RetryLoadModel() {
   // Post a delayed task to retry after 100ms
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
-      base::BindOnce(&CandleService::OnGotDefaultModelPath,
-                     weak_ptr_factory_.GetWeakPtr(), pending_model_path_),
+      base::BindOnce(&CandleService::LoadModelFiles,
+                     weak_ptr_factory_.GetWeakPtr()),
       base::Milliseconds(100));
 }
 

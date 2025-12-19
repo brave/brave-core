@@ -19,16 +19,6 @@ struct ModelFiles {
 interface CandleService {
   BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
 
-  // Get the default model directory path
-  GetDefaultModelPath() => (mojo_base.mojom.FilePath? model_path);
-
-  // Load model files from the specified paths and initialize the model
-  LoadModelFiles(mojo_base.mojom.FilePath weights_path,
-                 mojo_base.mojom.FilePath weights_dense1_path,
-                 mojo_base.mojom.FilePath weights_dense2_path,
-                 mojo_base.mojom.FilePath tokenizer_path,
-                 mojo_base.mojom.FilePath config_path) => (bool success);
-
   // Generate embeddings for the given text
   Embed(string text) => (array<double> embedding);
 };

@@ -44,15 +44,6 @@ class CandleService : public KeyedService,
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
-  void GetDefaultModelPath(GetDefaultModelPathCallback callback) override;
-
-  void LoadModelFiles(const base::FilePath& weights_path,
-                      const base::FilePath& weights_dense1_path,
-                      const base::FilePath& weights_dense2_path,
-                      const base::FilePath& tokenizer_path,
-                      const base::FilePath& config_path,
-                      LoadModelFilesCallback callback) override;
-
   void Embed(const std::string& text, EmbedCallback callback) override;
 
  private:
@@ -66,13 +57,10 @@ class CandleService : public KeyedService,
   // KeyedService:
   void Shutdown() override;
 
-  void OnEmbeddingGemmaModelFilesLoaded(LoadModelFilesCallback callback,
-                                        mojom::ModelFilesPtr model_files);
-
-  void LoadWasmModel();
-  void OnGotDefaultModelPath(const std::optional<base::FilePath>& model_path);
+  void LoadModelFiles();
+  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
   void OnModelFilesLoaded(bool success);
-  void RetryLoadWasmModel();
+  void RetryLoadModel();
   void CloseWasmWebContents();
 
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
