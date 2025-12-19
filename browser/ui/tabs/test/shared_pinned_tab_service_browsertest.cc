@@ -16,6 +16,7 @@
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -309,7 +310,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
 
   // Then the window should be closed
   WaitUntil(base::BindRepeating(
-      []() { return BrowserList::GetInstance()->size() == 1; }));
+      []() { return chrome::GetTotalBrowserCount() == 1; }));
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PreferenceChanged) {
@@ -388,8 +389,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
 
   // Then only the target browser should be left with shared contents.
   auto* browser_list = BrowserList::GetInstance();
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return browser_list->size() == 1u; }));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return chrome::GetTotalBrowserCount() == 1u; }));
   EXPECT_EQ(browser_1, *browser_list->begin());
   browser_1->window()->Show();
   WaitUntil(base::BindLambdaForTesting([&]() {
