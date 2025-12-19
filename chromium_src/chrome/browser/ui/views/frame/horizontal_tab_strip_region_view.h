@@ -12,6 +12,9 @@
   Unused_IsPositionInWindowCaption() {                              \
     return false;                                                   \
   }                                                                 \
+  views::Button* new_tab_button() {                                 \
+    return new_tab_button_;                                         \
+  }                                                                 \
   friend class BraveVerticalTabStripRegionView;                     \
   friend class BraveTabStrip;                                       \
   friend class BraveHorizontalTabStripRegionView;                   \
