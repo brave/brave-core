@@ -17,7 +17,6 @@ const syncUtil = require('../lib/syncUtils')
 
 program
   .version(process.env.npm_package_version)
-  .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')
   .option(
@@ -88,10 +87,10 @@ async function RunCommand() {
     program.init
     || program.target_os
     || program.target_arch
-    || !fs.existsSync(config.rootGclientFile)
+    || !fs.existsSync(config.gclientFile)
     || config.isCI
   ) {
-    syncUtil.writeRootGclientFile(targetOSList, targetArchList)
+    syncUtil.writeGclientConfig(targetOSList, targetArchList)
   }
 
   if (config.isCI) {
