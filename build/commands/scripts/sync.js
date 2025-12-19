@@ -95,15 +95,15 @@ async function RunCommand() {
   config.update(program)
 
   if (
-    program.init
-    || config.updateGclientConfig
-    || !fs.existsSync(config.gclientFile)
+    config.disableGclientConfigUpdate
+    && fs.existsSync(config.gclientFile)
+    && !program.init
   ) {
-    syncUtil.writeGclientConfig(targetOSList, targetArchList)
-  } else if (!config.updateGclientConfig) {
     Log.status(
-      `Skipping ${config.gclientFile} update (disabled by update_gclient_config=false)`,
+      `Skipping ${config.gclientFile} update (disable_gclient_config_update=true)`,
     )
+  } else {
+    syncUtil.writeGclientConfig(targetOSList, targetArchList)
   }
 
   if (config.isCI) {
