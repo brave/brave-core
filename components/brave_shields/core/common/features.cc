@@ -100,10 +100,6 @@ BASE_FEATURE(kBraveIOSEnableFarblingPlugins,
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              base::FEATURE_DISABLED_BY_DEFAULT);
-// when enabled, brave will prompt for permission on sites which want to connect
-// to localhost.
-BASE_FEATURE(kBraveLocalhostAccessPermission,
-             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 BASE_FEATURE(kBraveDarkModeBlock,
              base::FEATURE_ENABLED_BY_DEFAULT);

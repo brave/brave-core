@@ -989,14 +989,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                                  kBraveGoogleSignInPermission),                \
       },                                                                       \
       {                                                                        \
-          "brave-localhost-access-permission",                                 \
-          "Enable Localhost access permission prompt",                         \
-          "Enable permissioning access to localhost connections",              \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveLocalhostAccessPermission),       \
-      },                                                                       \
-      {                                                                        \
           "brave-extension-network-blocking",                                  \
           "Enable extension network blocking",                                 \
           "Enable blocking for network requests initiated by extensions",      \
