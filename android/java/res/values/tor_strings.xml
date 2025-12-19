@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Tor-related string resources -->
+<resources>
+    <!-- Menu and Tab -->
+    <string name="brave_new_tor_tab">New Private Tab with Tor</string>
+    <string name="brave_tor_tab_header">Private with Tor</string>
+    
+    <!-- Connection Status -->
+    <string name="brave_tor_connecting">Connecting to Tor network…</string>
+    <string name="brave_tor_connected">✓ Connected to Tor</string>
+    <string name="brave_tor_disconnected">Not connected to Tor</string>
+    
+    <!-- Features -->
+    <string name="brave_tor_traffic_routed">Traffic Routed Through Tor</string>
+    <string name="brave_tor_traffic_routed_desc">Your browsing traffic is encrypted and routed through multiple Tor relays around the world.</string>
+    
+    <string name="brave_tor_ip_hidden">Your IP Address is Hidden</string>
+    <string name="brave_tor_ip_hidden_desc">Websites you visit cannot see your real IP address. They only see the IP of the Tor exit node.</string>
+    
+    <string name="brave_tor_no_history">No Traces Left Behind</string>
+    <string name="brave_tor_no_history_desc">Browsing history, cookies, and site data are automatically cleared when you close Tor tabs.</string>
+    
+    <!-- Actions -->
+    <string name="brave_tor_new_identity">New Tor Identity</string>
+</resources>

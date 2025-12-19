@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<org.chromium.chrome.browser.ntp.TorNewTabPageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ntp_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:contentDescription="@string/brave_new_tor_tab">
+
+    <org.chromium.chrome.browser.ntp.NewTabPageScrollView
+        android:id="@+id/ntp_scrollview"
+        android:background="@drawable/tor_tab_gradient_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="9dp"
+        android:fillViewport="true"
+        android:requiresFadingEdge="vertical" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingVertical="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="32dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="32dp" />
+
+            <!-- Tor Logo -->
+            <ImageView
+                android:id="@+id/new_tab_tor_icon"
+                android:layout_width="@dimen/new_tab_page_incognito_logo_size"
+                android:layout_height="@dimen/new_tab_page_incognito_logo_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_tor_onion"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="@+id/title"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/title"
+                />
+
+            <TextView
+                android:id="@+id/title"
+                android:textStyle="bold"
+                android:textSize="@dimen/new_tab_page_incognito_title_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_tor_tab_header"
+                android:textColor="@color/brave_white"
+                android:layout_marginStart="14dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tv_connection_status"
+                app:layout_constraintStart_toEndOf="@+id/new_tab_tor_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <!-- Connection Status -->
+            <TextView
+                android:id="@+id/tv_connection_status"
+                style="@style/DefaultSemibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="48dp"
+                android:text="@string/brave_tor_connecting"
+                android:textColor="#9B59B6"
+                android:drawablePadding="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_first_title"
+                app:layout_constraintStart_toStartOf="@id/guideline_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <!-- Feature 1: Traffic Routed -->
+            <ImageView
+                android:id="@+id/iv_first_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_antenna"
+                app:layout_constraintTop_toTopOf="@+id/tv_first_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_first_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_first_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_tor_traffic_routed"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/tv_connection_status"
+                app:layout_constraintBottom_toTopOf="@+id/tv_first_description"
+                app:layout_constraintStart_toEndOf="@id/iv_first_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <TextView
+                android:id="@+id/tv_first_description"
+                style="@style/DefaultRegular"
+                android:layout_marginBottom="32dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_tor_traffic_routed_desc"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_second_title"
+                app:layout_constraintStart_toStartOf="@id/tv_first_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_first_title"
+                />
+
+            <!-- Feature 2: IP Hidden -->
+            <ImageView
+                android:id="@+id/iv_second_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_mask"
+                app:layout_constraintTop_toTopOf="@+id/tv_second_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_second_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_second_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_tor_ip_hidden"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/tv_first_description"
+                app:layout_constraintBottom_toTopOf="@+id/tv_second_description"
+                app:layout_constraintStart_toEndOf="@id/iv_second_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <TextView
+                android:id="@+id/tv_second_description"
+                style="@style/DefaultRegular"
+                android:layout_marginBottom="32dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_tor_ip_hidden_desc"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_title"
+                app:layout_constraintBottom_toTopOf="@+id/tv_third_title"
+                app:layout_constraintStart_toStartOf="@id/tv_second_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_second_title"
+                />
+
+            <!-- Feature 3: No History -->
+            <ImageView
+                android:id="@+id/iv_third_icon"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_width="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_height="@dimen/new_tab_page_incognito_icon_size"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/product_private_layer_list"
+                app:layout_constraintTop_toTopOf="@+id/tv_third_title"
+                app:layout_constraintStart_toStartOf="@+id/guideline_begin"
+                app:layout_constraintEnd_toStartOf="@+id/tv_third_title"
+                />
+
+            <TextView
+                android:id="@+id/tv_third_title"
+                style="@style/DefaultSemibold"
+                app:layout_constraintWidth_max="460dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_tor_no_history"
+                android:textColor="@color/primitive_private_window_90"
+                app:layout_constraintTop_toBottomOf="@+id/tv_second_description"
+                app:layout_constraintBottom_toTopOf="@+id/tv_third_description"
+                app:layout_constraintStart_toEndOf="@id/iv_third_icon"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <TextView
+                android:id="@+id/tv_third_description"
+                style="@style/DefaultRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/brave_tor_no_history_desc"
+                android:textColor="@color/primitive_private_window_80"
+                app:layout_constraintTop_toBottomOf="@+id/tv_third_title"
+                app:layout_constraintBottom_toTopOf="@+id/btn_new_identity"
+                app:layout_constraintStart_toStartOf="@id/tv_third_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_third_title"
+                />
+
+            <!-- New Identity Button -->
+            <TextView
+                android:id="@+id/btn_new_identity"
+                style="@style/DefaultSemibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/brave_tor_new_identity"
+                android:textColor="#9B59B6"
+                android:padding="12dp"
+                android:background="@drawable/transparent_bg_bordered"
+                app:layout_constraintTop_toBottomOf="@+id/tv_third_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </org.chromium.chrome.browser.ntp.NewTabPageScrollView>
+
+</org.chromium.chrome.browser.ntp.TorNewTabPageView>

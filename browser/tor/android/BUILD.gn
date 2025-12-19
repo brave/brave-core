@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/tor/buildflags/buildflags.gni")
+
+if (is_android && enable_tor) {
+  source_set("android") {
+    sources = [
+      "tor_service_bridge.cc",
+      "tor_service_bridge.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/browser/tor:jni_headers",
+      "//brave/net/proxy_resolution",
+      "//url",
+    ]
+  }
+
+  # Generate JNI header for TorServiceBridge
+  generate_jni("jni_headers") {
+    sources = [
+      "//brave/android/java/org/chromium/chrome/browser/tor/TorServiceBridge.java",
+    ]
+  }
+}

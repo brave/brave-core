@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
+import org.chromium.chrome.browser.tor.TorTabManager;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.util.ColorUtils;
@@ -85,16 +86,13 @@ public class TabUtils {
         }
 
         Tab currentTab = locationBarModel != null ? locationBarModel.getTab() : null;
-        BookmarkModel bookmarkModel =
-                bookmarkModelSupplier != null ? bookmarkModelSupplier.get() : null;
-        boolean isBookmarked =
-                currentTab != null
-                        && bookmarkModel != null
-                        && bookmarkModel.hasBookmarkIdForTab(currentTab);
-        boolean editingAllowed =
-                currentTab == null
-                        || bookmarkModel == null
-                        || bookmarkModel.isEditBookmarksEnabled();
+        BookmarkModel bookmarkModel = bookmarkModelSupplier != null ? bookmarkModelSupplier.get() : null;
+        boolean isBookmarked = currentTab != null
+                && bookmarkModel != null
+                && bookmarkModel.hasBookmarkIdForTab(currentTab);
+        boolean editingAllowed = currentTab == null
+                || bookmarkModel == null
+                || bookmarkModel.isEditBookmarksEnabled();
 
         MenuCompat.setGroupDividerEnabled(popup.getMenu(), true);
 
@@ -146,8 +144,7 @@ public class TabUtils {
                             BraveActivity activity_final = activity;
                             bookmarkModel.finishLoadingBookmarkModel(
                                     () -> {
-                                        BookmarkId bookmarkId =
-                                                bookmarkModel.getUserBookmarkIdForTab(currentTab);
+                                        BookmarkId bookmarkId = bookmarkModel.getUserBookmarkIdForTab(currentTab);
                                         if (bookmarkId != null) {
                                             bookmarkManagerOpener.startEditActivity(
                                                     activity_final,
@@ -191,6 +188,8 @@ public class TabUtils {
                         openNewTab(braveActivity, false);
                     } else if (id == R.id.new_incognito_tab_menu_id) {
                         openNewTab(braveActivity, true);
+                    } else if (id == R.id.new_tor_tab_menu_id) {
+                        openNewTorTab(braveActivity);
                     }
                     return true;
                 }
@@ -204,8 +203,7 @@ public class TabUtils {
     public static void openNewTab() {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            boolean isIncognito =
-                    braveActivity != null && braveActivity.getCurrentTabModel().isIncognito();
+            boolean isIncognito = braveActivity != null && braveActivity.getCurrentTabModel().isIncognito();
             openNewTab(braveActivity, isIncognito);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openNewTab " + e);
@@ -213,7 +211,8 @@ public class TabUtils {
     }
 
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
-        if (braveActivity == null) return;
+        if (braveActivity == null)
+            return;
 
         ObservableSupplier<TabModelSelector> supplier = braveActivity.getTabModelSelectorSupplier();
         TabModelSelector selector = supplier.get();
@@ -222,6 +221,34 @@ public class TabUtils {
         }
         selector.getModel(isIncognito).commitAllTabClosures();
         braveActivity.getTabCreator(isIncognito).launchNtp(TabLaunchType.FROM_CHROME_UI);
+    }
+
+    /**
+     * Opens a new Private Tab with Tor.
+     * Starts Tor service if not running and opens an incognito tab that routes
+     * through Tor.
+     */
+    private static void openNewTorTab(BraveActivity braveActivity) {
+        if (braveActivity == null)
+            return;
+
+        // Notify TorTabManager that a new Tor tab is being opened
+        TorTabManager.getInstance().onTorTabOpened();
+
+        // Open an incognito tab (Tor tabs are a special type of incognito)
+        // The TorService will be started by TorTabManager and proxy will be applied
+        ObservableSupplier<TabModelSelector> supplier = braveActivity.getTabModelSelectorSupplier();
+        TabModelSelector selector = supplier.get();
+        if (selector == null) {
+            return;
+        }
+        selector.getModel(true).commitAllTabClosures();
+        // Launch standard NTP but with a query param that triggers the Tor UI in
+        // BraveNewTabPage
+        braveActivity.getTabCreator(true).launchUrl("chrome://newtab/?tor-newtab", TabLaunchType.FROM_CHROME_UI);
+
+        // TODO: Display Tor NTP instead of regular incognito NTP
+        // TODO: Configure network to use SOCKS5 proxy from TorService
     }
 
     public static void openUrlInNewTab(boolean isIncognito, String url) {
@@ -237,8 +264,7 @@ public class TabUtils {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
 
-            ObservableSupplier<TabModelSelector> supplier =
-                    braveActivity.getTabModelSelectorSupplier();
+            ObservableSupplier<TabModelSelector> supplier = braveActivity.getTabModelSelectorSupplier();
             TabModelSelector selector = supplier.get();
 
             if (selector != null && braveActivity.getActivityTab() != null) {
@@ -299,8 +325,10 @@ public class TabUtils {
     }
 
     /**
-     * Brings the ChromeTabbedActivity to the foreground of the screen. Creates an intent that
-     * clears the activity stack and brings ChromeTabbedActivity to the top with ACTION_VIEW.
+     * Brings the ChromeTabbedActivity to the foreground of the screen. Creates an
+     * intent that
+     * clears the activity stack and brings ChromeTabbedActivity to the top with
+     * ACTION_VIEW.
      *
      * @param activity The activity context used to create and start the intent
      */
@@ -313,8 +341,9 @@ public class TabUtils {
 
     /**
      * Open link in a (normal/non-incognito) tab
+     * 
      * @param activity packageContext/source of the intent
-     * @param link to be opened
+     * @param link     to be opened
      */
     public static void openLinkWithFocus(Activity activity, String link) {
         TabUtils.openUrlInNewTab(false, link);
@@ -322,8 +351,10 @@ public class TabUtils {
     }
 
     /**
-     * Opens a URL in a new or existing tab using BraveActivity. This method attempts to open the
-     * URL in BraveActivity and bring it to the foreground. If BraveActivity cannot be found, logs
+     * Opens a URL in a new or existing tab using BraveActivity. This method
+     * attempts to open the
+     * URL in BraveActivity and bring it to the foreground. If BraveActivity cannot
+     * be found, logs
      * an error.
      *
      * @param url The URL to open in BraveActivity
@@ -343,22 +374,22 @@ public class TabUtils {
      * Open link in a custom tab
      *
      * @param context packageContext/source of the intent
-     * @param url to be opened
+     * @param url     to be opened
      */
     public static void openUrlInCustomTab(Context context, String url) {
-        CustomTabsIntent customTabIntent =
-                new CustomTabsIntent.Builder()
-                        .setShowTitle(true)
-                        .setColorScheme(ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK
-                                                                        : COLOR_SCHEME_LIGHT)
-                        .build();
+        CustomTabsIntent customTabIntent = new CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .setColorScheme(ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK
+                        : COLOR_SCHEME_LIGHT)
+                .build();
         customTabIntent.intent.setData(Uri.parse(url));
 
         Intent intent = LaunchIntentDispatcher.createCustomTabActivityIntent(
                 context, customTabIntent.intent);
         intent.setPackage(context.getPackageName());
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-        if (!(context instanceof Activity)) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (!(context instanceof Activity))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
@@ -370,17 +401,17 @@ public class TabUtils {
                 && tab.getWebContents() != null
                 && tab.getWebContents().getNavigationController() != null
                 && tab.getWebContents().getNavigationController().getVisibleEntry() != null) {
-            int transition =
-                    tab.getWebContents()
-                            .getNavigationController()
-                            .getVisibleEntry()
-                            .getTransition();
+            int transition = tab.getWebContents()
+                    .getNavigationController()
+                    .getVisibleEntry()
+                    .getTransition();
             return transition;
         }
         return 0;
     }
 
     private static void tintIcon(@Nullable Drawable icon, int color) {
-        if (icon != null) icon.setTint(color);
+        if (icon != null)
+            icon.setTint(color);
     }
 }

@@ -67,3 +67,10 @@ source_set("util") {
     "//content/public/browser",
   ]
 }
+
+# Android-specific Tor support
+if (is_android) {
+  source_set("tor_android") {
+    deps = [ "//brave/browser/tor/android" ]
+  }
+}

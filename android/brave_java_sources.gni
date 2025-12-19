@@ -265,6 +265,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NtpUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/OnBraveNtpListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/SponsoredRichMediaWebView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/TorNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/BackgroundImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/ImageCredit.java",
@@ -499,6 +500,12 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/promo/SearchWidgetPromoPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/utils/BraveSearchWidgetUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/youtube_script_injector/BraveYouTubeScriptInjectorNativeHelper.java",
+
+  # Tor service files for Private Window with Tor
+  "../../brave/android/java/org/chromium/chrome/browser/tor/TorProxyHelper.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tor/TorService.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tor/TorServiceBridge.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tor/TorTabManager.java",
 ]
 
 brave_java_sources += brave_ads_java_sources
@@ -555,3 +562,11 @@ brave_java_base_module_deps = [
 ]
 
 brave_java_base_module_deps += brave_java_base_module_billing_deps
+brave_java_base_module_deps += [
+  "//components/browser_ui/accessibility/android:page_zoom_utils_java",
+  "//third_party/android_deps:material_design_java",
+  "//third_party/androidx:androidx_annotation_annotation_java",
+  "//third_party/androidx:androidx_appcompat_appcompat_java",
+  "//third_party/zxing:zxing_java",
+]
+

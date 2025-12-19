@@ -11,4 +11,6 @@
           android:title="@string/menu_new_tab" />
     <item android:id="@id/new_incognito_tab_menu_id"
           android:title="@string/brave_new_private_tab" />
+    <item android:id="@+id/new_tor_tab_menu_id"
+          android:title="@string/brave_new_tor_tab" />
 </menu>

@@ -123,21 +123,20 @@ public class BraveNewTabPage extends NewTabPage {
         if (tabModelSelector != null) {
             for (TabModel tabModel : tabModelSelector.getModels()) {
                 if (tabModel.getProfile() != null) {
-                    TemplateUrlService templateUrlService =
-                            TemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
+                    TemplateUrlService templateUrlService = TemplateUrlServiceFactory
+                            .getForProfile(tabModel.getProfile());
                     templateUrlService.removeObserver(this);
                 }
             }
         }
         // Re-add to the new tab's profile
-        TemplateUrlService templateUrlService =
-                TemplateUrlServiceFactory.getForProfile(
-                        Profile.fromWebContents(assertNonNull(mTab.getWebContents())));
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(
+                Profile.fromWebContents(assertNonNull(mTab.getWebContents())));
         templateUrlService.addObserver(this);
     }
 
     @Override
-    @EnsuresNonNull({"mNewTabPageLayout", "mFeedSurfaceProvider"})
+    @EnsuresNonNull({ "mNewTabPageLayout", "mFeedSurfaceProvider" })
     protected void initializeMainView(
             Activity activity,
             WindowAndroid windowAndroid,
@@ -152,36 +151,39 @@ public class BraveNewTabPage extends NewTabPage {
         assertNonNull(profile);
 
         LayoutInflater inflater = LayoutInflater.from(activity);
-        mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
+        if (url != null && url.contains("tor-newtab")) {
+            mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_tor, null);
+        } else {
+            mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
+        }
 
         assertNonNull(mBrowserControlsStateProvider);
         assertNonNull(mToolbarSupplier);
         assertNonNull(mTabStripHeightSupplier);
         assert !FeedFeatures.isFeedEnabled(profile);
-        FeedSurfaceCoordinator feedSurfaceCoordinator =
-                new BraveFeedSurfaceCoordinator(
-                        activity,
-                        snackbarManager,
-                        windowAndroid,
-                        new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
-                        mNewTabPageLayout,
-                        mBrowserControlsStateProvider.getTopControlsHeight(),
-                        isInNightMode,
-                        this,
-                        profile,
-                        mBottomSheetController,
-                        shareDelegateSupplier,
-                        /* externalScrollableContainerDelegate= */ null,
-                        NewTabPageUtils.decodeOriginFromNtpUrl(url),
-                        PrivacyPreferencesManagerImpl.getInstance(),
-                        mToolbarSupplier,
-                        mConstructedTimeNs,
-                        FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
-                        /* overScrollDisabled= */ false,
-                        /* viewportView= */ null,
-                        /* actionDelegate= */ null,
-                        mTabStripHeightSupplier,
-                        edgeToEdgeControllerSupplier);
+        FeedSurfaceCoordinator feedSurfaceCoordinator = new BraveFeedSurfaceCoordinator(
+                activity,
+                snackbarManager,
+                windowAndroid,
+                new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
+                mNewTabPageLayout,
+                mBrowserControlsStateProvider.getTopControlsHeight(),
+                isInNightMode,
+                this,
+                profile,
+                mBottomSheetController,
+                shareDelegateSupplier,
+                /* externalScrollableContainerDelegate= */ null,
+                NewTabPageUtils.decodeOriginFromNtpUrl(url),
+                PrivacyPreferencesManagerImpl.getInstance(),
+                mToolbarSupplier,
+                mConstructedTimeNs,
+                FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
+                /* overScrollDisabled= */ false,
+                /* viewportView= */ null,
+                /* actionDelegate= */ null,
+                mTabStripHeightSupplier,
+                edgeToEdgeControllerSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
