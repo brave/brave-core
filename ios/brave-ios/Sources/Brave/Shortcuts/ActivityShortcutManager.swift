@@ -169,7 +169,8 @@ public class ActivityShortcutManager: NSObject {
       if Preferences.Privacy.lockWithPasscode.value {
         openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
       } else if Preferences.Privacy.privateBrowsingLock.value {
-        bvc.askForLocalAuthentication(viewType: .external) { success, _ in
+        guard let windowProtection = bvc.windowProtection else { return }
+        bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) { success, _ in
           guard success else { return }
           openExternalNewTab(true, Preferences.General.openKeyboardOnNTPSelection.value)
         }
