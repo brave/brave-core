@@ -336,13 +336,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_FALSE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
