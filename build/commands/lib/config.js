@@ -178,8 +178,7 @@ const Config = function () {
     'repository',
     'url',
   ])
-  this.rootGclientFile = path.join(this.rootDir, '.gclient')
-  this.gclientFile = process.env.BRAVE_GCLIENT_FILE || this.rootGclientFile
+  this.gclientFile = path.join(this.rootDir, '.gclient')
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
   this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
   this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
@@ -932,10 +931,6 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.C) {
     this.__outputDir = options.C
-  }
-
-  if (options.gclient_file && options.gclient_file !== 'default') {
-    this.gclientFile = options.gclient_file
   }
 
   if (options.channel) {

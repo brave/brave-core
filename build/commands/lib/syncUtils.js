@@ -31,7 +31,7 @@ function toGClientConfigItem(name, value, pretty = true) {
   return `${name} = ${pythonLikeValue}\n`
 }
 
-function writeRootGclientFile(
+function writeGclientConfig(
   targetOSList,
   targetArchList,
   onlyChromium = false,
@@ -87,7 +87,7 @@ function writeRootGclientFile(
     }
   }
 
-  util.writeFileIfModified(config.rootGclientFile, out)
+  util.writeFileIfModified(config.gclientFile, out)
 }
 
 function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
@@ -161,7 +161,7 @@ function syncChromium(program) {
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
-    gclientTimestamp: fs.statSync(config.rootGclientFile).mtimeMs.toString(),
+    gclientTimestamp: fs.statSync(config.gclientFile).mtimeMs.toString(),
   }
 
   const chromiumNeedsUpdate = shouldUpdateChromium(
@@ -251,7 +251,7 @@ async function checkInternalDepsEndpoint() {
 }
 
 module.exports = {
-  writeRootGclientFile,
+  writeGclientConfig,
   syncChromium,
   checkInternalDepsEndpoint,
 }
