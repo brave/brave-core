@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
-#include "base/test/run_until.h"
+#include "base/functional/callback_forward.h"
 #include "base/test/task_environment.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -57,7 +57,10 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
 };
 
-TEST_F(PolkadotWalletServiceUnitTest, Initialize) {
+TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
+  // Basic Hello, World style test for getting chain data from the constructor
+  // calls.
+
   url_loader_factory_.ClearResponses();
 
   std::string testnet_url =
@@ -93,11 +96,41 @@ TEST_F(PolkadotWalletServiceUnitTest, Initialize) {
       "result": "Polkadot",
       "id": 1 })");
 
-    EXPECT_TRUE(base::test::RunUntil(
-        [&] { return polkadot_wallet_service->IsInitialized(); }));
+    // Do this twice to prove our fetching and caching layers work.
+    for (int i = 0; i < 2; ++i) {
+      // Testnet chain metadata.
 
-    EXPECT_TRUE(polkadot_wallet_service->testnet_chain_metadata().has_value());
-    EXPECT_TRUE(polkadot_wallet_service->mainnet_chain_metadata().has_value());
+      polkadot_wallet_service->GetChainMetadata(
+          mojom::kPolkadotTestnet,
+          base::BindOnce(
+              [](base::RepeatingClosure quit_closure,
+                 const base::expected<PolkadotChainMetadata, std::string>&
+                     metadata) {
+                EXPECT_TRUE(metadata.has_value());
+                std::move(quit_closure).Run();
+              },
+              task_environment_.QuitClosure()));
+
+      task_environment_.RunUntilQuit();
+    }
+
+    // Do this twice to prove our fetching and caching layers work.
+    for (int i = 0; i < 2; ++i) {
+      // Mainnet chain metadata.
+
+      polkadot_wallet_service->GetChainMetadata(
+          mojom::kPolkadotMainnet,
+          base::BindOnce(
+              [](base::RepeatingClosure quit_closure,
+                 const base::expected<PolkadotChainMetadata, std::string>&
+                     metadata) {
+                EXPECT_TRUE(metadata.has_value());
+                std::move(quit_closure).Run();
+              },
+              task_environment_.QuitClosure()));
+
+      task_environment_.RunUntilQuit();
+    }
   }
 
   url_loader_factory_.ClearResponses();
@@ -120,12 +153,114 @@ TEST_F(PolkadotWalletServiceUnitTest, Initialize) {
       "result": "world",
       "id": 1 })");
 
-    EXPECT_TRUE(base::test::RunUntil(
-        [&] { return polkadot_wallet_service->IsInitialized(); }));
+    {
+      // Testnet chain metadata.
 
-    EXPECT_FALSE(polkadot_wallet_service->testnet_chain_metadata().has_value());
-    EXPECT_FALSE(polkadot_wallet_service->mainnet_chain_metadata().has_value());
+      polkadot_wallet_service->GetChainMetadata(
+          mojom::kPolkadotTestnet,
+          base::BindOnce(
+              [](base::RepeatingCallback<void()> quit_closure,
+                 const base::expected<PolkadotChainMetadata, std::string>&
+                     metadata) {
+                EXPECT_FALSE(metadata.has_value());
+                std::move(quit_closure).Run();
+              },
+              task_environment_.QuitClosure()));
+
+      task_environment_.RunUntilQuit();
+    }
+
+    {
+      // Mainnet chain metadata.
+
+      polkadot_wallet_service->GetChainMetadata(
+          mojom::kPolkadotMainnet,
+          base::BindOnce(
+              [](base::RepeatingCallback<void()> quit_closure,
+                 const base::expected<PolkadotChainMetadata, std::string>&
+                     metadata) {
+                EXPECT_FALSE(metadata.has_value());
+                std::move(quit_closure).Run();
+              },
+              task_environment_.QuitClosure()));
+
+      task_environment_.RunUntilQuit();
+    }
   }
+}
+
+TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
+  // Test callback caching for getting chain names.
+
+  url_loader_factory_.ClearResponses();
+
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  std::string mainnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, shared_url_loader_factory_);
+
+  EXPECT_EQ(url_loader_factory_.NumPending(), 2);
+
+  url_loader_factory_.AddResponse(testnet_url, R"(
+    { "jsonrpc": "2.0",
+      "result": "Westend",
+      "id": 1 })");
+
+  url_loader_factory_.AddResponse(mainnet_url, R"(
+    { "jsonrpc": "2.0",
+      "result": "Polkadot",
+      "id": 1 })");
+
+  int num_requests = 5;
+  for (int i = 0; i < num_requests; ++i) {
+    // Testnet chain metadata.
+    polkadot_wallet_service->GetChainMetadata(
+        mojom::kPolkadotTestnet,
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, int* num_reqs,
+               const base::expected<PolkadotChainMetadata, std::string>&
+                   metadata) {
+              EXPECT_TRUE(*num_reqs > 0);
+              EXPECT_TRUE(metadata.has_value());
+              if (--*num_reqs == 0) {
+                std::move(quit_closure).Run();
+              }
+            },
+            task_environment_.QuitClosure(), &num_requests));
+  }
+  task_environment_.RunUntilQuit();
+
+  num_requests = 5;
+  for (int i = 0; i < num_requests; ++i) {
+    // Mainnet chain metadata.
+    polkadot_wallet_service->GetChainMetadata(
+        mojom::kPolkadotMainnet,
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, int* num_reqs,
+               const base::expected<PolkadotChainMetadata, std::string>&
+                   metadata) {
+              EXPECT_TRUE(*num_reqs > 0);
+              EXPECT_TRUE(metadata.has_value());
+              if (--*num_reqs == 0) {
+                std::move(quit_closure).Run();
+              }
+            },
+            task_environment_.QuitClosure(), &num_requests));
+  }
+  task_environment_.RunUntilQuit();
 }
 
 }  // namespace brave_wallet
