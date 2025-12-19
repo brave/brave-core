@@ -109,6 +109,10 @@ import {
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
 
+// Selectors
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
+
 const emptyPriceList: TokenPriceHistory[] = []
 
 export const PortfolioFungibleAsset = () => {
@@ -161,6 +165,9 @@ export const PortfolioFungibleAsset = () => {
 
   // queries
   const { accounts } = useAccountsQuery()
+
+  // Selectors
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   const { data: selectedAssetsNetwork } = useGetNetworkQuery(
     selectedAssetFromParams ?? skipToken,
@@ -485,11 +492,13 @@ export const PortfolioFungibleAsset = () => {
                   icon='currency-exchange'
                   onClick={() => onClickSwapOrBridge('swap')}
                 />
-                <PortfolioAssetActionButton
-                  text={getLocale('braveWalletBridge')}
-                  icon='web3-bridge'
-                  onClick={() => onClickSwapOrBridge('bridge')}
-                />
+                {!isIOS && (
+                  <PortfolioAssetActionButton
+                    text={getLocale('braveWalletBridge')}
+                    icon='web3-bridge'
+                    onClick={() => onClickSwapOrBridge('bridge')}
+                  />
+                )}
               </>
             )}
             {isSelectedAssetDepositSupported && (

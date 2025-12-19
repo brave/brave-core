@@ -14,6 +14,7 @@ export const defaultUIState: UIState = {
   transactionProviderErrorRegistry: {},
   isPanel: false,
   isMobile: false,
+  isIOS: false,
 }
 
 // slice

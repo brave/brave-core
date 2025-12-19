@@ -59,6 +59,7 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                               IDR_WALLET_PAGE_HTML);
 
   source->AddBoolean("isMobile", true);
+  source->AddBoolean("isIOS", false);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
