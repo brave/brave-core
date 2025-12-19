@@ -8,6 +8,8 @@
 
 #include <string>
 
+class PrefService;
+
 #include "base/android/scoped_java_ref.h"
 
 namespace tor {
@@ -40,6 +42,9 @@ class TorServiceBridge {
 
   // Sets whether Tor is enabled.
   void SetTorEnabled(bool enabled);
+
+  // Sets whether .onion domains are allowed (for Tor tabs)
+  void SetOnionAllowed(JNIEnv* env, jboolean allowed);
 
   // Gets the current proxy URI.
   std::string GetProxyUri() const;

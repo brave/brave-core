@@ -96,6 +96,19 @@ public class TorServiceBridge {
     }
 
     /**
+     * Set whether .onion domains should be allowed.
+     * Called when Tor tabs are opened/closed.
+     *
+     * @param allowed true to allow .onion domains, false to block them
+     */
+    public void setOnionAllowed(boolean allowed) {
+        if (mNativePtr != 0) {
+            TorServiceBridgeJni.get().setOnionAllowed(mNativePtr, allowed);
+            Log.d(TAG, "Onion domains " + (allowed ? "allowed" : "blocked"));
+        }
+    }
+
+    /**
      * Called from native when Tor connection state changes.
      */
     @CalledByNative
@@ -140,5 +153,7 @@ public class TorServiceBridge {
         void setNewTorCircuit(long nativePtr, String url);
 
         boolean isTorEnabled(long nativePtr);
+
+        void setOnionAllowed(long nativePtr, boolean allowed);
     }
 }

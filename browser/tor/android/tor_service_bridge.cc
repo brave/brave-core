@@ -7,7 +7,12 @@
 
 #include "base/android/jni_string.h"
 #include "brave/browser/tor/jni_headers/TorServiceBridge_jni.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 using base::android::ConvertJavaStringToUTF8;
@@ -65,6 +70,16 @@ void TorServiceBridge::SetTorEnabled(bool enabled) {
 
 std::string TorServiceBridge::GetProxyUri() const {
   return proxy_uri_;
+}
+
+void TorServiceBridge::SetOnionAllowed(JNIEnv* env, jboolean allowed) {
+  // When Tor tabs are open, set onion_only_in_tor_windows to false
+  // to allow .onion domains. When all Tor tabs close, set to true.
+  Profile* profile = ProfileManager::GetLastUsedProfile();
+  if (profile && profile->GetPrefs()) {
+    // Setting to false ALLOWS .onion (counterintuitive but matches the pref name)
+    profile->GetPrefs()->SetBoolean(tor::prefs::kOnionOnlyInTorWindows, !allowed);
+  }
 }
 
 // Static methods for global access

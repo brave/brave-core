@@ -79,15 +79,32 @@
                 style="@style/DefaultSemibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="48dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/brave_tor_connecting"
                 android:textColor="#9B59B6"
                 android:drawablePadding="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintBottom_toTopOf="@+id/progress_connection"
+                app:layout_constraintStart_toStartOf="@id/guideline_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                />
+
+            <!-- Connection Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progress_connection"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="200dp"
+                android:layout_height="4dp"
+                android:layout_marginBottom="48dp"
+                android:indeterminate="true"
+                android:progressTint="#9B59B6"
+                android:indeterminateTint="#9B59B6"
+                app:layout_constraintTop_toBottomOf="@+id/tv_connection_status"
                 app:layout_constraintBottom_toTopOf="@+id/tv_first_title"
                 app:layout_constraintStart_toStartOf="@id/guideline_begin"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 />
+
 
             <!-- Feature 1: Traffic Routed -->
             <ImageView

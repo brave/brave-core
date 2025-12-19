@@ -16,14 +16,15 @@ import org.chromium.base.ContextUtils;
  */
 public class TorTabManager {
     private static final String TAG = "TorTabManager";
-    
+
     private static TorTabManager sInstance;
-    
+
     private int mTorTabCount = 0;
     private boolean mTorStartedByUs = false;
-    
-    private TorTabManager() {}
-    
+
+    private TorTabManager() {
+    }
+
     /**
      * Get singleton instance
      */
@@ -33,7 +34,7 @@ public class TorTabManager {
         }
         return sInstance;
     }
-    
+
     /**
      * Called when a new Tor tab is opened.
      * Starts Tor service if not already running.
@@ -48,8 +49,13 @@ public class TorTabManager {
             torService.startTor();
             mTorStartedByUs = true;
         }
+
+        // Enable .onion domains when first Tor tab opens
+        if (mTorTabCount == 1) {
+            TorServiceBridge.getInstance().setOnionAllowed(true);
+        }
     }
-    
+
     /**
      * Called when a Tor tab is closed.
      * Stops Tor service when last Tor tab is closed.
@@ -60,49 +66,54 @@ public class TorTabManager {
             mTorTabCount = 0;
         }
         Log.d(TAG, "Tor tab closed. Count: " + mTorTabCount);
-        
-        if (mTorTabCount == 0 && mTorStartedByUs) {
-            Log.i(TAG, "Stopping Tor service - no Tor tabs remaining");
-            TorService.getInstance().stopTor();
-            mTorStartedByUs = false;
-            
+
+        if (mTorTabCount == 0) {
+            // Disable .onion domains when all Tor tabs are closed
+            TorServiceBridge.getInstance().setOnionAllowed(false);
+
+            if (mTorStartedByUs) {
+                Log.i(TAG, "Stopping Tor service - no Tor tabs remaining");
+                TorService.getInstance().stopTor();
+                mTorStartedByUs = false;
+            }
+
             // Clear Tor session data
             clearTorSessionData();
         }
     }
-    
+
     /**
      * Get current count of open Tor tabs
      */
     public int getTorTabCount() {
         return mTorTabCount;
     }
-    
+
     /**
      * Check if any Tor tabs are open
      */
     public boolean hasTorTabs() {
         return mTorTabCount > 0;
     }
-    
+
     /**
      * Clear all Tor session data (cookies, cache, history)
      * Called when last Tor tab is closed.
      */
     private void clearTorSessionData() {
         Log.i(TAG, "Clearing Tor session data");
-        
+
         // TODO: Clear browsing data for Tor profile
         // This should clear:
         // - Cookies
         // - Cache
         // - Session storage
         // - Any temporary files
-        
+
         Context context = ContextUtils.getApplicationContext();
         // Implementation will use BrowsingDataBridge or similar
     }
-    
+
     /**
      * Request new Tor identity (new circuit)
      */
