@@ -853,13 +853,13 @@ const util = {
     )
   },
 
-  runGClient: (args, options = {}, gClientFile = config.gClientFile) => {
-    if (config.gClientVerbose) {
+  runGclient: (args, options = {}, gclientFile = config.gclientFile) => {
+    if (config.gclientVerbose) {
       args.push('--verbose')
     }
     options.cwd = options.cwd || config.rootDir
     options = util.mergeWithDefault(options)
-    options.env.GCLIENT_FILE = gClientFile
+    options.env.GCLIENT_FILE = gclientFile
     util.run('gclient', args, options)
   },
 
