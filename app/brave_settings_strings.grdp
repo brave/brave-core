@@ -963,24 +963,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
     Allowed to use third-party cookies for legacy Google Sign-In
   </message>
-
-  <!-- Localhost access setting -->
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS" desc="Label for localhost site settings.">
-    Localhost access
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK" desc="Label for localhost access site settings.">
-    Sites can request access to localhost resources
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK" desc="Label for localhost access site settings.">
-    Don't allow access to localhost resources
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK_EXCEPTIONS" desc="Label for localhost access site settings.">
-    Not allowed to access localhost resources
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS" desc="Label for localhost access site settings.">
-    Allowed to access localhost resources
-  </message>
-
+  
   <!-- AI chat setting -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT" desc="Label for opening Leo AI chat site settings.">
     Leo AI chat
