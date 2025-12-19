@@ -29,6 +29,10 @@ namespace brave_rewards {
 class RewardsPageHandler;
 }
 
+namespace contextual_search {
+class ContextualSearchSessionHandle;
+}  // namespace contextual_search
+
 class RealboxHandler;
 
 // The Web UI controller for the Brave new tab page.
@@ -60,7 +64,16 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 #endif
 
+  // Returns a reference to the owned contextual search session handle for
+  // `realbox_handler_`.
+  contextual_search::ContextualSearchSessionHandle*
+  GetContextualSessionHandle();
+
  private:
+  // Must outlive `realbox_handler_`.
+  std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
+      session_handle_;
+
   std::unique_ptr<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
       page_handler_;
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
