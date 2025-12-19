@@ -1025,7 +1025,7 @@ void BraveVerticalTabStripRegionView::AnimationEnded(
 void BraveVerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   const bool is_vertical_tabs =
       tabs::utils::ShouldShowBraveVerticalTabs(browser_);
-  auto* original_ntb = original_region_view_->GetNewTabButton();
+  auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);
