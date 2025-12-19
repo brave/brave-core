@@ -356,12 +356,9 @@ AdBlockService::AdBlockService(
   custom_filters_provider_ = std::make_unique<AdBlockCustomFiltersProvider>(
       local_state_, filters_provider_manager_.get());
 
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    localhost_filters_provider_ =
-        std::make_unique<AdBlockLocalhostFiltersProvider>(
-            filters_provider_manager_.get());
-  }
+  localhost_filters_provider_ =
+      std::make_unique<AdBlockLocalhostFiltersProvider>(
+          filters_provider_manager_.get());
 
   default_service_observer_ =
       std::make_unique<SourceProviderObserver>(this, true);

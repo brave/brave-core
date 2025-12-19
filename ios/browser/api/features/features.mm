@@ -161,11 +161,6 @@
       initWithFeature:&brave_shields::features::kBraveDomainBlock1PES];
 }
 
-+ (Feature*)kBraveLocalhostAccessPermission {
-  return [[Feature alloc] initWithFeature:&brave_shields::features::
-                                              kBraveLocalhostAccessPermission];
-}
-
 + (Feature*)kBraveNTPBrandedWallpaper {
   return [[Feature alloc] initWithFeature:&ntp_background_images::features::
                                               kBraveNTPBrandedWallpaper];
