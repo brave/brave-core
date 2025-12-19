@@ -772,24 +772,16 @@ const util = {
       }
       const sisoExplainFile = path.join(outputDir, 'siso_explain')
       if (fs.existsSync(sisoExplainFile)) {
-        const lineLimit = 100
+        const lineLimit = 20
         await Log.progressScopeAsync(
           `siso explain (first ${lineLimit} lines)`,
           async () => {
-            await new Promise((resolve) => {
-              const rl = readline.createInterface({
-                input: fs.createReadStream(sisoExplainFile),
-                crlfDelay: Infinity,
-              })
-              let lineCount = 0
-              rl.on('line', (line) => {
-                console.log(line)
-                if (lineCount++ === lineLimit) {
-                  rl.close()
-                }
-              })
-              rl.on('close', resolve)
-            })
+            for await (const line of util.readLines(
+              sisoExplainFile,
+              lineLimit,
+            )) {
+              console.log(line)
+            }
           },
         )
       }
@@ -1001,6 +993,23 @@ const util = {
       return true
     }
     return false
+  },
+
+  readLines: async function* (filePath, maxLines) {
+    const rl = readline.createInterface({
+      input: fs.createReadStream(filePath),
+      crlfDelay: Infinity,
+    })
+
+    let lineCount = 0
+    for await (const line of rl) {
+      if (maxLines && lineCount >= maxLines) {
+        rl.close()
+        break
+      }
+      yield line
+      lineCount++
+    }
   },
 
   launchDocs: () => {
