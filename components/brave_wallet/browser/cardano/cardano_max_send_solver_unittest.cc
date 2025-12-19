@@ -66,12 +66,13 @@ class CardanoMaxSendSolverUnitTest : public testing::Test {
                 0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, index))
             ->address_string;
 
+    uint32_t id = next_input_id_++;
     CardanoTransaction::TxInput tx_input;
     tx_input.utxo_address = *CardanoAddress::FromString(address);
-    std::string txid_fake = address + base::NumberToString(amount);
+    std::string txid_fake = address + base::NumberToString(id);
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::as_byte_span(txid_fake));
-    tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid.back();
+    tx_input.utxo_outpoint.index = id;
     tx_input.utxo_value = amount;
 
     return tx_input;
@@ -92,6 +93,8 @@ class CardanoMaxSendSolverUnitTest : public testing::Test {
 
   CardanoHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
                             mojom::KeyringId::kCardanoMainnet};
+
+  uint32_t next_input_id_ = 0;
 };
 
 TEST_F(CardanoMaxSendSolverUnitTest, NoInputs) {
@@ -121,8 +124,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
 
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
-    EXPECT_EQ(min_fee, 165237u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 229u);
+    EXPECT_EQ(min_fee, 165457u);
 
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -144,8 +147,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
   // Sending twice of send_amount.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
-    EXPECT_EQ(min_fee, 165237u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 229u);
+    EXPECT_EQ(min_fee, 165457u);
 
     uint32_t total_input = 2 * send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -167,8 +170,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
   // Sending slightly less than send_amount.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
-    EXPECT_EQ(min_fee, 165237u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 229u);
+    EXPECT_EQ(min_fee, 165457u);
 
     uint32_t total_input = send_amount() - 1000 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -190,8 +193,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, NoChangeNeeded) {
   // Sending one tenth of send_amount fails min value req.
   {
     uint32_t min_fee =
-        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 224u);
-    EXPECT_EQ(min_fee, 165237u);
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 230u);
+    EXPECT_EQ(min_fee, 165501u);
 
     uint32_t total_input = send_amount() / 10 + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
@@ -209,8 +212,8 @@ TEST_F(CardanoMaxSendSolverUnitTest, ManyInputs) {
 
   // Fee for typical 1 input -> 1 output transaction.
   uint32_t min_fee =
-      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13880u);
-  EXPECT_EQ(min_fee, 766101u);
+      MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 13870u);
+  EXPECT_EQ(min_fee, 765661u);
 
   {
     uint32_t total_input = 100 * send_amount() + min_fee;
