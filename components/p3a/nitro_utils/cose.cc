@@ -202,9 +202,10 @@ bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
   bssl::CertPathErrors cert_path_errors;
 
   bssl::VerifyCertificateChain(
-      cert_chain, bssl::CertificateTrust::ForTrustAnchor(), this, time_now,
-      bssl::KeyPurpose::ANY_EKU, bssl::InitialExplicitPolicy::kFalse,
-      std::set<bssl::der::Input>(), bssl::InitialPolicyMappingInhibit::kFalse,
+      cert_chain, bssl::TrustAnchor(bssl::CertificateTrust::ForTrustAnchor()),
+      this, time_now, bssl::KeyPurpose::ANY_EKU,
+      bssl::InitialExplicitPolicy::kFalse, std::set<bssl::der::Input>(),
+      bssl::InitialPolicyMappingInhibit::kFalse,
       bssl::InitialAnyPolicyInhibit::kFalse, nullptr, &cert_path_errors);
 
   if (cert_path_errors.ContainsHighSeverityErrors()) {
