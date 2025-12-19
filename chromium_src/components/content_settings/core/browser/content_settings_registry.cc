@@ -242,19 +242,6 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
-  // Register localhost permission default value as Ask.
-  Register(ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
-           "brave_localhost_access", CONTENT_SETTING_ASK,
-           WebsiteSettingsInfo::UNSYNCABLE,
-           /*allowlisted_schemes=*/{},
-           /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
-
   // Register AI chat permission default value as Ask.
   Register(ContentSettingsType::BRAVE_OPEN_AI_CHAT, "brave_open_ai_chat",
            CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,

@@ -50,7 +50,6 @@
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
-  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
   {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},                   \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
@@ -134,9 +133,6 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
-    return true;
-  }
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (type == ContentSettingsType::BRAVE_ETHEREUM) {
     return true;
@@ -162,7 +158,6 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   // Add Brave-specific content settings types
   types.push_back(ContentSettingsType::AUTOPLAY);
   types.push_back(ContentSettingsType::BRAVE_GOOGLE_SIGN_IN);
-  types.push_back(ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
   types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
