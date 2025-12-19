@@ -46,8 +46,45 @@ PolkadotWalletService::PolkadotWalletService(
 
 PolkadotWalletService::~PolkadotWalletService() = default;
 
-bool PolkadotWalletService::IsInitialized() const {
-  return testnet_chain_metadata_ && mainnet_chain_metadata_;
+void PolkadotWalletService::GetChainMetadata(
+    std::string_view chain_id,
+    GetChainMetadataCallback callback) {
+  CHECK(IsPolkadotNetwork(chain_id));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!testnet_chain_metadata_) {
+    // Testnet chain metadata isn't ready yet, defer execution of the callback.
+    testnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    return;
+  }
+
+  if (!mainnet_chain_metadata_) {
+    // Mainnet chain metadata isn't ready yet, defer execution of the callback.
+    mainnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    return;
+  }
+
+  // Manually time-slice here so that the QuitClosure + RunUntilQuit idiom
+  // works in tests.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&PolkadotWalletService::OnGetChainMetadataPost,
+                                weak_ptr_factory_.GetWeakPtr(),
+                                std::string(chain_id), std::move(callback)));
+}
+
+void PolkadotWalletService::OnGetChainMetadataPost(
+    std::string chain_id,
+    GetChainMetadataCallback callback) {
+  CHECK(IsPolkadotNetwork(chain_id));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (chain_id == mojom::kPolkadotTestnet) {
+    return std::move(callback).Run(*testnet_chain_metadata_);
+  }
+
+  if (chain_id == mojom::kPolkadotMainnet) {
+    return std::move(callback).Run(*mainnet_chain_metadata_);
+  }
 }
 
 void PolkadotWalletService::InitializeChainMetadata() {
@@ -102,10 +139,18 @@ void PolkadotWalletService::OnInitializeChainMetadata(
 
   if (chain_id == mojom::kPolkadotTestnet) {
     testnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
+    for (auto& callback : testnet_chain_metadata_callbacks_) {
+      std::move(callback).Run(*testnet_chain_metadata_);
+    }
+    testnet_chain_metadata_callbacks_.clear();
   }
 
   if (chain_id == mojom::kPolkadotMainnet) {
     mainnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
+    for (auto& callback : mainnet_chain_metadata_callbacks_) {
+      std::move(callback).Run(*mainnet_chain_metadata_);
+    }
+    mainnet_chain_metadata_callbacks_.clear();
   }
 }
 
