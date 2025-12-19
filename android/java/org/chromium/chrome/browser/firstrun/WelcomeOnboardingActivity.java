@@ -8,14 +8,20 @@ import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBro
 import static org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils.setDefaultBrowser;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.animation.Animator;
 import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
 import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -36,6 +43,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
@@ -82,10 +90,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private boolean mIsTablet;
     private int mCurrentStep = -1;
 
+    private ConstraintLayout mDefaultConstraintLayout;
+    private ConstraintLayout mVariantBConstraintLayout;
     private View mVLeafAlignTop;
     private View mVLeafAlignBottom;
     private ImageView mIvLeafTop;
     private ImageView mIvLeafBottom;
+    private ImageView mIvBraveSplash;
     private ImageView mIvBrave;
     private ImageView mIvArrowDown;
     private LinearLayout mLayoutCard;
@@ -95,6 +106,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private Button mBtnNegative;
     private CheckBox mCheckboxCrash;
     private CheckBox mCheckboxP3a;
+
+    private String mDayZeroVariant;
 
     private enum CurrentOnboardingPage {
         SET_AS_DEFAULT,
@@ -113,6 +126,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void initializeViews() {
         setContentView(R.layout.activity_welcome_onboarding);
 
+        mDefaultConstraintLayout = findViewById(R.id.onboarding_default_variant);
+        mVariantBConstraintLayout = findViewById(R.id.onboarding_variant_b);
+        mIvBraveSplash = findViewById(R.id.brave_splash);
         mIvLeafTop = findViewById(R.id.iv_leaf_top);
         mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
         mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);
@@ -259,11 +275,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         mCurrentStep++;
-
-        // Uncomment next line to extract day zero variant
-        // for new onboarding flow when it's ready.
-        // final String variant = DayZeroHelper.getDayZeroVariant();
-
         handleOnboardingStepForDefaultVariant(mCurrentStep);
     }
 
@@ -554,21 +565,84 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     @Override
+    public void triggerLayoutInflation() {
+        super.triggerLayoutInflation();
+        initializeViews();
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        nextOnboardingStep();
+        mDayZeroVariant = DayZeroHelper.getDayZeroVariant();
+        if (mDayZeroVariant.equals("b")) {
+            mVariantBConstraintLayout.setVisibility(View.VISIBLE);
+            AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable) mIvBraveSplash.getDrawable();
+            vectorDrawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
+
+                @Override
+                public void onAnimationStart(Drawable drawable) {
+                    super.onAnimationStart(drawable);
+                    mIvBraveSplash.setAlpha(1f);
+                }
+
+               @Override
+               public void onAnimationEnd(Drawable drawable) {
+                   super.onAnimationEnd(drawable);
+                   vectorDrawable.clearAnimationCallbacks();
+
+                   View parent = (View) mIvBraveSplash.getParent();
+
+                   float currentY = mIvBraveSplash.getY();
+                   float targetY  = parent.getPaddingTop();
+                   float deltaY   = targetY - currentY;
+
+                   // Compensate because shrinking around center moves the top edge down.
+                   float compensation = (mIvBraveSplash.getHeight() * (1f - 0.4f)) / 2f;
+
+                   mIvBraveSplash.animate()
+                           .translationY(deltaY - compensation)
+                           .scaleX(0.4f)
+                           .scaleY(0.4f)
+                           .setDuration(600)
+                           .setInterpolator(new OvershootInterpolator(1f))
+                           .setListener(new Animator.AnimatorListener() {
+                               @Override
+                               public void onAnimationCancel(@NonNull Animator animation) {
+
+                               }
+
+                               @Override
+                               public void onAnimationEnd(@NonNull Animator animation) {
+                                   nextOnboardingStep();
+                               }
+
+                               @Override
+                               public void onAnimationRepeat(@NonNull Animator animation) {
+
+                               }
+
+                               @Override
+                               public void onAnimationStart(@NonNull Animator animation) {
+
+                               }
+                           })
+                           .start();
+               }});
+            vectorDrawable.start();
+
+        } else {
+            mDefaultConstraintLayout.setVisibility(View.VISIBLE);
+            nextOnboardingStep();
+        }
+
+
+
     }
 
     @Override
     public @BackPressResult int handleBackPress() {
         return BackPressResult.SUCCESS;
-    }
-
-    @Override
-    public void triggerLayoutInflation() {
-        super.triggerLayoutInflation();
-        initializeViews();
-        onInitialLayoutInflationComplete();
     }
 }

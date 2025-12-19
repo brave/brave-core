@@ -18,7 +18,8 @@ public class DayZeroHelper {
     }
 
     public static String getDayZeroVariant() {
+        // FIXME - Temp changing default value to "b" to trigger new onboarding flow.
         return ChromeSharedPreferences.getInstance()
-                .readString(BravePreferenceKeys.DAY_ZERO_EXPT_VARIANT, "");
+                .readString(BravePreferenceKeys.DAY_ZERO_EXPT_VARIANT, "b");
     }
 }
