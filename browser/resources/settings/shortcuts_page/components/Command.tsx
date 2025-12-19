@@ -65,7 +65,7 @@ function Accelerator({
           size="small"
           kind="plain-faint"
           onClick={() =>
-            commandsApi.endpoints.unassignAcceleratorFromCommand.mutate(commandId, accelerator.codes)
+            commandsApi.unassignAcceleratorFromCommand(commandId, accelerator.codes)
           }
         >
           <Icon name="remove-circle-outline" />
@@ -110,7 +110,7 @@ export default function Command({
         <ConfigureShortcut
           onChange={(info) => {
             setAdding(false)
-            commandsApi.endpoints.assignAcceleratorToCommand.mutate(command.id, info.codes)
+            commandsApi.assignAcceleratorToCommand(command.id, info.codes)
           }}
           onCancel={() => {
             setAdding(false)

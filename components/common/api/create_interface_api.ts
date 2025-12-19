@@ -125,7 +125,7 @@ export function query<const P extends readonly any[], R>(
  * @param data optional initial data (not placeholder data)
  * @returns query endpoint definition
  */
-export function state<R>(data?: R): QueryEndpointDefinition<[], R> {
+export function state<R>(data: R): QueryEndpointDefinition<[], R> {
   return {
     query: () =>
       Promise.reject(new Error('State endpoint should not be called')),
@@ -333,9 +333,10 @@ export function createInterfaceApi<
             }
           : {})
       : RawEndpoints[K] extends MutationEndpointDefinition<any, any>
-        ? {
+        ? ((...args: ArgsOf<K>) => Promise<DataOf<K>>) & {
             /**
              * Call the underlying `raw[K].mutation(...args)` and return the data.
+             * Not sure if we should still expose this property is now callable.
              */
             mutate: (...args: ArgsOf<K>) => Promise<DataOf<K>>
 
@@ -539,10 +540,11 @@ export function createInterfaceApi<
         } as UseMutationResult<typeof name>
       }
 
-      ;(endpoints as any)[name] = {
-        mutate: mutator,
-        useMutation: useMut,
-      }
+      // Add the mutate and useMutation methods to the endpoint.
+      const m: any = mutator
+      m.mutate = mutator
+      m.useMutation = useMut
+      ;(endpoints as any)[name] = m
     }
   })
 
