@@ -186,6 +186,16 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
           break;
         }
 
+        case mojom::ContentBlock::Tag::kRequestTitleContentBlock: {
+          const auto& request = block->get_request_title_content_block();
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_GENERATE_CONVERSATION_TITLE_PROMPT,
+                          base::UTF8ToUTF16(request->text)));
+          break;
+        }
+
         default:
           DVLOG(2) << "Unsupported block type: "
                    << static_cast<int>(block->which());
