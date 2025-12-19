@@ -764,10 +764,27 @@ const util = {
 
     Log.progressFinish(progressMessage)
 
-    if (config.isTeamcity && buildStats) {
-      Log.progressScope('report build stats', () => {
-        console.log(buildStats)
-      })
+    if (config.isTeamcity) {
+      if (buildStats) {
+        Log.progressScope('report build stats', () => {
+          console.log(buildStats)
+        })
+      }
+      const sisoExplainFile = path.join(outputDir, 'siso_explain')
+      if (fs.existsSync(sisoExplainFile)) {
+        const lineLimit = 20
+        await Log.progressScopeAsync(
+          `siso explain (first ${lineLimit} lines)`,
+          async () => {
+            for await (const line of util.readLines(
+              sisoExplainFile,
+              lineLimit,
+            )) {
+              console.log(line)
+            }
+          },
+        )
+      }
     }
   },
 
@@ -976,6 +993,23 @@ const util = {
       return true
     }
     return false
+  },
+
+  readLines: async function* (filePath, maxLines) {
+    const rl = readline.createInterface({
+      input: fs.createReadStream(filePath),
+      crlfDelay: Infinity,
+    })
+
+    let lineCount = 0
+    for await (const line of rl) {
+      if (maxLines && lineCount >= maxLines) {
+        rl.close()
+        break
+      }
+      yield line
+      lineCount++
+    }
   },
 
   launchDocs: () => {
