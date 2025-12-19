@@ -149,7 +149,6 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
 bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case ContentSettingsType::BRAVE_ETHEREUM:
     case ContentSettingsType::BRAVE_SOLANA:

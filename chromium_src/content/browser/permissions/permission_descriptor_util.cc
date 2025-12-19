@@ -54,9 +54,6 @@
   case blink::PermissionType::BRAVE_GOOGLE_SIGN_IN:                           \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_GOOGLE_SIGN_IN);                  \
-  case blink::PermissionType::BRAVE_LOCALHOST_ACCESS:                         \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_LOCALHOST_ACCESS);                \
   case blink::PermissionType::BRAVE_OPEN_AI_CHAT:                             \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_OPEN_AI_CHAT);                    \
