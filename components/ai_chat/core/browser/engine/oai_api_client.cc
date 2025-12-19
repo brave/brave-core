@@ -127,6 +127,25 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
                               block->get_page_excerpt_content_block()->text)));
           break;
 
+        case mojom::ContentBlock::Tag::kPageTextContentBlock:
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", l10n_util::GetStringFUTF8(
+                          IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
+                          base::UTF8ToUTF16(
+                              block->get_page_text_content_block()->text)));
+          break;
+
+        case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text",
+              l10n_util::GetStringFUTF8(
+                  IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+                  base::UTF8ToUTF16(
+                      block->get_video_transcript_content_block()->text)));
+          break;
+
         case mojom::ContentBlock::Tag::kChangeToneContentBlock:
           content_block_dict.Set("type", "text");
           content_block_dict.Set(
@@ -153,6 +172,9 @@ base::Value::List OAIAPIClient::SerializeOAIMessages(
               break;
             case mojom::SimpleRequestType::kExpand:
               message_id = IDS_AI_CHAT_QUESTION_EXPAND;
+              break;
+            case mojom::SimpleRequestType::kRequestQuestions:
+              message_id = IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT;
               break;
             default:
               DVLOG(2) << "Unsupported simple request type: "
