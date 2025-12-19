@@ -21,7 +21,6 @@
   case RequestType::kWidevine:                       \
     BRAVE_WALLET_UMA_CASES                           \
   case RequestType::kBraveGoogleSignInPermission:    \
-  case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
     return RequestTypeForUma::PERMISSION_VR;
 
