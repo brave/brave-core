@@ -32,7 +32,6 @@ export function createCommandsApi(
             response: (result) => result.key,
           },
           unassignAcceleratorFromCommand: {
-            mutationResponse() { },
             onMutate([commandId, accelerator]) {
               // Eagerly update the cache to remove the accelerator
               api.endpoints.commands.update(result => {
@@ -43,7 +42,6 @@ export function createCommandsApi(
             }
           },
           assignAcceleratorToCommand: {
-            mutationResponse() { },
             onMutate([commandId, accelerator]) {
               // Eagerly update the cache with the new accelerator
               api.endpoints.commands.update(result => {
