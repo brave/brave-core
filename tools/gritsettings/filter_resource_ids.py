@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -11,7 +12,6 @@
 
 import argparse
 import re
-import sys
 
 filter_values = ['glic', 'ash', 'chromeos']
 start_pattern = [r'^{}\/'.format(val) for val in filter_values]
@@ -38,17 +38,15 @@ def read_file(filename):
         return f.read()
 
 
-def filter_ids(in_file, out_file, is_default_toolchain):
+def filter_ids(in_file, out_file, srcdir):
     '''Removes entries whose keys match the |patterns| defined above.
 
     Args:
       in_file: The path to the input file.
       out_file: The path to the output file.
-      is_default_toolchain: If the target is being built for default
-      toolchain. If the toolchain is not the default one, then there's another
-      directory level added to the path (for example,
-      'out/android_Debug_x86/clang_x64/gen/...', as opposed to
-      'out/android_Debug_x86/gen/...' for the default toolchain).
+      srcdir: The relative path from the output file to the repo root. This
+      value is needed for updating the SRCDIR value in the output file (see
+      below).
 
     Note:
       The output file and the output of the upstream's 'default_resource_ids"
@@ -58,21 +56,19 @@ def filter_ids(in_file, out_file, is_default_toolchain):
     ids_dict = eval(read_file(in_file))
     # Update SRCDIR entry because the input to the "default_resource_ids"
     # action in //tools/gritsettings/BUILD.gn will now be the output of this
-    # script (//out/<BUILD_TYPE>/[TOOLCHAIN/]gen/tools/gritsettings) instead of
-    # //tools/gritsettings/resource_ids.spec.
-    # SRCDIR is used by the scripts that consume the file get the path to the
-    # checkout's src directory.
-    if is_default_toolchain:
-        ids_dict['SRCDIR'] = '../../../../..'
-    else:
-        ids_dict['SRCDIR'] = '../../../../../..'
+    # script ('//out/<BUILD_TYPE>/[TOOLCHAIN]/gen/tools/gritsettings/
+    # filtered_default_resource_ids.spec') instead of '//tools/gritsettings/
+    # resource_ids.spec'. SRCDIR is used by the scripts that consume the file
+    # to get the path to the checkout's src directory.
+    ids_dict['SRCDIR'] = srcdir
+
     for grd_filename in list(ids_dict.keys()):
         # If the key matches our removal pattern but not in exclusions, then
         # remove the entry
         if re.search(patterns,
                      grd_filename) and not grd_filename in exclusions:
             ids_dict.pop(grd_filename)
-    with open(out_file, 'w', encoding='utf-8') as f:
+    with open(out_file, 'w', encoding='utf-8', newline='\n') as f:
         f.write(repr(ids_dict))
 
 
@@ -82,14 +78,14 @@ def parse_args():
         description='Filter out unused resource ids')
     parser.add_argument('--input', nargs=1, required=True)
     parser.add_argument('--output', nargs=1, required=True)
-    parser.add_argument('--is_default_toolchain', action='store_true')
+    parser.add_argument('--srcdir', nargs=1, required=True)
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    filter_ids(args.input[0], args.output[0], args.is_default_toolchain)
+    filter_ids(args.input[0], args.output[0], args.srcdir[0])
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()

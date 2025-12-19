@@ -15,8 +15,7 @@ action("filter_resource_ids") {
     filtered_resource_id_file_path,
     "--input",
     rebase_path(inputs[0], root_build_dir),
+    "--srcdir",
+    rebase_path("//", filtered_resource_id_file_dir)
   ]
-  if (current_toolchain == default_toolchain) {
-    args += [ "--is_default_toolchain" ]
-  }
 }
