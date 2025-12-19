@@ -81,24 +81,6 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
-      // Localhost Access feature
-      const isLocalhostAccessFeatureEnabled =
-        loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
-      if (isLocalhostAccessFeatureEnabled) {
-        insertBefore(firstPermissionItem, html`<site-details-permission
-             category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-             icon="smartphone-desktop">
-           </site-details-permission>`)
-        const localhostAccessSettings = templateContent.querySelector(
-          `div.list-frame > site-details-permission:nth-child(${curChild})`)
-        if (!localhostAccessSettings) {
-          console.error('[Settings] Localhost access settings not found')
-        } else {
-          localhostAccessSettings.setAttribute(
-            'label', loadTimeData.getString('siteSettingsLocalhostAccess'))
-        }
-        curChild++
-      }
       // <if expr="enable_ai_chat">
       // AI Chat feature
       const isOpenAIChatFromBraveSearchEnabled =
