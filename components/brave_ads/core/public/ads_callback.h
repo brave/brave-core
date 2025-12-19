@@ -23,6 +23,9 @@ using ResultCallback = base::OnceCallback<void(bool success)>;
 using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
+using GetInternalsCallback =
+    base::OnceCallback<void(std::optional<base::Value::Dict> internals)>;
+
 using GetDiagnosticsCallback =
     base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
 
@@ -31,6 +34,7 @@ using GetStatementOfAccountsCallback =
 
 using ParseAndSaveNewTabPageAdsCallback =
     base::OnceCallback<void(bool success)>;
+
 using MaybeServeNewTabPageAdCallback =
     base::OnceCallback<void(base::optional_ref<const NewTabPageAdInfo> ad)>;
 
@@ -47,6 +51,13 @@ using PurgeOrphanedAdEventsForTypeCallback =
 
 using GetAdHistoryCallback =
     base::OnceCallback<void(std::optional<AdHistoryList> ad_history)>;
+
+// TODO(https://github.com/brave/brave-browser/issues/24595): Transition
+// GetAdHistory from base::Value to a mojom data structure.
+using GetAdHistoryForUICallback =
+    base::OnceCallback<void(std::optional<base::Value::List> ad_history)>;
+
+using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 

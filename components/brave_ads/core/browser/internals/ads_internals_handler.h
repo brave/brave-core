@@ -11,7 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
