@@ -65,6 +65,7 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//ui/base",
     "//ui/base:test_support",
+    "//ui/display:test_support",
     "//ui/views",
     "//ui/views:test_support",
   ]
