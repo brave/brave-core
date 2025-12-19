@@ -68,11 +68,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                                  const std::optional<std::string>&,
                                  const std::optional<std::string>&);
 
-  // Used internally to prevent chain metadata callbacks from being invoked with
-  // a dangling ptr to the underlying chain metadata structures.
-  void OnGetChainMetadataPost(std::string chain_id,
-                              GetChainMetadataCallback callback);
-
   SEQUENCE_CHECKER(sequence_checker_);
 
   const raw_ref<KeyringService> keyring_service_;
