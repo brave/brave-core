@@ -20,6 +20,15 @@
 
 namespace brave_wallet {
 
+namespace {
+
+// Use the BOB account here:
+// https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+inline constexpr const char kBob[] =
+    "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
+
+}  // namespace
+
 class PolkadotWalletServiceUnitTest : public testing::Test {
  public:
   PolkadotWalletServiceUnitTest()
@@ -56,6 +65,32 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
 };
+
+void VerifyTestnet(const PolkadotChainMetadata& metadata) {
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  base::HexStringToSpan(kBob, pubkey);
+
+  PolkadotUnsignedTransfer transfer_extrinsic(pubkey, 1234);
+  const char* testnet_extrinsic =
+      R"(98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
+
+  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.recipient()), kBob);
+  EXPECT_EQ(transfer_extrinsic.Encode(metadata), testnet_extrinsic);
+}
+
+void VerifyMainnet(const PolkadotChainMetadata& metadata) {
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  base::HexStringToSpan(kBob, pubkey);
+
+  PolkadotUnsignedTransfer transfer_extrinsic(pubkey, 1234);
+  const char* mainnet_extrinsic =
+      R"(98040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
+
+  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.recipient()), kBob);
+  EXPECT_EQ(transfer_extrinsic.Encode(metadata), mainnet_extrinsic);
+}
 
 TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
   // Basic Hello, World style test for getting chain data from the constructor
@@ -107,6 +142,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
                  const base::expected<PolkadotChainMetadata, std::string>&
                      metadata) {
                 EXPECT_TRUE(metadata.has_value());
+                VerifyTestnet(*metadata);
                 std::move(quit_closure).Run();
               },
               task_environment_.QuitClosure()));
@@ -125,6 +161,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
                  const base::expected<PolkadotChainMetadata, std::string>&
                      metadata) {
                 EXPECT_TRUE(metadata.has_value());
+                VerifyMainnet(*metadata);
                 std::move(quit_closure).Run();
               },
               task_environment_.QuitClosure()));
@@ -235,6 +272,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
                    metadata) {
               EXPECT_TRUE(*num_reqs > 0);
               EXPECT_TRUE(metadata.has_value());
+              VerifyTestnet(*metadata);
               if (--*num_reqs == 0) {
                 std::move(quit_closure).Run();
               }
@@ -254,6 +292,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
                    metadata) {
               EXPECT_TRUE(*num_reqs > 0);
               EXPECT_TRUE(metadata.has_value());
+              VerifyMainnet(*metadata);
               if (--*num_reqs == 0) {
                 std::move(quit_closure).Run();
               }
