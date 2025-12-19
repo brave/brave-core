@@ -53,7 +53,7 @@ type IncomingMutationDefinition<
   K extends keyof T,
   Z = MutationResult<T, K>,
 > = BaseIncomingMutation<T, K, NoInfer<Z>> & {
-  mutationResponse: (raw: MutationResult<T, K>) => Z
+  mutationResponse?: (raw: MutationResult<T, K>) => Z
 }
 
 // Helper: every possible mapper for a key of `T`
@@ -130,7 +130,7 @@ export function endpointsFor<
         },
       } as any)
       ;(result as any)[key] = endpoint
-    } else if ('mutationResponse' in mapper) {
+    } else if ('mutationResponse' in mapper || 'onMutate' in mapper) {
       const endpoint = {
         ...mapper,
 
@@ -144,7 +144,7 @@ export function endpointsFor<
           }
 
           // void is ok if incoming result is void
-          return mapper.mutationResponse(raw as any)
+          return mapper.mutationResponse?.(raw as any)
         },
       } as any
       ;(result as any)[key] = endpoint
