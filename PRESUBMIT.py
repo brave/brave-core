@@ -138,28 +138,35 @@ def CheckLicense(input_api, output_api):
     # Note: presubmit machinery cannot distinguish between NEW and MOVED files,
     # that's why we cannot force this regexp to have a precise year, also
     # uplifts may fail during year change period, so the year check is relaxed.
-    new_file_license_re = input_api.re.compile((
-        r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
-        r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
-        r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this file,\n'
-        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n') %
-                                               {'year': years_re},
-                                               input_api.re.MULTILINE)
+    new_file_license_re = input_api.re.compile(
+        (r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
+         r'All rights reserved\.\n'
+         r'.*? This Source Code Form is subject to the terms of the '
+         r'Mozilla Public\n'
+         r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
+         r'distributed with this file,\n'
+         r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n') %
+        {'year': years_re}, input_api.re.MULTILINE)
 
     # License regexp to match in EXISTING files, it allows some variance.
-    existing_file_license_re = input_api.re.compile((
-        r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
-        r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
-        r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this(\n.*?)? file,\n?'
-        r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n')
-                                                    % {'year': years_re},
-                                                    input_api.re.MULTILINE)
+    existing_file_license_re = input_api.re.compile(
+        (r'.*? Copyright \(c\) %(year)s The Brave Authors\. '
+         r'All rights reserved\.\n'
+         r'.*? This Source Code Form is subject to the terms of the '
+         r'Mozilla Public\n'
+         r'.*? License, v\. 2\.0\. If a copy of the MPL was not '
+         r'distributed with this(\n.*?)? file,\n?'
+         r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n')
+        % {'year': years_re}, input_api.re.MULTILINE)
 
     # License template for new files. Includes current year.
     expected_license_template = (
-        '%(comment)s Copyright (c) %(year)s The Brave Authors. All rights reserved.\n'
-        '%(comment)s This Source Code Form is subject to the terms of the Mozilla Public\n'
-        '%(comment)s License, v. 2.0. If a copy of the MPL was not distributed with this file,\n'
+        '%(comment)s Copyright (c) %(year)s The Brave Authors. '
+        'All rights reserved.\n'
+        '%(comment)s This Source Code Form is subject to the terms of the '
+        'Mozilla Public\n'
+        '%(comment)s License, v. 2.0. If a copy of the MPL was not '
+        'distributed with this file,\n'
         '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n'
     ) % {
         'comment': '#',
@@ -395,8 +402,8 @@ _BANNED_CPP_FUNCTIONS += (
     ),
     BanRule(
         r'/\bEnableStackLogging\(\)',
-        ('Do not commit EnableStackLogging() call, it\'s not intended for production use',
-         ),
+        ('Do not commit EnableStackLogging() call, it\'s not intended '
+         'for production use', ),
         treat_as_error=True,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
@@ -433,9 +440,11 @@ _BANNED_CPP_FUNCTIONS += (
         'base::debug::DumpWithoutCrashing',
         explanation=(
             'Please use `DUMP_WILL_BE_NOTREACHED()` instead.',
-            'This prevents dumps and NOTREACHED in tests for the following reasons:',
+            'This prevents dumps and NOTREACHED in tests for the '
+            'following reasons:',
             ' * Dumps can hang tests.',
-            ' * NOTREACHED is a test failure unless it is an EXPECT_DEATH test.',
+            ' * NOTREACHED is a test failure unless it is an '
+            'EXPECT_DEATH test.',
         ),
         treat_as_error=True,
     ),
