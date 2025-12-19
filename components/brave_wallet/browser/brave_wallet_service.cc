@@ -528,7 +528,18 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
                                              bool visible) {
   CHECK(token);
 
-  return ::brave_wallet::SetUserAssetVisible(profile_prefs_, token, visible);
+  if (!::brave_wallet::SetUserAssetVisible(profile_prefs_, token, visible)) {
+    return false;
+  }
+
+  // Update the token's visible field to match what was set
+  token->visible = visible;
+
+  for (const auto& observer : token_observers_) {
+    observer->OnTokenVisibilityChanged(token.Clone());
+  }
+
+  return true;
 }
 
 void BraveWalletService::SetAssetSpamStatus(
