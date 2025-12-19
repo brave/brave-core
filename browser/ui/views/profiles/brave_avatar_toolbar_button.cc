@@ -21,7 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -95,8 +95,8 @@ void BraveAvatarToolbarButton::SetHighlight(
   // We put window count to otr window's profile icon.
   int window_count = 0;
   if (browser_->profile()->IsOffTheRecord()) {
-    window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
-        browser_->profile());
+    window_count =
+        chrome::GetOffTheRecordBrowsersActiveForProfile(browser_->profile());
   }
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
