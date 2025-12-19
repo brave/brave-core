@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_CLIENT_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_CLIENT_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_CLIENT_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_CLIENT_IMPL_H_
 
-#include "brave/components/brave_ads/core/browser/service/network_client_callback.h"
+#include "brave/components/brave_ads/core/browser/network/network_client_callback.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
 class GURL;
@@ -32,4 +32,4 @@ class ObliviousHttpClientImpl : public network::mojom::ObliviousHttpClient {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_OBLIVIOUS_HTTP_CLIENT_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_NETWORK_OBLIVIOUS_HTTP_CLIENT_IMPL_H_

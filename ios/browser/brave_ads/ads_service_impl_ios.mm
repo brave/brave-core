@@ -20,7 +20,7 @@
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
+#include "brave/components/brave_ads/core/browser/new_tab_page_ad/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"

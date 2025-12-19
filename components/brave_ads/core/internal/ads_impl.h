@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace base {
 class Time;

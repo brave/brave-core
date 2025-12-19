@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

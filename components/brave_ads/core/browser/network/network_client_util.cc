@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/browser/service/network_client_util.h"
+#include "brave/components/brave_ads/core/browser/network/network_client_util.h"
 
-#include "brave/components/brave_ads/core/browser/service/oblivious_http_constants.h"
+#include "brave/components/brave_ads/core/browser/network/oblivious_http_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"
 

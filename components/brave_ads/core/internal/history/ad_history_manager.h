@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
-#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace base {
 class Time;
