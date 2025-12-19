@@ -7,6 +7,13 @@ import { AIChatAPI } from './'
 import * as Mojom from '../../common/mojom'
 import createConversationAPI from './conversation_api'
 
+export type ConversationBindings = {
+  conversationUuid?: string
+  conversationHandler: Mojom.ConversationHandlerInterface
+  close: () => void
+  api: ReturnType<typeof createConversationAPI>['api']
+}
+
 //
 // Binding helpers for conversations which are bound from either the browser UI handler
 // or browser AIChat service
@@ -15,7 +22,7 @@ import createConversationAPI from './conversation_api'
 export function bindConversation(
   aiChat: AIChatAPI['api'],
   id: string | undefined,
-) {
+): ConversationBindings {
   let conversationHandler = new Mojom.ConversationHandlerRemote()
   const conversationHandlerReceiver =
     conversationHandler.$.bindNewPipeAndPassReceiver()
@@ -49,7 +56,9 @@ export function bindConversation(
   }
 }
 
-export function newConversation(aiChat: AIChatAPI['api']) {
+export function newConversation(
+  aiChat: AIChatAPI['api'],
+): ConversationBindings {
   let conversationHandler = new Mojom.ConversationHandlerRemote()
   const conversationHandlerReceiver =
     conversationHandler.$.bindNewPipeAndPassReceiver()
@@ -71,5 +80,3 @@ export function newConversation(aiChat: AIChatAPI['api']) {
     api: conversationAPI.api,
   }
 }
-
-export type ConversationBindings = ReturnType<typeof newConversation>

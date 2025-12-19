@@ -10,6 +10,7 @@ import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import createAIChatAPI from './api'
+import * as BindConversation from './api/bind_conversation'
 import {
   AIChatProvider,
   ConversationEntriesProps,
@@ -90,7 +91,10 @@ function App() {
       api={aiChat.api}
       conversationEntriesComponent={ConversationEntries}
     >
-      <ActiveChatProviderFromUrl>
+      <ActiveChatProviderFromUrl
+        bindConversation={BindConversation.bindConversation}
+        newConversation={BindConversation.newConversation}
+      >
         <MainConversation />
       </ActiveChatProviderFromUrl>
     </AIChatProvider>
