@@ -364,7 +364,8 @@ AdBlockService::AdBlockService(
           network::features::kLocalNetworkAccessChecksWebSockets)) {
     // If LNA enabled and blocks request
     localhost_filters_provider_ =
-        std::make_unique<AdBlockLocalhostFiltersProvider>();
+        std::make_unique<AdBlockLocalhostFiltersProvider>(
+            filters_provider_manager_.get());
   }
 
   default_service_observer_ =
