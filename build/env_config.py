@@ -83,7 +83,8 @@ def read_env_config_as_dict(file_path, result_dict=None):
                 result_dict.setdefault('include_env', []).append(
                     include_path.replace("\\", "/"))
                 read_env_config_as_dict(include_path, result_dict)
-            else:
+            # Only allow bool, string, and integer types.
+            elif isinstance(value, (bool, str, int)):
                 result_dict[key] = value
                 # Additionaly store the key in uppercase to be able to access it
                 # during BUILDFLAG generation. GN doesn't have a way to convert

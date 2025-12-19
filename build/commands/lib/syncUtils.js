@@ -63,6 +63,7 @@ function writeGclientConfig(
     cache_dir: process.env.GIT_CACHE_PATH,
     target_os: targetOSList,
     target_cpu: targetArchList,
+    ...config.gclientGlobalVars,
   }
 
   // Add brave-core as a non-managed solution to handle DEPS.
@@ -77,7 +78,27 @@ function writeGclientConfig(
   }
 
   // Generate the gclient config file.
-  let out = ''
+  let out = `# Auto-updated on each sync.
+#
+# Customize via brave/.env:
+#   - gclient_custom_deps: Override src solution's custom_deps
+#       Example: {"src/third_party/some_dep": null}
+#   - gclient_custom_vars: Override src solution's custom_vars
+#       Example: {"checkout_clangd": true}
+#   - gclient_global_vars: Override top-level .gclient variables
+#       Example: {"delete_unversioned_trees": true}
+#   - update_gclient_config: Set to false to disable .gclient auto-updates
+#       Note: Ignored on init or if .gclient doesn't exist.
+#
+# Multiline values in brave/.env can be defined using single quotes:
+#   gclient_custom_vars='{
+#     "checkout_clangd": true,
+#     "checkout_clang_tidy": true
+#   }'
+#
+# Note: target_os and target_cpu persist unless set via CLI.
+
+`
   for (const [key, value] of Object.entries(gclientConfig)) {
     const singleLineValue = toGClientConfigItem(key, value, false)
     if (singleLineValue.length > 80) {
@@ -87,7 +108,38 @@ function writeGclientConfig(
     }
   }
 
-  util.writeFileIfModified(config.gclientFile, out)
+  if (util.writeFileIfModified(config.gclientFile, out)) {
+    Log.status(`${config.gclientFile} has been updated`)
+  }
+}
+
+function readGclientConfig() {
+  if (!fs.existsSync(config.gclientFile)) {
+    return {}
+  }
+
+  try {
+    const script = `
+import json
+out = {}
+path = r"""${config.gclientFile}"""
+exec(compile(open(path, 'r').read(), path, 'exec'), None, out)
+print(json.dumps(out))
+`
+    const result = util.run('python3', ['-'], {
+      skipLogging: true,
+      input: script,
+      encoding: 'utf8',
+      continueOnFail: true,
+    })
+    if (result.status !== 0) {
+      throw new Error(result.stderr.toString().trim())
+    }
+    return JSON.parse(result.stdout.toString().trim())
+  } catch (error) {
+    Log.error(`Failed to read ${config.gclientFile}:\n${error}`)
+    process.exit(1)
+  }
 }
 
 function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
@@ -252,6 +304,7 @@ async function checkInternalDepsEndpoint() {
 
 module.exports = {
   writeGclientConfig,
+  readGclientConfig,
   syncChromium,
   checkInternalDepsEndpoint,
 }

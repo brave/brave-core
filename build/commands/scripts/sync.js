@@ -67,30 +67,43 @@ function syncBrave(program) {
 async function RunCommand() {
   program.parse(process.argv)
 
+  // Install depot_tools early to make Python available.
+  depotTools.installDepotTools()
+
+  // Read the existing .gclient config to reuse some values from it if they are
+  // not provided.
+  const existingGclientConfig = program.init ? {} : syncUtil.readGclientConfig()
+
   // --target_os, --target_arch as lists make sense only for `init/sync`
   // commands. Handle comma-separated values here and only pass the first value
   // to the config.update() call.
-  const targetOSList = commaSeparatedToList(program.target_os)
+  const targetOSList = commaSeparatedToList(
+    program.target_os,
+    existingGclientConfig?.target_os || [],
+  )
   if (targetOSList.length > 0) {
     program.target_os = targetOSList[0]
   }
-  const targetArchList = commaSeparatedToList(program.target_arch)
+  const targetArchList = commaSeparatedToList(
+    program.target_arch,
+    existingGclientConfig?.target_cpu || [],
+  )
   if (targetArchList.length > 0) {
     program.target_arch = targetArchList[0]
   }
 
   config.update(program)
 
-  depotTools.installDepotTools()
-
   if (
     program.init
-    || program.target_os
-    || program.target_arch
+    || config.updateGclientConfig
     || !fs.existsSync(config.gclientFile)
-    || config.isCI
   ) {
     syncUtil.writeGclientConfig(targetOSList, targetArchList)
+  } else if (!config.updateGclientConfig) {
+    Log.status(
+      `Skipping ${config.gclientFile} update (disabled by update_gclient_config=false)`,
+    )
   }
 
   if (config.isCI) {
@@ -124,8 +137,8 @@ async function RunCommand() {
   }
 }
 
-function commaSeparatedToList(value) {
-  return value?.split(',').filter(Boolean) || []
+function commaSeparatedToList(value, defaultValue) {
+  return value?.split(',').filter(Boolean) || defaultValue
 }
 
 RunCommand().catch((err) => {
