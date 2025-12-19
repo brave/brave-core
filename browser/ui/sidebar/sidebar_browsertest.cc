@@ -715,7 +715,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   gfx::Point mouse_position = contents_area_view_rect.top_right();
   mouse_position.Offset(-2, 2);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
+  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Check when sidebar on left.
@@ -730,7 +730,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position = contents_area_view_rect.origin();
   mouse_position.Offset(2, 2);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
+  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -742,7 +742,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // When mouse moves into that space, sidebar should be visible.
   mouse_position = contents_area_view_rect.origin();
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
+  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -767,7 +767,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position.Offset(2, 2);
   views::View::ConvertPointToScreen(left_split_view, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
+  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -779,7 +779,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position.Offset(2, 2);
   views::View::ConvertPointToScreen(right_split_view, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
+  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 }
 

@@ -171,10 +171,10 @@ void BraveBrowserView::SetDownloadConfirmReturnForTesting(bool allow) {
   g_download_confirm_return_allow_for_testing = allow;
 }
 
-class BraveBrowserView::SidebarOnMouseOverEventHandler
+class BraveBrowserView::BrowserWindowMouseEventHandler
     : public ui::EventObserver {
  public:
-  explicit SidebarOnMouseOverEventHandler(BraveBrowserView* browser_view)
+  explicit BrowserWindowMouseEventHandler(BraveBrowserView* browser_view)
       : browser_view_(browser_view) {
     auto* widget = browser_view_->GetWidget();
     CHECK(widget && widget->GetNativeWindow());
@@ -182,18 +182,18 @@ class BraveBrowserView::SidebarOnMouseOverEventHandler
         this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
   }
 
-  ~SidebarOnMouseOverEventHandler() override = default;
+  ~BrowserWindowMouseEventHandler() override = default;
 
-  SidebarOnMouseOverEventHandler(const SidebarOnMouseOverEventHandler&) =
+  BrowserWindowMouseEventHandler(const BrowserWindowMouseEventHandler&) =
       delete;
-  SidebarOnMouseOverEventHandler& operator=(
-      const SidebarOnMouseOverEventHandler&) = delete;
+  BrowserWindowMouseEventHandler& operator=(
+      const BrowserWindowMouseEventHandler&) = delete;
 
  private:
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
     if (event.type() == ui::EventType::kMouseMoved) {
-      browser_view_->HandleSidebarOnMouseOverMouseEvent(*event.AsMouseEvent());
+      browser_view_->HandleBrowserWindowMouseEvent(*event.AsMouseEvent());
       return;
     }
   }
@@ -717,8 +717,8 @@ void BraveBrowserView::CloseWalletBubble() {
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
 
-  sidebar_on_mouse_over_event_handler_ =
-      std::make_unique<SidebarOnMouseOverEventHandler>(this);
+  browser_window_mouse_event_handler_ =
+      std::make_unique<BrowserWindowMouseEventHandler>(this);
 
   // we must call all new views once BraveBrowserView is added to widget
 
@@ -1131,16 +1131,24 @@ void BraveBrowserView::StopListeningFullscreenChanges() {
   }
 }
 
-void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
+void BraveBrowserView::HandleBrowserWindowMouseEvent(
     const ui::MouseEvent& event) {
   CHECK(event.type() == ui::EventType::kMouseMoved);
 
+  // Use GetCursorScreenPoint() to get current mouse position in screen.
+  // event.root_location_f() could not give in screen coordinate in some
+  // situation.
+  const gfx::PointF point_in_screen(
+      display::Screen::Get()->GetCursorScreenPoint());
+
   if (sidebar_container_view_) {
-    // Use GetCursorScreenPoint() to get current mouse position in screen.
-    // event.root_location_f() could not give in screen coordinate in some
-    // situation.
-    sidebar_container_view_->ShowSidebarOnMouseOver(
-        gfx::PointF(display::Screen::Get()->GetCursorScreenPoint()));
+    sidebar_container_view_->ShowSidebarOnMouseOver(point_in_screen);
+  }
+
+  if (vertical_tab_strip_widget_delegate_view_ &&
+      tabs::utils::ShouldShowVerticalTabs(browser())) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->ShowVerticalTabStripOnMouseOver(point_in_screen);
   }
 }
 
