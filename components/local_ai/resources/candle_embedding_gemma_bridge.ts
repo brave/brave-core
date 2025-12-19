@@ -158,127 +158,30 @@ console.log('[Candle WASM] Embedding Gemma WASM bridge initialized!')
 ;(window as any).embeddingGemmaImpl = embeddingGemmaImpl
 console.log('[Candle WASM] Exposed embeddingGemmaImpl for debugging')
 
-// Get default model path and send to parent
-;(async () => {
-  try {
-    const result = await candleService.getDefaultModelPath()
-    if (result.modelPath) {
-      console.log('[Candle WASM] Default model path:', result.modelPath.path)
-      // Send default path to parent window
-      if (window.parent !== window) {
-        window.parent.postMessage(
-          {
-            type: 'defaultModelPath',
-            path: result.modelPath.path,
-          },
-          'chrome://local-ai-internals',
-        )
-      }
-    }
-  } catch (error) {
-    console.error('[Candle WASM] Error getting default model path:', error)
-  }
-})()
-
 // UI handling
 const statusEl = document.getElementById('status')!
 const textInput = document.getElementById('textInput') as HTMLInputElement
 const embedBtn = document.getElementById('embedBtn') as HTMLButtonElement
 const resultEl = document.getElementById('result')!
 
-// Update status to indicate waiting for user to load model
+// Update status - model will be loaded automatically by component updater
 statusEl.textContent =
-  'Waiting for model files... Please load the model from the parent page.'
+  'Waiting for model to load automatically from component updater...'
 statusEl.className = 'status loading'
 
-// Listen for messages from the parent window to load the model
-window.addEventListener('message', async (event) => {
-  if (event.origin !== 'chrome://local-ai-internals') {
-    return
+// Listen for init success to update UI
+const checkInitialized = setInterval(() => {
+  if (embeddingGemmaImpl.isInitialized) {
+    console.log('[Candle WASM] Model initialized!')
+    statusEl.textContent =
+      'Model loaded and ready! (Initialized in '
+      + `${embeddingGemmaImpl.initTime.toFixed(2)}ms)`
+    statusEl.className = 'status ready'
+    textInput.disabled = false
+    embedBtn.disabled = false
+    clearInterval(checkInitialized)
   }
-
-  console.log('[Candle WASM] Received message from parent:', event.data)
-
-  if (event.data.type === 'loadModel') {
-    const {
-      weightsPath,
-      weightsDense1Path,
-      weightsDense2Path,
-      tokenizerPath,
-      configPath,
-    } = event.data
-
-    console.log('[Candle WASM] Loading model from paths:')
-    console.log('  Weights:', weightsPath)
-    console.log('  Weights Dense1:', weightsDense1Path)
-    console.log('  Weights Dense2:', weightsDense2Path)
-    console.log('  Tokenizer:', tokenizerPath)
-    console.log('  Config:', configPath)
-
-    statusEl.textContent = 'Loading model files from disk...'
-    statusEl.className = 'status loading'
-
-    try {
-      const result = await candleService.loadModelFiles(
-        { path: weightsPath },
-        { path: weightsDense1Path },
-        { path: weightsDense2Path },
-        { path: tokenizerPath },
-        { path: configPath },
-      )
-
-      if (result.success) {
-        console.log('[Candle WASM] Model loaded successfully!')
-        statusEl.textContent =
-          'Model loaded and ready! (Initialized in '
-          + `${embeddingGemmaImpl.initTime.toFixed(2)}ms)`
-        statusEl.className = 'status ready'
-        textInput.disabled = false
-        embedBtn.disabled = false
-
-        // Notify parent window of success
-        if (window.parent !== window) {
-          window.parent.postMessage(
-            { type: 'loadModelResult', success: true },
-            'chrome://local-ai-internals',
-          )
-        }
-      } else {
-        console.error('[Candle WASM] Failed to load model')
-        statusEl.textContent = 'Error: Failed to load model'
-        statusEl.className = 'status error'
-
-        // Notify parent window of failure
-        if (window.parent !== window) {
-          window.parent.postMessage(
-            {
-              type: 'loadModelResult',
-              success: false,
-              error: 'Failed to load',
-            },
-            'chrome://local-ai-internals',
-          )
-        }
-      }
-    } catch (error) {
-      console.error('[Candle WASM] Error loading model:', error)
-      statusEl.textContent = `Error: ${error}`
-      statusEl.className = 'status error'
-
-      // Notify parent window of error
-      if (window.parent !== window) {
-        window.parent.postMessage(
-          {
-            type: 'loadModelResult',
-            success: false,
-            error: String(error),
-          },
-          'chrome://local-ai-internals',
-        )
-      }
-    }
-  }
-})
+}, 100)
 
 // Handle embed button click
 embedBtn.addEventListener('click', async () => {
