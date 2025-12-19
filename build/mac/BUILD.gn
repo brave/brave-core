@@ -23,6 +23,7 @@ packaged_basename =
     "-$chrome_version_full"
 
 dmg_path = "$packaged_basename.dmg"
+zip_path = "$packaged_basename.zip"
 
 if (is_universal_binary) {
   assert(target_cpu == "arm64")
@@ -274,7 +275,7 @@ action("package") {
   outputs = [
     dmg_path,
     "$packaged_basename.pkg",
-    "$packaged_basename.zip",
+    zip_path,
   ]
   deps = [
     ":copy_browser_install_script",
@@ -407,11 +408,16 @@ group("create_dist_mac") {
 }
 
 if (dmg_crx_private_key != "") {
-  crx3("crx") {
-    inputs = [ dmg_path ]
-    output = "$packaged_basename.crx3"
-    base_dir = get_path_info(dmg_path, "dir")
-    key = dmg_crx_private_key
+  compiled_action("crx") {
+    tool = "//components/crx_file:crx3_build_action"
+    inputs = [ zip_path ]
+    crx_path = "$packaged_basename.crx3"
+    outputs = [ crx_path ]
+    args = [
+      rebase_path(crx_path, root_build_dir),
+      rebase_path(zip_path, root_build_dir),
+      rebase_path(dmg_crx_private_key, root_build_dir),
+    ]
     deps = [ ":package" ]
   }
 }
