@@ -540,6 +540,15 @@ INSTANTIATE_TEST_SUITE_P(
                       mojom::SimpleRequestType::kRequestQuestions));
             }),
             "text", LocalizedText{IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "RequestTitle", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewRequestTitleContentBlock(
+                  mojom::RequestTitleContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_GENERATE_CONVERSATION_TITLE_PROMPT,
+                          kTestContent},
             std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
       return info.param.name;
