@@ -4,175 +4,202 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto" 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/iv_background"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/onboarding_variant_b"
+        android:visibility="gone"
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_onboarding_bg"/>
+        android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/view_leaf_top_align"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"/>
+        <ImageView
+            android:id="@+id/brave_splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_brave_splash_animated"
+            android:contentDescription="@null"
+            android:alpha="0"
 
-    <ImageView
-        android:id="@+id/iv_leaf_top"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/onboarding_default_variant"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/view_leaf_top_align"
-        android:adjustViewBounds="true"
-        android:scaleX="1.3"
-        android:scaleY="1.3"
-        android:src="@drawable/ic_onboarding_top_leaf"
-        android:contentDescription="@null"/>
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_leaf_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/view_leaf_bottom_align"
-        android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:scaleX="1.3"
-        android:scaleY="1.3"
-        android:src="@drawable/ic_onboarding_bottom_leaf"/>
+        <ImageView
+            android:id="@+id/iv_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ic_onboarding_bg"/>
 
-    <View
-        android:id="@+id/view_leaf_bottom_align"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"/>
+        <View
+            android:id="@+id/view_leaf_top_align"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:id="@+id/layout_data"
+        <ImageView
+            android:id="@+id/iv_leaf_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            app:layout_constraintTop_toBottomOf="@id/view_leaf_top_align"
+            android:adjustViewBounds="true"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/ic_onboarding_top_leaf"
+            android:contentDescription="@null"/>
+
+        <ImageView
+            android:id="@+id/iv_leaf_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/view_leaf_bottom_align"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/ic_onboarding_bottom_leaf"/>
+
+        <View
+            android:id="@+id/view_leaf_bottom_align"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
-                android:id="@+id/layout_card"
+                android:id="@+id/layout_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:padding="24dp"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_onboarding_welcome_bg">
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/privacy_onboarding"
-                    android:textSize="22sp"
-                    android:textColor="@color/onboarding_card_text_color"/>
-
-                <TextView
-                    android:id="@+id/tv_default"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="@string/onboarding_set_default"
-                    android:textSize="16sp"
-                    android:textColor="@color/onboarding_card_text_color"/>
-
-                <android.widget.CheckBox
-                    android:id="@+id/checkbox_crash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:button="@drawable/ic_p3a_checkbox"
-                    android:gravity="top"
-                    android:visibility="gone"
-                    android:paddingStart="4dp"
-                    android:text="@string/p3a_crash"
-                    android:textColor="@color/onboarding_card_text_color"
-                    android:textSize="14sp" />
-
-                <android.widget.CheckBox
-                    android:id="@+id/checkbox_p3a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:button="@drawable/ic_p3a_checkbox"
-                    android:gravity="top"
-                    android:visibility="gone"
-                    android:paddingStart="4dp"
-                    android:text="@string/p3a_insights"
-                    android:textColor="@color/onboarding_card_text_color"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/btn_positive"
+                <LinearLayout
+                    android:id="@+id/layout_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/blue_48_rounded_bg"
-                    app:backgroundTint="@null"
-                    android:text="@string/set_default_browser"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:padding="4dp"
-                    android:minHeight="0dp"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:padding="24dp"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_onboarding_welcome_bg">
 
-                <Button
-                    android:id="@+id/btn_negative"
+                    <TextView
+                        android:id="@+id/tv_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/privacy_onboarding"
+                        android:textSize="22sp"
+                        android:textColor="@color/onboarding_card_text_color"/>
+
+                    <TextView
+                        android:id="@+id/tv_default"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="@string/onboarding_set_default"
+                        android:textSize="16sp"
+                        android:textColor="@color/onboarding_card_text_color"/>
+
+                    <android.widget.CheckBox
+                        android:id="@+id/checkbox_crash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:button="@drawable/ic_p3a_checkbox"
+                        android:gravity="top"
+                        android:visibility="gone"
+                        android:paddingStart="4dp"
+                        android:text="@string/p3a_crash"
+                        android:textColor="@color/onboarding_card_text_color"
+                        android:textSize="14sp" />
+
+                    <android.widget.CheckBox
+                        android:id="@+id/checkbox_p3a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:button="@drawable/ic_p3a_checkbox"
+                        android:gravity="top"
+                        android:visibility="gone"
+                        android:paddingStart="4dp"
+                        android:text="@string/p3a_insights"
+                        android:textColor="@color/onboarding_card_text_color"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/btn_positive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/blue_48_rounded_bg"
+                        app:backgroundTint="@null"
+                        android:text="@string/set_default_browser"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:padding="4dp"
+                        android:minHeight="0dp"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/btn_negative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="6dp"
+                        android:background="@android:color/transparent"
+                        android:text="@string/not_now"
+                        android:textAllCaps="false"
+                        android:textColor="@color/onboarding_negative_button_color"
+                        android:textSize="16sp"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_arrow_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
-                    android:background="@android:color/transparent"
-                    android:text="@string/not_now"
-                    android:textAllCaps="false"
-                    android:textColor="@color/onboarding_negative_button_color"
-                    android:textSize="16sp"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    app:srcCompat="@drawable/ic_onboarding_arrow_down"
+                    android:contentDescription="@null"/>
+
+                <ImageView
+                    android:id="@+id/iv_brave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@null"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_brave_onboarding"/>
 
             </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/iv_arrow_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/ic_onboarding_arrow_down"
-                android:contentDescription="@null"/>
 
-            <ImageView
-                android:id="@+id/iv_brave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@null"
-                android:visibility="gone"
-                android:src="@drawable/ic_brave_onboarding"/>
-
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>
