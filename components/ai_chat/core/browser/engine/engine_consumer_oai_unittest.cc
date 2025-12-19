@@ -211,60 +211,67 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   auto* client = GetClient();
   base::RunLoop run_loop;
 
-  auto invoke_completion_callback = [](const std::string& result_string) {
-    return [result_string](
-               const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback completed_callback,
-               const std::optional<std::vector<std::string>>&) {
-      std::move(completed_callback)
-          .Run(base::ok(EngineConsumer::GenerationResultData(
-              mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(result_string)),
-              std::nullopt /* model_key */)));
-    };
-  };
+  std::string test_content = "This is a test page content";
+  std::string expected_response =
+      "<question>Question 1</question><question>Question 2</question>"
+      "<question>Question 3</question>";
+  std::string expected_page_content_text =
+      l10n_util::GetStringFUTF8(IDS_AI_CHAT_CLAUDE_ARTICLE_PROMPT_SEGMENT,
+                                base::UTF8ToUTF16(test_content));
+  std::string expected_question_prompt =
+      "Propose up to 3 very short questions that a reader may ask about the "
+      "content. Wrap each in <question> tags.";
+  std::string expected_seed =
+      "Here are three questions the user may ask about the content "
+      "in <question> tags:\n";
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
-      .WillOnce(invoke_completion_callback("Returning non question format"))
-      .WillOnce(invoke_completion_callback(
-          "<question>Question 1</question><question>Question 2</question>"))
-      .WillOnce(invoke_completion_callback(
-          "<question>Question 1</question>\n\n<question>Question 2</question>"))
-      .WillOnce(invoke_completion_callback(
-          "< question>>Question 1<</question><question>Question 2</question "
-          ">"));
+      .WillOnce(
+          [&](const mojom::CustomModelOptions& options,
+              base::Value::List messages,
+              EngineConsumer::GenerationDataCallback data_callback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>& stop_sequences) {
+            // Verify message structure
+            ASSERT_EQ(messages.size(), 3u);
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, "",
-      base::BindLambdaForTesting(
-          [](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(result.value().size(), 1ull);
-          }));
+            // First message: page content wrapped with localized prompt
+            const auto& first_message = messages[0].GetDict();
+            EXPECT_EQ(*first_message.FindString("role"), "user");
+            EXPECT_EQ(*first_message.FindString("content"),
+                      expected_page_content_text);
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, "",
-      base::BindLambdaForTesting(
-          [](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_EQ(result.value()[0], "Question 1");
-            EXPECT_EQ(result.value()[1], "Question 2");
-          }));
+            // Second message: question prompt
+            const auto& second_message = messages[1].GetDict();
+            EXPECT_EQ(*second_message.FindString("role"), "user");
+            EXPECT_EQ(*second_message.FindString("content"),
+                      expected_question_prompt);
 
-  engine_->GenerateQuestionSuggestions(
-      {page_content}, "",
-      base::BindLambdaForTesting(
-          [](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_EQ(result.value()[0], "Question 1");
-            EXPECT_EQ(result.value()[1], "Question 2");
-          }));
+            // Third message: assistant seed
+            const auto& third_message = messages[2].GetDict();
+            EXPECT_EQ(*third_message.FindString("role"), "assistant");
+            EXPECT_EQ(*third_message.FindString("content"), expected_seed);
+
+            // Verify no stop sequences
+            EXPECT_FALSE(stop_sequences.has_value());
+
+            // Return completion
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(expected_response)),
+                    std::nullopt /* model_key*/)));
+          });
 
   engine_->GenerateQuestionSuggestions(
       {page_content}, "",
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_EQ(result.value()[0], "Question 1");
-            EXPECT_EQ(result.value()[1], "Question 2");
+            ASSERT_TRUE(result.has_value());
+            ASSERT_EQ(result->size(), 3u);
+            EXPECT_EQ((*result)[0], "Question 1");
+            EXPECT_EQ((*result)[1], "Question 2");
+            EXPECT_EQ((*result)[2], "Question 3");
             run_loop.Quit();
           }));
 
