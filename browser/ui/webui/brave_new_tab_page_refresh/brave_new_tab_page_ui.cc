@@ -25,10 +25,13 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/contextual_search/contextual_search_service_factory.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
+#include "components/contextual_search/contextual_search_service.h"
+#include "components/contextual_search/contextual_search_session_handle.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 
@@ -113,7 +116,9 @@ void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver) {
   realbox_handler_ = std::make_unique<RealboxHandler>(
       std::move(receiver), Profile::FromWebUI(web_ui()),
-      web_ui()->GetWebContents());
+      web_ui()->GetWebContents(),
+      base::BindRepeating(&BraveNewTabPageUI::GetContextualSessionHandle,
+                          base::Unretained(this)));
 }
 
 void BraveNewTabPageUI::BindInterface(
@@ -146,5 +151,21 @@ void BraveNewTabPageUI::BindInterface(
   }
 }
 #endif
+
+contextual_search::ContextualSearchSessionHandle*
+BraveNewTabPageUI::GetContextualSessionHandle() {
+  if (!session_handle_) {
+    auto* service = ContextualSearchServiceFactory::GetForProfile(
+        Profile::FromWebUI(web_ui()));
+    if (service) {
+      session_handle_ = service->CreateSession(
+          std::make_unique<
+              contextual_search::ContextualSearchContextController::
+                  ConfigParams>(),
+          contextual_search::ContextualSearchSource::kOmnibox);
+    }
+  }
+  return session_handle_.get();
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)
