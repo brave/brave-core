@@ -52,33 +52,24 @@ void PolkadotWalletService::GetChainMetadata(
   CHECK(IsPolkadotNetwork(chain_id));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (chain_id == mojom::kPolkadotTestnet && !testnet_chain_metadata_) {
-    // Testnet chain metadata isn't ready yet, defer execution of the callback.
-    testnet_chain_metadata_callbacks_.push_back(std::move(callback));
-    return;
-  }
-
-  if (chain_id == mojom::kPolkadotMainnet && !mainnet_chain_metadata_) {
-    // Mainnet chain metadata isn't ready yet, defer execution of the callback.
-    mainnet_chain_metadata_callbacks_.push_back(std::move(callback));
-    return;
-  }
-
-  return OnGetChainMetadataPost(std::string(chain_id), std::move(callback));
-}
-
-void PolkadotWalletService::OnGetChainMetadataPost(
-    std::string chain_id,
-    GetChainMetadataCallback callback) {
-  CHECK(IsPolkadotNetwork(chain_id));
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (chain_id == mojom::kPolkadotTestnet) {
-    return std::move(callback).Run(*testnet_chain_metadata_);
+    if (testnet_chain_metadata_) {
+      return std::move(callback).Run(*testnet_chain_metadata_);
+    } else {
+      // Testnet chain metadata isn't ready yet, defer execution of the
+      // callback.
+      testnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    }
   }
 
   if (chain_id == mojom::kPolkadotMainnet) {
-    return std::move(callback).Run(*mainnet_chain_metadata_);
+    if (mainnet_chain_metadata_) {
+      return std::move(callback).Run(*mainnet_chain_metadata_);
+    } else {
+      // Mainnet chain metadata isn't ready yet, defer execution of the
+      // callback.
+      mainnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    }
   }
 }
 
