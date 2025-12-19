@@ -38,3 +38,43 @@ def initialize(self, original_method):
     self.context["VERSIONFULL"] = (f"{self.context['MINOR']}."
                                    f"{self.context['BUILD']}."
                                    f"{self.context['PATCH']}")
+
+
+# This override stages Brave resources
+@override_utils.override_method(Installer)
+def _stage_resources(self, original_method, install_dir):
+    original_method(self, install_dir)
+    self._install_into_dir(
+        self.output_dir / "installer/common/LICENSE",
+        install_dir,
+        mode=0o644,
+        strip=False,
+    )
+    self._install_into_dir(
+        self.output_dir / "brave_resources.pak",
+        install_dir,
+        mode=0o644,
+        strip=False,
+    )
+    self._install_into_dir(
+        self.output_dir / "brave_100_percent.pak",
+        install_dir,
+        mode=0o644,
+    )
+    self._install_into_dir(
+        self.output_dir / "brave_200_percent.pak",
+        install_dir,
+        mode=0o644,
+    )
+    # localization files for Brave extension
+    locales_dir = install_dir / "resources/brave_extension/_locales"
+    locales_dir.mkdir(parents=True, exist_ok=True)
+    locales_dir.chmod(0o755)
+    for locale in (self.output_dir / "locales").glob("*"):
+        if not locale.is_dir():
+            continue
+        locale_dir = locales_dir / locale.name
+        locale_dir.mkdir(parents=True, exist_ok=True)
+        locale_dir.chmod(0o755)
+        locale_file = locale / "messages.json"
+        self._install_into_dir(locale_file, locale_dir, mode=0o644)
