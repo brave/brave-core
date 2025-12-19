@@ -69,6 +69,7 @@ const SearchIcon = styled(Icon)`
 
 export const commandsApi = createCommandsApi(CommandsMojo.CommandsService.getRemote())
 export function useCommands() {
+  // Note: I don't think data should be getting the `| undefined` type here as I give it a default value.
   return commandsApi.useCommands().data!
 }
 
