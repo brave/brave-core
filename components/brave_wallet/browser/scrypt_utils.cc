@@ -24,16 +24,14 @@ std::optional<std::vector<uint8_t>> ScryptEncrypt(
     base::span<const uint8_t, kScryptKeyBytes> key,
     base::span<const uint8_t, kSecretboxNonceSize> nonce) {
   std::vector<uint8_t> padded_plaintext(
-      plaintext.size() + crypto_secretbox_ZEROBYTES, 0);
-  std::vector<uint8_t> ciphertext = padded_plaintext;
+      crypto_secretbox_ZEROBYTES + plaintext.size(), 0);
 
   // Write plaintext with padding.
-  base::SpanWriter padded_plaintext_writer = base::SpanWriter(
-      base::span(padded_plaintext)
-          .subspan(base::checked_cast<size_t>(crypto_secretbox_ZEROBYTES)));
-  padded_plaintext_writer.Write(plaintext);
-  CHECK_EQ(padded_plaintext_writer.remaining(), 0u);
+  base::span(padded_plaintext)
+      .last(plaintext.size())
+      .copy_from_nonoverlapping(plaintext);
 
+  std::vector<uint8_t> ciphertext(padded_plaintext.size());
   if (crypto_secretbox(ciphertext.data(), padded_plaintext.data(),
                        padded_plaintext.size(), nonce.data(),
                        key.data()) != 0) {
@@ -55,12 +53,10 @@ std::optional<std::vector<uint8_t>> ScryptDecrypt(
   // Reconstruct the full ciphertext with zero bytes prefix
   std::vector<uint8_t> full_ciphertext(
       crypto_secretbox_BOXZEROBYTES + data.size(), 0);
-  base::span(full_ciphertext)
-      .subspan(base::checked_cast<size_t>(crypto_secretbox_BOXZEROBYTES))
-      .copy_from_nonoverlapping(data);
+  base::span(full_ciphertext).last(data.size()).copy_from_nonoverlapping(data);
 
   // Decrypt using NaCl secretbox.
-  std::vector<uint8_t> decrypted = full_ciphertext;
+  std::vector<uint8_t> decrypted(full_ciphertext.size());
   if (crypto_secretbox_open(decrypted.data(), full_ciphertext.data(),
                             full_ciphertext.size(), nonce.data(),
                             key.data()) != 0) {
@@ -82,7 +78,7 @@ std::optional<std::array<uint8_t, crypto_secretbox_KEYBYTES>> ScryptDeriveKey(
     return std::nullopt;
   }
 
-  std::array<uint8_t, crypto_secretbox_KEYBYTES> derived_key;
+  std::array<uint8_t, crypto_secretbox_KEYBYTES> derived_key = {};
   if (!crypto::kdf::DeriveKeyScryptNoCheck(
           scrypt_params, base::as_byte_span(password), salt, derived_key)) {
     return std::nullopt;

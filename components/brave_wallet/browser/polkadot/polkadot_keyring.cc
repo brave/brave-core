@@ -114,7 +114,7 @@ std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
   return GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
 }
 
-void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
+void PolkadotKeyring::SetRandBytesForTesting(
     const std::array<uint8_t, kScryptSaltSize>& salt_bytes,
     const std::array<uint8_t, kSecretboxNonceSize>& nonce_bytes) {
   CHECK_IS_TEST();
