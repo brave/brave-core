@@ -151,8 +151,6 @@ This is the text of a web page:
 &lt;page&gt;
 <ph name="ARTICLE">$1</ph>
 &lt;/page&gt;
-
-<ph name= "USER_PROMPT">$2</ph>
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT" translateable="false">
@@ -161,8 +159,6 @@ This is a video transcript:
 &lt;transcript&gt;
 <ph name="TRANSCRIPT">$1</ph>
 &lt;/transcript&gt;
-
-<ph name= "USER_PROMPT">$2</ph>
 </message>
 
 <message name="IDS_AI_CHAT_LLAMA2_GENERATE_QUESTIONS_VIDEO" translateable="false">
