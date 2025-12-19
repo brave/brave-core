@@ -32,11 +32,15 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/url_constants.h"
+#include "chrome/browser/contextual_search/contextual_search_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
+#include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
+#include "components/contextual_search/contextual_search_service.h"
+#include "components/contextual_search/contextual_search_session_handle.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -199,9 +203,10 @@ void BraveNewTabUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
-  realbox_handler_ =
-      std::make_unique<RealboxHandler>(std::move(pending_page_handler),
-                                       profile, web_ui()->GetWebContents());
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
+      base::BindRepeating(&BraveNewTabUI::GetContextualSessionHandle,
+                          base::Unretained(this)));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -216,6 +221,22 @@ void BraveNewTabUI::BindInterface(
   }
 }
 #endif
+
+contextual_search::ContextualSearchSessionHandle*
+BraveNewTabUI::GetContextualSessionHandle() {
+  if (!session_handle_) {
+    auto* service = ContextualSearchServiceFactory::GetForProfile(
+        Profile::FromWebUI(web_ui()));
+    if (service) {
+      session_handle_ = service->CreateSession(
+          std::make_unique<
+              contextual_search::ContextualSearchContextController::
+                  ConfigParams>(),
+          contextual_search::ContextualSearchSource::kOmnibox);
+    }
+  }
+  return session_handle_.get();
+}
 
 void BraveNewTabUI::CreatePageHandler(
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
