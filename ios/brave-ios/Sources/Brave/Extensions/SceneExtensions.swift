@@ -58,10 +58,10 @@ extension UIViewController {
     // And caller does not need it then
     // Local Authentication is not necesseary
     if !windowProtection.isPassCodeAvailable {
-      if !errorOnNoPasscode {
-        completion?(true, nil)
+      if errorOnNoPasscode {
+        completion?(false, .passcodeNotSet)
       } else {
-        completion?(false,  .passcodeNotSet)
+        completion?(true, nil)
       }
     } else {
       windowProtection.presentAuthenticationForViewController(
