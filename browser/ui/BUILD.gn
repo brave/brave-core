@@ -389,6 +389,7 @@ source_set("ui") {
       "//chrome/app:generated_resources",
       "//chrome/browser/app_mode",
       "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/contextual_search",
       "//chrome/browser/favicon",
       "//chrome/browser/importer",
       "//chrome/browser/profiles",
