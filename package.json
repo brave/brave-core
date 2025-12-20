@@ -38,6 +38,8 @@
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js",
+    "ai-chat-app-dev": "webpack serve --config components/ai_chat/resources/app/webpack.config.ts --mode=development",
+    "ai-chat-app-prod": "webpack --config components/ai_chat/resources/app/webpack.config.ts --mode=production",
     "build-storybook": "npm run build -- --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",
@@ -91,6 +93,7 @@
     }
   },
   "devDependencies": {
+    "@capacitor/cli": "8.0.0",
     "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-knobs": "8.0.1",
     "@storybook/csf-tools": "8.6.14",
@@ -126,6 +129,7 @@
     "buffer": "6.0.3",
     "chalk": "4.1.2",
     "commander": "2.20.3",
+    "copy-webpack-plugin": "^13.0.1",
     "crypto-browserify": "3.12.0",
     "css-loader": "5.2.7",
     "csstype": "2.6.21",
@@ -188,13 +192,17 @@
     "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "3.0.0",
     "webpack": "5.97.1",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "^5.2.2"
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
     "@brave/leo": "github:brave/leo#5905f5e96b42bbca89409f545fd9e2136812eeb8",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#17e29a0f1ffafdeefafc3015c687fc3f449401dc",
     "@brave/wallet-standard-brave": "0.0.16",
+    "@capacitor/android": "8.0.0",
+    "@capacitor/core": "8.0.0",
+    "@capacitor/ios": "8.0.0",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "3.0.15",

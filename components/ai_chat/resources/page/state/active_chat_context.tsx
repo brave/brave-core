@@ -5,13 +5,16 @@
 
 import * as React from 'react'
 import { useRoute } from '$web-common/useRoute'
-import * as BindConversation from '../api/bind_conversation'
+import type * as BindConversation from '../api/bind_conversation'
 import { useAIChat } from './ai_chat_context'
 
 export const tabAssociatedChatId = 'tab'
 
 export interface SelectedChatDetails
-  extends Pick<BindConversation.ConversationBindings, 'api'> {
+  extends Pick<
+    BindConversation.ConversationBindings,
+    'api' | 'conversationHandler'
+  > {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
   createNewConversation: () => void
@@ -26,13 +29,21 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   createNewConversation: () => {},
   isTabAssociated: false,
   api: undefined!,
+  conversationHandler: undefined!,
 })
 
 export const updateSelectedConversation = (selectedId: string | undefined) => {
   window.history.pushState(null, '', `/${selectedId ?? ''}`)
 }
 
-export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
+type BindingProps = {
+  bindConversation: typeof BindConversation.bindConversation
+  newConversation: typeof BindConversation.newConversation
+}
+
+export function ActiveChatProviderFromUrl(
+  props: React.PropsWithChildren<BindingProps>,
+) {
   // Register the empty route, so we don't reload the page when navigating to '/'
   useRoute('/')
 
@@ -41,6 +52,7 @@ export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
     <ActiveChatProvider
       selectedConversationId={selectedConversationId}
       updateSelectedConversationId={updateSelectedConversation}
+      {...props}
     >
       {props.children}
     </ActiveChatProvider>
@@ -49,65 +61,107 @@ export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
 
 export const useActiveChat = () => React.useContext(ActiveChatContext)
 
-type ActiveChatContextProps = {
+type ActiveChatContextProps = BindingProps & {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void
 }
 
-function ActiveChatProvider({
-  children,
-  selectedConversationId,
-  updateSelectedConversationId,
-}: React.PropsWithChildren<ActiveChatContextProps>) {
+function ActiveChatProvider(
+  props: React.PropsWithChildren<ActiveChatContextProps>,
+) {
   const aiChat = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<BindConversation.ConversationBindings>()
+
+  const [currentBoundConversationUuid, setCurrentBoundConversationUuid] =
+    React.useState<string>()
 
   const details = React.useMemo<SelectedChatDetails>(
     () => ({
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       ...conversationAPI!, // It's always got a value
-      selectedConversationId,
-      updateSelectedConversationId,
+      selectedConversationId: props.selectedConversationId,
+      updateSelectedConversationId: props.updateSelectedConversationId,
       createNewConversation: () => {
-        setConversationAPI(BindConversation.newConversation(aiChat.api))
+        const bindings = props.newConversation(aiChat.api)
+        if (bindings.conversationUuid) {
+          setCurrentBoundConversationUuid(bindings.conversationUuid)
+          updateSelectedConversation(bindings.conversationUuid)
+        } else {
+          bindings.conversationHandler
+            .getConversationUuid()
+            .then(({ conversationUuid }) => {
+              setCurrentBoundConversationUuid(conversationUuid)
+              updateSelectedConversation(conversationUuid)
+            })
+        }
+
+        setConversationAPI(bindings)
       },
-      isTabAssociated: selectedConversationId === tabAssociatedChatId,
+      isTabAssociated: props.selectedConversationId === tabAssociatedChatId,
     }),
-    [selectedConversationId, updateSelectedConversationId, conversationAPI],
+    [
+      props.selectedConversationId,
+      props.updateSelectedConversationId,
+      props.newConversation,
+      setConversationAPI,
+      conversationAPI,
+    ],
   )
 
   // Only update conversation if we're on the tab associated conversation
   // and the event fires
   aiChat.api.useOnNewDefaultConversation(() => {
-    if (selectedConversationId === tabAssociatedChatId) {
+    if (props.selectedConversationId === tabAssociatedChatId) {
       // If the selected conversation is the tab associated one, we need to
       // bind to the new default conversation.
-      setConversationAPI(
-        BindConversation.bindConversation(aiChat.api, undefined),
-      )
+      setConversationAPI(props.bindConversation(aiChat.api, undefined))
     }
-  }, [selectedConversationId, aiChat.api])
+  }, [props.selectedConversationId, aiChat.api])
 
   // If the conversation ID changes explicitly to an ID or to blank,
   // we need to re-bind.
   React.useEffect(() => {
     // Handle creating a new conversation
-    if (!selectedConversationId) {
-      setConversationAPI(BindConversation.newConversation(aiChat.api))
+    if (!props.selectedConversationId) {
+      const bindings = props.newConversation(aiChat.api)
+      if (bindings.conversationUuid) {
+        setCurrentBoundConversationUuid(bindings.conversationUuid)
+      } else {
+        bindings.conversationHandler
+          .getConversationUuid()
+          .then(({ conversationUuid }) => {
+            setCurrentBoundConversationUuid(conversationUuid)
+          })
+      }
+      setConversationAPI(bindings)
+      return
+    }
+
+    if (props.selectedConversationId === currentBoundConversationUuid) {
       return
     }
 
     // Select a specific conversation
-    setConversationAPI(
-      BindConversation.bindConversation(
-        aiChat.api,
-        selectedConversationId === tabAssociatedChatId
-          ? undefined
-          : selectedConversationId,
-      ),
+    const bindings = props.bindConversation(
+      aiChat.api,
+      props.selectedConversationId === tabAssociatedChatId
+        ? undefined
+        : props.selectedConversationId,
     )
-  }, [aiChat.api, selectedConversationId])
+    if (bindings.conversationUuid) {
+      setCurrentBoundConversationUuid(bindings.conversationUuid)
+      updateSelectedConversation(bindings.conversationUuid)
+    } else {
+      bindings.conversationHandler
+        .getConversationUuid()
+        .then(({ conversationUuid }) => {
+          setCurrentBoundConversationUuid(conversationUuid)
+          updateSelectedConversation(conversationUuid)
+        })
+    }
+    setConversationAPI(bindings)
+  }, [aiChat.api, props.selectedConversationId])
 
   // Clean up bindings when not used anymore
   React.useEffect(() => {
@@ -126,29 +180,30 @@ function ActiveChatProvider({
 
     // Special case the default conversation - it gets treated specially as
     // the chat is rebound as the tab navigates.
-    if (selectedConversationId === tabAssociatedChatId) return
-    if (!selectedConversationId) return
-    if (conversations.find((c) => c.uuid === selectedConversationId)) return
+    if (props.selectedConversationId === tabAssociatedChatId) return
+    if (!props.selectedConversationId) return
+    if (conversations.find((c) => c.uuid === props.selectedConversationId))
+      return
 
     // If this isn't a non-empty conversation, it could be an empty tab bound
     // conversation.
     let cancelled = false
     aiChat.api.actions.service
-      .conversationExists(selectedConversationId)
+      .conversationExists(props.selectedConversationId)
       .then(({ exists }) => {
         if (cancelled) return
         if (exists) return
-        updateSelectedConversationId(undefined)
+        props.updateSelectedConversationId(undefined)
       })
 
     return () => {
       cancelled = true
     }
-  }, [conversations, selectedConversationId, aiChat.initialized])
+  }, [conversations, props.selectedConversationId, aiChat.initialized])
 
   return (
     <ActiveChatContext.Provider value={details}>
-      {conversationAPI && children}
+      {conversationAPI && props.children}
     </ActiveChatContext.Provider>
   )
 }
