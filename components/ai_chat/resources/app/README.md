@@ -1,3 +1,11 @@
+# Prerequisites
+
+You don't need to do a full brave browser build, but you do need some generated types and strings via a much much smaller build (make sure to sync first):
+
+```bash
+npm run build -- --target=brave:ai_chat_app_lib
+```
+
 # Work locally in a browser
 ```bash
 # Runs webpack, watching for changes, and a web server to view the site
