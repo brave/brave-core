@@ -13,7 +13,7 @@
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_mojom_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -153,14 +153,7 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
       base::BindOnce(
           [](MaybeServeNewTabPageAdCallback callback,
              base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
-            if (!ad) {
-              std::move(callback).Run(/*ad*/ std::nullopt);
-              return;
-            }
-
-            std::optional<base::Value::Dict> dict =
-                brave_ads::NewTabPageAdToValue(*ad);
-            std::move(callback).Run(std::move(dict));
+            std::move(callback).Run(brave_ads::NewTabPageAdToMojom(ad));
           },
           std::move(callback)),
       /*value=*/std::nullopt));

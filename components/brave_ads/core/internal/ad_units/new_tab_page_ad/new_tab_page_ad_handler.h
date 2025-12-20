@@ -40,7 +40,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
   void ParseAndSave(base::Value::Dict dict,
                     ParseAndSaveNewTabPageAdsCallback callback);
 
-  void MaybeServe(MaybeServeNewTabPageAdCallback callback);
+  void MaybeServe(MaybeServeNewTabPageAdRefCallback callback);
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
@@ -48,7 +48,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
                     TriggerAdEventCallback callback);
 
  private:
-  void MaybeServeCallback(MaybeServeNewTabPageAdCallback callback,
+  void MaybeServeCallback(MaybeServeNewTabPageAdRefCallback callback,
                           base::optional_ref<const NewTabPageAdInfo> ad);
 
   void TriggerServedEventCallback(

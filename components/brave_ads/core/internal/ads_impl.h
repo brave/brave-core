@@ -64,7 +64,8 @@ class AdsImpl final : public Ads {
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
-  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
+  void MaybeServeNewTabPageAd(
+      MaybeServeNewTabPageAdRefCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

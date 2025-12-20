@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_mojom_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -67,38 +68,22 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, Prefetch) {
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(expected_ad);
+        std::move(callback).Run(NewTabPageAdToMojom(expected_ad));
       });
 
   // Act
   prefetcher().Prefetch();
 
   // Assert
-  EXPECT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  EXPECT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 }
 
 TEST_F(BraveAdsNewTabPageAdPrefetcherTest, PrefetchFailed) {
   // Arrange
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .WillOnce([](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(/*ad=*/std::nullopt);
-      });
-
-  // Act
-  prefetcher().Prefetch();
-
-  // Assert
-  EXPECT_FALSE(prefetcher().MaybeGetPrefetchedAd());
-}
-
-TEST_F(BraveAdsNewTabPageAdPrefetcherTest, PrefetchInvalidAd) {
-  // Arrange
-  const NewTabPageAdInfo invalid_ad;
-  ASSERT_FALSE(invalid_ad.IsValid());
-
-  EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce([&invalid_ad](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(invalid_ad);
+        std::move(callback).Run(/*ad=*/nullptr);
       });
 
   // Act
@@ -116,17 +101,19 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .Times(2)
       .WillRepeatedly([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(expected_ad);
+        std::move(callback).Run(NewTabPageAdToMojom(expected_ad));
       });
 
   prefetcher().Prefetch();
-  ASSERT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  ASSERT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 
   // Act
   prefetcher().Prefetch();
 
   // Assert
-  EXPECT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  EXPECT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 }
 
 TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
@@ -136,7 +123,7 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(expected_ad);
+        std::move(callback).Run(NewTabPageAdToMojom(expected_ad));
       });
 
   prefetcher().Prefetch();
@@ -145,7 +132,8 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
   prefetcher().Prefetch();
 
   // Assert
-  EXPECT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  EXPECT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 }
 
 TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
@@ -164,10 +152,12 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
 
   // Act
   prefetcher().Prefetch();
-  std::move(deferred_maybe_serve_ad_callback).Run(expected_ad);
+  std::move(deferred_maybe_serve_ad_callback)
+      .Run(NewTabPageAdToMojom(expected_ad));
 
   // Assert
-  EXPECT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  EXPECT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 }
 
 TEST_F(BraveAdsNewTabPageAdPrefetcherTest, ShouldOnlyGetPrefetchedAdOnce) {
@@ -176,11 +166,12 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, ShouldOnlyGetPrefetchedAdOnce) {
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-        std::move(callback).Run(expected_ad);
+        std::move(callback).Run(NewTabPageAdToMojom(expected_ad));
       });
 
   prefetcher().Prefetch();
-  ASSERT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
+  ASSERT_EQ(expected_ad,
+            NewTabPageAdFromMojom(prefetcher().MaybeGetPrefetchedAd()));
 
   // Act & Assert
   EXPECT_FALSE(prefetcher().MaybeGetPrefetchedAd());
@@ -201,7 +192,7 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, CancelPrefetch) {
 
   // Assert
   // Run the deferred callback and make sure no crash occurs
-  std::move(deferred_maybe_serve_ad_callback).Run(/*ad=*/std::nullopt);
+  std::move(deferred_maybe_serve_ad_callback).Run(/*ad=*/nullptr);
 }
 
 }  // namespace brave_ads

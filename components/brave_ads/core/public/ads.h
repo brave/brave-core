@@ -82,7 +82,7 @@ class Ads {
   // Called to serve a new tab page ad. The callback takes one argument -
   // `NewTabPageAdInfo` containing the info for the ad.
   virtual void MaybeServeNewTabPageAd(
-      MaybeServeNewTabPageAdCallback callback) = 0;
+      MaybeServeNewTabPageAdRefCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger a
   // `mojom_ad_event_type` event for the specified `placement_id` and

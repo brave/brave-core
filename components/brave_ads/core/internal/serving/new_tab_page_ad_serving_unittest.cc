@@ -29,7 +29,7 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdServingTest : public test::TestBase {
  protected:
-  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
+  void MaybeServeAd(MaybeServeNewTabPageAdRefCallback callback) {
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;
     ad_serving_ = std::make_unique<NewTabPageAdServing>(
@@ -59,7 +59,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -85,7 +85,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
 
   EXPECT_CALL(delegate_mock_, OnDidServeNewTabPageAd);
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -105,7 +105,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
@@ -127,7 +127,7 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
+  base::MockCallback<MaybeServeNewTabPageAdRefCallback> callback;
   base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));

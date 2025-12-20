@@ -153,7 +153,7 @@ interface BatAds {
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
 
   ParseAndSaveNewTabPageAds(mojo_base.mojom.DictionaryValue value) => (bool success);
-  MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
+  MaybeServeNewTabPageAd() => (brave_ads.mojom.NewTabPageAdInfo? value);
   TriggerNewTabPageAdEvent(
       string placement_id,
       string creative_instance_id,

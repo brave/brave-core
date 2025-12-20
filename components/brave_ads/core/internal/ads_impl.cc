@@ -141,7 +141,8 @@ void AdsImpl::ParseAndSaveNewTabPageAds(
                                            std::move(callback));
 }
 
-void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
+void AdsImpl::MaybeServeNewTabPageAd(
+    MaybeServeNewTabPageAdRefCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(&AdsImpl::MaybeServeNewTabPageAd,
                                           weak_factory_.GetWeakPtr(),

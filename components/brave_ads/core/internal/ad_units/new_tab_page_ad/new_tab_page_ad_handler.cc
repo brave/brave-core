@@ -26,7 +26,7 @@ namespace {
 
 void FireServedEventCallback(
     const NewTabPageAdInfo& ad,
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     bool success,
     const std::string& /*placement_id*/,
     mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
@@ -64,7 +64,8 @@ void NewTabPageAdHandler::ParseAndSave(
   ParseAndSaveNewTabPageAds(std::move(dict), std::move(callback));
 }
 
-void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdHandler::MaybeServe(
+    MaybeServeNewTabPageAdRefCallback callback) {
   if (!UserHasOptedInToNewTabPageAds()) {
     // No-op if the user has not opted into new tab page ads.
     return std::move(callback).Run(/*ad=*/std::nullopt);
@@ -97,7 +98,7 @@ void NewTabPageAdHandler::TriggerEvent(
 ///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAdHandler::MaybeServeCallback(
-    MaybeServeNewTabPageAdCallback callback,
+    MaybeServeNewTabPageAdRefCallback callback,
     base::optional_ref<const NewTabPageAdInfo> ad) {
   if (!ad) {
     return std::move(callback).Run(ad);

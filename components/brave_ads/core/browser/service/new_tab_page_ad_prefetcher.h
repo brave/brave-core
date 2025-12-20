@@ -11,7 +11,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/optional_ref.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -27,12 +27,12 @@ class NewTabPageAdPrefetcher {
   ~NewTabPageAdPrefetcher();
 
   void Prefetch();
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedAd();
+  mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedAd();
 
  private:
-  void PrefetchCallback(base::optional_ref<const NewTabPageAdInfo> ad);
+  void PrefetchCallback(mojom::NewTabPageAdInfoPtr ad);
 
-  std::optional<NewTabPageAdInfo> prefetched_ad_;
+  mojom::NewTabPageAdInfoPtr prefetched_ad_;
   bool is_prefetching_ = false;
 
   const raw_ref<AdsService> ads_service_;
