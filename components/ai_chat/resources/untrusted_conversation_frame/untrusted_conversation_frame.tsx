@@ -11,6 +11,10 @@ import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 import { untrustedFrameDragHandlingSetup } from './hooks/useUntrustedFrameDragHandling'
+import {
+  bindUntrustedConversation,
+  BoundUntrustedConversation,
+} from './api/bind_untrusted_conversation'
 
 import '../common/strings'
 
@@ -19,17 +23,24 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 // Set up drag handling at module level
 untrustedFrameDragHandlingSetup()
 
-function App() {
+interface AppProps {
+  boundConversation: BoundUntrustedConversation
+}
+
+function App(props: AppProps) {
   return (
-    <UntrustedConversationContextProvider>
+    <UntrustedConversationContextProvider api={props.boundConversation.api}>
       <ConversationEntries />
     </UntrustedConversationContextProvider>
   )
 }
 
-function initialize() {
+async function initialize() {
+  // Bind the conversation and initialize the API
+  const boundConversation = await bindUntrustedConversation()
+
   const root = createRoot(document.getElementById('mountPoint')!)
-  root.render(<App />)
+  root.render(<App boundConversation={boundConversation} />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

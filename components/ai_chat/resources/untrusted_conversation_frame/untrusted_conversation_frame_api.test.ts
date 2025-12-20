@@ -5,7 +5,7 @@
 
 import * as Mojom from '../common/mojom'
 import { createTextContentBlock } from '../common/content_block'
-import { updateToolUseEventInHistory } from './untrusted_conversation_frame_api'
+import { updateToolUseEventInHistory } from './api/untrusted_conversation_api'
 
 describe('updateToolUseEventInHistory', () => {
   const mockToolUseEvent: Mojom.ToolUseEvent = {

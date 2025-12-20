@@ -35,21 +35,15 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     if (!memoryContent) return
 
     // Initial check
-    context.uiHandler?.hasMemory(memoryContent).then(({ exists }) => {
+    context.api.endpoints.hasMemory.fetch(memoryContent).then((exists) => {
       setMemoryExists(exists)
     })
 
     // Subscribe to memory changes via UI observer
-    const id = context.uiObserver?.onMemoriesChanged.addListener(
-      (memories: string[]) => {
-        const exists = memories.includes(memoryContent)
-        setMemoryExists(exists)
-      },
-    )
-
-    return () => {
-      context.uiObserver?.removeListener(id)
-    }
+    return context.api.subscribeToOnMemoriesChanged((memories: string[]) => {
+      const exists = memories.includes(memoryContent)
+      setMemoryExists(exists)
+    })
   }, [memoryContent])
 
   // Non-empty string in textContentBlock indicates an error

@@ -148,9 +148,10 @@ function ConversationEntries() {
         const handleCopyText =
           useConversationEventClipboardCopyHandler(firstEntryEdit)
 
-        const tabAttachments = conversationContext.associatedContent.filter(
-          (c) => c.conversationTurnUuid === firstEntryEdit.uuid,
-        )
+        const tabAttachments =
+          conversationContext.associatedContent?.filter(
+            (c) => c.conversationTurnUuid === firstEntryEdit.uuid,
+          ) ?? []
         const hasAttachments =
           !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
