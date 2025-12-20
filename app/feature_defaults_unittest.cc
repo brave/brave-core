@@ -114,6 +114,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
+      &blink::features::kUserMediaElement,
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       &browsing_data::features::kDbdRevampDesktop,
 #endif
@@ -142,6 +143,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
+      &features::kDevToolsAiCodeCompletion,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
 #endif  // !BUILDFLAG(IS_ANDROID)
