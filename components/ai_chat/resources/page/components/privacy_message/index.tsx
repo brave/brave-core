@@ -24,7 +24,7 @@ function PrivacyMessage() {
     const mojomUrl = new Url()
     mojomUrl.url = url
 
-    context.uiHandler?.openURL(mojomUrl)
+    context.api.actions.uiHandler.openURL(mojomUrl)
   }
 
   const createLinkWithClickHandler = (content: string, url: string) => (

@@ -12,7 +12,10 @@ import InputBox from '../../../../ai_chat/resources/page/components/input_box'
 import { useRewriterContext } from '../Context'
 import InitialText from './InitialText'
 import NoContent from './NoContent'
-import { stringifyContent } from '../../../../ai_chat/resources/page/components/input_box/editable_content'
+import {
+  Content,
+  stringifyContent,
+} from '../../../../ai_chat/resources/page/components/input_box/editable_content'
 
 const FiltersContainer = styled.div`
   display: flex;
@@ -51,7 +54,7 @@ export default function BeginGeneration() {
           conversationStarted
           context={{
             inputText: [context.instructionsText],
-            setInputText: (c) =>
+            setInputText: (c: Content) =>
               context.setInstructionsText(stringifyContent(c)),
             isToolsMenuOpen: context.isToolsMenuOpen,
             setIsToolsMenuOpen: context.setIsToolsMenuOpen,
@@ -67,17 +70,21 @@ export default function BeginGeneration() {
             isAIChatAgentProfileFeatureEnabled: false,
             isAIChatAgentProfile: false,
             openAIChatAgentProfile: () => {},
+            handleVoiceRecognition: () => {},
+            openURL: () => {},
+            associateDefaultContent: () => {},
             isGenerating: context.isGenerating,
             handleStopGenerating: async () => {},
             removeFile: () => {},
-            uploadFile: (useMediaCapture: boolean) => {},
-            getScreenshots: () => {},
+            uploadFile: (useMediaCapture: boolean) => Promise.resolve(null),
+            getScreenshots: () => Promise.resolve([]),
             associatedContentInfo: [],
             conversationHistory: [],
             pendingMessageFiles: [],
             isUploadingFiles: false,
             disassociateContent: () => {},
             getPluralString: () => Promise.resolve(''),
+            processImageFile: () => Promise.resolve(null),
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},

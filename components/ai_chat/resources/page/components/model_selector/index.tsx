@@ -106,8 +106,10 @@ export function ModelSelector() {
   )
 
   const onClickLearnMore = React.useCallback(() => {
-    aiChatContext.uiHandler?.openURL({ url: NEAR_AI_LEARN_MORE_URL })
-  }, [aiChatContext.uiHandler])
+    aiChatContext.api.actions.uiHandler?.openURL({
+      url: NEAR_AI_LEARN_MORE_URL,
+    })
+  }, [aiChatContext.api.actions.uiHandler])
 
   return (
     <ButtonMenu

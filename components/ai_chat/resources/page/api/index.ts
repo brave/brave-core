@@ -3,234 +3,246 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { loadTimeData } from '$web-common/loadTimeData'
-import API from '../../common/api'
 import * as Mojom from '../../common/mojom'
+import {
+  Closable,
+  createInterfaceApi,
+  state,
+  eventsFor,
+  endpointsFor,
+  VoidMethodKeys,
+} from '$web-common/api'
 
-// State that is owned by this class because it is global to the UI
-// (loadTimeData / Service / UIHandler).
-export type State = Mojom.ServiceState & {
-  initialized: boolean
-  isStandalone?: boolean
-  conversations: Mojom.Conversation[]
-  isPremiumStatusFetching: boolean
-  isPremiumUser: boolean
-  isPremiumUserDisconnected: boolean
-  isMobile: boolean
-  isHistoryFeatureEnabled: boolean
-  isAIChatAgentProfileFeatureEnabled: boolean
-  isAIChatAgentProfile: boolean
-  actionList: Mojom.ActionGroup[]
-  skills: Mojom.Skill[]
-  tabs: Mojom.TabData[]
+// createAIChatAPI uses createInterfaceAPI to configure
+// the various mojom interfaces for use
+// in the UI. Some function are marked as subscribable,
+// some as mutable, some as events, and some as actions -
+// which infer differences in data access and observability.
+//
+// Always provide parameters as mockable so that we can provide an
+// implementation of the basic interface. This is achieved with
+// Closable<MyMojomServiceInterface> instead of passing the
+// MyMojomServiceRemote derived class type, which has a lot of extra
+// methods we'd have to mock.
+//
+// This is a good place for services and ui handlers.
+// It may be broken up by service or combined for convenience, depending
+// on how big the interfaces are.
+export default function createAIChatApi(
+  service: Closable<Mojom.ServiceInterface>,
+  uiHandler: Closable<Mojom.AIChatUIHandlerInterface>,
+  bookmarksService: Closable<Mojom.BookmarksPageHandlerInterface>,
+  historyService: Closable<Mojom.HistoryUIHandlerInterface>,
+  metrics: Closable<Mojom.MetricsInterface>,
+) {
+  // Hang on to some receiver references as in some cases we're passed
+  // the remote from an event on another receiver.
+  let serviceObserver: Mojom.ServiceObserverInterface
+  let chatUIObserver: Mojom.ChatUIInterface
+  let conversationEntriesFrameObserver: Mojom.ParentUIFrameInterface
+  let tabDataObserver: Mojom.TabDataObserverInterface
 
-  // This is the content of the tab that this conversation is shown next to (if
-  // any). If the user creates a new conversation this will be used as the
-  // default tab content.
-  defaultTabContentId?: number
-}
+  // Define the API layout and what to do with the interface data:
+  // - which functions should be exposed to the UI as subscribable with hooks
+  // - which should be prefetched,
+  // - which are mutable and should only be called explicitly
+  const api = createInterfaceApi({
+    // endpoints are subscribable Queries or Mutations.
+    // - Queries are fetched as soon as the hook is present.
+    // - Mutations only when the mutate function of the hook is called.
+    endpoints: {
+      // `endpointsFor` is a helper to generate endpoints from an interface
+      // with minimal boilerplate.
+      ...endpointsFor(service, {
+        getConversations: {
+          response: (result) => result.conversations,
+          prefetchWithArgs: [],
+          placeholderData: [] as Mojom.Conversation[],
+        },
+        getActionMenuList: {
+          response: (result) => result.actionList,
+          prefetchWithArgs: [],
+          placeholderData: [] as Mojom.ActionGroup[],
+        },
+        getSkills: {
+          response: (result) => result.skills,
+          prefetchWithArgs: [],
+          placeholderData: [] as Mojom.Skill[],
+        },
+        getPremiumStatus: {
+          response: (result) => ({
+            /**
+             * @deprecated use api.useGetPremiumState().isPlaceholderData
+             * instead to know if this has ever been fetched.
+             */
+            isPremiumStatusFetching: false,
 
-export const defaultUIState: State = {
-  initialized: false,
-  conversations: [],
-  hasAcceptedAgreement: false,
-  isStoragePrefEnabled: false,
-  isPremiumStatusFetching: true,
-  isPremiumUser: false,
-  isPremiumUserDisconnected: false,
-  isStorageNoticeDismissed: false,
-  canShowPremiumPrompt: false,
-  isMobile: loadTimeData.getBoolean('isMobile'),
-  isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
-  isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
-    'isAIChatAgentProfileFeatureEnabled',
-  ),
-  isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
-  actionList: [],
-  skills: [],
-  tabs: [],
-}
+            isPremiumUser:
+              result.status !== undefined
+              && result.status !== Mojom.PremiumStatus.Inactive,
 
-// Owns connections to the browser via mojom as well as global state
-class PageAPI extends API<State> {
-  public service: Mojom.ServiceRemote = Mojom.Service.getRemote()
+            isPremiumUserDisconnected:
+              result.status === Mojom.PremiumStatus.ActiveDisconnected,
+          }),
+          // Should be `placeholderData`?
+          initialData: {
+            isPremiumStatusFetching: true,
+            isPremiumUser: false,
+            isPremiumUserDisconnected: false,
+          },
+          prefetchWithArgs: [],
+          refetchOnWindowFocus: 'always',
+        },
+      }),
 
-  public metrics: Mojom.MetricsRemote = new Mojom.MetricsRemote()
+      ...endpointsFor(uiHandler, {
+        uploadFile: {
+          mutationResponse: (result) => result.uploadedFiles,
+        },
+        processImageFile: {
+          mutationResponse: (result) => result.processedFile,
+        },
+        getPluralString: {
+          response: (result) => result.pluralString,
+        },
+      }),
 
-  public observer: Mojom.ServiceObserverCallbackRouter =
-    new Mojom.ServiceObserverCallbackRouter()
+      ...endpointsFor(bookmarksService, {
+        getBookmarks: {
+          response: (result) => result.bookmarks,
+          placeholderData: [] as Mojom.Bookmark[],
+        },
+      }),
 
-  public uiHandler: Mojom.AIChatUIHandlerRemote =
-    Mojom.AIChatUIHandler.getRemote()
+      ...endpointsFor(historyService, {
+        getHistory: {
+          response: (result) => result.history,
+          placeholderData: [] as Mojom.HistoryEntry[],
+        },
+      }),
 
-  public uiObserver: Mojom.ChatUICallbackRouter =
-    new Mojom.ChatUICallbackRouter()
+      // An endpoint can also be a non-query: data that will be updated
+      // outside (in this case, when binding) and updated by event.
+      //
+      // We provide initial data here with the `state` helper, so that
+      // we don't have to manually define with:
+      // `{ query: () => Promise.reject(), enabled: false, initialData: { ... } }`.
+      // which state(...) is a wrapper for.
+      state: state<Mojom.ServiceState>({
+        hasAcceptedAgreement: false,
+        isStoragePrefEnabled: false,
+        isStorageNoticeDismissed: false,
+        canShowPremiumPrompt: false,
+      }),
 
-  public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter =
-    new Mojom.ParentUIFrameCallbackRouter()
+      // no intial data so we know when the value has been received
+      // (undefined until the service responds) to avoid flash
+      // of different layout.
+      isStandalone: state<boolean | undefined>(undefined),
 
-  public tabObserver: Mojom.TabDataObserverCallbackRouter =
-    new Mojom.TabDataObserverCallbackRouter()
+      tabs: state<Mojom.TabData[]>([]),
+    },
 
-  public bookmarksService = Mojom.BookmarksPageHandler.getRemote()
+    // actions are passed through to consumers as-is, no caching or result handling
+    actions: {
+      service: service as Pick<
+        Mojom.ServiceInterface,
+        VoidMethodKeys<Mojom.ServiceInterface> | 'conversationExists'
+      >,
+      uiHandler: uiHandler as Pick<
+        Mojom.AIChatUIHandlerInterface,
+        VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+      >,
+      metrics: metrics as Pick<
+        Mojom.MetricsInterface,
+        VoidMethodKeys<Mojom.MetricsInterface>
+      >,
+    },
 
-  public historyService = Mojom.HistoryUIHandler.getRemote()
+    // Events are subscribable data and offers an easy hook to wrap the subscription
+    events: {
+      // Provide a partial implementation of a receiver,
+      // and eventsFor will optionally generate events
+      // that are create as subscribables in the API.
+      ...eventsFor(
+        Mojom.ServiceObserverInterface,
+        {
+          onConversationListChanged: (conversations) => {
+            api.getConversations.update(conversations)
+          },
+          onStateChanged: (state) => {
+            api.state.update(state)
+          },
+          onSkillsChanged: (skills) => {
+            api.getSkills.update(skills)
+          },
+        },
+        async (observer) => {
+          serviceObserver = observer
+        },
+      ),
 
-  constructor() {
-    super(defaultUIState)
-    this.initialize()
-    this.updateCurrentPremiumStatus()
-  }
+      ...eventsFor(
+        Mojom.ChatUIInterface,
+        {
+          // We don't need to do any handling here, just pass through
+          onNewDefaultConversation(contentId: number) {},
 
-  async initialize() {
-    // Get any global UI state. We can do that here instead of React context
-    // to start as early as possible.
-    // Premium state separately because it takes longer to fetch and we don't
-    // need to wait for it.
+          // TODO(petemill): rename in mojom to
+          // `onAttachedFilesAreProcessing`.
+          onUploadFilesSelected() {},
 
-    this.uiObserver.onNewDefaultConversation.addListener(
-      (contentId?: number) => {
-        this.setPartialState({
-          defaultTabContentId: contentId,
-        })
-      },
-    )
+          onChildFrameBound(parentPagePendingReceiver) {},
+        },
+        async (observer) => {
+          chatUIObserver = observer
+        },
+      ),
 
-    const [
-      { state },
-      { isStandalone },
-      { conversations },
-      { actionList },
-      { skills },
-      premiumStatus,
-    ] = await Promise.all([
-      this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
-      this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
-      this.service.getConversations(),
-      this.service.getActionMenuList(),
-      this.service.getSkills(),
-      this.getCurrentPremiumStatus(),
-    ])
-    this.setPartialState({
-      ...state,
-      ...premiumStatus,
-      initialized: true,
-      isStandalone,
-      conversations,
-      actionList,
-      skills,
-    })
+      ...eventsFor(
+        Mojom.ParentUIFrameInterface,
+        {
+          // TODO(petemill): rename in mojom to
+          // `OnConversationEntriesFrameHeightChanged`, etc.
+          childHeightChanged(height) {},
+          rateMessage(turnUuid, isLiked) {},
+          userRequestedOpenGeneratedUrl(url) {},
+          dragStart() {},
+          regenerateAnswerMenuIsOpen(isOpen) {},
+          showSkillDialog(prompt) {},
+          showPremiumSuggestionForRegenerate(isVisible) {},
+        },
+        (observer) => {
+          conversationEntriesFrameObserver = observer
+        },
+      ),
 
-    this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
+      ...eventsFor(
+        Mojom.TabDataObserverInterface,
+        {
+          tabDataChanged: (tabs) => {
+            api.tabs.update(tabs)
+          },
+        },
+        (observer) => {
+          tabDataObserver = observer
+        },
+      ),
+    },
+  })
 
-    // If we're in standalone mode, listen for tab changes so we can show a picker.
-    Mojom.TabTrackerService.getRemote().addObserver(
-      this.tabObserver.$.bindNewPipeAndPassRemote(),
-    )
-    this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
-      this.setPartialState({
-        tabs,
-      })
-    })
-
-    this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
-      this.setPartialState(state)
-    })
-
-    this.observer.onConversationListChanged.addListener(
-      (conversations: Mojom.Conversation[]) => {
-        this.setPartialState({
-          conversations,
-        })
-      },
-    )
-
-    this.observer.onSkillsChanged.addListener((skills: Mojom.Skill[]) => {
-      this.setPartialState({
-        skills,
-      })
-    })
-
-    this.uiObserver.onChildFrameBound.addListener(
-      (parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {
-        this.conversationEntriesFrameObserver.$.bindHandle(
-          parentPagePendingReceiver.handle,
-        )
-      },
-    )
-
-    // Since there is no browser-side event for premium status changing,
-    // we should check often. And since purchase or login is performed in
-    // a separate WebContents, we can check when focus is returned here.
-    window.addEventListener('focus', () => {
-      this.updateCurrentPremiumStatus()
-    })
-
-    document.addEventListener('visibilitychange', (e) => {
-      if (document.visibilityState === 'visible') {
-        this.updateCurrentPremiumStatus()
-      }
-    })
-  }
-
-  private async getCurrentPremiumStatus() {
-    const { status } = await this.service.getPremiumStatus()
-    return {
-      isPremiumStatusFetching: false,
-      isPremiumUser:
-        status !== undefined && status !== Mojom.PremiumStatus.Inactive,
-      isPremiumUserDisconnected:
-        status === Mojom.PremiumStatus.ActiveDisconnected,
-    }
-  }
-
-  private async updateCurrentPremiumStatus() {
-    this.setPartialState(await this.getCurrentPremiumStatus())
-  }
-}
-
-let apiInstance: PageAPI
-
-export default function getAPI() {
-  if (!apiInstance) {
-    apiInstance = new PageAPI()
-  }
-  return apiInstance
-}
-
-export function bindConversation(id: string | undefined) {
-  let conversationHandler: Mojom.ConversationHandlerRemote =
-    new Mojom.ConversationHandlerRemote()
-  let callbackRouter = new Mojom.ConversationUICallbackRouter()
-
-  if (id !== undefined) {
-    getAPI().service.bindConversation(
-      id,
-      conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote(),
-    )
-  } else {
-    getAPI().uiHandler.bindRelatedConversation(
-      conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote(),
-    )
-  }
   return {
-    conversationHandler,
-    callbackRouter,
+    api,
+
+    serviceObserver: serviceObserver!,
+    chatUIObserver: chatUIObserver!,
+    conversationEntriesFrameObserver: conversationEntriesFrameObserver!,
+    tabDataObserver: tabDataObserver!,
+
+    close: () => {
+      api.close()
+    },
   }
 }
 
-export function newConversation() {
-  let conversationHandler: Mojom.ConversationHandlerRemote =
-    new Mojom.ConversationHandlerRemote()
-  let callbackRouter = new Mojom.ConversationUICallbackRouter()
-  getAPI().uiHandler.newConversation(
-    conversationHandler.$.bindNewPipeAndPassReceiver(),
-    callbackRouter.$.bindNewPipeAndPassRemote(),
-  )
-  return {
-    conversationHandler,
-    callbackRouter,
-  }
-}
+export type AIChatAPI = ReturnType<typeof createAIChatApi>

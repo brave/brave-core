@@ -120,14 +120,14 @@ export default function SkillModal() {
     }
 
     if (isEditMode && aiChatContext.skillDialog?.id) {
-      aiChatContext.service?.updateSkill(
+      aiChatContext.api.actions.service?.updateSkill(
         aiChatContext.skillDialog.id,
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
       )
     } else {
-      aiChatContext.service?.createSkill(
+      aiChatContext.api.actions.service?.createSkill(
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
@@ -143,7 +143,7 @@ export default function SkillModal() {
     shortcut,
     prompt,
     selectedModel,
-    aiChatContext.service,
+    aiChatContext.api.actions.service,
     closeAndReset,
   ])
 
@@ -152,14 +152,16 @@ export default function SkillModal() {
       return
     }
 
-    if (aiChatContext.service?.deleteSkill) {
-      aiChatContext.service.deleteSkill(aiChatContext.skillDialog.id)
+    if (aiChatContext.api.actions.service?.deleteSkill) {
+      aiChatContext.api.actions.service.deleteSkill(
+        aiChatContext.skillDialog.id,
+      )
     }
     closeAndReset()
   }, [
     isEditMode,
     aiChatContext.skillDialog?.id,
-    aiChatContext.service,
+    aiChatContext.api.actions.service,
     closeAndReset,
   ])
 

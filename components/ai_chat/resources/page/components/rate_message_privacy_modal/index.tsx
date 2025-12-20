@@ -32,11 +32,11 @@ export default function RateMessagePrivacyModal() {
     conversationContext.ratingTurnUuid,
   ])
 
-  const handleLearnMoreClicked = React.useCallback(() => {
+  const handleLearnMoreClicked = () => {
     const mojomUrl = new Url()
     mojomUrl.url = LEARN_MORE_URL
-    aiChatContext.uiHandler?.openURL(mojomUrl)
-  }, [aiChatContext.uiHandler])
+    aiChatContext.api.actions.uiHandler.openURL(mojomUrl)
+  }
 
   return (
     <Dialog

@@ -38,9 +38,12 @@ function TabItem({ tab }: { tab: TabData }) {
       checked={!!content}
       onChange={(e) => {
         if (e.checked) {
-          aiChat.uiHandler?.associateTab(tab, conversationUuid!)
+          aiChat.api.actions.uiHandler.associateTab(tab, conversationUuid)
         } else if (content) {
-          aiChat.uiHandler?.disassociateContent(content, conversationUuid!)
+          aiChat.api.actions.uiHandler.disassociateContent(
+            content,
+            conversationUuid,
+          )
         }
       }}
     >
@@ -71,13 +74,13 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
       isDisabled={!!content?.conversationTurnUuid}
       onChange={(e) => {
         if (e.checked) {
-          aiChat.uiHandler?.associateUrlContent(
+          aiChat.api.actions.uiHandler.associateUrlContent(
             { url },
             title,
             conversation.conversationUuid!,
           )
         } else if (content) {
-          aiChat.uiHandler?.disassociateContent(
+          aiChat.api.actions.uiHandler.disassociateContent(
             content,
             conversation.conversationUuid!,
           )
@@ -122,11 +125,14 @@ export function useFilteredItems(search: string) {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
-  const { result: bookmarks = [] } = usePromise(() => aiChat.getBookmarks(), [])
+  const bookmarks = aiChat.api.useGetBookmarksData()
+
+  // Since we don't want to fetch history every time, don't use the
+  // useGetHistory hook, and use fetch directly instead.
   const { result: history = [] } = usePromise(
     () =>
       conversation.attachmentsDialog === 'history'
-        ? aiChat.getHistory(search)
+        ? aiChat.api.endpoints.getHistory.fetch(search, null)
         : Promise.resolve([]),
     [search, conversation.attachmentsDialog],
   )

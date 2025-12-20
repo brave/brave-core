@@ -125,14 +125,14 @@ export function query<const P extends readonly any[], R>(
  * @param data optional initial data (not placeholder data)
  * @returns query endpoint definition
  */
-export function state<R>(data?: R): QueryEndpointDefinition<[], R> {
+export function state<R>(data: R): QueryEndpointDefinition<[], R> & { placeholderData: R } {
   return {
     query: () =>
       Promise.reject(new Error('State endpoint should not be called')),
     enabled: false,
     prefetchWithArgs: [],
-    // TODO(petemill): should be placeholderData?
-    initialData: data,
+    // TODO(petemill): should be initialData?
+    placeholderData: data,
     // never re-fetch, even if invalidated
     staleTime: 'static',
   }

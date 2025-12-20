@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as Mojom from '../../common/mojom'
-import getAPI from '../api'
+import type { AIChatContext } from '../state/ai_chat_context'
 
 // Custom error types for better error handling
 export class FileReadError extends Error {
@@ -37,6 +37,7 @@ export class UnsupportedFileTypeError extends Error {
 // Utility function to convert File objects to UploadedFile format
 export const convertFileToUploadedFile = async (
   file: File,
+  processImageFile: AIChatContext['processImageFile'],
 ): Promise<Mojom.UploadedFile> => {
   const reader = new FileReader()
   const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
@@ -69,19 +70,18 @@ export const convertFileToUploadedFile = async (
   } else if (mimeType.startsWith('image/')) {
     // Use backend processing for images via mojo call
     try {
-      const api = getAPI()
-      const response = await api.uiHandler.processImageFile(
+      const processedFile = await processImageFile(
         Array.from(uint8Array),
         file.name,
       )
 
-      if (!response.processedFile) {
+      if (!processedFile) {
         throw new ImageProcessingError(
           'Failed to process image file: Backend returned no result',
         )
       }
 
-      return response.processedFile
+      return processedFile
     } catch (error) {
       if (error instanceof ImageProcessingError) {
         throw error

@@ -24,7 +24,7 @@ export default function FeatureMenu(props: Props) {
   const conversationContext = useConversation()
 
   const handleSettingsClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
+    aiChatContext.api.actions.uiHandler.openAIChatSettings()
   }
 
   // If conversation has been started, then it has been committed
@@ -32,6 +32,8 @@ export default function FeatureMenu(props: Props) {
   const hasConversationStarted = useHasConversationStarted(
     conversationContext.conversationUuid,
   )
+
+  const isTemporaryChat = conversationContext.api.useGetStateData().temporary
 
   const handleTemporaryChatToggle = (detail: { checked: boolean }) => {
     conversationContext.setTemporary(detail.checked)
@@ -52,9 +54,7 @@ export default function FeatureMenu(props: Props) {
         <leo-menu-item
           data-is-interactive='true'
           onClick={() =>
-            handleTemporaryChatToggle({
-              checked: !conversationContext.isTemporaryChat,
-            })
+            handleTemporaryChatToggle({ checked: !isTemporaryChat })
           }
         >
           <div
@@ -70,7 +70,7 @@ export default function FeatureMenu(props: Props) {
             <Toggle
               size='small'
               onChange={handleTemporaryChatToggle}
-              checked={conversationContext.isTemporaryChat}
+              checked={isTemporaryChat}
             ></Toggle>
           </div>
         </leo-menu-item>
@@ -81,7 +81,7 @@ export default function FeatureMenu(props: Props) {
           <leo-menu-item
             onClick={() =>
               aiChatContext.setEditingConversationId(
-                conversationContext.conversationUuid!,
+                conversationContext.conversationUuid,
               )
             }
           >
@@ -100,7 +100,7 @@ export default function FeatureMenu(props: Props) {
           <leo-menu-item
             onClick={() =>
               aiChatContext.setDeletingConversationId(
-                conversationContext.conversationUuid!,
+                conversationContext.conversationUuid,
               )
             }
           >
@@ -140,7 +140,9 @@ export default function FeatureMenu(props: Props) {
       )}
       {!aiChatContext.isMobile && (
         <leo-menu-item
-          onClick={() => aiChatContext.uiHandler?.openMemorySettings()}
+          onClick={() =>
+            aiChatContext.api.actions.uiHandler.openMemorySettings()
+          }
         >
           <div
             className={classnames(
