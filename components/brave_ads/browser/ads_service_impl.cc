@@ -39,7 +39,6 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
@@ -1197,8 +1196,7 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   new_tab_page_ad_prefetcher_->Prefetch();
 }
 
-std::optional<NewTabPageAdInfo>
-AdsServiceImpl::MaybeGetPrefetchedNewTabPageAd() {
+mojom::NewTabPageAdInfoPtr AdsServiceImpl::MaybeGetPrefetchedNewTabPageAd() {
   return new_tab_page_ad_prefetcher_->MaybeGetPrefetchedAd();
 }
 
@@ -1225,25 +1223,11 @@ void AdsServiceImpl::ParseAndSaveNewTabPageAds(
 }
 
 void AdsServiceImpl::MaybeServeNewTabPageAd(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeMojomNewTabPageAdCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*ad=*/std::nullopt);
+    return std::move(callback).Run(/*ad=*/nullptr);
   }
-
-  auto callback_wrapper = base::BindOnce(
-      [](MaybeServeNewTabPageAdCallback callback,
-         std::optional<base::Value::Dict> dict) {
-        if (!dict) {
-          return std::move(callback).Run(
-              /*ad=*/std::nullopt);
-        }
-
-        std::move(callback).Run(NewTabPageAdFromValue(*dict));
-      },
-      std::move(callback));
-
-  bat_ads_associated_remote_->MaybeServeNewTabPageAd(
-      std::move(callback_wrapper));
+  bat_ads_associated_remote_->MaybeServeNewTabPageAd(std::move(callback));
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(

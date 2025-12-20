@@ -42,8 +42,8 @@ CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
   creative_new_tab_page_ad.wallpaper_type = wallpaper_type;
-  creative_new_tab_page_ad.company_name = "Test Ad Company Name";
-  creative_new_tab_page_ad.alt = "Test Ad Alt";
+  creative_new_tab_page_ad.company_name = "Test Ad Title";
+  creative_new_tab_page_ad.alt = "Test Ad Description";
 
   return creative_new_tab_page_ad;
 }

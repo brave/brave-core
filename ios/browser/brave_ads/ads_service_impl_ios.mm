@@ -22,7 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -200,10 +200,9 @@ void AdsServiceImplIOS::PrefetchNewTabPageAd() {
   new_tab_page_ad_prefetcher_->Prefetch();
 }
 
-std::optional<NewTabPageAdInfo>
-AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAd() {
+mojom::NewTabPageAdInfoPtr AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAd() {
   if (!IsInitialized()) {
-    return std::nullopt;
+    return nullptr;
   }
 
   return new_tab_page_ad_prefetcher_->MaybeGetPrefetchedAd();
@@ -241,12 +240,17 @@ void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
 }
 
 void AdsServiceImplIOS::MaybeServeNewTabPageAd(
-    MaybeServeNewTabPageAdCallback callback) {
+    MaybeServeMojomNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*ad=*/std::nullopt);
+    return std::move(callback).Run(/*ad=*/nullptr);
   }
 
-  ads_->MaybeServeNewTabPageAd(std::move(callback));
+  ads_->MaybeServeNewTabPageAd(base::BindOnce(
+      [](MaybeServeMojomNewTabPageAdCallback callback,
+         base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
+        std::move(callback).Run(brave_ads::ToMojom(ad));
+      },
+      std::move(callback)));
 }
 
 void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
