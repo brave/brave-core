@@ -24,6 +24,10 @@ function getBrowserTheme() {
     s.href?.includes('nala.css'),
   )!
 
+  if (!nala) {
+    return null
+  }
+
   const baseColors = Array.from(nala.cssRules || []).find(
     (rule) =>
       rule instanceof CSSImportRule && rule.href?.includes('theme/colors.css'),
@@ -41,10 +45,13 @@ export default function RichSearchWidget(props: { jsonData: string }) {
     (iframe: HTMLIFrameElement | null) => {
       if (iframe) {
         const sendContent = () => {
-          iframe.contentWindow?.postMessage(
-            { type: 'theme', styles: getBrowserTheme() },
-            RICH_SEARCH_WIDGETS_ORIGIN,
-          )
+          const browserTheme = getBrowserTheme()
+          if (browserTheme) {
+            iframe.contentWindow?.postMessage(
+              { type: 'theme', styles: browserTheme },
+              RICH_SEARCH_WIDGETS_ORIGIN,
+            )
+          }
           iframe.contentWindow?.postMessage(
             JSON.parse(props.jsonData),
             RICH_SEARCH_WIDGETS_ORIGIN,
