@@ -997,6 +997,7 @@ test("brave_browser_tests") {
     "//components/country_codes",
     "//components/crx_file",
     "//components/embedder_support",
+    "//components/feed:feature_list",
     "//components/gcm_driver:gcm_buildflags",
     "//components/history_clusters/core",
     "//components/infobars/content",
