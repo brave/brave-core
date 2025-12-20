@@ -153,7 +153,8 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
       binaryString += String.fromCharCode(...chunk)
     }
     const base64String = btoa(binaryString)
-    // return uint8Array.toBase64() // Use this when supported
+    // Replace with uint8Array.toBase64() when TypeScript adds support for 
+    // toBase64 method.
     return base64String
   }
 
