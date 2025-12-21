@@ -9,7 +9,7 @@ const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
 const XHRCompileAsyncWasmPlugin = require('./xhr-compile-async-wasm-plugin.js')
 const { fallback, provideNodeGlobals } = require('./polyfill')
 const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
-
+const buildFlags = require(path.join(process.env.ROOT_GEN_DIR, 'brave/build_flags.json'))
 const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
 
 /**
@@ -199,6 +199,11 @@ module.exports = async function (env, argv) {
             // correct build configuration output directory.
             configFile: tsConfigPath
           }
+        },
+        {
+          test: /\.(js|ts)x?$/,
+          loader: './components/webpack/plugins/ifdef-loader.ts',
+          options: buildFlags
         },
         {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,

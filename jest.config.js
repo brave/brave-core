@@ -38,7 +38,7 @@ function getReporters() {
 function getBuildConfig() {
   // Try to find the build config in any of the possible build directories
   const possiblePaths = getBuildOutputPathList(
-    'gen/brave/jest_build_config.json'
+    'gen/brave/build_flags.json'
   )
 
   for (const configPath of possiblePaths) {
