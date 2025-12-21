@@ -96,13 +96,22 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
     google_chrome_xml_tree = etree.parse(google_chrome_string_path)
 
     message_ids = []
+    # For GRDP files use grit-part, for GRD files use messages
+    parent_element = brave_strings_xml_tree.xpath('//grit-part')
+    if not parent_element:
+        parent_element = brave_strings_xml_tree.xpath('//messages')
+    parent_element = parent_element[0]
+
     for item in google_chrome_strings_map.keys():
         google_message_elem = google_chrome_xml_tree.xpath(
             '//message[@name="{}"]'.format(item))[0]
         message_text = google_message_elem.text.lstrip().rstrip()
         message_ids.append(tclib.GenerateMessageId(message_text))
-        messages_element = brave_strings_xml_tree.xpath('//messages')[0]
-        new_element = etree.SubElement(messages_element, 'message')
+        # Add indentation before new element by setting tail of last child
+        last_child = parent_element[-1] if len(parent_element) > 0 else None
+        if last_child is not None:
+            last_child.tail = (last_child.tail or '').rstrip() + '\n    '
+        new_element = etree.SubElement(parent_element, 'message')
         new_element.set('name', google_chrome_strings_map[item])
         new_element.text = google_message_elem.text
         new_element.set('desc', google_message_elem.get('desc'))
@@ -111,10 +120,9 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
 
 def add_installer_strings_xtb_translations_for_messages(message_ids):
     installer_xtb_files = glob.glob(
-        os.path.join(
-            BRAVE_SOURCE_ROOT,
-            'chromium_src/chrome/installer/setup/resources/setup_resources_*.xtb'
-        ))
+        os.path.join(BRAVE_SOURCE_ROOT,
+                     'chromium_src/chrome/installer/setup/resources',
+                     'setup_resources_*.xtb'))
     for installer_xtb_path in installer_xtb_files:
         installer_xtb_xml_tree = etree.parse(installer_xtb_path)
         lang = os.path.basename(installer_xtb_path).replace(
@@ -148,8 +156,12 @@ def add_installer_strings(brave_strings_xml_tree, installer_strings):
         'chromium_src/chrome/installer/setup/resources/setup_resources.grd')
     installer_strings_xml_tree = etree.parse(installer_strings_grd_path)
     message_ids = []
-    messages_element = brave_strings_xml_tree.xpath('//messages')[0]
-    if_element = etree.SubElement(messages_element, 'if')
+    # For GRDP files use grit-part, for GRD files use messages
+    parent_element = brave_strings_xml_tree.xpath('//grit-part')
+    if not parent_element:
+        parent_element = brave_strings_xml_tree.xpath('//messages')
+    parent_element = parent_element[0]
+    if_element = etree.SubElement(parent_element, 'if')
     if_element.set('expr', 'is_win')
     for item in installer_strings:
         message_elem = installer_strings_xml_tree.xpath(
@@ -173,6 +185,13 @@ def parse_args():
 
 def generate_overrides_and_replace_strings(source_string_path):
     # pylint: disable=too-many-locals
+    # Skip override generation for _main.grdp files - their overrides stay
+    # inline in the parent _override.grd file (e.g. brave_strings_override.grd)
+    basename = os.path.basename(source_string_path)
+    if basename.endswith('_main.grdp'):
+        braveify_grd_in_place(source_string_path)
+        return
+
     # Read the clean GRD and apply only branding replacements (e.g. Chrome ->
     # Brave).
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
@@ -208,9 +227,10 @@ def generate_overrides_and_replace_strings(source_string_path):
     parts = modified_xml_tree.xpath('//part')
     for part in parts:
         override_file = get_override_file_path(part.attrib['file'])
-        # Check for the special case of brave_stings.grd:
-        if (os.path.basename(source_string_path) == 'brave_strings.grd'
-                and override_file == 'settings_chromium_strings_override.grdp'):
+        # Check for the special case of brave_strings_main.grdp:
+        if (os.path.basename(source_string_path) == 'brave_strings_main.grdp'
+                and override_file
+                == 'settings_chromium_strings_override.grdp'):
             override_file = 'settings_brave_strings_override.grdp'
 
         if os.path.exists(os.path.join(os.path.dirname(source_string_path),
@@ -225,12 +245,13 @@ def generate_overrides_and_replace_strings(source_string_path):
 
     # Write out an override file that is a duplicate of the original file but
     # with strings that are shared with Chrome stripped out.
+    # Only create override if there are actual modified messages (not parts).
+    # Shell GRDs that only contain <part> references don't need overrides.
     override_string_path = get_override_file_path(source_string_path)
     modified_messages = modified_xml_tree.xpath('//message')
-    modified_parts = modified_xml_tree.xpath('//part')
-    if len(modified_messages) > 0 or len(modified_parts) > 0:
+    if len(modified_messages) > 0:
         # Fix output filenames to generate "brave" files instead of "chromium".
-        if os.path.basename(source_string_path) == 'brave_strings.grd':
+        if os.path.basename(source_string_path) == 'brave_strings_main.grdp':
             for xtb_filename in modified_xml_tree.xpath(
                     "//file[re:test(@path, '.*\\.xtb')]",
                     namespaces={"re": "http://exslt.org/regular-expressions"}):
@@ -286,7 +307,7 @@ def main():
     # is_translateable_string function in brave/script/lib/l10n/grd_utils.py.
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
-    if basename == 'brave_strings':
+    if basename == 'brave_strings_main':
         if not migrate_google_chrome_strings(
                 xml_tree, GOOGLE_CHROME_STRINGS_MIGRATION_MAP):
             return 1
@@ -350,20 +371,24 @@ def main():
         elem1.attrib.pop('desc')
         elem1.attrib.pop('translateable')
         elem1 = xml_tree.xpath(
-            '//part[@file="settings_chromium_strings.grdp"]')[0]
-        elem1.set('file', 'settings_brave_strings.grdp')
-        elem1 = xml_tree.xpath(
             '//message[@name="IDS_INSTALL_OS_NOT_SUPPORTED"]')[0]
         elem1.text = elem1.text.replace('Windows 7', 'Windows 10')
+        # Update settings part reference to use brave version
+        settings_part = xml_tree.xpath(
+            '//part[@file="settings_chromium_strings.grdp"]')
+        if settings_part:
+            settings_part[0].set('file', 'settings_brave_strings.grdp')
 
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
     previous_to_grit_root = grit_root.getprevious()
     comment_text = 'This file is created by l10nUtil.js. Do not edit manually.'
-    if previous_to_grit_root is None or (
-            previous_to_grit_root.text != comment_text):
-        comment = etree.Comment(comment_text)
-        grit_root.addprevious(comment)
+    # Skip l10nUtil comment for _main.grdp files - they have their own comment
+    if not basename.endswith('_main'):
+        if previous_to_grit_root is None or (previous_to_grit_root.text
+                                             != comment_text):
+            comment = etree.Comment(comment_text)
+            grit_root.addprevious(comment)
 
     # Fix output filenames to generate "brave" files instead of "chromium".
     if basename in ('brave_strings', 'components_brave_strings'):
