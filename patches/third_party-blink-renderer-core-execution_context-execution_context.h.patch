@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/execution_context/execution_context.h b/third_party/blink/renderer/core/execution_context/execution_context.h
-index ca705e013099539ce79ec0480f16fe922795ece0..ab44615ed99115d0774f114c99239fe3c2f0842f 100644
+index 7d28279de889b161c635304881cd74f55bba6a15..391fe037f6fd261d7b4a0c0e4858745965f0d61d 100644
 --- a/third_party/blink/renderer/core/execution_context/execution_context.h
 +++ b/third_party/blink/renderer/core/execution_context/execution_context.h
-@@ -803,6 +803,14 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
+@@ -799,6 +799,14 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
      web_view_android_ = web_view_android;
    }
  
@@ -17,7 +17,7 @@ index ca705e013099539ce79ec0480f16fe922795ece0..ab44615ed99115d0774f114c99239fe3
   protected:
    ExecutionContext(v8::Isolate* isolate, Agent* agent, bool is_window = false);
    ~ExecutionContext() override;
-@@ -910,6 +918,7 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
+@@ -905,6 +913,7 @@ class CORE_EXPORT ExecutionContext : public MojoBindingContext,
    ForwardDeclaredMember<WebCodecsLogger> web_codecs_logger_;
    ForwardDeclaredMember<WebPrintingManager> web_printing_manager_;
    ForwardDeclaredMember<WebViewAndroid> web_view_android_;

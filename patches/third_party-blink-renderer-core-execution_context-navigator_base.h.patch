@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.h b/third_party/blink/renderer/core/execution_context/navigator_base.h
-index aed72d412ad8601a9de8a7f3ea31ccf42c279a8d..bb9a7675fd71114890602ca479251b6f5be4fe25 100644
+index cf3eced2ec0f9c7a3bc18379d775ecaf023c5ce4..05485a2f71dd0a1951cd81e8567d1492804ea94d 100644
 --- a/third_party/blink/renderer/core/execution_context/navigator_base.h
 +++ b/third_party/blink/renderer/core/execution_context/navigator_base.h
-@@ -181,6 +181,9 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+@@ -180,6 +180,9 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
      wake_lock_ = wake_lock;
    }
  
@@ -12,7 +12,7 @@ index aed72d412ad8601a9de8a7f3ea31ccf42c279a8d..bb9a7675fd71114890602ca479251b6f
   protected:
    ExecutionContext* GetUAExecutionContext() const override;
    UserAgentMetadata GetUserAgentMetadata() const override;
-@@ -202,6 +205,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+@@ -201,6 +204,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
    ForwardDeclaredMember<StorageBucketManager> storage_bucket_manager_;
    ForwardDeclaredMember<USB> usb_;
    ForwardDeclaredMember<WakeLock, ContextLifecycleObserver> wake_lock_;

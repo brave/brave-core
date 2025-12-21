@@ -1,8 +1,8 @@
 diff --git a/build/toolchain/rbe.gni b/build/toolchain/rbe.gni
-index 46cd247e432fdb759e4c955a3f3919bed3914322..2f55cd928fe1eefd1c62a550ffaea22cafaa78a9 100644
+index 78cd9d5c3f5205ebedb6adff6903218e70f6b30c..86f795f702f3be72d28f089175e4386946d74d73 100644
 --- a/build/toolchain/rbe.gni
 +++ b/build/toolchain/rbe.gni
-@@ -144,7 +144,7 @@ declare_args() {
+@@ -138,7 +138,7 @@ declare_args() {
  
  if (use_reclient) {
    rewrapper_path = "${reclient_bin_dir}/rewrapper"
