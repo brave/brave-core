@@ -26,14 +26,6 @@
 
 namespace optimization_guide {
 
-namespace {
-proto::ModelCacheKey GetModelCacheKey(const std::string& locale) {
-  proto::ModelCacheKey model_cache_key;
-  model_cache_key.set_locale(locale);
-  return model_cache_key;
-}
-}  // namespace
-
 PredictionManager::PredictionManager(
     PredictionModelStore* prediction_model_store,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -48,7 +40,7 @@ PredictionManager::PredictionManager(
       unzipper_factory_(std::move(unzipper_factory)),
       prediction_model_fetch_timer_(local_state, base::DoNothing()),
       application_locale_(application_locale),
-      model_cache_key_(GetModelCacheKey(application_locale_)) {}
+      model_cache_key_(ClientCacheKey::FromLocale(application_locale_)) {}
 
 PredictionManager::~PredictionManager() {}
 
