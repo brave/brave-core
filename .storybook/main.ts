@@ -25,7 +25,8 @@ const config: StorybookConfig = {
     : [
       '../components/**/stories/*.tsx',
       '../components/**/*.stories.tsx',
-      '../browser/resources/**/stories/*.tsx'
+      '../browser/resources/**/stories/*.tsx',
+      '../browser/resources/**/*.stories.tsx'
     ],
   typescript: {
     check: false,

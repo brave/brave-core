@@ -17,7 +17,7 @@ import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 import { createCommandsApi } from './utils/commandsApi'
-setIconBasePath('chrome://resources/brave-icons')
+// setIconBasePath('chrome://resources/brave-icons')
 
 const Container = styled.div`
   padding: ${spacing['2Xl']};
@@ -67,13 +67,23 @@ const SearchIcon = styled(Icon)`
   transform: translateY(-50%);
 `
 
-export const commandsApi = createCommandsApi(CommandsMojo.CommandsService.getRemote())
+let commandsApi: ReturnType<typeof createCommandsApi> | undefined = undefined
+export const getCommandsApi = () => {
+  if (!commandsApi) {
+    commandsApi = createCommandsApi(CommandsMojo.CommandsService.getRemote())
+  }
+  return commandsApi!
+}
 export function useCommands() {
   // Note: I don't think data should be getting the `| undefined` type here as I give it a default value.
-  return commandsApi.useCommands().data!
+  return getCommandsApi().useCommands().data!
 }
 
-function App() {
+export function setCommandsApi(api: ReturnType<typeof createCommandsApi>) {
+  commandsApi = api
+}
+
+export function App() {
   const [filter, setFilter] = React.useState('')
 
   const commands = useCommands()
@@ -99,7 +109,7 @@ function App() {
           <Command key={c.id} command={c} />
         ))}
       </CommandsContainer>
-      <Button kind="plain-faint" onClick={() => commandsApi.actions.commands.resetAccelerators()}>
+      <Button kind="plain-faint" onClick={() => getCommandsApi().actions.commands.resetAccelerators()}>
         {getLocale(S.SHORTCUTS_PAGE_RESET_ALL)}
       </Button>
     </Container>
@@ -114,3 +124,4 @@ export const mount = (at: HTMLElement) => {
     at
   )
 }
+

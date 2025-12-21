@@ -1,0 +1,13 @@
+diff --git a/mojo/public/tools/bindings/generators/js_templates/lite/interface_definition_for_module.tmpl b/mojo/public/tools/bindings/generators/js_templates/lite/interface_definition_for_module.tmpl
+index a4d0b9dcb7c86210b0a18d4a77df56990ae926b7..47476d9bb2bffe6178f1d69db34c6a701220b769 100644
+--- a/mojo/public/tools/bindings/generators/js_templates/lite/interface_definition_for_module.tmpl
++++ b/mojo/public/tools/bindings/generators/js_templates/lite/interface_definition_for_module.tmpl
+@@ -112,6 +112,8 @@ export class {{interface.name}}Receiver {
+    * @param {!{{interface.name}}Interface } impl
+    */
+   constructor(impl) {
++    /** @public {!{{module.namespace}}.{{interface.name}}Interface } */
++    this.impl = impl
+     /** @private {!mojo.internal.interfaceSupport.InterfaceReceiverHelperInternal<!{{interface.name}}Remote>} */
+     this.helper_internal_ = new mojo.internal.interfaceSupport.InterfaceReceiverHelperInternal(
+         {{interface.name}}Remote);

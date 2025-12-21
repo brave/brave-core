@@ -36,7 +36,7 @@ export function createCommandsApi(
               // Eagerly update the cache to remove the accelerator
               api.endpoints.commands.update(result => {
                 const update = { ...result }
-                update[commandId].accelerators = update[commandId].accelerators.filter(a => a.codes !== accelerator)
+                update[commandId].accelerators = update[commandId].accelerators.filter(a => a.codes !== accelerator && a.keys !== accelerator)
                 return update
               })
             }
@@ -49,7 +49,7 @@ export function createCommandsApi(
                   ...result,
                   [commandId]: {
                     ...result[commandId],
-                    accelerators: [...result[commandId].accelerators, accelerator]
+                    accelerators: [...result[commandId].accelerators, { keys: accelerator }]
                   }
                 }
                 return update
