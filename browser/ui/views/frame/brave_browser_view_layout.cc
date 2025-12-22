@@ -160,7 +160,7 @@ void BraveBrowserViewLayout::LayoutBookmarkBar(gfx::Rect& available_bounds) {
   // Set insets for vertical tab and restore after finishing infobar layout.
   // Each control's layout will consider vertical tab.
   // On macOS, it can have bottom insets but it doesn't need for bookmarks bar.
-  auto insets_for_vertical_tab = GetVerticalTabInsets();
+  auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
   insets_for_vertical_tab.set_bottom(0);
   available_bounds.Inset(insets_for_vertical_tab);
   BrowserViewLayoutImplOld::LayoutBookmarkBar(available_bounds);
@@ -179,7 +179,7 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
   // Set insets for vertical tab and restore after finishing infobar layout.
   // Each control's layout will consider vertical tab.
   // On macOS, it can have bottom insets but it doesn't need for info bar.
-  auto insets_for_vertical_tab = GetVerticalTabInsets();
+  auto insets_for_vertical_tab = GetInsetsConsideringVerticalTabHost();
   insets_for_vertical_tab.set_bottom(0);
   available_bounds.Inset(insets_for_vertical_tab);
   BrowserViewLayoutImplOld::LayoutInfoBar(available_bounds);
@@ -200,7 +200,7 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
     CHECK(!tabs::IsVerticalTabsFeatureEnabled());
-    contents_container_bounds.Inset(GetVerticalTabInsets());
+    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
   if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
@@ -448,7 +448,8 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
          delegate_->IsBookmarkBarVisible();
 }
 
-gfx::Insets BraveBrowserViewLayout::GetVerticalTabInsets() const {
+gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost()
+    const {
   CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
   gfx::Insets insets;
