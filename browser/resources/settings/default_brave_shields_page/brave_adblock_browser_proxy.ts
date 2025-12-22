@@ -146,7 +146,15 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
 
   private utf8ToBase64_ (str: string) {
     const uint8Array = new TextEncoder().encode(str)
-    const base64String = btoa(String.fromCharCode(...uint8Array))
+    let binaryString = ''
+    const chunkSize = 1024
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.slice(i, i + chunkSize)
+      binaryString += String.fromCharCode(...chunk)
+    }
+    const base64String = btoa(binaryString)
+    // Replace with uint8Array.toBase64() when TypeScript adds support for 
+    // toBase64 method.
     return base64String
   }
 
