@@ -193,6 +193,7 @@
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>
 
+    <color name="schemes_surface">#141415</color>
     <color name="text_primary">#e4e4e5</color>
     <color name="text_secondary">#c9c9ca</color>
     <color name="text_tertiary">#909093</color>

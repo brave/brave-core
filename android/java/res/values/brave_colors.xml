@@ -326,6 +326,7 @@
     <color name="leo_reset_text_color">#FF4B6A</color>
     <!-- End Brave Leo colors-->
 
+    <color name="schemes_surface">#fafafb</color>
     <color name="text_primary">#1c1c1d</color>
     <color name="text_secondary">#464649</color>
     <color name="text_tertiary">#78787c</color>
