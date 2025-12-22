@@ -6,12 +6,15 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
 #include "base/functional/callback_forward.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -40,6 +43,9 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
   ~PolkadotWalletServiceUnitTest() override = default;
 
   void SetUp() override {
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletPolkadotFeature);
+
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
@@ -49,10 +55,35 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
         *network_manager_, shared_url_loader_factory_);
+
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+    polkadot_account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
+    ASSERT_TRUE(polkadot_account_);
+  }
+
+  void UnlockWallet() {
+    keyring_service_->Unlock(
+        kTestWalletPassword,
+        base::BindOnce(
+            [](base::RepeatingClosure quit_closure, bool unlocked) {
+              EXPECT_TRUE(unlocked);
+              quit_closure.Run();
+            },
+            task_environment_.QuitClosure()));
+
+    task_environment_.RunUntilQuit();
+  }
+
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(keyring_service_.get());
   }
 
  protected:
   base::test::TaskEnvironment task_environment_;
+
+  base::test::ScopedFeatureList feature_list_;
+  mojom::AccountInfoPtr polkadot_account_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -119,6 +150,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, shared_url_loader_factory_);
 
+    UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
 
     url_loader_factory_.AddResponse(testnet_url, R"(
@@ -178,6 +210,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, shared_url_loader_factory_);
 
+    UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
 
     url_loader_factory_.AddResponse(testnet_url, R"(
@@ -249,6 +282,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, shared_url_loader_factory_);
 
+  UnlockWallet();
   EXPECT_EQ(url_loader_factory_.NumPending(), 2);
 
   url_loader_factory_.AddResponse(testnet_url, R"(

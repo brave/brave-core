@@ -40,8 +40,6 @@ PolkadotWalletService::PolkadotWalletService(
       polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)) {
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
-
-  InitializeChainMetadata();
 }
 
 PolkadotWalletService::~PolkadotWalletService() = default;
@@ -73,20 +71,6 @@ void PolkadotWalletService::GetChainMetadata(
   }
 }
 
-void PolkadotWalletService::InitializeChainMetadata() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  polkadot_substrate_rpc_.GetChainName(
-      mojom::kPolkadotTestnet,
-      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
-                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotTestnet));
-
-  polkadot_substrate_rpc_.GetChainName(
-      mojom::kPolkadotMainnet,
-      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
-                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotMainnet));
-}
-
 void PolkadotWalletService::Bind(
     mojo::PendingReceiver<mojom::PolkadotWalletService> receiver) {
   receivers_.Add(this, std::move(receiver));
@@ -114,6 +98,24 @@ void PolkadotWalletService::GetAccountBalance(
 
   polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
                                             std::move(callback));
+}
+
+void PolkadotWalletService::Unlocked() {
+  InitializeChainMetadata();
+}
+
+void PolkadotWalletService::InitializeChainMetadata() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  polkadot_substrate_rpc_.GetChainName(
+      mojom::kPolkadotTestnet,
+      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotTestnet));
+
+  polkadot_substrate_rpc_.GetChainName(
+      mojom::kPolkadotMainnet,
+      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotMainnet));
 }
 
 void PolkadotWalletService::OnInitializeChainMetadata(
