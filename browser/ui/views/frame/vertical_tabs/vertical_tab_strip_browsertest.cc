@@ -1254,14 +1254,28 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
 
-  // When collapsed, it should be inivisible.
+  // When collapsed, it should be invisible.
   EXPECT_FALSE(region_view->GetVisible());
 
+  const bool rounded_corners =
+      BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          browser());
 #if BUILDFLAG(IS_MAC)
   // On Mac, host view is moved by 1px to prevent vertical tab overlap
   // with frame border. If failed see
-  // BraveBrowserViewLayout::GetFrameBorderInsetsForVerticalTab();
-  EXPECT_EQ(browser_view()->vertical_tab_strip_host_view_->x(), 1);
+  // BraveBrowserViewLayout::AddVerticalTabFrameBorderInsets();
+  EXPECT_TRUE(browser_view()
+                  ->vertical_tab_strip_host_view_->GetContentsBounds()
+                  .IsEmpty());
+  EXPECT_EQ(browser_view()->vertical_tab_strip_host_view_->GetInsets().width(),
+            1);
+
+  // Check contents container has 1px insets for frame border.
+  // frame border(1px) + rounded corners padding(4px).
+  EXPECT_EQ(browser_view()->contents_container()->x(), rounded_corners ? 5 : 1);
+#else
+  // Check contents container doesn't have insets for frame border.
+  EXPECT_EQ(browser_view()->contents_container()->x(), rounded_corners ? 4 : 0);
 #endif
 
   region_view->ToggleState();
