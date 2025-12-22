@@ -27,7 +27,14 @@ protocol TabCollectionViewDelegate: AnyObject {
 /// A view that can display tabs in a grid formation
 class TabGridContainerView: UIView {
   let collectionView: UICollectionView
-  var isPrivateBrowsing: Bool
+  var isPrivateBrowsing: Bool {
+    didSet {
+      // Track mode changes for scrolling
+      if oldValue != isPrivateBrowsing {
+        scrollToSelectedTabAfterUpdate = true
+      }
+    }
+  }
   var isEditing: Bool = false {
     didSet {
       collectionView.isEditing = isEditing
@@ -40,10 +47,21 @@ class TabGridContainerView: UIView {
     }
   }
   private var tabs: [any TabState] = []
+  private var scrollToSelectedTabAfterUpdate = false
 
   func updateTabs(_ tabs: [any TabState], transaction: Transaction) {
     self.tabs = tabs
     applyTabsSnapshot(animated: transaction.animation != nil)
+    
+    // Scroll to selected tab after mode switch
+    if scrollToSelectedTabAfterUpdate {
+      scrollToSelectedTabAfterUpdate = false
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        self.collectionView.layoutIfNeeded()
+        self.scrollToSelectedItem(animated: false)
+      }
+    }
   }
 
   weak var delegate: TabCollectionViewDelegate?
