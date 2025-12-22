@@ -81,13 +81,14 @@ function writeGclientConfig(
   let out = `# Auto-updated on each sync.
 #
 # Customize via brave/.env:
-#   - gclient_custom_deps: Override src solution's custom_deps
-#       Example: {"src/third_party/some_dep": null}
-#   - gclient_custom_vars: Override src solution's custom_vars
-#       Example: {"checkout_clangd": true}
-#   - gclient_global_vars: Override top-level .gclient variables
-#       Example: {"delete_unversioned_trees": true}
+#   - gclient_custom_deps: Override src solution's custom_deps (JSON object)
+#       Example: gclient_custom_deps={"src/third_party/some_dep": null}
+#   - gclient_custom_vars: Override src solution's custom_vars (JSON object)
+#       Example: gclient_custom_vars={"checkout_clangd": true}
+#   - gclient_global_vars: Override top-level .gclient variables (JSON object)
+#       Example: gclient_global_vars={"delete_unversioned_trees": true}
 #   - disable_gclient_config_update: Set to true to disable .gclient auto-update
+#       Example: disable_gclient_config_update=true
 #       Note: Ignored on init or if .gclient doesn't exist.
 #
 # Multiline values in brave/.env can be defined using single quotes:
