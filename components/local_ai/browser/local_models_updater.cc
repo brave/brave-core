@@ -123,6 +123,19 @@ LocalModelsUpdaterState* LocalModelsUpdaterState::GetInstance() {
   return instance.get();
 }
 
+void LocalModelsUpdaterState::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+
+  // If component is already ready, notify immediately
+  if (!install_dir_.empty()) {
+    observer->OnComponentReady(install_dir_);
+  }
+}
+
+void LocalModelsUpdaterState::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   if (install_dir.empty()) {
     return;
@@ -131,10 +144,21 @@ void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   embeddinggemma_model_dir_ = install_dir_.AppendASCII(kEmbeddingGemmaModelDir);
   embeddinggemma_model_path_ =
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaModelFile);
+  embeddinggemma_dense1_path_ =
+      embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaDense1Dir)
+          .AppendASCII(kEmbeddingGemmaDenseModelFile);
+  embeddinggemma_dense2_path_ =
+      embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaDense2Dir)
+          .AppendASCII(kEmbeddingGemmaDenseModelFile);
   embeddinggemma_config_path_ =
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaConfigFile);
   embeddinggemma_tokenizer_path_ =
       embeddinggemma_model_dir_.AppendASCII(kEmbeddingGemmaTokenizerFile);
+
+  // Notify all observers that the component is ready
+  for (auto& observer : observers_) {
+    observer.OnComponentReady(install_dir_);
+  }
 }
 
 const base::FilePath& LocalModelsUpdaterState::GetInstallDir() const {
@@ -148,6 +172,14 @@ const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaModelDir()
 
 const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaModel() const {
   return embeddinggemma_model_path_;
+}
+
+const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaDense1() const {
+  return embeddinggemma_dense1_path_;
+}
+
+const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaDense2() const {
+  return embeddinggemma_dense2_path_;
 }
 
 const base::FilePath& LocalModelsUpdaterState::GetEmbeddingGemmaConfig() const {

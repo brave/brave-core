@@ -44,6 +44,10 @@
         <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
       </if>
 
+      <!-- WebUI Local AI resources -->
+      <include name="IDR_CANDLE_EMBEDDING_GEMMA_BRIDGE_HTML" file="../local_ai/resources/candle_embedding_gemma_bridge.html" type="BINDATA" />
+      <include name="IDR_LOCAL_AI_INTERNALS_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
+
       <!-- WebUI wallet resources -->
       <if expr="enable_brave_wallet">
         <include name="IDR_WALLET_PAGE_HTML" file="${root_gen_dir}/brave/components/brave_wallet_ui/page/preprocessed/wallet_page.html" use_base_dir="false" type="BINDATA" />

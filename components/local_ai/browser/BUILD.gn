@@ -5,6 +5,8 @@
 
 static_library("browser") {
   sources = [
+    "candle_service.cc",
+    "candle_service.h",
     "local_models_updater.cc",
     "local_models_updater.h",
   ]
@@ -13,11 +15,18 @@ static_library("browser") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/constants",
     "//brave/components/local_ai/common",
+    "//brave/components/local_ai/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
+    "//components/keyed_service/core",
     "//components/update_client",
+    "//content/public/browser",
     "//crypto",
+    "//mojo/public/cpp/bindings",
+    "//ui/base",
   ]
 }
 
