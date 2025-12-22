@@ -51,8 +51,8 @@ __PYTHON_REMOTE_WRAPPER = "../../buildtools/reclient_cfgs/python/python_remote_w
 # The path should be relative to working directory which is `out/<config>`.
 __CLANG_REMOTE_WRAPPER = "../../buildtools/reclient_cfgs/chromium-browser-clang/clang_remote_wrapper"
 
-# A Linux clang binary to use for cross-compilation.
-__LINUX_CLANG_BINARY = "third_party/llvm-build/Release+Asserts_linux/bin/clang"
+# The path to the llvm-build directory.
+__LLVM_BUILD_PATH = "third_party/llvm-build/Release+Asserts"
 
 # Set to True to enable debug logging for handlers in this file.
 __debug = False
@@ -62,7 +62,7 @@ __debug = False
 # requirements by adjusting step configurations and registering custom handlers.
 def __configure(ctx, step_config, filegroups, handlers):
     __remove_rules(step_config)
-    __adjust_filegroups(filegroups)
+    __adjust_filegroups(step_config, filegroups)
     __adjust_handlers(ctx, step_config, handlers)
     __remove_labels_from_platforms(step_config)
 
@@ -89,15 +89,54 @@ def __remove_rules(step_config):
     ]
 
 
-def __adjust_filegroups(filegroups):
-    # Exclude vecLib.framework, a broken symlink that breaks remote execution.
-    # This symlink is not needed for the build and can be safely excluded.
-    for _, filegroup in filegroups.items():
+def __adjust_filegroups(step_config, filegroups):
+    llvm_build_filegroups = {}
+
+    for name, filegroup in filegroups.items():
         includes = filegroup.get("includes", [])
+
         if "*.framework" in includes:
+            # Exclude vecLib.framework, a broken symlink that breaks remote
+            # execution. This symlink is not needed for the build and can be
+            # safely excluded.
             excludes = filegroup.get("excludes", [])
             excludes.append("vecLib.framework")
             filegroup["excludes"] = excludes
+
+        if __LLVM_BUILD_PATH in name:
+            llvm_build_filegroups[name] = filegroup
+
+    # On non-Linux hosts (Windows/macOS), set up Linux clang build dependencies
+    # for cross-compilation via RBE. The Linux clang binary is included
+    # automatically by the redirect_cc handler, but this code ensures that
+    # required headers and other build-specific files (filegroups) are added to
+    # input_deps for the Linux toolchain, mirroring how they're configured for
+    # the host platform's toolchain. This allows Siso to automatically include
+    # all necessary dependencies in RBE requests.
+    if not __HOST_OS_IS_LINUX:
+        if not llvm_build_filegroups:
+            fail("llvm-build filegroups not found. Did upstream change?")
+
+        llvm_build_linux_fg_names = []
+        for name, filegroup in llvm_build_filegroups.items():
+            new_name = __to_linux_llvm_build_path(name)
+            filegroups[new_name] = filegroup
+            llvm_build_linux_fg_names.append(new_name)
+
+        input_deps = step_config.get("input_deps")
+        if not input_deps:
+            fail("step_config missing input_deps. Did upstream change?")
+
+        for clang in ["clang", "clang++", "clang-cl"]:
+            # Get original input_deps for the clang binary.
+            orig_input_deps_name = __LLVM_BUILD_PATH + "/bin/" + clang
+            orig_input_deps = input_deps.get(orig_input_deps_name, [])
+
+            # Add corresponding linux clang binary input_deps.
+            linux_input_deps_name = __to_linux_llvm_build_path(
+                orig_input_deps_name)
+            linux_input_deps = orig_input_deps + llvm_build_linux_fg_names
+            input_deps[linux_input_deps_name] = linux_input_deps
 
 
 # Configures handlers to handle chromium_src overrides and disable remote
@@ -161,7 +200,9 @@ def __remove_labels_from_platforms(step_config):
 def __wrap_with_redirect_cc_handler(ctx, rule, handlers):
     if not __HOST_OS_IS_LINUX:
         __set_remote_wrapper(ctx, rule, __CLANG_REMOTE_WRAPPER)
-        __append_executables(rule, __LINUX_CLANG_BINARY)
+        __append_executables(
+            rule,
+            __to_linux_llvm_build_path(__LLVM_BUILD_PATH) + "/bin/clang")
 
     handler_name = rule.get("handler")
     # If the rule has no handler, use the default redirect_cc handler.
@@ -347,6 +388,11 @@ def __append_executables(rule, *executables):
 # Checks if the remote is disabled for a rule.
 def __is_remote_disabled(rule):
     return rule.get("remote") == False
+
+
+# Converts a path to the linux version of the llvm-build path.
+def __to_linux_llvm_build_path(path):
+    return path.replace(__LLVM_BUILD_PATH, __LLVM_BUILD_PATH + "_linux", 1)
 
 
 # Ensures a list field exists in a dict and returns it.
