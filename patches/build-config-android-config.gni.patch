@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index c576fd55d37118a6a80adf64d0df7322ae86af5a..6bcb09708a35419b909d56f3716bceb671b454eb 100644
+index 31ddfda0c1d48c1e9b53c8e5a1ecfd00095c08d5..9e95f7983d74cf8190d434808b517544bc7f29b9 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -35,6 +35,7 @@ assert(!(enable_javaless_renderers && is_component_build),
@@ -9,4 +9,4 @@ index c576fd55d37118a6a80adf64d0df7322ae86af5a..6bcb09708a35419b909d56f3716bceb6
 +if (is_android || is_robolectric) { import("//brave/build/android/config.gni") }
  if (is_android) {
    import("//build/config/android/channel.gni")
-   import("//build/config/clang/clang.gni")
+   import("//build/config/chrome_build.gni")

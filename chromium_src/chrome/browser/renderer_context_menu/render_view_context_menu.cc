@@ -191,7 +191,7 @@ void OnTorProfileCreated(const GURL& link_url,
   }
   nav_params.referrer =
       content::Referrer(GURL(), network::mojom::ReferrerPolicy::kStrictOrigin);
-  nav_params.window_action = NavigateParams::SHOW_WINDOW;
+  nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
   Navigate(&nav_params);
 }
 

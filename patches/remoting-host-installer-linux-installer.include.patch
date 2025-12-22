@@ -1,0 +1,31 @@
+diff --git a/remoting/host/installer/linux/installer.include b/remoting/host/installer/linux/installer.include
+index 3c2946d335fb8325395ec6468209eafa1c8836b2..037eca85d776e036144aa8c7cd372ab8389f28b2 100644
+--- a/remoting/host/installer/linux/installer.include
++++ b/remoting/host/installer/linux/installer.include
+@@ -142,6 +142,8 @@ stage_install_common() {
+     install -m 644 "${OUTPUTDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
+   fi
+ 
++  source "${OUTPUTDIR}/installer/common/brave_installer.include"
++  brave_stage_install_common
+   # ICU data file; Necessary when the GN icu_use_data_file flag is true.
+   install -m 644 "${OUTPUTDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
+ 
+@@ -280,13 +282,15 @@ stage_install_common() {
+ 
+   # app icons
+   local icon_suffix=""
+-  if [ "$BRANDING" = "google_chrome" ]; then
++  if [ "$BRANDING" = "brave" ]; then
+     if [ "$CHANNEL" = "beta" ]; then
+       icon_suffix="_beta"
+-    elif [ "$CHANNEL" = "unstable" ]; then
++    elif [ "$CHANNEL" = "unstable" -o "$CHANNEL" = "dev" ]; then
+       icon_suffix="_dev"
+     elif [ "$CHANNEL" = "canary" ]; then
+       icon_suffix="_canary"
++    elif [ "$CHANNEL" = "nightly" ]; then
++      icon_suffix="_nightly"
+     fi
+   fi
+ 

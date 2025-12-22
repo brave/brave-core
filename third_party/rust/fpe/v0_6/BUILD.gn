@@ -32,6 +32,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/str4d/fpe"
   cargo_pkg_version = "0.6.1"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/cbc/v0_1:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",

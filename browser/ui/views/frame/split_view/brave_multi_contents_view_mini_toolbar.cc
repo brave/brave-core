@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/frame/top_container_background.h"
 #include "third_party/skia/include/core/SkMatrix.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkPathBuilder.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
@@ -94,25 +95,27 @@ void BraveMultiContentsViewMiniToolbar::OnPaint(gfx::Canvas* canvas) {
 SkPath BraveMultiContentsViewMiniToolbar::GetPath(
     bool border_stroke_only) const {
   const gfx::Rect local_bounds = GetLocalBounds();
-  SkPath path;
+  SkPathBuilder path;
   path.moveTo(
       0, local_bounds.height() - BraveContentsContainerView::kBorderThickness);
-  path.arcTo(kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius,
-             0, SkPath::kSmall_ArcSize, SkPathDirection::kCCW,
-             kMiniToolbarOutlineCornerRadius,
-             local_bounds.height() - kMiniToolbarOutlineCornerRadius);
+  path.arcTo({kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
+             0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
+             {kMiniToolbarOutlineCornerRadius,
+              static_cast<float>(local_bounds.height() -
+                                 kMiniToolbarOutlineCornerRadius)});
   path.lineTo(kMiniToolbarOutlineCornerRadius,
               kMiniToolbarOutlineCornerRadius * 2);
-  path.arcTo(kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius,
-             270.0f, SkPath::kSmall_ArcSize, SkPathDirection::kCW,
-             kMiniToolbarOutlineCornerRadius * 2,
-             kMiniToolbarOutlineCornerRadius);
+  path.arcTo(
+      {kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
+      270.0f, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+      {kMiniToolbarOutlineCornerRadius * 2, kMiniToolbarOutlineCornerRadius});
   path.lineTo(local_bounds.width() - kMiniToolbarOutlineCornerRadius,
               kMiniToolbarOutlineCornerRadius);
-  path.arcTo(
-      kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius, 0,
-      SkPath::kSmall_ArcSize, SkPathDirection::kCCW,
-      local_bounds.width() - BraveContentsContainerView::kBorderThickness, 0);
+  path.arcTo({kMiniToolbarOutlineCornerRadius, kMiniToolbarOutlineCornerRadius},
+             0, SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
+             {static_cast<float>(local_bounds.width() -
+                                 BraveContentsContainerView::kBorderThickness),
+              0});
   if (!border_stroke_only) {
     path.lineTo(local_bounds.width(), 0);
     path.lineTo(local_bounds.width(), local_bounds.height());
@@ -127,7 +130,7 @@ SkPath BraveMultiContentsViewMiniToolbar::GetPath(
     flip.setScale(-1, 1, center.x(), center.y());
     path.transform(flip);
   }
-  return path;
+  return path.detach();
 }
 
 int BraveMultiContentsViewMiniToolbar::GetOutlineThickness() const {

@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 8f136746b29627c17c2d0b60bdc1d4fbf755d89d..e07c05b17ba9a2bc97db5962403119cea334b2d9 100644
+index 9d355f22e0498fe67e2fdcaf560606e7cd3f8cbf..c23aeb9078b6567d3f2120c5758eb644110141a2 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3657,6 +3657,7 @@ if (enable_java_templates) {
+@@ -3658,6 +3658,7 @@ if (enable_java_templates) {
            # Filter directly in compile_java.py when no other processing is required.
            _processed_jar_path = _javac_jar_path
          }
@@ -10,7 +10,7 @@ index 8f136746b29627c17c2d0b60bdc1d4fbf755d89d..e07c05b17ba9a2bc97db5962403119ce
        }
  
        if (_build_device_jar) {
-@@ -3864,6 +3865,7 @@ if (enable_java_templates) {
+@@ -3865,6 +3866,7 @@ if (enable_java_templates) {
        if (defined(_enable_bytecode_checks) && _enable_bytecode_checks) {
          enable_bytecode_checks = _enable_bytecode_checks
        }
@@ -18,7 +18,7 @@ index 8f136746b29627c17c2d0b60bdc1d4fbf755d89d..e07c05b17ba9a2bc97db5962403119ce
  
        # Specifically avoid passing in invoker.base_module_target as one of the
        # possible_config_deps.
-@@ -4245,6 +4247,7 @@ if (enable_java_templates) {
+@@ -4246,6 +4248,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }

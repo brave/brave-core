@@ -1,7 +1,7 @@
 Name: anonymous-credentials
 URL: https://crates.io/crates/anonymous-credentials
 Version: 0.1.4
-License: Mozilla-Public-License-2.0
+License: MPL-2.0
 License File:
 Shipped: yes
 Security Critical: yes
