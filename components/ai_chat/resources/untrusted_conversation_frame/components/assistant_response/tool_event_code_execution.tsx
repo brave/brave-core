@@ -10,10 +10,15 @@ import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event_code_execution.module.scss'
 import '../../../common/strings'
 
+/**
+ * Renders the code execution tool output, displaying the executed JavaScript,
+ * console output, and any chart images generated via window.createChart().
+ */
 const ToolEventCodeExecution: ToolComponent = (props) => {
   const jsCode = props.toolInput?.script
 
-  // Extract text and image outputs from content blocks
+  // Tool output may contain multiple content blocks: text (console.log output)
+  // and/or image (rendered chart captured as base64 PNG).
   const outputs = props.toolUseEvent.output ?? []
   const textOutput =
     outputs.find((block) => block.textContentBlock)?.textContentBlock?.text ??
@@ -22,7 +27,9 @@ const ToolEventCodeExecution: ToolComponent = (props) => {
     (block) => block.imageContentBlock
   )?.imageContentBlock?.imageUrl?.url
 
-  // Auto-expand when there's a chart image by setting toolLabel to null
+  // When toolLabel is null, the parent ToolEvent component renders the
+  // expandedContent directly without a collapsible wrapper. This ensures
+  // chart images are immediately visible rather than hidden behind a click.
   const content: ToolUseContent = {
     toolLabel: imageOutput ? null : props.content.toolLabel,
     expandedContent: jsCode && (

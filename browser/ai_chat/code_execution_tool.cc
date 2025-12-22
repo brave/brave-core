@@ -84,7 +84,8 @@ std::string WrapScript(const std::string& script) {
       // Run user script in try-catch
       "try { ", script,
       " } catch (error) { console.error(error.toString()); } ",
-      // Wait for chart to render then extract image
+      // Wait for chart to render before capturing. Double requestAnimationFrame
+      // ensures uPlot has completed both layout and paint phases.
       "await new Promise(resolve => {"
       "  requestAnimationFrame(() => {"
       "    requestAnimationFrame(resolve);"
@@ -133,7 +134,9 @@ CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() {
 void CodeExecutionTool::CodeExecutionRequest::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  // Execute only in main frame (where chart container exists), not child frames
+  // Execute only in the main frame, not the sandboxed child iframe.
+  // The main frame contains the chart container div; GetParent() returns
+  // non-null for child frames, so we skip those.
   if (render_frame_host->GetParent() || wrapped_js_.empty()) {
     return;
   }
@@ -167,7 +170,8 @@ void CodeExecutionTool::CodeExecutionRequest::HandleResult(base::Value result) {
   ExecutionResult execution_result;
   execution_result.console_output = base::JoinString(console_logs_, "\n");
 
-  // Check for chart image in result
+  // The wrapped script returns {chartImageDataUrl: string|null} on success.
+  // If result is not a dict, script evaluation failed (e.g., syntax error).
   if (result.is_dict()) {
     const auto* chart_url = result.GetDict().FindString("chartImageDataUrl");
     if (chart_url && !chart_url->empty()) {
@@ -209,7 +213,8 @@ void CodeExecutionTool::ResolveRequest(
     }
   }
 
-  // Ensure at least one content block exists
+  // Tool output requires at least one content block, even for scripts that
+  // produce no console output and no chart.
   if (content_blocks.empty()) {
     content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
         mojom::TextContentBlock::New("")));

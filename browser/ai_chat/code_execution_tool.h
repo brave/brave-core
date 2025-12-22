@@ -36,19 +36,24 @@ namespace ai_chat {
 class CodeSandboxWebContentsObserver;
 
 // Result of code execution containing console output and optional chart image.
+// Move-only because it may contain large base64-encoded image data.
 struct ExecutionResult {
   ExecutionResult();
   ~ExecutionResult();
   ExecutionResult(ExecutionResult&&);
   ExecutionResult& operator=(ExecutionResult&&);
 
+  // Concatenated console.log() output from the executed script.
   std::string console_output;
+  // Base64-encoded PNG data URL (e.g., "data:image/png;base64,...") if the
+  // script rendered a chart using window.createChart().
   std::optional<std::string> chart_image_data_url;
 };
 
-// Tool for executing JavaScript code and returning console.log output.
-// This tool is provided by the browser and allows AI assistants to run
-// JavaScript code in a sandboxed environment.
+// Tool for executing JavaScript code in a sandboxed environment.
+// Captures console.log output and optionally rendered chart images.
+// The sandbox provides bignumber.js for decimal math and uPlot for charting.
+// Network requests are blocked; execution is time-limited.
 class CodeExecutionTool : public Tool {
  public:
   explicit CodeExecutionTool(content::BrowserContext* browser_context);

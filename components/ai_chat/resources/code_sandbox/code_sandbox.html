@@ -6,6 +6,9 @@
     <title>Code Sandbox</title>
   </head>
   <body>
+    <!-- Container for uPlot charts rendered by window.createChart().
+         Located in main frame (not iframe) so canvas.toDataURL() works
+         without cross-origin restrictions. -->
     <div id="chart-container" style="width:600px;height:400px;"></div>
     <iframe sandbox="allow-scripts"></iframe>
   </body>
