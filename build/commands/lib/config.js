@@ -129,6 +129,7 @@ const Config = function () {
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
   this.disableGclientConfigUpdate = getEnvConfig([
     'disable_gclient_config_update',
+    false,
   ])
   this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
   this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})

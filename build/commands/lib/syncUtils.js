@@ -87,9 +87,6 @@ function writeGclientConfig(
 #       Example: gclient_custom_vars={"checkout_clangd": true}
 #   - gclient_global_vars: Override top-level .gclient variables (JSON object)
 #       Example: gclient_global_vars={"delete_unversioned_trees": true}
-#   - disable_gclient_config_update: Set to true to disable .gclient auto-update
-#       Example: disable_gclient_config_update=true
-#       Note: Ignored on init or if .gclient doesn't exist.
 #
 # Multiline values in brave/.env can be defined using single quotes:
 #   gclient_custom_vars='{
