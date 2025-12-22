@@ -229,6 +229,7 @@
     "redux-thunk": "2.4.1",
     "remark-gfm": "4.0.1",
     "throttleit": "1.0.0",
+    "uplot": "^1.6.31",
     "webext-redux": "2.1.9"
   },
   "overrides": {

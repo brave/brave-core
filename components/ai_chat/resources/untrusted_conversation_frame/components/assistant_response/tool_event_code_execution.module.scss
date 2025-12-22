@@ -18,7 +18,8 @@
 }
 
 .codeSection,
-.outputSection {
+.outputSection,
+.chartSection {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-m);
@@ -27,4 +28,18 @@
 .sectionLabel {
   font: var(--leo-font-default-semibold);
   color: var(--leo-color-text-primary);
+}
+
+.chartContent {
+  display: flex;
+  justify-content: center;
+  padding: var(--leo-spacing-m);
+  background-color: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-m);
+}
+
+.chartImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--leo-radius-s);
 }

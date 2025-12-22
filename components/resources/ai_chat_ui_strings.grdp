@@ -906,4 +906,7 @@
   <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
     Output:
   </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_CHART_LABEL" desc="Label for chart section in code execution tool" formatter_data="webui=AiChat">
+    Chart:
+  </message>
 </grit-part>

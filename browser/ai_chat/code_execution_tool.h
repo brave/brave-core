@@ -35,6 +35,17 @@ namespace ai_chat {
 
 class CodeSandboxWebContentsObserver;
 
+// Result of code execution containing console output and optional chart image.
+struct ExecutionResult {
+  ExecutionResult();
+  ~ExecutionResult();
+  ExecutionResult(ExecutionResult&&);
+  ExecutionResult& operator=(ExecutionResult&&);
+
+  std::string console_output;
+  std::optional<std::string> chart_image_data_url;
+};
+
 // Tool for executing JavaScript code and returning console.log output.
 // This tool is provided by the browser and allows AI assistants to run
 // JavaScript code in a sandboxed environment.
@@ -66,7 +77,7 @@ class CodeExecutionTool : public Tool {
  private:
   class CodeExecutionRequest : public content::WebContentsObserver {
    public:
-    using ResolveCallback = base::OnceCallback<void(std::string)>;
+    using ResolveCallback = base::OnceCallback<void(ExecutionResult)>;
 
     CodeExecutionRequest(Profile* profile,
                          const std::string& script,
@@ -103,7 +114,7 @@ class CodeExecutionTool : public Tool {
 
   void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
                       UseToolCallback callback,
-                      std::string output);
+                      ExecutionResult result);
 
   raw_ptr<Profile> profile_;
   std::list<CodeExecutionRequest> requests_;

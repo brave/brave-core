@@ -15,4 +15,8 @@
     type="BINDATA" />
   <include name="IDR_AI_CHAT_BIGNUMBER_JS" file="../../node_modules/bignumber.js/bignumber.js"
     type="BINDATA" />
+  <include name="IDR_AI_CHAT_UPLOT_JS" file="../../node_modules/uplot/dist/uPlot.iife.min.js"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_UPLOT_CSS" file="../../node_modules/uplot/dist/uPlot.min.css"
+    type="BINDATA" />
 </grit-part>

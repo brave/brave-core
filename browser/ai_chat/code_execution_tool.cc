@@ -33,6 +33,11 @@
 
 namespace ai_chat {
 
+ExecutionResult::ExecutionResult() = default;
+ExecutionResult::~ExecutionResult() = default;
+ExecutionResult::ExecutionResult(ExecutionResult&&) = default;
+ExecutionResult& ExecutionResult::operator=(ExecutionResult&&) = default;
+
 namespace {
 
 constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
@@ -42,10 +47,59 @@ std::string WrapScript(const std::string& script) {
   auto bignumber_js =
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
           IDR_AI_CHAT_BIGNUMBER_JS);
+  auto uplot_js =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_AI_CHAT_UPLOT_JS);
+  auto uplot_css =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_AI_CHAT_UPLOT_CSS);
 
-  return base::StrCat({"(async function() { ", bignumber_js, " try { ", script,
-                       " } catch (error) { console.error(error.toString()); } "
-                       "return true; })()"});
+  // Build a script that:
+  // 1. Injects uPlot CSS as inline styles
+  // 2. Loads bignumber.js and uPlot.js libraries
+  // 3. Creates a helper function for chart creation
+  // 4. Runs the user script
+  // 5. Extracts chart image if a canvas was rendered
+  return base::StrCat({
+      "(async function() { ",
+      // Inject uPlot CSS
+      "const style = document.createElement('style'); "
+      "style.textContent = `",
+      uplot_css,
+      "`; "
+      "document.head.appendChild(style); ",
+      // Load libraries
+      bignumber_js, " ", uplot_js, " ",
+      // Create chart container accessor and helper function
+      "const chartContainer = document.getElementById('chart-container'); "
+      "window.createChart = function(opts, data) { "
+      "  if (chartContainer) { "
+      "    while (chartContainer.firstChild) { "
+      "      chartContainer.removeChild(chartContainer.firstChild); "
+      "    } "
+      "  } "
+      "  const chart = new uPlot(opts, data, chartContainer); "
+      "  return chart; "
+      "}; ",
+      // Run user script in try-catch
+      "try { ", script,
+      " } catch (error) { console.error(error.toString()); } ",
+      // Wait for chart to render then extract image
+      "await new Promise(resolve => {"
+      "  requestAnimationFrame(() => {"
+      "    requestAnimationFrame(resolve);"
+      "  });"
+      "}); "
+      "let chartImageDataUrl = null; "
+      "if (chartContainer) { "
+      "  const canvas = chartContainer.querySelector('canvas'); "
+      "  if (canvas) { "
+      "    chartImageDataUrl = canvas.toDataURL('image/png'); "
+      "  } "
+      "} ",
+      // Return result object
+      "return { chartImageDataUrl }; "
+      "})()"});
 }
 
 }  // namespace
@@ -79,7 +133,8 @@ CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() {
 void CodeExecutionTool::CodeExecutionRequest::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (!render_frame_host->GetParent() || wrapped_js_.empty()) {
+  // Execute only in main frame (where chart container exists), not child frames
+  if (render_frame_host->GetParent() || wrapped_js_.empty()) {
     return;
   }
 
@@ -109,24 +164,58 @@ void CodeExecutionTool::CodeExecutionRequest::OnDidAddMessageToConsole(
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleResult(base::Value result) {
-  if (!result.is_bool() || !result.GetBool()) {
-    std::move(resolve_callback_).Run("Error: Syntax error");
-    return;
+  ExecutionResult execution_result;
+  execution_result.console_output = base::JoinString(console_logs_, "\n");
+
+  // Check for chart image in result
+  if (result.is_dict()) {
+    const auto* chart_url = result.GetDict().FindString("chartImageDataUrl");
+    if (chart_url && !chart_url->empty()) {
+      execution_result.chart_image_data_url = *chart_url;
+    }
+  } else if (!result.is_bool() || !result.GetBool()) {
+    execution_result.console_output = "Error: Syntax error";
   }
 
-  std::move(resolve_callback_).Run(base::JoinString(console_logs_, "\n"));
+  std::move(resolve_callback_).Run(std::move(execution_result));
 }
 
 void CodeExecutionTool::CodeExecutionRequest::HandleTimeout() {
-  std::move(resolve_callback_).Run("Error: Time limit exceeded");
+  ExecutionResult execution_result;
+  execution_result.console_output = "Error: Time limit exceeded";
+  std::move(resolve_callback_).Run(std::move(execution_result));
 }
 
 void CodeExecutionTool::ResolveRequest(
     std::list<CodeExecutionRequest>::iterator request_it,
     UseToolCallback callback,
-    std::string output) {
+    ExecutionResult result) {
   requests_.erase(request_it);
-  std::move(callback).Run(CreateContentBlocksForText(output));
+
+  std::vector<mojom::ContentBlockPtr> content_blocks;
+
+  // Add text output if present
+  if (!result.console_output.empty()) {
+    content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New(result.console_output)));
+  }
+
+  // Add chart image if present
+  if (result.chart_image_data_url.has_value()) {
+    auto image_blocks =
+        CreateContentBlocksForImage(GURL(*result.chart_image_data_url));
+    for (auto& block : image_blocks) {
+      content_blocks.push_back(std::move(block));
+    }
+  }
+
+  // Ensure at least one content block exists
+  if (content_blocks.empty()) {
+    content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("")));
+  }
+
+  std::move(callback).Run(std::move(content_blocks));
 }
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
@@ -140,7 +229,7 @@ std::string_view CodeExecutionTool::Name() const {
 }
 
 std::string_view CodeExecutionTool::Description() const {
-  return "Execute JavaScript code and capture console output. "
+  return "Execute JavaScript code and capture console output and charts. "
          "Use only when the task requires code execution for providing an "
          "accurate answer. "
          "Do not use this if you are able to answer without executing code. "
@@ -151,10 +240,23 @@ std::string_view CodeExecutionTool::Description() const {
          "Network requests are not allowed. "
          "bignumber.js is available in the global scope. Use it for any "
          "decimal math (i.e. financial calculations). "
-         "Do not use require to import bignumber.js, as it is not needed.\n"
+         "uPlot charting library is available for line/area/bar charts (NOT pie "
+         "charts). "
+         "CRITICAL: All data arrays must contain numbers only - no strings! "
+         "Format: [[x-numbers], [y-numbers], ...]. "
+         "For categorical labels, use numeric indices and axes.values callback. "
+         "Series array MUST start with {} for x-axis. "
+         "Example with labels: const labels = ['Q1','Q2','Q3','Q4']; "
+         "const data = [[0,1,2,3], [10,20,15,25]]; "
+         "window.createChart({width: 600, height: 400, scales: {x: {time: "
+         "false}, y: {auto: true}}, axes: [{values: (u,v) => v.map(i => "
+         "labels[i] || i)}, {}], series: [{}, {stroke: 'red', width: 2}]}, "
+         "data); "
+         "Do not use require to import libraries, as they are already loaded.\n"
          "Example tasks that require code execution:\n"
          " - Financial calculations (e.g. compound interest)\n"
          " - Analyzing data or web content\n"
+         " - Creating charts or visualizations\n"
          "Example tasks that do not require code execution:\n"
          " - Very simple calculations (e.g. 2 + 2)\n"
          " - Finding the 4th prime number\n"

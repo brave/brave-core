@@ -12,10 +12,19 @@ import '../../../common/strings'
 
 const ToolEventCodeExecution: ToolComponent = (props) => {
   const jsCode = props.toolInput?.script
-  const output = props.toolUseEvent.output?.[0]?.textContentBlock?.text ?? ''
 
+  // Extract text and image outputs from content blocks
+  const outputs = props.toolUseEvent.output ?? []
+  const textOutput =
+    outputs.find((block) => block.textContentBlock)?.textContentBlock?.text ??
+    ''
+  const imageOutput = outputs.find(
+    (block) => block.imageContentBlock
+  )?.imageContentBlock?.imageUrl?.url
+
+  // Auto-expand when there's a chart image by setting toolLabel to null
   const content: ToolUseContent = {
-    toolLabel: props.content.toolLabel,
+    toolLabel: imageOutput ? null : props.content.toolLabel,
     expandedContent: jsCode && (
       <div className={styles.codeExecutionTool}>
         <div className={styles.codeExecutionContent}>
@@ -28,15 +37,29 @@ const ToolEventCodeExecution: ToolComponent = (props) => {
               lang='javascript'
             />
           </div>
-          {output && (
+          {textOutput && (
             <div className={styles.outputSection}>
               <div className={styles.sectionLabel}>
                 {getLocale(S.CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL)}
               </div>
               <div className={styles.outputContent}>
                 <CodeBlock.Block
-                  code={output}
+                  code={textOutput}
                   lang='text'
+                />
+              </div>
+            </div>
+          )}
+          {imageOutput && (
+            <div className={styles.chartSection}>
+              <div className={styles.sectionLabel}>
+                {getLocale(S.CHAT_UI_CODE_EXECUTION_CHART_LABEL)}
+              </div>
+              <div className={styles.chartContent}>
+                <img
+                  src={imageOutput}
+                  alt='Generated chart'
+                  className={styles.chartImage}
                 />
               </div>
             </div>
