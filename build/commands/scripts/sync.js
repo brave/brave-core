@@ -99,7 +99,7 @@ async function RunCommand() {
     && fs.existsSync(config.gclientFile)
     && !program.init
   ) {
-    Log.status(
+    Log.warn(
       `Skipping ${config.gclientFile} update (disable_gclient_config_update=true)`,
     )
   } else {
