@@ -15,8 +15,6 @@ public class BraveSiteSettingsCategory {
                 return ContentSettingsType.AUTOPLAY;
             case Type.BRAVE_GOOGLE_SIGN_IN:
                 return ContentSettingsType.BRAVE_GOOGLE_SIGN_IN;
-            case Type.BRAVE_LOCALHOST_ACCESS:
-                return ContentSettingsType.BRAVE_LOCALHOST_ACCESS;
             default:
                 return SiteSettingsCategory.contentSettingsType(type);
         }
@@ -28,8 +26,6 @@ public class BraveSiteSettingsCategory {
                 return "autoplay";
             case Type.BRAVE_GOOGLE_SIGN_IN:
                 return "brave_google_sign_in";
-            case Type.BRAVE_LOCALHOST_ACCESS:
-                return "brave_localhost_access";
             default:
                 return SiteSettingsCategory.preferenceKey(type);
         }

@@ -27,8 +27,6 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 return "autoplay_permission_list";
             case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
                 return "brave_google_sign_in";
-            case ContentSettingsType.BRAVE_LOCALHOST_ACCESS:
-                return "brave_localhost_access";
             default:
                 return (String)
                         BraveReflectionUtil.invokeMethod(
@@ -49,11 +47,6 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         preference = new ChromeSwitchPreference(getStyledContext());
         preference.setKey(getPreferenceKey(ContentSettingsType.BRAVE_GOOGLE_SIGN_IN));
         setUpGoogleSignInPreference(preference);
-
-        // Localhost
-        preference = new ChromeSwitchPreference(getStyledContext());
-        preference.setKey(getPreferenceKey(ContentSettingsType.BRAVE_LOCALHOST_ACCESS));
-        setUpLocalhostPreference(preference);
 
         // SingleWebsiteSettings.setupContentSettingsPreferences has its own for loop
         BraveReflectionUtil.invokeMethod(
@@ -121,38 +114,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 boolean.class,
                 false);
     }
-
-    private void setUpLocalhostPreference(Preference preference) {
-        BrowserContextHandle browserContextHandle =
-                getSiteSettingsDelegate().getBrowserContextHandle();
-        @Nullable
-        Website mSite =
-                (Website) BraveReflectionUtil.getField(SingleWebsiteSettings.class, "mSite", this);
-        Integer currentValue =
-                mSite.getContentSetting(
-                        browserContextHandle, ContentSettingsType.BRAVE_LOCALHOST_ACCESS);
-        if (currentValue == null) {
-            currentValue =
-                    WebsitePreferenceBridge.isCategoryEnabled(
-                                    browserContextHandle,
-                                    ContentSettingsType.BRAVE_LOCALHOST_ACCESS)
-                            ? ContentSetting.ASK
-                            : ContentSetting.BLOCK;
-        }
-        BraveReflectionUtil.invokeMethod(
-                SingleWebsiteSettings.class,
-                this,
-                "setupContentSettingsPreference",
-                Preference.class,
-                preference,
-                Integer.class,
-                currentValue,
-                boolean.class,
-                false,
-                boolean.class,
-                false);
-    }
-
+    
     private Context getStyledContext() {
         return getPreferenceManager().getContext();
     }
