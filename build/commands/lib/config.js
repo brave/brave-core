@@ -12,7 +12,6 @@ const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
 
 let envConfig = null
-let envConfigParseErrors = null
 let packageConfigObj = null
 
 let dirName = __dirname
@@ -79,10 +78,9 @@ print(json.dumps(result))
   return JSON.parse(result.stdout.toString().trim())
 }
 
-const getEnvConfig = (key, defaultValue = undefined) => {
+const loadEnvConfig = () => {
   if (!envConfig) {
     envConfig = {}
-    envConfigParseErrors = {}
 
     // Parse src/brave/.env with all included env files.
     let envConfigPath = path.join(braveCoreDir, '.env')
@@ -96,47 +94,79 @@ const getEnvConfig = (key, defaultValue = undefined) => {
       fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 
-    // Attempt to parse JSON-parseable values (strings, numbers, booleans, null,
-    // objects, arrays). If parsing fails, store the value as string.
-    for (const [key, value] of Object.entries(envConfig)) {
-      try {
-        if (typeof defaultValue === 'string') {
-          envConfig[key] = value
-        } else {
-          envConfig[key] = JSON.parse(value)
-        }
-      } catch (e) {
-        envConfig[key] = value
-        envConfigParseErrors[key] = e.message
-      }
-    }
+    // Cache for parsed values with correct types.
+    envConfig.__cache = {}
+    // Default values for each key to assert that defaultValue is not changed.
+    envConfig.__defaultValues = {}
   }
+}
+
+const getEnvConfig = (key, defaultValue = undefined) => {
+  loadEnvConfig()
 
   const keyJoined = key.join('_')
+
+  // Check cached value first.
+  if (keyJoined in envConfig.__cache) {
+    assert.deepStrictEqual(
+      defaultValue,
+      envConfig.__defaultValues[keyJoined],
+      `Default value mismatch for ${keyJoined}`,
+    )
+    return envConfig.__cache[keyJoined]
+  }
+
+  // Store the default value for the key to check for mismatches on subsequent
+  // calls to the same key.
+  envConfig.__defaultValues[keyJoined] = defaultValue
+
+  // Look for .env value.
   const envConfigValue = envConfig[keyJoined]
   if (envConfigValue !== undefined) {
-    if (
-      defaultValue !== undefined
-      && getValueType(defaultValue) !== getValueType(envConfigValue)
-    ) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${getValueType(defaultValue)}, got ${getValueType(envConfigValue)}`,
-      )
-      const parseError = envConfigParseErrors[keyJoined]
-      if (parseError) {
-        Log.error(`${parseError}:\n${envConfigValue}`)
+    // Parse as JSON or return a string if no default value is provided.
+    if (defaultValue === undefined) {
+      try {
+        return (envConfig.__cache[keyJoined] = JSON.parse(envConfigValue))
+      } catch (e) {
+        return (envConfig.__cache[keyJoined] = envConfigValue)
       }
+    }
+
+    // Use the value as is if the default value is a string.
+    const defaultValueType = getValueType(defaultValue)
+    if (defaultValueType === 'String') {
+      return (envConfig.__cache[keyJoined] = envConfigValue)
+    }
+
+    // Parse as JSON if the default value is not a string.
+    let envConfigValueParsed
+    try {
+      envConfigValueParsed = JSON.parse(envConfigValue)
+    } catch (e) {
+      Log.error(
+        `${keyJoined} value is not JSON-parseable: ${envConfigValue}\n${e.message}`,
+      )
       process.exit(1)
     }
-    return envConfigValue
+
+    // Validate the parsed value against the default value type.
+    const envConfigValueType = getValueType(envConfigValueParsed)
+    if (envConfigValueType !== defaultValueType) {
+      Log.error(
+        `${keyJoined} value type is invalid: expected ${defaultValueType}, got ${envConfigValueType}`,
+      )
+      process.exit(1)
+    }
+
+    return (envConfig.__cache[keyJoined] = envConfigValueParsed)
   }
 
   const packageConfigValue = packageConfig(key)
   if (packageConfigValue !== undefined) {
-    return packageConfigValue
+    return (envConfig.__cache[keyJoined] = packageConfigValue)
   }
 
-  return defaultValue
+  return (envConfig.__cache[keyJoined] = defaultValue)
 }
 
 const getDepotToolsDir = (rootDir) => {
