@@ -15,6 +15,6 @@
     return;                                                                \
   }
 
-#include <chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc>
+#include <chrome/browser/ui/views/extensions/extensions_menu_delegate_desktop.cc>
 
 #undef BRAVE_EXTENSIONS_MENU_VIEW_PLATFORM_DELEGATE_VIEWS_OPEN_MAIN_PAGE
