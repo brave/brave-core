@@ -31,6 +31,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/zkcrypto/ff"
   cargo_pkg_version = "0.13.0"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/bitvec/v1:lib",
     "//brave/third_party/rust/byteorder/v1:lib",

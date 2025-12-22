@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -25,7 +26,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +62,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.browserservices.ui.controller.trustedwebactivity.ClientPackageNameProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
@@ -96,11 +97,12 @@ import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.navattach.NavigationAttachmentsCoordinator;
+import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -127,6 +129,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
+import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
@@ -147,6 +150,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
+import org.chromium.chrome.browser.ui.appmenu.BraveAppMenu;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -199,6 +203,8 @@ import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController.SubmenuHeaderFactory;
 import org.chromium.ui.insets.InsetObserver;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
@@ -1021,6 +1027,12 @@ public class BytecodeTest {
                         BrowserServicesThemeColorProvider.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getClientPackageNameProvider",
+                        MethodModifier.REGULAR,
+                        ClientPackageNameProvider.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
                         "onMenuOrKeyboardAction",
                         MethodModifier.REGULAR,
@@ -1051,7 +1063,7 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
                         "isValidSegment",
-                        MethodModifier.REGULAR,
+                        MethodModifier.STATIC,
                         boolean.class,
                         int.class));
         Assert.assertTrue(
@@ -1367,6 +1379,7 @@ public class BytecodeTest {
                         CompositorViewHolder.class,
                         Callback.class,
                         TopUiThemeColorProvider.class,
+                        AdjustedTopUiThemeColorProvider.class,
                         TabObscuringHandler.class,
                         ObservableSupplier.class,
                         List.class,
@@ -1383,6 +1396,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         WindowAndroid.class,
+                        OneshotSupplier.class,
                         Supplier.class,
                         Supplier.class,
                         StatusBarColorController.class,
@@ -1405,7 +1419,8 @@ public class BytecodeTest {
                         TopControlsStacker.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        PageZoomManager.class));
+                        PageZoomManager.class,
+                        SnackbarManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1521,7 +1536,8 @@ public class BytecodeTest {
                         HomeButtonDisplay.class,
                         ExtensionToolbarCoordinator.class,
                         TopControlsStacker.class,
-                        BrowserControlsStateProvider.class));
+                        BrowserControlsStateProvider.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1539,7 +1555,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Runnable.class,
                         int.class,
-                        MenuButtonCoordinator.VisibilityDelegate.class));
+                        MenuButtonCoordinator.VisibilityDelegate.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/share/ShareDelegateImpl",
@@ -1573,7 +1590,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
                         DeferredIMEWindowInsetApplicationCallback.class,
-                        NavigationAttachmentsCoordinator.class,
+                        FuseboxCoordinator.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1676,6 +1693,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
                         ObservableSupplier.class,
+                        LocationBarEmbedder.class,
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
                         Supplier.class,
@@ -1683,7 +1701,10 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         boolean.class,
                         PageZoomManager.class,
-                        Function.class));
+                        Function.class,
+                        MultiInstanceManager.class,
+                        SnackbarManager.class,
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1707,7 +1728,10 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         Supplier.class,
                         ObservableSupplier.class,
-                        PageZoomIndicatorCoordinator.class));
+                        PageZoomIndicatorCoordinator.class,
+                        FuseboxCoordinator.class,
+                        MultiInstanceManager.class,
+                        LocationBarEmbedder.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1728,7 +1752,8 @@ public class BytecodeTest {
                         View.class,
                         Supplier.class,
                         WindowAndroid.class,
-                        BrowserControlsStateProvider.class));
+                        BrowserControlsStateProvider.class,
+                        SubmenuHeaderFactory.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/cached_flags/CachedFlag",
@@ -1786,6 +1811,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
+                        OneshotSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
@@ -1819,7 +1845,8 @@ public class BytecodeTest {
                         ManualFillingComponentSupplier.class,
                         EdgeToEdgeManager.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1928,6 +1955,14 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
         Assert.assertTrue(
                 constructorsMatch(
+                        "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",
+                        "org/chromium/chrome/browser/ui/appmenu/AppMenu",
+                        BraveAppMenu.getAppMenuVisibilityDelegateClass(),
+                        Resources.class,
+                        HierarchicalMenuController.class,
+                        boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
                         "org/chromium/components/external_intents/ExternalNavigationHandler",
                         "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
                         ExternalNavigationDelegate.class));
@@ -2011,9 +2046,8 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController", // presubmit: ignore-long-line
-                        Window.class,
+                        Activity.class,
                         boolean.class,
-                        Context.class,
                         StatusBarColorProvider.class,
                         ObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,

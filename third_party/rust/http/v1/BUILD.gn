@@ -48,6 +48,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/hyperium/http"
   cargo_pkg_version = "1.0.0"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/bytes/v1:lib",
     "//brave/third_party/rust/fnv/v1:lib",

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index f9962dd3c2298d18a7867afc440f10d8ffa0121b..03b2b2a54b71fa97c7ed91d04d5f3e572f22d8f4 100644
+index d19b7c08c4b83d9be6fc7cbdabd623e566b6dde9..dba7e932bbdcc7799c298f49eb43f3d77274ad34 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -733,6 +733,7 @@ PendingScript* ScriptLoader::PrepareScript(
+@@ -734,6 +734,7 @@ PendingScript* ScriptLoader::PrepareScript(
    ScriptFetchOptions options(nonce, integrity_metadata, integrity_attr,
                               parser_state, credentials_mode, referrer_policy,
                               fetch_priority_hint, render_blocking_behavior);

@@ -128,8 +128,9 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
   actor::TaskId task_id = tool_provider_->GetTaskId();
   EXPECT_FALSE(task_id.is_null());
 
-  EXPECT_EQ(actor_service_->GetActiveTasks().count(task_id), 1u);
-  EXPECT_EQ(actor_service_->GetInactiveTasks().count(task_id), 0u);
+  base::WeakPtr<actor::ActorTask> task =
+      actor_service_->GetTask(task_id)->GetWeakPtr();
+  ASSERT_TRUE(task);
 
   tool_provider_->StopAllTasks();
 
@@ -137,7 +138,7 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
   EXPECT_EQ(actor_service_->GetActiveTasks().count(task_id), 0u);
   // With kActorDoNotStoreCompletedTasks feature turned on by default upstream,
   // completed tasks aren't stored in inactive tasks.
-  EXPECT_EQ(actor_service_->GetInactiveTasks().count(task_id), 0u);
+  ASSERT_FALSE(task);
 }
 
 // NOTE: GetOrCreateTabHandleForTask or ExecuteActions with valid actions cannot

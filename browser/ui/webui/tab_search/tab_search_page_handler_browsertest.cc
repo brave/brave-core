@@ -333,7 +333,8 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   const int tab_id4 =
       browser2->GetTabStripModel()->GetTabAtIndex(2)->GetHandle().raw_value();
 
-  std::vector<ai_chat::Tab> expected_tabs = {
+  // Tabs order: browser() tabs first, then browser2 tabs.
+  std::vector<ai_chat::Tab> expected_tabs_order1 = {
       {base::NumberToString(tab_id1), kFooDotComTitle1,
        url::Origin::Create(GURL(kFooDotComUrl1))},
       {base::NumberToString(tab_id2), kFooDotComTitle2,
@@ -344,10 +345,27 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
        url::Origin::Create(GURL(kBarDotComUrl2))},
   };
 
+  // Tabs order: browser2 tabs first, then browser() tabs.
+  std::vector<ai_chat::Tab> expected_tabs_order2 = {
+      {base::NumberToString(tab_id3), kBarDotComTitle1,
+       url::Origin::Create(GURL(kBarDotComUrl1))},
+      {base::NumberToString(tab_id4), kBarDotComTitle2,
+       url::Origin::Create(GURL(kBarDotComUrl2))},
+      {base::NumberToString(tab_id1), kFooDotComTitle1,
+       url::Origin::Create(GURL(kFooDotComUrl1))},
+      {base::NumberToString(tab_id2), kFooDotComTitle2,
+       url::Origin::Create(GURL(kFooDotComUrl2))},
+  };
+
   std::vector<std::string> mock_ret_tabs = {base::NumberToString(tab_id1),
                                             "100", "invalid",
                                             base::NumberToString(tab_id4)};
-  EXPECT_CALL(*mock_engine, GetFocusTabs(expected_tabs, "topic", _))
+
+  // Accept either order since browser iteration order maybe non-deterministic.
+  using testing::AnyOf;
+  EXPECT_CALL(*mock_engine,
+              GetFocusTabs(AnyOf(expected_tabs_order1, expected_tabs_order2),
+                           "topic", _))
       .WillOnce(base::test::RunOnceCallback<2>(mock_ret_tabs));
 
   base::RunLoop run_loop1;

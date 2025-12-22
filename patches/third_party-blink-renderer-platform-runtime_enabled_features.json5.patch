@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 7ffbed48116b51c9a8e056269cfbdec330dbf4b0..14668d6109633f4b7fe5f15da9dfa42aba651139 100644
+index f87e3e39cf90abafc05cb6b279716b937c0d904f..60638794e911648f281849dc2f6605c565ae1814 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -789,6 +789,11 @@
+@@ -797,6 +797,11 @@
        public: true,
-       status: "experimental",
+       status: "stable",
      },
 +    {
 +      name: "BraveIsInTorContext",
@@ -14,7 +14,7 @@ index 7ffbed48116b51c9a8e056269cfbdec330dbf4b0..14668d6109633f4b7fe5f15da9dfa42a
      {
        name: "BrowserInitiatedAutomaticPictureInPicture",
        public: true,
-@@ -2360,6 +2365,7 @@
+@@ -2424,6 +2429,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -22,7 +22,7 @@ index 7ffbed48116b51c9a8e056269cfbdec330dbf4b0..14668d6109633f4b7fe5f15da9dfa42a
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -2374,6 +2380,7 @@
+@@ -2438,6 +2444,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},
@@ -30,7 +30,7 @@ index 7ffbed48116b51c9a8e056269cfbdec330dbf4b0..14668d6109633f4b7fe5f15da9dfa42a
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -3303,6 +3310,7 @@
+@@ -3407,6 +3414,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",

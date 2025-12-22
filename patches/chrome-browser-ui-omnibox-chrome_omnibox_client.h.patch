@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/omnibox/chrome_omnibox_client.h b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
-index a7577f5b37c07b131e4e38184bec56c14f9c4131..b6c1d36525d23e55d36cebec7810cebcbceb8065 100644
+index c83e92627a9a80a64d279d26c0c0d468b948cd95..261d42017f7fb6d05524256d88a54e845a67034c 100644
 --- a/chrome/browser/ui/omnibox/chrome_omnibox_client.h
 +++ b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
-@@ -23,7 +23,7 @@ class GURL;
- class LocationBar;
- class Profile;
+@@ -27,7 +27,7 @@ namespace omnibox {
+ class OmniboxPopupCloser;
+ }  // namespace omnibox
  
 -class ChromeOmniboxClient final : public OmniboxClient {
 +class ChromeOmniboxClient : public OmniboxClient {

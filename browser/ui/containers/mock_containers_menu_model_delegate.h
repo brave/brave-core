@@ -12,7 +12,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 
 class MockContainerMenuModelDelegate
-    : public containers::ContainersMenuModel::Delegate {
+    : public containers::ContainersMenuModelDelegate {
  public:
   MockContainerMenuModelDelegate();
   ~MockContainerMenuModelDelegate() override;

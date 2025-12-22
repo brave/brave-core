@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/layout_constants.h"
 
 // Upstream is no longer centering the tab favicon vertically within the tab
@@ -60,4 +61,23 @@ bool ControllableCloseButtonState::operator=(bool show) {
 ControllableCloseButtonState::operator bool() const {
   return !controller->ShouldAlwaysHideCloseButton() &&
          (tab->IsActive() || tab->mouse_hovered()) && showing_close_button;
+}
+
+bool Tab::IsTabMuteIndicatorNotClickable() {
+  auto* browser = controller()->GetBrowser();
+  // We have clickable mute indicators enabled by default. Thus, if our pref is
+  // disabled we can force the indicator off.
+  // Note: We have a test which checks the feature is enabled by default. If
+  // that changes this may need to as well.
+  // Note: |browser| is |nullptr| in some unit_tests.
+  return browser && browser->profile()->GetPrefs()->GetBoolean(
+                        kTabMuteIndicatorNotClickable);
+}
+
+void Tab::ResetTabStyle(std::unique_ptr<TabStyleViews> new_style) {
+  tab_style_views_ = std::move(new_style);
+
+  views::HighlightPathGenerator::Install(
+      this,
+      std::make_unique<TabStyleHighlightPathGenerator>(tab_style_views()));
 }

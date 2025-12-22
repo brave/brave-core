@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 7d94dc62f8c4f4502e2624b28d4d259b9e0586d9..616781cb3542c44dd8ffddf0925570a53c43e354 100644
+index f2ed42efc5bbcb15a4756ebfd86a4c54fcf3aa74..ebf26275ffcb5da64d858ee0c693d78f9ad16202 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -259,6 +259,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
@@ -26,7 +26,7 @@ index 7d94dc62f8c4f4502e2624b28d4d259b9e0586d9..616781cb3542c44dd8ffddf0925570a5
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -719,6 +722,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -715,6 +718,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 7d94dc62f8c4f4502e2624b28d4d259b9e0586d9..616781cb3542c44dd8ffddf0925570a5
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -746,6 +750,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -742,6 +746,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index 7d94dc62f8c4f4502e2624b28d4d259b9e0586d9..616781cb3542c44dd8ffddf0925570a5
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -872,6 +877,7 @@ base::Value::Dict GetExceptionForPage(
+@@ -868,6 +873,7 @@ base::Value::Dict GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);

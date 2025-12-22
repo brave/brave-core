@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRRect.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
@@ -34,20 +35,19 @@ void NotificationAdBackgroundPainter::Paint(gfx::Canvas* canvas,
 
   const gfx::Rect rect(size);
 
-  SkScalar radii[8] = {top_radius_,    top_radius_,      // top-left
-                       top_radius_,    top_radius_,      // top-right
-                       bottom_radius_, bottom_radius_,   // bottom-right
-                       bottom_radius_, bottom_radius_};  // bottom-left
-
-  SkPath path;
-  path.addRoundRect(gfx::RectToSkRect(rect), radii);
+  SkVector radii[4] = {{top_radius_, top_radius_},         // top-left
+                       {top_radius_, top_radius_},         // top-right
+                       {bottom_radius_, bottom_radius_},   // bottom-right
+                       {bottom_radius_, bottom_radius_}};  // bottom-left
 
   cc::PaintFlags flags;
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kFill_Style);
   flags.setColor(color_);
 
-  canvas->DrawPath(path, flags);
+  canvas->DrawPath(
+      SkPath::RRect(SkRRect::MakeRectRadii(gfx::RectToSkRect(rect), radii)),
+      flags);
 }
 
 }  // namespace brave_ads

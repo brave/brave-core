@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index fc516272be02a3dac1086e4aaf2015dc946cc3c2..127b7b5485da7570fe2bd9a9d8631da5dcd0f2fd 100644
+index 766ad28c66348f79164d8690faffb936bf659884..6cf8ea22dc7beaa501fed427b14464a01873c575 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -115,6 +115,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
@@ -11,14 +11,14 @@ index fc516272be02a3dac1086e4aaf2015dc946cc3c2..127b7b5485da7570fe2bd9a9d8631da5
  }
  
 @@ -210,6 +211,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
- #endif
+ #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
 +    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
    }
  }
  
-@@ -538,6 +540,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -540,6 +542,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOCAL_NETWORK_ACCESS;
      case PermissionType::NUM:
        break;

@@ -28,44 +28,24 @@ class Browser;
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
-  enum BraveTabContextMenuCommand {
-    CommandStart = TabStripModel::CommandLast,
-    CommandRestoreTab,
-    CommandBookmarkAllTabs,
-    CommandShowVerticalTabs,
-    CommandToggleTabMuted,
-    CommandBringAllTabsToThisWindow,
-    CommandCloseDuplicateTabs,
-    CommandOpenInContainer,
-    CommandRenameTab,
-    CommandLast,
-  };
-
-  static_assert(CommandLast < IDC_OPEN_IN_CONTAINER_START,
+  static_assert(TabStripModel::CommandLast < IDC_OPEN_IN_CONTAINER_START,
                 "Container's menu commands must be after "
-                "BraveTabContextMenuCommand to avoid conflicts");
+                "TabStripModel::CommandLast to avoid conflicts");
 
-  BraveTabMenuModel(
-      ui::SimpleMenuModel::Delegate* delegate,
-      TabMenuModelDelegate* tab_menu_model_delegate,
-      TabStripModel* tab_strip_model,
-#if BUILDFLAG(ENABLE_CONTAINERS)
-      containers::ContainersMenuModel::Delegate& containers_delegate,
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-      int index,
-      bool is_vertical_tab);
+  BraveTabMenuModel(ui::SimpleMenuModel::Delegate* delegate,
+                    TabMenuModelDelegate* tab_menu_model_delegate,
+                    TabStripModel* tab_strip_model,
+                    int index);
   BraveTabMenuModel(const BraveTabMenuModel&) = delete;
   BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
-
-  bool all_muted() const { return all_muted_; }
 
   // TabMenuModel:
   std::u16string GetLabelAt(size_t index) const override;
   bool IsNewFeatureAt(size_t index) const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,
                            SplitViewMenuCustomizationTest);
 
   void Build(Browser* browser,
@@ -81,7 +61,6 @@ class BraveTabMenuModel : public TabMenuModel {
   void BuildItemForContainers(
       const PrefService& prefs,
       TabStripModel* tab_strip_model,
-      containers::ContainersMenuModel::Delegate& containers_delegate,
       const std::vector<int>& indices);
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -95,11 +74,7 @@ class BraveTabMenuModel : public TabMenuModel {
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   bool all_muted_;
 
-  bool is_vertical_tab_ = false;
-
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  raw_ref<containers::ContainersMenuModel::Delegate>
-      containers_menu_model_delegate_;
   std::unique_ptr<containers::ContainersMenuModel> containers_submenu_;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 };

@@ -63,7 +63,8 @@ class ContentAgentToolProvider : public ToolProvider,
   friend class ContentAgentToolProviderTest;
   friend class ContentAgentToolProviderBrowserTest;
 
-  void OnActorTaskStateChanged(const actor::ActorTask& task);
+  void OnActorTaskStateChanged(actor::TaskId task_id,
+                               actor::ActorTask::State task_state);
 
   void CreateTools();
 
@@ -76,7 +77,7 @@ class ContentAgentToolProvider : public ToolProvider,
       std::vector<actor::ActionResultWithLatencyInfo> action_results);
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,
-      std::optional<optimization_guide::AIPageContentResult> content);
+      optimization_guide::AIPageContentResultOrError result);
 
   // Browser-specific tools owned by this provider.
   // Note: if it becomes an advantage to refer directly to a specific tool,

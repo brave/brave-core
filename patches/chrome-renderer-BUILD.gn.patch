@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index 811b6a58be86311c44ae2e6c90d7db63735fb076..d378670b32500b9048810a6527381e6882a37d7e 100644
+index dc4abc80a082fee06e306cbdec04401ff795ed7f..f5ede473bf7dd0ee362013ee467b48fbeb3bd347 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -242,6 +242,7 @@ static_library("renderer") {
+@@ -239,6 +239,7 @@ static_library("renderer") {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
    }
  
