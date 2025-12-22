@@ -120,6 +120,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoVoiceRecognitionHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
@@ -2654,6 +2655,7 @@ public abstract class BraveActivity extends ChromeActivity
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
                     if (button == AlertDialog.BUTTON_POSITIVE) {
+                        FirstPartyStorageCleanerAnimationFragment.show(BraveActivity.this);
                         BraveFirstPartyStorageCleanerUtils.cleanupTLDFirstPartyStorage(currentTab);
                     } else {
                         dialog.dismiss();
