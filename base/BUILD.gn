@@ -28,6 +28,7 @@ source_set("base_unittests") {
   ]
   deps = [
     "//base",
+    "//base:build_time",
     "//base/test:test_support",
     "//testing/gmock",
     "//testing/gtest",

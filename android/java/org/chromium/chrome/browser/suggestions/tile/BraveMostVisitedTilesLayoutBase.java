@@ -8,7 +8,11 @@ package org.chromium.chrome.browser.suggestions.tile;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.GridLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** The most visited tiles layout. */
 public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
@@ -38,17 +42,40 @@ public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
             if (getRowCount() < numRows) {
                 setRowCount(numRows);
             }
+
+            List<View> dividerList = new ArrayList<>();
+
             int tileViewWidth = widthMeasureSpec / numColumns;
             for (int i = 0; i < childCount; i++) {
-                SuggestionsTileView tileView = (SuggestionsTileView) getChildAt(i);
-                int row = i / numColumns;
-                int column = i % numColumns;
+                View tileView = getChildAt(i);
+
+                if (tileView instanceof SuggestionsTileVerticalDivider) {
+                    dividerList.add(tileView);
+                    continue;
+                }
+
+                int j = i - dividerList.size();
+                int row = j / numColumns;
+                int column = j % numColumns;
                 GridLayout.LayoutParams params =
                         new GridLayout.LayoutParams(
                                 GridLayout.spec(row, GridLayout.CENTER, 1),
                                 GridLayout.spec(column, GridLayout.CENTER, 1));
                 params.width = tileViewWidth;
                 updateViewLayout(tileView, params);
+            }
+
+            // Add dividers after normal tiles, to make it look better
+            for (int i = 0; i < dividerList.size(); i++) {
+                int j = childCount - dividerList.size() + i;
+                int row = j / numColumns;
+                int column = j % numColumns;
+                GridLayout.LayoutParams params =
+                        new GridLayout.LayoutParams(
+                                GridLayout.spec(row, GridLayout.CENTER, 1),
+                                GridLayout.spec(column, GridLayout.CENTER, 1));
+                params.width = 0;
+                updateViewLayout(dividerList.get(i), params);
             }
         }
 

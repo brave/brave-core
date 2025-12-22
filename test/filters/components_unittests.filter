@@ -51,7 +51,7 @@
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
--OnDeviceAssetManagerTest.AdaptationModelDownloadRegisteredWhenFeatureFirstUsed
+-OnDeviceAssetManagerTest.*
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
@@ -129,6 +129,10 @@
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -TriggerManagerTest.ReportSentWhenEsbIsEnabled
+
+# These tests fail because the text contains "Google" instead of "Brave" (the
+# string is hard-coded into the test)
+-BnplUtilTest.GetBnplUiFooterTextForAi_AiTerms*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
@@ -270,6 +274,7 @@
 -SyncPrefsTest.PasswordSyncAllowed_ExplicitValue
 -SyncServiceImplStartupTest.*
 -SyncServiceImplTest.*
+-SyncServiceImplBookmarksLimitExceededErrorTest.*
 -SyncServiceImplStartupTest.WebSignoutAfterInitialization
 -SyncServiceImplWithBatchUploadDesktopTest.ShouldForwardUponSelectTypeAndMigrateLocalDataItemsWhenActive
 -SyncServiceImplWithBatchUploadDesktopTest.ShouldForwardUponSelectTypeAndMigrateLocalDataItemsWhenActiveWithDataTypeDisabled

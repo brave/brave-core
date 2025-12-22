@@ -13,15 +13,14 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
-#include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
-#include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
@@ -43,6 +42,7 @@
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
@@ -592,34 +592,29 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
   EXPECT_TRUE(pref && pref->IsDefaultValue());
   EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsShowScrollbar));
 
-  auto get_tab_container = [&]() {
-    return views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
-        ->GetTabContainerForTesting();
-  };
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(browser_view()->tabstrip())
+          ->GetTabContainerForTesting());
 
-  auto* brave_tab_container =
-      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
   EXPECT_TRUE(brave_tab_container);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
-            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+            brave_tab_container->GetScrollBarMode());
 
   // Turn on the prefs and checks if scrollbar becomes visible
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, true);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
-            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+            brave_tab_container->GetScrollBarMode());
 
   // Turning off and on vertical tabs and see if the visibility persists.
   ToggleVerticalTabStrip();
   ToggleVerticalTabStrip();
-  brave_tab_container =
-      views::AsViewClass<BraveCompoundTabContainer>(get_tab_container());
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kEnabled,
-            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+            brave_tab_container->GetScrollBarMode());
 
   // Checks if scrollbar is hidden when the pref is turned off.
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowScrollbar, false);
   EXPECT_EQ(views::ScrollView::ScrollBarMode::kHiddenButEnabled,
-            brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
+            brave_tab_container->GetScrollBarMode());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
@@ -736,29 +731,63 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
     base::CommandLine::ForCurrentProcess()->AppendSwitchASCII("lang", "en");
     VerticalTabStripBrowserTest::SetUp();
   }
+
+  std::unique_ptr<TabContextMenuController> CreateMenuControllerAt(
+      int tab_index) {
+    auto* controller = static_cast<BraveBrowserTabStripController*>(
+        BrowserView::GetBrowserViewForBrowser(browser())
+            ->tabstrip()
+            ->controller());
+
+    auto context_menu_controller = std::make_unique<TabContextMenuController>(
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
+            base::Unretained(controller)),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
+            base::Unretained(controller), tab_index),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
+            base::Unretained(controller)),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
+            base::Unretained(controller), tab_index),
+        base::BindRepeating(
+            &BraveBrowserTabStripController::GetContextMenuAccelerator,
+            base::Unretained(controller)));
+
+    return context_menu_controller;
+  }
+
+  ui::SimpleMenuModel* CreateMenuModelAt(
+      TabContextMenuController* context_menu_controller,
+      int tab_index) {
+    brave::BraveTabMenuModelFactory factory;
+    auto model =
+        factory.Create(context_menu_controller,
+                       browser()->GetFeatures().tab_menu_model_delegate(),
+                       browser()->tab_strip_model(), tab_index);
+
+    auto* model_ptr = model.get();
+    context_menu_controller->LoadModel(std::move(model));
+
+    return model_ptr;
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
   // Pre-conditions ------------------------------------------------------------
-  auto create_tab_context_menu_contents = [&]() {
-    return std::make_unique<BraveTabContextMenuContents>(
-        GetTabAt(browser(), 0),
-        static_cast<BraveBrowserTabStripController*>(
-            browser_view()->tabstrip()->controller()),
-        /* index= */ 0);
-  };
-
   auto get_all_labels = [&]() {
-    auto menu_contents = create_tab_context_menu_contents();
+    auto menu = CreateMenuControllerAt(/*tab_index=*/0);
+    auto* menu_model = CreateMenuModelAt(menu.get(), /*tab_index=*/0);
     std::vector<std::u16string> labels;
-    for (auto i = 0u; i < menu_contents->model_->GetItemCount(); i++) {
-      labels.push_back(menu_contents->model_->GetLabelAt(i));
+    for (auto i = 0u; i < menu_model->GetItemCount(); i++) {
+      labels.push_back(menu_model->GetLabelAt(i));
     }
     return labels;
   };
 
   {
-    auto context_menu_contents = create_tab_context_menu_contents();
     ASSERT_FALSE(get_all_labels().empty());
   }
 
@@ -766,7 +795,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
   {
     // Check if there's no "Below" in context menu labels when it's horizontal
     // tab strip
-    auto context_menu_contents = create_tab_context_menu_contents();
     EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
       return base::Contains(label, u"Below");
@@ -781,7 +809,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     // Check if there's no "Right" or "Left" in context menu labels when it's
     // vertical tab strip. When this fails, we should revisit
     // BraveTabMenuModel::GetLabelAt().
-    auto context_menu_contents = create_tab_context_menu_contents();
     EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
       return base::Contains(label, u"Right") || base::Contains(label, u"Left");
@@ -1049,13 +1076,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
 class VerticalTabStripWithScrollableTabBrowserTest
     : public VerticalTabStripBrowserTest {
  public:
-  VerticalTabStripWithScrollableTabBrowserTest()
-      : feature_list_(tabs::kScrollableTabStrip) {}
+  VerticalTabStripWithScrollableTabBrowserTest() = default;
 
   ~VerticalTabStripWithScrollableTabBrowserTest() override = default;
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {

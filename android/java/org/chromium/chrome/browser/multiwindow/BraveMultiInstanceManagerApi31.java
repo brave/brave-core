@@ -16,6 +16,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.NewWindowAppSource;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
@@ -64,17 +66,18 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     }
 
     @Override
-    public void moveTabsToWindow(InstanceInfo info, List<Tab> tabs, int tabAtIndex) {
-        super.moveTabsToWindow(info, tabs, tabAtIndex);
+    public void moveTabsToWindow(
+            InstanceInfo info, List<Tab> tabs, int tabAtIndex, @NewWindowAppSource int source) {
+        super.moveTabsToWindow(info, tabs, tabAtIndex, source);
 
         if (mIsMoveTabsFromSettings && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
             if (selector != null && selector.getTotalTabCount() == 0) {
-                closeInstance(mInstanceId, INVALID_TASK_ID);
+                closeWindow(mInstanceId, CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
-            if (MultiWindowUtils.getInstanceCount() == 1) {
+            if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
             } else {
                 Snackbar snackbar =

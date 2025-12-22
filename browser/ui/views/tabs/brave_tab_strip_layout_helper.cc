@@ -81,18 +81,15 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
     return;
   }
 
+  int start = kMarginForVerticalTabContainers;
   if (!result->empty()) {
-    // Usually this shouldn't happen, as pinned tabs and unpinned tabs belong to
-    // separated containers. But this could happen on start-up. In this case,
-    // fills bounds for unpinned tabs with empty rects.
-    while (result->size() < tabs.size()) {
-      result->push_back({});
-    }
-    return;
+    // This means pinned tabs are already laid out. So start from the bottom of
+    // the last pinned tab and add spacing.
+    start += result->back().bottom() + kVerticalTabsSpacing;
   }
 
   gfx::Rect rect;
-  rect.set_y(kMarginForVerticalTabContainers);
+  rect.set_y(start);
   for (auto iter = tabs.begin() + result->size(); iter != tabs.end(); iter++) {
     auto& tab = *iter;
     rect.set_x(
@@ -194,6 +191,14 @@ void UpdateInsertionIndexForVerticalTabs(
     return;
   }
 
+  const bool dragging_pinned_tab =
+      tab_strip_controller->IsTabPinned(first_dragged_tab_index);
+  if (dragging_pinned_tab && candidate_index != 0 &&
+      !tab_strip_controller->IsTabPinned(candidate_index - 1)) {
+    // Pinned tabs can only be inserted within pinned tabs area.
+    return;
+  }
+
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
 
@@ -201,8 +206,7 @@ void UpdateInsertionIndexForVerticalTabs(
   const gfx::Rect candidate_bounds =
       candidate_index == 0 ? gfx::Rect()
                            : tab_container->GetIdealBounds(candidate_index - 1);
-  if (!is_vertical_tabs_floating &&
-      tab_strip_controller->IsTabPinned(first_dragged_tab_index)) {
+  if (!is_vertical_tabs_floating && dragging_pinned_tab) {
     // Pinned tabs are laid out in a grid.
     distance = std::sqrt(
         std::pow(dragged_bounds.x() - candidate_bounds.CenterPoint().x(), 2) +
@@ -212,6 +216,7 @@ void UpdateInsertionIndexForVerticalTabs(
     // coordinate
     distance = std::abs(dragged_bounds.y() - candidate_bounds.bottom());
   }
+
   if (distance < min_distance) {
     min_distance = distance;
     min_distance_index = candidate_index;

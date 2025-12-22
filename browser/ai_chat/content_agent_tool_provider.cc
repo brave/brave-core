@@ -197,7 +197,7 @@ void ContentAgentToolProvider::OnActionsFinished(
 
 void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
     Tool::UseToolCallback callback,
-    std::optional<optimization_guide::AIPageContentResult> content) {
+    optimization_guide::AIPageContentResultOrError content) {
   if (!content.has_value()) {
     DLOG(ERROR) << "Error getting page content";
     std::move(callback).Run(

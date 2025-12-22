@@ -21,6 +21,8 @@
 // It includes features like vertical tab support, renaming functionality.
 // Also customizes the tab layout and visual appearance for Brave's UI.
 class BraveTab : public Tab, public views::TextfieldController {
+  METADATA_HEADER(BraveTab, Tab)
+
  public:
   explicit BraveTab(TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
@@ -28,6 +30,9 @@ class BraveTab : public Tab, public views::TextfieldController {
   ~BraveTab() override;
 
   void EnterRenameMode();
+
+  // Resets tab_style_views_ so that it can have correct style for orientation.
+  void UpdateTabStyle();
 
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;

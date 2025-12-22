@@ -31,6 +31,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/cbreeden/fxhash"
   cargo_pkg_version = "0.2.1"
 
+  allow_unsafe = false
+
   deps = [ "//brave/third_party/rust/byteorder/v1:lib" ]
   rustenv = []
   rustflags = []

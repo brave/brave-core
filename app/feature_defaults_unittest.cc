@@ -17,8 +17,10 @@
 #include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
+#include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/browsing_data/core/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -68,6 +70,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
+#include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -88,7 +91,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
-      &autofill::features::test::kAutofillServerCommunication,
+      &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
@@ -98,7 +101,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAIWriterAPI,
       &blink::features::kAllowURNsInIframes,
       &blink::features::kBackgroundResourceFetch,
-      &blink::features::kBuiltInAIAPI,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
@@ -112,6 +114,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
+      &blink::features::kUserMediaElement,
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+      &browsing_data::features::kDbdRevampDesktop,
+#endif
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif
@@ -136,9 +142,11 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
+      &features::kAppBrowserUseNewLayout,
       &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
+      &features::kDevToolsAiCodeCompletion,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -158,6 +166,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
+      &features::kPopupBrowserUseNewLayout,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -167,6 +176,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
+      &features::kTabbedBrowserUseNewLayout,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
       &features::kTrustSafetySentimentSurveyV2,
@@ -184,7 +194,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
-      &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
@@ -233,10 +242,12 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &safe_browsing::kNotificationTelemetry,
+#if BUILDFLAG(IS_ANDROID)
+      &security_interstitials::features::kHttpsFirstDialogUi,
+#endif
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
-      &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,

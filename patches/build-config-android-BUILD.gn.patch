@@ -1,12 +1,12 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index db4025262767d571bc832e973a5d5283e5ea5910..a1ccf1a8e5b807ceacdf8278f7bcf0f0308a101e 100644
+index db4025262767d571bc832e973a5d5283e5ea5910..6ae26330b8f6eacb4bdd98579103381c4e50ca93 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -53,6 +53,7 @@ config("compiler") {
-     # segments to be mapped adjacently, which breakpad relies on.
-     "-Wl,-z,max-page-size=$_max_page_size",
-   ]
-+  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
+@@ -63,6 +63,7 @@ config("compiler") {
+       rustflags = [ "-Zbranch-protection=pac-ret" ]
+     }
+   }
++  import("//brave/build/config/android/brave_compiler_ldflags.gni") ldflags += brave_build_config_android_compiler_ldflags
  
-   if (current_cpu == "arm64") {
-     if (arm_control_flow_integrity == "standard") {
+   # Disable TLSDESC for riscv64 until the Android NDK supports it. While
+   # Chromium's clang turns it on by default for Android RISC-V devices, NDK r27

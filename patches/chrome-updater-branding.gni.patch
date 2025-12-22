@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/branding.gni b/chrome/updater/branding.gni
-index 40719fd7e6b882391c65636092962531134fa118..99a8b95c83c5a6d7b7a74655c2c7f28edd94673a 100644
+index 2b6f9e23b21e320440b34e9d7d31f14b625cccb6..4f860819bbf95a88c720f81b1810b5401d20a2f0 100644
 --- a/chrome/updater/branding.gni
 +++ b/chrome/updater/branding.gni
-@@ -107,3 +107,4 @@ if (is_chrome_branded) {
+@@ -108,3 +108,4 @@ if (is_chrome_branded) {
      legacy_google_update_appid = "{8B2B92A3-1BA2-4154-A89C-DA74C9C505E4}"
    }
  }

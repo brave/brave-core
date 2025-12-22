@@ -339,8 +339,8 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 
   // If side panel is shown, contents container should have margin
   // because panel doesn't have margin.
-  if (browser() &&
-      browser()->GetFeatures().side_panel_ui()->GetCurrentEntryId()) {
+  if (browser() && browser()->GetFeatures().side_panel_ui()->GetCurrentEntryId(
+                       SidePanelEntry::PanelType::kContent)) {
     contents_container_bounds.Inset(contents_margins);
     return;
   }

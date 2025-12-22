@@ -11,6 +11,7 @@ import android.view.View;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
 
 /*
  * This is dummy super class for BraveAppMenu.
@@ -18,8 +19,12 @@ import org.chromium.build.annotations.Nullable;
  */
 @NullMarked
 class BraveAppMenuDummySuper extends AppMenu {
-    BraveAppMenuDummySuper(AppMenuHandlerImpl handler, Resources res) {
-        super(handler, res);
+    BraveAppMenuDummySuper(
+            AppMenuVisibilityDelegate visibilityDelegate,
+            Resources res,
+            HierarchicalMenuController hierarchicalMenuController,
+            boolean disableVerticalScrollbar) {
+        super(visibilityDelegate, res, hierarchicalMenuController, disableVerticalScrollbar);
         assert false : "This class usage should be removed in the bytecode!";
     }
 

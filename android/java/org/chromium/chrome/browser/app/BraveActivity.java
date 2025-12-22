@@ -143,6 +143,7 @@ import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErro
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -219,6 +220,7 @@ import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.omnibox.AutocompleteRequestType;
 import org.chromium.components.prefs.PrefChangeRegistrar;
 import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
@@ -1343,7 +1345,7 @@ public abstract class BraveActivity extends ChromeActivity
         // Check multiwindow toggle for upgrade case
         if (!isFirstInstall
                 && !BraveMultiWindowUtils.isCheckUpgradeEnableMultiWindows()
-                && MultiWindowUtils.getInstanceCount() > 1
+                && MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) > 1
                 && !BraveMultiWindowUtils.shouldEnableMultiWindows()) {
             BraveMultiWindowUtils.setCheckUpgradeEnableMultiWindows(true);
             BraveMultiWindowUtils.updateEnableMultiWindows(true);
@@ -1621,7 +1623,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void focusSearchBox() {
         if (mNewTabPageManager != null) {
-            mNewTabPageManager.focusSearchBox(false, null);
+            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, null);
         }
     }
 

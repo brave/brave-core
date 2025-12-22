@@ -1,0 +1,25 @@
+diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
+index 9da0e5b43cf65cb33895c3c2d0e19e7586219de8..bdddd3ec9e7c835075822c396b83a2cfa9841a93 100644
+--- a/chrome/installer/linux/common/installer.py
++++ b/chrome/installer/linux/common/installer.py
+@@ -111,6 +111,7 @@ def gen_changelog(context, staging_dir, deb_changelog):
+     gzlog_dir = (
+         staging_dir /
+         f"usr/share/doc/{context['PACKAGE']}-{context['CHANNEL']}")
++    if context['CHANNEL'] == "stable": gzlog_dir = (staging_dir / f"usr/share/doc/{context['PACKAGE']}")
+     gzlog_dir.mkdir(parents=True, exist_ok=True)
+     gzlog = gzlog_dir / "changelog.gz"
+ 
+@@ -516,6 +517,7 @@ class Installer:
+                 icon_suffix = "_dev"
+             elif self.channel == "canary":
+                 icon_suffix = "_canary"
++        icon_suffix = {"beta": "_beta", "dev": "_dev", "nightly": "_nightly", "unstable": "_dev"}.get(self.channel, "") if self.branding == "brave" else ""
+ 
+         icon_sizes = [16, 24, 32, 48, 64, 128, 256]
+         logo_resources_png = []
+@@ -822,3 +824,4 @@ class Installer:
+                         msg += f", but they were {oct(actual_perms)}"
+                         print(msg, file=sys.stderr)
+                         sys.exit(1)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

@@ -31,7 +31,6 @@
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/storage/blink_storage_key.h"
-#include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/weborigin/scheme_registry.h"
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
@@ -98,8 +97,6 @@ const blink::BlinkStorageKey* GetStorageKey(blink::ExecutionContext* context) {
 }  // namespace
 
 namespace brave {
-
-constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context) {
@@ -228,7 +225,7 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 }
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
-    : Supplement<ExecutionContext>(context) {
+    : execution_context_(context) {
   if (auto* settings_client = GetContentSettingsClientFor(&context)) {
     default_shields_settings_ = settings_client->GetBraveShieldsSettings(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
@@ -257,11 +254,10 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
 }
 
 BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
-  BraveSessionCache* cache =
-      Supplement<ExecutionContext>::From<BraveSessionCache>(context);
+  BraveSessionCache* cache = context.GetBraveSessionCache();
   if (!cache) {
     cache = MakeGarbageCollected<BraveSessionCache>(context);
-    ProvideTo(context, cache);
+    context.SetBraveSessionCache(cache);
   }
   return *cache;
 }
@@ -439,7 +435,7 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
   if (webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
       webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
     if (auto* settings_client =
-            GetContentSettingsClientFor(GetSupplementable())) {
+            GetContentSettingsClientFor(execution_context_)) {
       auto shields_settings =
           settings_client->GetBraveShieldsSettings(webcompat_content_settings);
       // https://github.com/brave/brave-browser/issues/41889 debug.
@@ -454,6 +450,10 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
     }
   }
   return default_shields_settings_->farbling_level;
+}
+
+void BraveSessionCache::Trace(blink::Visitor* visitor) const {
+  visitor->Trace(execution_context_);
 }
 
 }  // namespace brave

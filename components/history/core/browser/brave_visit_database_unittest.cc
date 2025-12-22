@@ -49,7 +49,7 @@ TEST_F(BraveVisitDatabaseTest, BraveGetKnownToSyncCount) {
   for (VisitID i = 1; i <= 3; i++) {
     VisitRow original(i, Time::Now(), 23, ui::PageTransitionFromInt(0), 19,
                       false, 0);
-    AddVisit(&original, SOURCE_BROWSED);
+    AddVisit(&original);
     ASSERT_EQ(i, original.visit_id);  // Verifies that we added 1, 2, and 3
   }
 

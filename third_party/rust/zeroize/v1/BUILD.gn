@@ -30,6 +30,8 @@ cargo_crate("lib") {
       "https://github.com/RustCrypto/utils/tree/master/zeroize"
   cargo_pkg_version = "1.8.1"
 
+  allow_unsafe = true
+
   deps = [ "//brave/third_party/rust/zeroize_derive/v1:lib" ]
   features = [
     "alloc",

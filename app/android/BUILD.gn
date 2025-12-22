@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 
 if (should_generate_symbols) {
@@ -48,7 +53,10 @@ action("create_symbol_archive") {
   deps = [ "//brave/build/android:brave" ]
 
   archive_dir_path = "$root_out_dir/dist"
-  archive_file_name = "Default$target_cpu$target_android_base.tar"
+
+  # TODO(https://github.com/brave/brave-browser/issues/51200)
+  # Cleanup Mono once cr144 reaches stable channel, CI also needs to be updated
+  archive_file_name = "Default$target_cpu" + "mono.tar"
   archive_file_path = "$archive_dir_path/$archive_file_name"
 
   inputs = [

@@ -23,6 +23,12 @@ void BraveTabStripRegionView::Layout(PassKey) {
   UpdateTabStripMargin();
   LayoutSuperclass<TabStripRegionView>(this);
 
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+    // in vertical tabs mode, we make tab strip's height is the same with this
+    // view's height to avoid extra gaps.
+    tab_strip_->SetSize({tab_strip_->size().width(), height()});
+  }
+
   // Ensure that the new tab button is positioned after the last tab, with the
   // correct amount of padding.
   if (new_tab_button_) {

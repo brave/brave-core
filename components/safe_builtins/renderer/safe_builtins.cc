@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/containers/heap_array.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -194,8 +195,7 @@ class ExtensionImpl : public v8::Extension {
     int args_length = info[4].As<v8::Int32>()->Value();
 
     int argc = args_length - first_arg_index;
-    std::unique_ptr<v8::Local<v8::Value>[]> argv(
-        new v8::Local<v8::Value>[argc]);
+    auto argv = base::HeapArray<v8::Local<v8::Value>>::WithSize(argc);
     for (int i = 0; i < argc; ++i) {
       CHECK(IsTrue(args->Has(context, i + first_arg_index)));
       // Getting a property value could throw an exception.
@@ -205,7 +205,7 @@ class ExtensionImpl : public v8::Extension {
     }
 
     v8::Local<v8::Value> return_value;
-    if (function->Call(context, recv, argc, argv.get())
+    if (function->Call(context, recv, argc, argv.data())
             .ToLocal(&return_value)) {
       info.GetReturnValue().Set(return_value);
     }

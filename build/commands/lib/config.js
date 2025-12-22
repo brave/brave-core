@@ -186,7 +186,6 @@ const Config = function () {
   this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
-  this.targetAndroidBase = 'mono'
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -641,7 +640,6 @@ Config.prototype.buildArgs = function () {
     // exclude_unwind_tables is inherited form upstream and is false for any
     // Android build
 
-    args.target_android_base = this.targetAndroidBase
     args.target_android_output_format =
       this.targetAndroidOutputFormat
       || (this.buildConfig === 'Release' ? 'aab' : 'apk')
@@ -868,9 +866,6 @@ Config.prototype.updateInternal = function (options) {
   }
 
   if (this.targetOS === 'android') {
-    if (options.target_android_base) {
-      this.targetAndroidBase = options.target_android_base
-    }
     if (options.target_android_output_format) {
       this.targetAndroidOutputFormat = options.target_android_output_format
     }

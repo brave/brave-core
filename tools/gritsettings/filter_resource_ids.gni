@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+filtered_resource_id_file_dir =
+    get_label_info("//tools/gritsettings:default_resource_ids",
+                   "target_gen_dir")
+
+filtered_resource_id_file =
+    filtered_resource_id_file_dir + "/filtered_default_resource_ids.spec"
+
+filtered_resource_id_file_path =
+    rebase_path(filtered_resource_id_file, root_build_dir)
+
+brave_tools_gritsettings_deps =
+    [ "//brave/tools/gritsettings:filter_resource_ids" ]

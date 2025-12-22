@@ -20,6 +20,8 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
@@ -74,7 +76,10 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             ObservableSupplier<@AutocompleteRequestType Integer> autocompleteRequestTypeSupplier,
-            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator) {
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
+            FuseboxCoordinator fuseboxCoordinator,
+            @Nullable MultiInstanceManager multiInstanceManager,
+            LocationBarEmbedder locationBarEmbedder) {
         super(
                 context,
                 locationBarLayout,
@@ -95,7 +100,10 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
                 autocompleteRequestTypeSupplier,
-                pageZoomIndicatorCoordinator);
+                pageZoomIndicatorCoordinator,
+                fuseboxCoordinator,
+                multiInstanceManager,
+                locationBarEmbedder);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
@@ -164,7 +172,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mIsTablet) {
             return mUrlHasFocus || mIsUrlFocusChangeInProgress;
         } else {
-            return !shouldShowDeleteButton()
+            return !isUrlBarFocusedWithUserInput()
                     && (mUrlHasFocus
                             || mIsUrlFocusChangeInProgress
                             || mIsLocationBarFocusedFromNtpScroll);
