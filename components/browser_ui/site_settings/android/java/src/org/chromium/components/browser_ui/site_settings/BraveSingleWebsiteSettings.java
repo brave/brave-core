@@ -114,7 +114,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 boolean.class,
                 false);
     }
-    
+
     private Context getStyledContext() {
         return getPreferenceManager().getContext();
     }

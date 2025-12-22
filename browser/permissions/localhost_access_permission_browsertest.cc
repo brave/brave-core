@@ -378,7 +378,7 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, NoPermissionPrompt) {
 }
 
 // Test that WebSocket connections to localhost are blocked/allowed.
-IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, DISABLED_WebSocket) {
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   // Start a WebSocket server.
   net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
   net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
