@@ -24,8 +24,15 @@
   EndDrag(__VA_ARGS__) = 0; \
   virtual bool IsVerticalTabsFloating() const
 
+// Add a method to TabSlotController to determine whether tabs can be closed via
+// middle mouse button click.
+#define CanPaintThrobberToLayer()      \
+  CanPaintThrobberToLayer() const = 0; \
+  virtual bool CanCloseTabViaMiddleButtonClick()
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed

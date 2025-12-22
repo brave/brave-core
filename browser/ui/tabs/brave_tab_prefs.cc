@@ -41,6 +41,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   }
 
   registry->RegisterBooleanPref(kAlwaysHideTabCloseButton, false);
+  registry->RegisterBooleanPref(kMiddleClickCloseTabEnabled, true);
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {

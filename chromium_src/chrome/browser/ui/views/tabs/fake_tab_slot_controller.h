@@ -12,18 +12,23 @@
   IsGroupCollapsed(__VA_ARGS__) const override; \
   const Browser* GetBrowser()
 
-// Add override for ShouldAlwaysHideTabCloseButton() and setters to control its
-// return value in tests.
-#define ShouldCompactLeadingEdge()                      \
-  ShouldCompactLeadingEdge() const override;            \
-                                                        \
- private:                                               \
-  bool should_always_hide_close_button_ = false;        \
-                                                        \
- public:                                                \
-  void set_should_always_hide_close_button(bool hide) { \
-    should_always_hide_close_button_ = hide;            \
-  }                                                     \
+// Add override for
+// ShouldAlwaysHideTabCloseButton()/CanCloseTabViaMiddleButtonClick() and
+// setters to control its return value in tests.
+#define ShouldCompactLeadingEdge()                               \
+  ShouldCompactLeadingEdge() const override;                     \
+                                                                 \
+ private:                                                        \
+  bool should_always_hide_close_button_ = false;                 \
+  bool can_close_tab_via_middle_button_click_ = true;            \
+                                                                 \
+ public:                                                         \
+  void set_should_always_hide_close_button(bool hide) {          \
+    should_always_hide_close_button_ = hide;                     \
+  }                                                              \
+  void set_can_close_tab_via_middle_button_click(bool enabled) { \
+    can_close_tab_via_middle_button_click_ = enabled;            \
+  }                                                              \
   bool ShouldAlwaysHideCloseButton()
 
 // Add override for IsVerticalTabsFloating()
@@ -31,8 +36,14 @@
   EndDrag(__VA_ARGS__) override; \
   bool IsVerticalTabsFloating() const
 
+// Add override for CanCloseTabViaMiddleButtonClick()
+#define CanPaintThrobberToLayer()           \
+  CanPaintThrobberToLayer() const override; \
+  bool CanCloseTabViaMiddleButtonClick()
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef CanPaintThrobberToLayer
 #undef EndDrag
 #undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed

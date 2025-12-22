@@ -40,6 +40,9 @@ inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
 inline constexpr char kAlwaysHideTabCloseButton[] =
     "brave.tabs.always_hide_tab_close_button";
 
+inline constexpr char kMiddleClickCloseTabEnabled[] =
+    "brave.tabs.middle_click_close_tab_enabled";
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
 
