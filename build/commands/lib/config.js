@@ -13,6 +13,7 @@ const Log = require('./logging')
 
 let envConfig = null
 let envConfigParseErrors = null
+let packageConfigObj = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -27,15 +28,25 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-const packageConfig = function (key, sourceDir = braveCoreDir) {
-  let packages = { config: {} }
-  const configAbsolutePath = path.join(sourceDir, 'package.json')
-  if (fs.existsSync(configAbsolutePath)) {
-    packages = require(path.relative(__dirname, configAbsolutePath))
-  }
+const loadPackageConfig = () => {
+  if (!packageConfigObj) {
+    let packages = { config: {} }
+    const configAbsolutePath = path.join(braveCoreDir, 'package.json')
+    if (fs.existsSync(configAbsolutePath)) {
+      packages = require(path.relative(__dirname, configAbsolutePath))
+    }
 
-  // packages.config should include version string.
-  let obj = Object.assign({}, packages.config, { version: packages.version })
+    // packages.config should include version string.
+    packageConfigObj = Object.assign({}, packages.config, {
+      version: packages.version,
+    })
+  }
+}
+
+const packageConfig = function (key) {
+  loadPackageConfig()
+
+  let obj = packageConfigObj
   for (let i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj
