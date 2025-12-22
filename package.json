@@ -215,6 +215,7 @@
     "date-fns": "2.28.0",
     "jszip": "3.8.0",
     "page-metadata-parser": "1.1.4",
+    "pdf-lib": "^1.17.1",
     "prettier-bytes": "1.0.4",
     "qr-image": "3.2.0",
     "react-json-view-lite": "0.9.5",

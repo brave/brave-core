@@ -19,4 +19,6 @@
     type="BINDATA" />
   <include name="IDR_AI_CHAT_UPLOT_CSS" file="../../node_modules/uplot/dist/uPlot.min.css"
     type="BINDATA" />
+  <include name="IDR_AI_CHAT_PDFLIB_JS" file="../../node_modules/pdf-lib/dist/pdf-lib.min.js"
+    type="BINDATA" />
 </grit-part>

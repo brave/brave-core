@@ -844,6 +844,31 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [])
 
+  // Listen for downloadDataUrl requests from the untrusted child frame.
+  // This handler enables PDF downloads from the code execution tool. The child
+  // frame is sandboxed and cannot trigger downloads directly, so it sends the
+  // data URL to this trusted parent frame via Mojo (ParentUIFrame interface).
+  // We create a temporary anchor element with the download attribute to trigger
+  // the browser's native download behavior for the base64-encoded PDF data.
+  React.useEffect(() => {
+    const listener = (dataUrl: string, filename: string) => {
+      const link = document.createElement('a')
+      link.href = dataUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+    const listenerId =
+      getAPI().conversationEntriesFrameObserver.downloadDataUrl.addListener(
+        listener,
+      )
+
+    return () => {
+      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
+    }
+  }, [])
+
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,

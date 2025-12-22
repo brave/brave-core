@@ -19,7 +19,8 @@
 
 .codeSection,
 .outputSection,
-.chartSection {
+.chartSection,
+.pdfSection {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-m);
@@ -42,4 +43,9 @@
   max-width: 100%;
   height: auto;
   border-radius: var(--leo-radius-s);
+}
+
+.pdfContent {
+  display: flex;
+  margin-bottom: var(--leo-spacing-m);
 }

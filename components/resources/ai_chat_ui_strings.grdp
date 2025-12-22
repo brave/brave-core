@@ -909,4 +909,10 @@
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CHART_LABEL" desc="Label for chart section in code execution tool" formatter_data="webui=AiChat">
     Chart:
   </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_PDF_LABEL" desc="Label for PDF section in code execution tool" formatter_data="webui=AiChat">
+    PDF:
+  </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_DOWNLOAD_PDF_BUTTON" desc="Button label to download generated PDF file" formatter_data="webui=AiChat">
+    Download PDF
+  </message>
 </grit-part>

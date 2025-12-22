@@ -35,8 +35,8 @@ namespace ai_chat {
 
 class CodeSandboxWebContentsObserver;
 
-// Result of code execution containing console output and optional chart image.
-// Move-only because it may contain large base64-encoded image data.
+// Result of code execution containing console output and optional chart/PDF.
+// Move-only because it may contain large base64-encoded data.
 struct ExecutionResult {
   ExecutionResult();
   ~ExecutionResult();
@@ -48,12 +48,26 @@ struct ExecutionResult {
   // Base64-encoded PNG data URL (e.g., "data:image/png;base64,...") if the
   // script rendered a chart using window.createChart().
   std::optional<std::string> chart_image_data_url;
+  // Base64-encoded PDF data URL (e.g., "data:application/pdf;base64,...") if
+  // the script generated a PDF using window.createPdf().
+  std::optional<std::string> pdf_data_url;
 };
 
 // Tool for executing JavaScript code in a sandboxed environment.
-// Captures console.log output and optionally rendered chart images.
-// The sandbox provides bignumber.js for decimal math and uPlot for charting.
+// Captures console.log output and optionally rendered chart images or PDFs.
+//
+// The sandbox provides:
+// - bignumber.js for arbitrary-precision decimal math
+// - uPlot for line/area/bar chart rendering
+// - pdf-lib for programmatic PDF document generation
+//
 // Network requests are blocked; execution is time-limited.
+//
+// PDF Generation:
+// Scripts can use window.createPdf(builderFn) to generate PDFs. The builder
+// function receives {pdfDoc, StandardFonts, rgb, degrees} from pdf-lib. The
+// generated PDF is returned as a base64 data URL in ExecutionResult.pdf_data_url
+// and displayed to users as a downloadable file in the UI.
 class CodeExecutionTool : public Tool {
  public:
   explicit CodeExecutionTool(content::BrowserContext* browser_context);
