@@ -12,6 +12,7 @@ const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
 
 let envConfig = null
+let envConfigParseErrors = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -70,6 +71,7 @@ print(json.dumps(result))
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
+    envConfigParseErrors = {}
 
     // Parse src/brave/.env with all included env files.
     let envConfigPath = path.join(braveCoreDir, '.env')
@@ -83,18 +85,38 @@ const getEnvConfig = (key, defaultValue = undefined) => {
       fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 
-    // Convert 'true' and 'false' strings into booleans.
+    // Attempt to parse JSON-parseable values (strings, numbers, booleans, null,
+    // objects, arrays). If parsing fails, store the value as string.
     for (const [key, value] of Object.entries(envConfig)) {
       try {
-        envConfig[key] = JSON.parse(value)
+        if (typeof defaultValue === 'string') {
+          envConfig[key] = value
+        } else {
+          envConfig[key] = JSON.parse(value)
+        }
       } catch (e) {
         envConfig[key] = value
+        envConfigParseErrors[key] = e.message
       }
     }
   }
 
-  const envConfigValue = envConfig[key.join('_')]
+  const keyJoined = key.join('_')
+  const envConfigValue = envConfig[keyJoined]
   if (envConfigValue !== undefined) {
+    if (
+      defaultValue !== undefined
+      && getValueType(defaultValue) !== getValueType(envConfigValue)
+    ) {
+      Log.error(
+        `${keyJoined} value type is invalid: expected ${getValueType(defaultValue)}, got ${getValueType(envConfigValue)}`,
+      )
+      const parseError = envConfigParseErrors[keyJoined]
+      if (parseError) {
+        Log.error(`${parseError}:\n${envConfigValue}`)
+      }
+      process.exit(1)
+    }
     return envConfigValue
   }
 
@@ -1335,5 +1357,15 @@ Object.defineProperty(Config.prototype, 'useSiso', {
     )
   },
 })
+
+function getValueType(value) {
+  if (value === undefined) {
+    return 'undefined'
+  }
+  if (value === null) {
+    return 'null'
+  }
+  return value.constructor.name
+}
 
 module.exports = new Config()
