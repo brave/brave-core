@@ -624,9 +624,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_CONFIGURE_SHORTCUTS:
       brave::ShowShortcutsPage(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     case IDC_SHOW_BRAVE_TALK:
       brave::ShowBraveTalk(&*browser_);
       break;
+#endif
     case IDC_TOGGLE_SHIELDS:
       brave::ToggleShieldsEnabled(&*browser_);
       break;

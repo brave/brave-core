@@ -304,9 +304,6 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
   profile().GetPrefs()->SetBoolean(brave_talk::prefs::kDisabledByPolicy, false);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
-#else
-  // Talk not compiled in, should always be disabled
-  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
 #endif
 
   // Test Brave VPN (multiple commands)

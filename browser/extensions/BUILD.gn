@@ -88,13 +88,6 @@ source_set("extensions") {
     "updater/brave_update_client_config.h",
   ]
 
-  if (enable_brave_talk) {
-    sources += [
-      "api/brave_talk_api.cc",
-      "api/brave_talk_api.h",
-    ]
-  }
-
   deps = [
     ":brave_prefs_util_impl",
     ":resources",
@@ -207,6 +200,10 @@ source_set("extensions") {
   }
 
   if (enable_brave_talk) {
+    sources += [
+      "api/brave_talk_api.cc",
+      "api/brave_talk_api.h",
+    ]
     deps += [ "//brave/components/brave_talk" ]
   }
 

@@ -271,6 +271,8 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
   size_t GetDefaultItemCount() const {
+    // kDefaultBuiltInItemTypes.size() already accounts for buildflags
+    // (ENABLE_BRAVE_TALK, ENABLE_AI_CHAT) at compile time.
     auto item_count =
         std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
         1 /* for history*/;
@@ -282,10 +284,6 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
-#endif
-
-#if !BUILDFLAG(ENABLE_BRAVE_TALK)
-    item_count -= 1;
 #endif
 
 #if !BUILDFLAG(ENABLE_BRAVE_WALLET)

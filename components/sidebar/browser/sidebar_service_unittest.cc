@@ -576,7 +576,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   }
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET) && BUILDFLAG(ENABLE_BRAVE_TALK)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   // Make prefs already have old-style builtin items before service
   // initialization.
@@ -622,7 +622,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   auto talk_item = *talk_iter;
   EXPECT_EQ(talk_item.url, kBraveTalkURL);
 }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET) && BUILDFLAG(ENABLE_BRAVE_TALK)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {

@@ -60,10 +60,12 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   // A previous version of prefs used the URL even for built-in items, and not
   // the |SidebarItem::BuiltInItemType|. Therefore, this list should not
   // need to be updated.
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   if (url == "https://together.brave.com/" ||
       url == "https://talk.brave.com/") {
     return SidebarItem::BuiltInItemType::kBraveTalk;
   }
+#endif
 
   if (url == "chrome://wallet/") {
     return SidebarItem::BuiltInItemType::kWallet;
@@ -163,8 +165,10 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   }
   // Only include items that were known prior to this migration
   std::vector<SidebarItem> built_in_items_to_hide;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBraveTalk));
+#endif
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
   built_in_items_to_hide.push_back(
@@ -606,8 +610,8 @@ std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
 SidebarItem SidebarService::GetBuiltInItemForType(
     SidebarItem::BuiltInItemType type) const {
   switch (type) {
-    case SidebarItem::BuiltInItemType::kBraveTalk:
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
+    case SidebarItem::BuiltInItemType::kBraveTalk:
       if (!prefs_->GetBoolean(brave_talk::prefs::kDisabledByPolicy)) {
         return SidebarItem::Create(
             GURL(kBraveTalkURL),
@@ -616,8 +620,8 @@ SidebarItem SidebarService::GetBuiltInItemForType(
             SidebarItem::BuiltInItemType::kBraveTalk,
             /* open_in_panel = */ false);
       }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
       return SidebarItem();
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
     case SidebarItem::BuiltInItemType::kWallet: {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       if (brave_wallet::IsAllowed(prefs_)) {

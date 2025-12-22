@@ -543,11 +543,11 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
     case UpdateObserver::Source::kShieldsStats:
       page_->OnShieldsStatsUpdated();
       break;
-    case UpdateObserver::Source::kTalk:
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
+    case UpdateObserver::Source::kTalk:
       page_->OnTalkStateUpdated();
-#endif
       break;
+#endif
     case UpdateObserver::Source::kRewards:
       page_->OnRewardsStateUpdated();
       break;

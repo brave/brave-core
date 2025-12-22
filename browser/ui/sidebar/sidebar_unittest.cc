@@ -259,11 +259,13 @@ TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(GURL("https://talk.brave.com")));
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(
                 GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
+#endif
   EXPECT_EQ(
       GURL(kBraveUIWalletPageURL),
       ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));

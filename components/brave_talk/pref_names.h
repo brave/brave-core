@@ -20,7 +20,6 @@ inline constexpr char kNewTabPageShowBraveTalk[] =
     "brave.new_tab_page.show_together";
 
 inline constexpr char kDisabledByPolicy[] = "brave.talk.disabled_by_policy";
-
 }  // namespace prefs
 }  // namespace brave_talk
 
