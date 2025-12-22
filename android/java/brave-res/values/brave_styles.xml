@@ -663,4 +663,14 @@
     <style name="BraveNewsDescTextColor">
         <item name="android:textColor">@color/news_time_color</item>
     </style>
+
+    <style name="FadeEnterAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/fast_fade_in</item>
+    </style>
+
+    <!--  Customized enter animation to provide a smooth transition between splash screen and
+      welcome onboarding activity. -->
+    <style name="Theme.Brave.WelcomeOnboarding" parent="Theme.Chromium.Activity.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/FadeEnterAnimation</item>
+    </style>
 </resources>

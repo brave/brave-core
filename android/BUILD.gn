@@ -80,6 +80,7 @@ android_library("qrreader_java") {
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [
+    "java/brave-res/anim/fast_fade_in.xml",
     "java/brave-res/anim/slide_in_bottom.xml",
     "java/brave-res/anim/slide_in_top.xml",
     "java/brave-res/anim/slide_out_bottom.xml",

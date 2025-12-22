@@ -36,7 +36,7 @@
 
 <activity
     android:name="org.chromium.chrome.browser.firstrun.WelcomeOnboardingActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:theme="@style/Theme.Brave.WelcomeOnboarding"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
