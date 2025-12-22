@@ -12,6 +12,10 @@
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 namespace {
 
 void UpdateBraveScheme(NavigateParams* params) {
@@ -39,8 +43,12 @@ void UpdateParams(NavigateParams* params) {
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateParams(params);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-#define GetSiteInstanceForNewTab(...) \
-  GetSiteInstanceForNewTab(__VA_ARGS__, params.storage_partition_config)
+#define GetSiteInstanceForNewTab(...)                                    \
+  GetSiteInstanceForNewTab(                                              \
+      __VA_ARGS__,                                                       \
+      containers::ContainedTabHandlerRegistry::GetInstance()             \
+          .MaybeInheritStoragePartition(params.storage_partition_config, \
+                                        params.source_site_instance.get()))
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/browser_navigator.cc>
