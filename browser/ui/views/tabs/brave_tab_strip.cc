@@ -53,6 +53,8 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
       controller_->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged,
                           base::Unretained(this)));
+  middle_click_close_tab_enabled_.Init(brave_tabs::kMiddleClickCloseTabEnabled,
+                                       controller_->GetProfile()->GetPrefs());
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -99,6 +101,10 @@ bool BraveTabStrip::CanPaintThrobberToLayer() const {
   // and a tab could be out of the viewport. Otherwise, throbber would be
   // painted even when the tab is not in the viewport.
   return false;
+}
+
+bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
+  return *middle_click_close_tab_enabled_;
 }
 
 bool BraveTabStrip::ShouldDrawStrokes() const {

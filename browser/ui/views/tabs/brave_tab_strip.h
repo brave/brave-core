@@ -43,6 +43,7 @@ class BraveTabStrip : public TabStrip {
   bool ShouldAlwaysHideCloseButton() const override;
   bool IsVerticalTabsFloating() const override;
   bool CanPaintThrobberToLayer() const override;
+  bool CanCloseTabViaMiddleButtonClick() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
@@ -63,6 +64,7 @@ class BraveTabStrip : public TabStrip {
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 
   BooleanPrefMember always_hide_close_button_;
+  BooleanPrefMember middle_click_close_tab_enabled_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };
