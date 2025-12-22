@@ -73,27 +73,6 @@ public class BraveWebsite {
                         ContentSettingException.class,
                         exception);
             }
-        } else if (type == ContentSettingsType.BRAVE_LOCALHOST_ACCESS) {
-            if (exception == null) {
-                exception =
-                        new ContentSettingException(
-                                ContentSettingsType.BRAVE_LOCALHOST_ACCESS,
-                                ((WebsiteAddress)
-                                                BraveReflectionUtil.invokeMethod(
-                                                        Website.class, this, "getAddress"))
-                                        .getHost(),
-                                value,
-                                ProviderType.NONE,
-                                false);
-                BraveReflectionUtil.invokeMethod(
-                        Website.class,
-                        this,
-                        "setContentSettingException",
-                        int.class,
-                        type,
-                        ContentSettingException.class,
-                        exception);
-            }
         }
 
         BraveReflectionUtil.invokeMethod(
