@@ -1224,6 +1224,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // 41px w/o rounded corners.
   browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
   EXPECT_EQ(41, region_view->GetMinimumSize().width());
+
+  region_view->ToggleState();
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+
+  // When expanded, minimum size should not be affected when the hide
+  // completely option changes.
+  const auto minimum_size_no_collapsed = region_view->GetMinimumSize().width();
+  SetHideCompletelyWhenCollapsed(true);
+  EXPECT_EQ(minimum_size_no_collapsed, region_view->GetMinimumSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
