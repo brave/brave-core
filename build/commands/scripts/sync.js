@@ -79,14 +79,14 @@ async function RunCommand() {
   // to the config.update() call.
   const targetOSList = commaSeparatedToList(
     program.target_os,
-    existingGclientConfig?.target_os || [],
+    existingGclientConfig.target_os || [],
   )
   if (targetOSList.length > 0) {
     program.target_os = targetOSList[0]
   }
   const targetArchList = commaSeparatedToList(
     program.target_arch,
-    existingGclientConfig?.target_cpu || [],
+    existingGclientConfig.target_cpu || [],
   )
   if (targetArchList.length > 0) {
     program.target_arch = targetArchList[0]
