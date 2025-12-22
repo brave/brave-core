@@ -42,7 +42,7 @@ std::optional<std::vector<uint8_t>> ScryptDecrypt(
 // Returns the derived key, or std::nullopt if key derivation fails.
 std::optional<std::array<uint8_t, kScryptKeyBytes>> ScryptDeriveKey(
     std::string_view password,
-    base::span<const uint8_t, kScryptSaltSize> salt,
+    base::span<const uint8_t> salt,
     const crypto::kdf::ScryptParams& scrypt_params);
 
 }  // namespace brave_wallet
