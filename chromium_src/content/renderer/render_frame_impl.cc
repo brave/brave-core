@@ -12,7 +12,7 @@
 // clang-format off
 #define BRAVE_RENDER_FRAME_IMPL_SHOULD_USE_USER_AGENT_OVERRIDE \
     return true;                                               \
-  if (false)                                                          \
+  if (false)                                                   \
 // clang-format on
 #endif
 
