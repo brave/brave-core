@@ -22,7 +22,7 @@ def LoadPList(path):
         return plistlib.load(f)
 
 # This contains binaries from Xcode 26.1, along with the macOS 26.1 SDK
-XCODE_VERSION = '26.1'
+XCODE_VERSION = '26.2'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_INTERNAL_URL +
     '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' + XCODE_VERSION +
