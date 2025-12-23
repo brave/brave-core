@@ -64,6 +64,7 @@ class BraveTabContainer : public TabContainerImpl {
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
+  bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
   void OnScrollEvent(ui::ScrollEvent* event) override;
   views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
   bool IsPointInTab(Tab* tab,
@@ -159,6 +160,10 @@ class BraveTabContainer : public TabContainerImpl {
 
   // Show or hide scrollbar based on the preference
   void UpdateScrollBarVisibility();
+
+  // Handles vertical scroll input for unpinned tabs. Returns true if the scroll
+  // was handled.
+  bool HandleVerticalScroll(int y_offset);
 
   base::flat_set<Tab*> closing_tabs_;
 

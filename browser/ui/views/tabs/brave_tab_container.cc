@@ -570,6 +570,18 @@ void BraveTabContainer::UpdateScrollBarVisibility() {
   NOTIMPLEMENTED();
 }
 
+bool BraveTabContainer::HandleVerticalScroll(int y_offset) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
+      IsUnpinnedTabScrollEnabled() && y_offset != 0) {
+    // Only handle vertical scroll
+    int new_offset = scroll_offset_ - static_cast<int>(y_offset);
+    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+    SetScrollOffset(new_offset);
+    return true;
+  }
+  return false;
+}
+
 void BraveTabContainer::OnSplitCreated(const std::vector<int>& indices) {
   UpdateTabsBorderInSplitTab(indices);
 }
@@ -583,13 +595,16 @@ void BraveTabContainer::OnSplitContentsChanged(
   UpdateTabsBorderInSplitTab(indices);
 }
 
+bool BraveTabContainer::OnMouseWheel(const ui::MouseWheelEvent& event) {
+  if (HandleVerticalScroll(event.y_offset())) {
+    return true;
+  }
+
+  return TabContainerImpl::OnMouseWheel(event);
+}
+
 void BraveTabContainer::OnScrollEvent(ui::ScrollEvent* event) {
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
-      IsUnpinnedTabScrollEnabled() && event->y_offset() != 0) {
-    // Only handle vertical scroll
-    int new_offset = scroll_offset_ - static_cast<int>(event->y_offset());
-    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
-    SetScrollOffset(new_offset);
+  if (HandleVerticalScroll(event->y_offset())) {
     event->SetHandled();
     return;
   }
