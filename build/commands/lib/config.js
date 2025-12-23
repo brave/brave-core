@@ -8,11 +8,8 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
+const EnvConfig = require('./envConfig')
 const Log = require('./logging')
-
-let envConfig = null
-let packageConfigObj = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -27,32 +24,14 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-const loadPackageConfig = () => {
-  if (!packageConfigObj) {
-    let packages = { config: {} }
-    const configAbsolutePath = path.join(braveCoreDir, 'package.json')
-    if (fs.existsSync(configAbsolutePath)) {
-      packages = require(path.relative(__dirname, configAbsolutePath))
-    }
+const envConfig = new EnvConfig(braveCoreDir)
 
-    // packages.config should include version string.
-    packageConfigObj = Object.assign({}, packages.config, {
-      version: packages.version,
-    })
-  }
+const packageConfig = (key) => {
+  return envConfig.getPackageConfig(key)
 }
 
-const packageConfig = function (key) {
-  loadPackageConfig()
-
-  let obj = packageConfigObj
-  for (let i = 0, len = key.length; i < len; i++) {
-    if (!obj) {
-      return obj
-    }
-    obj = obj[key[i]]
-  }
-  return obj
+const getEnvConfig = (key, defaultValue = undefined) => {
+  return envConfig.getEnvConfig(key, defaultValue)
 }
 
 const readArgsGn = (srcDir, outputDir) => {
@@ -76,97 +55,6 @@ print(json.dumps(result))
   })
 
   return JSON.parse(result.stdout.toString().trim())
-}
-
-const loadEnvConfig = () => {
-  if (!envConfig) {
-    envConfig = {}
-
-    // Parse src/brave/.env with all included env files.
-    let envConfigPath = path.join(braveCoreDir, '.env')
-    if (fs.existsSync(envConfigPath)) {
-      dotenvPopulateWithIncludes(envConfig, envConfigPath)
-    } else {
-      // The .env file is used by `gn gen`. Create it if it doesn't exist.
-      const defaultEnvConfigContent =
-        '# This is a placeholder .env config file for the build system.\n'
-        + '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
-      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
-    }
-
-    // Cache for parsed values with correct types.
-    envConfig.__cache = {}
-    // Default values for each key to assert that defaultValue is not changed.
-    envConfig.__defaultValues = {}
-  }
-}
-
-const getEnvConfig = (key, defaultValue = undefined) => {
-  loadEnvConfig()
-
-  const keyJoined = key.join('_')
-
-  // Check cached value first.
-  if (keyJoined in envConfig.__cache) {
-    assert.deepStrictEqual(
-      defaultValue,
-      envConfig.__defaultValues[keyJoined],
-      `Default value mismatch for ${keyJoined}`,
-    )
-    return envConfig.__cache[keyJoined]
-  }
-
-  // Store the default value for the key to check for mismatches on subsequent
-  // calls to the same key.
-  envConfig.__defaultValues[keyJoined] = defaultValue
-
-  // Look for .env value.
-  const envConfigValue = envConfig[keyJoined]
-  if (envConfigValue !== undefined) {
-    // Parse as JSON or return a string if no default value is provided.
-    if (defaultValue === undefined) {
-      try {
-        return (envConfig.__cache[keyJoined] = JSON.parse(envConfigValue))
-      } catch (e) {
-        return (envConfig.__cache[keyJoined] = envConfigValue)
-      }
-    }
-
-    // Use the value as is if the default value is a string.
-    const defaultValueType = getValueType(defaultValue)
-    if (defaultValueType === 'String') {
-      return (envConfig.__cache[keyJoined] = envConfigValue)
-    }
-
-    // Parse as JSON if the default value is not a string.
-    let envConfigValueParsed
-    try {
-      envConfigValueParsed = JSON.parse(envConfigValue)
-    } catch (e) {
-      Log.error(
-        `${keyJoined} value is not JSON-parseable: ${envConfigValue}\n${e.message}`,
-      )
-      process.exit(1)
-    }
-
-    // Validate the parsed value against the default value type.
-    const envConfigValueType = getValueType(envConfigValueParsed)
-    if (envConfigValueType !== defaultValueType) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${defaultValueType}, got ${envConfigValueType}`,
-      )
-      process.exit(1)
-    }
-
-    return (envConfig.__cache[keyJoined] = envConfigValueParsed)
-  }
-
-  const packageConfigValue = packageConfig(key)
-  if (packageConfigValue !== undefined) {
-    return (envConfig.__cache[keyJoined] = packageConfigValue)
-  }
-
-  return (envConfig.__cache[keyJoined] = defaultValue)
 }
 
 const getDepotToolsDir = (rootDir) => {
@@ -1393,15 +1281,5 @@ Object.defineProperty(Config.prototype, 'useSiso', {
     )
   },
 })
-
-function getValueType(value) {
-  if (value === undefined) {
-    return 'undefined'
-  }
-  if (value === null) {
-    return 'null'
-  }
-  return value.constructor.name
-}
 
 module.exports = new Config()
