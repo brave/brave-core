@@ -19,6 +19,8 @@
 
 NSString* const BraveAccountAuthenticationTokenPref = base::SysUTF8ToNSString(
     brave_account::prefs::kBraveAccountAuthenticationToken);
+NSString* const BraveAccountEmailAddressPref =
+    base::SysUTF8ToNSString(brave_account::prefs::kBraveAccountEmailAddress);
 NSString* const BraveAccountVerificationTokenPref = base::SysUTF8ToNSString(
     brave_account::prefs::kBraveAccountVerificationToken);
 

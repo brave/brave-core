@@ -15,6 +15,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const BraveAccountAuthenticationTokenPref;
+OBJC_EXPORT NSString* const BraveAccountEmailAddressPref;
 OBJC_EXPORT NSString* const BraveAccountVerificationTokenPref;
 
 OBJC_EXPORT
