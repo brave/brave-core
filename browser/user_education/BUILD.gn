@@ -29,26 +29,24 @@ source_set("user_education") {
 source_set("unit_tests") {
   testonly = true
 
-  if (!is_android) {
-    sources = [
-      "brave_user_education_utils_unittest.cc",
-      "user_education_service_unittest.cc",
-    ]
+  sources = [
+    "brave_user_education_utils_unittest.cc",
+    "user_education_service_unittest.cc",
+  ]
 
-    deps = [
-      ":features",
-      ":user_education",
-      "//base",
-      "//base/test:test_support",
-      "//chrome/browser",
-      "//chrome/browser/ui:ui_features",
-      "//chrome/browser/user_education",
-      "//chrome/test:test_support",
-      "//components/user_education/common",
-      "//components/user_education/test",
-      "//content/test:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-    ]
-  }
+  deps = [
+    ":features",
+    ":user_education",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/user_education",
+    "//chrome/test:test_support",
+    "//components/user_education/common",
+    "//components/user_education/test",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }
