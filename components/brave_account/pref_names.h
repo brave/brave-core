@@ -27,6 +27,11 @@ inline constexpr char kBraveAccountVerificationToken[] =
 inline constexpr char kBraveAccountAuthenticationToken[] =
     "brave.account.authentication_token";
 
+// This preference will store the email address of the authenticated user
+// returned by the GET /v2/auth/validate endpoint.
+inline constexpr char kBraveAccountEmailAddress[] =
+    "brave.account.email_address";
+
 }  // namespace brave_account::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_

@@ -18,6 +18,7 @@ void RegisterPrefs(PrefRegistrySimple* registry) {
     registry->RegisterStringPref(kBraveAccountVerificationToken, std::string());
     registry->RegisterStringPref(kBraveAccountAuthenticationToken,
                                  std::string());
+    registry->RegisterStringPref(kBraveAccountEmailAddress, std::string());
   }
 }
 

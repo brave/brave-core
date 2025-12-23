@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
@@ -24,7 +25,7 @@
 #include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
@@ -63,7 +64,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback,
-      std::unique_ptr<base::OneShotTimer> verify_result_timer);
+      std::unique_ptr<base::OneShotTimer> verify_result_timer,
+      std::unique_ptr<base::OneShotTimer> auth_validate_timer);
 
   void RegisterInitialize(const std::string& email,
                           const std::string& blinded_message,
@@ -111,6 +113,17 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void OnLoginFinalize(LoginFinalizeCallback callback,
                        endpoints::LoginFinalize::Response response);
 
+  void OnAuthenticationTokenChanged();
+
+  void ScheduleAuthValidate(
+      base::TimeDelta delay = base::Seconds(0),
+      endpoint_client::RequestHandle current_auth_validate_request = {});
+
+  void AuthValidate(
+      endpoint_client::RequestHandle current_auth_validate_request);
+
+  void OnAuthValidate(endpoints::AuthValidate::Response response);
+
   std::string Encrypt(const std::string& plain_text) const;
 
   std::string Decrypt(const std::string& base64) const;
@@ -120,8 +133,10 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
-  PrefChangeRegistrar pref_change_registrar_;
+  StringPrefMember pref_verification_token_;
+  StringPrefMember pref_authentication_token_;
   std::unique_ptr<base::OneShotTimer> verify_result_timer_;
+  std::unique_ptr<base::OneShotTimer> auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 
