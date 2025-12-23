@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index eae7b4cef4dc9e633c975b63fcf89ebe59dffff6..f9ed57e409391138f51922353a3e317884f25656 100644
+index eae7b4cef4dc9e633c975b63fcf89ebe59dffff6..9218dbd11b83acaad5274943b3762c662dd4ebf3 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -781,6 +781,7 @@ static_library("ui") {
@@ -22,15 +22,7 @@ index eae7b4cef4dc9e633c975b63fcf89ebe59dffff6..f9ed57e409391138f51922353a3e3178
      }
    }
  
-@@ -5478,6 +5482,7 @@ static_library("ui_public_dependencies") {
-     "//components/enterprise/buildflags",
-     "//components/paint_preview/buildflags",
-     "//components/safe_browsing:buildflags",
-+    "//components/saved_tab_groups/public",
-     "//components/segmentation_platform/public",
-     "//components/sync",
-     "//components/sync_user_events",
-@@ -5489,6 +5494,7 @@ static_library("ui_public_dependencies") {
+@@ -5489,6 +5493,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -38,7 +30,7 @@ index eae7b4cef4dc9e633c975b63fcf89ebe59dffff6..f9ed57e409391138f51922353a3e3178
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5612,6 +5618,7 @@ source_set("browser_navigator_params_headers") {
+@@ -5612,6 +5617,7 @@ source_set("browser_navigator_params_headers") {
      "//url",
    ]
    deps = []
