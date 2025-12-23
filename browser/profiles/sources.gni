@@ -13,3 +13,12 @@ brave_browser_profiles_sources = [
   "//brave/browser/profiles/brave_renderer_updater_factory.cc",
   "//brave/browser/profiles/brave_renderer_updater_factory.h",
 ]
+
+brave_browser_profiles_deps = []
+
+if (!is_android) {
+  brave_browser_profiles_deps += [
+    "//brave/browser/user_education",
+    "//chrome/browser/user_education",
+  ]
+}

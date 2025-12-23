@@ -665,6 +665,7 @@ brave_chrome_browser_deps += brave_browser_notifications_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_playlist_deps
+brave_chrome_browser_deps += brave_browser_profiles_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
 brave_chrome_browser_deps += brave_browser_request_otr_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps

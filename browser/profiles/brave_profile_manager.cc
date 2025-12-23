@@ -45,6 +45,11 @@
 #include "content/public/browser/browser_thread.h"
 #include "net/base/features.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/user_education/brave_user_education_utils.h"
+#include "chrome/browser/user_education/user_education_service_factory.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #endif
@@ -184,6 +189,14 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   if (!do_final_services_init_) {
     return;
   }
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Suppress "New" badges for specific Brave features by setting badge data
+  // to exceed policy limits during profile initialization
+  brave::SuppressNewBadgesForFeatures(
+      UserEducationServiceFactory::GetForBrowserContext(profile));
+#endif
+
   perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
