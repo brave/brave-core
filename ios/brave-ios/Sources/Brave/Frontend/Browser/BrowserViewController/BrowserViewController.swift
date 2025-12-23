@@ -669,7 +669,7 @@ public class BrowserViewController: UIViewController {
       alongsideTransition: { context in
         if self.isViewLoaded {
           self.updateStatusBarOverlayColor()
-          self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+          self.bottomBarKeyboardBackground.backgroundColor = self.privateBrowsingManager.browserColors.chromeBackground
           self.setNeedsStatusBarAppearanceUpdate()
         }
       }
@@ -940,7 +940,7 @@ public class BrowserViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateStatusBarOverlayColor()
-        self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
+        self.bottomBarKeyboardBackground.backgroundColor = self.privateBrowsingManager.browserColors.chromeBackground
         self.collapsedURLBarView.browserColors = self.privateBrowsingManager.browserColors
       })
 
