@@ -68,7 +68,7 @@ class RewardsServiceTest : public testing::Test {
     rewards_service_ = std::make_unique<RewardsServiceImpl>(
         profile()->GetPrefs(), profile()->GetPath(), nullptr,
         base::RepeatingCallback<int(
-            const GURL& url, base::OnceCallback<void(const SkBitmap& bitmap)>,
+            const GURL& url, base::OnceCallback<void(SkBitmap bitmap)>,
             const net::NetworkTrafficAnnotationTag& traffic_annotation)>(),
         base::RepeatingCallback<void(int)>(),
         profile()->GetDefaultStoragePartition()
