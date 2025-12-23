@@ -67,30 +67,9 @@
         android:visibility="gone"
         android:text="@string/shields_about_text"/>
 
-    <LinearLayout
-            android:id="@+id/brave_shields_auto_shred_item_layout_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables"
-            >
-    
-        <ImageView
-                android:id="@+id/auto_shred_favicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:paddingEnd="8dp"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_brave_auto_shred"/>
-
-        <include
-            android:id="@+id/brave_shields_auto_shred_site_data_layout_id"
-            layout="@layout/brave_shields_toggle_layout"/>
-    </LinearLayout>
+    <include
+        android:id="@+id/brave_shields_auto_shred_site_data_layout_id"
+        layout="@layout/brave_shields_toggle_layout"/>
 
     <View
 	    android:layout_width="match_parent"
@@ -114,7 +93,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:paddingStart="8dp"
-            android:paddingEnd="18dp"
+            android:paddingEnd="8dp"
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/ic_brave_shred"/>
 
