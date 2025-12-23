@@ -9,11 +9,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -92,30 +94,46 @@ class SidebarModelTest : public testing::Test {
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
-  auto built_in_items_size = service()->items().size();
-
   model()->Init(nullptr);
 
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  // Add one more item to test with 5 items.
+  // Record the initial item count before adding custom items.
+  const size_t initial_item_count = service()->items().size();
+
+  // Add custom items to ensure we have enough items for testing moves.
+  // We need at least 4 items to test all the move scenarios.
   SidebarItem new_item = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
 
   service()->AddItem(new_item);
-  const auto items_count = built_in_items_size + 1;
-  EXPECT_EQ(items_count, service()->items().size());
 
-  // Update last item w/ url change.
-  SidebarItemUpdate expected_update{(items_count - 1), false, true};
+  // The "brave software" item is at the initial_item_count index.
+  const size_t brave_item_index = initial_item_count;
+
+  // Add more custom items if needed to reach at least 4 items total.
+  while (service()->items().size() < 4) {
+    SidebarItem extra_item = SidebarItem::Create(
+        GURL("https://extra" + base::NumberToString(service()->items().size()) +
+             ".com/"),
+        u"extra item", SidebarItem::Type::kTypeWeb,
+        SidebarItem::BuiltInItemType::kNone, false);
+    service()->AddItem(extra_item);
+  }
+
+  const auto items_count = service()->items().size();
+  ASSERT_GE(items_count, 4u) << "Need at least 4 items for move tests";
+
+  // Update the "brave software" item w/ url change.
+  SidebarItemUpdate expected_update{brave_item_index, false, true};
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
   service()->UpdateItem(GURL("https://www.brave.com/"),
                         GURL("https://brave.com/"), u"brave software",
                         u"brave software");
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  // Update last item w/o url change.
+  // Update the same item w/o url change.
   expected_update.url_updated = false;
   expected_update.title_updated = true;
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
@@ -172,6 +190,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_THAT(model()->active_index(), Optional(3u));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
 TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
   GURL talk("https://talk.brave.com/1Ar1vHfLBWX2sAdi");
   // False because builtin talk item is already added.
@@ -187,6 +206,7 @@ TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
   service()->RemoveItemAt(std::distance(items.cbegin(), talk_iter));
   EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
   model()->SetActiveIndex(1);
@@ -216,10 +236,16 @@ TEST_F(SidebarModelTest, TopItemTest) {
   // Leo should be the top item when AI Chat is enabled.
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kChatUI);
-#else
-  // Brave Talk should be the top item when AI Chat is disabled.
+#elif BUILDFLAG(ENABLE_BRAVE_TALK)
+  // Brave Talk should be the top item when AI Chat is disabled but Talk is
+  // enabled.
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kBraveTalk);
+#else
+  // When AI Chat and Brave Talk are disabled, Bookmarks is first
+  // (Wallet is only shown when brave_wallet::IsAllowed() returns true).
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kBookmarks);
 #endif
 }
 
@@ -233,11 +259,13 @@ TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(GURL("https://talk.brave.com")));
   EXPECT_EQ(GURL(kBraveTalkURL),
             ConvertURLToBuiltInItemURL(
                 GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
+#endif
   EXPECT_EQ(
       GURL(kBraveUIWalletPageURL),
       ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));

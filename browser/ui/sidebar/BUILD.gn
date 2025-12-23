@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -30,6 +31,7 @@ source_set("sidebar") {
   deps = [
     "//base",
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
@@ -68,6 +70,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common",
     "//brave/components/sidebar/browser",
@@ -103,6 +106,8 @@ source_set("unit_tests") {
     ":sidebar",
     "//base",
     "//brave/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_talk/buildflags",
     "//brave/components/playlist/core/common",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",

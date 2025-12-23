@@ -22,6 +22,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -37,6 +38,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -55,10 +60,12 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   // A previous version of prefs used the URL even for built-in items, and not
   // the |SidebarItem::BuiltInItemType|. Therefore, this list should not
   // need to be updated.
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   if (url == "https://together.brave.com/" ||
       url == "https://talk.brave.com/") {
     return SidebarItem::BuiltInItemType::kBraveTalk;
   }
+#endif
 
   if (url == "chrome://wallet/") {
     return SidebarItem::BuiltInItemType::kWallet;
@@ -158,8 +165,10 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
   }
   // Only include items that were known prior to this migration
   std::vector<SidebarItem> built_in_items_to_hide;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBraveTalk));
+#endif
   built_in_items_to_hide.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
   built_in_items_to_hide.push_back(
@@ -601,8 +610,9 @@ std::vector<SidebarItem> SidebarService::GetDefaultSidebarItems() const {
 SidebarItem SidebarService::GetBuiltInItemForType(
     SidebarItem::BuiltInItemType type) const {
   switch (type) {
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     case SidebarItem::BuiltInItemType::kBraveTalk:
-      if (!prefs_->GetBoolean(kBraveTalkDisabledByPolicy)) {
+      if (!prefs_->GetBoolean(brave_talk::prefs::kDisabledByPolicy)) {
         return SidebarItem::Create(
             GURL(kBraveTalkURL),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
@@ -611,6 +621,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
             /* open_in_panel = */ false);
       }
       return SidebarItem();
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
     case SidebarItem::BuiltInItemType::kWallet: {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       if (brave_wallet::IsAllowed(prefs_)) {

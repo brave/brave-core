@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -40,6 +41,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 namespace commands {
@@ -292,12 +297,14 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
 
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
   // Test Brave Talk
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
-  profile().GetPrefs()->SetBoolean(kBraveTalkDisabledByPolicy, true);
+  profile().GetPrefs()->SetBoolean(brave_talk::prefs::kDisabledByPolicy, true);
   EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
-  profile().GetPrefs()->SetBoolean(kBraveTalkDisabledByPolicy, false);
+  profile().GetPrefs()->SetBoolean(brave_talk::prefs::kDisabledByPolicy, false);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_TALK));
+#endif
 
   // Test Brave VPN (multiple commands)
   const std::vector<int> vpn_commands = {IDC_SHOW_BRAVE_VPN_PANEL,

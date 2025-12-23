@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -34,6 +35,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -65,7 +70,9 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 
-  registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  registry->RegisterBooleanPref(brave_talk::prefs::kDisabledByPolicy, false);
+#endif
 
   // This is typically registered by the PlaylistService but iOS does not
   // use that service

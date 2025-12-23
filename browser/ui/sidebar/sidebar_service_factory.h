@@ -6,10 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_SERVICE_FACTORY_H_
 
+#include <array>
 #include <memory>
 #include <vector>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,23 +37,25 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
   friend class SidebarBrowserTest;
 
   // This is the default display order
-  static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+  static constexpr auto kDefaultBuiltInItemTypes =
+      std::to_array<SidebarItem::BuiltInItemType>({
 #if BUILDFLAG(ENABLE_AI_CHAT)
-      SidebarItem::BuiltInItemType::kChatUI,
+          SidebarItem::BuiltInItemType::kChatUI,
 #endif
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist};
-  static_assert(
-      std::size(kDefaultBuiltInItemTypes) ==
-          static_cast<size_t>(SidebarItem::BuiltInItemType::kBuiltInItemLast),
-      "A built-in item in this visual order is missing or you might forget to "
-      "update kBuiltInItemItemLast value. If you want to add a "
-      "new item while keeping that hidden, please visit "
-      "GetBuiltInItemForType() in sidebar_service.cc");
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+          SidebarItem::BuiltInItemType::kBraveTalk,
+#endif
+          SidebarItem::BuiltInItemType::kWallet,
+          SidebarItem::BuiltInItemType::kBookmarks,
+          SidebarItem::BuiltInItemType::kReadingList,
+          SidebarItem::BuiltInItemType::kHistory,
+          SidebarItem::BuiltInItemType::kPlaylist,
+      });
+
+  static_assert(SidebarItem::kBuiltInItemsCount ==
+                    kDefaultBuiltInItemTypes.size(),
+                "A built-in item in kDefaultBuiltInItemTypes is missing or "
+                "SidebarItem::kBuiltInItemsCount needs updating.");
 
   SidebarServiceFactory();
   ~SidebarServiceFactory() override;

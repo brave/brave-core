@@ -82,6 +82,7 @@ interface NewTabPage {
   OnTopSitesUpdated();
   OnClockStateUpdated();
   OnShieldsStatsUpdated();
+  [EnableIf=enable_brave_talk]
   OnTalkStateUpdated();
   OnRewardsStateUpdated();
   OnVPNStateUpdated();
@@ -216,7 +217,9 @@ interface NewTabPageHandler {
   GetShieldsStats() => (ShieldsStats shields_stats);
 
   // Gets or sets whether the Brave Talk widget is displayed.
+  [EnableIf=enable_brave_talk]
   GetShowTalkWidget() => (bool show_talk_widget);
+  [EnableIf=enable_brave_talk]
   SetShowTalkWidget(bool show_talk_widget) => ();
 
   // Gets or sets whether the Brave Rewards widget is displayed.

@@ -1277,10 +1277,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
 
-  html_source->AddBoolean(
-      "braveTalkDisabledByPolicy",
-      profile->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
-
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",
                           TorProfileServiceFactory::IsTorDisabled(profile) &&

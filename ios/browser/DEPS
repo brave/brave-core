@@ -2,6 +2,7 @@ from brave_chromium_utils import inline_file
 inline_file('//ios/chrome/browser/DEPS', globals(), locals())
 
 include_rules += [
+  "+brave/components/brave_talk",
   "+brave/ios/browser",
   "+brave/components/constants",
   "+brave/components/ai_chat/core/browser",

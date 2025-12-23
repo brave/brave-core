@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -77,6 +78,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -307,9 +312,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       IDC_CONFIGURE_SHORTCUTS,
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 
-  UpdateCommandEnabled(
-      IDC_SHOW_BRAVE_TALK,
-      !browser_->profile()->GetPrefs()->GetBoolean(kBraveTalkDisabledByPolicy));
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK,
+                       !browser_->profile()->GetPrefs()->GetBoolean(
+                           brave_talk::prefs::kDisabledByPolicy));
+#endif
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
 
@@ -617,9 +624,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_CONFIGURE_SHORTCUTS:
       brave::ShowShortcutsPage(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
     case IDC_SHOW_BRAVE_TALK:
       brave::ShowBraveTalk(&*browser_);
       break;
+#endif
     case IDC_TOGGLE_SHIELDS:
       brave::ToggleShieldsEnabled(&*browser_);
       break;
