@@ -15,6 +15,10 @@ jest.mock('./logging', () => ({
 const Log = require('./logging')
 
 describe('EnvConfig', () => {
+  const configDir = '/path/to/config'
+  const packageJsonPath = path.join(configDir, 'package.json')
+  const envPath = path.join(configDir, '.env')
+
   let mockFiles = {}
   let originalExistsSync
   let originalReadFileSync
@@ -36,7 +40,17 @@ describe('EnvConfig', () => {
       if (!mockFiles.hasOwnProperty(filePath)) {
         throw new Error(`ENOENT: no such file or directory, open '${filePath}'`)
       }
-      return mockFiles[filePath]
+      const f = mockFiles[filePath]
+      if (typeof f === 'string') {
+        return f
+      }
+      if (Array.isArray(f)) {
+        return f.join('\n')
+      }
+      if (typeof f === 'object') {
+        return JSON.stringify(f)
+      }
+      throw new Error(`Unsupported file type: ${typeof f}`)
     })
 
     // Mock fs.writeFileSync
@@ -60,11 +74,7 @@ describe('EnvConfig', () => {
 
   describe('constructor', () => {
     it('should load package.json and .env on construction', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.2.3',
         config: {
           projects: {
@@ -74,28 +84,27 @@ describe('EnvConfig', () => {
           },
         },
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
       mockFiles[envPath] = 'TEST_VALUE=hello'
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.packageConfig).toBeDefined()
-      expect(envConfig.packageConfig.version).toBe('1.2.3')
-      expect(envConfig.envConfig).toBeDefined()
+      expect(envConfig.getPackageConfig(['version'])).toBe('1.2.3')
+      expect(
+        envConfig.getPackageConfig(['projects', 'chrome', 'version']),
+      ).toBe('120.0.0')
+      expect(envConfig.getPackageConfig(['TEST', 'VALUE'])).toBe(undefined)
+      expect(envConfig.getEnvConfig(['version'])).toBe('1.2.3')
+      expect(envConfig.getEnvConfig(['projects', 'chrome', 'version'])).toBe(
+        '120.0.0',
+      )
+      expect(envConfig.getEnvConfig(['TEST', 'VALUE'])).toBe('hello')
     })
 
     it('should create .env file if it does not exist', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
 
       const envConfig = new EnvConfig(configDir)
 
@@ -111,35 +120,23 @@ describe('EnvConfig', () => {
     let envConfig
 
     beforeEach(() => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.2.3',
         config: {
           projects: {
             chrome: {
-              version: '120.0.0',
-              tag: 'v120',
+              tag: '120.0.0',
             },
           },
-          target_arch: 'x64',
         },
       }
-
       mockFiles[envPath] = ''
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
 
       envConfig = new EnvConfig(configDir)
     })
 
     it('should retrieve nested config values', () => {
-      const result = envConfig.getPackageConfig([
-        'projects',
-        'chrome',
-        'version',
-      ])
+      const result = envConfig.getPackageConfig(['projects', 'chrome', 'tag'])
       expect(result).toBe('120.0.0')
     })
 
@@ -163,25 +160,24 @@ describe('EnvConfig', () => {
     let envConfig
 
     beforeEach(() => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.2.3',
         config: {
           fallback_value: 'from_package',
         },
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
       mockFiles[envPath] = [
         'STRING_VALUE=hello',
         'NUMBER_VALUE=42',
         'BOOL_VALUE=true',
         'ARRAY_VALUE=["a","b","c"]',
         'OBJECT_VALUE={"key":"value"}',
-      ].join('\n')
+        'EMPTY_STRING_VALUE=""',
+        'EMPTY_NUMBER_VALUE=0',
+        'EMPTY_BOOL_VALUE=false',
+        'EMPTY_ARRAY_VALUE=[]',
+        'EMPTY_OBJECT_VALUE={}',
+      ]
 
       envConfig = new EnvConfig(configDir)
     })
@@ -192,28 +188,48 @@ describe('EnvConfig', () => {
     })
 
     it('should parse JSON values when default is not provided', () => {
-      const result = envConfig.getEnvConfig(['NUMBER', 'VALUE'])
-      expect(result).toBe(42)
+      expect(envConfig.getEnvConfig(['NUMBER', 'VALUE'])).toBe(42)
+      expect(envConfig.getEnvConfig(['BOOL', 'VALUE'])).toBe(true)
+      expect(envConfig.getEnvConfig(['ARRAY', 'VALUE'])).toEqual([
+        'a',
+        'b',
+        'c',
+      ])
+      expect(envConfig.getEnvConfig(['OBJECT', 'VALUE'])).toEqual({
+        key: 'value',
+      })
+      expect(envConfig.getEnvConfig(['EMPTY', 'STRING', 'VALUE'])).toBe('')
+      expect(envConfig.getEnvConfig(['EMPTY', 'NUMBER', 'VALUE'])).toBe(0)
+      expect(envConfig.getEnvConfig(['EMPTY', 'BOOL', 'VALUE'])).toBe(false)
+      expect(envConfig.getEnvConfig(['EMPTY', 'ARRAY', 'VALUE'])).toEqual([])
+      expect(envConfig.getEnvConfig(['EMPTY', 'OBJECT', 'VALUE'])).toEqual({})
     })
 
-    it('should parse boolean values', () => {
-      const result = envConfig.getEnvConfig(['BOOL', 'VALUE'], false)
-      expect(result).toBe(true)
-    })
-
-    it('should parse array values', () => {
-      const result = envConfig.getEnvConfig(['ARRAY', 'VALUE'], [])
-      expect(result).toEqual(['a', 'b', 'c'])
-    })
-
-    it('should parse object values', () => {
-      const result = envConfig.getEnvConfig(['OBJECT', 'VALUE'], {})
-      expect(result).toEqual({ key: 'value' })
+    it('should parse typed values', () => {
+      expect(envConfig.getEnvConfig(['STRING', 'VALUE'], '')).toBe('hello')
+      expect(envConfig.getEnvConfig(['NUMBER', 'VALUE'], 0)).toBe(42)
+      expect(envConfig.getEnvConfig(['BOOL', 'VALUE'], false)).toBe(true)
+      expect(envConfig.getEnvConfig(['ARRAY', 'VALUE'], [])).toEqual([
+        'a',
+        'b',
+        'c',
+      ])
+      expect(envConfig.getEnvConfig(['OBJECT', 'VALUE'], {})).toEqual({
+        key: 'value',
+      })
     })
 
     it('should use string value as-is when default is string', () => {
-      const result = envConfig.getEnvConfig(['NUMBER', 'VALUE'], 'default')
-      expect(result).toBe('42')
+      expect(envConfig.getEnvConfig(['NUMBER', 'VALUE'], 'default')).toBe('42')
+      expect(envConfig.getEnvConfig(['BOOL', 'VALUE'], 'default')).toBe('true')
+      expect(envConfig.getEnvConfig(['ARRAY', 'VALUE'], 'default')).toEqual(
+        JSON.stringify(['a', 'b', 'c']),
+      )
+      expect(envConfig.getEnvConfig(['OBJECT', 'VALUE'], 'default')).toEqual(
+        JSON.stringify({
+          key: 'value',
+        }),
+      )
     })
 
     it('should fall back to package config when .env value not found', () => {
@@ -256,17 +272,11 @@ describe('EnvConfig', () => {
     let envConfig
 
     beforeEach(() => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-      mockFiles[envPath] = ['INVALID_JSON=not json', 'WRONG_TYPE=42'].join('\n')
+      mockFiles[envPath] = ['INVALID_JSON=not json', 'WRONG_TYPE=42']
 
       envConfig = new EnvConfig(configDir)
     })
@@ -292,112 +302,79 @@ describe('EnvConfig', () => {
     })
 
     it('should not throw when type matches', () => {
-      envConfig.envConfig.CORRECT_TYPE = '42'
-
-      const result = envConfig.getEnvConfig(['CORRECT', 'TYPE'], 0)
+      const result = envConfig.getEnvConfig(['WRONG', 'TYPE'], 0)
       expect(result).toBe(42)
     })
   })
 
   describe('include_env directive', () => {
     it('should handle include_env directive in .env files', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const includedEnvPath = path.resolve(configDir, 'included.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
       mockFiles[envPath] = [
         'MAIN_VALUE=main',
         'include_env=included.env',
         'OVERRIDE_VALUE=from_main',
-      ].join('\n')
-
+      ]
       mockFiles[includedEnvPath] = [
         'INCLUDED_VALUE=included',
         'OVERRIDE_VALUE=from_included',
-      ].join('\n')
+      ]
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.envConfig.MAIN_VALUE).toBe('main')
-      expect(envConfig.envConfig.INCLUDED_VALUE).toBe('included')
-      expect(envConfig.envConfig.OVERRIDE_VALUE).toBe('from_main')
+      expect(envConfig.getEnvConfig(['MAIN', 'VALUE'])).toBe('main')
+      expect(envConfig.getEnvConfig(['INCLUDED', 'VALUE'])).toBe('included')
+      expect(envConfig.getEnvConfig(['OVERRIDE', 'VALUE'])).toBe('from_main')
     })
 
     it('should handle nested include_env directives', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const included1Path = path.resolve(configDir, 'included1.env')
       const included2Path = path.resolve(configDir, 'included2.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
-      mockFiles[envPath] = ['MAIN=1', 'include_env=included1.env'].join('\n')
-
-      mockFiles[included1Path] = ['LEVEL1=2', 'include_env=included2.env'].join(
-        '\n',
-      )
-
+      mockFiles[envPath] = ['MAIN=1', 'include_env=included1.env']
+      mockFiles[included1Path] = ['LEVEL1=2', 'include_env=included2.env']
       mockFiles[included2Path] = `LEVEL2=3`
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.envConfig.MAIN).toBe('1')
-      expect(envConfig.envConfig.LEVEL1).toBe('2')
-      expect(envConfig.envConfig.LEVEL2).toBe('3')
+      expect(envConfig.getEnvConfig(['MAIN'])).toBe(1)
+      expect(envConfig.getEnvConfig(['LEVEL1'])).toBe(2)
+      expect(envConfig.getEnvConfig(['LEVEL2'])).toBe(3)
     })
 
     it('should handle include_env with comments', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const includedEnvPath = path.resolve(configDir, 'included.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
       mockFiles[envPath] = [
         'VALUE=main',
         'include_env=included.env # This is a comment',
-      ].join('\n')
-
+      ]
       mockFiles[includedEnvPath] = 'INCLUDED=value'
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.envConfig.VALUE).toBe('main')
-      expect(envConfig.envConfig.INCLUDED).toBe('value')
+      expect(envConfig.getEnvConfig(['VALUE'])).toBe('main')
+      expect(envConfig.getEnvConfig(['INCLUDED'])).toBe('value')
     })
 
     it('should throw error when included file does not exist', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
       mockFiles[envPath] = `include_env=nonexistent.env`
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
@@ -408,27 +385,18 @@ describe('EnvConfig', () => {
     })
 
     it('should detect and throw error on circular include_env directives', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const file1Path = path.resolve(configDir, 'file1.env')
       const file2Path = path.resolve(configDir, 'file2.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
-      // Create a circular reference: .env -> file1.env -> file2.env -> file1.env
-      mockFiles[envPath] = ['VALUE=main', 'include_env=file1.env'].join('\n')
-      mockFiles[file1Path] = ['VALUE1=first', 'include_env=file2.env'].join(
-        '\n',
-      )
-      mockFiles[file2Path] = ['VALUE2=second', 'include_env=file1.env'].join(
-        '\n',
-      )
+      // Create a circular reference: .env -> file1.env -> file2.env ->
+      // file1.env
+      mockFiles[envPath] = ['VALUE=main', 'include_env=file1.env']
+      mockFiles[file1Path] = ['VALUE1=first', 'include_env=file2.env']
+      mockFiles[file2Path] = ['VALUE2=second', 'include_env=file1.env']
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
       expect(Log.error).toHaveBeenCalledWith(
@@ -437,24 +405,15 @@ describe('EnvConfig', () => {
     })
 
     it('should detect self-referencing include_env directive', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const selfRefPath = path.resolve(configDir, 'self.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
       // Create a self-referencing file
-      mockFiles[envPath] = ['VALUE=main', 'include_env=self.env'].join('\n')
-      mockFiles[selfRefPath] = [
-        'SELF_VALUE=value',
-        'include_env=self.env',
-      ].join('\n')
+      mockFiles[envPath] = ['VALUE=main', 'include_env=self.env']
+      mockFiles[selfRefPath] = ['SELF_VALUE=value', 'include_env=self.env']
 
       expect(() => new EnvConfig(configDir)).toThrow('process.exit called')
       expect(Log.error).toHaveBeenCalledWith(
@@ -463,39 +422,27 @@ describe('EnvConfig', () => {
     })
 
     it('should resolve relative paths correctly', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
       const includedEnvPath = path.resolve(configDir, 'subdir', 'included.env')
 
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
-
       mockFiles[envPath] = `include_env=subdir/included.env`
       mockFiles[includedEnvPath] = `NESTED=value`
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.envConfig.NESTED).toBe('value')
+      expect(envConfig.getEnvConfig(['NESTED'])).toBe('value')
     })
   })
 
   describe('edge cases', () => {
     it('should handle empty .env file', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
       mockFiles[envPath] = ''
 
       const envConfig = new EnvConfig(configDir)
@@ -505,22 +452,14 @@ describe('EnvConfig', () => {
     })
 
     it('should fail to load missing package.json', () => {
-      const configDir = '/path/to/config'
-
       expect(() => new EnvConfig(configDir)).toThrow('ENOENT')
     })
 
     it('should handle empty key array', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: { root: 'value' },
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
       mockFiles[envPath] = ''
 
       const envConfig = new EnvConfig(configDir)
@@ -530,16 +469,10 @@ describe('EnvConfig', () => {
     })
 
     it('should handle undefined and null values correctly', () => {
-      const configDir = '/path/to/config'
-      const packageJsonPath = path.join(configDir, 'package.json')
-      const envPath = path.join(configDir, '.env')
-
-      const packageData = {
+      mockFiles[packageJsonPath] = {
         version: '1.0.0',
         config: {},
       }
-
-      mockFiles[packageJsonPath] = JSON.stringify(packageData)
       mockFiles[envPath] = 'NULL_VALUE=null'
 
       const envConfig = new EnvConfig(configDir)
@@ -547,7 +480,8 @@ describe('EnvConfig', () => {
       const nullResult = envConfig.getEnvConfig(['NULL', 'VALUE'])
       expect(nullResult).toBeNull()
 
-      // When no env or package config exists, return the default value (undefined)
+      // When no env or package config exists, return the default value
+      // (undefined)
       const undefResult = envConfig.getEnvConfig(['NONEXISTENT', 'VALUE'])
       expect(undefResult).toBeUndefined()
     })
