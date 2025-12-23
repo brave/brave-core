@@ -33,8 +33,17 @@ class BraveTabStrip;
  public:                                                            \
   int UpdateIdealBounds
 
+// Add non-const version of group_header_ideal_bounds()
+#define group_header_ideal_bounds()                                          \
+  group_header_ideal_bounds_Unused();                                        \
+  std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds() { \
+    return group_header_ideal_bounds_;                                       \
+  }                                                                          \
+  const std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds()
+
 #include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.h>  // IWYU pragma: export
 
+#undef group_header_ideal_bounds
 #undef UpdateIdealBounds
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_LAYOUT_HELPER_H_

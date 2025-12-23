@@ -8,8 +8,13 @@
 #include <optional>
 #include <utility>
 
+#include "base/json/string_escape.h"
 #include "base/numerics/clamped_math.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -189,6 +194,86 @@ void VerifySimpleRequestBlock(const base::Location& location,
   ASSERT_EQ(block->which(),
             mojom::ContentBlock::Tag::kSimpleRequestContentBlock);
   EXPECT_EQ(block->get_simple_request_content_block()->type, expected_type);
+}
+
+void VerifyReduceFocusTopicsBlock(const base::Location& location,
+                                  const mojom::ContentBlockPtr& block,
+                                  std::string_view expected_topics_json) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock);
+  EXPECT_EQ(block->get_reduce_focus_topics_content_block()->text,
+            expected_topics_json);
+}
+
+void VerifySuggestFocusTopicsWithEmojiBlock(
+    const base::Location& location,
+    const mojom::ContentBlockPtr& block,
+    std::string_view expected_tabs_json) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock);
+  EXPECT_EQ(block->get_suggest_focus_topics_with_emoji_content_block()->text,
+            expected_tabs_json);
+}
+
+void VerifySuggestFocusTopicsBlock(const base::Location& location,
+                                   const mojom::ContentBlockPtr& block,
+                                   std::string_view expected_tabs_json) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock);
+  EXPECT_EQ(block->get_suggest_focus_topics_content_block()->text,
+            expected_tabs_json);
+}
+
+void VerifyFilterTabsBlock(const base::Location& location,
+                           const mojom::ContentBlockPtr& block,
+                           std::string_view expected_tabs_json,
+                           std::string_view expected_topic) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(), mojom::ContentBlock::Tag::kFilterTabsContentBlock);
+  const auto& filter_block = block->get_filter_tabs_content_block();
+  EXPECT_EQ(filter_block->text, expected_tabs_json);
+  EXPECT_EQ(filter_block->topic, expected_topic);
+}
+
+std::pair<std::vector<Tab>, std::vector<std::string>>
+GetMockTabsAndExpectedTabsJsonString(size_t num_tabs,
+                                     bool escape_for_json_string) {
+  size_t num_chunks = (num_tabs + kTabListChunkSize - 1) / kTabListChunkSize;
+  std::vector<Tab> tabs;
+  std::vector<std::string> tabs_json_strings;
+  for (size_t i = 0; i < num_chunks; i++) {
+    std::string tabs_json_string = "[";
+    size_t start_suffix = i * kTabListChunkSize;
+    for (size_t j = start_suffix;
+         j < std::min(kTabListChunkSize + start_suffix, num_tabs); j++) {
+      std::string id = base::StrCat({"id", base::NumberToString(j)});
+      std::string title = base::StrCat({"title", base::NumberToString(j)});
+      std::string url = base::StrCat(
+          {"https://www.example", base::NumberToString(j), ".com"});
+      tabs.push_back({id, title, url::Origin::Create(GURL(url))});
+      base::StrAppend(&tabs_json_string,
+                      {R"({"id":")", id, R"(","title":")", title,
+                       R"(","url":")", url, R"("},)"});
+    }
+
+    if (!tabs_json_string.empty() && tabs_json_string.back() == ',') {
+      tabs_json_string.pop_back();  // Remove comma
+    }
+    base::StrAppend(&tabs_json_string, {"]"});
+
+    // Conditionally escape for embedding in JSON string
+    if (escape_for_json_string) {
+      std::string escaped;
+      base::EscapeJSONString(tabs_json_string, false, &escaped);
+      tabs_json_strings.push_back(escaped);
+    } else {
+      tabs_json_strings.push_back(tabs_json_string);
+    }
+  }
+  return {tabs, tabs_json_strings};
 }
 
 }  // namespace ai_chat

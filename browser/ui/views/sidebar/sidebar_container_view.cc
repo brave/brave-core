@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -188,7 +189,7 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   gfx::RectF mouse_event_detect_bounds(
-      browser_view->main_container()->GetBoundsInScreen());
+      browser_view->top_container()->parent()->GetBoundsInScreen());
 
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
@@ -214,7 +215,7 @@ void SidebarContainerView::WillShowSidePanel() {
   }
   StartObservingContextualSidePanelEntry(active_web_contents);
 
-  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+  auto* global_registry = SidePanelRegistry::From(browser_);
   for (const auto& entry : global_registry->entries()) {
     AddSidePanelEntryObservation(entry.get());
   }
@@ -222,8 +223,8 @@ void SidebarContainerView::WillShowSidePanel() {
 
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   // For now, we only supports fullscreen from playlist.
-  if (side_panel_coordinator_->GetCurrentEntryId() !=
-      SidePanelEntryId::kPlaylist) {
+  if (side_panel_coordinator_->GetCurrentEntryId(
+          SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kPlaylist) {
     return false;
   }
 
@@ -347,7 +348,9 @@ void SidebarContainerView::Layout(PassKey) {
   if (side_panel_->GetVisible()) {
     gfx::Rect side_panel_bounds(side_panel_x, 0, width() - control_view_width,
                                 height());
-    side_panel_bounds.Inset(*side_panel_->GetProperty(views::kMarginsKey));
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      side_panel_bounds.Inset(*margins);
+    }
 
     side_panel_->SetBoundsRect(side_panel_bounds);
   }
@@ -383,8 +386,10 @@ gfx::Size SidebarContainerView::CalculatePreferredSize(
   }
 
   if (side_panel_->GetVisible()) {
-    preferred_width += side_panel_->GetPreferredSize().width() +
-                       side_panel_->GetProperty(views::kMarginsKey)->width();
+    preferred_width += side_panel_->GetPreferredSize().width();
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      preferred_width += margins->width();
+    }
   }
 
   return {preferred_width, 0};
@@ -410,7 +415,8 @@ bool SidebarContainerView::IsFullscreenByTab() const {
 bool SidebarContainerView::ShouldForceShowSidebar() const {
   // It is more reliable to check whether coordinator has current entry rather
   // than checking if side_panel_ is visible.
-  return side_panel_coordinator_->GetCurrentEntryId() ||
+  return side_panel_coordinator_->GetCurrentEntryId(
+             SidePanelEntry::PanelType::kContent) ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -499,7 +505,8 @@ void SidebarContainerView::OnActiveIndexChanged(
     // arrived first and then OnEntryHidden() for managed is called.
     // And this method is called by last OnEntryHidden(). So, coordinator
     // already has non-managed entry.
-    if (side_panel_coordinator_->GetCurrentEntryId()) {
+    if (side_panel_coordinator_->GetCurrentEntryId(
+            SidePanelEntry::PanelType::kContent)) {
       return;
     }
 
@@ -549,9 +556,10 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   if (show_side_panel) {
     // Note: as margins of |side_panel_| are part of |width()| we need to add
     // them when calculating the ideal width of the contents.
-    animation_end_width_ +=
-        side_panel_->GetPreferredSize().width() +
-        side_panel_->GetProperty(views::kMarginsKey)->width();
+    animation_end_width_ += side_panel_->GetPreferredSize().width();
+    if (auto* margins = side_panel_->GetProperty(views::kMarginsKey)) {
+      animation_end_width_ += margins->width();
+    }
   }
 
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
@@ -790,7 +798,8 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
       // different tab uses ai-chat). In this case, don't need to deactivate
       // item because same item should be activated.
       if (controller->IsActiveIndex(sidebar_index) &&
-          side_panel_coordinator_->GetCurrentEntryId() != entry->key().id()) {
+          side_panel_coordinator_->GetCurrentEntryId(
+              SidePanelEntry::PanelType::kContent) != entry->key().id()) {
         controller->ActivateItemAt(std::nullopt);
         return;
       }
@@ -800,7 +809,8 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Handling non-managed entry.
   // If non-managed entry is hidden and there is no active entry,
   // panel should be hidden here.
-  if (!side_panel_coordinator_->GetCurrentEntryId()) {
+  if (!side_panel_coordinator_->GetCurrentEntryId(
+          SidePanelEntry::PanelType::kContent)) {
     HideSidebarForShowOption();
   }
 }
@@ -828,7 +838,8 @@ void SidebarContainerView::UpdateActiveItemState() {
 
   auto* controller = browser_->GetFeatures().sidebar_controller();
   std::optional<sidebar::SidebarItem::BuiltInItemType> current_type;
-  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId()) {
+  if (auto entry_id = side_panel_coordinator_->GetCurrentEntryId(
+          SidePanelEntry::PanelType::kContent)) {
     current_type = sidebar::BuiltInItemTypeFromSidePanelId(*entry_id);
   }
   controller->UpdateActiveItemState(current_type);
@@ -911,6 +922,11 @@ BraveBrowser* SidebarContainerView::GetBraveBrowser() const {
 
 void SidebarContainerView::AddSidePanelEntryObservation(SidePanelEntry* entry) {
   if (entry->IsBeingObservedBy(this)) {
+    return;
+  }
+
+  // Brave sidebar can handle only kContent type.
+  if (entry->type() != SidePanelEntry::PanelType::kContent) {
     return;
   }
 

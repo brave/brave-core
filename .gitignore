@@ -44,6 +44,7 @@ patches/**/*.patchinfo
 *.VC.VC.opendb
 .vs/
 .vscode/
+!ui/webui/resources/wasm/vendor/**/.vscode
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters

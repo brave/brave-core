@@ -1,8 +1,17 @@
 diff --git a/content/public/browser/web_ui_browser_interface_broker_registry.h b/content/public/browser/web_ui_browser_interface_broker_registry.h
-index d92382a7b00b2bec59a15cb3dcf629f06c1fdf8d..0eb571a97df2b6b733354429da93beb79b34046a 100644
+index e5bd3d6ef12f6bf20e915dcb378ad282cd4a164e..aee431af876e88e6e0ed1c922b4c63b258f488cc 100644
 --- a/content/public/browser/web_ui_browser_interface_broker_registry.h
 +++ b/content/public/browser/web_ui_browser_interface_broker_registry.h
-@@ -109,6 +109,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+@@ -31,7 +31,7 @@ class InterfaceRegistrationHelper {
+     // binder_map.
+     binder_initializers_->push_back(
+         base::BindRepeating([](WebUIBinderMap* binder_map) {
+-          CHECK(!binder_map->Contains<Interface>());
++          /* CHECK(!binder_map->Contains<Interface>()); */
+           binder_map->Add<Interface>(
+               [](WebUIController* controller,
+                  mojo::PendingReceiver<Interface> receiver) {
+@@ -111,6 +111,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
      // class declaration.
      WebUIController::Type type = &ControllerType::kWebUIControllerType;
  
@@ -10,3 +19,12 @@ index d92382a7b00b2bec59a15cb3dcf629f06c1fdf8d..0eb571a97df2b6b733354429da93beb7
      DCHECK(binder_initializers_.count(type) == 0)
          << "Interfaces for a WebUI should be registered together.";
  
+@@ -144,7 +145,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+         [](base::RepeatingCallback<void(
+                WebUIController*, mojo::PendingReceiver<Interface>)> binder,
+            WebUIBinderMap* binder_map) {
+-          CHECK(!binder_map->Contains<Interface>());
++          /* CHECK(!binder_map->Contains<Interface>()); */
+           binder_map->Add<Interface>(std::move(binder));
+         },
+         std::move(binder)));

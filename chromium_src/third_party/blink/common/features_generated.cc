@@ -15,9 +15,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAIRewriterAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAISummarizationAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAIWriterAPI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBuiltInAIAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kLanguageDetectionAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTranslationAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kUserMediaElement, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace blink::features

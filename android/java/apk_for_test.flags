@@ -109,13 +109,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
-    public <init>(...);
+    <init>(...);
     *** getPopupPosition(...);
     *** runMenuItemEnterAnimations(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator {
@@ -940,6 +940,7 @@
     *** mMinimizationManagerHolder;
     *** getAppHeaderCoordinator(...);
     *** getBrowserServicesThemeColorProvider(...);
+    *** getClientPackageNameProvider(...);
     public <init>(...);
 }
 

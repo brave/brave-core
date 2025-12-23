@@ -73,6 +73,23 @@ failures:
   the macOS SDK that prevents remote system from correctly setting up remote
   workspace. Since it's not used by the build, we can safely exclude it.
 
+#### Linux Clang Toolchain Dependencies (Non-Linux Hosts)
+
+On Windows and macOS development machines, we configure Siso to automatically
+include Linux clang build dependencies for cross-compilation via RBE:
+
+1. The Linux clang binary itself is included automatically by the `redirect_cc`
+   handler
+2. Additional filegroups (headers and other build-specific files) are configured
+   by mirroring the host platform's toolchain input dependencies and creating
+   corresponding `_linux` versions
+3. These Linux toolchain filegroups are then added to `input_deps` for each
+   clang binary variant
+
+This ensures that when compilation actions are sent to remote Linux workers, all
+necessary toolchain dependencies are included in the RBE request, not just the
+compiler binary itself.
+
 ### 2.3 Handler Customizations
 
 Handlers are the custom logic that processes individual build actions. We add

@@ -21,9 +21,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_ids.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
@@ -32,6 +36,21 @@
 #include "ui/views/view_class_properties.h"
 
 namespace {
+
+SidePanel::HorizontalAlignment GetHorizontalAlignment(
+    PrefService* pref_service,
+    SidePanelEntry::PanelType type) {
+  bool is_right_aligned =
+      pref_service->GetBoolean(prefs::kSidePanelHorizontalAlignment);
+  is_right_aligned = type == SidePanelEntry::PanelType::kToolbar &&
+                             features::kSidePanelRelativeAlignment.Get() ==
+                                 features::SidePanelRelativeAlignment::
+                                     kShowPanelsOnOppositeSides
+                         ? !is_right_aligned
+                         : is_right_aligned;
+  return is_right_aligned ? SidePanel::HorizontalAlignment::kRight
+                          : SidePanel::HorizontalAlignment::kLeft;
+}
 
 // ContentParentView is the parent view for views hosted in the
 // side panel.
@@ -58,9 +77,11 @@ END_METADATA
 
 SidePanel::SidePanel(BrowserView* browser_view,
                      SidePanelEntry::PanelType type,
-                     bool has_border,
-                     HorizontalAlignment horizontal_alignment)
-    : browser_view_(browser_view), type_(type) {
+                     bool has_border)
+    : horizontal_alignment_(
+          GetHorizontalAlignment(browser_view->GetProfile()->GetPrefs(), type)),
+      browser_view_(browser_view),
+      type_(type) {
   // If panel has layer by default, adjust its radius whenever
   // updating shadow at UpdateBorder() instead of destroying layer.
   CHECK(!layer());
@@ -81,9 +102,21 @@ SidePanel::SidePanel(BrowserView* browser_view,
 
   content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());
   content_parent_view_->SetVisible(false);
+
+  pref_change_registrar_.Init(browser_view->GetProfile()->GetPrefs());
+
+  pref_change_registrar_.Add(
+      prefs::kSidePanelHorizontalAlignment,
+      base::BindRepeating(&SidePanel::UpdateHorizontalAlignment,
+                          base::Unretained(this)));
+
+  animation_coordinator_ =
+      std::make_unique<SidePanelAnimationCoordinator>(this);
+  animation_coordinator_->AddObserver(kSidePanelBoundsAnimation, this);
 }
 
 SidePanel::~SidePanel() {
+  animation_coordinator_->RemoveObserver(kSidePanelBoundsAnimation, this);
   scoped_observation_.RemoveObservation(this);
 }
 
@@ -100,11 +133,7 @@ void SidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
   UpdateBorder();
 }
 
-SidePanel::HorizontalAlignment SidePanel::GetHorizontalAlignment() {
-  return horizontal_alignment_;
-}
-
-bool SidePanel::IsRightAligned() {
+bool SidePanel::IsRightAligned() const {
   return horizontal_alignment_ == HorizontalAlignment::kRight;
 }
 
@@ -156,7 +185,7 @@ gfx::Size SidePanel::GetMinimumSize() const {
 }
 
 bool SidePanel::IsClosing() {
-  return false;
+  return animation_coordinator_->IsClosing();
 }
 
 void SidePanel::AddedToWidget() {
@@ -228,6 +257,13 @@ void SidePanel::RemoveHeaderView() {}
 
 void SidePanel::SetOutlineVisibility(bool visible) {}
 
+void SidePanel::ResetSidePanelAnimationContent() {}
+
+gfx::Rect SidePanel::GetContentAnimationBounds(
+    const gfx::Rect& side_panel_final_bounds) {
+  return {};
+}
+
 void SidePanel::OnChildViewAdded(View* observed_view, View* child) {
   if (observed_view != this) {
     return;
@@ -246,6 +282,13 @@ void SidePanel::OnChildViewRemoved(View* observed_view, View* child) {
   }
 }
 
+void SidePanel::OnAnimationSequenceProgressed(
+    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id,
+    double animation_value) {}
+
+void SidePanel::OnAnimationSequenceEnded(
+    const SidePanelAnimationCoordinator::SidePanelAnimationId& animation_id) {}
+
 void SidePanel::Open(bool animated) {
   UpdateVisibility(/*should_be_open=*/true);
 }
@@ -257,6 +300,13 @@ void SidePanel::Close(bool animated) {
 void SidePanel::UpdateVisibility(bool should_be_open) {
   state_ = should_be_open ? State::kOpen : State::kClosed;
   SetVisible(should_be_open);
+}
+
+void SidePanel::UpdateHorizontalAlignment() {
+  horizontal_alignment_ =
+      GetHorizontalAlignment(browser_view_->GetProfile()->GetPrefs(), type_);
+
+  InvalidateLayout();
 }
 
 views::View* SidePanel::GetContentParentView() {

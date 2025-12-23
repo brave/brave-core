@@ -31,12 +31,12 @@ function toGClientConfigItem(name, value, pretty = true) {
   return `${name} = ${pythonLikeValue}\n`
 }
 
-function buildDefaultGClientConfig(
+function writeGclientConfig(
   targetOSList,
   targetArchList,
   onlyChromium = false,
 ) {
-  const gClientConfig = {
+  const gclientConfig = {
     solutions: [
       {
         managed: false,
@@ -47,7 +47,7 @@ function buildDefaultGClientConfig(
           'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
           // chromium-variations .git takes ~4 GB, not used in the build.
           'src/third_party/chromium-variations': null,
-          ...config.gClientCustomDeps,
+          ...config.gclientCustomDeps,
         },
         custom_vars: {
           'checkout_clang_coverage_tools': true,
@@ -56,7 +56,7 @@ function buildDefaultGClientConfig(
           'reapi_address': config.reapiAddress,
           'reapi_backend_config_path': config.reapiBackendConfigPath,
           'reapi_instance': config.reapiInstance,
-          ...config.gClientCustomVars,
+          ...config.gclientCustomVars,
         },
       },
     ],
@@ -67,7 +67,7 @@ function buildDefaultGClientConfig(
 
   // Add brave-core as a non-managed solution to handle DEPS.
   if (!onlyChromium) {
-    gClientConfig.solutions.push({
+    gclientConfig.solutions.push({
       managed: false,
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
@@ -78,7 +78,7 @@ function buildDefaultGClientConfig(
 
   // Generate the gclient config file.
   let out = ''
-  for (const [key, value] of Object.entries(gClientConfig)) {
+  for (const [key, value] of Object.entries(gclientConfig)) {
     const singleLineValue = toGClientConfigItem(key, value, false)
     if (singleLineValue.length > 80) {
       out += toGClientConfigItem(key, value, true)
@@ -87,7 +87,7 @@ function buildDefaultGClientConfig(
     }
   }
 
-  util.writeFileIfModified(config.defaultGClientFile, out)
+  util.writeFileIfModified(config.gclientFile, out)
 }
 
 function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
@@ -161,7 +161,7 @@ function syncChromium(program) {
   const latestSyncInfo = util.readJSON(latestSyncInfoFilePath, {})
   const expectedSyncInfo = {
     chromiumRef: requiredChromiumRef,
-    gClientTimestamp: fs.statSync(config.gClientFile).mtimeMs.toString(),
+    gclientTimestamp: fs.statSync(config.gclientFile).mtimeMs.toString(),
   }
 
   const chromiumNeedsUpdate = shouldUpdateChromium(
@@ -225,7 +225,7 @@ function syncChromium(program) {
     util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
   }
 
-  util.runGClient(args)
+  util.runGclient(args)
   util.addGitExclusion(config.srcDir, 'brave/')
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
@@ -251,7 +251,7 @@ async function checkInternalDepsEndpoint() {
 }
 
 module.exports = {
-  buildDefaultGClientConfig,
+  writeGclientConfig,
   syncChromium,
   checkInternalDepsEndpoint,
 }

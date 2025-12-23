@@ -23,6 +23,7 @@ import {
   NavOptions,
   PanelNavOptions,
   BuySendSwapDepositOptions,
+  BuySendSwapDepositIOSOptions,
 } from '../../../options/nav-options'
 
 // Components
@@ -42,6 +43,7 @@ import { Row, VerticalDivider } from '../../shared/style'
 export const WalletNav = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   // routing
   const history = useHistory()
@@ -50,6 +52,10 @@ export const WalletNav = () => {
 
   // computed
   const navigationOptions = isPanel ? PanelNavOptions : NavOptions
+
+  const walletActionOptions = isIOS
+    ? BuySendSwapDepositIOSOptions
+    : BuySendSwapDepositOptions
 
   return (
     <Wrapper>
@@ -87,7 +93,7 @@ export const WalletNav = () => {
             <Row>
               <VerticalDivider />
             </Row>
-            {BuySendSwapDepositOptions.map((option) => (
+            {walletActionOptions.map((option) => (
               <NavigationItem
                 key={option.id}
                 icon={option.icon}

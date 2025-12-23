@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_CONTENT_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_CONTENT_CLIENT_H_
 
-#define AddPlugins                                                \
-  AddPlugins(std::vector<content::ContentPluginInfo>* plugins) {} \
+#define AddPlugins                                            \
+  AddPlugins(std::vector<content::WebPluginInfo>* plugins) {} \
   virtual void AddPlugins_ChromiumImpl
 
 #include <content/public/common/content_client.h>  // IWYU pragma: export

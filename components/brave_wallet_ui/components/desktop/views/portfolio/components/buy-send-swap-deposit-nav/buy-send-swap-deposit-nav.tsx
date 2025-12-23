@@ -16,11 +16,18 @@ import { useRoute } from '../../../../../../common/hooks/use_route'
 
 // Options
 import {
-  BuySendSwapDepositOptions, //
+  BuySendSwapDepositOptions,
+  BuySendSwapDepositIOSOptions,
 } from '../../../../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
+
+// Selectors
+import {
+  useSafeUISelector, //
+} from '../../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../../common/selectors'
 
 // Components
 import {
@@ -44,6 +51,9 @@ export const BuySendSwapDepositNav = () => {
   // refs
   const moreMenuRef = React.useRef<HTMLDivElement>(null)
 
+  // selectors
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
+
   // hooks
   useOnClickOutside(moreMenuRef, () => setShowMoreMenu(false), showMoreMenu)
   const { openOrPushRoute } = useRoute()
@@ -56,9 +66,13 @@ export const BuySendSwapDepositNav = () => {
     [openOrPushRoute],
   )
 
+  const options = isIOS
+    ? BuySendSwapDepositIOSOptions
+    : BuySendSwapDepositOptions
+
   return (
     <Row width='unset'>
-      {BuySendSwapDepositOptions.slice(0, 3).map((option) => (
+      {options.slice(0, 3).map((option) => (
         <ButtonWrapper key={option.id}>
           <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />

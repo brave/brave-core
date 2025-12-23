@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.h b/third_party/blink/renderer/core/execution_context/navigator_base.h
+index cf3eced2ec0f9c7a3bc18379d775ecaf023c5ce4..05485a2f71dd0a1951cd81e8567d1492804ea94d 100644
+--- a/third_party/blink/renderer/core/execution_context/navigator_base.h
++++ b/third_party/blink/renderer/core/execution_context/navigator_base.h
+@@ -180,6 +180,9 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+     wake_lock_ = wake_lock;
+   }
+ 
++  ForwardDeclaredMember<Brave> GetBraveNavigator() const { return brave_navigator_; }
++  void SetBraveNavigator(ForwardDeclaredMember<Brave> brave_navigator) { brave_navigator_ = brave_navigator; }
++
+  protected:
+   ExecutionContext* GetUAExecutionContext() const override;
+   UserAgentMetadata GetUserAgentMetadata() const override;
+@@ -201,6 +204,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+   ForwardDeclaredMember<StorageBucketManager> storage_bucket_manager_;
+   ForwardDeclaredMember<USB> usb_;
+   ForwardDeclaredMember<WakeLock, ContextLifecycleObserver> wake_lock_;
++  ForwardDeclaredMember<Brave> brave_navigator_;
+ };
+ 
+ }  // namespace blink

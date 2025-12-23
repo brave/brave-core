@@ -12,6 +12,7 @@ const dotenvPopulateWithIncludes = require('./dotenvPopulateWithIncludes')
 const Log = require('./logging')
 
 let envConfig = null
+let envConfigParseErrors = null
 
 let dirName = __dirname
 // Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
@@ -70,6 +71,7 @@ print(json.dumps(result))
 const getEnvConfig = (key, defaultValue = undefined) => {
   if (!envConfig) {
     envConfig = {}
+    envConfigParseErrors = {}
 
     // Parse src/brave/.env with all included env files.
     let envConfigPath = path.join(braveCoreDir, '.env')
@@ -83,18 +85,38 @@ const getEnvConfig = (key, defaultValue = undefined) => {
       fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
     }
 
-    // Convert 'true' and 'false' strings into booleans.
+    // Attempt to parse JSON-parseable values (strings, numbers, booleans, null,
+    // objects, arrays). If parsing fails, store the value as string.
     for (const [key, value] of Object.entries(envConfig)) {
       try {
-        envConfig[key] = JSON.parse(value)
+        if (typeof defaultValue === 'string') {
+          envConfig[key] = value
+        } else {
+          envConfig[key] = JSON.parse(value)
+        }
       } catch (e) {
         envConfig[key] = value
+        envConfigParseErrors[key] = e.message
       }
     }
   }
 
-  const envConfigValue = envConfig[key.join('_')]
+  const keyJoined = key.join('_')
+  const envConfigValue = envConfig[keyJoined]
   if (envConfigValue !== undefined) {
+    if (
+      defaultValue !== undefined
+      && getValueType(defaultValue) !== getValueType(envConfigValue)
+    ) {
+      Log.error(
+        `${keyJoined} value type is invalid: expected ${getValueType(defaultValue)}, got ${getValueType(envConfigValue)}`,
+      )
+      const parseError = envConfigParseErrors[keyJoined]
+      if (parseError) {
+        Log.error(`${parseError}:\n${envConfigValue}`)
+      }
+      process.exit(1)
+    }
     return envConfigValue
   }
 
@@ -178,17 +200,15 @@ const Config = function () {
     'repository',
     'url',
   ])
-  this.defaultGClientFile = path.join(this.rootDir, '.gclient')
-  this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
-  this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
-  this.gClientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
-  this.gClientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+  this.gclientFile = path.join(this.rootDir, '.gclient')
+  this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
+  this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
-  this.targetAndroidBase = 'mono'
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -653,7 +673,6 @@ Config.prototype.buildArgs = function () {
     // exclude_unwind_tables is inherited form upstream and is false for any
     // Android build
 
-    args.target_android_base = this.targetAndroidBase
     args.target_android_output_format =
       this.targetAndroidOutputFormat
       || (this.buildConfig === 'Release' ? 'aab' : 'apk')
@@ -880,9 +899,6 @@ Config.prototype.updateInternal = function (options) {
   }
 
   if (this.targetOS === 'android') {
-    if (options.target_android_base) {
-      this.targetAndroidBase = options.target_android_base
-    }
     if (options.target_android_output_format) {
       this.targetAndroidOutputFormat = options.target_android_output_format
     }
@@ -932,10 +948,6 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.C) {
     this.__outputDir = options.C
-  }
-
-  if (options.gclient_file && options.gclient_file !== 'default') {
-    this.gClientFile = options.gclient_file
   }
 
   if (options.channel) {
@@ -992,7 +1004,7 @@ Config.prototype.updateInternal = function (options) {
   }
 
   if (options.gclient_verbose) {
-    this.gClientVerbose = options.gclient_verbose
+    this.gclientVerbose = options.gclient_verbose
   }
 
   if (options.ignore_compile_failure) {
@@ -1340,5 +1352,15 @@ Object.defineProperty(Config.prototype, 'useSiso', {
     )
   },
 })
+
+function getValueType(value) {
+  if (value === undefined) {
+    return 'undefined'
+  }
+  if (value === null) {
+    return 'null'
+  }
+  return value.constructor.name
+}
 
 module.exports = new Config()

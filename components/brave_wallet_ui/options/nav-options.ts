@@ -77,6 +77,33 @@ export const BuySendSwapDepositOptions: NavOption[] = [
   },
 ]
 
+export const BuySendSwapDepositIOSOptions: NavOption[] = [
+  {
+    id: 'buy',
+    name: 'braveWalletBuy',
+    icon: 'coins-alt1',
+    route: WalletRoutes.FundWalletPageStart,
+  },
+  {
+    id: 'send',
+    name: 'braveWalletSend',
+    icon: 'send',
+    route: WalletRoutes.Send,
+  },
+  {
+    id: 'swap',
+    name: 'braveWalletSwap',
+    icon: 'currency-exchange',
+    route: WalletRoutes.Swap,
+  },
+  {
+    id: 'deposit',
+    name: 'braveWalletDepositCryptoButton',
+    icon: 'money-bag-coins',
+    route: WalletRoutes.DepositFundsPageStart,
+  },
+]
+
 const PortfolioActivityNavOption: NavOption = {
   id: 'activity',
   name: 'braveWalletActivity',

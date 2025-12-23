@@ -189,6 +189,7 @@ export interface UIState {
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
   isMobile: boolean
+  isIOS: boolean
 }
 
 export interface WalletState {

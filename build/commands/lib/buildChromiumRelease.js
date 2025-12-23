@@ -163,11 +163,7 @@ function buildChromiumRelease(buildOptions = {}) {
   }
 
   depotTools.installDepotTools()
-  syncUtil.buildDefaultGClientConfig(
-    [config.targetOS],
-    [config.targetArch],
-    true,
-  )
+  syncUtil.writeGclientConfig([config.targetOS], [config.targetArch], true)
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 
@@ -176,7 +172,7 @@ function buildChromiumRelease(buildOptions = {}) {
   })
 
   Log.progressScope('gclient runhooks', () => {
-    util.runGClient(['runhooks'])
+    util.runGclient(['runhooks'])
   })
 
   if (chromiumConfig.extraHooks) {

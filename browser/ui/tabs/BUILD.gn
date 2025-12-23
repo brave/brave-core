@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -62,6 +63,29 @@ if (!is_android) {
   }
 }
 
+source_set("tab_menu") {
+  sources = [
+    "brave_browser_tab_menu_model_delegate.cc",
+    "brave_browser_tab_menu_model_delegate.h",
+    "brave_tab_menu_model_factory.cc",
+    "brave_tab_menu_model_factory.h",
+    "tab_menu_model_delegate.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/containers/buildflags",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_menu",
+    "//ui/compositor",
+    "//ui/views",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/browser/ui/containers" ]
+  }
+}
+
 source_set("tab_model") {
   sources = [
     "brave_split_tab_menu_model.cc",
@@ -78,4 +102,30 @@ source_set("tab_model") {
     "//chrome/browser/ui/tabs:tab_strip",
     "//ui/base",
   ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_tab_menu_browsertest.cc" ]
+
+  deps = [
+    ":tab_menu",
+    ":tab_model",
+    "//brave/components/containers/buildflags",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/core/common:features" ]
+  }
 }

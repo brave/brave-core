@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_stopped_reporter.h b/components/sync/service/sync_stopped_reporter.h
-index ab3a7a373120d57ca60c2e5f3867b6e050b71076..d144da982c929a319dd89aa1d05e3f8c292bd165 100644
+index 489a9fba1fe9d6a2f0e69f5cebb40616e698ff68..a693988ee8fabaec4338a36355605437f432c82b 100644
 --- a/components/sync/service/sync_stopped_reporter.h
 +++ b/components/sync/service/sync_stopped_reporter.h
-@@ -29,7 +29,7 @@ class SyncStoppedReporter {
+@@ -30,7 +30,7 @@ class SyncStoppedReporter {
    SyncStoppedReporter(const SyncStoppedReporter&) = delete;
    SyncStoppedReporter& operator=(const SyncStoppedReporter&) = delete;
  

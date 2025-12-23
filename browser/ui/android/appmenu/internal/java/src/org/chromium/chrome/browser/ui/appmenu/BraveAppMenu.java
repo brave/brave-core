@@ -16,19 +16,28 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.SysUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
 
 @NullMarked
-class BraveAppMenu extends BraveAppMenuDummySuper {
+public class BraveAppMenu extends BraveAppMenuDummySuper {
     private static final int BOTTOM_MENU_VERTICAL_OFFSET_DP = 44;
     private static int sMenuHeight;
     private static int sNegativeVerticalOffsetNotTopAnchored;
 
-    BraveAppMenu(AppMenuHandlerImpl handler, Resources res) {
-        super(handler, res);
+    BraveAppMenu(
+            AppMenuVisibilityDelegate visibilityDelegate,
+            Resources res,
+            HierarchicalMenuController hierarchicalMenuController,
+            boolean disableVerticalScrollbar) {
+        super(visibilityDelegate, res, hierarchicalMenuController, disableVerticalScrollbar);
 
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
                 (int) (BOTTOM_MENU_VERTICAL_OFFSET_DP * scale + 0.5f);
+    }
+
+    public static Class getAppMenuVisibilityDelegateClass() {
+        return AppMenuVisibilityDelegate.class;
     }
 
     @SuppressLint("VisibleForTests")

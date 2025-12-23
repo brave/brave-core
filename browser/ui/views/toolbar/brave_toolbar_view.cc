@@ -174,7 +174,7 @@ void BraveToolbarView::Init() {
   views::SetHitTestComponent(container_view, HTCAPTION);
 
   // For non-normal mode, we don't have to do any more work.
-  if (display_mode_ != DisplayMode::NORMAL) {
+  if (display_mode_ != DisplayMode::kNormal) {
     brave_initialized_ = true;
     return;
   }
@@ -339,7 +339,7 @@ void BraveToolbarView::OnVPNButtonVisibilityChanged() {
 #endif
 
 void BraveToolbarView::OnEditBookmarksEnabledChanged() {
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  DCHECK_EQ(DisplayMode::kNormal, display_mode_);
   Update(nullptr);
 }
 
@@ -352,7 +352,7 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
 }
 
 void BraveToolbarView::OnLocationBarIsWideChanged() {
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  DCHECK_EQ(DisplayMode::kNormal, display_mode_);
 
   DeprecatedLayoutImmediately();
   SchedulePaint();
@@ -365,11 +365,11 @@ void BraveToolbarView::OnThemeChanged() {
     return;
   }
 
-  if (display_mode_ == DisplayMode::NORMAL && bookmark_) {
+  if (display_mode_ == DisplayMode::kNormal && bookmark_) {
     bookmark_->UpdateImageAndText();
   }
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (display_mode_ == DisplayMode::NORMAL && wallet_) {
+  if (display_mode_ == DisplayMode::kNormal && wallet_) {
     wallet_->UpdateImageAndText();
   }
 #endif
@@ -423,7 +423,7 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
     return;
   }
 
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  DCHECK_EQ(DisplayMode::kNormal, display_mode_);
   bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                         edit_bookmarks_enabled_.GetValue() &&
                         show_bookmarks_button_.GetValue());
@@ -482,7 +482,7 @@ void BraveToolbarView::ViewHierarchyChanged(
 }
 
 void BraveToolbarView::Layout(PassKey) {
-  if (!brave_initialized_ || display_mode_ != DisplayMode::NORMAL) {
+  if (!brave_initialized_ || display_mode_ != DisplayMode::kNormal) {
     LayoutSuperclass<ToolbarView>(this);
     return;
   }
@@ -513,7 +513,7 @@ void BraveToolbarView::Layout(PassKey) {
 }
 
 void BraveToolbarView::ResetLocationBarBounds() {
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  DCHECK_EQ(DisplayMode::kNormal, display_mode_);
 
   // Calculate proper location bar's margin and set its bounds.
   const gfx::Insets margin = CalcLocationBarMargin(
@@ -526,7 +526,7 @@ void BraveToolbarView::ResetLocationBarBounds() {
 }
 
 void BraveToolbarView::ResetBookmarkButtonBounds() {
-  DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
+  DCHECK_EQ(DisplayMode::kNormal, display_mode_);
 
   int button_right_margin = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);
 

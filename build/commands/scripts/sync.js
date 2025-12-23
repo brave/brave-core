@@ -17,7 +17,6 @@ const syncUtil = require('../lib/syncUtils')
 
 program
   .version(process.env.npm_package_version)
-  .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')
   .option(
@@ -58,7 +57,7 @@ function syncBrave(program) {
     args.push('--no-history')
   }
 
-  util.runGClient(
+  util.runGclient(
     args,
     { cwd: config.braveCoreDir },
     path.join(config.braveCoreDir, '.brave_gclient'),
@@ -88,10 +87,10 @@ async function RunCommand() {
     program.init
     || program.target_os
     || program.target_arch
-    || !fs.existsSync(config.defaultGClientFile)
+    || !fs.existsSync(config.gclientFile)
     || config.isCI
   ) {
-    syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
+    syncUtil.writeGclientConfig(targetOSList, targetArchList)
   }
 
   if (config.isCI) {
@@ -120,7 +119,7 @@ async function RunCommand() {
     // hooks. Don't cache the result, just always rerun this step, because it's
     // pretty quick in a no-op scenario.
     Log.progressScope('gclient runhooks', () => {
-      util.runGClient(['runhooks'])
+      util.runGclient(['runhooks'])
     })
   }
 }

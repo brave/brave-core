@@ -27,7 +27,7 @@ program
       // Setting this env variable to prevent downloading the toolchain using
       // the new tag's revision, as the intent is to generate a new toolchain.
       process.env.SKIP_DOWNLOAD_RUST_TOOLCHAIN_AUX = '1'
-      util.runGClient([
+      util.runGclient([
         'sync',
         '--reset',
         '--upstream',

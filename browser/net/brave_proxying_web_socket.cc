@@ -220,6 +220,7 @@ void BraveProxyingWebSocket::OnBeforeSendHeaders(
 void BraveProxyingWebSocket::OnHeadersReceived(
     const std::string& headers,
     const ::net::IPEndPoint& remote_endpoint,
+    const std::optional<net::SSLInfo>& ssl_info,
     OnHeadersReceivedCallback callback) {
   DCHECK(proxy_has_extra_headers());
 
@@ -368,8 +369,7 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
 
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnHeadersReceived(
-        headers,
-        remote_endpoint_,
+        headers, remote_endpoint_, /*ssl_info=*/std::nullopt,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));

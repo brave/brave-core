@@ -196,10 +196,11 @@ void ContentAgentToolProvider::ExecuteActions(
 }
 
 void ContentAgentToolProvider::OnActorTaskStateChanged(
-    const actor::ActorTask& task) {
-  DVLOG(4) << __func__ << " " << task.GetState();
-  if (!task.id().is_null() && task.id() == task_id_ &&
-      kActorStatesToNotify.contains(task.GetState())) {
+    actor::TaskId task_id,
+    actor::ActorTask::State task_state) {
+  DVLOG(4) << __func__ << " " << task_state;
+  if (!task_id_.is_null() && task_id_ == task_id &&
+      kActorStatesToNotify.contains(task_state)) {
     NotifyTaskStateChanged();
   }
 }
@@ -259,7 +260,7 @@ void ContentAgentToolProvider::OnActionsFinished(
 
 void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
     Tool::UseToolCallback callback,
-    std::optional<optimization_guide::AIPageContentResult> content) {
+    optimization_guide::AIPageContentResultOrError content) {
   if (!content.has_value()) {
     DLOG(ERROR) << "Error getting page content";
     std::move(callback).Run(

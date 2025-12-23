@@ -14,6 +14,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController.SubmenuHeaderFactory;
 
 import java.util.function.Supplier;
 
@@ -38,7 +39,8 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
             View hardwareButtonAnchorView,
             Supplier<Rect> appRect,
             WindowAndroid windowAndroid,
-            BrowserControlsStateProvider browserControlsStateProvider) {
+            BrowserControlsStateProvider browserControlsStateProvider,
+            SubmenuHeaderFactory submenuHeaderFactory) {
         super(
                 context,
                 delegate,
@@ -48,11 +50,12 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
                 hardwareButtonAnchorView,
                 appRect,
                 windowAndroid,
-                browserControlsStateProvider);
+                browserControlsStateProvider,
+                submenuHeaderFactory);
     }
 
     @Override
-    boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
+    public boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
         final boolean show = super.showAppMenu(anchorView, startDragging);
         if (show) {
             assert mAppMenuDragHelper != null;

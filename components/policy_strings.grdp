@@ -80,6 +80,9 @@
   <message name="IDS_POLICY_ACTION_BLOCKED_BY_ORGANIZATION" desc="Text to be shown to the user to inform them that an action they initiated was blocked by the organization.">
     Blocked by your organization
   </message>
+  <message name="IDS_POLICY_ACTION_FORCED_SAVE_TO_GDRIVE" desc="Text to be shown to the user to inform them that a local download they initiated was blocked and will proceed to GDrive">
+    Local download blocked
+  </message>
   <message name="IDS_POLICY_VALIDATION_OK" desc="Message indicating successful policy validation.">
     Validation successful
   </message>
@@ -845,6 +848,12 @@ Additional details:
   </message>
   <message name="IDS_POLICY_BANNER_PROMOTION_BTN" desc="Button for Brave Enterprise Core (CEC) promotion banner">
     Try Brave Enterprise Core
+  </message>
+  <message name="IDS_DEVTOOLS_BLOCKED_BY_POLICY" desc="Message shown when DevTools is blocked by policy.">
+    Your organization has blocked the use of DevTools on this page
+  </message>
+  <message name="IDS_DEVTOOLS_NOT_ALLOWED" desc="Message shown when DevTools is not allowed.">
+    DevTools not allowed on this page
   </message>
 
   <!-- Strings for chrome://policy/logs -->

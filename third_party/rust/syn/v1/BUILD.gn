@@ -78,6 +78,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/dtolnay/syn"
   cargo_pkg_version = "1.0.109"
 
+  allow_unsafe = true
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",
@@ -215,6 +217,8 @@ cargo_crate("buildrs_support") {
   cargo_pkg_description = "Parser for Rust source code"
   cargo_pkg_repository = "https://github.com/dtolnay/syn"
   cargo_pkg_version = "1.0.109"
+
+  allow_unsafe = true
 
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",

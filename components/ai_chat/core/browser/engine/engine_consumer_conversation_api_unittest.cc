@@ -26,8 +26,10 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -50,36 +52,6 @@ namespace ai_chat {
 namespace {
 
 constexpr int kTestingMaxAssociatedContentLength = 100;
-constexpr size_t kChunkSize = 75;
-
-std::pair<std::vector<Tab>, std::vector<std::string>>
-GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
-  size_t num_chunks = (num_tabs + kChunkSize - 1) / kChunkSize;
-  std::vector<Tab> tabs;
-  std::vector<std::string> tabs_json_strings;
-  for (size_t i = 0; i < num_chunks; i++) {
-    std::string tabs_json_string = "[";
-    size_t start_suffix = i * kChunkSize;
-    for (size_t j = start_suffix;
-         j < std::min(kChunkSize + start_suffix, num_tabs); j++) {
-      std::string id = base::StrCat({"id", base::NumberToString(j)});
-      std::string title = base::StrCat({"title", base::NumberToString(j)});
-      std::string url = base::StrCat(
-          {"https://www.example", base::NumberToString(j), ".com"});
-      tabs.push_back({id, title, url::Origin::Create(GURL(url))});
-      base::StrAppend(&tabs_json_string,
-                      {R"({\"id\":\")", id, R"(\",\"title\":\")", title,
-                       R"(\",\"url\":\")", url, R"(\"},)"});
-    }
-
-    if (!tabs_json_string.empty() && tabs_json_string.back() == ',') {
-      tabs_json_string.pop_back();  // Remove comma
-    }
-    base::StrAppend(&tabs_json_string, {"]"});
-    tabs_json_strings.push_back(tabs_json_string);
-  }
-  return {tabs, tabs_json_strings};
-}
 
 // Helper function to create base64 data URL from uploaded file data
 std::string CreateDataURLFromUploadedFile(const mojom::UploadedFilePtr& file,
@@ -1193,8 +1165,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   auto [tabs, tabs_json_strings] =
-      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
-  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
   ASSERT_EQ(tabs_json_strings.size(), 2u);
 
   std::string expected_events1 = R"([
@@ -1239,11 +1211,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         EXPECT_EQ(conversation.size(), 1u);
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "{ \"topics\": [\n  \"topic3\",\n  \"topic4\",\n  "
+                    "\"topic5\",\n  \"topic6\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1559,7 +1532,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GetSuggestedTopics_SingleTabChunk) {
-  auto [tabs, tabs_json_strings] = GetMockTabsAndExpectedTabsJsonString(1);
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(1, true);
   ASSERT_EQ(tabs.size(), 1u);
   ASSERT_EQ(tabs_json_strings.size(), 1u);
 
@@ -1601,8 +1575,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   // Get two full chunks of tabs for testing.
   auto [tabs, tabs_json_strings] =
-      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
-  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+      GetMockTabsAndExpectedTabsJsonString(2 * kTabListChunkSize, true);
+  ASSERT_EQ(tabs.size(), 2 * kTabListChunkSize);
   ASSERT_EQ(tabs_json_strings.size(), 2u);
 
   std::string expected_events1 = R"([
@@ -1648,10 +1622,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         EXPECT_EQ(conversation.size(), 1u);
         EXPECT_EQ(mock_api_client->GetEventsJson(std::move(conversation)),
                   FormatComparableEventsJson(expected_events2));
+        // Test response with newlines in the array
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+                    "{ \"tab_ids\": [\n  \"id75\",\n  \"id76\"\n] }"));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1668,8 +1643,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
 
   // Test 1 full chunk of tabs and 1 partial chunk of tabs.
   auto [tabs2, tabs_json_strings2] =
-      GetMockTabsAndExpectedTabsJsonString(kChunkSize + 5);
-  ASSERT_EQ(tabs2.size(), kChunkSize + 5);
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize + 5, true);
+  ASSERT_EQ(tabs2.size(), kTabListChunkSize + 5);
   ASSERT_EQ(tabs_json_strings2.size(), 2u);
 
   expected_events1 = R"([
@@ -1812,92 +1787,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
       }));
 
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
-}
-
-TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
-  std::vector<EngineConsumer::GenerationResult> results;
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      base::unexpected(mojom::APIError::InternalError));
-
-  auto add_result = [&results](const std::string& completion_text) {
-    results.push_back(base::ok(EngineConsumer::GenerationResultData(
-        mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(completion_text)),
-        std::nullopt)));
-  };
-
-  // Test specifically the "Skip empty results" code path
-  results.clear();
-
-  // This creates a result with an event that is not a completion event
-  results.push_back(base::ok(EngineConsumer::GenerationResultData(
-      mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
-          mojom::SelectedLanguageEvent::New("en-us")),
-      std::nullopt)));
-
-  // This creates a result with no event
-  results.push_back(
-      base::ok(EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
-
-  // This creates a result with an empty completion
-  results.push_back(base::ok(EngineConsumer::GenerationResultData(
-      mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("")),
-      std::nullopt)));
-
-  // Add a valid result
-  add_result("[\"validString\"]");
-
-  // Verify the empty results are skipped and we get only the valid string
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      std::vector<std::string>({"validString"}));
-
-  // Test with an empty vector
-  results.clear();
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      base::unexpected(mojom::APIError::InternalError));
-
-  // Test with only one invalid result
-  add_result("   ");
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      base::unexpected(mojom::APIError::InternalError));
-
-  // Test only valid strings are added to the result
-  add_result("null");
-  add_result("[]");
-  add_result("[   ]");
-  add_result("[null]");
-  add_result("[\"\"]");
-  add_result("[1, 2, 3]");
-  add_result("[\"string1\", \"string2\", \"string3\"]");
-  add_result(
-      "Result\n: [\"\xF0\x9F\x98\x8A string4\", \"string5\", \"string6\"] "
-      "TEST");
-  add_result("[{[\"string7\", \"string8\", \"string9\"]}]");
-
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      std::vector<std::string>({"string1", "string2", "string3",
-                                "\xF0\x9F\x98\x8A string4", "string5",
-                                "string6"}));
-
-  // Test having a error message inside the response
-  results.clear();
-  add_result("[\"string1\", \"string2\", \"string3\"]");
-  results.push_back(base::unexpected(mojom::APIError::RateLimitReached));
-  EXPECT_EQ(
-      EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
-          results),
-      base::unexpected(mojom::APIError::RateLimitReached));
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {

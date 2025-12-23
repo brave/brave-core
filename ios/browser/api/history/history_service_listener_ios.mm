@@ -57,12 +57,11 @@ void HistoryServiceListenerIOS::HistoryServiceBeingDeleted(
 
 void HistoryServiceListenerIOS::OnURLVisited(
     history::HistoryService* history_service,
-    const history::URLRow& url_row,
-    const history::VisitRow& new_visit) {
+    const history::VisitedURLInfo& visited_url_info) {
   IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
-      initWithURL:net::NSURLWithGURL(url_row.url())
-            title:base::SysUTF16ToNSString(url_row.title())
-        dateAdded:new_visit.visit_time.ToNSDate()];
+      initWithURL:net::NSURLWithGURL(visited_url_info.url_row.url())
+            title:base::SysUTF16ToNSString(visited_url_info.url_row.title())
+        dateAdded:visited_url_info.visit_row.visit_time.ToNSDate()];
 
   if ([observer_ respondsToSelector:@selector(historyNodeVisited:)]) {
     [observer_ historyNodeVisited:historyNode];
