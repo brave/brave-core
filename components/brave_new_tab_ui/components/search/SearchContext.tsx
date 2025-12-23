@@ -82,6 +82,7 @@ class SearchPage implements PageInterface {
   setKeywordSelected(isKeywordSelected: boolean): void {}
   updateAutoSuggestedTabContext(tab: (TabInfo | null)): void {}
   updateLensSearchEligibility(eligible: boolean): void {}
+  updateAimEligibility(eligible: boolean): void {}
 }
 
 export const search = new SearchPage()
