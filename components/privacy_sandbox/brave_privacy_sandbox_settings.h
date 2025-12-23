@@ -35,7 +35,6 @@ class BravePrivacySandboxSettings
       std::unique_ptr<Delegate> delegate,
       HostContentSettingsMap* host_content_settings_map,
       content_settings::CookieSettings* cookie_settings,
-      privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
       PrefService* pref_service);
   ~BravePrivacySandboxSettings() override;
 

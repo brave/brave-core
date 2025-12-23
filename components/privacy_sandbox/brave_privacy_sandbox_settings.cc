@@ -14,13 +14,11 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
-#include "components/privacy_sandbox/tracking_protection_settings.h"
 
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     std::unique_ptr<Delegate> delegate,
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
-    privacy_sandbox::TrackingProtectionSettings* tracking_protection_settings,
     PrefService* pref_service)
     : pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox.
