@@ -18,7 +18,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/command_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -40,6 +40,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -401,8 +405,12 @@ void AcceleratorService::NotifyCommandsChanged(
 bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
   switch (command_id) {
     case IDC_CONFIGURE_BRAVE_NEWS:
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
       return pref_service_->GetBoolean(
           brave_news::prefs::kBraveNewsDisabledByPolicy);
+#else
+      return true;  // News not compiled in, always disabled
+#endif
     case IDC_SHOW_BRAVE_TALK:
       return pref_service_->GetBoolean(kBraveTalkDisabledByPolicy);
     case IDC_SHOW_BRAVE_VPN_PANEL:

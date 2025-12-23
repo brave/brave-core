@@ -14,30 +14,32 @@ import NewTabPage from './newTab'
 
 // Utils
 import * as PreferencesAPI from '../api/preferences'
-import getBraveNewsController from '../../brave_news/browser/resources/shared/api'
 import getNTPBrowserAPI from '../api/background'
 import { getActionsForDispatch } from '../api/getActions'
 
 // Types
 import { NewTabActions } from '../constants/new_tab_types'
 import { ApplicationState } from '../reducers'
+// <if expr="enable_brave_news">
 import { BraveNewsState } from '../reducers/today'
+// </if>
 import { BraveVPNState } from '../reducers/brave_vpn'
 
 interface Props {
   actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  // <if expr="enable_brave_news">
   braveNewsData: BraveNewsState,
+  // </if>
   braveVPNData: BraveVPNState
 }
 
-const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
-  return getBraveNewsController().getDisplayAd()
-}
-
 function DefaultPage (props: Props) {
-  const { newTabData, braveNewsData, braveVPNData, gridSitesData, actions } = props
+  const { newTabData, braveVPNData, gridSitesData, actions } = props
+  // <if expr="enable_brave_news">
+  const { braveNewsData } = props
+  // </if>
 
   // don't render if user prefers an empty page
   if (props.newTabData.showEmptyPage && !props.newTabData.isIncognito) {
@@ -47,7 +49,9 @@ function DefaultPage (props: Props) {
   return (
     <NewTabPage
       newTabData={newTabData}
+      // <if expr="enable_brave_news">
       todayData={braveNewsData}
+      // </if>
       braveVPNData={braveVPNData}
       gridSitesData={gridSitesData}
       actions={actions}
@@ -56,7 +60,6 @@ function DefaultPage (props: Props) {
       saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
       saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
       saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
-      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       chooseNewCustomBackgroundImage={() => getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground() }
       setCustomImageBackground={background => getNTPBrowserAPI().pageHandler.useCustomImageBackground(background) }
       removeCustomImageBackground={background => getNTPBrowserAPI().pageHandler.removeCustomImageBackground(background) }
@@ -69,7 +72,9 @@ function DefaultPage (props: Props) {
 const mapStateToProps = (state: ApplicationState): Partial<Props> => ({
   newTabData: state.newTabData,
   gridSitesData: state.gridSitesData,
+  // <if expr="enable_brave_news">
   braveNewsData: state.today,
+  // </if>
   braveVPNData: state.braveVPN,
 })
 

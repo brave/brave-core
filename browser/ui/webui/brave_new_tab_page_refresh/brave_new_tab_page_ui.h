@@ -9,10 +9,14 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#endif
 #include "components/omnibox/browser/searchbox.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
@@ -52,8 +56,10 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   void BindInterface(
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BindInterface(

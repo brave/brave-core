@@ -17,8 +17,11 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
 namespace content {
 class RenderFrameHost;

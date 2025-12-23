@@ -20,7 +20,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -53,6 +53,10 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -298,10 +302,12 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_EXPANDED, true);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord() &&
                            !browser_->profile()->GetPrefs()->GetBoolean(
                                brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif
 
   UpdateCommandEnabled(
       IDC_CONFIGURE_SHORTCUTS,

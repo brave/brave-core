@@ -3,9 +3,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+
+preprocess_folder = "preprocessed"
+
+preprocess_if_expr("preprocess") {
+  in_folder = "."
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  in_files = [
+    "store.ts",
+    "reducers/index.ts",
+    "constants/new_tab_types.ts",
+    "api/getActions.ts",
+    "async/today.ts",
+    "containers/app.tsx",
+    "containers/newTab/index.tsx",
+    "containers/newTab/settings.tsx",
+  ]
+  defines = [ "enable_brave_news=$enable_brave_news" ]
+}
 
 transpile_web_ui("brave_new_tab_ui") {
   entry_points = [ [
@@ -14,10 +34,14 @@ transpile_web_ui("brave_new_tab_ui") {
       ] ]
   public_deps = [
     ":mojom_js",
-    "//brave/components/brave_news/common:mojom_js",
+    ":preprocess",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/resources:strings",
   ]
+
+  if (enable_brave_news) {
+    public_deps += [ "//brave/components/brave_news/common:mojom_js" ]
+  }
   if (!is_android && !is_ios) {
     public_deps += [
       "//components/omnibox/browser:mojo_bindings",
@@ -25,7 +49,9 @@ transpile_web_ui("brave_new_tab_ui") {
     ]
   }
   resource_name = "brave_new_tab"
+  extra_modules = [ rebase_path("$target_gen_dir/$preprocess_folder", "//") ]
   imports_from = [
+    rebase_path("$target_gen_dir/$preprocess_folder"),
     "//brave/components/brave_new_tab_ui/",
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/shared/",
@@ -46,7 +72,11 @@ mojom("mojom") {
     "//brave/components/ntp_background_images/browser/mojom",
     "//url/mojom:url_mojom_gurl",
   ]
+  enabled_features = []
+  if (enable_brave_news) {
+    enabled_features += [ "enable_brave_news" ]
+  }
   if (enable_brave_vpn) {
-    enabled_features = [ "enable_brave_vpn" ]
+    enabled_features += [ "enable_brave_vpn" ]
   }
 }

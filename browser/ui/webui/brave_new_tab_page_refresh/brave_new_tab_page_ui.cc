@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
@@ -22,8 +21,13 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#endif
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -126,6 +130,7 @@ void BraveNewTabPageUI::BindInterface(
       profile->GetPrefs());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
@@ -135,6 +140,7 @@ void BraveNewTabPageUI::BindInterface(
     brave_news_controller->Bind(std::move(receiver));
   }
 }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveNewTabPageUI::BindInterface(

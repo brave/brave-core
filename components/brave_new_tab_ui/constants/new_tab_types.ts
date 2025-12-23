@@ -6,7 +6,9 @@ import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
+// <if expr="enable_brave_news">
 import * as todayActions from '../actions/today_actions'
+// </if>
 import * as braveVPNActions from '../actions/brave_vpn_actions'
 
 export const enum types {
@@ -34,6 +36,8 @@ export type NewTabActions =
   typeof rewardsActions &
   typeof stackWidgetActions &
   {
+    // <if expr="enable_brave_news">
     today: typeof todayActions
+    // </if>
     braveVPN: typeof braveVPNActions
   }

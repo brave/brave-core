@@ -12,7 +12,7 @@
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
@@ -23,6 +23,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -68,10 +72,12 @@ void MaybeEnableBraveFeaturesPrefsForPerfTesting(Profile* profile) {
   profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
                                   true);
 
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Brave news
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                   true);
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader - enable both the feature toggle and all-sites setting

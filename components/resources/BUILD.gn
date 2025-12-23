@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -117,7 +118,6 @@ repack("resources") {
   if (!is_android && !is_ios) {
     deps += [
       "//brave/components/brave_new_tab_ui:generated_resources",
-      "//brave/components/brave_news/browser/resources:generated_resources",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
@@ -126,12 +126,18 @@ repack("resources") {
 
     sources += [
       "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
-      "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
       "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
+
+    if (enable_brave_news) {
+      deps += [
+        "//brave/components/brave_news/browser/resources:generated_resources",
+      ]
+      sources += [ "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak" ]
+    }
 
     if (enable_speedreader) {
       deps += [
