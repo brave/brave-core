@@ -592,6 +592,11 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #endif
 }
 
+gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
+  CHECK(contents_background_view_);
+  return contents_background_view_->GetBoundsInScreen();
+}
+
 bool BraveBrowserView::HasSelectedURL() const {
   if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
     return false;
