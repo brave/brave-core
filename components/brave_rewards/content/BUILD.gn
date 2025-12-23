@@ -59,6 +59,7 @@ static_library("content") {
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
+    "//skia:skia_core_public_headers",
     "//ui/base",
     "//ui/gfx",
     "//url",

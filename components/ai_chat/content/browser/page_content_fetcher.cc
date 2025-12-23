@@ -467,8 +467,15 @@ class PageContentFetcherInternal {
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 void OnScreenshot(FetchPageContentCallback callback,
-                  const viz::CopyOutputBitmapWithMetadata& result) {
-  const SkBitmap& bitmap = result.bitmap;
+                  const content::CopyFromSurfaceResult& result) {
+  if (!result.has_value()) {
+    LOG(ERROR) << "RenderWidgetHostView::CopyFromSurface failed with: "
+               << result.error();
+    std::move(callback).Run("", false, "");
+    return;
+  }
+
+  const SkBitmap& bitmap = result->bitmap;
   GetOCRText(bitmap,
              base::BindOnce(
                  [](FetchPageContentCallback callback, std::string text) {
