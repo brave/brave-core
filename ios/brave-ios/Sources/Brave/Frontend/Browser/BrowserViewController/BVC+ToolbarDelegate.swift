@@ -1008,7 +1008,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return url
     }()
     /// The selected tab's url
-    let selectedTabOriginalURL = tabManager.selectedTab?.visibleURL
+    _ = tabManager.selectedTab?.visibleURL
 
     clearPageZoomDialog()
 
