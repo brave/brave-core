@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:gravity="start|center_vertical"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/shield_back_button_tint"/>
+
+        <TextView
+            android:id="@+id/option_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="start"
+            android:textColor="@color/shield_title_color"
+            android:text="Shred Site Data"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/option_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/shield_option_text_color"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/about_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/shield_text_color"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        android:text="@string/shields_about_text"/>
+
+    <LinearLayout
+            android:id="@+id/brave_shields_auto_shred_item_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables"
+            >
+    
+        <ImageView
+                android:id="@+id/auto_shred_favicon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:paddingEnd="8dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_brave_auto_shred"/>
+
+        <include
+            android:id="@+id/brave_shields_auto_shred_site_data_layout_id"
+            layout="@layout/brave_shields_toggle_layout"/>
+    </LinearLayout>
+
+    <View
+	    android:layout_width="match_parent"
+	    android:layout_height="1dp"
+	    android:alpha="0.5"
+	    android:background="@color/shield_divider_color"/>
+
+	<LinearLayout
+		android:id="@+id/brave_shields_manual_shred_site_data_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+      	android:padding="16dp"
+      	android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables"
+		>
+
+        <ImageView
+            android:id="@+id/manual_shred_favicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:paddingStart="8dp"
+            android:paddingEnd="18dp"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/ic_brave_shred"/>
+
+        <TextView
+            android:id="@+id/manual_shred_text"
+            android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:textSize="14sp"
+		    android:fontFamily="sans-serif"
+		    android:layout_gravity="center_vertical"
+            android:textColor="@color/shield_text_color"
+            android:text="Manual shred"/>
+    </LinearLayout>
+
+</LinearLayout>
