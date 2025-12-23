@@ -27,14 +27,7 @@ protocol TabCollectionViewDelegate: AnyObject {
 /// A view that can display tabs in a grid formation
 class TabGridContainerView: UIView {
   let collectionView: UICollectionView
-  var isPrivateBrowsing: Bool {
-    didSet {
-      // Track mode changes for scrolling
-      if oldValue != isPrivateBrowsing {
-        scrollToSelectedTabAfterUpdate = true
-      }
-    }
-  }
+  var isPrivateBrowsing: Bool
   var isEditing: Bool = false {
     didSet {
       collectionView.isEditing = isEditing
@@ -47,21 +40,10 @@ class TabGridContainerView: UIView {
     }
   }
   private var tabs: [any TabState] = []
-  private var scrollToSelectedTabAfterUpdate = false
 
   func updateTabs(_ tabs: [any TabState], transaction: Transaction) {
     self.tabs = tabs
     applyTabsSnapshot(animated: transaction.animation != nil)
-    
-    // Scroll to selected tab after mode switch
-    if scrollToSelectedTabAfterUpdate {
-      scrollToSelectedTabAfterUpdate = false
-      DispatchQueue.main.async { [weak self] in
-        guard let self else { return }
-        self.collectionView.layoutIfNeeded()
-        self.scrollToSelectedItem(animated: false)
-      }
-    }
   }
 
   weak var delegate: TabCollectionViewDelegate?
@@ -159,7 +141,7 @@ class TabGridContainerView: UIView {
 
   // MARK: -
 
-  private func scrollToSelectedItem(animated: Bool) {
+  fileprivate func scrollToSelectedItem(animated: Bool) {
     guard let tab = tabs.first(where: \.isVisible),
       let indexPath = dataSource.indexPath(for: tab.id)
     else { return }
@@ -488,6 +470,13 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       self.viewModel = viewModel
       self.contextMenu = contextMenu
       self._selectedTabList = selectedTabList
+      
+      // Set up scroll handler to be called after mode switch completes
+      viewModel.onModeSwitchComplete = { [weak self] in
+        guard let self, let containerView = self.containerView else { return }
+        containerView.collectionView.layoutIfNeeded()
+        containerView.scrollToSelectedItem(animated: false)
+      }
     }
 
     func didSelectTab(_ tab: any TabState, source: TabCollectionViewSelectSource) {

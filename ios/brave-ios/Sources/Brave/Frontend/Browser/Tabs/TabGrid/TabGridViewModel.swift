@@ -17,6 +17,7 @@ class TabGridViewModel {
   private var _isPrivateBrowsing: Bool = false
   private(set) var tabs: [any TabState] = []
   private(set) var isPrivateTabsLocked: Bool = false
+  var onModeSwitchComplete: (() -> Void)?
 
   var isPrivateBrowsing: Bool {
     get {
@@ -291,6 +292,12 @@ class TabGridViewModel {
     // last tab in the list for that mode
     if tabs.first(where: \.isVisible) == nil, let tab = tabs.last {
       tabManager.selectTab(tab)
+    }
+    
+    // Trigger scroll after ALL tab selection is complete
+    // Use async to ensure SwiftUI has updated the view first
+    Task { 
+      self.onModeSwitchComplete?()
     }
   }
 
