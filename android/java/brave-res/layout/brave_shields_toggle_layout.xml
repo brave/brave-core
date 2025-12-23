@@ -27,6 +27,15 @@
       	android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
+        <ImageView
+                android:id="@+id/toggle_button_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:paddingEnd="8dp"
+                android:layout_gravity="center_vertical"
+				android:visibility="gone"/>
+
 	    <TextView
 		    android:id="@+id/toggle_text"
 		    android:layout_width="0dp"
