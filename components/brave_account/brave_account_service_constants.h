@@ -10,9 +10,9 @@
 
 namespace brave_account {
 
+inline constexpr base::TimeDelta kWatchdogInterval = base::Seconds(15);
 inline constexpr base::TimeDelta kVerifyResultPollInterval = base::Seconds(5);
-inline constexpr base::TimeDelta kVerifyResultWatchdogInterval =
-    3 * kVerifyResultPollInterval;
+inline constexpr base::TimeDelta kAuthValidatePollInterval = base::Minutes(2);
 
 }  // namespace brave_account
 

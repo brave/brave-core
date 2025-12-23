@@ -32,6 +32,7 @@ using endpoint_client::Client;
 using endpoint_client::RequestCancelability;
 using endpoint_client::RequestHandle;
 using endpoint_client::WithHeaders;
+using endpoints::AuthValidate;
 using endpoints::ErrorBody;
 using endpoints::LoginFinalize;
 using endpoints::LoginInit;
@@ -103,6 +104,7 @@ BraveAccountService::BraveAccountService(
                           std::move(url_loader_factory),
                           base::BindRepeating(&OSCrypt::EncryptString),
                           base::BindRepeating(&OSCrypt::DecryptString),
+                          std::make_unique<base::OneShotTimer>(),
                           std::make_unique<base::OneShotTimer>()) {}
 
 BraveAccountService::~BraveAccountService() = default;
@@ -117,24 +119,32 @@ BraveAccountService::BraveAccountService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     OSCryptCallback encrypt_callback,
     OSCryptCallback decrypt_callback,
-    std::unique_ptr<base::OneShotTimer> verify_result_timer)
+    std::unique_ptr<base::OneShotTimer> verify_result_timer,
+    std::unique_ptr<base::OneShotTimer> auth_validate_timer)
     : pref_service_(pref_service),
       url_loader_factory_(std::move(url_loader_factory)),
       encrypt_callback_(std::move(encrypt_callback)),
       decrypt_callback_(std::move(decrypt_callback)),
-      verify_result_timer_(std::move(verify_result_timer)) {
+      verify_result_timer_(std::move(verify_result_timer)),
+      auth_validate_timer_(std::move(auth_validate_timer)) {
   CHECK(pref_service_);
   CHECK(url_loader_factory_);
   CHECK(encrypt_callback_);
   CHECK(decrypt_callback_);
   CHECK(verify_result_timer_);
+  CHECK(auth_validate_timer_);
 
-  pref_change_registrar_.Init(pref_service_);
-  pref_change_registrar_.Add(
-      prefs::kBraveAccountVerificationToken,
+  pref_verification_token_.Init(
+      prefs::kBraveAccountVerificationToken, pref_service,
       base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
                           base::Unretained(this)));
   OnVerificationTokenChanged();
+
+  pref_authentication_token_.Init(
+      prefs::kBraveAccountAuthenticationToken, pref_service,
+      base::BindRepeating(&BraveAccountService::OnAuthenticationTokenChanged,
+                          base::Unretained(this)));
+  OnAuthenticationTokenChanged();
 }
 
 void BraveAccountService::RegisterInitialize(
@@ -318,7 +328,7 @@ void BraveAccountService::OnRegisterFinalize(
 }
 
 void BraveAccountService::OnVerificationTokenChanged() {
-  if (pref_service_->GetString(prefs::kBraveAccountVerificationToken).empty()) {
+  if (pref_verification_token_.GetValue().empty()) {
     return CHECK_DEREF(verify_result_timer_.get()).Stop();
   }
 
@@ -361,7 +371,7 @@ void BraveAccountService::VerifyResult(
                          weak_factory_.GetWeakPtr()));
 
   // Replace normal cadence with the watchdog timer.
-  ScheduleVerifyResult(kVerifyResultWatchdogInterval,
+  ScheduleVerifyResult(kWatchdogInterval,
                        std::move(current_verify_result_request));
 }
 
@@ -494,6 +504,70 @@ void BraveAccountService::OnLoginFinalize(LoginFinalizeCallback callback,
           });
 
   std::move(callback).Run(std::move(result));
+}
+
+void BraveAccountService::OnAuthenticationTokenChanged() {
+  if (pref_authentication_token_.GetValue().empty()) {
+    pref_service_->ClearPref(prefs::kBraveAccountEmailAddress);
+    return CHECK_DEREF(auth_validate_timer_.get()).Stop();
+  }
+
+  ScheduleAuthValidate();
+}
+
+void BraveAccountService::ScheduleAuthValidate(
+    base::TimeDelta delay,
+    RequestHandle current_auth_validate_request) {
+  CHECK_DEREF(auth_validate_timer_.get())
+      .Start(FROM_HERE, delay,
+             base::BindOnce(&BraveAccountService::AuthValidate,
+                            base::Unretained(this),
+                            std::move(current_auth_validate_request)));
+}
+
+void BraveAccountService::AuthValidate(
+    RequestHandle current_auth_validate_request) {
+  current_auth_validate_request.reset();
+
+  const auto encrypted_authentication_token =
+      pref_service_->GetString(prefs::kBraveAccountAuthenticationToken);
+  if (encrypted_authentication_token.empty()) {
+    return;
+  }
+
+  const auto authentication_token = Decrypt(encrypted_authentication_token);
+  if (authentication_token.empty()) {
+    return;
+  }
+
+  auto request = MakeRequest<WithHeaders<AuthValidate::Request>>();
+  request.headers.SetHeader("Authorization",
+                            base::StrCat({"Bearer ", authentication_token}));
+  current_auth_validate_request =
+      Client<endpoints::AuthValidate>::Send<RequestCancelability::kCancelable>(
+          url_loader_factory_, std::move(request),
+          base::BindOnce(&BraveAccountService::OnAuthValidate,
+                         weak_factory_.GetWeakPtr()));
+
+  // Replace normal cadence with the watchdog timer.
+  ScheduleAuthValidate(kWatchdogInterval,
+                       std::move(current_auth_validate_request));
+}
+
+void BraveAccountService::OnAuthValidate(AuthValidate::Response response) {
+  const auto email =
+      response.body
+          ? std::move(*response.body)
+                .transform([](auto success_body) { return success_body.email; })
+                .value_or("")
+          : "";
+
+  if (!email.empty()) {
+    pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
+  }
+
+  // Replace watchdog timer with the normal cadence.
+  ScheduleAuthValidate(kAuthValidatePollInterval);
 }
 
 std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
