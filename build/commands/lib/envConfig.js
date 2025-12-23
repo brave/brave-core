@@ -16,22 +16,24 @@ const Log = require('./logging')
  *
  * This class manages all configuration loading for the Brave build system,
  * combining values from multiple sources with a clear priority order:
- *   1. Environment variables from .env files (highest priority)
+ *   1. Variables from .env files (highest priority)
  *   2. Package configuration from package.json
  *   3. Default values provided by caller (lowest priority)
- *
- * Features:
- * - Loads package.json configuration on construction
- * - Parses .env files with support for include_env directives
- * - Type validation and automatic JSON parsing of config values
- * - Caching for performance optimization
- * - Validation to prevent inconsistent default values across calls
- *
- * Usage: const envConfig = new EnvConfig('/path/to/brave/core') const value =
- *   envConfig.getEnvConfig(['projects', 'chrome', 'tag']) const pkgValue =
- *   envConfig.getPackageConfig(['version'])
  */
 class EnvConfig {
+  /** Package.json config merged with version.
+   *  @type {{config: Record<string, any>, version: string}}  */
+  #packageConfig
+  /** Raw variables from .env files.
+   *  @type {Record<string, string>}  */
+  #envConfig
+  /** Parsed and typed config values cache.
+   *  @type {Record<string, any>}  */
+  #envConfigTyped
+  /** Stored default values for validation.
+   *  @type {Record<string, any>}  */
+  #seenDefaultValues
+
   /**
    * Creates a new EnvConfig instance and loads all configuration files.
    *
@@ -39,22 +41,22 @@ class EnvConfig {
    * files
    */
   constructor(configDir) {
-    this.packageConfig = this.#loadPackageConfig(configDir)
-    this.envConfig = this.#loadEnvConfig(configDir)
+    this.#packageConfig = this.#loadPackageConfig(configDir)
+    this.#envConfig = this.#loadEnvConfig(configDir)
 
-    this.envConfigTyped = {}
-    this.seenDefaultValues = {}
+    this.#envConfigTyped = {}
+    this.#seenDefaultValues = {}
   }
 
   /**
    * Retrieves a value from package.json configuration.
    *
-   * @param {string[]} key - Array of keys forming the path to the config value
-   *                         (e.g., ['projects', 'chrome', 'version'])
+   * @param {string[]} keyPath - Array of keys forming the path to the config
+   * value (e.g., ['projects', 'chrome', 'version'])
    * @returns {*} The configuration value, or undefined if not found
    */
-  getPackageConfig(key) {
-    return key.reduce((obj, key) => obj?.[key], this.packageConfig)
+  getPackageConfig(keyPath) {
+    return keyPath.reduce((obj, subkey) => obj?.[subkey], this.#packageConfig)
   }
 
   /**
@@ -72,49 +74,46 @@ class EnvConfig {
    * - If defaultValue is a string, returns .env value as-is
    * - For other types, parses .env value as JSON and validates type matches
    *
-   * Results are cached for performance. If called multiple times with the same
-   * key but different defaultValues, an assertion error is thrown.
-   *
-   * @param {string[]} key - Array of keys forming the config path
-   * @param {*} [defaultValue=undefined] - Default value if config not found;
-   *                                       also determines expected type
+   * @param {string[]} keyPath - Array of keys forming the config path
+   * @param {*} defaultValue - Default value if config not found;also determines
+   * expected type
    * @returns {*} The configuration value with appropriate type
    * @throws {AssertionError} If called with different defaultValue for same key
    * @throws {Error} If .env value cannot be parsed or has wrong type
    */
-  getEnvConfig(key, defaultValue) {
-    const keyJoined = key.join('_')
+  getEnvConfig(keyPath, defaultValue) {
+    const keyJoined = keyPath.join('_')
 
     // Check already processed value first.
-    if (keyJoined in this.envConfigTyped) {
+    if (keyJoined in this.#envConfigTyped) {
       assert.deepStrictEqual(
         defaultValue,
-        this.seenDefaultValues[keyJoined],
+        this.#seenDefaultValues[keyJoined],
         `getEnvConfig for key ${keyJoined} was called with a different defaultValue before`,
       )
-      return this.envConfigTyped[keyJoined]
+      return this.#envConfigTyped[keyJoined]
     }
 
     // Store the default value for the key to check for mismatches on subsequent
     // calls to the same key.
-    this.seenDefaultValues[keyJoined] = defaultValue
+    this.#seenDefaultValues[keyJoined] = defaultValue
 
     // Look for .env value.
-    const envConfigValue = this.envConfig[keyJoined]
+    const envConfigValue = this.#envConfig[keyJoined]
     if (envConfigValue !== undefined) {
       // Parse as JSON or return a string if no default value is provided.
       if (defaultValue === undefined) {
         try {
-          return (this.envConfigTyped[keyJoined] = JSON.parse(envConfigValue))
+          return (this.#envConfigTyped[keyJoined] = JSON.parse(envConfigValue))
         } catch (e) {
-          return (this.envConfigTyped[keyJoined] = envConfigValue)
+          return (this.#envConfigTyped[keyJoined] = envConfigValue)
         }
       }
 
       // Use the value as is if the default value is a string.
       const defaultValueType = getValueType(defaultValue)
       if (defaultValueType === 'String') {
-        return (this.envConfigTyped[keyJoined] = envConfigValue)
+        return (this.#envConfigTyped[keyJoined] = envConfigValue)
       }
 
       // Parse as JSON if the default value is not a string.
@@ -137,15 +136,15 @@ class EnvConfig {
         process.exit(1)
       }
 
-      return (this.envConfigTyped[keyJoined] = envConfigValueParsed)
+      return (this.#envConfigTyped[keyJoined] = envConfigValueParsed)
     }
 
-    const packageConfigValue = this.getPackageConfig(key)
+    const packageConfigValue = this.getPackageConfig(keyPath)
     if (packageConfigValue !== undefined) {
-      return (this.envConfigTyped[keyJoined] = packageConfigValue)
+      return (this.#envConfigTyped[keyJoined] = packageConfigValue)
     }
 
-    return (this.envConfigTyped[keyJoined] = defaultValue)
+    return (this.#envConfigTyped[keyJoined] = defaultValue)
   }
 
   /**
@@ -200,8 +199,7 @@ class EnvConfig {
  *
  * Format: include_env=path/to/file.env
  *
- * @param {Object} processEnv - Object to populate with parsed environment
- * variables
+ * @param {Object} processEnv - Object to populate with parsed variables
  * @param {string} envPath - Path to the main .env file to parse
  */
 function dotenvPopulateWithIncludes(processEnv, envPath) {
@@ -243,11 +241,13 @@ function dotenvPopulateWithIncludes(processEnv, envPath) {
 }
 
 /**
- * Returns a string representing the type of a value.
- * Used for type validation in getEnvConfig.
+ * Returns a string representing the type of a JSON-parseable value. Throws an
+ * error if the value is not a JSON-parseable type.
  *
  * @param {*} value - Value to get the type of
- * @returns {string} Type name ('undefined', 'null', or constructor name)
+ * @returns {'undefined'|'null'|'String'|'Number'|'Boolean'|'Array'|'Object'}
+ * Type name
+ * @throws {AssertionError} If value is not a JSON-parseable type
  */
 function getValueType(value) {
   if (value === undefined) {
@@ -256,7 +256,17 @@ function getValueType(value) {
   if (value === null) {
     return 'null'
   }
-  return value.constructor.name
+
+  const typeName = value.constructor.name
+
+  // Only allow JSON-parseable types
+  const validTypes = ['String', 'Number', 'Boolean', 'Array', 'Object']
+  assert(
+    validTypes.includes(typeName),
+    `Unsupported type: ${typeName}. Only JSON-parseable types are allowed (string, number, boolean, null, array, object).`,
+  )
+
+  return typeName
 }
 
 module.exports = EnvConfig

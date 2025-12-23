@@ -26,7 +26,7 @@ if (rootDir.includes(' ')) {
 
 const envConfig = new EnvConfig(braveCoreDir)
 
-const packageConfig = (key) => {
+const getPackageConfig = (key) => {
   return envConfig.getPackageConfig(key)
 }
 
@@ -79,7 +79,7 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const getBraveVersion = (ignorePatchVersionNumber) => {
-  const braveVersion = packageConfig(['version'])
+  const braveVersion = getPackageConfig(['version'])
   if (!ignorePatchVersionNumber) {
     return braveVersion
   }
