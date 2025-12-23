@@ -16,7 +16,6 @@
 #include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/privacy_sandbox/privacy_sandbox_test_util.h"
-#include "components/privacy_sandbox/tracking_protection_settings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/test/browser_task_environment.h"
@@ -133,15 +132,9 @@ class PrivacySandboxSettingsTest : public testing::Test {
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
         false /* restore_session */, false /* should_record_metrics */);
     cookie_settings_ = new content_settings::CookieSettings(
-        host_content_settings_map_.get(), &prefs_,
-        /*tracking_protection_settings=*/nullptr, false,
+        host_content_settings_map_.get(), &prefs_, false,
         content_settings::CookieSettings::NoFedCmSharingPermissionsCallback(),
         /*tpcd_metadata_manager=*/nullptr, "chrome-extension");
-
-    tracking_protection_settings_ =
-        std::make_unique<privacy_sandbox::TrackingProtectionSettings>(
-            &prefs_,
-            /*is_incognito=*/false);
   }
   ~PrivacySandboxSettingsTest() override {
     host_content_settings_map()->ShutdownOnUIThread();
@@ -155,7 +148,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
 
     privacy_sandbox_settings_ = std::make_unique<BravePrivacySandboxSettings>(
         std::move(mock_delegate), host_content_settings_map(),
-        cookie_settings(), tracking_protection_settings_.get(), prefs());
+        cookie_settings(), prefs());
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -180,8 +173,6 @@ class PrivacySandboxSettingsTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
-  std::unique_ptr<privacy_sandbox::TrackingProtectionSettings>
-      tracking_protection_settings_;
 
   std::unique_ptr<PrivacySandboxSettings> privacy_sandbox_settings_;
   raw_ptr<MockPrivacySandboxDelegate, DanglingUntriaged> mock_delegate_;
