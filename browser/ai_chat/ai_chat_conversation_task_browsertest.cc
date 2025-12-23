@@ -105,7 +105,7 @@ class AIChatConversationTaskBrowserTest : public InProcessBrowserTest {
     agent_profile_ = agent_browser->profile();
     agent_browser_window_ = agent_browser;
 
-    GetActorService()->GetPolicyChecker().SetActOnWebForTesting(true);
+    GetActorService()->GetPolicyChecker().set_act_on_web_for_testing(true);
     actor::InitActionBlocklist(agent_profile_);
 
     // Get the AI Chat service from the agent profile
