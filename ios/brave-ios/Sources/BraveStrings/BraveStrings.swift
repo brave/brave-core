@@ -2912,6 +2912,14 @@ extension Strings {
     comment: "Title for the Brave Account section in settings"
   )
 
+  public static let braveAccountEmailAddress = NSLocalizedString(
+    "BraveAccountEmailAddress",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Email address",
+    comment: "Title shown when user is logged in"
+  )
+
   public static let braveAccountSignOut = NSLocalizedString(
     "BraveAccountSignOut",
     tableName: "BraveShared",

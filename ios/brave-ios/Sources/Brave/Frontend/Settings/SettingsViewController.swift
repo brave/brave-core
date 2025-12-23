@@ -193,6 +193,10 @@ class SettingsViewController: TableViewController {
       callback: refreshUI
     )
     prefsChangeRegistrar.addObserver(
+      forPath: BraveAccountEmailAddressPref,
+      callback: refreshUI
+    )
+    prefsChangeRegistrar.addObserver(
       forPath: BraveAccountVerificationTokenPref,
       callback: refreshUI
     )
@@ -365,8 +369,10 @@ class SettingsViewController: TableViewController {
         header: .title(Strings.braveAccount),
         rows: [
           Row(
-            text: "John Doe",
-            detailText: "johndoe@gmail.com",
+            text: Strings.braveAccountEmailAddress,
+            detailText: braveCore.profile.prefs.string(
+              forPath: BraveAccountEmailAddressPref
+            ),
             image: UIImage(sharedNamed: "brave.logo"),
             cellClass: BraveAccountIconCell.self
           ),
