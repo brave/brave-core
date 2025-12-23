@@ -166,7 +166,7 @@ std::optional<std::string> PolkadotKeyring::EncodePrivateKeyForExport(
   }
 
   // Encrypt message.
-  auto encrypt_result = ScryptEncrypt(pkcs8_key, *derived_key, nonce_bytes);
+  auto encrypt_result = XSalsaPolyEncrypt(pkcs8_key, *derived_key, nonce_bytes);
   if (!encrypt_result.has_value()) {
     return std::nullopt;
   }
