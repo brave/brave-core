@@ -25,7 +25,7 @@ inline constexpr uint8_t kSecretboxNonceSize = 24u;
 inline constexpr uint8_t kScryptKeyBytes = 32u;
 
 // Encrypts data using xsalsa20-poly1305 encryption with the provided key.
-std::optional<std::vector<uint8_t>> ScryptEncrypt(
+std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
     base::span<const uint8_t> plaintext,
     base::span<const uint8_t, kScryptKeyBytes> key,
     base::span<const uint8_t, kSecretboxNonceSize> nonce);
@@ -33,7 +33,7 @@ std::optional<std::vector<uint8_t>> ScryptEncrypt(
 // Decrypts data encrypted with ScryptEncrypt.
 // Returns the decrypted plaintext, or std::nullopt if decryption fails
 // (e.g., wrong key, corrupted data).
-std::optional<std::vector<uint8_t>> ScryptDecrypt(
+std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
     base::span<const uint8_t> data,
     base::span<const uint8_t, kSecretboxNonceSize> nonce,
     base::span<const uint8_t, kScryptKeyBytes> key);

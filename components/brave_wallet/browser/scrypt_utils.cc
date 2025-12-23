@@ -19,7 +19,7 @@ static_assert(kSecretboxNonceSize == crypto_secretbox_NONCEBYTES,
 static_assert(kScryptKeyBytes == crypto_secretbox_KEYBYTES,
               "kScryptKeyBytes must be equal crypto_secretbox_KEYBYTES");
 
-std::optional<std::vector<uint8_t>> ScryptEncrypt(
+std::optional<std::vector<uint8_t>> XSalsaPolyEncrypt(
     base::span<const uint8_t> plaintext,
     base::span<const uint8_t, kScryptKeyBytes> key,
     base::span<const uint8_t, kSecretboxNonceSize> nonce) {
@@ -46,7 +46,7 @@ std::optional<std::vector<uint8_t>> ScryptEncrypt(
   return base::ToVector(payload);
 }
 
-std::optional<std::vector<uint8_t>> ScryptDecrypt(
+std::optional<std::vector<uint8_t>> XSalsaPolyDecrypt(
     base::span<const uint8_t> data,
     base::span<const uint8_t, kSecretboxNonceSize> nonce,
     base::span<const uint8_t, kScryptKeyBytes> key) {
