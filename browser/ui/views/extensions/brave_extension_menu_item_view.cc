@@ -26,12 +26,12 @@
 BraveExtensionMenuItemView::BraveExtensionMenuItemView(
     Browser* browser,
     bool is_enterprise,
-    std::unique_ptr<ToolbarActionViewModel> controller,
+    ToolbarActionViewModel* controller,
     base::RepeatingCallback<void(bool)> site_access_toggle_callback,
     views::Button::PressedCallback site_permissions_button_callback)
     : ExtensionMenuItemView(browser,
                             is_enterprise,
-                            std::move(controller),
+                            controller,
                             std::move(site_access_toggle_callback),
                             std::move(site_permissions_button_callback)) {
   CHECK(base::FeatureList::IsEnabled(
