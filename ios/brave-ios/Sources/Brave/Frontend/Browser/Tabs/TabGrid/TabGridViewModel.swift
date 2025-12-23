@@ -293,10 +293,9 @@ class TabGridViewModel {
     if tabs.first(where: \.isVisible) == nil, let tab = tabs.last {
       tabManager.selectTab(tab)
     }
-    
+
     // Trigger scroll after ALL tab selection is complete
-    // Use async to ensure SwiftUI has updated the view first
-    Task { 
+    Task {
       self.onModeSwitchComplete?()
     }
   }

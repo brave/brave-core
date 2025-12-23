@@ -470,7 +470,7 @@ struct TabGridContainerViewRepresentable: UIViewRepresentable {
       self.viewModel = viewModel
       self.contextMenu = contextMenu
       self._selectedTabList = selectedTabList
-      
+
       // Set up scroll handler to be called after mode switch completes
       viewModel.onModeSwitchComplete = { [weak self] in
         guard let self, let containerView = self.containerView else { return }
