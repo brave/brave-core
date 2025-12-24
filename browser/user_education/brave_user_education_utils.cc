@@ -27,6 +27,12 @@ void SuppressUserEducation(UserEducationService* service) {
       &features::kSideBySideLinkMenuNewBadge,
   };
 
+  // Chromium's NewBadgePolicy suppresses badges when show_count or used_count
+  // exceeds the policy limits. The defaults are:
+  // - kDefaultNewBadgeShowCount = 10 (badge stops after 10 displays)
+  // - kDefaultNewBadgeFeatureUsedCount = 2 (badge stops after 2 feature uses)
+  // Setting to 999 guarantees exceeding any reasonable policy limit.
+  // See: components/user_education/common/user_education_features.cc
   constexpr int kNeverShowCount = 999;
 
   for (const auto* feature : badges_to_suppress) {
@@ -52,7 +58,15 @@ void SuppressUserEducation(UserEducationService* service) {
 
   for (const auto* feature : promos_to_suppress) {
     user_education::FeaturePromoData data;
+    auto existing = storage_service.ReadPromoData(*feature);
+    if (existing) {
+      data = *existing;
+    }
     data.is_dismissed = true;
+    data.last_dismissed_by = user_education::FeaturePromoClosedReason::kDismiss;
+    if (data.last_show_time.is_null()) {
+      data.last_show_time = storage_service.GetCurrentTime();
+    }
     storage_service.SavePromoData(*feature, data);
   }
 }
