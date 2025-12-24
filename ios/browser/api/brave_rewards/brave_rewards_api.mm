@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #include <optional>
+#include <utility>
 
 #include "base/apple/foundation_util.h"
 #include "base/check.h"
@@ -20,7 +21,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_store.h"
@@ -255,7 +255,7 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
       [strongSelf fetchBalance:nil];
     } else {
       LLOG(0, @"Rewards Initialization Failed with error: %d",
-           base::to_underlying(result));
+           std::to_underlying(result));
     }
     strongSelf.initializationResult = static_cast<BraveRewardsResult>(result);
     if (completion) {

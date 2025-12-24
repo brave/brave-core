@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
@@ -60,7 +59,7 @@ std::string GenerateActivityFilterQuery(const int start,
   if (!filter->non_verified) {
     const std::string status = absl::StrFormat(
         " AND spi.status != %1d AND spi.address != ''",
-        base::to_underlying(mojom::PublisherStatus::NOT_VERIFIED));
+        std::to_underlying(mojom::PublisherStatus::NOT_VERIFIED));
     query += status;
   }
 
