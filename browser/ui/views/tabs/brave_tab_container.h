@@ -30,10 +30,6 @@ class BraveTabContainer : public TabContainerImpl {
                     TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
 
-  // Enables or disables scrolling in the tab container for pinned tabs
-  void SetUnpinnedTabScrollEnabled(bool enabled);
-  bool IsUnpinnedTabScrollEnabled() const;
-
   // Calling this will freeze this view's layout. When the returned closure
   // runs, layout will be unlocked and run immediately.
   // This is to avoid accessing invalid index during reconstruction
@@ -189,7 +185,6 @@ class BraveTabContainer : public TabContainerImpl {
   // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
   // value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
-  bool unpinned_tab_scroll_enabled_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
