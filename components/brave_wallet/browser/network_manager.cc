@@ -25,7 +25,6 @@
 #include "base/not_fatal_until.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -118,7 +117,7 @@ std::string MakeChainIdLowerCase(std::string_view chain_id,
   // Only dumbing for M138 so it doesn't keep rolling if we forget about it
   // (hopefully we won't though).
   if (version_info::GetMajorVersionNumberAsInt() ==
-      base::to_underlying(base::NotFatalUntil::M138)) {
+      std::to_underlying(base::NotFatalUntil::M138)) {
     SCOPED_CRASH_KEY_STRING256("wallet", "MakeChainIdLowerCaseChain", chain_id);
     switch (reason) {
       case ToLowerCaseReason::kGetURLForKnownChainId:

@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 
+#include <utility>
+
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -29,7 +30,7 @@ ConversionActionType ToConversionActionType(
   }
 
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
-               << base::to_underlying(mojom_confirmation_type);
+               << std::to_underlying(mojom_confirmation_type);
 }
 
 ConversionActionType ToConversionActionType(std::string_view action_type) {
@@ -60,7 +61,7 @@ std::string ToString(ConversionActionType action_type) {
   }
 
   NOTREACHED() << "Unexpected value for ConversionActionType: "
-               << base::to_underlying(action_type);
+               << std::to_underlying(action_type);
 }
 
 }  // namespace brave_ads
