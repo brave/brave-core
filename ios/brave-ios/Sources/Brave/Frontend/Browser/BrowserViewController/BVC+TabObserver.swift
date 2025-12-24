@@ -41,6 +41,7 @@ extension BrowserViewController: TabObserver {
       URLPartinessScriptHandler(),
       FaviconScriptHandler(),
       YoutubeQualityScriptHandler(),
+      AutoplayBlockingScriptHandler(),
       BraveLeoScriptHandler(),
       BraveSkusScriptHandler(),
       RequestBlockingContentScriptHandler(),
