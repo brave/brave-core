@@ -104,6 +104,10 @@ void PolkadotWalletService::Unlocked() {
 }
 
 void PolkadotWalletService::InitializeChainMetadata() {
+  if (testnet_chain_metadata_ && mainnet_chain_metadata_) {
+    return;
+  }
+
   polkadot_substrate_rpc_.GetChainName(
       mojom::kPolkadotTestnet,
       base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
