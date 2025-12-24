@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 
+#include <utility>
+
 #include "base/notreached.h"
 #include "base/time/time.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
@@ -47,7 +48,7 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
   }
 
   NOTREACHED() << "Unexpected value for mojom::AdType: "
-               << base::to_underlying(ad_event.type);
+               << std::to_underlying(ad_event.type);
 }
 
 bool DidAdEventOccurWithinObservationWindow(

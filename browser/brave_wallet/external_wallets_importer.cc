@@ -20,7 +20,6 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/types/fixed_array.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/third_party/argon2/src/include/argon2.h"
@@ -156,7 +155,7 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
     }
   } else {
     NOTREACHED() << "Unsupported ExternalWalletType type. value="
-                 << base::to_underlying(type_);
+                 << std::to_underlying(type_);
   }
 
   GetLocalStorage(*extension, std::move(callback));
