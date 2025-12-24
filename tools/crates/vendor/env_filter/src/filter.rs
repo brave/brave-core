@@ -192,6 +192,7 @@ impl fmt::Debug for Builder {
 /// Use the [`Builder`] type to parse and construct a `Filter`.
 ///
 /// [`Builder`]: struct.Builder.html
+#[derive(Clone)]
 pub struct Filter {
     directives: Vec<Directive>,
     filter: Option<FilterOp>,

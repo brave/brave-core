@@ -1,7 +1,6 @@
 use crate::{clone::PrepareCheckout, Repository};
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod main_worktree {
     use std::{path::PathBuf, sync::atomic::AtomicBool};
 
@@ -93,13 +92,13 @@ pub mod main_worktree {
                 .repo
                 .as_ref()
                 .expect("BUG: this method may only be called until it is successful");
-            let workdir = repo.work_dir().ok_or_else(|| Error::BareRepository {
+            let workdir = repo.workdir().ok_or_else(|| Error::BareRepository {
                 git_dir: repo.git_dir().to_owned(),
             })?;
 
             let root_tree_id = match &self.ref_name {
-                Some(reference_val) => Some(repo.find_reference(reference_val)?.peel_to_id_in_place()?),
-                None => repo.head()?.try_peel_to_id_in_place()?,
+                Some(reference_val) => Some(repo.find_reference(reference_val)?.peel_to_id()?),
+                None => repo.head()?.try_peel_to_id()?,
             };
 
             let root_tree = match root_tree_id {
@@ -119,9 +118,7 @@ pub mod main_worktree {
                 })?;
             let mut index = gix_index::File::from_state(index, repo.index_path());
 
-            let mut opts = repo
-                .config
-                .checkout_options(repo, gix_worktree::stack::state::attributes::Source::IdMapping)?;
+            let mut opts = repo.checkout_options(gix_worktree::stack::state::attributes::Source::IdMapping)?;
             opts.destination_is_initially_empty = true;
 
             let mut files = progress.add_child_with_id("checkout".to_string(), ProgressId::CheckoutFiles.into());
@@ -174,7 +171,7 @@ impl PrepareCheckout {
 impl Drop for PrepareCheckout {
     fn drop(&mut self) {
         if let Some(repo) = self.repo.take() {
-            std::fs::remove_dir_all(repo.work_dir().unwrap_or_else(|| repo.path())).ok();
+            std::fs::remove_dir_all(repo.workdir().unwrap_or_else(|| repo.path())).ok();
         }
     }
 }

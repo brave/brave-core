@@ -1,7 +1,7 @@
 //! Package collections
 
 use crate::error::{Error, ErrorKind};
-use serde::{de, ser, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de, ser};
 use std::{fmt, str::FromStr};
 
 /// Collections of packages (`crates` vs `rust`).

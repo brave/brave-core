@@ -334,7 +334,7 @@
 //! [`examples/custom_filter.rs`]: https://github.com/yaahc/color-eyre/blob/master/examples/custom_filter.rs
 //! [`examples/custom_section.rs`]: https://github.com/yaahc/color-eyre/blob/master/examples/custom_section.rs
 //! [`examples/multiple_errors.rs`]: https://github.com/yaahc/color-eyre/blob/master/examples/multiple_errors.rs
-#![doc(html_root_url = "https://docs.rs/color-eyre/0.6.3")]
+#![doc(html_root_url = "https://docs.rs/color-eyre/0.6.2")]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(
     missing_docs,

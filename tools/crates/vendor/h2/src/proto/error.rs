@@ -13,6 +13,11 @@ pub enum Error {
     Io(io::ErrorKind, Option<String>),
 }
 
+pub struct GoAway {
+    pub debug_data: Bytes,
+    pub reason: Reason,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Initiator {
     User,
@@ -59,6 +64,10 @@ impl Initiator {
             Self::User | Self::Library => true,
             Self::Remote => false,
         }
+    }
+
+    pub(crate) fn is_library(&self) -> bool {
+        matches!(self, Self::Library)
     }
 }
 

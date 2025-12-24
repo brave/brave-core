@@ -6,9 +6,9 @@ mod tests;
 
 use crate::combinator::trace;
 use crate::error::{ErrorConvert, Needed, ParserError};
-use crate::lib::std::ops::{AddAssign, Div, Shl, Shr};
 use crate::stream::{Stream, StreamIsPartial, ToUsize};
 use crate::{Parser, Result};
+use core::ops::{AddAssign, Div, Shl, Shr};
 
 /// Number of bits in a byte
 const BYTE: usize = u8::BITS as usize;

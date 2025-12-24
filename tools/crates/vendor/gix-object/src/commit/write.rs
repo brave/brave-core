@@ -11,8 +11,9 @@ impl crate::WriteTo for Commit {
         for parent in &self.parents {
             encode::trusted_header_id(b"parent", parent, &mut out)?;
         }
-        encode::trusted_header_signature(b"author", &self.author.to_ref(), &mut out)?;
-        encode::trusted_header_signature(b"committer", &self.committer.to_ref(), &mut out)?;
+        let mut buf = gix_date::parse::TimeBuf::default();
+        encode::trusted_header_signature(b"author", &self.author.to_ref(&mut buf), &mut out)?;
+        encode::trusted_header_signature(b"committer", &self.committer.to_ref(&mut buf), &mut out)?;
         if let Some(encoding) = self.encoding.as_ref() {
             encode::header_field(b"encoding", encoding, &mut out)?;
         }
@@ -41,8 +42,8 @@ impl crate::WriteTo for Commit {
                 .extra_headers
                 .iter()
                 .map(|(name, value)| {
-                    // each header *value* is preceded by a space and followed by a newline
-                    name.len() + value.split_str("\n").map(|s| s.len() + 2).sum::<usize>()
+                    // each header *value* is preceded by a space, and it starts right after the name.
+                    name.len() + value.lines_with_terminator().map(|s| s.len() + 1).sum::<usize>() + usize::from(!value.ends_with_str(b"\n"))
                 })
                 .sum::<usize>()
             + 1 /* nl */
@@ -50,7 +51,7 @@ impl crate::WriteTo for Commit {
     }
 }
 
-impl<'a> crate::WriteTo for CommitRef<'a> {
+impl crate::WriteTo for CommitRef<'_> {
     /// Serializes this instance to `out` in the git serialization format.
     fn write_to(&self, mut out: &mut dyn io::Write) -> io::Result<()> {
         encode::trusted_header_id(b"tree", &self.tree(), &mut out)?;
@@ -87,8 +88,8 @@ impl<'a> crate::WriteTo for CommitRef<'a> {
                 .extra_headers
                 .iter()
                 .map(|(name, value)| {
-                    // each header *value* is preceded by a space and followed by a newline
-                    name.len() + value.split_str("\n").map(|s| s.len() + 2).sum::<usize>()
+                    // each header *value* is preceded by a space, and it starts right after the name.
+                    name.len() + value.lines_with_terminator().map(|s| s.len() + 1).sum::<usize>() + usize::from(!value.ends_with_str(b"\n"))
                 })
                 .sum::<usize>()
             + 1 /* nl */

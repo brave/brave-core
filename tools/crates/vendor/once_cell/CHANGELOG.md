@@ -1,8 +1,22 @@
 # Changelog
 
-## Unreleased
+## 1.21.3
+
+- Outline more initialization in `race`: [#284](https://github.com/matklad/once_cell/pull/284),
+  [#285](https://github.com/matklad/once_cell/pull/285).
+
+## 1.21.2
+- Relax success ordering from AcqRel to Release in `race`: [#278](https://github.com/matklad/once_cell/pull/278).
+
+## 1.21.1
+- Reduce MSRV to 1.65: [#277](https://github.com/matklad/once_cell/pull/277).
+
+## 1.21.0
 
 - Outline initialization in `race`: [#273](https://github.com/matklad/once_cell/pull/273).
+- Add `OnceNonZereUsize::get_unchecked`: [#274](https://github.com/matklad/once_cell/pull/274).
+- Add `OnceBox::clone` and `OnceBox::with_value`: [#275](https://github.com/matklad/once_cell/pull/275).
+- Increase MSRV to 1.70
 
 ## 1.20.2
 

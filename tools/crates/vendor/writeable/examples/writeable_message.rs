@@ -3,7 +3,9 @@
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
 // This example illustrates a very simple type implementing Writeable.
-icu_benchmark_macros::static_setup!();
+
+#![no_main] // https://github.com/unicode-org/icu4x/issues/395
+icu_benchmark_macros::instrument!();
 
 use std::fmt;
 use writeable::*;
@@ -45,8 +47,6 @@ impl<V: Writeable> fmt::Display for WriteableMessage<V> {
 }
 
 fn main() {
-    icu_benchmark_macros::main_setup!();
-
     let (string, parts) =
         writeable::_internal::writeable_to_parts_for_test(&WriteableMessage("world"));
 

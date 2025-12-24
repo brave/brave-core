@@ -81,7 +81,7 @@ where
     }
 }
 
-impl<I, E> crate::lib::std::ops::Deref for Recoverable<I, E>
+impl<I, E> core::ops::Deref for Recoverable<I, E>
 where
     I: Stream,
 {
@@ -93,12 +93,12 @@ where
     }
 }
 
-impl<I: crate::lib::std::fmt::Display, E> crate::lib::std::fmt::Display for Recoverable<I, E>
+impl<I: core::fmt::Display, E> core::fmt::Display for Recoverable<I, E>
 where
     I: Stream,
 {
-    fn fmt(&self, f: &mut crate::lib::std::fmt::Formatter<'_>) -> crate::lib::std::fmt::Result {
-        crate::lib::std::fmt::Display::fmt(&self.input, f)
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Display::fmt(&self.input, f)
     }
 }
 
@@ -113,7 +113,7 @@ where
     }
 }
 
-impl<I, E: crate::lib::std::fmt::Debug> Stream for Recoverable<I, E>
+impl<I, E: core::fmt::Debug> Stream for Recoverable<I, E>
 where
     I: Stream,
 {
@@ -159,8 +159,18 @@ where
         self.input.next_slice(offset)
     }
     #[inline(always)]
+    unsafe fn next_slice_unchecked(&mut self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.next_slice_unchecked(offset) }
+    }
+    #[inline(always)]
     fn peek_slice(&self, offset: usize) -> Self::Slice {
         self.input.peek_slice(offset)
+    }
+    #[inline(always)]
+    unsafe fn peek_slice_unchecked(&self, offset: usize) -> Self::Slice {
+        // SAFETY: Passing up invariants
+        unsafe { self.input.peek_slice_unchecked(offset) }
     }
 
     #[inline(always)]
@@ -173,7 +183,7 @@ where
     }
 
     #[inline(always)]
-    fn raw(&self) -> &dyn crate::lib::std::fmt::Debug {
+    fn raw(&self) -> &dyn core::fmt::Debug {
         &self.input
     }
 }
@@ -197,7 +207,7 @@ impl<I, E, R> Recover<E> for Recoverable<I, R>
 where
     I: Stream,
     R: FromRecoverableError<Self, E>,
-    R: crate::lib::std::fmt::Debug,
+    R: core::fmt::Debug,
     E: crate::error::ParserError<Self>,
 {
     fn record_err(
@@ -257,7 +267,7 @@ where
 impl<I, E> Offset for Recoverable<I, E>
 where
     I: Stream,
-    E: crate::lib::std::fmt::Debug,
+    E: core::fmt::Debug,
 {
     #[inline(always)]
     fn offset_from(&self, other: &Self) -> usize {
@@ -268,7 +278,7 @@ where
 impl<I, E> Offset<<Recoverable<I, E> as Stream>::Checkpoint> for Recoverable<I, E>
 where
     I: Stream,
-    E: crate::lib::std::fmt::Debug,
+    E: core::fmt::Debug,
 {
     #[inline(always)]
     fn offset_from(&self, other: &<Recoverable<I, E> as Stream>::Checkpoint) -> usize {
@@ -315,7 +325,7 @@ where
     I: FindSlice<T>,
 {
     #[inline(always)]
-    fn find_slice(&self, substr: T) -> Option<crate::lib::std::ops::Range<usize>> {
+    fn find_slice(&self, substr: T) -> Option<core::ops::Range<usize>> {
         self.input.find_slice(substr)
     }
 }
@@ -324,7 +334,7 @@ impl<I, E> UpdateSlice for Recoverable<I, E>
 where
     I: Stream,
     I: UpdateSlice,
-    E: crate::lib::std::fmt::Debug,
+    E: core::fmt::Debug,
 {
     #[inline(always)]
     fn update_slice(mut self, inner: Self::Slice) -> Self {

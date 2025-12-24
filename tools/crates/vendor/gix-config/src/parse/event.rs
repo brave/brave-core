@@ -37,7 +37,7 @@ impl Event<'_> {
         match self {
             Self::ValueNotDone(e) => {
                 out.write_all(e.as_ref())?;
-                out.write_all(b"\\")
+                out.write_all(br"\")
             }
             Self::Whitespace(e) | Self::Newline(e) | Self::Value(e) | Self::ValueDone(e) => out.write_all(e.as_ref()),
             Self::KeyValueSeparator => out.write_all(b"="),

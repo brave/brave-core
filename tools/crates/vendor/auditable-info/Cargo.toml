@@ -12,9 +12,10 @@
 [package]
 edition = "2018"
 name = "auditable-info"
-version = "0.8.0"
+version = "0.10.0"
 authors = ['Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>']
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -24,26 +25,6 @@ readme = "README.md"
 categories = ["encoding"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-secure-code/cargo-auditable"
-
-[lib]
-name = "auditable_info"
-path = "src/lib.rs"
-
-[dependencies.auditable-extract]
-version = "0.3.4"
-default-features = false
-
-[dependencies.auditable-serde]
-version = "0.7.0"
-optional = true
-
-[dependencies.miniz_oxide]
-version = "0.6.2"
-features = ["std"]
-
-[dependencies.serde_json]
-version = "1.0.57"
-optional = true
 
 [features]
 default = [
@@ -55,3 +36,23 @@ serde = [
     "auditable-serde",
 ]
 wasm = ["auditable-extract/wasm"]
+
+[lib]
+name = "auditable_info"
+path = "src/lib.rs"
+
+[dependencies.auditable-extract]
+version = "0.3.4"
+default-features = false
+
+[dependencies.auditable-serde]
+version = "0.9.0"
+optional = true
+
+[dependencies.miniz_oxide]
+version = "0.8.0"
+features = ["std"]
+
+[dependencies.serde_json]
+version = "1.0.57"
+optional = true

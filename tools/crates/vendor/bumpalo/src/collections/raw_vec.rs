@@ -639,10 +639,11 @@ impl<'a, T> RawVec<'a, T> {
     #[inline(never)]
     fn reserve_internal_or_error(
         &mut self,
-         used_cap: usize,
-         needed_extra_cap: usize,
-         fallibility: Fallibility,
-         strategy: ReserveStrategy,)-> Result<(), CollectionAllocErr> {
+        used_cap: usize,
+        needed_extra_cap: usize,
+        fallibility: Fallibility,
+        strategy: ReserveStrategy,
+    ) -> Result<(), CollectionAllocErr> {
         // Delegates the call to `reserve_internal`, which can be inlined.
         self.reserve_internal(used_cap, needed_extra_cap, fallibility, strategy)
     }

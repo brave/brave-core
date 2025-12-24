@@ -30,7 +30,7 @@
 //!
 //! /// Reads a file and displays the name of each section.
 //! fn main() -> Result<(), Box<dyn Error>> {
-//! #   #[cfg(feature = "std")] {
+//! #   #[cfg(all(feature = "read", feature = "std"))] {
 //!     let data = fs::read("path/to/binary")?;
 //!     let file = object::File::parse(&*data)?;
 //!     for section in file.sections() {
@@ -45,18 +45,24 @@ use alloc::borrow::Cow;
 use alloc::vec::Vec;
 use core::{fmt, result};
 
-use crate::common::*;
+#[cfg(not(feature = "std"))]
+use alloc::collections::btree_map::BTreeMap as Map;
+#[cfg(feature = "std")]
+use std::collections::hash_map::HashMap as Map;
+
+pub use crate::common::*;
 
 mod read_ref;
 pub use read_ref::*;
 
-#[cfg(feature = "std")]
 mod read_cache;
-#[cfg(feature = "std")]
 pub use read_cache::*;
 
 mod util;
 pub use util::*;
+
+#[cfg(any(feature = "elf", feature = "macho"))]
+mod gnu_compression;
 
 #[cfg(any(
     feature = "coff",
@@ -107,7 +113,7 @@ mod private {
 
 /// The error type used within the read module.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct Error(&'static str);
+pub struct Error(pub(crate) &'static str);
 
 impl fmt::Display for Error {
     #[inline]
@@ -118,6 +124,8 @@ impl fmt::Display for Error {
 
 #[cfg(feature = "std")]
 impl std::error::Error for Error {}
+#[cfg(all(not(feature = "std"), core_error))]
+impl core::error::Error for Error {}
 
 /// The result type used within the read module.
 pub type Result<T> = result::Result<T, Error>;
@@ -151,7 +159,7 @@ impl<T> ReadError<T> for Option<T> {
     target_pointer_width = "32",
     feature = "elf"
 ))]
-pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile32<'data, crate::Endianness, R>;
+pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile32<'data, crate::endian::Endianness, R>;
 
 /// The native executable file for the target platform.
 #[cfg(all(
@@ -160,15 +168,17 @@ pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile32<'data, crate::Endia
     target_pointer_width = "64",
     feature = "elf"
 ))]
-pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile64<'data, crate::Endianness, R>;
+pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile64<'data, crate::endian::Endianness, R>;
 
 /// The native executable file for the target platform.
 #[cfg(all(target_os = "macos", target_pointer_width = "32", feature = "macho"))]
-pub type NativeFile<'data, R = &'data [u8]> = macho::MachOFile32<'data, crate::Endianness, R>;
+pub type NativeFile<'data, R = &'data [u8]> =
+    macho::MachOFile32<'data, crate::endian::Endianness, R>;
 
 /// The native executable file for the target platform.
 #[cfg(all(target_os = "macos", target_pointer_width = "64", feature = "macho"))]
-pub type NativeFile<'data, R = &'data [u8]> = macho::MachOFile64<'data, crate::Endianness, R>;
+pub type NativeFile<'data, R = &'data [u8]> =
+    macho::MachOFile64<'data, crate::endian::Endianness, R>;
 
 /// The native executable file for the target platform.
 #[cfg(all(target_os = "windows", target_pointer_width = "32", feature = "pe"))]
@@ -235,12 +245,12 @@ pub enum FileKind {
     MachO64,
     /// A 32-bit Mach-O fat binary.
     ///
-    /// See [`macho::FatHeader::parse_arch32`].
+    /// See [`macho::MachOFatFile32`].
     #[cfg(feature = "macho")]
     MachOFat32,
     /// A 64-bit Mach-O fat binary.
     ///
-    /// See [`macho::FatHeader::parse_arch64`].
+    /// See [`macho::MachOFatFile64`].
     #[cfg(feature = "macho")]
     MachOFat64,
     /// A 32-bit PE file.
@@ -287,7 +297,8 @@ impl FileKind {
 
         let kind = match [magic[0], magic[1], magic[2], magic[3], magic[4], magic[5], magic[6], magic[7]] {
             #[cfg(feature = "archive")]
-            [b'!', b'<', b'a', b'r', b'c', b'h', b'>', b'\n'] => FileKind::Archive,
+            [b'!', b'<', b'a', b'r', b'c', b'h', b'>', b'\n']
+            | [b'!', b'<', b't', b'h', b'i', b'n', b'>', b'\n'] => FileKind::Archive,
             #[cfg(feature = "macho")]
             [b'd', b'y', b'l', b'd', b'_', b'v', b'1', b' '] => FileKind::DyldCache,
             #[cfg(feature = "elf")]
@@ -305,7 +316,7 @@ impl FileKind {
             #[cfg(feature = "macho")]
             [0xca, 0xfe, 0xba, 0xbf, ..] => FileKind::MachOFat64,
             #[cfg(feature = "wasm")]
-            [0x00, b'a', b's', b'm', ..] => FileKind::Wasm,
+            [0x00, b'a', b's', b'm', _, _, 0x00, 0x00] => FileKind::Wasm,
             #[cfg(feature = "pe")]
             [b'M', b'Z', ..] if offset == 0 => {
                 // offset == 0 restriction is because optional_header_magic only looks at offset 0
@@ -327,6 +338,10 @@ impl FileKind {
             | [0x64, 0xaa, ..]
             // COFF arm64ec
             | [0x41, 0xa6, ..]
+            // COFF ppc
+            | [0xf0, 0x01, ..]
+            | [0xf1, 0x01, ..]
+            | [0xf2, 0x01, ..]
             // COFF x86
             | [0x4c, 0x01, ..]
             // COFF x86-64
@@ -373,9 +388,21 @@ pub enum ObjectKind {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SectionIndex(pub usize);
 
+impl fmt::Display for SectionIndex {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(f)
+    }
+}
+
 /// The index used to identify a symbol in a symbol table.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SymbolIndex(pub usize);
+
+impl fmt::Display for SymbolIndex {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(f)
+    }
+}
 
 /// The section where an [`ObjectSymbol`] is defined.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -494,7 +521,7 @@ impl<'data> SymbolMapEntry for SymbolMapName<'data> {
 #[derive(Debug, Default, Clone)]
 pub struct ObjectMap<'data> {
     symbols: SymbolMap<ObjectMapEntry<'data>>,
-    objects: Vec<&'data [u8]>,
+    objects: Vec<ObjectMapFile<'data>>,
 }
 
 impl<'data> ObjectMap<'data> {
@@ -513,12 +540,12 @@ impl<'data> ObjectMap<'data> {
 
     /// Get all objects in the map.
     #[inline]
-    pub fn objects(&self) -> &[&'data [u8]] {
+    pub fn objects(&self) -> &[ObjectMapFile<'data>] {
         &self.objects
     }
 }
 
-/// An [`ObjectMap`] entry.
+/// A symbol in an [`ObjectMap`].
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ObjectMapEntry<'data> {
     address: u64,
@@ -556,8 +583,8 @@ impl<'data> ObjectMapEntry<'data> {
 
     /// Get the object file name.
     #[inline]
-    pub fn object(&self, map: &ObjectMap<'data>) -> &'data [u8] {
-        map.objects[self.object]
+    pub fn object<'a>(&self, map: &'a ObjectMap<'data>) -> &'a ObjectMapFile<'data> {
+        &map.objects[self.object]
     }
 }
 
@@ -565,6 +592,32 @@ impl<'data> SymbolMapEntry for ObjectMapEntry<'data> {
     #[inline]
     fn address(&self) -> u64 {
         self.address
+    }
+}
+
+/// An object file name in an [`ObjectMap`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct ObjectMapFile<'data> {
+    path: &'data [u8],
+    member: Option<&'data [u8]>,
+}
+
+impl<'data> ObjectMapFile<'data> {
+    #[cfg(feature = "macho")]
+    fn new(path: &'data [u8], member: Option<&'data [u8]>) -> Self {
+        ObjectMapFile { path, member }
+    }
+
+    /// Get the path to the file containing the object.
+    #[inline]
+    pub fn path(&self) -> &'data [u8] {
+        self.path
+    }
+
+    /// If the file is an archive, get the name of the member containing the object.
+    #[inline]
+    pub fn member(&self) -> Option<&'data [u8]> {
+        self.member
     }
 }
 
@@ -667,6 +720,7 @@ pub struct Relocation {
     target: RelocationTarget,
     addend: i64,
     implicit_addend: bool,
+    flags: RelocationFlags,
 }
 
 impl Relocation {
@@ -705,7 +759,7 @@ impl Relocation {
     /// Set the addend to use in the relocation calculation.
     #[inline]
     pub fn set_addend(&mut self, addend: i64) {
-        self.addend = addend
+        self.addend = addend;
     }
 
     /// Returns true if there is an implicit addend stored in the data at the offset
@@ -714,6 +768,109 @@ impl Relocation {
     pub fn has_implicit_addend(&self) -> bool {
         self.implicit_addend
     }
+
+    /// Relocation flags that are specific to each file format.
+    ///
+    /// The values returned by `kind`, `encoding` and `size` are derived
+    /// from these flags.
+    #[inline]
+    pub fn flags(&self) -> RelocationFlags {
+        self.flags
+    }
+}
+
+/// A map from section offsets to relocation information.
+///
+/// This can be used to apply relocations to a value at a given section offset.
+/// This is intended for use with DWARF in relocatable object files, and only
+/// supports relocations that are used in DWARF.
+///
+/// Returned by [`ObjectSection::relocation_map`].
+#[derive(Debug, Default)]
+pub struct RelocationMap(Map<u64, RelocationMapEntry>);
+
+impl RelocationMap {
+    /// Construct a new relocation map for a section.
+    ///
+    /// Fails if any relocation cannot be added to the map.
+    /// You can manually use `add` if you need different error handling,
+    /// such as to list all errors or to ignore them.
+    pub fn new<'data, 'file, T>(file: &'file T, section: &T::Section<'file>) -> Result<Self>
+    where
+        T: Object<'data>,
+    {
+        let mut map = RelocationMap(Map::new());
+        for (offset, relocation) in section.relocations() {
+            map.add(file, offset, relocation)?;
+        }
+        Ok(map)
+    }
+
+    /// Add a single relocation to the map.
+    pub fn add<'data: 'file, 'file, T>(
+        &mut self,
+        file: &'file T,
+        offset: u64,
+        relocation: Relocation,
+    ) -> Result<()>
+    where
+        T: Object<'data>,
+    {
+        let mut entry = RelocationMapEntry {
+            implicit_addend: relocation.has_implicit_addend(),
+            addend: relocation.addend() as u64,
+        };
+        match relocation.kind() {
+            RelocationKind::Absolute => match relocation.target() {
+                RelocationTarget::Symbol(symbol_idx) => {
+                    let symbol = file
+                        .symbol_by_index(symbol_idx)
+                        .read_error("Relocation with invalid symbol")?;
+                    entry.addend = symbol.address().wrapping_add(entry.addend);
+                }
+                RelocationTarget::Section(section_idx) => {
+                    let section = file
+                        .section_by_index(section_idx)
+                        .read_error("Relocation with invalid section")?;
+                    // DWARF parsers expect references to DWARF sections to be section offsets,
+                    // not addresses. Addresses are useful for everything else.
+                    if section.kind() != SectionKind::Debug {
+                        entry.addend = section.address().wrapping_add(entry.addend);
+                    }
+                }
+                _ => {
+                    return Err(Error("Unsupported relocation target"));
+                }
+            },
+            _ => {
+                return Err(Error("Unsupported relocation type"));
+            }
+        }
+        if self.0.insert(offset, entry).is_some() {
+            return Err(Error("Multiple relocations for offset"));
+        }
+        Ok(())
+    }
+
+    /// Relocate a value that was read from the section at the given offset.
+    pub fn relocate(&self, offset: u64, value: u64) -> u64 {
+        if let Some(relocation) = self.0.get(&offset) {
+            if relocation.implicit_addend {
+                // Use the explicit addend too, because it may have the symbol value.
+                value.wrapping_add(relocation.addend)
+            } else {
+                relocation.addend
+            }
+        } else {
+            value
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+struct RelocationMapEntry {
+    implicit_addend: bool,
+    addend: u64,
 }
 
 /// A data compression format.
@@ -816,27 +973,7 @@ impl<'data> CompressedData<'data> {
         match self.format {
             CompressionFormat::None => Ok(Cow::Borrowed(self.data)),
             #[cfg(feature = "compression")]
-            CompressionFormat::Zlib => {
-                use core::convert::TryInto;
-                let size = self
-                    .uncompressed_size
-                    .try_into()
-                    .ok()
-                    .read_error("Uncompressed data size is too large.")?;
-                let mut decompressed = Vec::with_capacity(size);
-                let mut decompress = flate2::Decompress::new(true);
-                decompress
-                    .decompress_vec(
-                        self.data,
-                        &mut decompressed,
-                        flate2::FlushDecompress::Finish,
-                    )
-                    .ok()
-                    .read_error("Invalid zlib compressed data")?;
-                Ok(Cow::Owned(decompressed))
-            }
-            #[cfg(feature = "compression")]
-            CompressionFormat::Zstandard => {
+            CompressionFormat::Zlib | CompressionFormat::Zstandard => {
                 use core::convert::TryInto;
                 use std::io::Read;
                 let size = self
@@ -844,14 +981,58 @@ impl<'data> CompressedData<'data> {
                     .try_into()
                     .ok()
                     .read_error("Uncompressed data size is too large.")?;
-                let mut decompressed = Vec::with_capacity(size);
-                let mut decoder = ruzstd::StreamingDecoder::new(self.data)
+                let mut decompressed = Vec::new();
+                decompressed
+                    .try_reserve_exact(size)
                     .ok()
-                    .read_error("Invalid zstd compressed data")?;
-                decoder
-                    .read_to_end(&mut decompressed)
-                    .ok()
-                    .read_error("Invalid zstd compressed data")?;
+                    .read_error("Uncompressed data allocation failed")?;
+
+                match self.format {
+                    CompressionFormat::Zlib => {
+                        let mut decompress = flate2::Decompress::new(true);
+                        decompress
+                            .decompress_vec(
+                                self.data,
+                                &mut decompressed,
+                                flate2::FlushDecompress::Finish,
+                            )
+                            .ok()
+                            .read_error("Invalid zlib compressed data")?;
+                    }
+                    CompressionFormat::Zstandard => {
+                        let mut input = self.data;
+                        while !input.is_empty() {
+                            let mut decoder = match ruzstd::decoding::StreamingDecoder::new(&mut input) {
+                                Ok(decoder) => decoder,
+                                Err(
+                                    ruzstd::decoding::errors::FrameDecoderError::ReadFrameHeaderError(
+                                        ruzstd::decoding::errors::ReadFrameHeaderError::SkipFrame {
+                                            length,
+                                            ..
+                                        },
+                                    ),
+                                ) => {
+                                    input = input
+                                        .get(length as usize..)
+                                        .read_error("Invalid zstd compressed data")?;
+                                    continue;
+                                }
+                                x => x.ok().read_error("Invalid zstd compressed data")?,
+                            };
+                            decoder
+                                .read_to_end(&mut decompressed)
+                                .ok()
+                                .read_error("Invalid zstd compressed data")?;
+                        }
+                    }
+                    _ => unreachable!(),
+                }
+                if size != decompressed.len() {
+                    return Err(Error(
+                        "Uncompressed data size does not match compression header",
+                    ));
+                }
+
                 Ok(Cow::Owned(decompressed))
             }
             _ => Err(Error("Unsupported compressed data.")),

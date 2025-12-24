@@ -8,12 +8,15 @@ pub mod fs {
 
     /// Creates a new symbolic link on the filesystem.
     ///
+    /// The `link` path will be a symbolic link pointing to the `original` path.
+    ///
     /// Wrapper for [`std::os::unix::fs::symlink`](https://doc.rust-lang.org/std/os/unix/fs/fn.symlink.html)
-    pub fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> {
-        let src = src.as_ref();
-        let dst = dst.as_ref();
-        std::os::unix::fs::symlink(src, dst)
-            .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::Symlink, src, dst))
+    pub fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
+        let original = original.as_ref();
+        let link = link.as_ref();
+        std::os::unix::fs::symlink(original, link).map_err(|err| {
+            SourceDestError::build(err, SourceDestErrorKind::Symlink, link, original)
+        })
     }
 
     /// Wrapper for [`std::os::unix::fs::FileExt`](https://doc.rust-lang.org/std/os/unix/fs/trait.FileExt.html).

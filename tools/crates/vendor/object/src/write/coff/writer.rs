@@ -74,6 +74,8 @@ impl<'a> Writer<'a> {
     /// Reserve a file range with the given size and starting alignment.
     ///
     /// Returns the aligned offset of the start of the range.
+    ///
+    /// `align_start` must be a power of two.
     pub fn reserve(&mut self, len: usize, align_start: usize) -> u32 {
         if align_start > 1 {
             self.len = util::align(self.len, align_start);
@@ -386,6 +388,29 @@ impl<'a> Writer<'a> {
         self.buffer.write(&aux);
     }
 
+    /// Reserve an auxiliary symbol for a weak external.
+    ///
+    /// Returns the number of auxiliary symbols required.
+    ///
+    /// This must be called before [`Self::reserve_symtab_strtab`].
+    pub fn reserve_aux_weak_external(&mut self) -> u8 {
+        debug_assert_eq!(self.symtab_offset, 0);
+        self.symtab_num += 1;
+        1
+    }
+
+    /// Write an auxiliary symbol for a weak external.
+    pub fn write_aux_weak_external(&mut self, weak: AuxSymbolWeak) {
+        let aux = pe::ImageAuxSymbolWeak {
+            weak_default_sym_index: U32Bytes::new(LE, weak.weak_default_sym_index),
+            weak_search_type: U32Bytes::new(LE, weak.weak_search_type),
+        };
+        self.buffer.write(&aux);
+        // write padding for the unused field
+        const PAD_LEN: usize = pe::IMAGE_SIZEOF_SYMBOL - mem::size_of::<pe::ImageAuxSymbolWeak>();
+        self.buffer.write_bytes(&[0u8; PAD_LEN]);
+    }
+
     /// Return the number of reserved symbol table entries.
     pub fn symbol_count(&self) -> u32 {
         self.symtab_num
@@ -506,6 +531,14 @@ pub struct AuxSymbolSection {
     pub check_sum: u32,
     pub number: u32,
     pub selection: u8,
+}
+
+/// Native endian version of [`pe::ImageAuxSymbolWeak`].
+#[allow(missing_docs)]
+#[derive(Debug, Default, Clone)]
+pub struct AuxSymbolWeak {
+    pub weak_default_sym_index: u32,
+    pub weak_search_type: u32,
 }
 
 /// Native endian version of [`pe::ImageRelocation`].

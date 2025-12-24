@@ -22,6 +22,7 @@ use crate::OffsetDateTime;
 
 /// Serialize an [`OffsetDateTime`] using the well-known RFC2822 format.
 #[cfg(feature = "formatting")]
+#[inline]
 pub fn serialize<S: Serializer>(
     datetime: &OffsetDateTime,
     serializer: S,
@@ -34,6 +35,7 @@ pub fn serialize<S: Serializer>(
 
 /// Deserialize an [`OffsetDateTime`] from its RFC2822 representation.
 #[cfg(feature = "parsing")]
+#[inline]
 pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDateTime, D::Error> {
     deserializer.deserialize_str(Visitor::<Rfc2822>(PhantomData))
 }
@@ -46,11 +48,11 @@ pub fn deserialize<'a, D: Deserializer<'a>>(deserializer: D) -> Result<OffsetDat
 /// [RFC2822 format]: https://tools.ietf.org/html/rfc2822#section-3.3
 /// [with]: https://serde.rs/field-attrs.html#with
 pub mod option {
-    #[allow(clippy::wildcard_imports)]
     use super::*;
 
     /// Serialize an [`Option<OffsetDateTime>`] using the well-known RFC2822 format.
     #[cfg(feature = "formatting")]
+    #[inline]
     pub fn serialize<S: Serializer>(
         option: &Option<OffsetDateTime>,
         serializer: S,
@@ -64,6 +66,7 @@ pub mod option {
 
     /// Deserialize an [`Option<OffsetDateTime>`] from its RFC2822 representation.
     #[cfg(feature = "parsing")]
+    #[inline]
     pub fn deserialize<'a, D: Deserializer<'a>>(
         deserializer: D,
     ) -> Result<Option<OffsetDateTime>, D::Error> {

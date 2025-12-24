@@ -1,24 +1,29 @@
 //! PowerPC64-specific definitions for 64-bit linux-like values
 
 use crate::prelude::*;
-use crate::{off64_t, off_t, pthread_mutex_t};
+use crate::{
+    off64_t,
+    off_t,
+    pthread_mutex_t,
+};
 
-pub type c_long = i64;
-pub type c_ulong = u64;
-pub type c_char = u8;
 pub type wchar_t = i32;
 pub type nlink_t = u64;
 pub type blksize_t = i64;
 pub type suseconds_t = i64;
 pub type __u64 = c_ulong;
 pub type __s64 = c_long;
+pub type gregset_t = [c_ulong; __NGREG];
+pub type fpregset_t = [c_ulong; __NFPREG];
 
 s! {
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[allow(unpredictable_function_pointer_comparisons)]
     pub struct sigaction {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
         #[cfg(target_arch = "sparc64")]
-        __reserved0: c_int,
+        __reserved0: Padding<c_int>,
         pub sa_flags: c_int,
         pub sa_restorer: Option<extern "C" fn()>,
     }
@@ -62,7 +67,7 @@ s! {
         pub st_mode: crate::mode_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        __pad0: c_int,
+        __pad0: Padding<c_int>,
         pub st_rdev: crate::dev_t,
         pub st_size: off_t,
         pub st_blksize: crate::blksize_t,
@@ -73,7 +78,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __unused: [c_long; 3],
+        __unused: Padding<[c_long; 3]>,
     }
 
     pub struct stat64 {
@@ -83,7 +88,7 @@ s! {
         pub st_mode: crate::mode_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        __pad0: c_int,
+        __pad0: Padding<c_int>,
         pub st_rdev: crate::dev_t,
         pub st_size: off64_t,
         pub st_blksize: crate::blksize_t,
@@ -94,7 +99,7 @@ s! {
         pub st_mtime_nsec: c_long,
         pub st_ctime: crate::time_t,
         pub st_ctime_nsec: c_long,
-        __reserved: [c_long; 3],
+        __reserved: Padding<[c_long; 3]>,
     }
 
     pub struct statfs64 {
@@ -154,9 +159,9 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
         pub __seq: u32,
-        __pad1: u32,
-        __unused1: u64,
-        __unused2: c_ulong,
+        __pad1: Padding<u32>,
+        __unused1: Padding<u64>,
+        __unused2: Padding<c_ulong>,
     }
 
     pub struct shmid_ds {
@@ -168,8 +173,8 @@ s! {
         pub shm_cpid: crate::pid_t,
         pub shm_lpid: crate::pid_t,
         pub shm_nattch: crate::shmatt_t,
-        __unused4: c_ulong,
-        __unused5: c_ulong,
+        __unused4: Padding<c_ulong>,
+        __unused5: Padding<c_ulong>,
     }
 
     pub struct siginfo_t {
@@ -192,13 +197,85 @@ s! {
         pub ss_flags: c_int,
         pub ss_size: size_t,
     }
+
+    #[repr(align(8))]
+    pub struct clone_args {
+        pub flags: c_ulonglong,
+        pub pidfd: c_ulonglong,
+        pub child_tid: c_ulonglong,
+        pub parent_tid: c_ulonglong,
+        pub exit_signal: c_ulonglong,
+        pub stack: c_ulonglong,
+        pub stack_size: c_ulonglong,
+        pub tls: c_ulonglong,
+        pub set_tid: c_ulonglong,
+        pub set_tid_size: c_ulonglong,
+        pub cgroup: c_ulonglong,
+    }
 }
 
 s_no_extra_traits! {
-    #[allow(missing_debug_implementations)]
     #[repr(align(16))]
     pub struct max_align_t {
         priv_: [i64; 4],
+    }
+
+    pub struct ucontext_t {
+        pub uc_flags: c_ulong,
+        pub uc_link: *mut ucontext_t,
+        pub uc_stack: crate::stack_t,
+        pub uc_sigmask: crate::sigset_t,
+        pub uc_mcontext: mcontext_t,
+    }
+
+    pub struct pt_regs {
+        pub gpr: [c_ulong; 32],
+        pub nip: c_ulong,
+        pub msr: c_ulong,
+        pub orig_gpr3: c_ulong,
+        pub ctr: c_ulong,
+        pub link: c_ulong,
+        pub xer: c_ulong,
+        pub ccr: c_ulong,
+        pub softe: c_ulong,
+        pub trap: c_ulong,
+        pub dar: c_ulong,
+        pub dsisr: c_ulong,
+        pub result: c_ulong,
+    }
+
+    pub struct mcontext_t {
+        __glibc_reserved: [c_ulong; 4],
+        pub signal: c_int,
+        __pad0: c_int,
+        pub handler: c_ulong,
+        pub oldmask: c_ulong,
+        pub regs: *mut pt_regs,
+        pub gp_regs: crate::gregset_t,
+        pub fp_regs: crate::fpregset_t,
+        pub v_regs: *mut vrregset_t,
+        pub vmx_reserve: [c_long; __NVRREG + __NVRREG + 1],
+    }
+
+    #[repr(align(16))]
+    pub struct vrregset_t {
+        pub vrregs: [[c_uint; 4]; 32],
+        pub vscr: vscr_t,
+        pub vrsave: c_uint,
+        __pad: [c_uint; 3],
+    }
+
+    #[repr(align(4))]
+    pub struct vscr_t {
+        #[cfg(target_endian = "big")]
+        __pad: [c_uint; 3],
+        #[cfg(target_endian = "big")]
+        pub vscr_word: c_uint,
+
+        #[cfg(target_endian = "little")]
+        pub vscr_word: c_uint,
+        #[cfg(target_endian = "little")]
+        __pad: [c_uint; 3],
     }
 }
 
@@ -211,6 +288,10 @@ pub const RTLD_NOLOAD: c_int = 0x4;
 pub const VEOF: usize = 4;
 pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 56;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 32;
+
+pub const __NGREG: usize = 48;
+pub const __NFPREG: usize = 33;
+pub const __NVRREG: usize = 34;
 
 pub const O_APPEND: c_int = 1024;
 pub const O_CREAT: c_int = 64;
@@ -699,9 +780,11 @@ pub const SYS_modify_ldt: c_long = 123;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_create_module: c_long = 127;
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_get_kernel_syms: c_long = 130;
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
@@ -738,6 +821,7 @@ pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
 pub const SYS_setresuid: c_long = 164;
 pub const SYS_getresuid: c_long = 165;
+#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
 pub const SYS_query_module: c_long = 166;
 pub const SYS_poll: c_long = 167;
 pub const SYS_nfsservctl: c_long = 168;
@@ -970,4 +1054,9 @@ extern "C" {
         newp: *mut c_void,
         newlen: size_t,
     ) -> c_int;
+
+    pub fn getcontext(ucp: *mut ucontext_t) -> c_int;
+    pub fn setcontext(ucp: *const ucontext_t) -> c_int;
+    pub fn swapcontext(oucp: *mut ucontext_t, ucp: *const ucontext_t) -> c_int;
+    pub fn makecontext(ucp: *mut ucontext_t, func: extern "C" fn(), argc: c_int, ...);
 }

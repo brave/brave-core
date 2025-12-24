@@ -2,7 +2,7 @@ use std::any::Any;
 use std::cmp;
 use std::sync::Arc;
 
-use super::{Controller, ControllerFactory, BASE_DATAGRAM_SIZE};
+use super::{BASE_DATAGRAM_SIZE, Controller, ControllerFactory};
 use crate::connection::RttEstimator;
 use crate::{Duration, Instant};
 
@@ -180,8 +180,6 @@ impl Controller for Cubic {
         self.recovery_start_time = Some(now);
 
         // Fast convergence
-        #[allow(clippy::branches_sharing_code)]
-        // https://github.com/rust-lang/rust-clippy/issues/7198
         if (self.window as f64) < self.cubic_state.w_max {
             self.cubic_state.w_max = self.window as f64 * (1.0 + BETA_CUBIC) / 2.0;
         } else {
@@ -220,6 +218,14 @@ impl Controller for Cubic {
 
     fn window(&self) -> u64 {
         self.window
+    }
+
+    fn metrics(&self) -> super::ControllerMetrics {
+        super::ControllerMetrics {
+            congestion_window: self.window(),
+            ssthresh: Some(self.ssthresh),
+            pacing_rate: None,
+        }
     }
 
     fn clone_box(&self) -> Box<dyn Controller> {

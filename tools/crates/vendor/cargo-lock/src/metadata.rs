@@ -1,11 +1,11 @@
 //! Package metadata
 
 use crate::{
+    Checksum, Dependency, Map,
     error::{Error, Result},
     lockfile::encoding::EncodableDependency,
-    Checksum, Dependency, Map,
 };
-use serde::{de, ser, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de, ser};
 use std::{fmt, str::FromStr};
 
 /// Prefix of metadata keys for checksum entries

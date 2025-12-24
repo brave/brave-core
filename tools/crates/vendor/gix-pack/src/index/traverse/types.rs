@@ -8,7 +8,7 @@ pub struct Statistics {
     pub average: crate::data::decode::entry::Outcome,
     /// A mapping of the length of the chain to the amount of objects at that length.
     ///
-    /// A length of 0 indicates full objects, and everything above that involves the given amount
+    /// A length of 0 indicates full objects, and everything more than that uses the given number
     /// of delta objects.
     pub objects_per_chain_length: BTreeMap<u32, u32>,
     /// The amount of bytes in all compressed streams, one per entry

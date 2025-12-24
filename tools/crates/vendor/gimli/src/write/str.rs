@@ -23,7 +23,7 @@ use crate::write::{BaseId, Result, Section, Writer};
 //   This would avoid the need for DebugStrOffsets but would make it
 //   hard to implement `get`.
 macro_rules! define_string_table {
-    ($name:ident, $id:ident, $section:ident, $offsets:ident, $docs:expr) => {
+    ($name:ident, $id:ident, $section:ident, $offset:ident, $offsets:ident, $docs:expr) => {
         #[doc=$docs]
         #[derive(Debug, Default)]
         pub struct $name {
@@ -70,16 +70,35 @@ macro_rules! define_string_table {
             /// Returns the offsets at which the strings are written.
             pub fn write<W: Writer>(&self, w: &mut $section<W>) -> Result<$offsets> {
                 let mut offsets = Vec::new();
+                let mut empty = None;
                 for bytes in self.strings.iter() {
                     offsets.push(w.offset());
                     w.write(bytes)?;
+                    if empty.is_none() {
+                        empty = Some(w.offset());
+                    }
                     w.write_u8(0)?;
+                }
+                // Record the offset of the first null, for use as an empty string.
+                if let Some(empty) = empty {
+                    offsets.push(empty);
                 }
 
                 Ok($offsets {
                     base_id: self.base_id,
                     offsets,
                 })
+            }
+        }
+
+        impl $offsets {
+            pub(crate) fn get_empty(&self) -> Option<$id> {
+                if self.offsets.is_empty() {
+                    None
+                } else {
+                    // The last offset is always the empty string.
+                    Some($id::new(self.base_id, self.offsets.len() - 1))
+                }
             }
         }
     };
@@ -91,6 +110,7 @@ define_string_table!(
     StringTable,
     StringId,
     DebugStr,
+    DebugStrOffset,
     DebugStrOffsets,
     "A table of strings that will be stored in a `.debug_str` section."
 );
@@ -111,6 +131,7 @@ define_string_table!(
     LineStringTable,
     LineStringId,
     DebugLineStr,
+    DebugLineStrOffset,
     DebugLineStrOffsets,
     "A table of strings that will be stored in a `.debug_line_str` section."
 );
@@ -151,7 +172,8 @@ mod tests {
         assert_eq!(debug_str.slice(), b"one\0two\0");
         assert_eq!(offsets.get(id1), DebugStrOffset(0));
         assert_eq!(offsets.get(id2), DebugStrOffset(4));
-        assert_eq!(offsets.count(), 2);
+        assert_eq!(offsets.get(offsets.get_empty().unwrap()), DebugStrOffset(3));
+        assert_eq!(offsets.count(), 3);
     }
 
     #[test]
@@ -166,7 +188,11 @@ mod tests {
         let read_debug_str = read::DebugStr::new(debug_str.slice(), LittleEndian);
         let str1 = read_debug_str.get_str(offsets.get(id1)).unwrap();
         let str2 = read_debug_str.get_str(offsets.get(id2)).unwrap();
+        let str3 = read_debug_str
+            .get_str(offsets.get(offsets.get_empty().unwrap()))
+            .unwrap();
         assert_eq!(str1.slice(), &b"one"[..]);
         assert_eq!(str2.slice(), &b"two"[..]);
+        assert_eq!(str3.slice(), b"");
     }
 }

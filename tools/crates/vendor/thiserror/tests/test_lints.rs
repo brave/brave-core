@@ -33,7 +33,7 @@ fn test_unused_qualifications() {
 #[test]
 fn test_needless_lifetimes() {
     #![allow(dead_code)]
-    #![deny(clippy::needless_lifetimes)]
+    #![deny(clippy::elidable_lifetime_names, clippy::needless_lifetimes)]
 
     #[derive(Error, Debug)]
     #[error("...")]
@@ -93,4 +93,6 @@ fn test_deprecated() {
     let _ = DeprecatedEnum::Variant;
     #[allow(deprecated)]
     let _ = DeprecatedVariant::Variant;
+    #[allow(deprecated)]
+    let _ = DeprecatedFrom::Variant(DeprecatedStruct);
 }

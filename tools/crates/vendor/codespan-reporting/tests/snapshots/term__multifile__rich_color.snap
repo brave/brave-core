@@ -1,35 +1,33 @@
 ---
 source: codespan-reporting/tests/term.rs
-expression: TEST_DATA.emit_color(&config)
+expression: TEST_DATA.emit_color(& config)
 ---
 {fg:Red bold bright}error{bold bright}: unknown builtin: `NATRAL`{/}
-  {fg:Blue}┌─{/} Data/Nat.fun:7:13
-  {fg:Blue}│{/}
-{fg:Blue}7{/} {fg:Blue}│{/} {-# BUILTIN {fg:Red}NATRAL{/} Nat #-}
-  {fg:Blue}│{/}             {fg:Red}^^^^^^{/} {fg:Red}unknown builtin{/}
-  {fg:Blue}│{/}
-  {fg:Blue}={/} there is a builtin with a similar name: `NATURAL`
+  {fg:Cyan}┌─{/} Data/Nat.fun:7:13
+  {fg:Cyan}│{/}
+{fg:Cyan}7{/} {fg:Cyan}│{/} {-# BUILTIN {fg:Red}NATRAL{/} Nat #-}
+  {fg:Cyan}│{/}             {fg:Red}^^^^^^{/} {fg:Red}unknown builtin{/}
+  {fg:Cyan}│{/}
+  {fg:Cyan}={/} there is a builtin with a similar name: `NATURAL`
 
 {fg:Yellow bold bright}warning{bold bright}: unused parameter pattern: `n₂`{/}
-   {fg:Blue}┌─{/} Data/Nat.fun:17:16
-   {fg:Blue}│{/}
-{fg:Blue}17{/} {fg:Blue}│{/} zero    - succ {fg:Yellow}n₂{/} = zero
-   {fg:Blue}│{/}                {fg:Yellow}^^{/} {fg:Yellow}unused parameter{/}
-   {fg:Blue}│{/}
-   {fg:Blue}={/} consider using a wildcard pattern: `_`
+   {fg:Cyan}┌─{/} Data/Nat.fun:17:16
+   {fg:Cyan}│{/}
+{fg:Cyan}17{/} {fg:Cyan}│{/} zero    - succ {fg:Yellow}n₂{/} = zero
+   {fg:Cyan}│{/}                {fg:Yellow}^^{/} {fg:Yellow}unused parameter{/}
+   {fg:Cyan}│{/}
+   {fg:Cyan}={/} consider using a wildcard pattern: `_`
 
 {fg:Red bold bright}error[E0001]{bold bright}: unexpected type in application of `_+_`{/}
-   {fg:Blue}┌─{/} Test.fun:4:11
-   {fg:Blue}│{/}
-{fg:Blue} 4{/} {fg:Blue}│{/} _ = 123 + {fg:Red}"hello"{/}
-   {fg:Blue}│{/}           {fg:Red}^^^^^^^{/} {fg:Red}expected `Nat`, found `String`{/}
-   {fg:Blue}│{/}
-   {fg:Blue}┌─{/} Data/Nat.fun:11:1
-   {fg:Blue}│{/}
-{fg:Blue}11{/} {fg:Blue}│{/} _+_ : Nat → Nat → Nat
-   {fg:Blue}│{/} {fg:Blue}---------------------{/} {fg:Blue}based on the definition of `_+_`{/}
-   {fg:Blue}│{/}
-   {fg:Blue}={/} expected type `Nat`
+   {fg:Cyan}┌─{/} Test.fun:4:11
+   {fg:Cyan}│{/}
+{fg:Cyan} 4{/} {fg:Cyan}│{/} _ = 123 + {fg:Red}"hello"{/}
+   {fg:Cyan}│{/}           {fg:Red}^^^^^^^{/} {fg:Red}expected `Nat`, found `String`{/}
+   {fg:Cyan}│{/}
+   {fg:Cyan}┌─{/} Data/Nat.fun:11:1
+   {fg:Cyan}│{/}
+{fg:Cyan}11{/} {fg:Cyan}│{/} _+_ : Nat → Nat → Nat
+   {fg:Cyan}│{/} {fg:Cyan}---------------------{/} {fg:Cyan}based on the definition of `_+_`{/}
+   {fg:Cyan}│{/}
+   {fg:Cyan}={/} expected type `Nat`
         found type `String`
-
-

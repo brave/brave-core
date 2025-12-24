@@ -77,8 +77,6 @@ pub enum Error {
         direction: remote::Direction,
         source: Box<dyn std::error::Error + Send + Sync + 'static>,
     },
-    #[error("This feature will be implemented once {dependency}")]
-    Planned { dependency: &'static str },
     #[error("Reference {reference:?} does not have a reference log, cannot {action}")]
     MissingRefLog { reference: BString, action: &'static str },
     #[error("HEAD has {available} prior checkouts and checkout number {desired} is out of range")]
@@ -189,9 +187,13 @@ pub enum Error {
         next: Option<Box<dyn std::error::Error + Send + Sync + 'static>>,
     },
     #[error(transparent)]
-    Traverse(#[from] gix_traverse::commit::simple::Error),
+    Traverse(#[from] crate::revision::walk::iter::Error),
+    #[error("Tried to navigate the commit-graph without providing an anchor first")]
+    TraversalWithoutStartObject,
     #[error(transparent)]
     Walk(#[from] crate::revision::walk::Error),
     #[error("Spec does not contain a single object id")]
     SingleNotFound,
+    #[error("Reflog does not contain any entries")]
+    EmptyReflog,
 }

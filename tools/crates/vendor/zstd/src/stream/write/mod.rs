@@ -187,23 +187,29 @@ impl<W: Write> Encoder<'static, W> {
         dictionary: &[u8],
     ) -> io::Result<Self> {
         let encoder = raw::Encoder::with_dictionary(level, dictionary)?;
-        let writer = zio::Writer::new(writer, encoder);
-        Ok(Encoder { writer })
+        Ok(Self::with_encoder(writer, encoder))
     }
 }
 
 impl<'a, W: Write> Encoder<'a, W> {
+    /// Creates a new encoder from a prepared zio writer.
+    pub fn with_writer(writer: zio::Writer<W, raw::Encoder<'a>>) -> Self {
+        Self { writer }
+    }
+
+    /// Creates a new encoder from the given `Write` and raw encoder.
+    pub fn with_encoder(writer: W, encoder: raw::Encoder<'a>) -> Self {
+        let writer = zio::Writer::new(writer, encoder);
+        Self::with_writer(writer)
+    }
+
     /// Creates an encoder that uses the provided context to compress a stream.
     pub fn with_context(
         writer: W,
         context: &'a mut zstd_safe::CCtx<'static>,
     ) -> Self {
-        Self {
-            writer: zio::Writer::new(
-                writer,
-                raw::Encoder::with_context(context),
-            ),
-        }
+        let encoder = raw::Encoder::with_context(context);
+        Self::with_encoder(writer, encoder)
     }
 
     /// Creates a new encoder, using an existing prepared `EncoderDictionary`.
@@ -218,8 +224,7 @@ impl<'a, W: Write> Encoder<'a, W> {
         'b: 'a,
     {
         let encoder = raw::Encoder::with_prepared_dictionary(dictionary)?;
-        let writer = zio::Writer::new(writer, encoder);
-        Ok(Encoder { writer })
+        Ok(Self::with_encoder(writer, encoder))
     }
 
     /// Creates a new encoder, using a ref prefix
@@ -232,8 +237,7 @@ impl<'a, W: Write> Encoder<'a, W> {
         'b: 'a,
     {
         let encoder = raw::Encoder::with_ref_prefix(level, ref_prefix)?;
-        let writer = zio::Writer::new(writer, encoder);
-        Ok(Encoder { writer })
+        Ok(Self::with_encoder(writer, encoder))
     }
 
     /// Returns a wrapper around `self` that will finish the stream on drop.
@@ -340,12 +344,32 @@ impl<W: Write> Decoder<'static, W> {
     /// but requires the dictionary to be present during decompression.)
     pub fn with_dictionary(writer: W, dictionary: &[u8]) -> io::Result<Self> {
         let decoder = raw::Decoder::with_dictionary(dictionary)?;
-        let writer = zio::Writer::new(writer, decoder);
-        Ok(Decoder { writer })
+        Ok(Self::with_decoder(writer, decoder))
     }
 }
 
 impl<'a, W: Write> Decoder<'a, W> {
+    /// Creates a new decoder around the given prepared zio writer.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// fn wrap<W: std::io::Write>(writer: W) -> zstd::stream::write::Decoder<'static, W> {
+    ///   let decoder = zstd::stream::raw::Decoder::new().unwrap();
+    ///   let writer = zstd::stream::zio::Writer::new(writer, decoder);
+    ///   zstd::stream::write::Decoder::with_writer(writer)
+    /// }
+    /// ```
+    pub fn with_writer(writer: zio::Writer<W, raw::Decoder<'a>>) -> Self {
+        Decoder { writer }
+    }
+
+    /// Creates a new decoder around the given `Write` and raw decoder.
+    pub fn with_decoder(writer: W, decoder: raw::Decoder<'a>) -> Self {
+        let writer = zio::Writer::new(writer, decoder);
+        Decoder { writer }
+    }
+
     /// Creates a new decoder, using an existing prepared `DecoderDictionary`.
     ///
     /// (Provides better compression ratio for small files,
@@ -358,8 +382,7 @@ impl<'a, W: Write> Decoder<'a, W> {
         'b: 'a,
     {
         let decoder = raw::Decoder::with_prepared_dictionary(dictionary)?;
-        let writer = zio::Writer::new(writer, decoder);
-        Ok(Decoder { writer })
+        Ok(Self::with_decoder(writer, decoder))
     }
 
     /// Acquires a reference to the underlying writer.

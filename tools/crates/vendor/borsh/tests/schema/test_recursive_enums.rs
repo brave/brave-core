@@ -16,11 +16,11 @@ pub fn recursive_enum_schema() {
            "ERecD" => Definition::Enum {
                 tag_width: 1,
                 variants: vec![
-                    (0, "B".to_string(), "ERecDB".to_string()),
-                    (1, "C".to_string(), "ERecDC".to_string()),
+                    (0, "B".to_string(), "ERecD__B".to_string()),
+                    (1, "C".to_string(), "ERecD__C".to_string()),
                 ]
             },
-            "ERecDB" => Definition::Struct {
+            "ERecD__B" => Definition::Struct {
                 fields: Fields::NamedFields (
                     vec![
                         ("x".to_string(), "String".to_string()),
@@ -28,7 +28,7 @@ pub fn recursive_enum_schema() {
                     ]
                 )
             },
-            "ERecDC" => Definition::Struct {
+            "ERecD__C" => Definition::Struct {
                 fields: Fields::UnnamedFields( vec![
                     "u8".to_string(),
                     "Vec<ERecD>".to_string(),

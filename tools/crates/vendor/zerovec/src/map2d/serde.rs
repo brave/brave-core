@@ -101,7 +101,7 @@ where
     K1: ZeroMapKV<'a> + ?Sized + Ord,
     V: ZeroMapKV<'a> + ?Sized,
 {
-    #[allow(clippy::type_complexity)] // it's a marker type, complexity doesn't matter
+    #[expect(clippy::type_complexity)] // it's a marker type, complexity doesn't matter
     marker: PhantomData<fn() -> (&'a K0::OwnedType, &'a K1::OwnedType, &'a V::OwnedType)>,
 }
 
@@ -172,7 +172,6 @@ struct TupleVecMap<K1, V> {
 }
 
 struct TupleVecMapVisitor<K1, V> {
-    #[allow(clippy::type_complexity)] // it's a marker type, complexity doesn't matter
     marker: PhantomData<fn() -> (K1, V)>,
 }
 
@@ -355,12 +354,20 @@ mod test {
     use crate::map2d::{ZeroMap2d, ZeroMap2dBorrowed};
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "We are testing that these types can be deserialized, and Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_ZeroMap2d<'data> {
         #[serde(borrow)]
         _data: ZeroMap2d<'data, u16, str, [u8]>,
     }
 
     #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(
+        dead_code,
+        reason = "We are testing that these types can be deserialized, and Tests compatibility of custom impl with Serde derive."
+    )]
     struct DeriveTest_ZeroMap2dBorrowed<'data> {
         #[serde(borrow)]
         _data: ZeroMap2dBorrowed<'data, u16, str, [u8]>,
@@ -369,8 +376,8 @@ mod test {
     const JSON_STR: &str = "{\"1\":{\"1\":\"uno\"},\"2\":{\"2\":\"dos\",\"3\":\"tres\"}}";
     const BINCODE_BYTES: &[u8] = &[
         8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0,
-        0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 20, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0,
-        3, 0, 6, 0, 117, 110, 111, 100, 111, 115, 116, 114, 101, 115,
+        0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 3, 0, 16, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, 0, 6, 0,
+        117, 110, 111, 100, 111, 115, 116, 114, 101, 115,
     ];
 
     fn make_map() -> ZeroMap2d<'static, u32, u16, str> {
@@ -431,7 +438,7 @@ mod test {
             bincode_bytes.as_slice(),
             &[
                 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0,
-                0, 0, 2, 0, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 116, 104, 114, 101, 101
+                0, 0, 2, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 0, 116, 104, 114, 101, 101
             ]
         );
     }

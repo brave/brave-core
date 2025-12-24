@@ -49,6 +49,7 @@ fn ptr_from_ref<T: ?Sized>(r: &T) -> *const T {
 }
 
 /// Default implementation of `inner_u32` on top of `fill_uninit`
+#[inline]
 pub fn inner_u32() -> Result<u32, Error> {
     let mut res = MaybeUninit::<u32>::uninit();
     // SAFETY: the created slice has the same size as `res`
@@ -63,6 +64,7 @@ pub fn inner_u32() -> Result<u32, Error> {
 }
 
 /// Default implementation of `inner_u64` on top of `fill_uninit`
+#[inline]
 pub fn inner_u64() -> Result<u64, Error> {
     let mut res = MaybeUninit::<u64>::uninit();
     // SAFETY: the created slice has the same size as `res`

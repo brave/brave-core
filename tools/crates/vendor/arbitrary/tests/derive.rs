@@ -392,4 +392,11 @@ fn derive_structs_named_same_as_core() {
     }
 
     let _ = Default::arbitrary(&mut Unstructured::new(&[]));
+
+    #[derive(Debug, Arbitrary)]
+    struct Result {
+        f: core::result::Result<u32, u32>,
+    }
+
+    let _ = Result::arbitrary(&mut Unstructured::new(&[]));
 }

@@ -1,0 +1,26 @@
+lints.workspace = true
+
+[package]
+name = "gix-command"
+version = "0.6.3"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project handling internal git command execution"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+rust-version = "1.82"
+include = ["src/lib.rs", "LICENSE-*"]
+
+[lib]
+doctest = false
+
+[dependencies]
+gix-trace = { version = "^0.1.14", path = "../gix-trace" }
+gix-path = { version = "^0.10.21", path = "../gix-path" }
+gix-quote = { version = "^0.6.1", path = "../gix-quote" }
+
+bstr = { version = "1.12.0", default-features = false, features = ["std", "unicode"] }
+shell-words = "1.0"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }

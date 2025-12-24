@@ -1,5 +1,4 @@
 use std::env;
-use std::fs;
 use std::path::PathBuf;
 
 fn main() {
@@ -25,10 +24,13 @@ fn main() {
         (false, true) => println!("cargo:rustc-link-lib=c++"),
         (false, false) | (true, true) => {
             // The platform's default.
-            let out_dir = env::var_os("OUT_DIR").expect("missing OUT_DIR");
-            let path = PathBuf::from(out_dir).join("dummy.cc");
-            fs::write(&path, "int rust_link_cplusplus;\n").unwrap();
-            cc::Build::new().cpp(true).file(&path).compile("link-cplusplus");
+            let manifest_dir =
+                env::var_os("CARGO_MANIFEST_DIR").expect("missing CARGO_MANIFEST_DIR");
+            let path = PathBuf::from(manifest_dir).join("src").join("dummy.cc");
+            cc::Build::new()
+                .cpp(true)
+                .file(&path)
+                .compile("link-cplusplus");
         }
     }
 }

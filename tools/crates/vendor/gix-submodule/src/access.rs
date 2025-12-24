@@ -56,7 +56,7 @@ impl File {
         ) -> bool
                      + 'a),
     ) -> Result<
-        impl Iterator<Item = (&BStr, Result<bool, gix_config::value::Error>)> + 'a,
+        impl Iterator<Item = (&'a BStr, Result<bool, gix_config::value::Error>)> + 'a,
         crate::is_active_platform::Error,
     > {
         let mut platform = self.is_active_platform(config, defaults)?;
@@ -181,7 +181,7 @@ impl File {
                 .sections_by_name("submodule")
                 .into_iter()
                 .flatten()
-                .any(|s| (s.header().subsection_name() == Some(name) && s.meta() as *const _ != ours as *const _));
+                .any(|s| s.header().subsection_name() == Some(name) && !std::ptr::eq(s.meta(), ours));
             if !has_value_from_foreign_section {
                 return Err(config::update::Error::CommandForbiddenInModulesConfiguration {
                     submodule: name.to_owned(),

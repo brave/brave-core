@@ -1,4 +1,4 @@
-// spell-checker:ignore sles
+// spell-checker:ignore sles, AOSCOS
 
 use std::{fmt, fs::File, io::Read, path::Path};
 
@@ -93,9 +93,10 @@ static DISTRIBUTIONS: [ReleaseInfo; 6] = [
                     "almalinux" => Some(Type::AlmaLinux),
                     "alpaquita" => Some(Type::Alpaquita),
                     "alpine" => Some(Type::Alpine),
+                    "altlinux" => Some(Type::ALTLinux),
                     "amzn" => Some(Type::Amazon),
                     //"antergos" => Antergos
-                    //"aosc" => AOSC
+                    "aosc" => Some(Type::AOSC),
                     "arch" => Some(Type::Arch),
                     "archarm" => Some(Type::Arch),
                     "artix" => Some(Type::Artix),
@@ -106,15 +107,24 @@ static DISTRIBUTIONS: [ReleaseInfo; 6] = [
                     //"clearos" => ClearOS
                     //"coreos"
                     //"cumulus-linux" => Cumulus
-                    "debian" => Some(Type::Debian),
+                    "debian" => {
+                        // Check if it's actually Raspberry Pi OS
+                        if std::path::Path::new("/etc/rpi-issue").exists() {
+                            Some(Type::Raspbian)
+                        } else {
+                            Some(Type::Debian)
+                        }
+                    }
                     //"devuan" => Devuan
-                    //"elementary" => Elementary
+                    "elementary" => Some(Type::Elementary),
                     "fedora" => Some(Type::Fedora),
                     //"gentoo" => Gentoo
+                    "instantos" => Some(Type::InstantOS),
                     //"ios_xr" => ios_xr
                     "kali" => Some(Type::Kali),
                     //"mageia" => Mageia
                     //"manjaro" => Manjaro
+                    "manjaro-arm" => Some(Type::Manjaro),
                     "linuxmint" => Some(Type::Mint),
                     "mariner" => Some(Type::Mariner),
                     //"nexus" => Nexus
@@ -128,6 +138,7 @@ static DISTRIBUTIONS: [ReleaseInfo; 6] = [
                     "opensuse-leap" => Some(Type::openSUSE),
                     "opensuse-microos" => Some(Type::openSUSE),
                     "opensuse-tumbleweed" => Some(Type::openSUSE),
+                    "pika" => Some(Type::PikaOS),
                     //"rancheros" => RancherOS
                     //"raspbian" => Raspbian
                     // note XBian also uses "raspbian"
@@ -143,6 +154,7 @@ static DISTRIBUTIONS: [ReleaseInfo; 6] = [
                     "ultramarine" => Some(Type::Ultramarine),
                     //"virtuozzo" => Virtuozzo
                     "void" => Some(Type::Void),
+                    "zorin" => Some(Type::Zorin),
                     //"XCP-ng" => xcp-ng
                     //"xenenterprise" => xcp-ng
                     //"xenserver" => xcp-ng
@@ -251,6 +263,17 @@ mod tests {
     }
 
     #[test]
+    fn alt_p11_os_release() {
+        let root = "src/linux/tests/ALTLinux_p11";
+
+        let info = retrieve(&DISTRIBUTIONS, root).unwrap();
+        assert_eq!(info.os_type(), Type::ALTLinux);
+        assert_eq!(info.version, Version::Semantic(11, 0, 0));
+        assert_eq!(info.edition, None);
+        assert_eq!(info.codename, None);
+    }
+
+    #[test]
     fn amazon_1_os_release() {
         let root = "src/linux/tests/Amazon_1";
 
@@ -268,6 +291,17 @@ mod tests {
         let info = retrieve(&DISTRIBUTIONS, root).unwrap();
         assert_eq!(info.os_type(), Type::Amazon);
         assert_eq!(info.version, Version::Semantic(2, 0, 0));
+        assert_eq!(info.edition, None);
+        assert_eq!(info.codename, None);
+    }
+
+    #[test]
+    fn aosc_os_release() {
+        let root = "src/linux/tests/AOSCOS";
+
+        let info = retrieve(&DISTRIBUTIONS, root).unwrap();
+        assert_eq!(info.os_type(), Type::AOSC);
+        assert_eq!(info.version, Version::Semantic(12, 1, 3));
         assert_eq!(info.edition, None);
         assert_eq!(info.codename, None);
     }
@@ -312,6 +346,17 @@ mod tests {
         let info = retrieve(&DISTRIBUTIONS, root).unwrap();
         assert_eq!(info.os_type(), Type::Bluefin);
         assert_eq!(info.version, Version::Semantic(41, 0, 0));
+        assert_eq!(info.edition, None);
+        assert_eq!(info.codename, None);
+    }
+
+    #[test]
+    fn instant_os_release() {
+        let root = "src/linux/tests/InstantOS";
+
+        let info = retrieve(&DISTRIBUTIONS, root).unwrap();
+        assert_eq!(info.os_type(), Type::InstantOS);
+        assert_eq!(info.version, Version::Unknown);
         assert_eq!(info.edition, None);
         assert_eq!(info.codename, None);
     }
@@ -422,6 +467,17 @@ mod tests {
         let info = retrieve(&DISTRIBUTIONS, root).unwrap();
         assert_eq!(info.os_type(), Type::Kali);
         assert_eq!(info.version, Version::Semantic(2023, 2, 0));
+        assert_eq!(info.edition, None);
+        assert_eq!(info.codename, None);
+    }
+
+    #[test]
+    fn manjaro_arm_release() {
+        let root = "src/linux/tests/ManjaroArm";
+
+        let info = retrieve(&DISTRIBUTIONS, root).unwrap();
+        assert_eq!(info.os_type(), Type::Manjaro);
+        assert_eq!(info.version, Version::Unknown);
         assert_eq!(info.edition, None);
         assert_eq!(info.codename, None);
     }
@@ -680,6 +736,17 @@ mod tests {
         let info = retrieve(&DISTRIBUTIONS, root).unwrap();
         assert_eq!(info.os_type(), Type::CachyOS);
         assert_eq!(info.version, Version::Unknown);
+        assert_eq!(info.edition, None);
+        assert_eq!(info.codename, None);
+    }
+
+    #[test]
+    fn pika_os_release() {
+        let root = "src/linux/tests/PikaOS";
+
+        let info = retrieve(&DISTRIBUTIONS, root).unwrap();
+        assert_eq!(info.os_type(), Type::PikaOS);
+        assert_eq!(info.version, Version::Semantic(4, 0, 0));
         assert_eq!(info.edition, None);
         assert_eq!(info.codename, None);
     }

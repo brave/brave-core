@@ -3,6 +3,8 @@
 /*
 Adapted from https://github.com/rust-embedded/cortex-m.
 
+Refs: https://developer.arm.com/documentation/ddi0419/c/System-Level-Architecture/System-Level-Programmers--Model/Registers/The-special-purpose-mask-register--PRIMASK
+
 Generated asm:
 - armv6-m https://godbolt.org/z/1sqKnsY6n
 */
@@ -10,6 +12,14 @@ Generated asm:
 #[cfg(not(portable_atomic_no_asm))]
 use core::arch::asm;
 
+#[cfg_attr(
+    portable_atomic_no_cfg_target_has_atomic,
+    cfg(any(test, portable_atomic_no_atomic_cas))
+)]
+#[cfg_attr(
+    not(portable_atomic_no_cfg_target_has_atomic),
+    cfg(any(test, not(target_has_atomic = "ptr")))
+)]
 pub(super) use core::sync::atomic;
 
 pub(super) type State = u32;
@@ -21,11 +31,11 @@ pub(super) fn disable() -> State {
     // SAFETY: reading the priority mask register and disabling interrupts are safe.
     // (see module-level comments of interrupt/mod.rs on the safety of using privileged instructions)
     unsafe {
-        // Do not use `nomem` and `readonly` because prevent subsequent memory accesses from being reordered before interrupts are disabled.
         asm!(
-            "mrs {0}, PRIMASK",
-            "cpsid i",
-            out(reg) primask,
+            "mrs {primask}, PRIMASK", // primask = PRIMASK
+            "cpsid i",                // PRIMASK.PM = 1
+            primask = out(reg) primask,
+            // Do not use `nomem` and `readonly` because prevent subsequent memory accesses from being reordered before interrupts are disabled.
             options(nostack, preserves_flags),
         );
     }
@@ -38,13 +48,16 @@ pub(super) fn disable() -> State {
 ///
 /// The state must be the one retrieved by the previous `disable`.
 #[inline(always)]
-pub(super) unsafe fn restore(primask: State) {
-    if primask & 0x1 == 0 {
-        // SAFETY: the caller must guarantee that the state was retrieved by the previous `disable`,
-        // and we've checked that interrupts were enabled before disabling interrupts.
-        unsafe {
+pub(super) unsafe fn restore(prev_primask: State) {
+    // SAFETY: the caller must guarantee that the state was retrieved by the previous `disable`,
+    // and we've checked that interrupts were enabled before disabling interrupts.
+    unsafe {
+        // This clobbers the entire PRIMASK register. See msp430.rs to safety on this.
+        asm!(
+            "msr PRIMASK, {prev_primask}", // PRIMASK = prev_primask
+            prev_primask = in(reg) prev_primask,
             // Do not use `nomem` and `readonly` because prevent preceding memory accesses from being reordered after interrupts are enabled.
-            asm!("cpsie i", options(nostack, preserves_flags));
-        }
+            options(nostack, preserves_flags),
+        );
     }
 }

@@ -3,7 +3,7 @@ use std::marker::PhantomData;
 use std::mem::ManuallyDrop;
 use std::ops::Deref;
 #[cfg(unix)]
-use std::os::unix::io::{AsFd, AsRawFd, FromRawFd};
+use std::os::fd::{AsFd, AsRawFd, FromRawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, AsSocket, FromRawSocket};
 
@@ -20,7 +20,7 @@ use crate::Socket;
 ///
 /// [`TcpStream`]: std::net::TcpStream
 // Don't use intra-doc links because they won't build on every platform.
-/// [`AsFd`]: https://doc.rust-lang.org/stable/std/os/unix/io/trait.AsFd.html
+/// [`AsFd`]: https://doc.rust-lang.org/stable/std/os/fd/trait.AsFd.html
 /// [`AsSocket`]: https://doc.rust-lang.org/stable/std/os/windows/io/trait.AsSocket.html
 ///
 /// # Examples
@@ -49,8 +49,8 @@ use crate::Socket;
 ///
 /// // Create a `SockRef`erence to the stream.
 /// let socket_ref = SockRef::from(&stream);
-/// // Use `Socket::set_nodelay` on the stream.
-/// socket_ref.set_nodelay(true)?;
+/// // Use `Socket::set_tcp_nodelay` on the stream.
+/// socket_ref.set_tcp_nodelay(true)?;
 /// drop(socket_ref);
 ///
 /// assert_eq!(stream.nodelay()?, true);
@@ -78,7 +78,6 @@ impl<'s> Deref for SockRef<'s> {
 
 /// On Windows, a corresponding `From<&impl AsSocket>` implementation exists.
 #[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
 impl<'s, S> From<&'s S> for SockRef<'s>
 where
     S: AsFd,
@@ -96,7 +95,6 @@ where
 
 /// On Unix, a corresponding `From<&impl AsFd>` implementation exists.
 #[cfg(windows)]
-#[cfg_attr(docsrs, doc(cfg(windows)))]
 impl<'s, S> From<&'s S> for SockRef<'s>
 where
     S: AsSocket,

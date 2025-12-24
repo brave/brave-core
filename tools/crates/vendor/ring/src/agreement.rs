@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -74,6 +74,7 @@ pub struct Algorithm {
         out: &mut [u8],
         private_key: &ec::Seed,
         peer_public_key: untrusted::Input,
+        cpu: cpu::Features,
     ) -> Result<(), error::Unspecified>,
 }
 
@@ -128,7 +129,7 @@ impl EphemeralPrivateKey {
         // key generation and the sending of the public key to the peer. `out`
         // is what should be sent to the peer.
         self.private_key
-            .compute_public_key()
+            .compute_public_key(cpu::features())
             .map(|public_key| PublicKey {
                 algorithm: self.algorithm,
                 bytes: public_key,
@@ -141,8 +142,15 @@ impl EphemeralPrivateKey {
         self.algorithm
     }
 
+    /// Do not use.
+    #[deprecated]
     #[cfg(test)]
     pub fn bytes(&self) -> &[u8] {
+        self.bytes_for_test()
+    }
+
+    #[cfg(test)]
+    pub(super) fn bytes_for_test(&self) -> &[u8] {
         self.private_key.bytes_less_safe()
     }
 }
@@ -251,13 +259,14 @@ pub fn agree_ephemeral<B: AsRef<[u8]>, R>(
         algorithm: peer_public_key.algorithm,
         bytes: peer_public_key.bytes.as_ref(),
     };
-    agree_ephemeral_(my_private_key, peer_public_key, kdf)
+    agree_ephemeral_(my_private_key, peer_public_key, kdf, cpu::features())
 }
 
 fn agree_ephemeral_<R>(
     my_private_key: EphemeralPrivateKey,
     peer_public_key: UnparsedPublicKey<&[u8]>,
     kdf: impl FnOnce(&[u8]) -> R,
+    cpu: cpu::Features,
 ) -> Result<R, error::Unspecified> {
     // NSA Guide Prerequisite 1.
     //
@@ -291,6 +300,7 @@ fn agree_ephemeral_<R>(
         shared_key,
         &my_private_key.private_key,
         untrusted::Input::from(peer_public_key.bytes),
+        cpu,
     )?;
 
     // NSA Guide Steps 5 and 6.

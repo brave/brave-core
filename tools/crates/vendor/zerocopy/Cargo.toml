@@ -10,13 +10,22 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.60.0"
+edition = "2021"
+rust-version = "1.56.0"
 name = "zerocopy"
-version = "0.7.35"
-authors = ["Joshua Liebow-Feeser <joshlf@google.com>"]
+version = "0.8.31"
+authors = [
+    "Joshua Liebow-Feeser <joshlf@google.com>",
+    "Jack Wrenn <jswrenn@amazon.com>",
+]
+build = "build.rs"
 exclude = [".*"]
-description = "Utilities for zero-copy parsing and serialization"
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+description = """Zerocopy makes zero-cost memory manipulation effortless. We write "unsafe" so you don't have to."""
 readme = "README.md"
 keywords = [
     "cast",
@@ -35,9 +44,18 @@ categories = [
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
 repository = "https://github.com/google/zerocopy"
 
+[package.metadata.build-rs]
+no-zerocopy-simd-x86-avx12-1-89-0 = "1.89.0"
+no-zerocopy-core-error-1-81-0 = "1.81.0"
+no-zerocopy-diagnostic-on-unimplemented-1-78-0 = "1.78.0"
+no-zerocopy-generic-bounds-in-const-fn-1-61-0 = "1.61.0"
+no-zerocopy-target-has-atomics-1-60-0 = "1.60.0"
+no-zerocopy-aarch64-simd-1-59-0 = "1.59.0"
+no-zerocopy-panic-in-const-and-vec-try-reserve-1-57-0 = "1.57.0"
+
 [package.metadata.ci]
-pinned-nightly = "nightly-2024-06-19"
-pinned-stable = "1.79.0"
+pinned-stable = "1.91.1"
+pinned-nightly = "nightly-2025-11-23"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -50,20 +68,40 @@ rustdoc-args = [
 [package.metadata.playground]
 features = ["__internal_use_only_features_that_work_on_stable"]
 
-[dependencies.byteorder]
-version = "1.3"
-optional = true
-default-features = false
+[features]
+__internal_use_only_features_that_work_on_stable = [
+    "alloc",
+    "derive",
+    "simd",
+    "std",
+]
+alloc = []
+derive = ["zerocopy-derive"]
+float-nightly = []
+simd = []
+simd-nightly = ["simd"]
+std = ["alloc"]
+
+[lib]
+name = "zerocopy"
+path = "src/lib.rs"
+
+[[test]]
+name = "trybuild"
+path = "tests/trybuild.rs"
 
 [dependencies.zerocopy-derive]
-version = "=0.7.35"
+version = "=0.8.31"
 optional = true
 
-[dev-dependencies.assert_matches]
-version = "1.5"
+[dev-dependencies.either]
+version = "=1.13.0"
 
 [dev-dependencies.elain]
 version = "0.3.0"
+
+[dev-dependencies.glob]
+version = "=0.3.2"
 
 [dev-dependencies.itertools]
 version = "0.11"
@@ -71,6 +109,7 @@ version = "0.11"
 [dev-dependencies.rand]
 version = "0.8.5"
 features = ["small_rng"]
+default-features = false
 
 [dev-dependencies.rustversion]
 version = "1.0"
@@ -79,23 +118,11 @@ version = "1.0"
 version = "1.1"
 
 [dev-dependencies.trybuild]
-version = "=1.0.85"
+version = "=1.0.89"
 features = ["diff"]
 
 [dev-dependencies.zerocopy-derive]
-version = "=0.7.35"
-
-[features]
-__internal_use_only_features_that_work_on_stable = [
-    "alloc",
-    "derive",
-    "simd",
-]
-alloc = []
-default = ["byteorder"]
-derive = ["zerocopy-derive"]
-simd = []
-simd-nightly = ["simd"]
+version = "=0.8.31"
 
 [target."cfg(any())".dependencies.zerocopy-derive]
-version = "=0.7.35"
+version = "=0.8.31"

@@ -11,9 +11,9 @@ use rkyv::{Archive, Deserialize, Serialize};
 
 use super::fixed::FixedOffset;
 use super::{MappedLocalTime, TimeZone};
-use crate::naive::{NaiveDate, NaiveDateTime, NaiveTime};
 #[allow(deprecated)]
 use crate::Date;
+use crate::naive::{NaiveDate, NaiveDateTime, NaiveTime};
 use crate::{DateTime, Utc};
 
 #[cfg(unix)]
@@ -27,6 +27,9 @@ mod inner;
 #[cfg(all(windows, feature = "clock"))]
 #[allow(unreachable_pub)]
 mod win_bindings;
+
+#[cfg(all(any(target_os = "android", target_env = "ohos", test), feature = "clock"))]
+mod tz_data;
 
 #[cfg(all(
     not(unix),
@@ -56,7 +59,7 @@ mod inner {
 #[cfg(all(
     target_arch = "wasm32",
     feature = "wasmbind",
-    not(any(target_os = "emscripten", target_os = "wasi"))
+    not(any(target_os = "emscripten", target_os = "wasi", target_os = "linux"))
 ))]
 mod inner {
     use crate::{Datelike, FixedOffset, MappedLocalTime, NaiveDateTime, Timelike};
@@ -216,7 +219,7 @@ impl Transition {
 #[cfg(windows)]
 impl PartialOrd for Transition {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.transition_utc.cmp(&other.transition_utc))
+        Some(self.cmp(other))
     }
 }
 
@@ -274,9 +277,9 @@ fn lookup_with_dst_transitions(
 #[cfg(test)]
 mod tests {
     use super::Local;
-    #[cfg(windows)]
-    use crate::offset::local::{lookup_with_dst_transitions, Transition};
     use crate::offset::TimeZone;
+    #[cfg(windows)]
+    use crate::offset::local::{Transition, lookup_with_dst_transitions};
     use crate::{Datelike, Days, Utc};
     #[cfg(windows)]
     use crate::{FixedOffset, MappedLocalTime, NaiveDate, NaiveDateTime};
@@ -340,8 +343,7 @@ mod tests {
             // but there are only two sensible options.
             assert!(
                 timestr == "15:02:60" || timestr == "15:03:00",
-                "unexpected timestr {:?}",
-                timestr
+                "unexpected timestr {timestr:?}"
             );
         }
 
@@ -349,8 +351,7 @@ mod tests {
             let timestr = dt.time().to_string();
             assert!(
                 timestr == "15:02:03.234" || timestr == "15:02:04.234",
-                "unexpected timestr {:?}",
-                timestr
+                "unexpected timestr {timestr:?}"
             );
         }
     }

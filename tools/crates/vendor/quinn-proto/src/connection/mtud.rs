@@ -1,4 +1,4 @@
-use crate::{packet::SpaceId, Instant, MtuDiscoveryConfig, MAX_UDP_PAYLOAD};
+use crate::{Instant, MAX_UDP_PAYLOAD, MtuDiscoveryConfig, packet::SpaceId};
 use std::cmp;
 use tracing::trace;
 
@@ -417,7 +417,7 @@ impl BlackHoleDetector {
         let end_last_burst = self
             .current_loss_burst
             .as_ref()
-            .map_or(false, |current| pn - current.latest_non_probe != 1);
+            .is_some_and(|current| pn - current.latest_non_probe != 1);
 
         if end_last_burst {
             self.finish_loss_burst();
@@ -518,9 +518,9 @@ const BLACK_HOLE_THRESHOLD: usize = 3;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::packet::SpaceId;
     use crate::Duration;
     use crate::MAX_UDP_PAYLOAD;
+    use crate::packet::SpaceId;
     use assert_matches::assert_matches;
 
     fn default_mtud() -> MtuDiscovery {
@@ -731,6 +731,7 @@ mod tests {
         assert!(completed(&mtud));
     }
 
+    #[cfg(debug_assertions)]
     #[test]
     #[should_panic]
     fn mtu_discovery_with_peer_max_udp_payload_size_after_search_panics() {

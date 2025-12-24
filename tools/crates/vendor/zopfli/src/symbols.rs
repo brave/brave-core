@@ -1,4 +1,4 @@
-const LENGTH_SYMBOL_TABLE: [usize; 259] = [
+const LENGTH_SYMBOL_TABLE: [usize; 288 /* Originally, 259 entries */] = [
     0, 0, 0, 257, 258, 259, 260, 261, 262, 263, 264, 265, 265, 266, 266, 267, 267, 268, 268, 269,
     269, 269, 269, 270, 270, 270, 270, 271, 271, 271, 271, 272, 272, 272, 272, 273, 273, 273, 273,
     273, 273, 273, 273, 274, 274, 274, 274, 274, 274, 274, 274, 275, 275, 275, 275, 275, 275, 275,
@@ -13,87 +13,44 @@ const LENGTH_SYMBOL_TABLE: [usize; 259] = [
     283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 283, 284, 284,
     284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284,
     284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 285,
+    // Padding to 288 entries for reduced bounds checking
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
 
 /// Gets the symbol for the given length, cfr. the DEFLATE spec.
 /// Returns symbol in range [257-285] (inclusive).
-pub fn get_length_symbol(length: usize) -> usize {
+pub const fn get_length_symbol(length: usize) -> usize {
     LENGTH_SYMBOL_TABLE[length]
 }
 
 /// Gets the amount of extra bits for the given dist, cfr. the DEFLATE spec.
-pub fn get_dist_extra_bits(dist: u16) -> usize {
-    (match dist {
-        0..=4 => 0,
-        5..=8 => 1,
-        9..=16 => 2,
-        17..=32 => 3,
-        33..=64 => 4,
-        65..=128 => 5,
-        129..=256 => 6,
-        257..=512 => 7,
-        513..=1024 => 8,
-        1025..=2048 => 9,
-        2049..=4096 => 10,
-        4097..=8192 => 11,
-        8193..=16384 => 12,
-        _ => 13,
-    }) as usize
+pub const fn get_dist_extra_bits(dist: u16) -> u32 {
+    if dist < 5 {
+        return 0;
+    }
+    (dist - 1).ilog2() - 1
 }
 
 /// Gets value of the extra bits for the given dist, cfr. the DEFLATE spec.
-pub fn get_dist_extra_bits_value(dist: u16) -> u16 {
-    match dist {
-        0..=4 => 0,
-        5..=8 => (dist - 5) & 1,
-        9..=16 => (dist - 9) & 3,
-        17..=32 => (dist - 17) & 7,
-        33..=64 => (dist - 33) & 15,
-        65..=128 => (dist - 65) & 31,
-        129..=256 => (dist - 129) & 63,
-        257..=512 => (dist - 257) & 127,
-        513..=1024 => (dist - 513) & 255,
-        1025..=2048 => (dist - 1025) & 511,
-        2049..=4096 => (dist - 2049) & 1023,
-        4097..=8192 => (dist - 4097) & 2047,
-        8193..=16384 => (dist - 8193) & 4095,
-        _ => (dist - 16385) & 8191,
+pub const fn get_dist_extra_bits_value(dist: u16) -> u16 {
+    if dist < 5 {
+        return 0;
     }
+    let l = (dist - 1).ilog2();
+    (dist - (1 + (1 << l))) & ((1 << (l - 1)) - 1)
 }
 
-pub fn get_dist_symbol(dist: u16) -> usize {
-    (match dist {
-        0..=4 => dist - 1,
-        5..=6 => 4,
-        7..=8 => 5,
-        9..=12 => 6,
-        13..=16 => 7,
-        17..=24 => 8,
-        25..=32 => 9,
-        33..=48 => 10,
-        49..=64 => 11,
-        65..=96 => 12,
-        97..=128 => 13,
-        129..=192 => 14,
-        193..=256 => 15,
-        257..=384 => 16,
-        385..=512 => 17,
-        513..=768 => 18,
-        769..=1024 => 19,
-        1025..=1536 => 20,
-        1537..=2048 => 21,
-        2049..=3072 => 22,
-        3073..=4096 => 23,
-        4097..=6144 => 24,
-        6145..=8192 => 25,
-        8193..=12288 => 26,
-        12289..=16384 => 27,
-        16385..=24576 => 28,
-        _ => 29,
-    }) as usize
+pub const fn get_dist_symbol(dist: u16) -> u16 {
+    if dist < 5 {
+        // dist should never equal zero, and wrapping generates more efficient code
+        return dist.wrapping_sub(1);
+    }
+    let l = (dist - 1).ilog2();
+    let r = ((dist - 1) >> (l - 1)) & 1;
+    l as u16 * 2 + r
 }
 
-const LENGTH_EXTRA_BITS: [usize; 259] = [
+const LENGTH_EXTRA_BITS: [u32; 288 /* Originally, 259 entries */] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
     3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -102,15 +59,16 @@ const LENGTH_EXTRA_BITS: [usize; 259] = [
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 0,
+    5, 5, 0, // Padding to 288 entries for reduced bounds checking
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
 /// Gets the amount of extra bits for the given length, cfr. the DEFLATE spec.
-pub fn get_length_extra_bits(l: usize) -> usize {
+pub const fn get_length_extra_bits(l: usize) -> u32 {
     LENGTH_EXTRA_BITS[l]
 }
 
-const LENGTH_EXTRA_BITS_VALUE: [u32; 259] = [
+const LENGTH_EXTRA_BITS_VALUE: [u32; 288 /* Originally, 259 entries */] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0,
     1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4,
     5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -121,10 +79,12 @@ const LENGTH_EXTRA_BITS_VALUE: [u32; 259] = [
     4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
     29, 30, 31, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
     23, 24, 25, 26, 27, 28, 29, 30, 0,
+    // Padding to 288 entries for reduced bounds checking
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
 /// Gets value of the extra bits for the given length, cfr. the DEFLATE spec.
-pub fn get_length_extra_bits_value(l: usize) -> u32 {
+pub const fn get_length_extra_bits_value(l: usize) -> u32 {
     LENGTH_EXTRA_BITS_VALUE[l]
 }
 
@@ -133,7 +93,7 @@ const LENGTH_SYMBOL_EXTRA_BITS_TABLE: [u32; 29] = [
 ];
 
 /// Gets the amount of extra bits for the given length symbol.
-pub fn get_length_symbol_extra_bits(s: usize) -> u32 {
+pub const fn get_length_symbol_extra_bits(s: usize) -> u32 {
     LENGTH_SYMBOL_EXTRA_BITS_TABLE[s - 257]
 }
 
@@ -143,6 +103,6 @@ const DIST_SYMBOL_EXTRA_BITS_TABLE: [u32; 30] = [
 ];
 
 /// Gets the amount of extra bits for the given distance symbol.
-pub fn get_dist_symbol_extra_bits(s: usize) -> u32 {
+pub const fn get_dist_symbol_extra_bits(s: usize) -> u32 {
     DIST_SYMBOL_EXTRA_BITS_TABLE[s]
 }

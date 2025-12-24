@@ -11,8 +11,14 @@
 
 [package]
 name = "shell-words"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Tomasz Miąsko <tomasz.miasko@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Process command line according to parsing rules of UNIX shell"
 readme = "README.md"
 keywords = [
@@ -28,3 +34,7 @@ repository = "https://github.com/tmiasko/shell-words"
 [features]
 default = ["std"]
 std = []
+
+[lib]
+name = "shell_words"
+path = "src/lib.rs"

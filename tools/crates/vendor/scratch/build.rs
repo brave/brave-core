@@ -1,9 +1,3 @@
-#![cfg_attr(feature = "cargo-clippy", allow(renamed_and_removed_lints))]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(let_underscore_drop, let_underscore_untyped)
-)]
-
 use std::{env, fs};
 
 fn main() {

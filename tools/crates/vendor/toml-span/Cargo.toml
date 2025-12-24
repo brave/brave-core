@@ -10,9 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
+edition = "2024"
 name = "toml-span"
-version = "0.3.0"
+version = "0.6.0"
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Toml parser and deserializer that preserves span information"
 homepage = "https://github.com/EmbarkStudios/toml-span"
 documentation = "https://docs.rs/toml-span"
@@ -22,6 +28,8 @@ categories = [
     "config",
 ]
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/EmbarkStudios/toml-span"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -30,8 +38,16 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+reporting = ["dep:codespan-reporting"]
+serde = ["dep:serde"]
+
+[lib]
+name = "toml_span"
+path = "src/lib.rs"
+
 [dependencies.codespan-reporting]
-version = "0.11"
+version = "0.13"
 optional = true
 
 [dependencies.serde]
@@ -40,7 +56,3 @@ optional = true
 
 [dependencies.smallvec]
 version = "1.13"
-
-[features]
-reporting = ["dep:codespan-reporting"]
-serde = ["dep:serde"]

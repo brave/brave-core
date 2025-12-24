@@ -32,7 +32,7 @@ pub(crate) mod hmac;
 pub(crate) mod kx;
 #[path = "../ring/quic.rs"]
 pub(crate) mod quic;
-#[cfg(any(feature = "std", feature = "hashbrown"))]
+#[cfg(feature = "std")]
 pub(crate) mod ticketer;
 #[cfg(feature = "tls12")]
 pub(crate) mod tls12;
@@ -171,7 +171,9 @@ static SUPPORTED_SIG_ALGS: WebPkiSupportedAlgorithms = WebPkiSupportedAlgorithms
         webpki_algs::RSA_PKCS1_2048_8192_SHA256,
         webpki_algs::RSA_PKCS1_2048_8192_SHA384,
         webpki_algs::RSA_PKCS1_2048_8192_SHA512,
-        webpki_algs::RSA_PKCS1_3072_8192_SHA384,
+        webpki_algs::RSA_PKCS1_2048_8192_SHA256_ABSENT_PARAMS,
+        webpki_algs::RSA_PKCS1_2048_8192_SHA384_ABSENT_PARAMS,
+        webpki_algs::RSA_PKCS1_2048_8192_SHA512_ABSENT_PARAMS,
     ],
     mapping: &[
         // Note: for TLS1.2 the curve is not fixed by SignatureScheme. For TLS1.3 it is.
@@ -193,7 +195,11 @@ static SUPPORTED_SIG_ALGS: WebPkiSupportedAlgorithms = WebPkiSupportedAlgorithms
         ),
         (
             SignatureScheme::ECDSA_NISTP521_SHA512,
-            &[webpki_algs::ECDSA_P521_SHA512],
+            &[
+                webpki_algs::ECDSA_P521_SHA512,
+                webpki_algs::ECDSA_P384_SHA512,
+                webpki_algs::ECDSA_P256_SHA512,
+            ],
         ),
         (SignatureScheme::ED25519, &[webpki_algs::ED25519]),
         (
@@ -229,7 +235,7 @@ static SUPPORTED_SIG_ALGS: WebPkiSupportedAlgorithms = WebPkiSupportedAlgorithms
 /// [`DEFAULT_KX_GROUPS`] is provided as an array of this provider's defaults.
 pub mod kx_group {
     pub use super::kx::{SECP256R1, SECP384R1, X25519};
-    pub use super::pq::{MLKEM768, X25519MLKEM768};
+    pub use super::pq::{MLKEM768, SECP256R1MLKEM768, X25519MLKEM768};
 }
 
 /// A list of the default key exchange groups supported by this provider.
@@ -250,15 +256,19 @@ pub static DEFAULT_KX_GROUPS: &[&dyn SupportedKxGroup] = &[
 pub static ALL_KX_GROUPS: &[&dyn SupportedKxGroup] = &[
     #[cfg(feature = "prefer-post-quantum")]
     kx_group::X25519MLKEM768,
+    #[cfg(feature = "prefer-post-quantum")]
+    kx_group::SECP256R1MLKEM768,
     kx_group::X25519,
     kx_group::SECP256R1,
     kx_group::SECP384R1,
     #[cfg(not(feature = "prefer-post-quantum"))]
     kx_group::X25519MLKEM768,
+    #[cfg(not(feature = "prefer-post-quantum"))]
+    kx_group::SECP256R1MLKEM768,
     kx_group::MLKEM768,
 ];
 
-#[cfg(any(feature = "std", feature = "hashbrown"))]
+#[cfg(feature = "std")]
 pub use ticketer::Ticketer;
 
 /// Compatibility shims between ring 0.16.x and 0.17.x API
@@ -297,9 +307,11 @@ mod tests {
     #[cfg(feature = "fips")]
     #[test]
     fn default_suites_are_fips() {
-        assert!(super::DEFAULT_CIPHER_SUITES
-            .iter()
-            .all(|scs| scs.fips()));
+        assert!(
+            super::DEFAULT_CIPHER_SUITES
+                .iter()
+                .all(|scs| scs.fips())
+        );
     }
 
     #[cfg(not(feature = "fips"))]

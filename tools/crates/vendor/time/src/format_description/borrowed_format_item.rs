@@ -36,6 +36,7 @@ pub enum BorrowedFormatItem<'a> {
 
 #[cfg(feature = "alloc")]
 impl fmt::Debug for BorrowedFormatItem<'_> {
+    #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Literal(literal) => f.write_str(&String::from_utf8_lossy(literal)),
@@ -48,6 +49,7 @@ impl fmt::Debug for BorrowedFormatItem<'_> {
 }
 
 impl From<Component> for BorrowedFormatItem<'_> {
+    #[inline]
     fn from(component: Component) -> Self {
         Self::Component(component)
     }
@@ -56,6 +58,7 @@ impl From<Component> for BorrowedFormatItem<'_> {
 impl TryFrom<BorrowedFormatItem<'_>> for Component {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(value: BorrowedFormatItem<'_>) -> Result<Self, Self::Error> {
         match value {
             BorrowedFormatItem::Component(component) => Ok(component),
@@ -65,6 +68,7 @@ impl TryFrom<BorrowedFormatItem<'_>> for Component {
 }
 
 impl<'a> From<&'a [BorrowedFormatItem<'_>]> for BorrowedFormatItem<'a> {
+    #[inline]
     fn from(items: &'a [BorrowedFormatItem<'_>]) -> Self {
         Self::Compound(items)
     }
@@ -73,6 +77,7 @@ impl<'a> From<&'a [BorrowedFormatItem<'_>]> for BorrowedFormatItem<'a> {
 impl<'a> TryFrom<BorrowedFormatItem<'a>> for &[BorrowedFormatItem<'a>] {
     type Error = error::DifferentVariant;
 
+    #[inline]
     fn try_from(value: BorrowedFormatItem<'a>) -> Result<Self, Self::Error> {
         match value {
             BorrowedFormatItem::Compound(items) => Ok(items),
@@ -82,24 +87,28 @@ impl<'a> TryFrom<BorrowedFormatItem<'a>> for &[BorrowedFormatItem<'a>] {
 }
 
 impl PartialEq<Component> for BorrowedFormatItem<'_> {
+    #[inline]
     fn eq(&self, rhs: &Component) -> bool {
         matches!(self, Self::Component(component) if component == rhs)
     }
 }
 
 impl PartialEq<BorrowedFormatItem<'_>> for Component {
+    #[inline]
     fn eq(&self, rhs: &BorrowedFormatItem<'_>) -> bool {
         rhs == self
     }
 }
 
 impl PartialEq<&[Self]> for BorrowedFormatItem<'_> {
+    #[inline]
     fn eq(&self, rhs: &&[Self]) -> bool {
         matches!(self, Self::Compound(compound) if compound == rhs)
     }
 }
 
 impl PartialEq<BorrowedFormatItem<'_>> for &[BorrowedFormatItem<'_>] {
+    #[inline]
     fn eq(&self, rhs: &BorrowedFormatItem<'_>) -> bool {
         rhs == self
     }

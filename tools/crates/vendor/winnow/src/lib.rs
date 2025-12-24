@@ -7,7 +7,7 @@
 //! - [Tutorial][_tutorial::chapter_0]
 //! - [Special Topics][_topic]
 //! - [Discussions](https://github.com/winnow-rs/winnow/discussions)
-//! - [CHANGELOG](https://github.com/winnow-rs/winnow/blob/v0.7.2/CHANGELOG.md) (includes major version migration
+//! - [CHANGELOG](https://github.com/winnow-rs/winnow/blob/v0.7.14/CHANGELOG.md) (includes major version migration
 //!   guides)
 //!
 //! ## Aspirations
@@ -17,8 +17,8 @@
 //! In roughly priority order:
 //! 1. Support writing parser declaratively while not getting in the way of imperative-style
 //!    parsing when needed, working as an open-ended toolbox rather than a close-ended framework.
-//! 2. Flexible enough to be used for any application, including parsing binary data, strings, or
-//!    separate lexing and parsing phases
+//! 2. Flexible enough to be used for any application, including parsing strings, binary data,
+//!    or separate [lexing and parsing phases][_topic::lexing]
 //! 3. Zero-cost abstractions, making it easy to write high performance parsers
 //! 4. Easy to use, making it trivial for one-off uses
 //!
@@ -46,12 +46,12 @@
 //!
 //! See also the [Tutorial][_tutorial::chapter_0] and [Special Topics][_topic]
 
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![cfg_attr(docsrs, feature(extended_key_value_attributes))]
 #![cfg_attr(all(not(feature = "std"), not(test)), no_std)]
 #![warn(missing_docs)]
 #![warn(clippy::std_instead_of_core)]
+#![warn(clippy::std_instead_of_alloc)]
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
 
@@ -64,40 +64,34 @@ extern crate alloc;
 #[cfg(doctest)]
 pub struct ReadmeDoctests;
 
-/// Lib module to re-export everything needed from `std` or `core`/`alloc`. This is how `serde` does
-/// it, albeit there it is not public.
-#[doc(hidden)]
-pub(crate) mod lib {
-    #![allow(unused_imports)]
-
-    /// `std` facade allowing `std`/`core` to be interchangeable. Reexports `alloc` crate optionally,
-    /// as well as `core` or `std`
-    #[cfg(not(feature = "std"))]
-    /// internal std exports for no_std compatibility
-    pub(crate) mod std {
-        #[doc(hidden)]
-        #[cfg(not(feature = "alloc"))]
-        pub(crate) use core::borrow;
-
-        #[cfg(feature = "alloc")]
-        #[doc(hidden)]
-        pub(crate) use alloc::{borrow, boxed, collections, string, vec};
-
-        #[doc(hidden)]
-        pub(crate) use core::{
-            cmp, convert, fmt, hash, iter, mem, ops, option, result, slice, str,
-        };
+pub(crate) mod util {
+    #[allow(dead_code)]
+    pub(crate) fn from_fn<F: Fn(&mut core::fmt::Formatter<'_>) -> core::fmt::Result>(
+        f: F,
+    ) -> FromFn<F> {
+        FromFn(f)
     }
 
-    #[cfg(feature = "std")]
-    /// internal std exports for `no_std` compatibility
-    pub(crate) mod std {
-        #![allow(clippy::std_instead_of_core)]
-        #[doc(hidden)]
-        pub(crate) use std::{
-            borrow, boxed, cmp, collections, convert, fmt, hash, iter, mem, ops, result, slice,
-            str, string, vec,
-        };
+    pub(crate) struct FromFn<F>(F)
+    where
+        F: Fn(&mut core::fmt::Formatter<'_>) -> core::fmt::Result;
+
+    impl<F> core::fmt::Debug for FromFn<F>
+    where
+        F: Fn(&mut core::fmt::Formatter<'_>) -> core::fmt::Result,
+    {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            (self.0)(f)
+        }
+    }
+
+    impl<F> core::fmt::Display for FromFn<F>
+    where
+        F: Fn(&mut core::fmt::Formatter<'_>) -> core::fmt::Result,
+    {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            (self.0)(f)
+        }
     }
 }
 

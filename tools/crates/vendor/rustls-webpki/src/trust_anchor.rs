@@ -1,6 +1,6 @@
 use pki_types::{CertificateDer, TrustAnchor};
 
-use crate::cert::{lenient_certificate_serial_number, Cert};
+use crate::cert::{Cert, lenient_certificate_serial_number};
 use crate::der;
 use crate::error::{DerTypeId, Error};
 

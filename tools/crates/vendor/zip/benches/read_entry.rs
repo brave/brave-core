@@ -3,7 +3,6 @@ use bencher::{benchmark_group, benchmark_main};
 use std::io::{Cursor, Read, Write};
 
 use bencher::Bencher;
-use getrandom::getrandom;
 use zip::{write::SimpleFileOptions, ZipArchive, ZipWriter};
 
 fn generate_random_archive(size: usize) -> Vec<u8> {
@@ -13,7 +12,7 @@ fn generate_random_archive(size: usize) -> Vec<u8> {
 
     writer.start_file("random.dat", options).unwrap();
     let mut bytes = vec![0u8; size];
-    getrandom(&mut bytes).unwrap();
+    getrandom::fill(&mut bytes).unwrap();
     writer.write_all(&bytes).unwrap();
 
     writer.finish().unwrap().into_inner()

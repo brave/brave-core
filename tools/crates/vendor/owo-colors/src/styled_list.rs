@@ -1,4 +1,4 @@
-use crate::{dyn_styles::StyleFlags, Style, Styled};
+use crate::{Style, Styled, dyn_styles::StyleFlags};
 use core::{
     fmt::{self, Display},
     marker::PhantomData,
@@ -111,7 +111,7 @@ where
 }
 
 impl<'a> Style {
-    /// Retuns an enum that indicates how the transition from one style to this style should be printed
+    /// Returns an enum that indicates how the transition from one style to this style should be printed
     fn transition_from(&'a self, from: &Style) -> Transition<'a> {
         if self == from {
             return Transition::Noop;

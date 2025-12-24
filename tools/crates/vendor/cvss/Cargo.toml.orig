@@ -1,0 +1,25 @@
+[package]
+name         = "cvss"
+description  = "Common Vulnerability Scoring System parser/serializer"
+version      = "2.2.0"
+authors      = ["Tony Arcieri <bascule@gmail.com>"]
+license      = "Apache-2.0 OR MIT"
+repository   = "https://github.com/rustsec/rustsec"
+readme       = "README.md"
+categories   = ["parser-implementations"]
+keywords     = ["cvssv3", "cvssv4", "security", "advisory", "vulnerability"]
+edition      = "2024"
+rust-version = "1.85"
+
+[dependencies]
+serde = { workspace = true, optional = true }
+
+[features]
+default = ["std", "v3", "v4"]
+v3 = []
+v4 = []
+std = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

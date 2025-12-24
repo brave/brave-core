@@ -15,11 +15,12 @@ use crate::backend::c;
 use crate::backend::conv::loff_t_from_u64;
 use crate::backend::conv::{c_uint, no_fd, pass_usize, ret, ret_owned_fd, ret_void_star};
 use crate::fd::{BorrowedFd, OwnedFd};
+use crate::ffi::c_void;
 use crate::io;
 use linux_raw_sys::general::{MAP_ANONYMOUS, MREMAP_FIXED};
 
 #[inline]
-pub(crate) fn madvise(addr: *mut c::c_void, len: usize, advice: Advice) -> io::Result<()> {
+pub(crate) fn madvise(addr: *mut c_void, len: usize, advice: Advice) -> io::Result<()> {
     unsafe {
         ret(syscall!(
             __NR_madvise,
@@ -31,7 +32,7 @@ pub(crate) fn madvise(addr: *mut c::c_void, len: usize, advice: Advice) -> io::R
 }
 
 #[inline]
-pub(crate) unsafe fn msync(addr: *mut c::c_void, len: usize, flags: MsyncFlags) -> io::Result<()> {
+pub(crate) unsafe fn msync(addr: *mut c_void, len: usize, flags: MsyncFlags) -> io::Result<()> {
     ret(syscall!(__NR_msync, addr, pass_usize(len), flags))
 }
 
@@ -41,13 +42,13 @@ pub(crate) unsafe fn msync(addr: *mut c::c_void, len: usize, flags: MsyncFlags) 
 /// with memory pointed to by raw pointers is unsafe.
 #[inline]
 pub(crate) unsafe fn mmap(
-    addr: *mut c::c_void,
+    addr: *mut c_void,
     length: usize,
     prot: ProtFlags,
     flags: MapFlags,
     fd: BorrowedFd<'_>,
     offset: u64,
-) -> io::Result<*mut c::c_void> {
+) -> io::Result<*mut c_void> {
     #[cfg(target_pointer_width = "32")]
     {
         ret_void_star(syscall!(
@@ -83,11 +84,11 @@ pub(crate) unsafe fn mmap(
 /// with memory pointed to by raw pointers is unsafe.
 #[inline]
 pub(crate) unsafe fn mmap_anonymous(
-    addr: *mut c::c_void,
+    addr: *mut c_void,
     length: usize,
     prot: ProtFlags,
     flags: MapFlags,
-) -> io::Result<*mut c::c_void> {
+) -> io::Result<*mut c_void> {
     #[cfg(target_pointer_width = "32")]
     {
         ret_void_star(syscall!(
@@ -116,7 +117,7 @@ pub(crate) unsafe fn mmap_anonymous(
 
 #[inline]
 pub(crate) unsafe fn mprotect(
-    ptr: *mut c::c_void,
+    ptr: *mut c_void,
     len: usize,
     flags: MprotectFlags,
 ) -> io::Result<()> {
@@ -128,7 +129,7 @@ pub(crate) unsafe fn mprotect(
 /// `munmap` is primarily unsafe due to the `addr` parameter, as anything
 /// working with memory pointed to by raw pointers is unsafe.
 #[inline]
-pub(crate) unsafe fn munmap(addr: *mut c::c_void, length: usize) -> io::Result<()> {
+pub(crate) unsafe fn munmap(addr: *mut c_void, length: usize) -> io::Result<()> {
     ret(syscall!(__NR_munmap, addr, pass_usize(length)))
 }
 
@@ -138,11 +139,11 @@ pub(crate) unsafe fn munmap(addr: *mut c::c_void, length: usize) -> io::Result<(
 /// anything working with memory pointed to by raw pointers is unsafe.
 #[inline]
 pub(crate) unsafe fn mremap(
-    old_address: *mut c::c_void,
+    old_address: *mut c_void,
     old_size: usize,
     new_size: usize,
     flags: MremapFlags,
-) -> io::Result<*mut c::c_void> {
+) -> io::Result<*mut c_void> {
     ret_void_star(syscall!(
         __NR_mremap,
         old_address,
@@ -159,12 +160,12 @@ pub(crate) unsafe fn mremap(
 /// pointers is unsafe.
 #[inline]
 pub(crate) unsafe fn mremap_fixed(
-    old_address: *mut c::c_void,
+    old_address: *mut c_void,
     old_size: usize,
     new_size: usize,
     flags: MremapFlags,
-    new_address: *mut c::c_void,
-) -> io::Result<*mut c::c_void> {
+    new_address: *mut c_void,
+) -> io::Result<*mut c_void> {
     ret_void_star(syscall!(
         __NR_mremap,
         old_address,
@@ -180,7 +181,7 @@ pub(crate) unsafe fn mremap_fixed(
 /// `mlock` operates on raw pointers and may round out to the nearest page
 /// boundaries.
 #[inline]
-pub(crate) unsafe fn mlock(addr: *mut c::c_void, length: usize) -> io::Result<()> {
+pub(crate) unsafe fn mlock(addr: *mut c_void, length: usize) -> io::Result<()> {
     ret(syscall!(__NR_mlock, addr, pass_usize(length)))
 }
 
@@ -190,7 +191,7 @@ pub(crate) unsafe fn mlock(addr: *mut c::c_void, length: usize) -> io::Result<()
 /// boundaries.
 #[inline]
 pub(crate) unsafe fn mlock_with(
-    addr: *mut c::c_void,
+    addr: *mut c_void,
     length: usize,
     flags: MlockFlags,
 ) -> io::Result<()> {
@@ -202,7 +203,7 @@ pub(crate) unsafe fn mlock_with(
 /// `munlock` operates on raw pointers and may round out to the nearest page
 /// boundaries.
 #[inline]
-pub(crate) unsafe fn munlock(addr: *mut c::c_void, length: usize) -> io::Result<()> {
+pub(crate) unsafe fn munlock(addr: *mut c_void, length: usize) -> io::Result<()> {
     ret(syscall!(__NR_munlock, addr, pass_usize(length)))
 }
 
@@ -225,8 +226,9 @@ pub(crate) fn mlockall(flags: MlockAllFlags) -> io::Result<()> {
     // because if a load happens and evokes a fault before the `mlockall`,
     // the memory doesn't get locked, but if the load and therefore
     // the fault happens after, then the memory does get locked.
-    // So to be conservative in this regard, we use `syscall` instead
-    // of `syscall_readonly`
+    //
+    // So to be conservative in this regard, we use `syscall` instead of
+    // `syscall_readonly`
     unsafe { ret(syscall!(__NR_mlockall, flags)) }
 }
 

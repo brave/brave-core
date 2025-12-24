@@ -8,9 +8,9 @@ use console::{style, Term};
 
 fn write_chars() -> io::Result<()> {
     let term = Term::stdout();
-    let (heigth, width) = term.size();
+    let (height, width) = term.size();
     for x in 0..width {
-        for y in 0..heigth {
+        for y in 0..height {
             term.move_cursor_to(x as usize, y as usize)?;
             let text = if (x + y) % 2 == 0 {
                 format!("{}", style(x % 10).black().on_red())

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.66.0"
 name = "anstyle-parse"
-version = "0.2.6"
+version = "0.2.7"
 build = false
 include = [
     "build.rs",
@@ -22,15 +22,14 @@ include = [
     "Cargo.lock",
     "LICENSE*",
     "README.md",
-    "benches/**/*",
     "examples/**/*",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
 description = "Parse ANSI Style Escapes"
-homepage = "https://github.com/rust-cli/anstyle"
 readme = "README.md"
 keywords = [
     "ansi",
@@ -47,6 +46,7 @@ all-features = true
 rustdoc-args = [
     "--cfg",
     "docsrs",
+    "--generate-link-to-definition",
 ]
 
 [[package.metadata.release.pre-release-replacements]]
@@ -84,6 +84,11 @@ replace = """
 [Unreleased]: https://github.com/rust-cli/anstyle/compare/{{tag_name}}...HEAD"""
 search = "<!-- next-url -->"
 
+[features]
+core = ["dep:arrayvec"]
+default = ["utf8"]
+utf8 = ["dep:utf8parse"]
+
 [lib]
 name = "anstyle_parse"
 path = "src/lib.rs"
@@ -91,12 +96,6 @@ path = "src/lib.rs"
 [[example]]
 name = "parselog"
 path = "examples/parselog.rs"
-
-[[bench]]
-name = "parse"
-path = "benches/parse.rs"
-harness = false
-required-features = ["utf8"]
 
 [dependencies.arrayvec]
 version = "0.7.2"
@@ -122,11 +121,6 @@ version = "0.6.5"
 
 [dev-dependencies.vte_generate_state_changes]
 version = "0.1.1"
-
-[features]
-core = ["dep:arrayvec"]
-default = ["utf8"]
-utf8 = ["dep:utf8parse"]
 
 [lints.clippy]
 bool_assert_comparison = "allow"
@@ -164,7 +158,7 @@ lossy_float_literal = "warn"
 macro_use_imports = "warn"
 mem_forget = "warn"
 mutex_integer = "warn"
-needless_continue = "warn"
+needless_continue = "allow"
 needless_for_each = "warn"
 negative_feature_names = "warn"
 path_buf_push_overwrite = "warn"
@@ -173,6 +167,7 @@ rc_mutex = "warn"
 redundant_feature_names = "warn"
 ref_option_ref = "warn"
 rest_pat_in_fully_bound_structs = "warn"
+result_large_err = "allow"
 same_functions_in_if_condition = "warn"
 self_named_module_files = "warn"
 semicolon_if_nothing_returned = "warn"
@@ -189,6 +184,7 @@ wildcard_imports = "warn"
 zero_sized_map_values = "warn"
 
 [lints.rust]
+unnameable_types = "warn"
 unreachable_pub = "warn"
 unsafe_op_in_unsafe_fn = "warn"
 unused_lifetimes = "warn"

@@ -1,5 +1,0 @@
-TOML parse error at line 2, column 46
-  |
-2 | str5 = """Here are three quotation marks: """."""  # INVALID
-  |                                              ^
-expected newline, `#`

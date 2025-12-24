@@ -1,8 +1,5 @@
 use crate::backend::c;
-use crate::backend::conv::ret;
-#[cfg(feature = "mount")]
-use crate::backend::conv::{borrowed_fd, c_str, ret_owned_fd};
-#[cfg(feature = "mount")]
+use crate::backend::conv::{borrowed_fd, c_str, ret, ret_owned_fd};
 use crate::fd::{BorrowedFd, OwnedFd};
 use crate::ffi::CStr;
 use crate::io;
@@ -33,7 +30,6 @@ pub(crate) fn unmount(target: &CStr, flags: super::types::UnmountFlags) -> io::R
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsopen(fs_name: &CStr, flags: super::types::FsOpenFlags) -> io::Result<OwnedFd> {
     syscall! {
         fn fsopen(
@@ -45,7 +41,6 @@ pub(crate) fn fsopen(fs_name: &CStr, flags: super::types::FsOpenFlags) -> io::Re
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsmount(
     fs_fd: BorrowedFd<'_>,
     flags: super::types::FsMountFlags,
@@ -62,7 +57,6 @@ pub(crate) fn fsmount(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn move_mount(
     from_dfd: BorrowedFd<'_>,
     from_pathname: &CStr,
@@ -91,7 +85,6 @@ pub(crate) fn move_mount(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn open_tree(
     dfd: BorrowedFd<'_>,
     filename: &CStr,
@@ -109,7 +102,6 @@ pub(crate) fn open_tree(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fspick(
     dfd: BorrowedFd<'_>,
     path: &CStr,
@@ -126,7 +118,6 @@ pub(crate) fn fspick(
     unsafe { ret_owned_fd(fspick(borrowed_fd(dfd), c_str(path), flags.bits())) }
 }
 
-#[cfg(feature = "mount")]
 #[cfg(linux_kernel)]
 syscall! {
     fn fsconfig(
@@ -139,7 +130,6 @@ syscall! {
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_flag(fs_fd: BorrowedFd<'_>, key: &CStr) -> io::Result<()> {
     unsafe {
         ret(fsconfig(
@@ -153,7 +143,6 @@ pub(crate) fn fsconfig_set_flag(fs_fd: BorrowedFd<'_>, key: &CStr) -> io::Result
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_string(
     fs_fd: BorrowedFd<'_>,
     key: &CStr,
@@ -171,7 +160,6 @@ pub(crate) fn fsconfig_set_string(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_binary(
     fs_fd: BorrowedFd<'_>,
     key: &CStr,
@@ -189,7 +177,6 @@ pub(crate) fn fsconfig_set_binary(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_fd(
     fs_fd: BorrowedFd<'_>,
     key: &CStr,
@@ -207,7 +194,6 @@ pub(crate) fn fsconfig_set_fd(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_path(
     fs_fd: BorrowedFd<'_>,
     key: &CStr,
@@ -226,7 +212,6 @@ pub(crate) fn fsconfig_set_path(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_set_path_empty(
     fs_fd: BorrowedFd<'_>,
     key: &CStr,
@@ -244,7 +229,6 @@ pub(crate) fn fsconfig_set_path_empty(
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_create(fs_fd: BorrowedFd<'_>) -> io::Result<()> {
     unsafe {
         ret(fsconfig(
@@ -258,12 +242,24 @@ pub(crate) fn fsconfig_create(fs_fd: BorrowedFd<'_>) -> io::Result<()> {
 }
 
 #[cfg(linux_kernel)]
-#[cfg(feature = "mount")]
 pub(crate) fn fsconfig_reconfigure(fs_fd: BorrowedFd<'_>) -> io::Result<()> {
     unsafe {
         ret(fsconfig(
             borrowed_fd(fs_fd),
             super::types::FsConfigCmd::Reconfigure as _,
+            null(),
+            null(),
+            0,
+        ))
+    }
+}
+
+#[cfg(linux_kernel)]
+pub(crate) fn fsconfig_create_excl(fs_fd: BorrowedFd<'_>) -> io::Result<()> {
+    unsafe {
+        ret(fsconfig(
+            borrowed_fd(fs_fd),
+            super::types::FsConfigCmd::CreateExclusive as _,
             null(),
             null(),
             0,

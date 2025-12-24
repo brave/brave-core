@@ -1,10 +1,190 @@
-use std::io::{self, Write};
-use std::ops::Range;
-use termcolor::{ColorSpec, WriteColor};
+use alloc::string::String;
+use core::ops::Range;
 
 use crate::diagnostic::{LabelStyle, Severity};
 use crate::files::{Error, Location};
-use crate::term::{Chars, Config, Styles};
+use crate::term::{Chars, Config};
+
+#[cfg(feature = "std")]
+pub use std::io::Write as GeneralWrite;
+
+#[cfg(feature = "std")]
+pub type GeneralWriteResult = std::io::Result<()>;
+
+#[cfg(not(feature = "std"))]
+pub use core::fmt::Write as GeneralWrite;
+
+#[cfg(not(feature = "std"))]
+pub use core::fmt::Result as GeneralWriteResult;
+
+/// A writer that can apply styling for different parts of a diagnostic renderer.
+///
+/// # Implementations
+///
+/// - [`PlainWriter<W>`](PlainWriter) - no-op styling, plain text output
+/// - [`StylesWriter<W>`](crate::term::StylesWriter) - custom styles (requires `termcolor` feature)
+/// - `T: WriteColor` - blanket impl using default styles (requires `termcolor` feature)
+pub trait WriteStyle: GeneralWrite {
+    fn set_header(&mut self, severity: Severity) -> GeneralWriteResult;
+
+    fn set_header_message(&mut self) -> GeneralWriteResult;
+
+    fn set_line_number(&mut self) -> GeneralWriteResult;
+
+    fn set_note_bullet(&mut self) -> GeneralWriteResult;
+
+    fn set_source_border(&mut self) -> GeneralWriteResult;
+
+    fn set_label(&mut self, severity: Severity, label_style: LabelStyle) -> GeneralWriteResult;
+
+    fn reset(&mut self) -> GeneralWriteResult;
+}
+
+/// A [`WriteStyle`] implementation that ignores all styling calls. useful for non color output.
+/// Available on all targets
+pub struct PlainWriter<W: GeneralWrite> {
+    w: W,
+}
+
+impl<W: GeneralWrite> PlainWriter<W> {
+    pub fn new(writer: W) -> Self {
+        Self { w: writer }
+    }
+}
+
+#[cfg(feature = "std")]
+impl<W: std::io::Write> std::io::Write for PlainWriter<W> {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        self.w.write(buf)
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.w.flush()
+    }
+}
+
+#[cfg(not(feature = "std"))]
+impl<W: core::fmt::Write> core::fmt::Write for PlainWriter<W> {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        self.w.write_str(s)
+    }
+
+    fn write_char(&mut self, c: char) -> core::fmt::Result {
+        self.w.write_char(c)
+    }
+
+    fn write_fmt(&mut self, args: core::fmt::Arguments<'_>) -> core::fmt::Result {
+        self.w.write_fmt(args)
+    }
+}
+
+impl<W: GeneralWrite> WriteStyle for PlainWriter<W> {
+    fn set_header(&mut self, _severity: Severity) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn set_header_message(&mut self) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn set_line_number(&mut self) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn set_note_bullet(&mut self) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn set_source_border(&mut self) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn set_label(&mut self, _severity: Severity, _label_style: LabelStyle) -> GeneralWriteResult {
+        Ok(())
+    }
+
+    fn reset(&mut self) -> GeneralWriteResult {
+        Ok(())
+    }
+}
+
+pub(crate) struct WriteStyleByRef<'a, W: ?Sized> {
+    w: &'a mut W,
+}
+
+impl<'a, W> WriteStyleByRef<'a, W>
+where
+    W: ?Sized,
+{
+    pub fn new(writer: &'a mut W) -> Self {
+        Self { w: writer }
+    }
+}
+
+#[cfg(feature = "std")]
+impl<'a, W> std::io::Write for WriteStyleByRef<'a, W>
+where
+    W: std::io::Write + ?Sized,
+{
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        self.w.write(buf)
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.w.flush()
+    }
+}
+
+#[cfg(not(feature = "std"))]
+impl<'a, W> core::fmt::Write for WriteStyleByRef<'a, W>
+where
+    W: core::fmt::Write + ?Sized,
+{
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        self.w.write_str(s)
+    }
+
+    fn write_char(&mut self, c: char) -> core::fmt::Result {
+        self.w.write_char(c)
+    }
+
+    fn write_fmt(&mut self, args: core::fmt::Arguments<'_>) -> core::fmt::Result {
+        self.w.write_fmt(args)
+    }
+}
+
+impl<'a, W> WriteStyle for WriteStyleByRef<'a, W>
+where
+    W: WriteStyle + ?Sized,
+{
+    fn set_header(&mut self, severity: Severity) -> GeneralWriteResult {
+        self.w.set_header(severity)
+    }
+
+    fn set_header_message(&mut self) -> GeneralWriteResult {
+        self.w.set_header_message()
+    }
+
+    fn set_line_number(&mut self) -> GeneralWriteResult {
+        self.w.set_line_number()
+    }
+
+    fn set_note_bullet(&mut self) -> GeneralWriteResult {
+        self.w.set_note_bullet()
+    }
+
+    fn set_source_border(&mut self) -> GeneralWriteResult {
+        self.w.set_source_border()
+    }
+
+    fn set_label(&mut self, severity: Severity, label_style: LabelStyle) -> GeneralWriteResult {
+        self.w.set_label(severity, label_style)
+    }
+
+    fn reset(&mut self) -> GeneralWriteResult {
+        self.w.reset()
+    }
+}
 
 /// The 'location focus' of a source code snippet.
 pub struct Locus {
@@ -35,7 +215,7 @@ pub enum MultiLabel<'diagnostic> {
     /// Can also be rendered at the beginning of the line
     /// if there is only whitespace before the label starts.
     ///
-    /// /// ```text
+    /// ```text
     /// ╭
     /// ```
     Top(usize),
@@ -107,16 +287,16 @@ type Underline = (LabelStyle, VerticalBound);
 ///         empty ── │
 /// ```
 ///
-/// Filler text from http://www.cupcakeipsum.com
+/// > Filler text from <http://www.cupcakeipsum.com>
 pub struct Renderer<'writer, 'config> {
-    writer: &'writer mut dyn WriteColor,
+    writer: &'writer mut dyn WriteStyle,
     config: &'config Config,
 }
 
 impl<'writer, 'config> Renderer<'writer, 'config> {
     /// Construct a renderer from the given writer and config.
     pub fn new(
-        writer: &'writer mut dyn WriteColor,
+        writer: &'writer mut dyn WriteStyle,
         config: &'config Config,
     ) -> Renderer<'writer, 'config> {
         Renderer { writer, config }
@@ -124,10 +304,6 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
 
     fn chars(&self) -> &'config Chars {
         &self.config.chars
-    }
-
-    fn styles(&self) -> &'config Styles {
-        &self.config.styles
     }
 
     /// Diagnostic header, with severity, code, and message.
@@ -157,7 +333,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         // ```text
         // error
         // ```
-        self.set_color(self.styles().header(severity))?;
+        self.set_header(severity)?;
         match severity {
             Severity::Bug => write!(self, "bug")?,
             Severity::Error => write!(self, "error")?,
@@ -172,7 +348,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         // [E0001]
         // ```
         if let Some(code) = &code.filter(|code| !code.is_empty()) {
-            write!(self, "[{}]", code)?;
+            write!(self, "[{code}]")?;
         }
 
         // Write diagnostic message
@@ -180,8 +356,8 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         // ```text
         // : unexpected type in `+` application
         // ```
-        self.set_color(&self.styles().header_message)?;
-        write!(self, ": {}", message)?;
+        self.set_header_message()?;
+        write!(self, ": {message}")?;
         self.reset()?;
 
         writeln!(self)?;
@@ -207,12 +383,12 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
     ) -> Result<(), Error> {
         self.outer_gutter(outer_padding)?;
 
-        self.set_color(&self.styles().source_border)?;
+        self.set_source_border()?;
         write!(self, "{}", self.chars().snippet_start)?;
         self.reset()?;
 
         write!(self, " ")?;
-        self.snippet_locus(&locus)?;
+        self.snippet_locus(locus)?;
 
         writeln!(self)?;
 
@@ -225,6 +401,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
     /// 10 │   │ muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly
     ///    │ ╭─│─────────^
     /// ```
+    #[allow(clippy::too_many_arguments)]
     pub fn render_snippet_source(
         &mut self,
         outer_padding: usize,
@@ -291,7 +468,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
 
                 // Set the source color if we are in a primary label
                 if is_primary && !in_primary {
-                    self.set_color(self.styles().label(severity, LabelStyle::Primary))?;
+                    self.set_label(severity, LabelStyle::Primary)?;
                     in_primary = true;
                 } else if !is_primary && in_primary {
                     self.reset()?;
@@ -300,7 +477,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
 
                 match ch {
                     '\t' => (0..metrics.unicode_width).try_for_each(|_| write!(self, " "))?,
-                    _ => write!(self, "{}", ch)?,
+                    _ => write!(self, "{ch}")?,
                 }
             }
             if in_primary {
@@ -368,8 +545,8 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                 if !message.is_empty() {
                     num_messages += 1;
                 }
-                max_label_start = std::cmp::max(max_label_start, range.start);
-                max_label_end = std::cmp::max(max_label_end, range.end);
+                max_label_start = core::cmp::max(max_label_start, range.start);
+                max_label_end = core::cmp::max(max_label_end, range.end);
                 // This is a candidate for the trailing label, so let's record it.
                 if range.end == max_label_end {
                     if message.is_empty() {
@@ -418,7 +595,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                 // 1 │ Hello world!
                 //   │             ^
                 // ```
-                .chain(std::iter::once((placeholder_metrics, '\0')))
+                .chain(core::iter::once((placeholder_metrics, '\0')))
             {
                 // Find the current label style at this column
                 let column_range = metrics.byte_index..(metrics.byte_index + ch.len_utf8());
@@ -431,9 +608,11 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                 // Update writer style if necessary
                 if previous_label_style != current_label_style {
                     match current_label_style {
-                        None => self.reset()?,
+                        None => {
+                            self.reset()?;
+                        }
                         Some(label_style) => {
-                            self.set_color(self.styles().label(severity, label_style))?;
+                            self.set_label(severity, label_style)?;
                         }
                     }
                 }
@@ -447,7 +626,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                 };
                 if let Some(caret_ch) = caret_ch {
                     // FIXME: improve rendering of carets between character boundaries
-                    (0..metrics.unicode_width).try_for_each(|_| write!(self, "{}", caret_ch))?;
+                    (0..metrics.unicode_width).try_for_each(|_| write!(self, "{caret_ch}",))?;
                 }
 
                 previous_label_style = current_label_style;
@@ -459,8 +638,8 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             // Write first trailing label message
             if let Some((_, (label_style, _, message))) = trailing_label {
                 write!(self, " ")?;
-                self.set_color(self.styles().label(severity, *label_style))?;
-                write!(self, "{}", message)?;
+                self.set_label(severity, *label_style)?;
+                write!(self, "{message}",)?;
                 self.reset()?;
             }
             writeln!(self)?;
@@ -515,8 +694,8 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                             .char_indices()
                             .take_while(|(byte_index, _)| *byte_index < range.start),
                     )?;
-                    self.set_color(self.styles().label(severity, *label_style))?;
-                    write!(self, "{}", message)?;
+                    self.set_label(severity, *label_style)?;
+                    write!(self, "{message}",)?;
                     self.reset()?;
                     writeln!(self)?;
                 }
@@ -565,7 +744,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
                             }
                             MultiLabel::Top(..) if multi_label_index == *i => {
                                 underline = Some((*ls, VerticalBound::Top));
-                                self.label_multi_top_left(severity, label_style)?
+                                self.label_multi_top_left(severity, label_style)?;
                             }
                             MultiLabel::Bottom(..) if multi_label_index == *i => {
                                 underline = Some((*ls, VerticalBound::Bottom));
@@ -585,7 +764,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             match bottom_message {
                 None => self.label_multi_top_caret(severity, label_style, source, *range)?,
                 Some(message) => {
-                    self.label_multi_bottom_caret(severity, label_style, source, *range, message)?
+                    self.label_multi_bottom_caret(severity, label_style, source, *range, message)?;
                 }
             }
         }
@@ -646,14 +825,14 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             self.outer_gutter(outer_padding)?;
             match note_line_index {
                 0 => {
-                    self.set_color(&self.styles().note_bullet)?;
+                    self.set_note_bullet()?;
                     write!(self, "{}", self.chars().note_bullet)?;
                     self.reset()?;
                 }
                 _ => write!(self, " ")?,
             }
             // Write line of message
-            writeln!(self, " {}", line)?;
+            writeln!(self, " {line}",)?;
         }
 
         Ok(())
@@ -710,13 +889,8 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         line_number: usize,
         outer_padding: usize,
     ) -> Result<(), Error> {
-        self.set_color(&self.styles().line_number)?;
-        write!(
-            self,
-            "{line_number: >width$}",
-            line_number = line_number,
-            width = outer_padding,
-        )?;
+        self.set_line_number()?;
+        write!(self, "{line_number: >outer_padding$}",)?;
         self.reset()?;
         write!(self, " ")?;
         Ok(())
@@ -724,7 +898,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
 
     /// The left-hand border of a source line.
     fn border_left(&mut self) -> Result<(), Error> {
-        self.set_color(&self.styles().source_border)?;
+        self.set_source_border()?;
         write!(self, "{}", self.chars().source_border_left)?;
         self.reset()?;
         Ok(())
@@ -732,7 +906,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
 
     /// The broken left-hand border of a source line.
     fn border_left_break(&mut self) -> Result<(), Error> {
-        self.set_color(&self.styles().source_border)?;
+        self.set_source_border()?;
         write!(self, "{}", self.chars().source_border_left_break)?;
         self.reset()?;
         Ok(())
@@ -757,7 +931,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             let mut spaces = match label_style {
                 None => 0..metrics.unicode_width,
                 Some(label_style) => {
-                    self.set_color(self.styles().label(severity, label_style))?;
+                    self.set_label(severity, label_style)?;
                     write!(self, "{}", self.chars().pointer_left)?;
                     self.reset()?;
                     1..metrics.unicode_width
@@ -787,12 +961,12 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             None => write!(self, " ")?,
             // Continue an underline horizontally
             Some(label_style) => {
-                self.set_color(self.styles().label(severity, label_style))?;
+                self.set_label(severity, label_style)?;
                 write!(self, "{}", self.chars().multi_top)?;
                 self.reset()?;
             }
         }
-        self.set_color(self.styles().label(severity, label_style))?;
+        self.set_label(severity, label_style)?;
         write!(self, "{}", self.chars().multi_left)?;
         self.reset()?;
         Ok(())
@@ -809,7 +983,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         label_style: LabelStyle,
     ) -> Result<(), Error> {
         write!(self, " ")?;
-        self.set_color(self.styles().label(severity, label_style))?;
+        self.set_label(severity, label_style)?;
         write!(self, "{}", self.chars().multi_top_left)?;
         self.reset()?;
         Ok(())
@@ -826,7 +1000,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         label_style: LabelStyle,
     ) -> Result<(), Error> {
         write!(self, " ")?;
-        self.set_color(self.styles().label(severity, label_style))?;
+        self.set_label(severity, label_style)?;
         write!(self, "{}", self.chars().multi_bottom_left)?;
         self.reset()?;
         Ok(())
@@ -844,7 +1018,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         source: &str,
         start: usize,
     ) -> Result<(), Error> {
-        self.set_color(self.styles().label(severity, label_style))?;
+        self.set_label(severity, label_style)?;
 
         for (metrics, _) in self
             .char_metrics(source.char_indices())
@@ -859,7 +1033,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             LabelStyle::Primary => self.config.chars.multi_primary_caret_start,
             LabelStyle::Secondary => self.config.chars.multi_secondary_caret_start,
         };
-        write!(self, "{}", caret_start)?;
+        write!(self, "{caret_start}",)?;
         self.reset()?;
         writeln!(self)?;
         Ok(())
@@ -878,7 +1052,7 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         start: usize,
         message: &str,
     ) -> Result<(), Error> {
-        self.set_color(self.styles().label(severity, label_style))?;
+        self.set_label(severity, label_style)?;
 
         for (metrics, _) in self
             .char_metrics(source.char_indices())
@@ -893,9 +1067,9 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
             LabelStyle::Primary => self.config.chars.multi_primary_caret_start,
             LabelStyle::Secondary => self.config.chars.multi_secondary_caret_start,
         };
-        write!(self, "{}", caret_end)?;
+        write!(self, "{caret_end}")?;
         if !message.is_empty() {
-            write!(self, " {}", message)?;
+            write!(self, " {message}")?;
         }
         self.reset()?;
         writeln!(self)?;
@@ -911,12 +1085,12 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
         match underline {
             None => self.inner_gutter_space(),
             Some((label_style, vertical_bound)) => {
-                self.set_color(self.styles().label(severity, label_style))?;
+                self.set_label(severity, label_style)?;
                 let ch = match vertical_bound {
                     VerticalBound::Top => self.config.chars.multi_top,
                     VerticalBound::Bottom => self.config.chars.multi_bottom,
                 };
-                write!(self, "{0}{0}", ch)?;
+                write!(self, "{ch}{ch}")?;
                 self.reset()?;
                 Ok(())
             }
@@ -957,31 +1131,58 @@ impl<'writer, 'config> Renderer<'writer, 'config> {
     }
 }
 
-impl<'writer, 'config> Write for Renderer<'writer, 'config> {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+#[cfg(feature = "std")]
+impl std::io::Write for Renderer<'_, '_> {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
         self.writer.write(buf)
     }
 
-    fn flush(&mut self) -> io::Result<()> {
+    fn flush(&mut self) -> std::io::Result<()> {
         self.writer.flush()
     }
 }
 
-impl<'writer, 'config> WriteColor for Renderer<'writer, 'config> {
-    fn supports_color(&self) -> bool {
-        self.writer.supports_color()
+#[cfg(not(feature = "std"))]
+impl core::fmt::Write for Renderer<'_, '_> {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        self.writer.write_str(s)
     }
 
-    fn set_color(&mut self, spec: &ColorSpec) -> io::Result<()> {
-        self.writer.set_color(spec)
+    fn write_char(&mut self, c: char) -> core::fmt::Result {
+        self.writer.write_char(c)
     }
 
-    fn reset(&mut self) -> io::Result<()> {
+    fn write_fmt(&mut self, args: core::fmt::Arguments<'_>) -> core::fmt::Result {
+        self.writer.write_fmt(args)
+    }
+}
+
+impl WriteStyle for Renderer<'_, '_> {
+    fn set_header(&mut self, severity: Severity) -> GeneralWriteResult {
+        self.writer.set_header(severity)
+    }
+
+    fn set_header_message(&mut self) -> GeneralWriteResult {
+        self.writer.set_header_message()
+    }
+
+    fn set_line_number(&mut self) -> GeneralWriteResult {
+        self.writer.set_line_number()
+    }
+
+    fn set_note_bullet(&mut self) -> GeneralWriteResult {
+        self.writer.set_note_bullet()
+    }
+
+    fn set_source_border(&mut self) -> GeneralWriteResult {
+        self.writer.set_source_border()
+    }
+
+    fn set_label(&mut self, severity: Severity, label_style: LabelStyle) -> GeneralWriteResult {
+        self.writer.set_label(severity, label_style)
+    }
+    fn reset(&mut self) -> GeneralWriteResult {
         self.writer.reset()
-    }
-
-    fn is_synchronous(&self) -> bool {
-        self.writer.is_synchronous()
     }
 }
 
@@ -992,12 +1193,13 @@ struct Metrics {
 
 /// Check if two ranges overlap
 fn is_overlapping(range0: &Range<usize>, range1: &Range<usize>) -> bool {
-    let start = std::cmp::max(range0.start, range1.start);
-    let end = std::cmp::min(range0.end, range1.end);
+    let start = core::cmp::max(range0.start, range1.start);
+    let end = core::cmp::min(range0.end, range1.end);
     start < end
 }
 
 /// For prioritizing primary labels over secondary labels when rendering carets.
+#[allow(clippy::trivially_copy_pass_by_ref)]
 fn label_priority_key(label_style: &LabelStyle) -> u8 {
     match label_style {
         LabelStyle::Secondary => 0,

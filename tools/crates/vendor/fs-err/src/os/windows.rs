@@ -6,22 +6,28 @@ pub mod fs {
 
     /// Creates a new symlink to a directory on the filesystem.
     ///
+    /// The `link` path will be a symbolic link pointing to the `original` path.
+    ///
     /// Wrapper for [std::os::windows::fs::symlink_dir](https://doc.rust-lang.org/std/os/windows/fs/fn.symlink_dir.html)
-    pub fn symlink_dir<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> {
-        let src = src.as_ref();
-        let dst = dst.as_ref();
-        std::os::windows::fs::symlink_dir(src, dst)
-            .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::SymlinkDir, src, dst))
+    pub fn symlink_dir<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
+        let original = original.as_ref();
+        let link = link.as_ref();
+        std::os::windows::fs::symlink_dir(original, link).map_err(|err| {
+            SourceDestError::build(err, SourceDestErrorKind::SymlinkDir, link, original)
+        })
     }
 
     /// Creates a new symlink to a non-directory file on the filesystem.
     ///
+    /// The `link` path will be a symbolic link pointing to the `original` path.
+    ///
     /// Wrapper for [std::os::windows::fs::symlink_file](https://doc.rust-lang.org/std/os/windows/fs/fn.symlink_file.html)
-    pub fn symlink_file<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> {
-        let src = src.as_ref();
-        let dst = dst.as_ref();
-        std::os::windows::fs::symlink_file(src, dst)
-            .map_err(|err| SourceDestError::build(err, SourceDestErrorKind::SymlinkFile, src, dst))
+    pub fn symlink_file<P: AsRef<Path>, Q: AsRef<Path>>(original: P, link: Q) -> io::Result<()> {
+        let original = original.as_ref();
+        let link = link.as_ref();
+        std::os::windows::fs::symlink_file(original, link).map_err(|err| {
+            SourceDestError::build(err, SourceDestErrorKind::SymlinkFile, link, original)
+        })
     }
 
     /// Wrapper for [`std::os::windows::fs::FileExt`](https://doc.rust-lang.org/std/os/windows/fs/trait.FileExt.html).

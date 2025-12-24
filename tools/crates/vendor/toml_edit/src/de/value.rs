@@ -251,7 +251,7 @@ impl std::str::FromStr for ValueDeserializer {
 
     /// Parses a value from a &str
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let v = crate::parser::parse_value(s).map_err(Error::from)?;
-        Ok(v.into_deserializer())
+        let value = s.parse::<crate::Value>().map_err(Error::from)?;
+        Ok(value.into_deserializer())
     }
 }

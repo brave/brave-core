@@ -229,7 +229,7 @@ impl Counts {
                 }
             }
 
-            if stream.is_counted {
+            if !stream.state.is_scheduled_reset() && stream.is_counted {
                 tracing::trace!("dec_num_streams; stream={:?}", stream.id);
                 // Decrement the number of active streams.
                 self.dec_num_streams(&mut stream);

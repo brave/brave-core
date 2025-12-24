@@ -23,11 +23,16 @@ impl File<'static> {
     ///   times. It's recommended use is as part of a multi-step bootstrapping which needs fine-grained control,
     ///   and unless that's given one should prefer one of the other ways of initialization that resolve includes
     ///   at the right time.
+    ///
+    /// # Deviation
+    ///
     /// - included values are added after the _section_ that included them, not directly after the value. This is
     ///   a deviation from how git does it, as it technically adds new value right after the include path itself,
     ///   technically 'splitting' the section. This can only make a difference if the `include` section also has values
     ///   which later overwrite portions of the included file, which seems unusual as these would be related to `includes`.
     ///   We can fix this by 'splitting' the include section if needed so the included sections are put into the right place.
+    /// - `hasconfig:remote.*.url` will not prevent itself to include files with `[remote "name"]\nurl = x` values, but it also
+    ///   won't match them, i.e. one cannot include something that will cause the condition to match or to always be true.
     pub fn resolve_includes(&mut self, options: init::Options<'_>) -> Result<(), Error> {
         if options.includes.max_depth == 0 {
             return Ok(());
@@ -38,10 +43,11 @@ impl File<'static> {
 }
 
 pub(crate) fn resolve(config: &mut File<'static>, buf: &mut Vec<u8>, options: init::Options<'_>) -> Result<(), Error> {
-    resolve_includes_recursive(config, 0, buf, options)
+    resolve_includes_recursive(None, config, 0, buf, options)
 }
 
 fn resolve_includes_recursive(
+    search_config: Option<&File<'static>>,
     target_config: &mut File<'static>,
     depth: u8,
     buf: &mut Vec<u8>,
@@ -57,30 +63,34 @@ fn resolve_includes_recursive(
         };
     }
 
-    let mut section_ids_and_include_paths = Vec::new();
-    for (id, section) in target_config
-        .section_order
-        .iter()
-        .map(|id| (*id, &target_config.sections[id]))
-    {
+    for id in target_config.section_order.clone().into_iter() {
+        let section = &target_config.sections[&id];
         let header = &section.header;
         let header_name = header.name.as_ref();
+        let mut paths = None;
         if header_name == "include" && header.subsection_name.is_none() {
-            detach_include_paths(&mut section_ids_and_include_paths, section, id)
+            paths = Some(gather_paths(section, id));
         } else if header_name == "includeIf" {
             if let Some(condition) = &header.subsection_name {
                 let target_config_path = section.meta.path.as_deref();
-                if include_condition_match(condition.as_ref(), target_config_path, options.includes)? {
-                    detach_include_paths(&mut section_ids_and_include_paths, section, id)
+                if include_condition_match(
+                    condition.as_ref(),
+                    target_config_path,
+                    search_config.unwrap_or(target_config),
+                    options.includes,
+                )? {
+                    paths = Some(gather_paths(section, id));
                 }
             }
         }
+        if let Some(paths) = paths {
+            insert_includes_recursively(paths, target_config, depth, options, buf)?;
+        }
     }
-
-    append_followed_includes_recursively(section_ids_and_include_paths, target_config, depth, options, buf)
+    Ok(())
 }
 
-fn append_followed_includes_recursively(
+fn insert_includes_recursively(
     section_ids_and_include_paths: Vec<(SectionId, crate::Path<'_>)>,
     target_config: &mut File<'static>,
     depth: u8,
@@ -124,30 +134,26 @@ fn append_followed_includes_recursively(
                 init::Error::Interpolate(err) => Error::Interpolate(err),
                 init::Error::Includes(_) => unreachable!("BUG: {:?} not possible due to no-follow options", err),
             })?;
-        resolve_includes_recursive(&mut include_config, depth + 1, buf, options)?;
+        resolve_includes_recursive(Some(target_config), &mut include_config, depth + 1, buf, options)?;
 
         target_config.append_or_insert(include_config, Some(section_id));
     }
     Ok(())
 }
 
-fn detach_include_paths(
-    include_paths: &mut Vec<(SectionId, crate::Path<'static>)>,
-    section: &file::Section<'_>,
-    id: SectionId,
-) {
-    include_paths.extend(
-        section
-            .body
-            .values("path")
-            .into_iter()
-            .map(|path| (id, crate::Path::from(Cow::Owned(path.into_owned())))),
-    )
+fn gather_paths(section: &file::Section<'_>, id: SectionId) -> Vec<(SectionId, crate::Path<'static>)> {
+    section
+        .body
+        .values("path")
+        .into_iter()
+        .map(|path| (id, crate::Path::from(Cow::Owned(path.into_owned()))))
+        .collect()
 }
 
 fn include_condition_match(
     condition: &BStr,
     target_config_path: Option<&Path>,
+    search_config: &File<'static>,
     options: Options<'_>,
 ) -> Result<bool, Error> {
     let mut tokens = condition.splitn(2, |b| *b == b':');
@@ -170,6 +176,32 @@ fn include_condition_match(
             gix_glob::wildmatch::Mode::IGNORE_CASE,
         ),
         b"onbranch" => Ok(onbranch_matches(condition, options.conditional).is_some()),
+        b"hasconfig" => {
+            let mut tokens = condition.splitn(2, |b| *b == b':');
+            let (key_glob, value_glob) = match (tokens.next(), tokens.next()) {
+                (Some(a), Some(b)) => (a, b),
+                _ => return Ok(false),
+            };
+            if key_glob.as_bstr() != "remote.*.url" {
+                return Ok(false);
+            }
+            let Some(sections) = search_config.sections_by_name("remote") else {
+                return Ok(false);
+            };
+            for remote in sections {
+                for url in remote.values("url") {
+                    let glob_matches = gix_glob::wildmatch(
+                        value_glob.as_bstr(),
+                        url.as_ref(),
+                        gix_glob::wildmatch::Mode::NO_MATCH_SLASH_LITERAL,
+                    );
+                    if glob_matches {
+                        return Ok(true);
+                    }
+                }
+            }
+            Ok(false)
+        }
         _ => Ok(false),
     }
 }
@@ -251,7 +283,7 @@ fn gitdir_matches(
     {
         let mut prefixed = pattern_path.into_owned();
         prefixed.insert_str(0, "**/");
-        pattern_path = prefixed.into()
+        pattern_path = prefixed.into();
     }
     if pattern_path.ends_with(b"/") {
         let mut suffixed = pattern_path.into_owned();

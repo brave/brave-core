@@ -46,6 +46,7 @@ mod compression;
 mod cp437;
 mod crc32;
 pub mod extra_fields;
+mod path;
 pub mod read;
 pub mod result;
 mod spec;

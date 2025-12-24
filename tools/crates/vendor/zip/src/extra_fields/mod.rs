@@ -17,14 +17,19 @@ impl ExtraFieldVersion for LocalHeaderVersion {}
 impl ExtraFieldVersion for CentralHeaderVersion {}
 
 mod extended_timestamp;
+mod ntfs;
 mod zipinfo_utf8;
 
 pub use extended_timestamp::*;
+pub use ntfs::Ntfs;
 pub use zipinfo_utf8::*;
 
 /// contains one extra field
 #[derive(Debug, Clone)]
 pub enum ExtraField {
+    /// NTFS extra field
+    Ntfs(Ntfs),
+
     /// extended timestamp, as described in <https://libzip.org/specifications/extrafld.txt>
     ExtendedTimestamp(ExtendedTimestamp),
 }

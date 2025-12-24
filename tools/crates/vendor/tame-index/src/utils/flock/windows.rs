@@ -75,11 +75,8 @@ fn flock(file: &File, flags: u32, timeout: Option<Duration>) -> Result {
         {
             let err = Error::last_os_error();
 
-            if err
-                .raw_os_error()
-                .map_or(false, |x| x == Win32Error::ErrorIoPending as i32)
-            {
-                let timeout = timeout.map_or(0, |dur| {
+            if err.raw_os_error() == Some(Win32Error::ErrorIoPending as i32) {
+                let timeout = timeout.map_or(u32::MAX, |dur| {
                     let millis = dur.as_millis();
                     if millis >= Infinite as u128 {
                         u32::MAX
@@ -120,19 +117,17 @@ pub(super) fn unlock(file: &File) -> Result {
 
 #[inline]
 pub(super) fn is_contended(err: &Error) -> bool {
-    err.raw_os_error()
-        .map_or(false, |x| x == Win32Error::ErrorLockViolation as i32)
+    err.raw_os_error() == Some(Win32Error::ErrorLockViolation as i32)
 }
 
 #[inline]
 pub(super) fn is_unsupported(err: &Error) -> bool {
-    err.raw_os_error()
-        .map_or(false, |x| x == Win32Error::ErrorInvalidFunction as i32)
+    err.raw_os_error() == Some(Win32Error::ErrorInvalidFunction as i32)
 }
 
 #[inline]
 pub(super) fn is_timed_out(err: &Error) -> bool {
-    err.raw_os_error().map_or(false, |x| {
+    err.raw_os_error().is_some_and(|x| {
         x == Win32Error::WaitTimeout as i32 || x == Win32Error::WaitIoCompletion as i32
     })
 }

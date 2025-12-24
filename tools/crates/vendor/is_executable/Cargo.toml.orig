@@ -1,0 +1,19 @@
+[package]
+authors = ["Nick Fitzgerald <fitzgen@gmail.com>"]
+categories = ["filesystem"]
+description = "Is there an executable file at the given path?"
+documentation = "https://docs.rs/is_executable"
+keywords = ["executable", "path", "file", "permissions"]
+license = "Apache-2.0/MIT"
+name = "is_executable"
+readme = "./README.md"
+repository = "https://github.com/fitzgen/is_executable"
+version = "0.1.2"
+[badges.travis-ci]
+repository = "fitzgen/is_executable"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3", features = ["winbase"] }
+
+[dev-dependencies]
+diff = "0.1.10"
