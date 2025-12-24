@@ -65,6 +65,7 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     // Localhost server
     localhost_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    net::test_server::InstallDefaultWebSocketHandlers(localhost_server_.get());
     content::SetupCrossSiteRedirector(localhost_server_.get());
     CHECK(localhost_server_->InitializeAndListen());
   }
@@ -239,14 +240,14 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     // Load subresource
     InsertImage(localhost_url.spec(), false);
     // Make sure prompt came up.
-    EXPECT_EQ(prompt_count + 1, prompt_factory()->show_count());
+    EXPECT_EQ(prompt_count + 2, prompt_factory()->show_count());
     // Check content setting is still ASK.
     CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
     // Access to localhost resources should be denied.
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     InsertImage(localhost_url.spec(), false);
     // Still ask for prompt.
-    EXPECT_EQ(prompt_count + 2, prompt_factory()->show_count());
+    EXPECT_EQ(prompt_count + 3, prompt_factory()->show_count());
   }
 
   void CheckNoPromptFlow(const bool expected, GURL localhost_url) {
@@ -380,11 +381,8 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, NoPermissionPrompt) {
 // Test that WebSocket connections to localhost are blocked/allowed.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   // Start a WebSocket server.
-  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
-  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
-  ASSERT_TRUE(ws_server.Start());
-  auto ws_url = net::test_server::GetWebSocketURL(ws_server, "localhost",
-                                                  "/echo-with-no-extension");
+  auto ws_url = net::test_server::GetWebSocketURL(
+      *localhost_server_, "localhost", "/echo-with-no-extension");
   // Script to connect to ws server.
   std::string ws_open_script_template = R"(
     new Promise(resolve => {
@@ -397,16 +395,21 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
   prompt_factory()->set_response_type(
-      permissions::PermissionRequestManager::ACCEPT_ALL);
+      permissions::PermissionRequestManager::DISMISS);
   // Run script to open WebSocket, it should error out.
   const std::string& ws_open_script =
       content::JsReplace(ws_open_script_template, ws_url);
   ASSERT_EQ("error", EvalJs(contents(), ws_open_script));
   EXPECT_EQ(1, prompt_factory()->show_count());
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  contents()->GetController().Reload(content::ReloadType::NORMAL, false);
   // Wait for tab to reload after permission grant.
   WaitForLoadStop(contents());
-  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
   ASSERT_EQ("open", EvalJs(contents(), ws_open_script));
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
 }
 
 // Test that service worker connections are blocked/allowed correctly.
