@@ -196,7 +196,7 @@ std::string ControlTypeToString(ControlType type) {
       return "default";
   }
   NOTREACHED() << "Unexpected value for ControlType: "
-               << base::to_underlying(type);
+               << std::to_underlying(type);
 }
 
 ControlType ControlTypeFromString(const std::string& string) {

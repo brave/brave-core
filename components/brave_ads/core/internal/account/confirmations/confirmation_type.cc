@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
+#include <utility>
+
 #include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
@@ -88,7 +89,7 @@ std::string_view ToString(mojom::ConfirmationType value) {
   }
 
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
-               << base::to_underlying(value);
+               << std::to_underlying(value);
 }
 
 }  // namespace brave_ads

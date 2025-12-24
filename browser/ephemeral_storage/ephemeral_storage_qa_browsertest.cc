@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <array>
+#include <utility>
 
 #include "base/check_op.h"
 #include "base/containers/span.h"
@@ -11,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/types/zip.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -188,7 +188,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   void SetThirdPartyCookiePref(bool setting) {
     browser()->profile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
-        base::to_underlying(
+        std::to_underlying(
             setting ? content_settings::CookieControlsMode::kBlockThirdParty
                     : content_settings::CookieControlsMode::kOff));
   }
@@ -278,7 +278,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
                            StorageType storage_type,
                            const ResultSet& expected) {
     SCOPED_TRACE(::testing::Message()
-                 << "StorageType: " << base::to_underlying(storage_type));
+                 << "StorageType: " << std::to_underlying(storage_type));
 
     // The frames we want to test against and in the expected order.
     static constexpr auto kFrames = std::to_array<std::string_view>(
@@ -286,7 +286,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     for (auto [result, frame] : base::zip(expected, kFrames)) {
       EXPECT_EQ(
-          base::to_underlying(result),
+          std::to_underlying(result),
           content::EvalJs(contents, content::JsReplace(
                                         "window.generateStorageReport().then("
                                         "report => report[$1][$2])",
