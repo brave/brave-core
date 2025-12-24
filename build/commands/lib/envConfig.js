@@ -12,11 +12,6 @@ const path = require('path')
 const Log = require('./logging')
 
 /**
- * Type name for supported configuration values.
- * @typedef {'Undefined'|'Null'|'String'|'Number'|'Boolean'|'Array'|'Object'} ConfigValueType
- */
-
-/**
  * EnvConfig - Unified configuration loader for Brave build system
  *
  * This class manages all configuration loading for the Brave build system,
@@ -40,20 +35,25 @@ class EnvConfig {
   #seenDefaultValues
 
   /**
+   * Type name for supported configuration value types.
+   * @typedef {'Undefined'|'Null'|'String'|'Number'|'Boolean'|'Array'|'Object'} ConfigValueType
+   */
+
+  /**
    * Creates a new EnvConfig instance and loads all configuration files.
    *
    * @param {string} configDir - Directory containing package.json and .env
    * files
    */
   constructor(configDir) {
-    this.#packageJson = this.#loadPackageJson(configDir)
-    this.#dotenvConfig = this.#loadDotenvConfig(configDir)
+    this.#packageJson = EnvConfig.#loadPackageJson(configDir)
+    this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
 
     this.#envConfigTyped = {}
     this.#seenDefaultValues = {}
 
-    assert.equal(getConfigValueType(this.#packageJson.version), 'String')
-    assert.equal(getConfigValueType(this.#packageJson.config), 'Object')
+    assert.equal(EnvConfig.#getValueType(this.#packageJson.version), 'String')
+    assert.equal(EnvConfig.#getValueType(this.#packageJson.config), 'Object')
   }
 
   /**
@@ -95,7 +95,7 @@ class EnvConfig {
     // Store the default value for the key to check for mismatches on subsequent
     // calls to the same key.
     this.#seenDefaultValues[keyJoined] = defaultValue
-    const expectedValueType = getConfigValueType(defaultValue)
+    const expectedValueType = EnvConfig.#getValueType(defaultValue)
 
     const dotenvConfigValue = this.#getDotenvConfig(
       keyJoined,
@@ -142,7 +142,7 @@ class EnvConfig {
       return undefined
     }
 
-    this.#validateValueType(
+    EnvConfig.#validateValueType(
       keyPath.join('_') + ' (from package.json)',
       packageConfigValue,
       expectedValueType,
@@ -189,7 +189,7 @@ class EnvConfig {
       process.exit(1)
     }
 
-    this.#validateValueType(
+    EnvConfig.#validateValueType(
       keyJoined + ' (from .env)',
       dotenvConfigValueParsed,
       expectedValueType,
@@ -199,35 +199,13 @@ class EnvConfig {
   }
 
   /**
-   * Validates the value against the expected value type.
-   *
-   * @private
-   * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
-   * @param {*} value - The value to validate
-   * @param {ConfigValueType} expectedValueType - Expected type of the value
-   */
-  #validateValueType(keyJoined, value, expectedValueType) {
-    if (expectedValueType === 'Undefined') {
-      return
-    }
-
-    const valueType = getConfigValueType(value)
-    if (valueType !== expectedValueType) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
-      )
-      process.exit(1)
-    }
-  }
-
-  /**
    * Loads package.json file from the specified directory.
    *
    * @private
    * @param {string} configDir - Directory containing package.json
    * @returns {Record<string, any>} The parsed package.json
    */
-  #loadPackageJson(configDir) {
+  static #loadPackageJson(configDir) {
     const packageJsonPath = path.join(configDir, 'package.json')
     const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8')
     return JSON.parse(packageJsonContent)
@@ -241,12 +219,12 @@ class EnvConfig {
    * @private
    * @param {string} configDir - Directory containing .env file
    */
-  #loadDotenvConfig(configDir) {
+  static #loadDotenvConfig(configDir) {
     const dotenvConfig = {}
     // Parse {configDir}/.env with all included env files.
     const dotenvConfigPath = path.join(configDir, '.env')
     if (fs.existsSync(dotenvConfigPath)) {
-      dotenvPopulateWithIncludes(dotenvConfig, dotenvConfigPath)
+      EnvConfig.#dotenvPopulateWithIncludes(dotenvConfig, dotenvConfigPath)
     } else {
       // The .env file is used by `gn gen`. Create it if it doesn't exist.
       const defaultEnvConfigContent =
@@ -256,84 +234,106 @@ class EnvConfig {
     }
     return dotenvConfig
   }
-}
 
-/**
- * Reads a .env file and recursively includes other .env files using the
- * include_env=<path> directive.
- *
- * The include_env directive allows composing multiple .env files together.
- * Included files are processed recursively, allowing nested includes.
- *
- * Format: include_env=path/to/file.env
- *
- * @param {Object} processEnv - Object to populate with parsed variables
- * @param {string} envPath - Path to the main .env file to parse
- */
-function dotenvPopulateWithIncludes(processEnv, envPath) {
-  const seenFiles = new Set()
-  function readEnvFile(filePath, fromFile) {
-    if (seenFiles.has(filePath)) {
+  /**
+   * Reads a .env file and recursively includes other .env files using the
+   * include_env=<path> directive.
+   *
+   * The include_env directive allows composing multiple .env files together.
+   * Included files are processed recursively, allowing nested includes.
+   *
+   * Format: include_env=path/to/file.env
+   *
+   * @param {Object} processEnv - Object to populate with parsed variables
+   * @param {string} envPath - Path to the main .env file to parse
+   */
+  static #dotenvPopulateWithIncludes(processEnv, envPath) {
+    const seenFiles = new Set()
+    function readEnvFile(filePath, fromFile) {
+      if (seenFiles.has(filePath)) {
+        Log.error(
+          `Circular include_env directive detected: ${filePath} from ${fromFile}`,
+        )
+        process.exit(1)
+      }
+      seenFiles.add(filePath)
+
+      if (!fs.existsSync(filePath)) {
+        Log.error(`Error loading .env (not found) from: ${filePath}`)
+        process.exit(1)
+      }
+
+      const envContent = fs.readFileSync(filePath, 'utf8')
+      const lines = envContent.split('\n')
+      let result = ''
+
+      lines.forEach((line) => {
+        const includeEnvMatch = line.match(/^include_env=([^#]+)(?:#.*)?$/)
+        if (includeEnvMatch) {
+          const includePath = includeEnvMatch[1].trim()
+          const resolvedPath = path.resolve(path.dirname(filePath), includePath)
+          result += readEnvFile(resolvedPath, filePath)
+        } else {
+          result += line + '\n'
+        }
+      })
+
+      return result
+    }
+
+    const finalEnvContent = readEnvFile(envPath, envPath)
+    dotenv.populate(processEnv, dotenv.parse(finalEnvContent))
+  }
+
+  /**
+   * Validates the value against the expected value type.
+   *
+   * @private
+   * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
+   * @param {*} value - The value to validate
+   * @param {ConfigValueType} expectedValueType - Expected type of the value
+   */
+  static #validateValueType(keyJoined, value, expectedValueType) {
+    if (expectedValueType === 'Undefined') {
+      return
+    }
+
+    const valueType = EnvConfig.#getValueType(value)
+    if (valueType !== expectedValueType) {
       Log.error(
-        `Circular include_env directive detected: ${filePath} from ${fromFile}`,
+        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
       )
       process.exit(1)
     }
-    seenFiles.add(filePath)
+  }
 
-    if (!fs.existsSync(filePath)) {
-      Log.error(`Error loading .env (not found) from: ${filePath}`)
-      process.exit(1)
+  /**
+   * Returns a string representing the type of a value. Throws an error if the
+   * value is not a supported value type.
+   *
+   * @param {*} value - Value to get the type of
+   * @returns {ConfigValueType} Type name
+   * @throws {AssertionError} If type name is not a supported value type
+   */
+  static #getValueType(value) {
+    if (value === undefined) {
+      return 'Undefined'
+    }
+    if (value === null) {
+      return 'Null'
     }
 
-    const envContent = fs.readFileSync(filePath, 'utf8')
-    const lines = envContent.split('\n')
-    let result = ''
+    const typeName = value.constructor.name
 
-    lines.forEach((line) => {
-      const includeEnvMatch = line.match(/^include_env=([^#]+)(?:#.*)?$/)
-      if (includeEnvMatch) {
-        const includePath = includeEnvMatch[1].trim()
-        const resolvedPath = path.resolve(path.dirname(filePath), includePath)
-        result += readEnvFile(resolvedPath, filePath)
-      } else {
-        result += line + '\n'
-      }
-    })
+    // Only allow JSON-parseable types
+    const validTypes = ['String', 'Number', 'Boolean', 'Array', 'Object']
+    assert(
+      validTypes.includes(typeName),
+      `Unsupported type: ${typeName}. Only ${validTypes.join(', ')} are allowed.`,
+    )
 
-    return result
+    return typeName
   }
-
-  const finalEnvContent = readEnvFile(envPath, envPath)
-  dotenv.populate(processEnv, dotenv.parse(finalEnvContent))
-}
-
-/**
- * Returns a string representing the type of a value. Throws an error if the
- * value is not a supported value type.
- *
- * @param {*} value - Value to get the type of
- * @returns {ConfigValueType} Type name
- * @throws {AssertionError} If type name is not a supported value type
- */
-function getConfigValueType(value) {
-  if (value === undefined) {
-    return 'Undefined'
-  }
-  if (value === null) {
-    return 'Null'
-  }
-
-  const typeName = value.constructor.name
-
-  // Only allow JSON-parseable types
-  const validTypes = ['String', 'Number', 'Boolean', 'Array', 'Object']
-  assert(
-    validTypes.includes(typeName),
-    `Unsupported type: ${typeName}. Only ${validTypes.join(', ')} are allowed.`,
-  )
-
-  return typeName
 }
 
 module.exports = EnvConfig
