@@ -34,8 +34,6 @@
 <file:///.//> against <file:////>
 <file:.//p>
 <file:/.//p>
-<http://example.net/path> set hostname to <example.com:8080>
-<http://example.net:8080/path> set hostname to <example.com:>
 <non-spec:/.//p> set hostname to <h>
 <non-spec:/.//p> set hostname to <>
 <foo:///some/path> set pathname to <>

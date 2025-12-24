@@ -1,182 +1,132 @@
-use core::hash::BuildHasher;
-
 // These constants may end up unused depending on platform support.
 #[allow(unused)]
-use crate::{ARBITRARY1, ARBITRARY9};
+use crate::{ARBITRARY1, ARBITRARY5};
 
 use super::{
-    folded_multiply, ARBITRARY2, ARBITRARY3, ARBITRARY4, ARBITRARY5, ARBITRARY6, ARBITRARY7,
-    ARBITRARY8,
+    folded_multiply, ARBITRARY10, ARBITRARY11, ARBITRARY2, ARBITRARY6, ARBITRARY7, ARBITRARY8,
+    ARBITRARY9,
 };
 
 /// Used for FixedState, and RandomState if atomics for dynamic init are unavailable.
-const FIXED_GLOBAL_SEED: [u64; 4] = [ARBITRARY4, ARBITRARY5, ARBITRARY6, ARBITRARY7];
+const FIXED_GLOBAL_SEED: SharedSeed = SharedSeed {
+    seeds: [
+        ARBITRARY6,
+        ARBITRARY7,
+        ARBITRARY8,
+        ARBITRARY9,
+        ARBITRARY10,
+        ARBITRARY11,
+    ],
+};
 
-pub mod fast {
-    use super::*;
-    use crate::fast::FoldHasher;
+pub(crate) fn gen_per_hasher_seed() -> u64 {
+    // We initialize the per-hasher seed with the stack pointer to ensure
+    // different threads have different seeds, with as side benefit that
+    // stack address randomization gives us further non-determinism.
+    let mut per_hasher_seed = 0;
+    let stack_ptr = core::ptr::addr_of!(per_hasher_seed) as u64;
+    per_hasher_seed = stack_ptr;
 
-    /// A [`BuildHasher`] for [`fast::FoldHasher`]s that are randomly initialized.
-    #[derive(Copy, Clone, Debug)]
-    pub struct RandomState {
-        per_hasher_seed: u64,
-        global_seed: global::GlobalSeed,
-    }
-
-    impl Default for RandomState {
-        fn default() -> Self {
-            // We initialize the per-hasher seed with the stack pointer to ensure
-            // different threads have different seeds, with as side benefit that
-            // stack address randomization gives us further non-determinism.
-            let mut per_hasher_seed = 0;
-            let stack_ptr = core::ptr::addr_of!(per_hasher_seed) as u64;
-            per_hasher_seed = stack_ptr;
-
-            // If we have the standard library available we use a thread-local
-            // state to ensure RandomStates are different with high probability,
-            // even if the call stack is the same.
-            #[cfg(feature = "std")]
-            {
-                use std::cell::Cell;
-                thread_local! {
-                    static PER_HASHER_NONDETERMINISM: Cell<u64> = const { Cell::new(0) };
-                }
-
-                let nondeterminism = PER_HASHER_NONDETERMINISM.get();
-                per_hasher_seed = folded_multiply(per_hasher_seed, ARBITRARY1 ^ nondeterminism);
-                PER_HASHER_NONDETERMINISM.set(per_hasher_seed);
-            };
-
-            // If we don't have the standard library we instead use a global
-            // atomic instead of a thread-local state.
-            //
-            // PER_HASHER_NONDETERMINISM is loaded and updated in a racy manner,
-            // but this doesn't matter in practice - it is impossible that two
-            // different threads have the same stack location, so they'll almost
-            // surely generate different seeds, and provide a different possible
-            // update for PER_HASHER_NONDETERMINISM. If we would use a proper
-            // fetch_add atomic update then there is a larger chance of
-            // problematic contention.
-            //
-            // We use usize instead of 64-bit atomics for best platform support.
-            #[cfg(not(feature = "std"))]
-            {
-                use core::sync::atomic::{AtomicUsize, Ordering};
-                static PER_HASHER_NONDETERMINISM: AtomicUsize = AtomicUsize::new(0);
-
-                let nondeterminism = PER_HASHER_NONDETERMINISM.load(Ordering::Relaxed) as u64;
-                per_hasher_seed = folded_multiply(per_hasher_seed, ARBITRARY1 ^ nondeterminism);
-                PER_HASHER_NONDETERMINISM.store(per_hasher_seed as usize, Ordering::Relaxed);
-            }
-
-            // One extra mixing step to ensure good random bits.
-            per_hasher_seed = folded_multiply(per_hasher_seed, ARBITRARY2);
-
-            Self {
-                per_hasher_seed,
-                global_seed: global::GlobalSeed::new(),
-            }
+    // If we have the standard library available we use a thread-local
+    // state to ensure RandomStates are different with high probability,
+    // even if the call stack is the same.
+    #[cfg(feature = "std")]
+    {
+        use std::cell::Cell;
+        thread_local! {
+            static PER_HASHER_NONDETERMINISM: Cell<u64> = const { Cell::new(0) };
         }
+
+        PER_HASHER_NONDETERMINISM.with(|cell| {
+            let nondeterminism = cell.get();
+            per_hasher_seed = folded_multiply(per_hasher_seed, ARBITRARY1 ^ nondeterminism);
+            cell.set(per_hasher_seed);
+        })
+    };
+
+    // If we don't have the standard library we instead use a global
+    // atomic instead of a thread-local state.
+    //
+    // PER_HASHER_NONDETERMINISM is loaded and updated in a racy manner,
+    // but this doesn't matter in practice - it is impossible that two
+    // different threads have the same stack location, so they'll almost
+    // surely generate different seeds, and provide a different possible
+    // update for PER_HASHER_NONDETERMINISM. If we would use a proper
+    // fetch_add atomic update then there is a larger chance of
+    // problematic contention.
+    //
+    // We use usize instead of 64-bit atomics for best platform support.
+    #[cfg(not(feature = "std"))]
+    {
+        use core::sync::atomic::{AtomicUsize, Ordering};
+        static PER_HASHER_NONDETERMINISM: AtomicUsize = AtomicUsize::new(0);
+
+        let nondeterminism = PER_HASHER_NONDETERMINISM.load(Ordering::Relaxed) as u64;
+        per_hasher_seed = folded_multiply(per_hasher_seed, ARBITRARY1 ^ nondeterminism);
+        PER_HASHER_NONDETERMINISM.store(per_hasher_seed as usize, Ordering::Relaxed);
     }
 
-    impl BuildHasher for RandomState {
-        type Hasher = FoldHasher;
-
-        #[inline(always)]
-        fn build_hasher(&self) -> FoldHasher {
-            FoldHasher::with_seed(self.per_hasher_seed, self.global_seed.get())
-        }
-    }
-
-    /// A [`BuildHasher`] for [`fast::FoldHasher`]s that all have the same fixed seed.
-    ///
-    /// Not recommended unless you absolutely need determinism.
-    #[derive(Copy, Clone, Debug)]
-    pub struct FixedState {
-        per_hasher_seed: u64,
-    }
-
-    impl FixedState {
-        /// Creates a [`FixedState`] with the given seed.
-        #[inline(always)]
-        pub const fn with_seed(seed: u64) -> Self {
-            // XOR with ARBITRARY3 such that with_seed(0) matches default.
-            Self {
-                per_hasher_seed: seed ^ ARBITRARY3,
-            }
-        }
-    }
-
-    impl Default for FixedState {
-        #[inline(always)]
-        fn default() -> Self {
-            Self {
-                per_hasher_seed: ARBITRARY3,
-            }
-        }
-    }
-
-    impl BuildHasher for FixedState {
-        type Hasher = FoldHasher;
-
-        #[inline(always)]
-        fn build_hasher(&self) -> FoldHasher {
-            FoldHasher::with_seed(self.per_hasher_seed, &FIXED_GLOBAL_SEED)
-        }
-    }
+    // One extra mixing step to ensure good random bits.
+    folded_multiply(per_hasher_seed, ARBITRARY2)
 }
 
-pub mod quality {
-    use super::*;
-    use crate::quality::FoldHasher;
+/// A random seed intended to be shared by many different foldhash instances.
+///
+/// This seed is consumed by [`FoldHasher::with_seed`](crate::fast::FoldHasher::with_seed),
+/// and [`SeedableRandomState::with_seed`](crate::fast::SeedableRandomState::with_seed).
+#[derive(Clone, Debug)]
+pub struct SharedSeed {
+    pub(crate) seeds: [u64; 6],
+}
 
-    /// A [`BuildHasher`] for [`quality::FoldHasher`]s that are randomly initialized.
-    #[derive(Copy, Clone, Default, Debug)]
-    pub struct RandomState {
-        inner: fast::RandomState,
+impl SharedSeed {
+    /// Returns the globally shared randomly initialized [`SharedSeed`] as used
+    /// by [`RandomState`](crate::fast::RandomState).
+    #[inline(always)]
+    pub fn global_random() -> &'static SharedSeed {
+        global::GlobalSeed::new().get()
     }
 
-    impl BuildHasher for RandomState {
-        type Hasher = FoldHasher;
-
-        #[inline(always)]
-        fn build_hasher(&self) -> FoldHasher {
-            FoldHasher {
-                inner: self.inner.build_hasher(),
-            }
-        }
+    /// Returns the globally shared fixed [`SharedSeed`] as used
+    /// by [`FixedState`](crate::fast::FixedState).
+    #[inline(always)]
+    pub const fn global_fixed() -> &'static SharedSeed {
+        &FIXED_GLOBAL_SEED
     }
 
-    /// A [`BuildHasher`] for [`quality::FoldHasher`]s that all have the same fixed seed.
+    /// Generates a new [`SharedSeed`] from a single 64-bit seed.
     ///
-    /// Not recommended unless you absolutely need determinism.
-    #[derive(Copy, Clone, Default, Debug)]
-    pub struct FixedState {
-        inner: fast::FixedState,
-    }
-
-    impl FixedState {
-        /// Creates a [`FixedState`] with the given seed.
-        #[inline(always)]
-        pub const fn with_seed(seed: u64) -> Self {
-            Self {
-                // We do an additional folded multiply with the seed here for
-                // the quality hash to ensure better independence between seed
-                // and hash. If the seed is zero the folded multiply is zero,
-                // preserving with_seed(0) == default().
-                inner: fast::FixedState::with_seed(folded_multiply(seed, ARBITRARY8)),
-            }
+    /// Note that this is somewhat expensive so it is suggested to re-use the
+    /// [`SharedSeed`] as much as possible, using the per-hasher seed to
+    /// differentiate between hash instances.
+    pub const fn from_u64(seed: u64) -> Self {
+        macro_rules! mix {
+            ($x: expr) => {
+                folded_multiply($x, ARBITRARY5)
+            };
         }
-    }
 
-    impl BuildHasher for FixedState {
-        type Hasher = FoldHasher;
+        let seed_a = mix!(mix!(mix!(seed)));
+        let seed_b = mix!(mix!(mix!(seed_a)));
+        let seed_c = mix!(mix!(mix!(seed_b)));
+        let seed_d = mix!(mix!(mix!(seed_c)));
+        let seed_e = mix!(mix!(mix!(seed_d)));
+        let seed_f = mix!(mix!(mix!(seed_e)));
 
-        #[inline(always)]
-        fn build_hasher(&self) -> FoldHasher {
-            FoldHasher {
-                inner: self.inner.build_hasher(),
-            }
+        // Zeroes form a weak-point for the multiply-mix, and zeroes tend to be
+        // a common input. So we want our global seeds that are XOR'ed with the
+        // input to always be non-zero. To also ensure there is always a good spread
+        // of bits, we give up 3 bits of entropy and simply force some bits on.
+        const FORCED_ONES: u64 = (1 << 63) | (1 << 31) | 1;
+        Self {
+            seeds: [
+                seed_a | FORCED_ONES,
+                seed_b | FORCED_ONES,
+                seed_c | FORCED_ONES,
+                seed_d | FORCED_ONES,
+                seed_e | FORCED_ONES,
+                seed_f | FORCED_ONES,
+            ],
         }
     }
 }
@@ -187,8 +137,8 @@ mod global {
     use core::cell::UnsafeCell;
     use core::sync::atomic::{AtomicU8, Ordering};
 
-    fn generate_global_seed() -> [u64; 4] {
-        let mix = |seed: u64, x: u64| folded_multiply(seed ^ x, ARBITRARY9);
+    fn generate_global_seed() -> SharedSeed {
+        let mix = |seed: u64, x: u64| folded_multiply(seed ^ x, ARBITRARY5);
 
         // Use address space layout randomization as our main randomness source.
         // This isn't great, but we don't advertise HashDoS resistance in the first
@@ -220,22 +170,7 @@ mod global {
             seed = mix(seed, box_ptr as usize as u64);
         }
 
-        let seed_a = mix(seed, 0);
-        let seed_b = mix(mix(mix(seed_a, 0), 0), 0);
-        let seed_c = mix(mix(mix(seed_b, 0), 0), 0);
-        let seed_d = mix(mix(mix(seed_c, 0), 0), 0);
-
-        // Zeroes form a weak-point for the multiply-mix, and zeroes tend to be
-        // a common input. So we want our global seeds that are XOR'ed with the
-        // input to always be non-zero. To also ensure there is always a good spread
-        // of bits, we give up 3 bits of entropy and simply force some bits on.
-        const FORCED_ONES: u64 = (1 << 63) | (1 << 31) | 1;
-        [
-            seed_a | FORCED_ONES,
-            seed_b | FORCED_ONES,
-            seed_c | FORCED_ONES,
-            seed_d | FORCED_ONES,
-        ]
+        SharedSeed::from_u64(seed)
     }
 
     // Now all the below code purely exists to cache the above seed as
@@ -245,7 +180,7 @@ mod global {
     // to assume the storage is initialized after construction.
     struct GlobalSeedStorage {
         state: AtomicU8,
-        seed: UnsafeCell<[u64; 4]>,
+        seed: UnsafeCell<SharedSeed>,
     }
 
     const UNINIT: u8 = 0;
@@ -259,7 +194,7 @@ mod global {
 
     static GLOBAL_SEED_STORAGE: GlobalSeedStorage = GlobalSeedStorage {
         state: AtomicU8::new(UNINIT),
-        seed: UnsafeCell::new([0; 4]),
+        seed: UnsafeCell::new(SharedSeed { seeds: [0; 6] }),
     };
 
     /// An object representing an initialized global seed.
@@ -293,7 +228,7 @@ mod global {
                 match GLOBAL_SEED_STORAGE.state.compare_exchange_weak(
                     UNINIT,
                     LOCKED,
-                    Ordering::Relaxed,
+                    Ordering::Acquire,
                     Ordering::Acquire,
                 ) {
                     Ok(_) => unsafe {
@@ -315,7 +250,7 @@ mod global {
         }
 
         #[inline(always)]
-        pub fn get(self) -> &'static [u64; 4] {
+        pub fn get(self) -> &'static SharedSeed {
             // SAFETY: our constructor ensured we are in the INIT state and thus
             // this raw read does not race with any write.
             unsafe { &*GLOBAL_SEED_STORAGE.seed.get() }
@@ -325,6 +260,8 @@ mod global {
 
 #[cfg(not(target_has_atomic = "8"))]
 mod global {
+    use super::*;
+
     #[derive(Copy, Clone, Debug)]
     pub struct GlobalSeed {}
 
@@ -335,8 +272,10 @@ mod global {
         }
 
         #[inline(always)]
-        pub fn get(self) -> &'static [u64; 4] {
+        pub fn get(self) -> &'static SharedSeed {
             &super::FIXED_GLOBAL_SEED
         }
     }
 }
+
+pub(crate) use global::GlobalSeed;

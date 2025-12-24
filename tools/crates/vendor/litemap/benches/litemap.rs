@@ -5,6 +5,7 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 use litemap::LiteMap;
+use rand::seq::SliceRandom;
 
 const DATA: [(&str, &str); 16] = [
     ("ar", "Arabic"),
@@ -57,6 +58,13 @@ fn overview_bench(c: &mut Criterion) {
     bench_deserialize_large(c);
     bench_lookup(c);
     bench_lookup_large(c);
+    bench_from_iter(c);
+    bench_from_iter_rand_large(c);
+    bench_from_iter_sorted(c);
+    bench_from_iter_large_sorted(c);
+    bench_extend_rand(c);
+    bench_extend_rand_dups(c);
+    bench_extend_from_litemap_rand(c);
 }
 
 fn build_litemap(large: bool) -> LiteMap<String, String> {
@@ -89,6 +97,99 @@ fn bench_deserialize_large(c: &mut Criterion) {
             let map: LiteMap<String, String> = postcard::from_bytes(black_box(&buf)).unwrap();
             assert_eq!(map.get("iu3333"), Some(&"Inuktitut".to_owned()));
         });
+    });
+}
+
+fn bench_from_iter(c: &mut Criterion) {
+    c.bench_function("litemap/from_iter_rand/small", |b| {
+        let mut ff = build_litemap(false).into_iter().collect::<Vec<_>>();
+        ff[..].shuffle(&mut rand::rng());
+        b.iter(|| {
+            let map: LiteMap<&String, &String> = LiteMap::from_iter(ff.iter().map(|(k, v)| (k, v)));
+            black_box(map)
+        })
+    });
+}
+
+fn bench_from_iter_rand_large(c: &mut Criterion) {
+    c.bench_function("litemap/from_iter_rand/large", |b| {
+        let mut ff = build_litemap(true).into_iter().collect::<Vec<_>>();
+        ff[..].shuffle(&mut rand::rng());
+        b.iter(|| {
+            let map: LiteMap<&String, &String> = LiteMap::from_iter(ff.iter().map(|(k, v)| (k, v)));
+            black_box(map)
+        })
+    });
+}
+
+fn bench_from_iter_sorted(c: &mut Criterion) {
+    c.bench_function("litemap/from_iter_sorted/small", |b| {
+        let ff = build_litemap(false).into_iter().collect::<Vec<_>>();
+        b.iter(|| {
+            let map: LiteMap<&String, &String> = LiteMap::from_iter(ff.iter().map(|(k, v)| (k, v)));
+            black_box(map)
+        })
+    });
+}
+
+fn bench_from_iter_large_sorted(c: &mut Criterion) {
+    c.bench_function("litemap/from_iter_sorted/large", |b| {
+        let ff = build_litemap(true).into_iter().collect::<Vec<_>>();
+        b.iter(|| {
+            let map: LiteMap<&String, &String> = LiteMap::from_iter(ff.iter().map(|(k, v)| (k, v)));
+            black_box(map)
+        })
+    });
+}
+
+fn bench_extend_rand(c: &mut Criterion) {
+    c.bench_function("litemap/extend_rand/large", |b| {
+        let mut ff = build_litemap(true).into_iter().collect::<Vec<_>>();
+        ff[..].shuffle(&mut rand::rng());
+        b.iter(|| {
+            let mut map: LiteMap<&String, &String> = LiteMap::with_capacity(0);
+            let mut iter = ff.iter().map(|(k, v)| (k, v));
+            let step = ff.len().div_ceil(10);
+            for _ in 0..10 {
+                map.extend(iter.by_ref().take(step));
+            }
+            black_box(map)
+        })
+    });
+}
+
+fn bench_extend_rand_dups(c: &mut Criterion) {
+    c.bench_function("litemap/extend_rand_dups/large", |b| {
+        let mut ff = build_litemap(true).into_iter().collect::<Vec<_>>();
+        ff[..].shuffle(&mut rand::rng());
+        b.iter(|| {
+            let mut map: LiteMap<&String, &String> = LiteMap::with_capacity(0);
+            for _ in 0..2 {
+                let mut iter = ff.iter().map(|(k, v)| (k, v));
+                let step = ff.len().div_ceil(10);
+                for _ in 0..10 {
+                    map.extend(iter.by_ref().take(step));
+                }
+            }
+            black_box(map)
+        })
+    });
+}
+
+fn bench_extend_from_litemap_rand(c: &mut Criterion) {
+    c.bench_function("litemap/extend_from_litemap_rand/large", |b| {
+        let mut ff = build_litemap(true).into_iter().collect::<Vec<_>>();
+        ff[..].shuffle(&mut rand::rng());
+        b.iter(|| {
+            let mut map: LiteMap<&String, &String> = LiteMap::with_capacity(0);
+            let mut iter = ff.iter().map(|(k, v)| (k, v));
+            let step = ff.len().div_ceil(10);
+            for _ in 0..10 {
+                let tmp: LiteMap<&String, &String> = LiteMap::from_iter(iter.by_ref().take(step));
+                map.extend_from_litemap(tmp);
+            }
+            black_box(map)
+        })
     });
 }
 

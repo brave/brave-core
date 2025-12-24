@@ -20,7 +20,6 @@ pub struct SliceVec<'s, T> {
 
 impl<'s, T> Default for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn default() -> Self {
     Self { data: &mut [], len: 0 }
   }
@@ -29,7 +28,6 @@ impl<'s, T> Default for SliceVec<'s, T> {
 impl<'s, T> Deref for SliceVec<'s, T> {
   type Target = [T];
   #[inline(always)]
-  #[must_use]
   fn deref(&self) -> &Self::Target {
     &self.data[..self.len]
   }
@@ -37,7 +35,6 @@ impl<'s, T> Deref for SliceVec<'s, T> {
 
 impl<'s, T> DerefMut for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn deref_mut(&mut self) -> &mut Self::Target {
     &mut self.data[..self.len]
   }
@@ -49,7 +46,6 @@ where
 {
   type Output = <I as SliceIndex<[T]>>::Output;
   #[inline(always)]
-  #[must_use]
   fn index(&self, index: I) -> &Self::Output {
     &self.deref()[index]
   }
@@ -60,7 +56,6 @@ where
   I: SliceIndex<[T]>,
 {
   #[inline(always)]
-  #[must_use]
   fn index_mut(&mut self, index: I) -> &mut Self::Output {
     &mut self.deref_mut()[index]
   }
@@ -752,7 +747,6 @@ impl<'p, 's, T: Default> Drop for SliceVecDrain<'p, 's, T> {
 
 impl<'s, T> AsMut<[T]> for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn as_mut(&mut self) -> &mut [T] {
     &mut *self
   }
@@ -760,7 +754,6 @@ impl<'s, T> AsMut<[T]> for SliceVec<'s, T> {
 
 impl<'s, T> AsRef<[T]> for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn as_ref(&self) -> &[T] {
     &*self
   }
@@ -768,7 +761,6 @@ impl<'s, T> AsRef<[T]> for SliceVec<'s, T> {
 
 impl<'s, T> Borrow<[T]> for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn borrow(&self) -> &[T] {
     &*self
   }
@@ -776,7 +768,6 @@ impl<'s, T> Borrow<[T]> for SliceVec<'s, T> {
 
 impl<'s, T> BorrowMut<[T]> for SliceVec<'s, T> {
   #[inline(always)]
-  #[must_use]
   fn borrow_mut(&mut self) -> &mut [T] {
     &mut *self
   }
@@ -795,7 +786,6 @@ impl<'s, T> IntoIterator for SliceVec<'s, T> {
   type Item = &'s mut T;
   type IntoIter = core::slice::IterMut<'s, T>;
   #[inline(always)]
-  #[must_use]
   fn into_iter(self) -> Self::IntoIter {
     self.data.iter_mut()
   }
@@ -806,7 +796,6 @@ where
   T: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &Self) -> bool {
     self.as_slice().eq(other.as_slice())
   }
@@ -818,7 +807,6 @@ where
   T: PartialOrd,
 {
   #[inline]
-  #[must_use]
   fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
     self.as_slice().partial_cmp(other.as_slice())
   }
@@ -828,7 +816,6 @@ where
   T: Ord,
 {
   #[inline]
-  #[must_use]
   fn cmp(&self, other: &Self) -> core::cmp::Ordering {
     self.as_slice().cmp(other.as_slice())
   }
@@ -839,7 +826,6 @@ where
   T: PartialEq,
 {
   #[inline]
-  #[must_use]
   fn eq(&self, other: &&[T]) -> bool {
     self.as_slice().eq(*other)
   }

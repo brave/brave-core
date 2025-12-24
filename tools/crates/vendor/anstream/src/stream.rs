@@ -258,6 +258,7 @@ impl AsLockedWrite for crate::Buffer {
 }
 
 mod private {
+    #[allow(unnameable_types)]
     pub trait Sealed {}
 
     impl<T: Sealed + ?Sized> Sealed for &T {}
@@ -301,7 +302,7 @@ mod tests {
         assert_raw_stream::<Box<dyn std::io::Write + Send>>();
         assert_raw_stream::<Box<dyn std::io::Write + Send + Sync>>();
 
-        assert_raw_stream::<&mut (dyn std::io::Write)>();
+        assert_raw_stream::<&mut dyn std::io::Write>();
         assert_raw_stream::<&mut (dyn std::io::Write + 'static)>();
         assert_raw_stream::<&mut (dyn std::io::Write + Send)>();
         assert_raw_stream::<&mut (dyn std::io::Write + Send + Sync)>();

@@ -210,9 +210,9 @@ fn parse_component<'a, I: Iterator<Item = Result<lexer::Token<'a>, Error>>, cons
 
         modifiers.push(Modifier {
             _leading_whitespace: unused(whitespace),
-            key: key.spanned(span.shrink_to_before(colon_index as _)),
-            _colon: unused(span.start.offset(colon_index as _)),
-            value: value.spanned(span.shrink_to_after(colon_index as _)),
+            key: key.spanned(span.shrink_to_before(colon_index as u32)),
+            _colon: unused(span.start.offset(colon_index as u32)),
+            value: value.spanned(span.shrink_to_after(colon_index as u32)),
         });
     };
 

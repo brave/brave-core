@@ -1,6 +1,7 @@
 use std::convert::Infallible;
 
 use bstr::{BStr, BString, ByteSlice};
+use percent_encoding::percent_decode_str;
 
 use crate::Scheme;
 
@@ -18,7 +19,7 @@ pub enum Error {
     Url {
         url: String,
         kind: UrlKind,
-        source: url::ParseError,
+        source: crate::simple_url::UrlParseError,
     },
 
     #[error("The host portion of the following URL is too long ({} bytes, {len} bytes total): {truncated_url:?}", truncated_url.len())]
@@ -98,28 +99,45 @@ pub(crate) fn url(input: &BStr, protocol_end: usize) -> Result<crate::Url, Error
         });
     }
     let (input, url) = input_to_utf8_and_url(input, UrlKind::Url)?;
-    let scheme = url.scheme().into();
+    let scheme = Scheme::from(url.scheme.as_str());
 
-    if matches!(scheme, Scheme::Git | Scheme::Ssh) && url.path().is_empty() {
+    if matches!(scheme, Scheme::Git | Scheme::Ssh) && url.path.is_empty() {
         return Err(Error::MissingRepositoryPath {
             url: input.into(),
             kind: UrlKind::Url,
         });
     }
 
-    if url.cannot_be_a_base() {
-        return Err(Error::RelativeUrl { url: input.to_owned() });
-    }
+    // Normalize empty path to "/" for http/https URLs only
+    let path = if url.path.is_empty() && matches!(scheme, Scheme::Http | Scheme::Https) {
+        "/".into()
+    } else {
+        url.path.into()
+    };
 
     Ok(crate::Url {
         serialize_alternative_form: false,
         scheme,
-        user: url_user(&url),
-        password: url.password().map(Into::into),
-        host: url.host_str().map(Into::into),
-        port: url.port(),
-        path: url.path().into(),
+        user: url_user(&url, UrlKind::Url)?,
+        password: url
+            .password
+            .map(|s| percent_decoded_utf8(s, UrlKind::Url))
+            .transpose()?,
+        host: url.host,
+        port: url.port,
+        path,
     })
+}
+
+fn percent_decoded_utf8(s: &str, kind: UrlKind) -> Result<String, Error> {
+    Ok(percent_decode_str(s)
+        .decode_utf8()
+        .map_err(|err| Error::Utf8 {
+            url: s.into(),
+            kind,
+            source: err,
+        })?
+        .into_owned())
 }
 
 pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url, Error> {
@@ -141,7 +159,8 @@ pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url, Error> {
     // should never differ in any other way (ssh URLs should not contain a query or fragment part).
     // To avoid the various off-by-one errors caused by the `/` characters, we keep using the path
     // determined above and can therefore skip parsing it here as well.
-    let url = url::Url::parse(&format!("ssh://{host}")).map_err(|source| Error::Url {
+    let url_string = format!("ssh://{host}");
+    let url = crate::simple_url::ParsedUrl::parse(&url_string).map_err(|source| Error::Url {
         url: input.to_owned(),
         kind: UrlKind::Scp,
         source,
@@ -149,20 +168,23 @@ pub(crate) fn scp(input: &BStr, colon: usize) -> Result<crate::Url, Error> {
 
     Ok(crate::Url {
         serialize_alternative_form: true,
-        scheme: url.scheme().into(),
-        user: url_user(&url),
-        password: url.password().map(Into::into),
-        host: url.host_str().map(Into::into),
-        port: url.port(),
+        scheme: Scheme::from(url.scheme.as_str()),
+        user: url_user(&url, UrlKind::Scp)?,
+        password: url
+            .password
+            .map(|s| percent_decoded_utf8(s, UrlKind::Scp))
+            .transpose()?,
+        host: url.host,
+        port: url.port,
         path: path.into(),
     })
 }
 
-fn url_user(url: &url::Url) -> Option<String> {
-    if url.username().is_empty() && url.password().is_none() {
-        None
+fn url_user(url: &crate::simple_url::ParsedUrl<'_>, kind: UrlKind) -> Result<Option<String>, Error> {
+    if url.username.is_empty() && url.password.is_none() {
+        Ok(None)
     } else {
-        Some(url.username().into())
+        Ok(Some(percent_decoded_utf8(url.username, kind)?))
     }
 }
 
@@ -251,13 +273,22 @@ fn input_to_utf8(input: &BStr, kind: UrlKind) -> Result<&str, Error> {
     })
 }
 
-fn input_to_utf8_and_url(input: &BStr, kind: UrlKind) -> Result<(&str, url::Url), Error> {
+fn input_to_utf8_and_url(input: &BStr, kind: UrlKind) -> Result<(&str, crate::simple_url::ParsedUrl<'_>), Error> {
     let input = input_to_utf8(input, kind)?;
-    url::Url::parse(input)
+    crate::simple_url::ParsedUrl::parse(input)
         .map(|url| (input, url))
-        .map_err(|source| Error::Url {
-            url: input.to_owned(),
-            kind,
-            source,
+        .map_err(|source| {
+            // If the parser rejected it as RelativeUrlWithoutBase, map to Error::RelativeUrl
+            // to match the expected error type for malformed URLs like "invalid:://"
+            match source {
+                crate::simple_url::UrlParseError::RelativeUrlWithoutBase => {
+                    Error::RelativeUrl { url: input.to_owned() }
+                }
+                _ => Error::Url {
+                    url: input.to_owned(),
+                    kind,
+                    source,
+                },
+            }
         })
 }

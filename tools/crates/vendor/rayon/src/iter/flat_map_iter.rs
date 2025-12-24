@@ -6,16 +6,15 @@ use std::fmt::{self, Debug};
 /// `FlatMapIter` maps each element to a serial iterator, then flattens these iterators together.
 /// This struct is created by the [`flat_map_iter()`] method on [`ParallelIterator`]
 ///
-/// [`flat_map_iter()`]: trait.ParallelIterator.html#method.flat_map_iter
-/// [`ParallelIterator`]: trait.ParallelIterator.html
+/// [`flat_map_iter()`]: ParallelIterator::flat_map_iter()
 #[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
 #[derive(Clone)]
-pub struct FlatMapIter<I: ParallelIterator, F> {
+pub struct FlatMapIter<I, F> {
     base: I,
     map_op: F,
 }
 
-impl<I: ParallelIterator + Debug, F> Debug for FlatMapIter<I, F> {
+impl<I: Debug, F> Debug for FlatMapIter<I, F> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("FlatMapIter")
             .field("base", &self.base)
@@ -23,7 +22,7 @@ impl<I: ParallelIterator + Debug, F> Debug for FlatMapIter<I, F> {
     }
 }
 
-impl<I: ParallelIterator, F> FlatMapIter<I, F> {
+impl<I, F> FlatMapIter<I, F> {
     /// Creates a new `FlatMapIter` iterator.
     pub(super) fn new(base: I, map_op: F) -> Self {
         FlatMapIter { base, map_op }
@@ -34,8 +33,7 @@ impl<I, F, SI> ParallelIterator for FlatMapIter<I, F>
 where
     I: ParallelIterator,
     F: Fn(I::Item) -> SI + Sync + Send,
-    SI: IntoIterator,
-    SI::Item: Send,
+    SI: IntoIterator<Item: Send>,
 {
     type Item = SI::Item;
 
@@ -48,8 +46,8 @@ where
     }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
-/// Consumer implementation
+// ////////////////////////////////////////////////////////////////////////
+// Consumer implementation
 
 struct FlatMapIterConsumer<'f, C, F> {
     base: C,

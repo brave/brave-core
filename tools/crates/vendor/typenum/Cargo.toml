@@ -13,12 +13,25 @@
 edition = "2018"
 rust-version = "1.37.0"
 name = "typenum"
-version = "1.17.0"
+version = "1.19.0"
 authors = [
     "Paho Lurie-Gregg <paho@paholg.com>",
     "Andre Bogus <bogusandre@gmail.com>",
 ]
-build = "build/main.rs"
+build = "build.rs"
+exclude = [
+    "/.github/",
+    "/clippy.toml",
+    "/flake.lock",
+    "/flake.nix",
+    "/justfile",
+    "/.envrc",
+]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Typenum is a Rust library for type-level numbers evaluated at
     compile time. It currently supports bits, unsigned integers, and signed
@@ -46,14 +59,6 @@ features = [
     "const-generics",
 ]
 
-[lib]
-name = "typenum"
-
-[dependencies.scale-info]
-version = "1.0"
-optional = true
-default-features = false
-
 [features]
 const-generics = []
 force_unix_path_separator = []
@@ -61,3 +66,16 @@ i128 = []
 no_std = []
 scale_info = ["scale-info/derive"]
 strict = []
+
+[lib]
+name = "typenum"
+path = "src/lib.rs"
+
+[[test]]
+name = "test"
+path = "tests/test.rs"
+
+[dependencies.scale-info]
+version = "1.0"
+optional = true
+default-features = false

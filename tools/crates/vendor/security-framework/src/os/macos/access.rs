@@ -1,6 +1,7 @@
+#![allow(unused_imports)]
 //! Access functionality.
-use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation::base::TCFType;
+use core_foundation::{declare_TCFType, impl_TCFType};
 use security_framework_sys::access::SecAccessGetTypeID;
 use security_framework_sys::base::SecAccessRef;
 

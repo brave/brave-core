@@ -1,13 +1,12 @@
-// Copyright 2015-2016 Brian Smith.
-// Portions Copyright (c) 2014, 2015, Google Inc.
+// Copyright 2015-2025 Brian Smith.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -16,7 +15,12 @@
 // TODO: enforce maximum input length.
 
 use super::{Tag, TAG_LEN};
-use crate::{c, cpu};
+#[cfg(all(target_arch = "arm", target_endian = "little"))]
+use crate::cpu::GetFeature as _;
+use crate::{cpu, polyfill::slice::AsChunks};
+
+mod ffi_arm_neon;
+mod ffi_fallback;
 
 /// A Poly1305 key.
 pub(super) struct Key {
@@ -33,80 +37,46 @@ impl Key {
     }
 }
 
-pub struct Context {
-    state: poly1305_state,
-    #[allow(dead_code)]
-    cpu_features: cpu::Features,
-}
-
-// Keep in sync with `poly1305_state` in ring-core/poly1305.h.
-//
-// The C code, in particular the way the `poly1305_aligned_state` functions
-// are used, is only correct when the state buffer is 64-byte aligned.
-#[repr(C, align(64))]
-struct poly1305_state([u8; OPAQUE_LEN]);
-const OPAQUE_LEN: usize = 512;
-
-// Abstracts the dispatching logic that chooses the NEON implementation if and
-// only if it would work.
-macro_rules! dispatch {
-    ( $features:expr =>
-      ( $f:ident | $neon_f:ident )
-      ( $( $p:ident : $t:ty ),+ )
-      ( $( $a:expr ),+ ) ) => {
-        match () {
-            // Apple's 32-bit ARM ABI is incompatible with the assembly code.
-            #[cfg(all(target_arch = "arm", not(target_vendor = "apple")))]
-            () if cpu::arm::NEON.available($features) => {
-                prefixed_extern! {
-                    fn $neon_f( $( $p : $t ),+ );
-                }
-                unsafe { $neon_f( $( $a ),+ ) }
-            }
-            () => {
-                prefixed_extern! {
-                    fn $f( $( $p : $t ),+ );
-                }
-                unsafe { $f( $( $a ),+ ) }
-            }
-        }
-    }
+pub(super) enum Context {
+    #[cfg(all(target_arch = "arm", target_endian = "little"))]
+    ArmNeon(ffi_arm_neon::State),
+    Fallback(ffi_fallback::State),
 }
 
 impl Context {
     #[inline]
-    pub(super) fn from_key(Key { key_and_nonce }: Key, cpu_features: cpu::Features) -> Self {
-        let mut ctx = Self {
-            state: poly1305_state([0u8; OPAQUE_LEN]),
-            cpu_features,
-        };
-
-        dispatch!(
-            cpu_features =>
-            (CRYPTO_poly1305_init | CRYPTO_poly1305_init_neon)
-            (statep: &mut poly1305_state, key: &[u8; KEY_LEN])
-            (&mut ctx.state, &key_and_nonce));
-
-        ctx
+    pub(super) fn from_key(key: Key, cpu: cpu::Features) -> Self {
+        #[cfg(all(target_arch = "arm", target_endian = "little"))]
+        if let Some(cpu) = cpu.get_feature() {
+            return ffi_arm_neon::State::new_context(key, cpu);
+        }
+        let _: cpu::Features = cpu;
+        ffi_fallback::State::new_context(key)
     }
 
-    #[inline(always)]
-    pub fn update(&mut self, input: &[u8]) {
-        dispatch!(
-            self.cpu_features =>
-            (CRYPTO_poly1305_update | CRYPTO_poly1305_update_neon)
-            (statep: &mut poly1305_state, input: *const u8, in_len: c::size_t)
-            (&mut self.state, input.as_ptr(), input.len()));
+    pub fn update_block(&mut self, input: [u8; BLOCK_LEN]) {
+        self.update(AsChunks::from_ref(&input))
     }
 
-    pub(super) fn finish(mut self) -> Tag {
-        let mut tag = Tag([0u8; TAG_LEN]);
-        dispatch!(
-            self.cpu_features =>
-            (CRYPTO_poly1305_finish | CRYPTO_poly1305_finish_neon)
-            (statep: &mut poly1305_state, mac: &mut [u8; TAG_LEN])
-            (&mut self.state, &mut tag.0));
-        tag
+    pub fn update(&mut self, input: AsChunks<u8, BLOCK_LEN>) {
+        self.update_internal(input.as_flattened());
+    }
+
+    fn update_internal(&mut self, input: &[u8]) {
+        match self {
+            #[cfg(all(target_arch = "arm", target_endian = "little"))]
+            Self::ArmNeon(state) => state.update_internal(input),
+            Self::Fallback(state) => state.update_internal(input),
+        }
+    }
+
+    pub(super) fn finish(mut self, input: &[u8]) -> Tag {
+        self.update_internal(input);
+        match self {
+            #[cfg(all(target_arch = "arm", target_endian = "little"))]
+            Self::ArmNeon(state) => state.finish(),
+            Self::Fallback(state) => state.finish(),
+        }
     }
 }
 
@@ -115,31 +85,33 @@ impl Context {
 /// This is used by chacha20_poly1305_openssh and the standalone
 /// poly1305 test vectors.
 pub(super) fn sign(key: Key, input: &[u8], cpu_features: cpu::Features) -> Tag {
-    let mut ctx = Context::from_key(key, cpu_features);
-    ctx.update(input);
-    ctx.finish()
+    let ctx = Context::from_key(key, cpu_features);
+    ctx.finish(input)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test;
+    use crate::testutil as test;
 
     // Adapted from BoringSSL's crypto/poly1305/poly1305_test.cc.
     #[test]
     pub fn test_poly1305() {
         let cpu_features = cpu::features();
-        test::run(test_file!("poly1305_test.txt"), |section, test_case| {
-            assert_eq!(section, "");
-            let key = test_case.consume_bytes("Key");
-            let key: &[u8; KEY_LEN] = key.as_slice().try_into().unwrap();
-            let input = test_case.consume_bytes("Input");
-            let expected_mac = test_case.consume_bytes("MAC");
-            let key = Key::new(*key);
-            let Tag(actual_mac) = sign(key, &input, cpu_features);
-            assert_eq!(expected_mac, actual_mac.as_ref());
+        test::run(
+            test_vector_file!("poly1305_test.txt"),
+            |section, test_case| {
+                assert_eq!(section, "");
+                let key = test_case.consume_bytes("Key");
+                let key: &[u8; KEY_LEN] = key.as_slice().try_into().unwrap();
+                let input = test_case.consume_bytes("Input");
+                let expected_mac = test_case.consume_bytes("MAC");
+                let key = Key::new(*key);
+                let Tag(actual_mac) = sign(key, &input, cpu_features);
+                assert_eq!(expected_mac, actual_mac.as_ref());
 
-            Ok(())
-        })
+                Ok(())
+            },
+        )
     }
 }

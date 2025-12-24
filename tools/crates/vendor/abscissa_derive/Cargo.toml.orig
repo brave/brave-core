@@ -1,0 +1,25 @@
+[package]
+name         = "abscissa_derive"
+description  = "Custom derive support for the abscissa application microframework"
+version      = "0.8.2"
+license      = "Apache-2.0"
+authors      = ["Tony Arcieri <tony@iqlusion.io>"]
+homepage     = "https://github.com/iqlusioninc/abscissa"
+repository   = "https://github.com/iqlusioninc/abscissa/tree/main/derive"
+readme       = "README.md"
+edition      = "2021"
+rust-version = "1.74"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+ident_case = "1"
+proc-macro2 = "1"
+quote = "1"
+syn = "1"
+synstructure = "0.12"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--document-private-items"] # Document all modules

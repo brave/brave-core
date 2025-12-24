@@ -1,0 +1,18 @@
+[package]
+name = "unicode-bom"
+version = "2.0.3"
+edition = "2018"
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://gitlab.com/philbooth/unicode-bom"
+documentation = "https://philbooth.gitlab.io/unicode-bom/unicode_bom/"
+description = "Unicode byte-order mark detection for files and byte arrays."
+keywords = ["unicode","bom","utf","byte","order"]
+categories = ["parsing","encoding"]
+authors = ["Phil Booth <pmbooth@gmail.com>"]
+
+[badges]
+gitlab = { repository = "philbooth/unicode-bom", branch = "master" }
+maintenance = { status = "actively-developed" }
+
+[dependencies]

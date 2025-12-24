@@ -26,7 +26,7 @@ impl Repository {
         )?))
     }
 
-    /// Return a shared [`.gitmodules` file](crate::submodule::File) which is updated automatically if the in-memory snapshot
+    /// Return a shared [`.gitmodules` file](submodule::File) which is updated automatically if the in-memory snapshot
     /// has become stale as the underlying file on disk has changed. The snapshot based on the file on disk is shared across all
     /// clones of this repository.
     ///
@@ -54,12 +54,20 @@ impl Repository {
                 }) {
                     Some(id) => id,
                     None => match self
-                        .head_commit()?
-                        .tree()?
-                        .find_entry(submodule::MODULES_FILE)
-                        .map(|entry| entry.inner.oid)
+                        .head()?
+                        .try_peel_to_id()?
+                        .map(|id| -> Result<Option<_>, submodule::modules::Error> {
+                            Ok(id
+                                .object()?
+                                .peel_to_commit()?
+                                .tree()?
+                                .find_entry(submodule::MODULES_FILE)
+                                .map(|entry| entry.inner.oid.to_owned()))
+                        })
+                        .transpose()?
+                        .flatten()
                     {
-                        Some(id) => id.to_owned(),
+                        Some(id) => id,
                         None => return Ok(None),
                     },
                 };

@@ -1,16 +1,16 @@
-/* Copyright (c) 2020, Google Inc.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
- * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
- * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
+// Copyright 2020 The BoringSSL Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 // Some of this code is taken from the ref10 version of Ed25519 in SUPERCOP
 // 20141124 (http://bench.cr.yp.to/supercop.html). That code is released as
@@ -92,7 +92,7 @@ static uint64_t load_4(const uint8_t *in) {
 #define assert_fe(f)                                                    \
   do {                                                                  \
     for (unsigned _assert_fe_i = 0; _assert_fe_i < 5; _assert_fe_i++) { \
-      dev_assert_secret(f[_assert_fe_i] <= UINT64_C(0x8cccccccccccc));  \
+      declassify_assert(f[_assert_fe_i] <= UINT64_C(0x8cccccccccccc));  \
     }                                                                   \
   } while (0)
 
@@ -109,7 +109,7 @@ static uint64_t load_4(const uint8_t *in) {
 #define assert_fe_loose(f)                                              \
   do {                                                                  \
     for (unsigned _assert_fe_i = 0; _assert_fe_i < 5; _assert_fe_i++) { \
-      dev_assert_secret(f[_assert_fe_i] <= UINT64_C(0x1a666666666664)); \
+      declassify_assert(f[_assert_fe_i] <= UINT64_C(0x1a666666666664)); \
     }                                                                   \
   } while (0)
 
@@ -128,8 +128,8 @@ static uint64_t load_4(const uint8_t *in) {
 #define assert_fe(f)                                                     \
   do {                                                                   \
     for (unsigned _assert_fe_i = 0; _assert_fe_i < 10; _assert_fe_i++) { \
-      dev_assert_secret(f[_assert_fe_i] <=                               \
-             ((_assert_fe_i & 1) ? 0x2333333u : 0x4666666u));            \
+      declassify_assert(f[_assert_fe_i] <=                               \
+                        ((_assert_fe_i & 1) ? 0x2333333u : 0x4666666u)); \
     }                                                                    \
   } while (0)
 
@@ -146,8 +146,8 @@ static uint64_t load_4(const uint8_t *in) {
 #define assert_fe_loose(f)                                               \
   do {                                                                   \
     for (unsigned _assert_fe_i = 0; _assert_fe_i < 10; _assert_fe_i++) { \
-      dev_assert_secret(f[_assert_fe_i] <=                               \
-             ((_assert_fe_i & 1) ? 0x6999999u : 0xd333332u));            \
+      declassify_assert(f[_assert_fe_i] <=                               \
+                        ((_assert_fe_i & 1) ? 0x6999999u : 0xd333332u)); \
     }                                                                    \
   } while (0)
 
@@ -158,7 +158,7 @@ OPENSSL_STATIC_ASSERT(sizeof(fe) == sizeof(fe_limb_t) * FE_NUM_LIMBS,
 
 static void fe_frombytes_strict(fe *h, const uint8_t s[32]) {
   // |fiat_25519_from_bytes| requires the top-most bit be clear.
-  dev_assert_secret((s[31] & 0x80) == 0);
+  declassify_assert((s[31] & 0x80) == 0);
   fiat_25519_from_bytes(h->v, s);
   assert_fe(h->v);
 }
@@ -306,12 +306,8 @@ static void fe_neg(fe_loose *h, const fe *f) {
 //
 // Preconditions: b in {0,1}.
 static void fe_cmov(fe_loose *f, const fe_loose *g, fe_limb_t b) {
-  // Silence an unused function warning. |fiat_25519_selectznz| isn't quite the
-  // calling convention the rest of this code wants, so implement it by hand.
-  //
   // TODO(davidben): Switch to fiat's calling convention, or ask fiat to emit a
   // different one.
-  (void)fiat_25519_selectznz;
 
   b = 0-b;
   for (unsigned i = 0; i < FE_NUM_LIMBS; i++) {

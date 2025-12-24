@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "hyper-rustls"
-version = "0.27.5"
+version = "0.27.7"
 build = false
 autolib = false
 autobins = false
@@ -44,6 +44,34 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+aws-lc-rs = ["rustls/aws_lc_rs"]
+default = [
+    "native-tokio",
+    "http1",
+    "tls12",
+    "logging",
+    "aws-lc-rs",
+]
+fips = [
+    "aws-lc-rs",
+    "rustls/fips",
+]
+http1 = ["hyper-util/http1"]
+http2 = ["hyper-util/http2"]
+logging = [
+    "log",
+    "tokio-rustls/logging",
+    "rustls/logging",
+]
+native-tokio = ["rustls-native-certs"]
+ring = ["rustls/ring"]
+tls12 = [
+    "tokio-rustls/tls12",
+    "rustls/tls12",
+]
+webpki-tokio = ["webpki-roots"]
+
 [lib]
 name = "hyper_rustls"
 path = "src/lib.rs"
@@ -64,10 +92,6 @@ required-features = ["aws-lc-rs"]
 [[test]]
 name = "tests"
 path = "tests/tests.rs"
-
-[dependencies.futures-util]
-version = "0.3"
-default-features = false
 
 [dependencies.http]
 version = "1"
@@ -101,7 +125,7 @@ version = "0.8"
 optional = true
 
 [dependencies.rustls-platform-verifier]
-version = "0.5"
+version = "0.6"
 optional = true
 
 [dependencies.tokio]
@@ -115,7 +139,7 @@ default-features = false
 version = "0.3"
 
 [dependencies.webpki-roots]
-version = "0.26"
+version = "1"
 optional = true
 
 [dev-dependencies.cfg-if]
@@ -145,31 +169,3 @@ features = [
     "net",
     "rt-multi-thread",
 ]
-
-[features]
-aws-lc-rs = ["rustls/aws_lc_rs"]
-default = [
-    "native-tokio",
-    "http1",
-    "tls12",
-    "logging",
-    "aws-lc-rs",
-]
-fips = [
-    "aws-lc-rs",
-    "rustls/fips",
-]
-http1 = ["hyper-util/http1"]
-http2 = ["hyper-util/http2"]
-logging = [
-    "log",
-    "tokio-rustls/logging",
-    "rustls/logging",
-]
-native-tokio = ["rustls-native-certs"]
-ring = ["rustls/ring"]
-tls12 = [
-    "tokio-rustls/tls12",
-    "rustls/tls12",
-]
-webpki-tokio = ["webpki-roots"]

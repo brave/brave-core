@@ -82,7 +82,7 @@ fn basic_chars<'i>(input: &mut Input<'i>) -> ModalResult<Cow<'i, str>> {
 }
 
 // basic-unescaped = wschar / %x21 / %x23-5B / %x5D-7E / non-ascii
-pub(crate) const BASIC_UNESCAPED: (
+const BASIC_UNESCAPED: (
     (u8, u8),
     u8,
     RangeInclusive<u8>,
@@ -96,7 +96,7 @@ fn escaped(input: &mut Input<'_>) -> ModalResult<char> {
 }
 
 // escape = %x5C                    ; \
-pub(crate) const ESCAPE: u8 = b'\\';
+const ESCAPE: u8 = b'\\';
 
 // escape-seq-char =  %x22         ; "    quotation mark  U+0022
 // escape-seq-char =/ %x5C         ; \    reverse solidus U+005C
@@ -135,7 +135,7 @@ fn escape_seq_char(input: &mut Input<'_>) -> ModalResult<char> {
     .parse_next(input)
 }
 
-pub(crate) fn hexescape<const N: usize>(input: &mut Input<'_>) -> ModalResult<char> {
+fn hexescape<const N: usize>(input: &mut Input<'_>) -> ModalResult<char> {
     take_while(0..=N, HEXDIG)
         .verify(|b: &[u8]| b.len() == N)
         .map(|b: &[u8]| unsafe { from_utf8_unchecked(b, "`is_ascii_digit` filters out on-ASCII") })
@@ -162,7 +162,7 @@ fn ml_basic_string<'i>(input: &mut Input<'i>) -> ModalResult<Cow<'i, str>> {
 }
 
 // ml-basic-string-delim = 3quotation-mark
-pub(crate) const ML_BASIC_STRING_DELIM: &[u8] = b"\"\"\"";
+const ML_BASIC_STRING_DELIM: &[u8] = b"\"\"\"";
 
 // ml-basic-body = *mlb-content *( mlb-quotes 1*mlb-content ) [ mlb-quotes ]
 fn ml_basic_body<'i>(input: &mut Input<'i>) -> ModalResult<Cow<'i, str>> {
@@ -233,7 +233,7 @@ fn mlb_quotes<'i>(
 }
 
 // mlb-unescaped = wschar / %x21 / %x23-5B / %x5D-7E / non-ascii
-pub(crate) const MLB_UNESCAPED: (
+const MLB_UNESCAPED: (
     (u8, u8),
     u8,
     RangeInclusive<u8>,
@@ -274,7 +274,7 @@ pub(crate) fn literal_string<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> 
 pub(crate) const APOSTROPHE: u8 = b'\'';
 
 // literal-char = %x09 / %x20-26 / %x28-7E / non-ascii
-pub(crate) const LITERAL_CHAR: (
+const LITERAL_CHAR: (
     u8,
     RangeInclusive<u8>,
     RangeInclusive<u8>,
@@ -305,7 +305,7 @@ fn ml_literal_string<'i>(input: &mut Input<'i>) -> ModalResult<Cow<'i, str>> {
 }
 
 // ml-literal-string-delim = 3apostrophe
-pub(crate) const ML_LITERAL_STRING_DELIM: &[u8] = b"'''";
+const ML_LITERAL_STRING_DELIM: &[u8] = b"'''";
 
 // ml-literal-body = *mll-content *( mll-quotes 1*mll-content ) [ mll-quotes ]
 fn ml_literal_body<'i>(input: &mut Input<'i>) -> ModalResult<&'i str> {

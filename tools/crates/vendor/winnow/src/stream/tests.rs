@@ -52,7 +52,7 @@ fn test_offset_str() {
 fn test_bit_stream_empty() {
     let i = (&b""[..], 0);
 
-    let actual = i.iter_offsets().collect::<crate::lib::std::vec::Vec<_>>();
+    let actual = i.iter_offsets().collect::<alloc::vec::Vec<_>>();
     assert_eq!(actual, vec![]);
 
     let actual = i.eof_offset();
@@ -234,7 +234,7 @@ fn test_literal_support_char() {
 fn tokenslice_location() {
     #[derive(Clone, Debug)]
     struct Token {
-        span: crate::lib::std::ops::Range<usize>,
+        span: core::ops::Range<usize>,
     }
 
     impl Location for Token {

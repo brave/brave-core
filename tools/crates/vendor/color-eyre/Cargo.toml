@@ -13,11 +13,17 @@
 edition = "2018"
 rust-version = "1.65.0"
 name = "color-eyre"
-version = "0.6.3"
+version = "0.6.5"
 authors = ["Jane Lusby <jlusby@yaah.dev>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "An error report handler for panics and eyre::Reports for colorful, consistent, and well formatted error reports for all kinds of errors."
 documentation = "https://docs.rs/color-eyre"
-readme = "./README.md"
+readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/eyre-rs/eyre"
 
@@ -28,6 +34,9 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[package.metadata.release]
+dev-version = false
+
 [[package.metadata.release.pre-release-replacements]]
 file = "CHANGELOG.md"
 replace = "{{version}}"
@@ -36,7 +45,7 @@ search = "Unreleased"
 [[package.metadata.release.pre-release-replacements]]
 exactly = 1
 file = "src/lib.rs"
-replace = "#![doc(html_root_url = \"https://docs.rs/{{crate_name}}/{{version}}\")]"
+replace = '#![doc(html_root_url = "https://docs.rs/{{crate_name}}/{{version}}")]'
 search = '#!\[doc\(html_root_url.*'
 
 [[package.metadata.release.pre-release-replacements]]
@@ -67,20 +76,95 @@ replace = """
 [Unreleased]: https://github.com/eyre-rs/{{crate_name}}/compare/{{tag_name}}...HEAD"""
 search = "<!-- next-url -->"
 
+[features]
+capture-spantrace = [
+    "tracing-error",
+    "color-spantrace",
+]
+default = [
+    "track-caller",
+    "capture-spantrace",
+]
+issue-url = ["url"]
+track-caller = []
+
+[lib]
+name = "color_eyre"
+path = "src/lib.rs"
+
 [[example]]
 name = "color-eyre-usage"
 path = "examples/usage.rs"
 
+[[example]]
+name = "custom_filter"
+path = "examples/custom_filter.rs"
+
+[[example]]
+name = "custom_section"
+path = "examples/custom_section.rs"
+
+[[example]]
+name = "debug_perf"
+path = "examples/debug_perf.rs"
+
+[[example]]
+name = "github_issue"
+path = "examples/github_issue.rs"
+
+[[example]]
+name = "multiple_errors"
+path = "examples/multiple_errors.rs"
+
+[[example]]
+name = "panic_compose"
+path = "examples/panic_compose.rs"
+
+[[example]]
+name = "panic_hook"
+path = "examples/panic_hook.rs"
+
+[[example]]
+name = "theme"
+path = "examples/theme.rs"
+
+[[example]]
+name = "theme_test_helper"
+path = "examples/theme_test_helper.rs"
+
+[[test]]
+name = "bt_disabled"
+path = "tests/bt_disabled.rs"
+
+[[test]]
+name = "bt_enabled"
+path = "tests/bt_enabled.rs"
+
+[[test]]
+name = "install"
+path = "tests/install.rs"
+
+[[test]]
+name = "location_disabled"
+path = "tests/location_disabled.rs"
+
+[[test]]
+name = "theme"
+path = "tests/theme.rs"
+
+[[test]]
+name = "wasm"
+path = "tests/wasm.rs"
+
 [dependencies.backtrace]
-version = "0.3.48"
-features = ["gimli-symbolize"]
+version = "0.3.59"
 
 [dependencies.color-spantrace]
-version = "0.2"
+version = "0.3"
 optional = true
 
 [dependencies.eyre]
-version = "0.6.1"
+version = "0.6"
 
 [dependencies.indenter]
 version = "0.3.0"
@@ -89,7 +173,7 @@ version = "0.3.0"
 version = "1.18.0"
 
 [dependencies.owo-colors]
-version = "3.2.0"
+version = "4.0"
 
 [dependencies.tracing-error]
 version = "0.2.0"
@@ -115,17 +199,5 @@ version = "0.1.13"
 version = "0.3.0"
 features = ["env-filter"]
 
-[features]
-capture-spantrace = [
-    "tracing-error",
-    "color-spantrace",
-]
-default = [
-    "track-caller",
-    "capture-spantrace",
-]
-issue-url = ["url"]
-track-caller = []
-
-[target."cfg(target_arch = \"wasm32\")".dev-dependencies.wasm-bindgen-test]
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies.wasm-bindgen-test]
 version = "0.3.15"

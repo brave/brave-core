@@ -7,9 +7,9 @@ use crate::macho;
 use crate::pod::Pod;
 use crate::read::util::StringTable;
 use crate::read::{
-    self, ObjectMap, ObjectMapEntry, ObjectSymbol, ObjectSymbolTable, ReadError, ReadRef, Result,
-    SectionIndex, SectionKind, SymbolFlags, SymbolIndex, SymbolKind, SymbolMap, SymbolMapEntry,
-    SymbolScope, SymbolSection,
+    self, ObjectMap, ObjectMapEntry, ObjectMapFile, ObjectSymbol, ObjectSymbolTable, ReadError,
+    ReadRef, Result, SectionIndex, SectionKind, SymbolFlags, SymbolIndex, SymbolKind, SymbolMap,
+    SymbolMapEntry, SymbolScope, SymbolSection,
 };
 
 use super::{MachHeader, MachOFile};
@@ -68,9 +68,9 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
     }
 
     /// Return the symbol at the given index.
-    pub fn symbol(&self, index: usize) -> Result<&'data Mach::Nlist> {
+    pub fn symbol(&self, index: SymbolIndex) -> Result<&'data Mach::Nlist> {
         self.symbols
-            .get(index)
+            .get(index.0)
             .read_error("Invalid Mach-O symbol index")
     }
 
@@ -104,7 +104,7 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
             if n_type & macho::N_STAB == 0 {
                 continue;
             }
-            // TODO: includes variables too (N_GSYM, N_STSYM). These may need to get their
+            // TODO: includes global symbols too (N_GSYM). These may need to get their
             // address from regular symbols though.
             match n_type {
                 macho::N_SO => {
@@ -115,7 +115,20 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
                     if let Ok(name) = nlist.name(endian, self.strings) {
                         if !name.is_empty() {
                             object = Some(objects.len());
-                            objects.push(name);
+                            // `N_OSO` symbol names can be either `/path/to/object.o`
+                            // or `/path/to/archive.a(object.o)`.
+                            let (path, member) = name
+                                .split_last()
+                                .and_then(|(last, head)| {
+                                    if *last != b')' {
+                                        return None;
+                                    }
+                                    let index = head.iter().position(|&x| x == b'(')?;
+                                    let (archive, rest) = head.split_at(index);
+                                    Some((archive, Some(&rest[1..])))
+                                })
+                                .unwrap_or((name, None));
+                            objects.push(ObjectMapFile::new(path, member));
                         }
                     }
                 }
@@ -132,6 +145,20 @@ impl<'data, Mach: MachHeader, R: ReadRef<'data>> SymbolTable<'data, Mach, R> {
                                     object,
                                 });
                             }
+                        }
+                    }
+                }
+                macho::N_STSYM => {
+                    // Static symbols have a single entry with the address of the symbol
+                    // but no size
+                    if let Ok(name) = nlist.name(endian, self.strings) {
+                        if let Some(object) = object {
+                            symbols.push(ObjectMapEntry {
+                                address: nlist.n_value(endian).into(),
+                                size: 0,
+                                name,
+                                object,
+                            })
                         }
                     }
                 }
@@ -178,14 +205,11 @@ where
     type SymbolIterator = MachOSymbolIterator<'data, 'file, Mach, R>;
 
     fn symbols(&self) -> Self::SymbolIterator {
-        MachOSymbolIterator {
-            file: self.file,
-            index: 0,
-        }
+        MachOSymbolIterator::new(self.file)
     }
 
     fn symbol_by_index(&self, index: SymbolIndex) -> Result<Self::Symbol> {
-        let nlist = self.file.symbols.symbol(index.0)?;
+        let nlist = self.file.symbols.symbol(index)?;
         MachOSymbol::new(self.file, index, nlist).read_error("Unsupported Mach-O symbol index")
     }
 }
@@ -203,8 +227,28 @@ where
     Mach: MachHeader,
     R: ReadRef<'data>,
 {
-    pub(super) file: &'file MachOFile<'data, Mach, R>,
-    pub(super) index: usize,
+    file: &'file MachOFile<'data, Mach, R>,
+    index: SymbolIndex,
+}
+
+impl<'data, 'file, Mach, R> MachOSymbolIterator<'data, 'file, Mach, R>
+where
+    Mach: MachHeader,
+    R: ReadRef<'data>,
+{
+    pub(super) fn new(file: &'file MachOFile<'data, Mach, R>) -> Self {
+        MachOSymbolIterator {
+            file,
+            index: SymbolIndex(0),
+        }
+    }
+
+    pub(super) fn empty(file: &'file MachOFile<'data, Mach, R>) -> Self {
+        MachOSymbolIterator {
+            file,
+            index: SymbolIndex(file.symbols.len()),
+        }
+    }
 }
 
 impl<'data, 'file, Mach, R> fmt::Debug for MachOSymbolIterator<'data, 'file, Mach, R>
@@ -227,9 +271,9 @@ where
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             let index = self.index;
-            let nlist = self.file.symbols.symbols.get(index)?;
-            self.index += 1;
-            if let Some(symbol) = MachOSymbol::new(self.file, SymbolIndex(index), nlist) {
+            let nlist = self.file.symbols.symbols.get(index.0)?;
+            self.index.0 += 1;
+            if let Some(symbol) = MachOSymbol::new(self.file, index, nlist) {
                 return Some(symbol);
             }
         }
@@ -271,6 +315,16 @@ where
             return None;
         }
         Some(MachOSymbol { file, index, nlist })
+    }
+
+    /// Get the Mach-O file containing this symbol.
+    pub fn macho_file(&self) -> &'file MachOFile<'data, Mach, R> {
+        self.file
+    }
+
+    /// Get the raw Mach-O symbol structure.
+    pub fn macho_symbol(&self) -> &'data Mach::Nlist {
+        self.nlist
     }
 }
 

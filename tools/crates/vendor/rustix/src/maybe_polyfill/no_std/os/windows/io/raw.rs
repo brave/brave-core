@@ -45,10 +45,11 @@ pub trait FromRawSocket {
     /// # Safety
     ///
     /// The `socket` passed in must:
-    ///   - be a valid an open socket,
+    ///   - be an [owned socket][io-safety]; in particular, it must be open.
     ///   - be a socket that may be freed via [`closesocket`].
     ///
     /// [`closesocket`]: https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-closesocket
+    /// [io-safety]: io#io-safety
     #[cfg_attr(staged_api, stable(feature = "from_raw_os", since = "1.1.0"))]
     unsafe fn from_raw_socket(sock: RawSocket) -> Self;
 }

@@ -11,9 +11,9 @@
 
 [package]
 edition = "2018"
-rust-version = "1.63.0"
+rust-version = "1.65.0"
 name = "tracing-subscriber"
-version = "0.3.19"
+version = "0.3.22"
 authors = [
     "Eliza Weisman <eliza@buoyant.io>",
     "David Barsky <me@davidbarsky.com>",
@@ -52,9 +52,65 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[badges.maintenance]
+status = "experimental"
+
+[features]
+alloc = []
+ansi = [
+    "fmt",
+    "nu-ansi-term",
+]
+default = [
+    "smallvec",
+    "fmt",
+    "ansi",
+    "tracing-log",
+    "std",
+]
+env-filter = [
+    "matchers",
+    "once_cell",
+    "tracing",
+    "std",
+    "thread_local",
+    "dep:regex-automata",
+]
+fmt = [
+    "registry",
+    "std",
+]
+json = [
+    "tracing-serde",
+    "serde",
+    "serde_json",
+]
+local-time = ["time/local-offset"]
+nu-ansi-term = ["dep:nu-ansi-term"]
+regex = []
+registry = [
+    "sharded-slab",
+    "thread_local",
+    "std",
+]
+std = [
+    "alloc",
+    "tracing-core/std",
+]
+valuable = [
+    "tracing-core/valuable",
+    "valuable_crate",
+    "valuable-serde",
+    "tracing-serde/valuable",
+]
+
 [lib]
 name = "tracing_subscriber"
 path = "src/lib.rs"
+
+[[test]]
+name = "ansi_escaping"
+path = "tests/ansi_escaping.rs"
 
 [[test]]
 name = "cached_layer_filters_dont_break_other_layers"
@@ -101,6 +157,10 @@ name = "multiple_layer_filter_interests_cached"
 path = "tests/multiple_layer_filter_interests_cached.rs"
 
 [[test]]
+name = "on_register_dispatch_is_called"
+path = "tests/on_register_dispatch_is_called.rs"
+
+[[test]]
 name = "option"
 path = "tests/option.rs"
 
@@ -111,6 +171,10 @@ path = "tests/option_filter_interest_caching.rs"
 [[test]]
 name = "registry_max_level_hint"
 path = "tests/registry_max_level_hint.rs"
+
+[[test]]
+name = "registry_span_instrument_drop"
+path = "tests/registry_span_instrument_drop.rs"
 
 [[test]]
 name = "registry_with_subscriber"
@@ -174,11 +238,11 @@ optional = true
 default-features = false
 
 [dependencies.matchers]
-version = "0.1.0"
+version = "0.2.0"
 optional = true
 
 [dependencies.nu-ansi-term]
-version = "0.46.0"
+version = "0.50.0"
 optional = true
 
 [dependencies.once_cell]
@@ -189,13 +253,9 @@ optional = true
 version = "0.12.1"
 optional = true
 
-[dependencies.regex]
-version = "1.6.0"
-features = [
-    "std",
-    "unicode-case",
-    "unicode-perl",
-]
+[dependencies.regex-automata]
+version = "0.4"
+features = ["std"]
 optional = true
 default-features = false
 
@@ -225,12 +285,12 @@ features = ["formatting"]
 optional = true
 
 [dependencies.tracing]
-version = "0.1.41"
+version = "0.1.43"
 optional = true
 default-features = false
 
 [dependencies.tracing-core]
-version = "0.1.30"
+version = "0.1.35"
 default-features = false
 
 [dependencies.tracing-log]
@@ -269,11 +329,12 @@ features = [
 version = "1"
 features = [
     "rt",
+    "rt-multi-thread",
     "macros",
 ]
 
 [dev-dependencies.tracing]
-version = "0.1.41"
+version = "0.1.43"
 
 [dev-dependencies.tracing-futures]
 version = "0.2.0"
@@ -286,54 +347,6 @@ default-features = false
 [dev-dependencies.tracing-log]
 version = "0.2.0"
 
-[features]
-alloc = []
-ansi = [
-    "fmt",
-    "nu-ansi-term",
-]
-default = [
-    "smallvec",
-    "fmt",
-    "ansi",
-    "tracing-log",
-    "std",
-]
-env-filter = [
-    "matchers",
-    "regex",
-    "once_cell",
-    "tracing",
-    "std",
-    "thread_local",
-]
-fmt = [
-    "registry",
-    "std",
-]
-json = [
-    "tracing-serde",
-    "serde",
-    "serde_json",
-]
-local-time = ["time/local-offset"]
-nu-ansi-term = ["dep:nu-ansi-term"]
-registry = [
-    "sharded-slab",
-    "thread_local",
-    "std",
-]
-std = [
-    "alloc",
-    "tracing-core/std",
-]
-valuable = [
-    "tracing-core/valuable",
-    "valuable_crate",
-    "valuable-serde",
-    "tracing-serde/valuable",
-]
-
 [target."cfg(tracing_unstable)".dependencies.valuable-serde]
 version = "0.1.0"
 optional = true
@@ -345,13 +358,11 @@ optional = true
 default-features = false
 package = "valuable"
 
-[badges.maintenance]
-status = "experimental"
-
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
 check-cfg = [
     "cfg(flaky_tests)",
     "cfg(tracing_unstable)",
+    "cfg(unsound_local_offset)",
 ]

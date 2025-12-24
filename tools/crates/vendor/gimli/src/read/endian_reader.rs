@@ -5,6 +5,7 @@ use alloc::rc::Rc;
 use alloc::string::String;
 use alloc::sync::Arc;
 use core::fmt::Debug;
+use core::hash::{Hash, Hasher};
 use core::ops::{Deref, Index, Range, RangeFrom, RangeTo};
 use core::slice;
 use core::str;
@@ -116,7 +117,7 @@ pub type EndianArcSlice<Endian> = EndianReader<Endian, Arc<[u8]>>;
 /// pub type MmapFileReader<Endian> = gimli::EndianReader<Endian, ArcMmapFile>;
 /// # fn test(_: &MmapFileReader<gimli::NativeEndian>) { }
 /// ```
-#[derive(Debug, Clone, Copy, Hash)]
+#[derive(Debug, Clone, Copy)]
 pub struct EndianReader<Endian, T>
 where
     Endian: Endianity,
@@ -142,6 +143,17 @@ where
     Endian: Endianity,
     T: CloneStableDeref<Target = [u8]> + Debug,
 {
+}
+
+impl<Endian, T> Hash for EndianReader<Endian, T>
+where
+    Endian: Endianity,
+    T: CloneStableDeref<Target = [u8]> + Debug,
+{
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        // This must match the `PartialEq` implementation.
+        self.bytes().hash(state);
+    }
 }
 
 // This is separated out from `EndianReader` so that we can avoid running afoul
@@ -393,8 +405,8 @@ where
 
     #[inline]
     fn offset_from(&self, base: &EndianReader<Endian, T>) -> usize {
-        let base_ptr = base.bytes().as_ptr() as *const u8 as usize;
-        let ptr = self.bytes().as_ptr() as *const u8 as usize;
+        let base_ptr = base.bytes().as_ptr() as usize;
+        let ptr = self.bytes().as_ptr() as usize;
         debug_assert!(base_ptr <= ptr);
         debug_assert!(ptr + self.bytes().len() <= base_ptr + base.bytes().len());
         ptr - base_ptr
@@ -448,12 +460,12 @@ where
     }
 
     #[inline]
-    fn to_slice(&self) -> Result<Cow<[u8]>> {
+    fn to_slice(&self) -> Result<Cow<'_, [u8]>> {
         Ok(self.bytes().into())
     }
 
     #[inline]
-    fn to_string(&self) -> Result<Cow<str>> {
+    fn to_string(&self) -> Result<Cow<'_, str>> {
         match str::from_utf8(self.bytes()) {
             Ok(s) => Ok(s.into()),
             _ => Err(Error::BadUtf8),
@@ -461,7 +473,7 @@ where
     }
 
     #[inline]
-    fn to_string_lossy(&self) -> Result<Cow<str>> {
+    fn to_string_lossy(&self) -> Result<Cow<'_, str>> {
         Ok(String::from_utf8_lossy(self.bytes()))
     }
 

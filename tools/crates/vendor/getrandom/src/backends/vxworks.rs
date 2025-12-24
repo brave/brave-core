@@ -11,20 +11,25 @@ mod util_libc;
 
 pub use crate::util::{inner_u32, inner_u64};
 
+static RNG_INIT: AtomicBool = AtomicBool::new(false);
+
+#[cold]
+fn init() -> Result<(), Error> {
+    let ret = unsafe { libc::randSecure() };
+    match ret.cmp(&0) {
+        Greater => RNG_INIT.store(true, Relaxed),
+        Equal => unsafe {
+            libc::usleep(10);
+        },
+        Less => return Err(Error::VXWORKS_RAND_SECURE),
+    }
+    Ok(())
+}
+
+#[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
-    static RNG_INIT: AtomicBool = AtomicBool::new(false);
     while !RNG_INIT.load(Relaxed) {
-        let ret = unsafe { libc::randSecure() };
-        match ret.cmp(&0) {
-            Greater => {
-                RNG_INIT.store(true, Relaxed);
-                break;
-            }
-            Equal => unsafe {
-                libc::usleep(10);
-            },
-            Less => return Err(Error::VXWORKS_RAND_SECURE),
-        }
+        init()?;
     }
 
     // Prevent overflow of i32

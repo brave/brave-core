@@ -2,7 +2,8 @@
 
 use crate::{OffsetDateTime, UtcOffset};
 
-#[allow(clippy::missing_docs_in_private_items)]
+#[expect(clippy::missing_docs_in_private_items)]
+#[inline]
 pub(super) fn local_offset_at(_datetime: OffsetDateTime) -> Option<UtcOffset> {
     None
 }

@@ -1,4 +1,4 @@
-use crate::backend::c;
+use crate::ffi;
 use bitflags::bitflags;
 
 bitflags! {
@@ -7,7 +7,7 @@ bitflags! {
     /// [`shm::open`]: crate:shm::open
     #[repr(transparent)]
     #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-    pub struct ShmOFlags: c::c_uint {
+    pub struct ShmOFlags: ffi::c_uint {
         /// `O_CREAT`
         #[doc(alias = "CREAT")]
         const CREATE = linux_raw_sys::general::O_CREAT;

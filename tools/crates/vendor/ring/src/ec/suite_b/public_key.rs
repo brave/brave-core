@@ -4,9 +4,9 @@
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
 //
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
 // SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 // WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
@@ -26,8 +26,9 @@ use crate::{arithmetic::montgomery::*, error};
 ///
 /// [NIST SP 800-56A, revision 2]:
 ///     http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar2.pdf
-pub fn parse_uncompressed_point(
+pub(super) fn parse_uncompressed_point(
     ops: &PublicKeyOps,
+    q: &Modulus<Q>,
     input: untrusted::Input,
 ) -> Result<(Elem<R>, Elem<R>), error::Unspecified> {
     // NIST SP 800-56A Step 1: "Verify that Q is not the point at infinity.
@@ -43,15 +44,15 @@ pub fn parse_uncompressed_point(
 
         // NIST SP 800-56A Step 2: "Verify that xQ and yQ are integers in the
         // interval [0, p-1] in the case that q is an odd prime p[.]"
-        let x = ops.elem_parse(input)?;
-        let y = ops.elem_parse(input)?;
+        let x = ops.elem_parse(q, input)?;
+        let y = ops.elem_parse(q, input)?;
         Ok((x, y))
     })?;
 
     // NIST SP 800-56A Step 3: "If q is an odd prime p, verify that
     // yQ**2 = xQ**3 + axQ + b in GF(p), where the arithmetic is performed
     // modulo p."
-    verify_affine_point_is_on_the_curve(ops.common, (&x, &y))?;
+    verify_affine_point_is_on_the_curve(q, (&x, &y))?;
 
     // NIST SP 800-56A Note: "Since its order is not verified, there is no
     // check that the public key is in the correct EC subgroup."
@@ -66,13 +67,15 @@ pub fn parse_uncompressed_point(
 
 #[cfg(test)]
 mod tests {
-    use super::{super::ops, *};
-    use crate::test;
+    use super::*;
+    use crate::cpu;
+    use crate::testutil as test;
 
     #[test]
     fn parse_uncompressed_point_test() {
+        let cpu = cpu::features();
         test::run(
-            test_file!("suite_b_public_key_tests.txt"),
+            test_vector_file!("suite_b_public_key_tests.txt"),
             |section, test_case| {
                 assert_eq!(section, "");
 
@@ -83,8 +86,9 @@ mod tests {
                 let is_valid = test_case.consume_string("Result") == "P";
 
                 let curve_ops = public_key_ops_from_curve_name(&curve_name);
+                let q = &curve_ops.common.elem_modulus(cpu);
 
-                let result = parse_uncompressed_point(curve_ops, public_key);
+                let result = parse_uncompressed_point(curve_ops, q, public_key);
                 assert_eq!(is_valid, result.is_ok());
 
                 // TODO: Verify that we when we re-serialize the parsed (x, y), the
@@ -97,9 +101,9 @@ mod tests {
 
     fn public_key_ops_from_curve_name(curve_name: &str) -> &'static PublicKeyOps {
         if curve_name == "P-256" {
-            &ops::p256::PUBLIC_KEY_OPS
+            &p256::PUBLIC_KEY_OPS
         } else if curve_name == "P-384" {
-            &ops::p384::PUBLIC_KEY_OPS
+            &p384::PUBLIC_KEY_OPS
         } else {
             panic!("Unsupported curve: {}", curve_name);
         }

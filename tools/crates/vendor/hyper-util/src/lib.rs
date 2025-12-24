@@ -1,5 +1,5 @@
 #![deny(missing_docs)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 //! Utilities for working with hyper.
 //!

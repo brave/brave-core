@@ -22,7 +22,23 @@ pub(crate) use self::sys::*;
 )))]
 mod sys {
     pub(crate) fn system_time() -> std::time::SystemTime {
-        std::time::SystemTime::now()
+        // `SystemTime::now()` should continue to panic on this exact target in
+        // the future as well; Instead of letting `std` panic, we panic first
+        // with a more informative error message.
+        if cfg!(all(
+            not(feature = "js"),
+            any(target_arch = "wasm32", target_arch = "wasm64"),
+            target_os = "unknown"
+        )) {
+            panic!(
+                "getting the current time in wasm32-unknown-unknown \
+                 is not possible with just the standard library, \
+                 enable Jiff's `js` feature if you are \
+                 targeting a browser environment",
+            );
+        } else {
+            std::time::SystemTime::now()
+        }
     }
 
     #[cfg(any(
@@ -31,7 +47,18 @@ mod sys {
         feature = "tzdb-concatenated"
     ))]
     pub(crate) fn monotonic_time() -> Option<std::time::Instant> {
-        Some(std::time::Instant::now())
+        // Same reasoning as above, but we return `None` instead of panicking,
+        // because Jiff can deal with environments that don't provide
+        // monotonic time.
+        if cfg!(all(
+            not(feature = "js"),
+            any(target_arch = "wasm32", target_arch = "wasm64"),
+            target_os = "unknown"
+        )) {
+            None
+        } else {
+            Some(std::time::Instant::now())
+        }
     }
 }
 

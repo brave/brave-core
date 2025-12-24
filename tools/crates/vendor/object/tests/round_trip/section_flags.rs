@@ -48,7 +48,6 @@ fn elf_x86_64_section_flags() {
     assert_eq!(object.architecture(), Architecture::X86_64);
 
     let mut sections = object.sections();
-    sections.next().unwrap();
     let section = sections.next().unwrap();
     assert_eq!(section.name(), Ok(".text"));
     assert_eq!(

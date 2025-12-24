@@ -16,7 +16,10 @@ use crate::net::TcpStream;
 #[cfg(any(unix, target_os = "hermit"))]
 use crate::sys::tcp::set_reuseaddr;
 #[cfg(not(target_os = "wasi"))]
-use crate::sys::tcp::{bind, listen, new_for_addr};
+use crate::sys::{
+    tcp::{bind, listen, new_for_addr},
+    LISTEN_BACKLOG_SIZE,
+};
 use crate::{event, sys, Interest, Registry, Token};
 
 /// A structure representing a socket server
@@ -78,7 +81,7 @@ impl TcpListener {
         set_reuseaddr(&listener.inner, true)?;
 
         bind(&listener.inner, addr)?;
-        listen(&listener.inner, 1024)?;
+        listen(&listener.inner, LISTEN_BACKLOG_SIZE)?;
         Ok(listener)
     }
 
@@ -86,8 +89,8 @@ impl TcpListener {
     ///
     /// This function is intended to be used to wrap a TCP listener from the
     /// standard library in the Mio equivalent. The conversion assumes nothing
-    /// about the underlying listener; ; it is left up to the user to set it
-    /// in non-blocking mode.
+    /// about the underlying listener; it is left up to the user to set it
+    /// into non-blocking mode.
     pub fn from_std(listener: net::TcpListener) -> TcpListener {
         TcpListener {
             inner: IoSource::new(listener),

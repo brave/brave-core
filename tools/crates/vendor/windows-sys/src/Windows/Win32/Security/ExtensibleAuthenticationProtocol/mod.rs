@@ -1,35 +1,32 @@
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerBeginSession(dwflags : u32, eaptype : EAP_METHOD_TYPE, pattributearray : *const EAP_ATTRIBUTES, htokenimpersonateuser : super::super::Foundation:: HANDLE, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, dwmaxsendpacketsize : u32, pconnectionid : *const windows_sys::core::GUID, func : NotificationHandler, pcontextdata : *mut core::ffi::c_void, psessionid : *mut u32, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerClearConnection(pconnectionid : *mut windows_sys::core::GUID, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerConfigBlob2Xml(dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, dwsizeofconfigin : u32, pconfigin : *const u8, ppconfigdoc : *mut * mut core::ffi::c_void, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerConfigXml2Blob(dwflags : u32, pconfigdoc : * mut core::ffi::c_void, pdwsizeofconfigout : *mut u32, ppconfigout : *mut *mut u8, peapmethodtype : *mut EAP_METHOD_TYPE, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerCredentialsXml2Blob(dwflags : u32, pcredentialsdoc : * mut core::ffi::c_void, dwsizeofconfigin : u32, pconfigin : *const u8, pdwsizeofcredentialsout : *mut u32, ppcredentialsout : *mut *mut u8, peapmethodtype : *mut EAP_METHOD_TYPE, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerEndSession(sessionhandle : u32, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerFreeEapError(peaperror : *mut EAP_ERROR));
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerFreeErrorMemory(peaperror : *mut EAP_ERROR));
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerFreeMemory(pdata : *mut u8));
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerFreeRuntimeMemory(pdata : *mut u8));
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetAuthStatus(sessionhandle : u32, authparam : EapHostPeerAuthParams, pcbauthdata : *mut u32, ppauthdata : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetDataToUnplumbCredentials(pconnectionidthatlastsavedcreds : *mut windows_sys::core::GUID, phcredentialimpersonationtoken : *mut isize, sessionhandle : u32, ppeaperror : *mut *mut EAP_ERROR, fsavetocredman : *mut super::super::Foundation:: BOOL) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetEncryptedPassword(dwsizeofpassword : u32, szpassword : windows_sys::core::PCWSTR, ppszencpassword : *mut windows_sys::core::PWSTR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetIdentity(dwversion : u32, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, htokenimpersonateuser : super::super::Foundation:: HANDLE, pfinvokeui : *mut super::super::Foundation:: BOOL, pdwsizeofuserdataout : *mut u32, ppuserdataout : *mut *mut u8, ppwszidentity : *mut windows_sys::core::PWSTR, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut u8) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerGetMethodProperties(dwversion : u32, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, huserimpersonationtoken : super::super::Foundation:: HANDLE, dweapconndatasize : u32, pbeapconndata : *const u8, dwuserdatasize : u32, pbuserdata : *const u8, pmethodpropertyarray : *mut EAP_METHOD_PROPERTY_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerGetMethods(peapmethodinfoarray : *mut EAP_METHOD_INFO_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetResponseAttributes(sessionhandle : u32, pattribs : *mut EAP_ATTRIBUTES, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetResult(sessionhandle : u32, reason : EapHostPeerMethodResultReason, ppresult : *mut EapHostPeerMethodResult, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetSendPacket(sessionhandle : u32, pcbsendpacket : *mut u32, ppsendpacket : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerGetUIContext(sessionhandle : u32, pdwsizeofuicontextdata : *mut u32, ppuicontextdata : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerInitialize() -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerInvokeConfigUI(hwndparent : super::super::Foundation:: HWND, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, dwsizeofconfigin : u32, pconfigin : *const u8, pdwsizeofconfigout : *mut u32, ppconfigout : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerInvokeIdentityUI(dwversion : u32, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, hwndparent : super::super::Foundation:: HWND, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, pdwsizeofuserdataout : *mut u32, ppuserdataout : *mut *mut u8, ppwszidentity : *mut windows_sys::core::PWSTR, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerInvokeInteractiveUI(hwndparent : super::super::Foundation:: HWND, dwsizeofuicontextdata : u32, puicontextdata : *const u8, pdwsizeofdatafrominteractiveui : *mut u32, ppdatafrominteractiveui : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerProcessReceivedPacket(sessionhandle : u32, cbreceivepacket : u32, preceivepacket : *const u8, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerQueryCredentialInputFields(huserimpersonationtoken : super::super::Foundation:: HANDLE, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, dweapconndatasize : u32, pbeapconndata : *const u8, peapconfiginputfieldarray : *mut EAP_CONFIG_INPUT_FIELD_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerQueryInteractiveUIInputFields(dwversion : u32, dwflags : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapinteractiveuidata : *mut EAP_INTERACTIVE_UI_DATA, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerQueryUIBlobFromInteractiveUIInputFields(dwversion : u32, dwflags : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapinteractiveuidata : *const EAP_INTERACTIVE_UI_DATA, pdwsizeofdatafrominteractiveui : *mut u32, ppdatafrominteractiveui : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
-windows_targets::link!("eappcfg.dll" "system" fn EapHostPeerQueryUserBlobFromCredentialInputFields(huserimpersonationtoken : super::super::Foundation:: HANDLE, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, dweapconndatasize : u32, pbeapconndata : *const u8, peapconfiginputfieldarray : *const EAP_CONFIG_INPUT_FIELD_ARRAY, pdwuserblobsize : *mut u32, ppbuserblob : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerSetResponseAttributes(sessionhandle : u32, pattribs : *const EAP_ATTRIBUTES, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerSetUIContext(sessionhandle : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
-windows_targets::link!("eappprxy.dll" "system" fn EapHostPeerUninitialize());
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerBeginSession(dwflags : u32, eaptype : EAP_METHOD_TYPE, pattributearray : *const EAP_ATTRIBUTES, htokenimpersonateuser : super::super::Foundation:: HANDLE, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, dwmaxsendpacketsize : u32, pconnectionid : *const windows_sys::core::GUID, func : NotificationHandler, pcontextdata : *mut core::ffi::c_void, psessionid : *mut u32, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerClearConnection(pconnectionid : *mut windows_sys::core::GUID, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerEndSession(sessionhandle : u32, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerFreeEapError(peaperror : *mut EAP_ERROR));
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerFreeErrorMemory(peaperror : *mut EAP_ERROR));
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerFreeMemory(pdata : *mut u8));
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerFreeRuntimeMemory(pdata : *mut u8));
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetAuthStatus(sessionhandle : u32, authparam : EapHostPeerAuthParams, pcbauthdata : *mut u32, ppauthdata : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetDataToUnplumbCredentials(pconnectionidthatlastsavedcreds : *mut windows_sys::core::GUID, phcredentialimpersonationtoken : *mut isize, sessionhandle : u32, ppeaperror : *mut *mut EAP_ERROR, fsavetocredman : *mut windows_sys::core::BOOL) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetEncryptedPassword(dwsizeofpassword : u32, szpassword : windows_sys::core::PCWSTR, ppszencpassword : *mut windows_sys::core::PWSTR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetIdentity(dwversion : u32, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, htokenimpersonateuser : super::super::Foundation:: HANDLE, pfinvokeui : *mut windows_sys::core::BOOL, pdwsizeofuserdataout : *mut u32, ppuserdataout : *mut *mut u8, ppwszidentity : *mut windows_sys::core::PWSTR, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut u8) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerGetMethodProperties(dwversion : u32, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, huserimpersonationtoken : super::super::Foundation:: HANDLE, dweapconndatasize : u32, pbeapconndata : *const u8, dwuserdatasize : u32, pbuserdata : *const u8, pmethodpropertyarray : *mut EAP_METHOD_PROPERTY_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerGetMethods(peapmethodinfoarray : *mut EAP_METHOD_INFO_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetResponseAttributes(sessionhandle : u32, pattribs : *mut EAP_ATTRIBUTES, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetResult(sessionhandle : u32, reason : EapHostPeerMethodResultReason, ppresult : *mut EapHostPeerMethodResult, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetSendPacket(sessionhandle : u32, pcbsendpacket : *mut u32, ppsendpacket : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerGetUIContext(sessionhandle : u32, pdwsizeofuicontextdata : *mut u32, ppuicontextdata : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerInitialize() -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerInvokeConfigUI(hwndparent : super::super::Foundation:: HWND, dwflags : u32, eapmethodtype : EAP_METHOD_TYPE, dwsizeofconfigin : u32, pconfigin : *const u8, pdwsizeofconfigout : *mut u32, ppconfigout : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerInvokeIdentityUI(dwversion : u32, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, hwndparent : super::super::Foundation:: HWND, dwsizeofconnectiondata : u32, pconnectiondata : *const u8, dwsizeofuserdata : u32, puserdata : *const u8, pdwsizeofuserdataout : *mut u32, ppuserdataout : *mut *mut u8, ppwszidentity : *mut windows_sys::core::PWSTR, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerInvokeInteractiveUI(hwndparent : super::super::Foundation:: HWND, dwsizeofuicontextdata : u32, puicontextdata : *const u8, pdwsizeofdatafrominteractiveui : *mut u32, ppdatafrominteractiveui : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerProcessReceivedPacket(sessionhandle : u32, cbreceivepacket : u32, preceivepacket : *const u8, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerQueryCredentialInputFields(huserimpersonationtoken : super::super::Foundation:: HANDLE, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, dweapconndatasize : u32, pbeapconndata : *const u8, peapconfiginputfieldarray : *mut EAP_CONFIG_INPUT_FIELD_ARRAY, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerQueryInteractiveUIInputFields(dwversion : u32, dwflags : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapinteractiveuidata : *mut EAP_INTERACTIVE_UI_DATA, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerQueryUIBlobFromInteractiveUIInputFields(dwversion : u32, dwflags : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapinteractiveuidata : *const EAP_INTERACTIVE_UI_DATA, pdwsizeofdatafrominteractiveui : *mut u32, ppdatafrominteractiveui : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR, ppvreserved : *mut *mut core::ffi::c_void) -> u32);
+windows_link::link!("eappcfg.dll" "system" fn EapHostPeerQueryUserBlobFromCredentialInputFields(huserimpersonationtoken : super::super::Foundation:: HANDLE, eapmethodtype : EAP_METHOD_TYPE, dwflags : u32, dweapconndatasize : u32, pbeapconndata : *const u8, peapconfiginputfieldarray : *const EAP_CONFIG_INPUT_FIELD_ARRAY, pdwuserblobsize : *mut u32, ppbuserblob : *mut *mut u8, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerSetResponseAttributes(sessionhandle : u32, pattribs : *const EAP_ATTRIBUTES, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerSetUIContext(sessionhandle : u32, dwsizeofuicontextdata : u32, puicontextdata : *const u8, peapoutput : *mut EapHostPeerResponseAction, ppeaperror : *mut *mut EAP_ERROR) -> u32);
+windows_link::link!("eappprxy.dll" "system" fn EapHostPeerUninitialize());
 pub const CERTIFICATE_HASH_LENGTH: u32 = 20u32;
 pub const EAPACTION_Authenticate: PPP_EAP_ACTION = 1i32;
 pub const EAPACTION_Done: PPP_EAP_ACTION = 2i32;
@@ -44,8 +41,97 @@ pub const EAPCODE_Failure: u32 = 4u32;
 pub const EAPCODE_Request: u32 = 1u32;
 pub const EAPCODE_Response: u32 = 2u32;
 pub const EAPCODE_Success: u32 = 3u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAPHOST_AUTH_INFO {
+    pub status: EAPHOST_AUTH_STATUS,
+    pub dwErrorCode: u32,
+    pub dwReasonCode: u32,
+}
+pub type EAPHOST_AUTH_STATUS = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAPHOST_IDENTITY_UI_PARAMS {
+    pub eapMethodType: EAP_METHOD_TYPE,
+    pub dwFlags: u32,
+    pub dwSizeofConnectionData: u32,
+    pub pConnectionData: *mut u8,
+    pub dwSizeofUserData: u32,
+    pub pUserData: *mut u8,
+    pub dwSizeofUserDataOut: u32,
+    pub pUserDataOut: *mut u8,
+    pub pwszIdentity: windows_sys::core::PWSTR,
+    pub dwError: u32,
+    pub pEapError: *mut EAP_ERROR,
+}
+impl Default for EAPHOST_IDENTITY_UI_PARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAPHOST_INTERACTIVE_UI_PARAMS {
+    pub dwSizeofContextData: u32,
+    pub pContextData: *mut u8,
+    pub dwSizeofInteractiveUIData: u32,
+    pub pInteractiveUIData: *mut u8,
+    pub dwError: u32,
+    pub pEapError: *mut EAP_ERROR,
+}
+impl Default for EAPHOST_INTERACTIVE_UI_PARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAPHOST_METHOD_API_VERSION: u32 = 1u32;
 pub const EAPHOST_PEER_API_VERSION: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_ATTRIBUTE {
+    pub eaType: EAP_ATTRIBUTE_TYPE,
+    pub dwLength: u32,
+    pub pValue: *mut u8,
+}
+impl Default for EAP_ATTRIBUTE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_ATTRIBUTES {
+    pub dwNumberOfAttributes: u32,
+    pub pAttribs: *mut EAP_ATTRIBUTE,
+}
+impl Default for EAP_ATTRIBUTES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EAP_ATTRIBUTE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_AUTHENTICATOR_METHOD_ROUTINES {
+    pub dwSizeInBytes: u32,
+    pub pEapType: *mut EAP_METHOD_TYPE,
+    pub EapMethodAuthenticatorInitialize: isize,
+    pub EapMethodAuthenticatorBeginSession: isize,
+    pub EapMethodAuthenticatorUpdateInnerMethodParams: isize,
+    pub EapMethodAuthenticatorReceivePacket: isize,
+    pub EapMethodAuthenticatorSendPacket: isize,
+    pub EapMethodAuthenticatorGetAttributes: isize,
+    pub EapMethodAuthenticatorSetAttributes: isize,
+    pub EapMethodAuthenticatorGetResult: isize,
+    pub EapMethodAuthenticatorEndSession: isize,
+    pub EapMethodAuthenticatorShutdown: isize,
+}
+impl Default for EAP_AUTHENTICATOR_METHOD_ROUTINES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EAP_AUTHENTICATOR_SEND_TIMEOUT = i32;
 pub const EAP_AUTHENTICATOR_SEND_TIMEOUT_BASIC: EAP_AUTHENTICATOR_SEND_TIMEOUT = 1i32;
 pub const EAP_AUTHENTICATOR_SEND_TIMEOUT_INTERACTIVE: EAP_AUTHENTICATOR_SEND_TIMEOUT = 2i32;
 pub const EAP_AUTHENTICATOR_SEND_TIMEOUT_NONE: EAP_AUTHENTICATOR_SEND_TIMEOUT = 0i32;
@@ -54,11 +140,63 @@ pub const EAP_AUTHENTICATOR_VALUENAME_DLL_PATH: windows_sys::core::PCWSTR = wind
 pub const EAP_AUTHENTICATOR_VALUENAME_FRIENDLY_NAME: windows_sys::core::PCWSTR = windows_sys::core::w!("AuthenticatorFriendlyName");
 pub const EAP_AUTHENTICATOR_VALUENAME_PROPERTIES: windows_sys::core::PCWSTR = windows_sys::core::w!("Properties");
 pub const EAP_CERTIFICATE_CREDENTIAL: EapCredentialType = 3i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_CONFIG_INPUT_FIELD_ARRAY {
+    pub dwVersion: u32,
+    pub dwNumberOfFields: u32,
+    pub pFields: *mut EAP_CONFIG_INPUT_FIELD_DATA,
+}
+impl Default for EAP_CONFIG_INPUT_FIELD_ARRAY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_CONFIG_INPUT_FIELD_DATA {
+    pub dwSize: u32,
+    pub Type: EAP_CONFIG_INPUT_FIELD_TYPE,
+    pub dwFlagProps: u32,
+    pub pwszLabel: windows_sys::core::PWSTR,
+    pub pwszData: windows_sys::core::PWSTR,
+    pub dwMinDataLength: u32,
+    pub dwMaxDataLength: u32,
+}
+impl Default for EAP_CONFIG_INPUT_FIELD_DATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAP_CONFIG_INPUT_FIELD_PROPS_DEFAULT: u32 = 0u32;
 pub const EAP_CONFIG_INPUT_FIELD_PROPS_NON_DISPLAYABLE: u32 = 1u32;
 pub const EAP_CONFIG_INPUT_FIELD_PROPS_NON_PERSIST: u32 = 2u32;
+pub type EAP_CONFIG_INPUT_FIELD_TYPE = i32;
 pub const EAP_CREDENTIAL_VERSION: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAP_CRED_EXPIRY_REQ {
+    pub curCreds: EAP_CONFIG_INPUT_FIELD_ARRAY,
+    pub newCreds: EAP_CONFIG_INPUT_FIELD_ARRAY,
+}
 pub const EAP_EMPTY_CREDENTIAL: EapCredentialType = 0i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_ERROR {
+    pub dwWinError: u32,
+    pub r#type: EAP_METHOD_TYPE,
+    pub dwReasonCode: u32,
+    pub rootCauseGuid: windows_sys::core::GUID,
+    pub repairGuid: windows_sys::core::GUID,
+    pub helpLinkGuid: windows_sys::core::GUID,
+    pub pRootCauseString: windows_sys::core::PWSTR,
+    pub pRepairString: windows_sys::core::PWSTR,
+}
+impl Default for EAP_ERROR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAP_E_AUTHENTICATION_FAILED: u32 = 2151809045u32;
 pub const EAP_E_CERT_STORE_INACCESSIBLE: u32 = 2151809040u32;
 pub const EAP_E_EAPHOST_EAPQEC_INACCESSIBLE: u32 = 2151809043u32;
@@ -126,6 +264,21 @@ pub const EAP_FLAG_SUPRESS_UI: u32 = 65536u32;
 pub const EAP_FLAG_USER_AUTH: u32 = 262144u32;
 pub const EAP_FLAG_VPN: u32 = 8388608u32;
 pub const EAP_GROUP_MASK: i32 = 65280i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_INTERACTIVE_UI_DATA {
+    pub dwVersion: u32,
+    pub dwSize: u32,
+    pub dwDataType: EAP_INTERACTIVE_UI_DATA_TYPE,
+    pub cbUiData: u32,
+    pub pbUiData: EAP_UI_DATA_FORMAT,
+}
+impl Default for EAP_INTERACTIVE_UI_DATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EAP_INTERACTIVE_UI_DATA_TYPE = i32;
 pub const EAP_INTERACTIVE_UI_DATA_VERSION: u32 = 1u32;
 pub const EAP_INVALID_PACKET: u32 = 2151809048u32;
 pub const EAP_I_EAPHOST_EAP_NEGOTIATION_FAILED: u32 = 1078067222u32;
@@ -135,15 +288,168 @@ pub const EAP_I_USER_ACCOUNT_OTHER_ERROR: u32 = 1078067472u32;
 pub const EAP_I_USER_FIRST: i32 = 1078067456i32;
 pub const EAP_I_USER_LAST: i32 = 1078067711i32;
 pub const EAP_METHOD_AUTHENTICATOR_CONFIG_IS_IDENTITY_PRIVACY: u32 = 1u32;
+pub type EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_AUTHENTICATE: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 4i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_DISCARD: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 0i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_HANDLE_IDENTITY: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 5i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_RESPOND: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 3i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_RESULT: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 2i32;
 pub const EAP_METHOD_AUTHENTICATOR_RESPONSE_SEND: EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = 1i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_AUTHENTICATOR_RESULT {
+    pub fIsSuccess: windows_sys::core::BOOL,
+    pub dwFailureReason: u32,
+    pub pAuthAttribs: *mut EAP_ATTRIBUTES,
+}
+impl Default for EAP_METHOD_AUTHENTICATOR_RESULT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_INFO {
+    pub eaptype: EAP_METHOD_TYPE,
+    pub pwszAuthorName: windows_sys::core::PWSTR,
+    pub pwszFriendlyName: windows_sys::core::PWSTR,
+    pub eapProperties: u32,
+    pub pInnerMethodInfo: *mut EAP_METHOD_INFO,
+}
+impl Default for EAP_METHOD_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_INFO_ARRAY {
+    pub dwNumberOfMethods: u32,
+    pub pEapMethods: *mut EAP_METHOD_INFO,
+}
+impl Default for EAP_METHOD_INFO_ARRAY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_INFO_ARRAY_EX {
+    pub dwNumberOfMethods: u32,
+    pub pEapMethods: *mut EAP_METHOD_INFO_EX,
+}
+impl Default for EAP_METHOD_INFO_ARRAY_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_INFO_EX {
+    pub eaptype: EAP_METHOD_TYPE,
+    pub pwszAuthorName: windows_sys::core::PWSTR,
+    pub pwszFriendlyName: windows_sys::core::PWSTR,
+    pub eapProperties: u32,
+    pub pInnerMethodInfoArray: *mut EAP_METHOD_INFO_ARRAY_EX,
+}
+impl Default for EAP_METHOD_INFO_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAP_METHOD_INVALID_PACKET: u32 = 2151809047u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_PROPERTY {
+    pub eapMethodPropertyType: EAP_METHOD_PROPERTY_TYPE,
+    pub eapMethodPropertyValueType: EAP_METHOD_PROPERTY_VALUE_TYPE,
+    pub eapMethodPropertyValue: EAP_METHOD_PROPERTY_VALUE,
+}
+impl Default for EAP_METHOD_PROPERTY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_PROPERTY_ARRAY {
+    pub dwNumberOfProperties: u32,
+    pub pMethodProperty: *mut EAP_METHOD_PROPERTY,
+}
+impl Default for EAP_METHOD_PROPERTY_ARRAY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EAP_METHOD_PROPERTY_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union EAP_METHOD_PROPERTY_VALUE {
+    pub empvBool: EAP_METHOD_PROPERTY_VALUE_BOOL,
+    pub empvDword: EAP_METHOD_PROPERTY_VALUE_DWORD,
+    pub empvString: EAP_METHOD_PROPERTY_VALUE_STRING,
+}
+impl Default for EAP_METHOD_PROPERTY_VALUE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAP_METHOD_PROPERTY_VALUE_BOOL {
+    pub length: u32,
+    pub value: windows_sys::core::BOOL,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAP_METHOD_PROPERTY_VALUE_DWORD {
+    pub length: u32,
+    pub value: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_METHOD_PROPERTY_VALUE_STRING {
+    pub length: u32,
+    pub value: *mut u8,
+}
+impl Default for EAP_METHOD_PROPERTY_VALUE_STRING {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EAP_METHOD_PROPERTY_VALUE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAP_METHOD_TYPE {
+    pub eapType: EAP_TYPE,
+    pub dwAuthorId: u32,
+}
 pub const EAP_PEER_FLAG_GUEST_ACCESS: u32 = 64u32;
 pub const EAP_PEER_FLAG_HEALTH_STATE_CHANGE: u32 = 32768u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EAP_PEER_METHOD_ROUTINES {
+    pub dwVersion: u32,
+    pub pEapType: *mut EAP_TYPE,
+    pub EapPeerInitialize: isize,
+    pub EapPeerGetIdentity: isize,
+    pub EapPeerBeginSession: isize,
+    pub EapPeerSetCredentials: isize,
+    pub EapPeerProcessRequestPacket: isize,
+    pub EapPeerGetResponsePacket: isize,
+    pub EapPeerGetResult: isize,
+    pub EapPeerGetUIContext: isize,
+    pub EapPeerSetUIContext: isize,
+    pub EapPeerGetResponseAttributes: isize,
+    pub EapPeerSetResponseAttributes: isize,
+    pub EapPeerEndSession: isize,
+    pub EapPeerShutdown: isize,
+}
+impl Default for EAP_PEER_METHOD_ROUTINES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAP_PEER_VALUENAME_CONFIGUI: windows_sys::core::PCWSTR = windows_sys::core::w!("PeerConfigUIPath");
 pub const EAP_PEER_VALUENAME_DLL_PATH: windows_sys::core::PCWSTR = windows_sys::core::w!("PeerDllPath");
 pub const EAP_PEER_VALUENAME_FRIENDLY_NAME: windows_sys::core::PCWSTR = windows_sys::core::w!("PeerFriendlyName");
@@ -155,6 +461,25 @@ pub const EAP_PEER_VALUENAME_PROPERTIES: windows_sys::core::PCWSTR = windows_sys
 pub const EAP_PEER_VALUENAME_REQUIRE_CONFIGUI: windows_sys::core::PCWSTR = windows_sys::core::w!("PeerRequireConfigUI");
 pub const EAP_REGISTRY_LOCATION: windows_sys::core::PCWSTR = windows_sys::core::w!("System\\CurrentControlSet\\Services\\EapHost\\Methods");
 pub const EAP_SIM_CREDENTIAL: EapCredentialType = 4i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EAP_TYPE {
+    pub r#type: u8,
+    pub dwVendorId: u32,
+    pub dwVendorType: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union EAP_UI_DATA_FORMAT {
+    pub credData: *mut EAP_CONFIG_INPUT_FIELD_ARRAY,
+    pub credExpiryData: *mut EAP_CRED_EXPIRY_REQ,
+    pub credLogonData: *mut EAP_CONFIG_INPUT_FIELD_ARRAY,
+}
+impl Default for EAP_UI_DATA_FORMAT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EAP_UI_INPUT_FIELD_PROPS_DEFAULT: u32 = 0u32;
 pub const EAP_UI_INPUT_FIELD_PROPS_NON_DISPLAYABLE: u32 = 1u32;
 pub const EAP_UI_INPUT_FIELD_PROPS_NON_PERSIST: u32 = 2u32;
@@ -162,6 +487,18 @@ pub const EAP_UI_INPUT_FIELD_PROPS_READ_ONLY: u32 = 4u32;
 pub const EAP_USERNAME_PASSWORD_CREDENTIAL: EapCredentialType = 1i32;
 pub const EAP_VALUENAME_PROPERTIES: windows_sys::core::PCWSTR = windows_sys::core::w!("Properties");
 pub const EAP_WINLOGON_CREDENTIAL: EapCredentialType = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapCertificateCredential {
+    pub certHash: [u8; 20],
+    pub password: windows_sys::core::PWSTR,
+}
+impl Default for EapCertificateCredential {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EapCode = i32;
 pub const EapCodeFailure: EapCode = 4i32;
 pub const EapCodeMaximum: EapCode = 4i32;
 pub const EapCodeMinimum: EapCode = 1i32;
@@ -183,6 +520,30 @@ pub const EapCredLogonReq: EAP_INTERACTIVE_UI_DATA_TYPE = 4i32;
 pub const EapCredLogonResp: EAP_INTERACTIVE_UI_DATA_TYPE = 5i32;
 pub const EapCredReq: EAP_INTERACTIVE_UI_DATA_TYPE = 0i32;
 pub const EapCredResp: EAP_INTERACTIVE_UI_DATA_TYPE = 1i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapCredential {
+    pub credType: EapCredentialType,
+    pub credData: EapCredentialTypeData,
+}
+impl Default for EapCredential {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type EapCredentialType = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union EapCredentialTypeData {
+    pub username_password: EapUsernamePasswordCredential,
+    pub certificate: EapCertificateCredential,
+    pub sim: EapSimCredential,
+}
+impl Default for EapCredentialTypeData {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EapHostAuthFailed: EAPHOST_AUTH_STATUS = 6i32;
 pub const EapHostAuthIdentityExchange: EAPHOST_AUTH_STATUS = 2i32;
 pub const EapHostAuthInProgress: EAPHOST_AUTH_STATUS = 4i32;
@@ -191,12 +552,36 @@ pub const EapHostAuthNotStarted: EAPHOST_AUTH_STATUS = 1i32;
 pub const EapHostAuthSucceeded: EAPHOST_AUTH_STATUS = 5i32;
 pub const EapHostInvalidSession: EAPHOST_AUTH_STATUS = 0i32;
 pub const EapHostNapInfo: EapHostPeerAuthParams = 4i32;
+pub type EapHostPeerAuthParams = i32;
 pub const EapHostPeerAuthStatus: EapHostPeerAuthParams = 1i32;
 pub const EapHostPeerIdentity: EapHostPeerAuthParams = 2i32;
 pub const EapHostPeerIdentityExtendedInfo: EapHostPeerAuthParams = 3i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapHostPeerMethodResult {
+    pub fIsSuccess: windows_sys::core::BOOL,
+    pub dwFailureReasonCode: u32,
+    pub fSaveConnectionData: windows_sys::core::BOOL,
+    pub dwSizeofConnectionData: u32,
+    pub pConnectionData: *mut u8,
+    pub fSaveUserData: windows_sys::core::BOOL,
+    pub dwSizeofUserData: u32,
+    pub pUserData: *mut u8,
+    pub pAttribArray: *mut EAP_ATTRIBUTES,
+    pub isolationState: ISOLATION_STATE,
+    pub pEapMethodInfo: *mut EAP_METHOD_INFO,
+    pub pEapError: *mut EAP_ERROR,
+}
+impl Default for EapHostPeerMethodResult {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EapHostPeerMethodResultAltSuccessReceived: EapHostPeerMethodResultReason = 1i32;
 pub const EapHostPeerMethodResultFromMethod: EapHostPeerMethodResultReason = 3i32;
+pub type EapHostPeerMethodResultReason = i32;
 pub const EapHostPeerMethodResultTimeout: EapHostPeerMethodResultReason = 2i32;
+pub type EapHostPeerResponseAction = i32;
 pub const EapHostPeerResponseDiscard: EapHostPeerResponseAction = 0i32;
 pub const EapHostPeerResponseInvokeUi: EapHostPeerResponseAction = 3i32;
 pub const EapHostPeerResponseNone: EapHostPeerResponseAction = 6i32;
@@ -204,15 +589,80 @@ pub const EapHostPeerResponseRespond: EapHostPeerResponseAction = 4i32;
 pub const EapHostPeerResponseResult: EapHostPeerResponseAction = 2i32;
 pub const EapHostPeerResponseSend: EapHostPeerResponseAction = 1i32;
 pub const EapHostPeerResponseStartAuthentication: EapHostPeerResponseAction = 5i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapPacket {
+    pub Code: u8,
+    pub Id: u8,
+    pub Length: [u8; 2],
+    pub Data: [u8; 1],
+}
+impl Default for EapPacket {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct EapPeerMethodOutput {
+    pub action: EapPeerMethodResponseAction,
+    pub fAllowNotifications: windows_sys::core::BOOL,
+}
+pub type EapPeerMethodResponseAction = i32;
 pub const EapPeerMethodResponseActionDiscard: EapPeerMethodResponseAction = 0i32;
 pub const EapPeerMethodResponseActionInvokeUI: EapPeerMethodResponseAction = 3i32;
 pub const EapPeerMethodResponseActionNone: EapPeerMethodResponseAction = 5i32;
 pub const EapPeerMethodResponseActionRespond: EapPeerMethodResponseAction = 4i32;
 pub const EapPeerMethodResponseActionResult: EapPeerMethodResponseAction = 2i32;
 pub const EapPeerMethodResponseActionSend: EapPeerMethodResponseAction = 1i32;
+#[repr(C)]
+#[cfg(feature = "Win32_Security_Cryptography")]
+#[derive(Clone, Copy)]
+pub struct EapPeerMethodResult {
+    pub fIsSuccess: windows_sys::core::BOOL,
+    pub dwFailureReasonCode: u32,
+    pub fSaveConnectionData: windows_sys::core::BOOL,
+    pub dwSizeofConnectionData: u32,
+    pub pConnectionData: *mut u8,
+    pub fSaveUserData: windows_sys::core::BOOL,
+    pub dwSizeofUserData: u32,
+    pub pUserData: *mut u8,
+    pub pAttribArray: *mut EAP_ATTRIBUTES,
+    pub pEapError: *mut EAP_ERROR,
+    pub pNgcKerbTicket: *mut NgcTicketContext,
+    pub fSaveToCredMan: windows_sys::core::BOOL,
+}
+#[cfg(feature = "Win32_Security_Cryptography")]
+impl Default for EapPeerMethodResult {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const EapPeerMethodResultFailure: EapPeerMethodResultReason = 3i32;
+pub type EapPeerMethodResultReason = i32;
 pub const EapPeerMethodResultSuccess: EapPeerMethodResultReason = 2i32;
 pub const EapPeerMethodResultUnknown: EapPeerMethodResultReason = 1i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapSimCredential {
+    pub iccID: windows_sys::core::PWSTR,
+}
+impl Default for EapSimCredential {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct EapUsernamePasswordCredential {
+    pub username: windows_sys::core::PWSTR,
+    pub password: windows_sys::core::PWSTR,
+}
+impl Default for EapUsernamePasswordCredential {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const FACILITY_EAP_MESSAGE: u32 = 2114u32;
 pub const GUID_EapHost_Cause_CertStoreInaccessible: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9612fc67_6150_4209_a85e_a8d800000004);
 pub const GUID_EapHost_Cause_EapNegotiationFailed: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9612fc67_6150_4209_a85e_a8d80000001c);
@@ -268,14 +718,157 @@ pub const GUID_EapHost_Repair_Server_ClientSelectServerCert: windows_sys::core::
 pub const GUID_EapHost_Repair_User_AuthFailure: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9612fc67_6150_4209_a85e_a8d800000019);
 pub const GUID_EapHost_Repair_User_GetNewCert: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9612fc67_6150_4209_a85e_a8d80000001a);
 pub const GUID_EapHost_Repair_User_SelectValidCert: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x9612fc67_6150_4209_a85e_a8d80000001b);
+pub type ISOLATION_STATE = i32;
 pub const ISOLATION_STATE_IN_PROBATION: ISOLATION_STATE = 2i32;
 pub const ISOLATION_STATE_NOT_RESTRICTED: ISOLATION_STATE = 1i32;
 pub const ISOLATION_STATE_RESTRICTED_ACCESS: ISOLATION_STATE = 3i32;
 pub const ISOLATION_STATE_UNKNOWN: ISOLATION_STATE = 0i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct LEGACY_IDENTITY_UI_PARAMS {
+    pub eapType: u32,
+    pub dwFlags: u32,
+    pub dwSizeofConnectionData: u32,
+    pub pConnectionData: *mut u8,
+    pub dwSizeofUserData: u32,
+    pub pUserData: *mut u8,
+    pub dwSizeofUserDataOut: u32,
+    pub pUserDataOut: *mut u8,
+    pub pwszIdentity: windows_sys::core::PWSTR,
+    pub dwError: u32,
+}
+impl Default for LEGACY_IDENTITY_UI_PARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct LEGACY_INTERACTIVE_UI_PARAMS {
+    pub eapType: u32,
+    pub dwSizeofContextData: u32,
+    pub pContextData: *mut u8,
+    pub dwSizeofInteractiveUIData: u32,
+    pub pInteractiveUIData: *mut u8,
+    pub dwError: u32,
+}
+impl Default for LEGACY_INTERACTIVE_UI_PARAMS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const MAXEAPCODE: u32 = 4u32;
 pub const MAX_EAP_CONFIG_INPUT_FIELD_LENGTH: u32 = 256u32;
 pub const MAX_EAP_CONFIG_INPUT_FIELD_VALUE_LENGTH: u32 = 1024u32;
 pub const NCRYPT_PIN_CACHE_PIN_BYTE_LENGTH: u32 = 90u32;
+#[repr(C)]
+#[cfg(feature = "Win32_Security_Cryptography")]
+#[derive(Clone, Copy)]
+pub struct NgcTicketContext {
+    pub wszTicket: [u16; 45],
+    pub hKey: super::Cryptography::NCRYPT_KEY_HANDLE,
+    pub hImpersonateToken: super::super::Foundation::HANDLE,
+}
+#[cfg(feature = "Win32_Security_Cryptography")]
+impl Default for NgcTicketContext {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type NotificationHandler = Option<unsafe extern "system" fn(connectionid: windows_sys::core::GUID, pcontextdata: *mut core::ffi::c_void)>;
+pub type PPP_EAP_ACTION = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct PPP_EAP_INFO {
+    pub dwSizeInBytes: u32,
+    pub dwEapTypeId: u32,
+    pub RasEapInitialize: isize,
+    pub RasEapBegin: isize,
+    pub RasEapEnd: isize,
+    pub RasEapMakeMessage: isize,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PPP_EAP_INPUT {
+    pub dwSizeInBytes: u32,
+    pub fFlags: u32,
+    pub fAuthenticator: windows_sys::core::BOOL,
+    pub pwszIdentity: windows_sys::core::PWSTR,
+    pub pwszPassword: windows_sys::core::PWSTR,
+    pub bInitialId: u8,
+    pub pUserAttributes: *mut RAS_AUTH_ATTRIBUTE,
+    pub fAuthenticationComplete: windows_sys::core::BOOL,
+    pub dwAuthResultCode: u32,
+    pub hTokenImpersonateUser: super::super::Foundation::HANDLE,
+    pub fSuccessPacketReceived: windows_sys::core::BOOL,
+    pub fDataReceivedFromInteractiveUI: windows_sys::core::BOOL,
+    pub pDataFromInteractiveUI: *mut u8,
+    pub dwSizeOfDataFromInteractiveUI: u32,
+    pub pConnectionData: *mut u8,
+    pub dwSizeOfConnectionData: u32,
+    pub pUserData: *mut u8,
+    pub dwSizeOfUserData: u32,
+    pub hReserved: super::super::Foundation::HANDLE,
+    pub guidConnectionId: windows_sys::core::GUID,
+    pub isVpn: windows_sys::core::BOOL,
+}
+impl Default for PPP_EAP_INPUT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_Security_Cryptography")]
+#[derive(Clone, Copy)]
+pub struct PPP_EAP_OUTPUT {
+    pub dwSizeInBytes: u32,
+    pub Action: PPP_EAP_ACTION,
+    pub dwAuthResultCode: u32,
+    pub pUserAttributes: *mut RAS_AUTH_ATTRIBUTE,
+    pub fInvokeInteractiveUI: windows_sys::core::BOOL,
+    pub pUIContextData: *mut u8,
+    pub dwSizeOfUIContextData: u32,
+    pub fSaveConnectionData: windows_sys::core::BOOL,
+    pub pConnectionData: *mut u8,
+    pub dwSizeOfConnectionData: u32,
+    pub fSaveUserData: windows_sys::core::BOOL,
+    pub pUserData: *mut u8,
+    pub dwSizeOfUserData: u32,
+    pub pNgcKerbTicket: *mut NgcTicketContext,
+    pub fSaveToCredMan: windows_sys::core::BOOL,
+}
+#[cfg(feature = "Win32_Security_Cryptography")]
+impl Default for PPP_EAP_OUTPUT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PPP_EAP_PACKET {
+    pub Code: u8,
+    pub Id: u8,
+    pub Length: [u8; 2],
+    pub Data: [u8; 1],
+}
+impl Default for PPP_EAP_PACKET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RAS_AUTH_ATTRIBUTE {
+    pub raaType: RAS_AUTH_ATTRIBUTE_TYPE,
+    pub dwLength: u32,
+    pub Value: *mut core::ffi::c_void,
+}
+impl Default for RAS_AUTH_ATTRIBUTE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type RAS_AUTH_ATTRIBUTE_TYPE = i32;
 pub const RAS_EAP_FLAG_8021X_AUTH: u32 = 128u32;
 pub const RAS_EAP_FLAG_ALTERNATIVE_USER_DB: u32 = 2048u32;
 pub const RAS_EAP_FLAG_CONFG_READONLY: u32 = 524288u32;
@@ -578,421 +1171,3 @@ pub const raatUnassigned21: RAS_AUTH_ATTRIBUTE_TYPE = 21i32;
 pub const raatUserName: RAS_AUTH_ATTRIBUTE_TYPE = 1i32;
 pub const raatUserPassword: RAS_AUTH_ATTRIBUTE_TYPE = 2i32;
 pub const raatVendorSpecific: RAS_AUTH_ATTRIBUTE_TYPE = 26i32;
-pub type EAPHOST_AUTH_STATUS = i32;
-pub type EAP_ATTRIBUTE_TYPE = i32;
-pub type EAP_AUTHENTICATOR_SEND_TIMEOUT = i32;
-pub type EAP_CONFIG_INPUT_FIELD_TYPE = i32;
-pub type EAP_INTERACTIVE_UI_DATA_TYPE = i32;
-pub type EAP_METHOD_AUTHENTICATOR_RESPONSE_ACTION = i32;
-pub type EAP_METHOD_PROPERTY_TYPE = i32;
-pub type EAP_METHOD_PROPERTY_VALUE_TYPE = i32;
-pub type EapCode = i32;
-pub type EapCredentialType = i32;
-pub type EapHostPeerAuthParams = i32;
-pub type EapHostPeerMethodResultReason = i32;
-pub type EapHostPeerResponseAction = i32;
-pub type EapPeerMethodResponseAction = i32;
-pub type EapPeerMethodResultReason = i32;
-pub type ISOLATION_STATE = i32;
-pub type PPP_EAP_ACTION = i32;
-pub type RAS_AUTH_ATTRIBUTE_TYPE = i32;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAPHOST_AUTH_INFO {
-    pub status: EAPHOST_AUTH_STATUS,
-    pub dwErrorCode: u32,
-    pub dwReasonCode: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAPHOST_IDENTITY_UI_PARAMS {
-    pub eapMethodType: EAP_METHOD_TYPE,
-    pub dwFlags: u32,
-    pub dwSizeofConnectionData: u32,
-    pub pConnectionData: *mut u8,
-    pub dwSizeofUserData: u32,
-    pub pUserData: *mut u8,
-    pub dwSizeofUserDataOut: u32,
-    pub pUserDataOut: *mut u8,
-    pub pwszIdentity: windows_sys::core::PWSTR,
-    pub dwError: u32,
-    pub pEapError: *mut EAP_ERROR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAPHOST_INTERACTIVE_UI_PARAMS {
-    pub dwSizeofContextData: u32,
-    pub pContextData: *mut u8,
-    pub dwSizeofInteractiveUIData: u32,
-    pub pInteractiveUIData: *mut u8,
-    pub dwError: u32,
-    pub pEapError: *mut EAP_ERROR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_ATTRIBUTE {
-    pub eaType: EAP_ATTRIBUTE_TYPE,
-    pub dwLength: u32,
-    pub pValue: *mut u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_ATTRIBUTES {
-    pub dwNumberOfAttributes: u32,
-    pub pAttribs: *mut EAP_ATTRIBUTE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_AUTHENTICATOR_METHOD_ROUTINES {
-    pub dwSizeInBytes: u32,
-    pub pEapType: *mut EAP_METHOD_TYPE,
-    pub EapMethodAuthenticatorInitialize: isize,
-    pub EapMethodAuthenticatorBeginSession: isize,
-    pub EapMethodAuthenticatorUpdateInnerMethodParams: isize,
-    pub EapMethodAuthenticatorReceivePacket: isize,
-    pub EapMethodAuthenticatorSendPacket: isize,
-    pub EapMethodAuthenticatorGetAttributes: isize,
-    pub EapMethodAuthenticatorSetAttributes: isize,
-    pub EapMethodAuthenticatorGetResult: isize,
-    pub EapMethodAuthenticatorEndSession: isize,
-    pub EapMethodAuthenticatorShutdown: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_CONFIG_INPUT_FIELD_ARRAY {
-    pub dwVersion: u32,
-    pub dwNumberOfFields: u32,
-    pub pFields: *mut EAP_CONFIG_INPUT_FIELD_DATA,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_CONFIG_INPUT_FIELD_DATA {
-    pub dwSize: u32,
-    pub Type: EAP_CONFIG_INPUT_FIELD_TYPE,
-    pub dwFlagProps: u32,
-    pub pwszLabel: windows_sys::core::PWSTR,
-    pub pwszData: windows_sys::core::PWSTR,
-    pub dwMinDataLength: u32,
-    pub dwMaxDataLength: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_CRED_EXPIRY_REQ {
-    pub curCreds: EAP_CONFIG_INPUT_FIELD_ARRAY,
-    pub newCreds: EAP_CONFIG_INPUT_FIELD_ARRAY,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_ERROR {
-    pub dwWinError: u32,
-    pub r#type: EAP_METHOD_TYPE,
-    pub dwReasonCode: u32,
-    pub rootCauseGuid: windows_sys::core::GUID,
-    pub repairGuid: windows_sys::core::GUID,
-    pub helpLinkGuid: windows_sys::core::GUID,
-    pub pRootCauseString: windows_sys::core::PWSTR,
-    pub pRepairString: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_INTERACTIVE_UI_DATA {
-    pub dwVersion: u32,
-    pub dwSize: u32,
-    pub dwDataType: EAP_INTERACTIVE_UI_DATA_TYPE,
-    pub cbUiData: u32,
-    pub pbUiData: EAP_UI_DATA_FORMAT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_AUTHENTICATOR_RESULT {
-    pub fIsSuccess: super::super::Foundation::BOOL,
-    pub dwFailureReason: u32,
-    pub pAuthAttribs: *mut EAP_ATTRIBUTES,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_INFO {
-    pub eaptype: EAP_METHOD_TYPE,
-    pub pwszAuthorName: windows_sys::core::PWSTR,
-    pub pwszFriendlyName: windows_sys::core::PWSTR,
-    pub eapProperties: u32,
-    pub pInnerMethodInfo: *mut EAP_METHOD_INFO,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_INFO_ARRAY {
-    pub dwNumberOfMethods: u32,
-    pub pEapMethods: *mut EAP_METHOD_INFO,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_INFO_ARRAY_EX {
-    pub dwNumberOfMethods: u32,
-    pub pEapMethods: *mut EAP_METHOD_INFO_EX,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_INFO_EX {
-    pub eaptype: EAP_METHOD_TYPE,
-    pub pwszAuthorName: windows_sys::core::PWSTR,
-    pub pwszFriendlyName: windows_sys::core::PWSTR,
-    pub eapProperties: u32,
-    pub pInnerMethodInfoArray: *mut EAP_METHOD_INFO_ARRAY_EX,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_PROPERTY {
-    pub eapMethodPropertyType: EAP_METHOD_PROPERTY_TYPE,
-    pub eapMethodPropertyValueType: EAP_METHOD_PROPERTY_VALUE_TYPE,
-    pub eapMethodPropertyValue: EAP_METHOD_PROPERTY_VALUE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_PROPERTY_ARRAY {
-    pub dwNumberOfProperties: u32,
-    pub pMethodProperty: *mut EAP_METHOD_PROPERTY,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union EAP_METHOD_PROPERTY_VALUE {
-    pub empvBool: EAP_METHOD_PROPERTY_VALUE_BOOL,
-    pub empvDword: EAP_METHOD_PROPERTY_VALUE_DWORD,
-    pub empvString: EAP_METHOD_PROPERTY_VALUE_STRING,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_PROPERTY_VALUE_BOOL {
-    pub length: u32,
-    pub value: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_PROPERTY_VALUE_DWORD {
-    pub length: u32,
-    pub value: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_PROPERTY_VALUE_STRING {
-    pub length: u32,
-    pub value: *mut u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_METHOD_TYPE {
-    pub eapType: EAP_TYPE,
-    pub dwAuthorId: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_PEER_METHOD_ROUTINES {
-    pub dwVersion: u32,
-    pub pEapType: *mut EAP_TYPE,
-    pub EapPeerInitialize: isize,
-    pub EapPeerGetIdentity: isize,
-    pub EapPeerBeginSession: isize,
-    pub EapPeerSetCredentials: isize,
-    pub EapPeerProcessRequestPacket: isize,
-    pub EapPeerGetResponsePacket: isize,
-    pub EapPeerGetResult: isize,
-    pub EapPeerGetUIContext: isize,
-    pub EapPeerSetUIContext: isize,
-    pub EapPeerGetResponseAttributes: isize,
-    pub EapPeerSetResponseAttributes: isize,
-    pub EapPeerEndSession: isize,
-    pub EapPeerShutdown: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EAP_TYPE {
-    pub r#type: u8,
-    pub dwVendorId: u32,
-    pub dwVendorType: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union EAP_UI_DATA_FORMAT {
-    pub credData: *mut EAP_CONFIG_INPUT_FIELD_ARRAY,
-    pub credExpiryData: *mut EAP_CRED_EXPIRY_REQ,
-    pub credLogonData: *mut EAP_CONFIG_INPUT_FIELD_ARRAY,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapCertificateCredential {
-    pub certHash: [u8; 20],
-    pub password: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapCredential {
-    pub credType: EapCredentialType,
-    pub credData: EapCredentialTypeData,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union EapCredentialTypeData {
-    pub username_password: EapUsernamePasswordCredential,
-    pub certificate: EapCertificateCredential,
-    pub sim: EapSimCredential,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapHostPeerMethodResult {
-    pub fIsSuccess: super::super::Foundation::BOOL,
-    pub dwFailureReasonCode: u32,
-    pub fSaveConnectionData: super::super::Foundation::BOOL,
-    pub dwSizeofConnectionData: u32,
-    pub pConnectionData: *mut u8,
-    pub fSaveUserData: super::super::Foundation::BOOL,
-    pub dwSizeofUserData: u32,
-    pub pUserData: *mut u8,
-    pub pAttribArray: *mut EAP_ATTRIBUTES,
-    pub isolationState: ISOLATION_STATE,
-    pub pEapMethodInfo: *mut EAP_METHOD_INFO,
-    pub pEapError: *mut EAP_ERROR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapPacket {
-    pub Code: u8,
-    pub Id: u8,
-    pub Length: [u8; 2],
-    pub Data: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapPeerMethodOutput {
-    pub action: EapPeerMethodResponseAction,
-    pub fAllowNotifications: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Security_Cryptography")]
-#[derive(Clone, Copy)]
-pub struct EapPeerMethodResult {
-    pub fIsSuccess: super::super::Foundation::BOOL,
-    pub dwFailureReasonCode: u32,
-    pub fSaveConnectionData: super::super::Foundation::BOOL,
-    pub dwSizeofConnectionData: u32,
-    pub pConnectionData: *mut u8,
-    pub fSaveUserData: super::super::Foundation::BOOL,
-    pub dwSizeofUserData: u32,
-    pub pUserData: *mut u8,
-    pub pAttribArray: *mut EAP_ATTRIBUTES,
-    pub pEapError: *mut EAP_ERROR,
-    pub pNgcKerbTicket: *mut NgcTicketContext,
-    pub fSaveToCredMan: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapSimCredential {
-    pub iccID: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct EapUsernamePasswordCredential {
-    pub username: windows_sys::core::PWSTR,
-    pub password: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct LEGACY_IDENTITY_UI_PARAMS {
-    pub eapType: u32,
-    pub dwFlags: u32,
-    pub dwSizeofConnectionData: u32,
-    pub pConnectionData: *mut u8,
-    pub dwSizeofUserData: u32,
-    pub pUserData: *mut u8,
-    pub dwSizeofUserDataOut: u32,
-    pub pUserDataOut: *mut u8,
-    pub pwszIdentity: windows_sys::core::PWSTR,
-    pub dwError: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct LEGACY_INTERACTIVE_UI_PARAMS {
-    pub eapType: u32,
-    pub dwSizeofContextData: u32,
-    pub pContextData: *mut u8,
-    pub dwSizeofInteractiveUIData: u32,
-    pub pInteractiveUIData: *mut u8,
-    pub dwError: u32,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Security_Cryptography")]
-#[derive(Clone, Copy)]
-pub struct NgcTicketContext {
-    pub wszTicket: [u16; 45],
-    pub hKey: super::Cryptography::NCRYPT_KEY_HANDLE,
-    pub hImpersonateToken: super::super::Foundation::HANDLE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PPP_EAP_INFO {
-    pub dwSizeInBytes: u32,
-    pub dwEapTypeId: u32,
-    pub RasEapInitialize: isize,
-    pub RasEapBegin: isize,
-    pub RasEapEnd: isize,
-    pub RasEapMakeMessage: isize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PPP_EAP_INPUT {
-    pub dwSizeInBytes: u32,
-    pub fFlags: u32,
-    pub fAuthenticator: super::super::Foundation::BOOL,
-    pub pwszIdentity: windows_sys::core::PWSTR,
-    pub pwszPassword: windows_sys::core::PWSTR,
-    pub bInitialId: u8,
-    pub pUserAttributes: *mut RAS_AUTH_ATTRIBUTE,
-    pub fAuthenticationComplete: super::super::Foundation::BOOL,
-    pub dwAuthResultCode: u32,
-    pub hTokenImpersonateUser: super::super::Foundation::HANDLE,
-    pub fSuccessPacketReceived: super::super::Foundation::BOOL,
-    pub fDataReceivedFromInteractiveUI: super::super::Foundation::BOOL,
-    pub pDataFromInteractiveUI: *mut u8,
-    pub dwSizeOfDataFromInteractiveUI: u32,
-    pub pConnectionData: *mut u8,
-    pub dwSizeOfConnectionData: u32,
-    pub pUserData: *mut u8,
-    pub dwSizeOfUserData: u32,
-    pub hReserved: super::super::Foundation::HANDLE,
-    pub guidConnectionId: windows_sys::core::GUID,
-    pub isVpn: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_Security_Cryptography")]
-#[derive(Clone, Copy)]
-pub struct PPP_EAP_OUTPUT {
-    pub dwSizeInBytes: u32,
-    pub Action: PPP_EAP_ACTION,
-    pub dwAuthResultCode: u32,
-    pub pUserAttributes: *mut RAS_AUTH_ATTRIBUTE,
-    pub fInvokeInteractiveUI: super::super::Foundation::BOOL,
-    pub pUIContextData: *mut u8,
-    pub dwSizeOfUIContextData: u32,
-    pub fSaveConnectionData: super::super::Foundation::BOOL,
-    pub pConnectionData: *mut u8,
-    pub dwSizeOfConnectionData: u32,
-    pub fSaveUserData: super::super::Foundation::BOOL,
-    pub pUserData: *mut u8,
-    pub dwSizeOfUserData: u32,
-    pub pNgcKerbTicket: *mut NgcTicketContext,
-    pub fSaveToCredMan: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PPP_EAP_PACKET {
-    pub Code: u8,
-    pub Id: u8,
-    pub Length: [u8; 2],
-    pub Data: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RAS_AUTH_ATTRIBUTE {
-    pub raaType: RAS_AUTH_ATTRIBUTE_TYPE,
-    pub dwLength: u32,
-    pub Value: *mut core::ffi::c_void,
-}
-pub type NotificationHandler = Option<unsafe extern "system" fn(connectionid: windows_sys::core::GUID, pcontextdata: *mut core::ffi::c_void)>;

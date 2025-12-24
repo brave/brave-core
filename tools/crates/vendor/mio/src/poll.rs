@@ -10,7 +10,8 @@
         target_os = "hurd",
         target_os = "nto",
         target_os = "solaris",
-        target_os = "vita"
+        target_os = "vita",
+        target_os = "cygwin",
     )),
 ))]
 use std::os::fd::{AsRawFd, RawFd};
@@ -329,7 +330,7 @@ impl Poll {
         }
     }
 
-    /// Create a separate `Registry` which can be used to register
+    /// Returns a `Registry` which can be used to register
     /// `event::Source`s.
     pub fn registry(&self) -> &Registry {
         &self.registry
@@ -449,7 +450,8 @@ impl Poll {
         target_os = "hurd",
         target_os = "nto",
         target_os = "solaris",
-        target_os = "vita"
+        target_os = "vita",
+        target_os = "cygwin",
     )),
 ))]
 impl AsRawFd for Poll {
@@ -750,7 +752,8 @@ impl fmt::Debug for Registry {
         target_os = "hurd",
         target_os = "nto",
         target_os = "solaris",
-        target_os = "vita"
+        target_os = "vita",
+        target_os = "cygwin",
     )),
 ))]
 impl AsRawFd for Registry {
@@ -764,12 +767,14 @@ cfg_os_poll! {
         unix,
         not(mio_unsupported_force_poll_poll),
         not(any(
+            target_os = "aix",
             target_os = "espidf",
             target_os = "hermit",
             target_os = "hurd",
             target_os = "nto",
             target_os = "solaris",
-            target_os = "vita"
+            target_os = "vita",
+            target_os = "cygwin",
         )),
     ))]
     #[test]

@@ -1,5 +1,6 @@
 use crate::{size_hint, Arbitrary, MaxRecursionReached, Result, Unstructured};
 
+/// Returns `None`, not an error, if this `Unstructured` [is empty][Unstructured::is_empty].
 impl<'a, A> Arbitrary<'a> for Option<A>
 where
     A: Arbitrary<'a>,

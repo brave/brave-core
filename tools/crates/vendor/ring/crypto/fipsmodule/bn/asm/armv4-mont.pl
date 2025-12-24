@@ -1,17 +1,22 @@
 #! /usr/bin/env perl
 # Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
 #
-# Licensed under the OpenSSL license (the "License").  You may not use
-# this file except in compliance with the License.  You can obtain a copy
-# in the file LICENSE in the source distribution or at
-# https://www.openssl.org/source/license.html
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
-# project. The module is, however, dual licensed under OpenSSL and
-# CRYPTOGAMS licenses depending on where you obtain it. For further
-# details see http://www.openssl.org/~appro/cryptogams/.
+# project.
 # ====================================================================
 
 # January 2007.
@@ -97,8 +102,6 @@ $_n0="$num,#14*4";
 $_num="$num,#15*4";	$_bpend=$_num;
 
 $code=<<___;
-#include <ring-core/arm_arch.h>
-
 @ Silence ARMv8 deprecated IT instruction warnings. This file is used by both
 @ ARMv7 and ARMv8 processors and does not use ARMv8 instructions.
 .arch  armv7-a
@@ -111,39 +114,13 @@ $code=<<___;
 .code	32
 #endif
 
-#if __ARM_MAX_ARCH__>=7
-.extern OPENSSL_armcap_P
-.hidden OPENSSL_armcap_P
-.align	5
-.LOPENSSL_armcap:
-.word	OPENSSL_armcap_P-.Lbn_mul_mont
-#endif
-
-.global	bn_mul_mont
-.type	bn_mul_mont,%function
+.global	bn_mul_mont_nohw
+.type	bn_mul_mont_nohw,%function
 
 .align	5
-bn_mul_mont:
-.Lbn_mul_mont:
+bn_mul_mont_nohw:
 	ldr	ip,[sp,#4]		@ load num
 	stmdb	sp!,{r0,r2}		@ sp points at argument block
-#if __ARM_MAX_ARCH__>=7
-	tst	ip,#7
-	bne	.Lialu
-	adr	r0,.Lbn_mul_mont
-	ldr	r2,.LOPENSSL_armcap
-	ldr	r0,[r0,r2]
-#ifdef	__APPLE__
-	ldr	r0,[r0]
-#endif
-	tst	r0,#ARMV7_NEON		@ NEON available?
-	ldmia	sp, {r0,r2}
-	beq	.Lialu
-	add	sp,sp,#8
-	b	bn_mul8x_mont_neon
-.align	4
-.Lialu:
-#endif
 	cmp	ip,#2
 	mov	$num,ip			@ load num
 #ifdef	__thumb2__
@@ -287,14 +264,14 @@ bn_mul_mont:
 	add	sp,sp,#2*4		@ skip over {r0,r2}
 	mov	r0,#1
 .Labrt:
-#if __ARM_ARCH__>=5
+#if __ARM_ARCH>=5
 	ret				@ bx lr
 #else
 	tst	lr,#1
 	moveq	pc,lr			@ be binary compatible with V4, yet
 	bx	lr			@ interoperable with Thumb ISA:-)
 #endif
-.size	bn_mul_mont,.-bn_mul_mont
+.size	bn_mul_mont_nohw,.-bn_mul_mont_nohw
 ___
 {
 my ($A0,$A1,$A2,$A3)=map("d$_",(0..3));
@@ -313,6 +290,7 @@ $code.=<<___;
 .arch	armv7-a
 .fpu	neon
 
+.global	bn_mul8x_mont_neon
 .type	bn_mul8x_mont_neon,%function
 .align	5
 bn_mul8x_mont_neon:

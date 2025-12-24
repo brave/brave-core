@@ -11,8 +11,14 @@
 
 [package]
 name = "num_cpus"
-version = "1.16.0"
+version = "1.17.0"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Get the number of CPUs on a machine."
 documentation = "https://docs.rs/num_cpus"
 readme = "README.md"
@@ -25,8 +31,16 @@ categories = ["hardware-support"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/seanmonstar/num_cpus"
 
+[lib]
+name = "num_cpus"
+path = "src/lib.rs"
+
+[[example]]
+name = "values"
+path = "examples/values.rs"
+
 [target."cfg(not(windows))".dependencies.libc]
 version = "0.2.26"
 
-[target."cfg(target_os = \"hermit\")".dependencies.hermit-abi]
-version = "0.3.0"
+[target.'cfg(target_os = "hermit")'.dependencies.hermit-abi]
+version = "0.5.0"

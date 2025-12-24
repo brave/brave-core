@@ -34,6 +34,10 @@ mod imp;
 #[path = "illumos/mod.rs"]
 mod imp;
 
+#[cfg(target_os = "ios")]
+#[path = "ios/mod.rs"]
+mod imp;
+
 #[cfg(target_os = "linux")]
 #[path = "linux/mod.rs"]
 mod imp;
@@ -48,6 +52,10 @@ mod imp;
 
 #[cfg(target_os = "openbsd")]
 #[path = "openbsd/mod.rs"]
+mod imp;
+
+#[cfg(target_os = "cygwin")]
+#[path = "cygwin/mod.rs"]
 mod imp;
 
 #[cfg(target_os = "redox")]
@@ -65,10 +73,12 @@ mod imp;
     target_os = "emscripten",
     target_os = "freebsd",
     target_os = "illumos",
+    target_os = "ios",
     target_os = "linux",
     target_os = "macos",
     target_os = "netbsd",
     target_os = "openbsd",
+    target_os = "cygwin",
     target_os = "redox",
     target_os = "windows"
 )))]
@@ -79,7 +89,8 @@ mod imp;
     target_os = "linux",
     target_os = "macos",
     target_os = "netbsd",
-    target_os = "openbsd"
+    target_os = "openbsd",
+    target_os = "cygwin"
 ))]
 mod architecture;
 mod bitness;
@@ -92,8 +103,11 @@ mod os_type;
     target_os = "dragonfly",
     target_os = "freebsd",
     target_os = "illumos",
+    target_os = "linux",
+    target_os = "macos",
     target_os = "netbsd",
-    target_os = "openbsd"
+    target_os = "openbsd",
+    target_os = "cygwin"
 ))]
 mod uname;
 mod version;

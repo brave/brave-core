@@ -1,6 +1,9 @@
 use std::env;
 use std::path::{Path, PathBuf};
 
+#[cfg(doc)]
+use crate::{tempdir_in, tempfile_in, Builder};
+
 // Once rust 1.70 is wide-spread (Debian stable), we can use OnceLock from stdlib.
 use once_cell::sync::OnceCell as OnceLock;
 
@@ -10,6 +13,10 @@ static DEFAULT_TEMPDIR: OnceLock<PathBuf> = OnceLock::new();
 /// changes the _global_ default temporary directory for the entire program and should not be called
 /// except in exceptional cases where it's not configured correctly by the platform. Applications
 /// should first check if the path returned by [`env::temp_dir`] is acceptable.
+///
+/// If you're writing a library and want to control where your temporary files are placed, you
+/// should instead use the `_in` variants of the various temporary file/directory constructors
+/// ([`tempdir_in`], [`tempfile_in`], the so-named functions on [`Builder`], etc.).
 ///
 /// Only the first call to this function will succeed. All further calls will fail with `Err(path)`
 /// where `path` is previously set default temporary directory override.
@@ -34,7 +41,7 @@ pub fn override_temp_dir(path: &Path) -> Result<(), PathBuf> {
 /// This function simply delegates to [`std::env::temp_dir`] unless the default temporary directory
 /// has been override by a call to [`override_temp_dir`].
 ///
-/// **NOTE:** This function does check if the returned directory exists and/or is writable.
+/// **NOTE:** This function does not check if the returned directory exists and/or is writable.
 pub fn temp_dir() -> PathBuf {
     DEFAULT_TEMPDIR
         .get()

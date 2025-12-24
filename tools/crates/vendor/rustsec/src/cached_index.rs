@@ -72,8 +72,8 @@ impl CachedIndex {
     ///
     /// If `lock_timeout` is set to `std::time::Duration::from_secs(0)`, it will not wait at all,
     /// and instead return an error immediately if it fails to aquire the lock.
-    pub fn fetch(client: Option<ClientBuilder>, lock_timeout: Duration) -> Result<Self, Error> {
-        Self::fetch_inner(client, lock_timeout).map_err(Error::from_tame)
+    pub fn fetch(lock_timeout: Duration) -> Result<Self, Error> {
+        Self::fetch_inner(None, lock_timeout).map_err(Error::from_tame)
     }
 
     fn fetch_inner(
@@ -165,10 +165,10 @@ impl CachedIndex {
             Index::SparseRemote(rsi) => {
                 // Ensure we have a runtime
                 let rt = tame_index::external::tokio::runtime::Runtime::new().map_err(|err| {
-                    format_err!(
+                    Error::with_source(
                         ErrorKind::Registry,
-                        "unable to start a tokio runtime: {}",
-                        err
+                        "unable to start a tokio runtime".to_owned(),
+                        err,
                     )
                 })?;
                 let _rt = rt.enter();
@@ -189,10 +189,10 @@ impl CachedIndex {
                         &self.lock,
                     )
                     .map_err(|err| {
-                        format_err!(
+                        Error::with_source(
                             ErrorKind::Registry,
-                            "unable to acquire tokio runtime: {}",
-                            err
+                            "unable to acquire tokio runtime".to_owned(),
+                            err,
                         )
                     })?;
 
@@ -238,24 +238,19 @@ impl CachedIndex {
         match &self.cache[&package.name] {
             Ok(Some(ik)) => match ik.get(&package.version.to_string()) {
                 Some(is_yanked) => Ok(*is_yanked),
-                None => Err(format_err!(
+                None => Err(Error::new(
                     ErrorKind::NotFound,
-                    "No such version in crates.io index: {} {}",
-                    &package.name,
-                    &package.version
+                    format!(
+                        "No such version in crates.io index: {} {}",
+                        &package.name, &package.version
+                    ),
                 )),
             },
-            Ok(None) => Err(format_err!(
+            Ok(None) => Err(Error::new(
                 ErrorKind::NotFound,
-                "No such crate in crates.io index: {}",
-                &package.name,
+                format!("No such crate in crates.io index: {}", &package.name),
             )),
-            Err(err) => Err(format_err!(
-                ErrorKind::Registry,
-                "Failed to retrieve {} from crates.io index: {}",
-                &package.name,
-                err,
-            )),
+            Err(err) => Err(err.clone()),
         }
     }
 

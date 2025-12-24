@@ -51,12 +51,7 @@ pub(crate) fn parse_key_path(raw: &str) -> Result<Vec<crate::Key>, TomlError> {
     let b = new_input(raw);
     let result = key::key.parse(b.clone());
     match result {
-        Ok(mut keys) => {
-            for key in &mut keys {
-                key.despan(raw);
-            }
-            Ok(keys)
-        }
+        Ok(keys) => Ok(keys),
         Err(e) => Err(TomlError::new(e, b)),
     }
 }
@@ -67,12 +62,7 @@ pub(crate) fn parse_value(raw: &str) -> Result<crate::Value, TomlError> {
     let b = new_input(raw);
     let parsed = value::value.parse(b.clone());
     match parsed {
-        Ok(mut value) => {
-            // Only take the repr and not decor, as its probably not intended
-            value.decor_mut().clear();
-            value.despan(raw);
-            Ok(value)
-        }
+        Ok(value) => Ok(value),
         Err(e) => Err(TomlError::new(e, b)),
     }
 }

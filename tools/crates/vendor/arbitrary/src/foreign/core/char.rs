@@ -1,5 +1,6 @@
 use crate::{Arbitrary, Result, Unstructured};
 
+/// Returns '\0', not an error, if this `Unstructured` [is empty][Unstructured::is_empty].
 impl<'a> Arbitrary<'a> for char {
     fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
         // The highest unicode code point is 0x11_FFFF

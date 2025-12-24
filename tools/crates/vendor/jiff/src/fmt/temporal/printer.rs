@@ -8,7 +8,10 @@ use crate::{
     },
     span::Span,
     tz::{Offset, TimeZone},
-    util::{rangeint::RFrom, t},
+    util::{
+        rangeint::RFrom,
+        t::{self, C},
+    },
     SignedDuration, Timestamp, Zoned,
 };
 
@@ -53,11 +56,15 @@ impl DateTimePrinter {
     ) -> Result<(), Error> {
         let timestamp = zdt.timestamp();
         let tz = zdt.time_zone();
-        let (offset, _, _) = tz.to_offset(timestamp);
+        let offset = tz.to_offset(timestamp);
         let dt = offset.to_datetime(timestamp);
         self.print_datetime(&dt, &mut wtr)?;
-        self.print_offset_rounded(&offset, &mut wtr)?;
-        self.print_time_zone_annotation(&tz, &offset, &mut wtr)?;
+        if tz.is_unknown() {
+            wtr.write_str("Z[Etc/Unknown]")?;
+        } else {
+            self.print_offset_rounded(&offset, &mut wtr)?;
+            self.print_time_zone_annotation(&tz, &offset, &mut wtr)?;
+        }
         Ok(())
     }
 
@@ -138,7 +145,7 @@ impl DateTimePrinter {
             wtr.write_str(".")?;
             wtr.write_fraction(
                 &FMT_FRACTION.precision(self.precision),
-                fractional_nanosecond,
+                fractional_nanosecond.unsigned_abs(),
             )?;
         }
         Ok(())
@@ -153,20 +160,26 @@ impl DateTimePrinter {
         if let Some(iana_name) = tz.iana_name() {
             return wtr.write_str(iana_name);
         }
+        if tz.is_unknown() {
+            return wtr.write_str("Etc/Unknown");
+        }
         if let Ok(offset) = tz.to_fixed_offset() {
             return self.print_offset_full_precision(&offset, wtr);
         }
-        // `ReasonablePosixTimeZone` is currently only available when the
-        // `alloc` feature is enabled. (The type itself is compatible with
-        // core-only environments, but is effectively disabled because it
-        // greatly bloats the size of `TimeZone` and thus `Zoned` since there's
-        // no way to easily introduce indirection in core-only environments.)
+        // We get this on `alloc` because we format the POSIX time zone into a
+        // `String` first. See the note below.
+        //
+        // This is generally okay because there is no current (2025-02-28) way
+        // to create a `TimeZone` that is *only* a POSIX time zone in core-only
+        // environments. (All you can do is create a TZif time zone, which may
+        // contain a POSIX time zone, but `tz.posix_tz()` would still return
+        // `None` in that case.)
         #[cfg(feature = "alloc")]
         {
             if let Some(posix_tz) = tz.posix_tz() {
                 // This is pretty unfortunate, but at time of writing, I
                 // didn't see an easy way to make the `Display` impl for
-                // `ReasonablePosixTimeZone` automatically work with
+                // `PosixTimeZone` automatically work with
                 // `jiff::fmt::Write` without allocating a new string. As
                 // far as I can see, I either have to duplicate the code or
                 // make it generic in some way. I judged neither to be worth
@@ -280,7 +293,7 @@ impl DateTimePrinter {
         // to suggest that the number of minutes should be "as close as
         // possible" to the actual offset. So we just do basic rounding
         // here.
-        if offset.part_seconds_ranged().abs() >= 30 {
+        if offset.part_seconds_ranged().abs() >= C(30) {
             if minutes == 59 {
                 hours = hours.saturating_add(1);
                 minutes = 0;
@@ -401,29 +414,29 @@ impl SpanPrinter {
         wtr.write_str("P")?;
 
         let mut non_zero_greater_than_second = false;
-        if span.get_years_ranged() != 0 {
+        if span.get_years_ranged() != C(0) {
             wtr.write_int(&FMT_INT, span.get_years_ranged().get().abs())?;
             wtr.write_char(self.label('Y'))?;
             non_zero_greater_than_second = true;
         }
-        if span.get_months_ranged() != 0 {
+        if span.get_months_ranged() != C(0) {
             wtr.write_int(&FMT_INT, span.get_months_ranged().get().abs())?;
             wtr.write_char(self.label('M'))?;
             non_zero_greater_than_second = true;
         }
-        if span.get_weeks_ranged() != 0 {
+        if span.get_weeks_ranged() != C(0) {
             wtr.write_int(&FMT_INT, span.get_weeks_ranged().get().abs())?;
             wtr.write_char(self.label('W'))?;
             non_zero_greater_than_second = true;
         }
-        if span.get_days_ranged() != 0 {
+        if span.get_days_ranged() != C(0) {
             wtr.write_int(&FMT_INT, span.get_days_ranged().get().abs())?;
             wtr.write_char(self.label('D'))?;
             non_zero_greater_than_second = true;
         }
 
         let mut printed_time_prefix = false;
-        if span.get_hours_ranged() != 0 {
+        if span.get_hours_ranged() != C(0) {
             if !printed_time_prefix {
                 wtr.write_str("T")?;
                 printed_time_prefix = true;
@@ -432,7 +445,7 @@ impl SpanPrinter {
             wtr.write_char(self.label('H'))?;
             non_zero_greater_than_second = true;
         }
-        if span.get_minutes_ranged() != 0 {
+        if span.get_minutes_ranged() != C(0) {
             if !printed_time_prefix {
                 wtr.write_str("T")?;
                 printed_time_prefix = true;
@@ -452,17 +465,17 @@ impl SpanPrinter {
             span.get_microseconds_ranged().abs(),
             span.get_nanoseconds_ranged().abs(),
         );
-        if (seconds != 0 || !non_zero_greater_than_second)
-            && millis == 0
-            && micros == 0
-            && nanos == 0
+        if (seconds != C(0) || !non_zero_greater_than_second)
+            && millis == C(0)
+            && micros == C(0)
+            && nanos == C(0)
         {
             if !printed_time_prefix {
                 wtr.write_str("T")?;
             }
             wtr.write_int(&FMT_INT, seconds.get())?;
             wtr.write_char(self.label('S'))?;
-        } else if millis != 0 || micros != 0 || nanos != 0 {
+        } else if millis != C(0) || micros != C(0) || nanos != C(0) {
             if !printed_time_prefix {
                 wtr.write_str("T")?;
             }
@@ -486,9 +499,12 @@ impl SpanPrinter {
                 combined_as_nanos % t::NANOS_PER_SECOND,
             );
             wtr.write_int(&FMT_INT, fraction_second.get())?;
-            if fraction_nano != 0 {
+            if fraction_nano != C(0) {
                 wtr.write_str(".")?;
-                wtr.write_fraction(&FMT_FRACTION, fraction_nano.get())?;
+                wtr.write_fraction(
+                    &FMT_FRACTION,
+                    i32::from(fraction_nano).unsigned_abs(),
+                )?;
             }
             wtr.write_char(self.label('S'))?;
         }
@@ -498,7 +514,7 @@ impl SpanPrinter {
     /// Print the given signed duration to the writer given.
     ///
     /// This only returns an error when the given writer returns an error.
-    pub(super) fn print_duration<W: Write>(
+    pub(super) fn print_signed_duration<W: Write>(
         &self,
         dur: &SignedDuration,
         mut wtr: W,
@@ -538,6 +554,48 @@ impl SpanPrinter {
         } else if nanos != 0 {
             wtr.write_int(&FMT_INT, secs)?;
             wtr.write_str(".")?;
+            wtr.write_fraction(&FMT_FRACTION, nanos.unsigned_abs())?;
+            wtr.write_char(self.label('S'))?;
+        }
+        Ok(())
+    }
+
+    /// Print the given unsigned duration to the writer given.
+    ///
+    /// This only returns an error when the given writer returns an error.
+    pub(super) fn print_unsigned_duration<W: Write>(
+        &self,
+        dur: &core::time::Duration,
+        mut wtr: W,
+    ) -> Result<(), Error> {
+        static FMT_INT: DecimalFormatter = DecimalFormatter::new();
+        static FMT_FRACTION: FractionalFormatter = FractionalFormatter::new();
+
+        let mut non_zero_greater_than_second = false;
+        wtr.write_str("PT")?;
+
+        let mut secs = dur.as_secs();
+        let nanos = dur.subsec_nanos();
+        let hours = secs / (60 * 60);
+        secs %= 60 * 60;
+        let minutes = secs / 60;
+        secs = secs % 60;
+        if hours != 0 {
+            wtr.write_uint(&FMT_INT, hours)?;
+            wtr.write_char(self.label('H'))?;
+            non_zero_greater_than_second = true;
+        }
+        if minutes != 0 {
+            wtr.write_uint(&FMT_INT, minutes)?;
+            wtr.write_char(self.label('M'))?;
+            non_zero_greater_than_second = true;
+        }
+        if (secs != 0 || !non_zero_greater_than_second) && nanos == 0 {
+            wtr.write_uint(&FMT_INT, secs)?;
+            wtr.write_char(self.label('S'))?;
+        } else if nanos != 0 {
+            wtr.write_uint(&FMT_INT, secs)?;
+            wtr.write_str(".")?;
             wtr.write_fraction(&FMT_FRACTION, nanos)?;
             wtr.write_char(self.label('S'))?;
         }
@@ -557,6 +615,7 @@ impl SpanPrinter {
     }
 }
 
+#[cfg(feature = "alloc")]
 #[cfg(test)]
 mod tests {
     use alloc::string::String;
@@ -788,11 +847,11 @@ mod tests {
     }
 
     #[test]
-    fn print_duration() {
+    fn print_signed_duration() {
         let p = |secs, nanos| -> String {
             let dur = SignedDuration::new(secs, nanos);
             let mut buf = String::new();
-            SpanPrinter::new().print_duration(&dur, &mut buf).unwrap();
+            SpanPrinter::new().print_signed_duration(&dur, &mut buf).unwrap();
             buf
         };
 
@@ -830,6 +889,37 @@ mod tests {
         insta::assert_snapshot!(
             p(i64::MAX, 999_999_999),
             @"PT2562047788015215H30M7.999999999S",
+        );
+    }
+
+    #[test]
+    fn print_unsigned_duration() {
+        let p = |secs, nanos| -> String {
+            let dur = core::time::Duration::new(secs, nanos);
+            let mut buf = String::new();
+            SpanPrinter::new()
+                .print_unsigned_duration(&dur, &mut buf)
+                .unwrap();
+            buf
+        };
+
+        insta::assert_snapshot!(p(0, 0), @"PT0S");
+        insta::assert_snapshot!(p(0, 1), @"PT0.000000001S");
+        insta::assert_snapshot!(p(1, 0), @"PT1S");
+        insta::assert_snapshot!(p(59, 0), @"PT59S");
+        insta::assert_snapshot!(p(60, 0), @"PT1M");
+        insta::assert_snapshot!(p(60, 1), @"PT1M0.000000001S");
+        insta::assert_snapshot!(p(61, 1), @"PT1M1.000000001S");
+        insta::assert_snapshot!(p(3_600, 0), @"PT1H");
+        insta::assert_snapshot!(p(3_600, 1), @"PT1H0.000000001S");
+        insta::assert_snapshot!(p(3_660, 0), @"PT1H1M");
+        insta::assert_snapshot!(p(3_660, 1), @"PT1H1M0.000000001S");
+        insta::assert_snapshot!(p(3_661, 0), @"PT1H1M1S");
+        insta::assert_snapshot!(p(3_661, 1), @"PT1H1M1.000000001S");
+
+        insta::assert_snapshot!(
+            p(u64::MAX, 999_999_999),
+            @"PT5124095576030431H15.999999999S",
         );
     }
 }

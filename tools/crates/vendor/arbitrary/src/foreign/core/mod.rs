@@ -6,6 +6,7 @@ mod array;
 mod bool;
 mod cell;
 mod char;
+mod cmp;
 mod iter;
 mod marker;
 mod num;

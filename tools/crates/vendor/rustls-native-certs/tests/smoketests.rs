@@ -51,23 +51,22 @@ fn check_site_with_roots(
             .to_owned(),
     )
     .unwrap();
-    let mut sock = TcpStream::connect(format!("{}:443", domain)).unwrap();
+    let mut sock = TcpStream::connect(format!("{domain}:443")).unwrap();
     let mut tls = rustls::Stream::new(&mut conn, &mut sock);
     let result = tls.write_all(
         format!(
             "GET / HTTP/1.1\r\n\
-                       Host: {}\r\n\
+                       Host: {domain}\r\n\
                        Connection: close\r\n\
                        Accept-Encoding: identity\r\n\
-                       \r\n",
-            domain
+                       \r\n"
         )
         .as_bytes(),
     );
     match result {
         Ok(()) => (),
         Err(e) if e.kind() == ErrorKind::InvalidData => return Err(()), // TLS error
-        Err(e) => panic!("{}", e),
+        Err(e) => panic!("{e}"),
     }
     let mut plaintext = [0u8; 1024];
     let len = tls.read(&mut plaintext).unwrap();
@@ -194,6 +193,67 @@ fn badssl_with_dir_from_env() {
     // Dangling symlink
     #[cfg(unix)]
     symlink("/a/path/which/does/not/exist/hopefully", link2).unwrap();
+
+    check_site("self-signed.badssl.com").unwrap();
+}
+
+#[test]
+#[serial]
+#[ignore]
+fn ssl_cert_dir_multiple_paths_are_respected() {
+    unsafe {
+        // SAFETY: safe because of #[serial]
+        common::clear_env();
+    }
+
+    // Create 2 temporary directories
+    let temp_dir1 = tempfile::TempDir::new().unwrap();
+    let temp_dir2 = tempfile::TempDir::new().unwrap();
+
+    // Copy the certificate to the 2nd dir, leaving the 1st one
+    // empty.
+    let original = Path::new("tests/badssl-com-chain.pem")
+        .canonicalize()
+        .unwrap();
+    let cert = temp_dir2.path().join("5d30f3c5.3");
+    std::fs::copy(original, cert).unwrap();
+
+    let list_sep = if cfg!(windows) { ';' } else { ':' };
+    let value = format!(
+        "{}{}{}",
+        temp_dir1.path().display(),
+        list_sep,
+        temp_dir2.path().display()
+    );
+
+    env::set_var("SSL_CERT_DIR", value);
+    check_site("self-signed.badssl.com").unwrap();
+}
+
+#[test]
+#[serial]
+#[ignore]
+fn ssl_cert_dir_non_hash_based_name() {
+    unsafe {
+        // SAFETY: safe because of #[serial]
+        common::clear_env();
+    }
+
+    // Create temporary directory
+    let temp_dir = tempfile::TempDir::new().unwrap();
+
+    // Copy the certificate to the dir
+    let original = Path::new("tests/badssl-com-chain.pem")
+        .canonicalize()
+        .unwrap();
+    let cert = temp_dir.path().join("test.pem");
+    std::fs::copy(original, cert).unwrap();
+
+    env::set_var(
+        "SSL_CERT_DIR",
+        // The CA cert, downloaded directly from the site itself:
+        temp_dir.path(),
+    );
 
     check_site("self-signed.badssl.com").unwrap();
 }

@@ -1,275 +1,560 @@
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("mswsock.dll" "system" fn AcceptEx(slistensocket : SOCKET, sacceptsocket : SOCKET, lpoutputbuffer : *mut core::ffi::c_void, dwreceivedatalength : u32, dwlocaladdresslength : u32, dwremoteaddresslength : u32, lpdwbytesreceived : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-windows_targets::link!("mswsock.dll" "system" fn EnumProtocolsA(lpiprotocols : *const i32, lpprotocolbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn EnumProtocolsW(lpiprotocols : *const i32, lpprotocolbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn FreeAddrInfoEx(paddrinfoex : *const ADDRINFOEXA));
-windows_targets::link!("ws2_32.dll" "system" fn FreeAddrInfoExW(paddrinfoex : *const ADDRINFOEXW));
-windows_targets::link!("ws2_32.dll" "system" fn FreeAddrInfoW(paddrinfo : *const ADDRINFOW));
-windows_targets::link!("mswsock.dll" "system" fn GetAcceptExSockaddrs(lpoutputbuffer : *const core::ffi::c_void, dwreceivedatalength : u32, dwlocaladdresslength : u32, dwremoteaddresslength : u32, localsockaddr : *mut *mut SOCKADDR, localsockaddrlength : *mut i32, remotesockaddr : *mut *mut SOCKADDR, remotesockaddrlength : *mut i32));
+windows_link::link!("mswsock.dll" "system" fn AcceptEx(slistensocket : SOCKET, sacceptsocket : SOCKET, lpoutputbuffer : *mut core::ffi::c_void, dwreceivedatalength : u32, dwlocaladdresslength : u32, dwremoteaddresslength : u32, lpdwbytesreceived : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED) -> windows_sys::core::BOOL);
+windows_link::link!("mswsock.dll" "system" fn EnumProtocolsA(lpiprotocols : *const i32, lpprotocolbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn EnumProtocolsW(lpiprotocols : *const i32, lpprotocolbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn FreeAddrInfoEx(paddrinfoex : *const ADDRINFOEXA));
+windows_link::link!("ws2_32.dll" "system" fn FreeAddrInfoExW(paddrinfoex : *const ADDRINFOEXW));
+windows_link::link!("ws2_32.dll" "system" fn FreeAddrInfoW(paddrinfo : *const ADDRINFOW));
+windows_link::link!("mswsock.dll" "system" fn GetAcceptExSockaddrs(lpoutputbuffer : *const core::ffi::c_void, dwreceivedatalength : u32, dwlocaladdresslength : u32, dwremoteaddresslength : u32, localsockaddr : *mut *mut SOCKADDR, localsockaddrlength : *mut i32, remotesockaddr : *mut *mut SOCKADDR, remotesockaddrlength : *mut i32));
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn GetAddrInfoExA(pname : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, hints : *const ADDRINFOEXA, ppresult : *mut *mut ADDRINFOEXA, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn GetAddrInfoExCancel(lphandle : *const super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetAddrInfoExA(pname : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, hints : *const ADDRINFOEXA, ppresult : *mut *mut ADDRINFOEXA, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetAddrInfoExCancel(lphandle : *const super::super::Foundation:: HANDLE) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn GetAddrInfoExOverlappedResult(lpoverlapped : *const super::super::System::IO:: OVERLAPPED) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetAddrInfoExOverlappedResult(lpoverlapped : *const super::super::System::IO:: OVERLAPPED) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn GetAddrInfoExW(pname : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, hints : *const ADDRINFOEXW, ppresult : *mut *mut ADDRINFOEXW, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lphandle : *mut super::super::Foundation:: HANDLE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn GetAddrInfoW(pnodename : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, phints : *const ADDRINFOW, ppresult : *mut *mut ADDRINFOW) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetAddressByNameA(dwnamespace : u32, lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCSTR, lpiprotocols : *const i32, dwresolution : u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpcsaddrbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32, lpaliasbuffer : windows_sys::core::PSTR, lpdwaliasbufferlength : *mut u32) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetAddressByNameW(dwnamespace : u32, lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCWSTR, lpiprotocols : *const i32, dwresolution : u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpcsaddrbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32, lpaliasbuffer : windows_sys::core::PWSTR, lpdwaliasbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn GetHostNameW(name : windows_sys::core::PWSTR, namelen : i32) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetNameByTypeA(lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PSTR, dwnamelength : u32) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetNameByTypeW(lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PWSTR, dwnamelength : u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn GetNameInfoW(psockaddr : *const SOCKADDR, sockaddrlength : socklen_t, pnodebuffer : windows_sys::core::PWSTR, nodebuffersize : u32, pservicebuffer : windows_sys::core::PWSTR, servicebuffersize : u32, flags : i32) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetServiceA(dwnamespace : u32, lpguid : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCSTR, dwproperties : u32, lpbuffer : *mut core::ffi::c_void, lpdwbuffersize : *mut u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetServiceW(dwnamespace : u32, lpguid : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCWSTR, dwproperties : u32, lpbuffer : *mut core::ffi::c_void, lpdwbuffersize : *mut u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetTypeByNameA(lpservicename : windows_sys::core::PCSTR, lpservicetype : *mut windows_sys::core::GUID) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn GetTypeByNameW(lpservicename : windows_sys::core::PCWSTR, lpservicetype : *mut windows_sys::core::GUID) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn InetNtopW(family : i32, paddr : *const core::ffi::c_void, pstringbuf : windows_sys::core::PWSTR, stringbufsize : usize) -> windows_sys::core::PCWSTR);
-windows_targets::link!("ws2_32.dll" "system" fn InetPtonW(family : i32, pszaddrstring : windows_sys::core::PCWSTR, paddrbuf : *mut core::ffi::c_void) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetAddrInfoExW(pname : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, hints : *const ADDRINFOEXW, ppresult : *mut *mut ADDRINFOEXW, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lphandle : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetAddrInfoW(pnodename : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, phints : *const ADDRINFOW, ppresult : *mut *mut ADDRINFOW) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetAddressByNameA(dwnamespace : u32, lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCSTR, lpiprotocols : *const i32, dwresolution : u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpcsaddrbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32, lpaliasbuffer : windows_sys::core::PSTR, lpdwaliasbufferlength : *mut u32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetAddressByNameW(dwnamespace : u32, lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCWSTR, lpiprotocols : *const i32, dwresolution : u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpcsaddrbuffer : *mut core::ffi::c_void, lpdwbufferlength : *mut u32, lpaliasbuffer : windows_sys::core::PWSTR, lpdwaliasbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetHostNameW(name : windows_sys::core::PWSTR, namelen : i32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetNameByTypeA(lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PSTR, dwnamelength : u32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetNameByTypeW(lpservicetype : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PWSTR, dwnamelength : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn GetNameInfoW(psockaddr : *const SOCKADDR, sockaddrlength : socklen_t, pnodebuffer : windows_sys::core::PWSTR, nodebuffersize : u32, pservicebuffer : windows_sys::core::PWSTR, servicebuffersize : u32, flags : i32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetServiceA(dwnamespace : u32, lpguid : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCSTR, dwproperties : u32, lpbuffer : *mut core::ffi::c_void, lpdwbuffersize : *mut u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetServiceW(dwnamespace : u32, lpguid : *const windows_sys::core::GUID, lpservicename : windows_sys::core::PCWSTR, dwproperties : u32, lpbuffer : *mut core::ffi::c_void, lpdwbuffersize : *mut u32, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetTypeByNameA(lpservicename : windows_sys::core::PCSTR, lpservicetype : *mut windows_sys::core::GUID) -> i32);
+windows_link::link!("mswsock.dll" "system" fn GetTypeByNameW(lpservicename : windows_sys::core::PCWSTR, lpservicetype : *mut windows_sys::core::GUID) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn InetNtopW(family : i32, paddr : *const core::ffi::c_void, pstringbuf : windows_sys::core::PWSTR, stringbufsize : usize) -> windows_sys::core::PCWSTR);
+windows_link::link!("ws2_32.dll" "system" fn InetPtonW(family : i32, pszaddrstring : windows_sys::core::PCWSTR, paddrbuf : *mut core::ffi::c_void) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn ProcessSocketNotifications(completionport : super::super::Foundation:: HANDLE, registrationcount : u32, registrationinfos : *mut SOCK_NOTIFY_REGISTRATION, timeoutms : u32, completioncount : u32, completionportentries : *mut super::super::System::IO:: OVERLAPPED_ENTRY, receivedentrycount : *mut u32) -> u32);
-windows_targets::link!("ntdll.dll" "system" fn RtlEthernetAddressToStringA(addr : *const DL_EUI48, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlEthernetAddressToStringW(addr : *const DL_EUI48, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlEthernetStringToAddressA(s : windows_sys::core::PCSTR, terminator : *mut windows_sys::core::PCSTR, addr : *mut DL_EUI48) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlEthernetStringToAddressW(s : windows_sys::core::PCWSTR, terminator : *mut windows_sys::core::PCWSTR, addr : *mut DL_EUI48) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringA(addr : *const IN_ADDR, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringExA(address : *const IN_ADDR, port : u16, addressstring : windows_sys::core::PSTR, addressstringlength : *mut u32) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringExW(address : *const IN_ADDR, port : u16, addressstring : windows_sys::core::PWSTR, addressstringlength : *mut u32) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringW(addr : *const IN_ADDR, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressA(s : windows_sys::core::PCSTR, strict : super::super::Foundation:: BOOLEAN, terminator : *mut windows_sys::core::PCSTR, addr : *mut IN_ADDR) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressExA(addressstring : windows_sys::core::PCSTR, strict : super::super::Foundation:: BOOLEAN, address : *mut IN_ADDR, port : *mut u16) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressExW(addressstring : windows_sys::core::PCWSTR, strict : super::super::Foundation:: BOOLEAN, address : *mut IN_ADDR, port : *mut u16) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressW(s : windows_sys::core::PCWSTR, strict : super::super::Foundation:: BOOLEAN, terminator : *mut windows_sys::core::PCWSTR, addr : *mut IN_ADDR) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringA(addr : *const IN6_ADDR, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringExA(address : *const IN6_ADDR, scopeid : u32, port : u16, addressstring : windows_sys::core::PSTR, addressstringlength : *mut u32) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringExW(address : *const IN6_ADDR, scopeid : u32, port : u16, addressstring : windows_sys::core::PWSTR, addressstringlength : *mut u32) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringW(addr : *const IN6_ADDR, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressA(s : windows_sys::core::PCSTR, terminator : *mut windows_sys::core::PCSTR, addr : *mut IN6_ADDR) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressExA(addressstring : windows_sys::core::PCSTR, address : *mut IN6_ADDR, scopeid : *mut u32, port : *mut u16) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressExW(addressstring : windows_sys::core::PCWSTR, address : *mut IN6_ADDR, scopeid : *mut u32, port : *mut u16) -> i32);
-windows_targets::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressW(s : windows_sys::core::PCWSTR, terminator : *mut windows_sys::core::PCWSTR, addr : *mut IN6_ADDR) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn ProcessSocketNotifications(completionport : super::super::Foundation:: HANDLE, registrationcount : u32, registrationinfos : *mut SOCK_NOTIFY_REGISTRATION, timeoutms : u32, completioncount : u32, completionportentries : *mut super::super::System::IO:: OVERLAPPED_ENTRY, receivedentrycount : *mut u32) -> u32);
+windows_link::link!("ntdll.dll" "system" fn RtlEthernetAddressToStringA(addr : *const DL_EUI48, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlEthernetAddressToStringW(addr : *const DL_EUI48, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlEthernetStringToAddressA(s : windows_sys::core::PCSTR, terminator : *mut windows_sys::core::PCSTR, addr : *mut DL_EUI48) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlEthernetStringToAddressW(s : windows_sys::core::PCWSTR, terminator : *mut windows_sys::core::PCWSTR, addr : *mut DL_EUI48) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringA(addr : *const IN_ADDR, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringExA(address : *const IN_ADDR, port : u16, addressstring : windows_sys::core::PSTR, addressstringlength : *mut u32) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringExW(address : *const IN_ADDR, port : u16, addressstring : windows_sys::core::PWSTR, addressstringlength : *mut u32) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4AddressToStringW(addr : *const IN_ADDR, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressA(s : windows_sys::core::PCSTR, strict : bool, terminator : *mut windows_sys::core::PCSTR, addr : *mut IN_ADDR) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressExA(addressstring : windows_sys::core::PCSTR, strict : bool, address : *mut IN_ADDR, port : *mut u16) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressExW(addressstring : windows_sys::core::PCWSTR, strict : bool, address : *mut IN_ADDR, port : *mut u16) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv4StringToAddressW(s : windows_sys::core::PCWSTR, strict : bool, terminator : *mut windows_sys::core::PCWSTR, addr : *mut IN_ADDR) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringA(addr : *const IN6_ADDR, s : windows_sys::core::PSTR) -> windows_sys::core::PSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringExA(address : *const IN6_ADDR, scopeid : u32, port : u16, addressstring : windows_sys::core::PSTR, addressstringlength : *mut u32) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringExW(address : *const IN6_ADDR, scopeid : u32, port : u16, addressstring : windows_sys::core::PWSTR, addressstringlength : *mut u32) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6AddressToStringW(addr : *const IN6_ADDR, s : windows_sys::core::PWSTR) -> windows_sys::core::PWSTR);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressA(s : windows_sys::core::PCSTR, terminator : *mut windows_sys::core::PCSTR, addr : *mut IN6_ADDR) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressExA(addressstring : windows_sys::core::PCSTR, address : *mut IN6_ADDR, scopeid : *mut u32, port : *mut u16) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressExW(addressstring : windows_sys::core::PCWSTR, address : *mut IN6_ADDR, scopeid : *mut u32, port : *mut u16) -> i32);
+windows_link::link!("ntdll.dll" "system" fn RtlIpv6StringToAddressW(s : windows_sys::core::PCWSTR, terminator : *mut windows_sys::core::PCWSTR, addr : *mut IN6_ADDR) -> i32);
 #[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
-windows_targets::link!("ws2_32.dll" "system" fn SetAddrInfoExA(pname : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, paddresses : *const SOCKET_ADDRESS, dwaddresscount : u32, lpblob : *const super::super::System::Com:: BLOB, dwflags : u32, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn SetAddrInfoExA(pname : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, paddresses : *const SOCKET_ADDRESS, dwaddresscount : u32, lpblob : *const super::super::System::Com:: BLOB, dwflags : u32, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
 #[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
-windows_targets::link!("ws2_32.dll" "system" fn SetAddrInfoExW(pname : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, paddresses : *const SOCKET_ADDRESS, dwaddresscount : u32, lpblob : *const super::super::System::Com:: BLOB, dwflags : u32, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn SetAddrInfoExW(pname : windows_sys::core::PCWSTR, pservicename : windows_sys::core::PCWSTR, paddresses : *const SOCKET_ADDRESS, dwaddresscount : u32, lpblob : *const super::super::System::Com:: BLOB, dwflags : u32, dwnamespace : u32, lpnspid : *const windows_sys::core::GUID, timeout : *const TIMEVAL, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPLOOKUPSERVICE_COMPLETION_ROUTINE, lpnamehandle : *mut super::super::Foundation:: HANDLE) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("mswsock.dll" "system" fn SetServiceA(dwnamespace : u32, dwoperation : SET_SERVICE_OPERATION, dwflags : u32, lpserviceinfo : *const SERVICE_INFOA, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpdwstatusflags : *mut u32) -> i32);
+windows_link::link!("mswsock.dll" "system" fn SetServiceA(dwnamespace : u32, dwoperation : SET_SERVICE_OPERATION, dwflags : u32, lpserviceinfo : *const SERVICE_INFOA, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpdwstatusflags : *mut u32) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("mswsock.dll" "system" fn SetServiceW(dwnamespace : u32, dwoperation : SET_SERVICE_OPERATION, dwflags : u32, lpserviceinfo : *const SERVICE_INFOW, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpdwstatusflags : *mut u32) -> i32);
-windows_targets::link!("windows.networking.dll" "system" fn SetSocketMediaStreamingMode(value : super::super::Foundation:: BOOL) -> windows_sys::core::HRESULT);
+windows_link::link!("mswsock.dll" "system" fn SetServiceW(dwnamespace : u32, dwoperation : SET_SERVICE_OPERATION, dwflags : u32, lpserviceinfo : *const SERVICE_INFOW, lpserviceasyncinfo : *const SERVICE_ASYNC_INFO, lpdwstatusflags : *mut u32) -> i32);
+windows_link::link!("windows.networking.dll" "system" fn SetSocketMediaStreamingMode(value : windows_sys::core::BOOL) -> windows_sys::core::HRESULT);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("mswsock.dll" "system" fn TransmitFile(hsocket : SOCKET, hfile : super::super::Foundation:: HANDLE, nnumberofbytestowrite : u32, nnumberofbytespersend : u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lptransmitbuffers : *const TRANSMIT_FILE_BUFFERS, dwreserved : u32) -> super::super::Foundation:: BOOL);
+windows_link::link!("mswsock.dll" "system" fn TransmitFile(hsocket : SOCKET, hfile : super::super::Foundation:: HANDLE, nnumberofbytestowrite : u32, nnumberofbytespersend : u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lptransmitbuffers : *const TRANSMIT_FILE_BUFFERS, dwreserved : u32) -> windows_sys::core::BOOL);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WPUCompleteOverlappedRequest(s : SOCKET, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, dwerror : u32, cbtransferred : u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAccept(s : SOCKET, addr : *mut SOCKADDR, addrlen : *mut i32, lpfncondition : LPCONDITIONPROC, dwcallbackdata : usize) -> SOCKET);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAddressToStringA(lpsaaddress : *const SOCKADDR, dwaddresslength : u32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, lpszaddressstring : windows_sys::core::PSTR, lpdwaddressstringlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAddressToStringW(lpsaaddress : *const SOCKADDR, dwaddresslength : u32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, lpszaddressstring : windows_sys::core::PWSTR, lpdwaddressstringlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WPUCompleteOverlappedRequest(s : SOCKET, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, dwerror : u32, cbtransferred : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAAccept(s : SOCKET, addr : *mut SOCKADDR, addrlen : *mut i32, lpfncondition : LPCONDITIONPROC, dwcallbackdata : usize) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn WSAAddressToStringA(lpsaaddress : *const SOCKADDR, dwaddresslength : u32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, lpszaddressstring : windows_sys::core::PSTR, lpdwaddressstringlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAAddressToStringW(lpsaaddress : *const SOCKADDR, dwaddresslength : u32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, lpszaddressstring : windows_sys::core::PWSTR, lpdwaddressstringlength : *mut u32) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAAdvertiseProvider(puuidproviderid : *const windows_sys::core::GUID, pnspv2routine : *const NSPV2_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetHostByAddr(hwnd : super::super::Foundation:: HWND, wmsg : u32, addr : windows_sys::core::PCSTR, len : i32, r#type : i32, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetHostByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetProtoByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetProtoByNumber(hwnd : super::super::Foundation:: HWND, wmsg : u32, number : i32, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetServByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, proto : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncGetServByPort(hwnd : super::super::Foundation:: HWND, wmsg : u32, port : i32, proto : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
-windows_targets::link!("ws2_32.dll" "system" fn WSAAsyncSelect(s : SOCKET, hwnd : super::super::Foundation:: HWND, wmsg : u32, levent : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSACancelAsyncRequest(hasynctaskhandle : super::super::Foundation:: HANDLE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSACancelBlockingCall() -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSACleanup() -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSACloseEvent(hevent : WSAEVENT) -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSAConnect(s : SOCKET, name : *const SOCKADDR, namelen : i32, lpcallerdata : *const WSABUF, lpcalleedata : *mut WSABUF, lpsqos : *const QOS, lpgqos : *const QOS) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAAdvertiseProvider(puuidproviderid : *const windows_sys::core::GUID, pnspv2routine : *const NSPV2_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetHostByAddr(hwnd : super::super::Foundation:: HWND, wmsg : u32, addr : windows_sys::core::PCSTR, len : i32, r#type : i32, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetHostByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetProtoByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetProtoByNumber(hwnd : super::super::Foundation:: HWND, wmsg : u32, number : i32, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetServByName(hwnd : super::super::Foundation:: HWND, wmsg : u32, name : windows_sys::core::PCSTR, proto : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncGetServByPort(hwnd : super::super::Foundation:: HWND, wmsg : u32, port : i32, proto : windows_sys::core::PCSTR, buf : windows_sys::core::PSTR, buflen : i32) -> super::super::Foundation:: HANDLE);
+windows_link::link!("ws2_32.dll" "system" fn WSAAsyncSelect(s : SOCKET, hwnd : super::super::Foundation:: HWND, wmsg : u32, levent : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSACancelAsyncRequest(hasynctaskhandle : super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSACancelBlockingCall() -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSACleanup() -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSACloseEvent(hevent : WSAEVENT) -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAConnect(s : SOCKET, name : *const SOCKADDR, namelen : i32, lpcallerdata : *const WSABUF, lpcalleedata : *mut WSABUF, lpsqos : *const QOS, lpgqos : *const QOS) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAConnectByList(s : SOCKET, socketaddress : *const SOCKET_ADDRESS_LIST, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAConnectByList(s : SOCKET, socketaddress : *const SOCKET_ADDRESS_LIST, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> windows_sys::core::BOOL);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAConnectByNameA(s : SOCKET, nodename : windows_sys::core::PCSTR, servicename : windows_sys::core::PCSTR, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAConnectByNameA(s : SOCKET, nodename : windows_sys::core::PCSTR, servicename : windows_sys::core::PCSTR, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> windows_sys::core::BOOL);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAConnectByNameW(s : SOCKET, nodename : windows_sys::core::PCWSTR, servicename : windows_sys::core::PCWSTR, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSACreateEvent() -> WSAEVENT);
+windows_link::link!("ws2_32.dll" "system" fn WSAConnectByNameW(s : SOCKET, nodename : windows_sys::core::PCWSTR, servicename : windows_sys::core::PCWSTR, localaddresslength : *mut u32, localaddress : *mut SOCKADDR, remoteaddresslength : *mut u32, remoteaddress : *mut SOCKADDR, timeout : *const TIMEVAL, reserved : *const super::super::System::IO:: OVERLAPPED) -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSACreateEvent() -> WSAEVENT);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("fwpuclnt.dll" "system" fn WSADeleteSocketPeerTargetName(socket : SOCKET, peeraddr : *const SOCKADDR, peeraddrlen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSADuplicateSocketA(s : SOCKET, dwprocessid : u32, lpprotocolinfo : *mut WSAPROTOCOL_INFOA) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSADuplicateSocketW(s : SOCKET, dwprocessid : u32, lpprotocolinfo : *mut WSAPROTOCOL_INFOW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersA(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOA) -> i32);
+windows_link::link!("fwpuclnt.dll" "system" fn WSADeleteSocketPeerTargetName(socket : SOCKET, peeraddr : *const SOCKADDR, peeraddrlen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSADuplicateSocketA(s : SOCKET, dwprocessid : u32, lpprotocolinfo : *mut WSAPROTOCOL_INFOA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSADuplicateSocketW(s : SOCKET, dwprocessid : u32, lpprotocolinfo : *mut WSAPROTOCOL_INFOW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersA(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOA) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersExA(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersExA(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXA) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersExW(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersW(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumNetworkEvents(s : SOCKET, heventobject : WSAEVENT, lpnetworkevents : *mut WSANETWORKEVENTS) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumProtocolsA(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOA, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEnumProtocolsW(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAEventSelect(s : SOCKET, heventobject : WSAEVENT, lnetworkevents : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetLastError() -> WSA_ERROR);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersExW(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumNameSpaceProvidersW(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumNetworkEvents(s : SOCKET, heventobject : WSAEVENT, lpnetworkevents : *mut WSANETWORKEVENTS) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumProtocolsA(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOA, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEnumProtocolsW(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAEventSelect(s : SOCKET, heventobject : WSAEVENT, lnetworkevents : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetLastError() -> WSA_ERROR);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetOverlappedResult(s : SOCKET, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcbtransfer : *mut u32, fwait : super::super::Foundation:: BOOL, lpdwflags : *mut u32) -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetQOSByName(s : SOCKET, lpqosname : *const WSABUF, lpqos : *mut QOS) -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetServiceClassInfoA(lpproviderid : *const windows_sys::core::GUID, lpserviceclassid : *const windows_sys::core::GUID, lpdwbufsize : *mut u32, lpserviceclassinfo : *mut WSASERVICECLASSINFOA) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetServiceClassInfoW(lpproviderid : *const windows_sys::core::GUID, lpserviceclassid : *const windows_sys::core::GUID, lpdwbufsize : *mut u32, lpserviceclassinfo : *mut WSASERVICECLASSINFOW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetServiceClassNameByClassIdA(lpserviceclassid : *const windows_sys::core::GUID, lpszserviceclassname : windows_sys::core::PSTR, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAGetServiceClassNameByClassIdW(lpserviceclassid : *const windows_sys::core::GUID, lpszserviceclassname : windows_sys::core::PWSTR, lpdwbufferlength : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAHtonl(s : SOCKET, hostlong : u32, lpnetlong : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAHtons(s : SOCKET, hostshort : u16, lpnetshort : *mut u16) -> i32);
-windows_targets::link!("fwpuclnt.dll" "system" fn WSAImpersonateSocketPeer(socket : SOCKET, peeraddr : *const SOCKADDR, peeraddrlen : u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAInstallServiceClassA(lpserviceclassinfo : *const WSASERVICECLASSINFOA) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAInstallServiceClassW(lpserviceclassinfo : *const WSASERVICECLASSINFOW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetOverlappedResult(s : SOCKET, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpcbtransfer : *mut u32, fwait : windows_sys::core::BOOL, lpdwflags : *mut u32) -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetQOSByName(s : SOCKET, lpqosname : *const WSABUF, lpqos : *mut QOS) -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetServiceClassInfoA(lpproviderid : *const windows_sys::core::GUID, lpserviceclassid : *const windows_sys::core::GUID, lpdwbufsize : *mut u32, lpserviceclassinfo : *mut WSASERVICECLASSINFOA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetServiceClassInfoW(lpproviderid : *const windows_sys::core::GUID, lpserviceclassid : *const windows_sys::core::GUID, lpdwbufsize : *mut u32, lpserviceclassinfo : *mut WSASERVICECLASSINFOW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetServiceClassNameByClassIdA(lpserviceclassid : *const windows_sys::core::GUID, lpszserviceclassname : windows_sys::core::PSTR, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAGetServiceClassNameByClassIdW(lpserviceclassid : *const windows_sys::core::GUID, lpszserviceclassname : windows_sys::core::PWSTR, lpdwbufferlength : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAHtonl(s : SOCKET, hostlong : u32, lpnetlong : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAHtons(s : SOCKET, hostshort : u16, lpnetshort : *mut u16) -> i32);
+windows_link::link!("fwpuclnt.dll" "system" fn WSAImpersonateSocketPeer(socket : SOCKET, peeraddr : *const SOCKADDR, peeraddrlen : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAInstallServiceClassA(lpserviceclassinfo : *const WSASERVICECLASSINFOA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAInstallServiceClassW(lpserviceclassinfo : *const WSASERVICECLASSINFOW) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAIoctl(s : SOCKET, dwiocontrolcode : u32, lpvinbuffer : *const core::ffi::c_void, cbinbuffer : u32, lpvoutbuffer : *mut core::ffi::c_void, cboutbuffer : u32, lpcbbytesreturned : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAIsBlocking() -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSAJoinLeaf(s : SOCKET, name : *const SOCKADDR, namelen : i32, lpcallerdata : *const WSABUF, lpcalleedata : *mut WSABUF, lpsqos : *const QOS, lpgqos : *const QOS, dwflags : u32) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn WSAIoctl(s : SOCKET, dwiocontrolcode : u32, lpvinbuffer : *const core::ffi::c_void, cbinbuffer : u32, lpvoutbuffer : *mut core::ffi::c_void, cboutbuffer : u32, lpcbbytesreturned : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAIsBlocking() -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSAJoinLeaf(s : SOCKET, name : *const SOCKADDR, namelen : i32, lpcallerdata : *const WSABUF, lpcalleedata : *mut WSABUF, lpsqos : *const QOS, lpgqos : *const QOS, dwflags : u32) -> SOCKET);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSALookupServiceBeginA(lpqsrestrictions : *const WSAQUERYSETA, dwcontrolflags : u32, lphlookup : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSALookupServiceBeginA(lpqsrestrictions : *const WSAQUERYSETA, dwcontrolflags : u32, lphlookup : *mut super::super::Foundation:: HANDLE) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSALookupServiceBeginW(lpqsrestrictions : *const WSAQUERYSETW, dwcontrolflags : u32, lphlookup : *mut super::super::Foundation:: HANDLE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSALookupServiceEnd(hlookup : super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSALookupServiceBeginW(lpqsrestrictions : *const WSAQUERYSETW, dwcontrolflags : u32, lphlookup : *mut super::super::Foundation:: HANDLE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSALookupServiceEnd(hlookup : super::super::Foundation:: HANDLE) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSALookupServiceNextA(hlookup : super::super::Foundation:: HANDLE, dwcontrolflags : u32, lpdwbufferlength : *mut u32, lpqsresults : *mut WSAQUERYSETA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSALookupServiceNextA(hlookup : super::super::Foundation:: HANDLE, dwcontrolflags : u32, lpdwbufferlength : *mut u32, lpqsresults : *mut WSAQUERYSETA) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSALookupServiceNextW(hlookup : super::super::Foundation:: HANDLE, dwcontrolflags : u32, lpdwbufferlength : *mut u32, lpqsresults : *mut WSAQUERYSETW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSALookupServiceNextW(hlookup : super::super::Foundation:: HANDLE, dwcontrolflags : u32, lpdwbufferlength : *mut u32, lpqsresults : *mut WSAQUERYSETW) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSANSPIoctl(hlookup : super::super::Foundation:: HANDLE, dwcontrolcode : u32, lpvinbuffer : *const core::ffi::c_void, cbinbuffer : u32, lpvoutbuffer : *mut core::ffi::c_void, cboutbuffer : u32, lpcbbytesreturned : *mut u32, lpcompletion : *const WSACOMPLETION) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSANtohl(s : SOCKET, netlong : u32, lphostlong : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSANtohs(s : SOCKET, netshort : u16, lphostshort : *mut u16) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAPoll(fdarray : *mut WSAPOLLFD, fds : u32, timeout : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAProviderCompleteAsyncCall(hasynccall : super::super::Foundation:: HANDLE, iretcode : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSANSPIoctl(hlookup : super::super::Foundation:: HANDLE, dwcontrolcode : u32, lpvinbuffer : *const core::ffi::c_void, cbinbuffer : u32, lpvoutbuffer : *mut core::ffi::c_void, cboutbuffer : u32, lpcbbytesreturned : *mut u32, lpcompletion : *const WSACOMPLETION) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSANtohl(s : SOCKET, netlong : u32, lphostlong : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSANtohs(s : SOCKET, netshort : u16, lphostshort : *mut u16) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAPoll(fdarray : *mut WSAPOLLFD, fds : u32, timeout : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAProviderCompleteAsyncCall(hasynccall : super::super::Foundation:: HANDLE, iretcode : i32) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSAProviderConfigChange(lpnotificationhandle : *mut super::super::Foundation:: HANDLE, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAProviderConfigChange(lpnotificationhandle : *mut super::super::Foundation:: HANDLE, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("fwpuclnt.dll" "system" fn WSAQuerySocketSecurity(socket : SOCKET, securityquerytemplate : *const SOCKET_SECURITY_QUERY_TEMPLATE, securityquerytemplatelen : u32, securityqueryinfo : *mut SOCKET_SECURITY_QUERY_INFO, securityqueryinfolen : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("fwpuclnt.dll" "system" fn WSAQuerySocketSecurity(socket : SOCKET, securityquerytemplate : *const SOCKET_SECURITY_QUERY_TEMPLATE, securityquerytemplatelen : u32, securityqueryinfo : *mut SOCKET_SECURITY_QUERY_INFO, securityqueryinfolen : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSARecv(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytesrecvd : *mut u32, lpflags : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSARecvDisconnect(s : SOCKET, lpinbounddisconnectdata : *const WSABUF) -> i32);
-windows_targets::link!("mswsock.dll" "system" fn WSARecvEx(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSARecv(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytesrecvd : *mut u32, lpflags : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSARecvDisconnect(s : SOCKET, lpinbounddisconnectdata : *const WSABUF) -> i32);
+windows_link::link!("mswsock.dll" "system" fn WSARecvEx(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : *mut i32) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSARecvFrom(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytesrecvd : *mut u32, lpflags : *mut u32, lpfrom : *mut SOCKADDR, lpfromlen : *mut i32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSARemoveServiceClass(lpserviceclassid : *const windows_sys::core::GUID) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAResetEvent(hevent : super::super::Foundation:: HANDLE) -> super::super::Foundation:: BOOL);
-windows_targets::link!("fwpuclnt.dll" "system" fn WSARevertImpersonation() -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSARecvFrom(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytesrecvd : *mut u32, lpflags : *mut u32, lpfrom : *mut SOCKADDR, lpfromlen : *mut i32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSARemoveServiceClass(lpserviceclassid : *const windows_sys::core::GUID) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAResetEvent(hevent : WSAEVENT) -> windows_sys::core::BOOL);
+windows_link::link!("fwpuclnt.dll" "system" fn WSARevertImpersonation() -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSASend(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytessent : *mut u32, dwflags : u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSASendDisconnect(s : SOCKET, lpoutbounddisconnectdata : *const WSABUF) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASend(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytessent : *mut u32, dwflags : u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASendDisconnect(s : SOCKET, lpoutbounddisconnectdata : *const WSABUF) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSASendMsg(handle : SOCKET, lpmsg : *const WSAMSG, dwflags : u32, lpnumberofbytessent : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASendMsg(handle : SOCKET, lpmsg : *const WSAMSG, dwflags : u32, lpnumberofbytessent : *mut u32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("ws2_32.dll" "system" fn WSASendTo(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytessent : *mut u32, dwflags : u32, lpto : *const SOCKADDR, itolen : i32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSASetBlockingHook(lpblockfunc : super::super::Foundation:: FARPROC) -> super::super::Foundation:: FARPROC);
-windows_targets::link!("ws2_32.dll" "system" fn WSASetEvent(hevent : super::super::Foundation:: HANDLE) -> super::super::Foundation:: BOOL);
-windows_targets::link!("ws2_32.dll" "system" fn WSASetLastError(ierror : i32));
+windows_link::link!("ws2_32.dll" "system" fn WSASendTo(s : SOCKET, lpbuffers : *const WSABUF, dwbuffercount : u32, lpnumberofbytessent : *mut u32, dwflags : u32, lpto : *const SOCKADDR, itolen : i32, lpoverlapped : *mut super::super::System::IO:: OVERLAPPED, lpcompletionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASetBlockingHook(lpblockfunc : super::super::Foundation:: FARPROC) -> super::super::Foundation:: FARPROC);
+windows_link::link!("ws2_32.dll" "system" fn WSASetEvent(hevent : WSAEVENT) -> windows_sys::core::BOOL);
+windows_link::link!("ws2_32.dll" "system" fn WSASetLastError(ierror : i32));
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSASetServiceA(lpqsreginfo : *const WSAQUERYSETA, essoperation : WSAESETSERVICEOP, dwcontrolflags : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASetServiceA(lpqsreginfo : *const WSAQUERYSETA, essoperation : WSAESETSERVICEOP, dwcontrolflags : u32) -> i32);
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSASetServiceW(lpqsreginfo : *const WSAQUERYSETW, essoperation : WSAESETSERVICEOP, dwcontrolflags : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASetServiceW(lpqsreginfo : *const WSAQUERYSETW, essoperation : WSAESETSERVICEOP, dwcontrolflags : u32) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("fwpuclnt.dll" "system" fn WSASetSocketPeerTargetName(socket : SOCKET, peertargetname : *const SOCKET_PEER_TARGET_NAME, peertargetnamelen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("fwpuclnt.dll" "system" fn WSASetSocketPeerTargetName(socket : SOCKET, peertargetname : *const SOCKET_PEER_TARGET_NAME, peertargetnamelen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
 #[cfg(feature = "Win32_System_IO")]
-windows_targets::link!("fwpuclnt.dll" "system" fn WSASetSocketSecurity(socket : SOCKET, securitysettings : *const SOCKET_SECURITY_SETTINGS, securitysettingslen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSASocketA(af : i32, r#type : i32, protocol : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, g : u32, dwflags : u32) -> SOCKET);
-windows_targets::link!("ws2_32.dll" "system" fn WSASocketW(af : i32, r#type : i32, protocol : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, g : u32, dwflags : u32) -> SOCKET);
-windows_targets::link!("ws2_32.dll" "system" fn WSAStartup(wversionrequested : u16, lpwsadata : *mut WSADATA) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAStringToAddressA(addressstring : windows_sys::core::PCSTR, addressfamily : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, lpaddress : *mut SOCKADDR, lpaddresslength : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAStringToAddressW(addressstring : windows_sys::core::PCWSTR, addressfamily : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, lpaddress : *mut SOCKADDR, lpaddresslength : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAUnadvertiseProvider(puuidproviderid : *const windows_sys::core::GUID) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAUnhookBlockingHook() -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSAWaitForMultipleEvents(cevents : u32, lphevents : *const super::super::Foundation:: HANDLE, fwaitall : super::super::Foundation:: BOOL, dwtimeout : u32, falertable : super::super::Foundation:: BOOL) -> super::super::Foundation:: WAIT_EVENT);
-windows_targets::link!("ws2_32.dll" "system" fn WSCDeinstallProvider(lpproviderid : *const windows_sys::core::GUID, lperrno : *mut i32) -> i32);
+windows_link::link!("fwpuclnt.dll" "system" fn WSASetSocketSecurity(socket : SOCKET, securitysettings : *const SOCKET_SECURITY_SETTINGS, securitysettingslen : u32, overlapped : *const super::super::System::IO:: OVERLAPPED, completionroutine : LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSASocketA(af : i32, r#type : i32, protocol : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, g : u32, dwflags : u32) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn WSASocketW(af : i32, r#type : i32, protocol : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, g : u32, dwflags : u32) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn WSAStartup(wversionrequested : u16, lpwsadata : *mut WSADATA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAStringToAddressA(addressstring : windows_sys::core::PCSTR, addressfamily : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOA, lpaddress : *mut SOCKADDR, lpaddresslength : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAStringToAddressW(addressstring : windows_sys::core::PCWSTR, addressfamily : i32, lpprotocolinfo : *const WSAPROTOCOL_INFOW, lpaddress : *mut SOCKADDR, lpaddresslength : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAUnadvertiseProvider(puuidproviderid : *const windows_sys::core::GUID) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAUnhookBlockingHook() -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSAWaitForMultipleEvents(cevents : u32, lphevents : *const super::super::Foundation:: HANDLE, fwaitall : windows_sys::core::BOOL, dwtimeout : u32, falertable : windows_sys::core::BOOL) -> super::super::Foundation:: WAIT_EVENT);
+windows_link::link!("ws2_32.dll" "system" fn WSCDeinstallProvider(lpproviderid : *const windows_sys::core::GUID, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCDeinstallProvider32(lpproviderid : *const windows_sys::core::GUID, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnableNSProvider(lpproviderid : *const windows_sys::core::GUID, fenable : super::super::Foundation:: BOOL) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCDeinstallProvider32(lpproviderid : *const windows_sys::core::GUID, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnableNSProvider(lpproviderid : *const windows_sys::core::GUID, fenable : windows_sys::core::BOOL) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnableNSProvider32(lpproviderid : *const windows_sys::core::GUID, fenable : super::super::Foundation:: BOOL) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnableNSProvider32(lpproviderid : *const windows_sys::core::GUID, fenable : windows_sys::core::BOOL) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnumNameSpaceProviders32(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOW) -> i32);
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnumNameSpaceProvidersEx32(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnumProtocols(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32, lperrno : *mut i32) -> i32);
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCEnumProtocols32(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCGetApplicationCategory(path : windows_sys::core::PCWSTR, pathlength : u32, extra : windows_sys::core::PCWSTR, extralength : u32, ppermittedlspcategories : *mut u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCGetProviderInfo(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *mut u8, infosize : *mut usize, flags : u32, lperrno : *mut i32) -> i32);
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCGetProviderInfo32(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *mut u8, infosize : *mut usize, flags : u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCGetProviderPath(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PWSTR, lpproviderdllpathlen : *mut i32, lperrno : *mut i32) -> i32);
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCGetProviderPath32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PWSTR, lpproviderdllpathlen : *mut i32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallNameSpace(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID) -> i32);
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallNameSpace32(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID) -> i32);
-#[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallNameSpaceEx(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID, lpproviderspecific : *const super::super::System::Com:: BLOB) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnumNameSpaceProviders32(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOW) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
 #[cfg(feature = "Win32_System_Com")]
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallNameSpaceEx32(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID, lpproviderspecific : *const super::super::System::Com:: BLOB) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallProvider(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnumNameSpaceProvidersEx32(lpdwbufferlength : *mut u32, lpnspbuffer : *mut WSANAMESPACE_INFOEXW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnumProtocols(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallProvider64_32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCEnumProtocols32(lpiprotocols : *const i32, lpprotocolbuffer : *mut WSAPROTOCOL_INFOW, lpdwbufferlength : *mut u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCGetApplicationCategory(path : windows_sys::core::PCWSTR, pathlength : u32, extra : windows_sys::core::PCWSTR, extralength : u32, ppermittedlspcategories : *mut u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCGetProviderInfo(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *mut u8, infosize : *mut usize, flags : u32, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCInstallProviderAndChains64_32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpszproviderdllpath32 : windows_sys::core::PCWSTR, lpszlspname : windows_sys::core::PCWSTR, dwserviceflags : u32, lpprotocolinfolist : *mut WSAPROTOCOL_INFOW, dwnumberofentries : u32, lpdwcatalogentryid : *mut u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCSetApplicationCategory(path : windows_sys::core::PCWSTR, pathlength : u32, extra : windows_sys::core::PCWSTR, extralength : u32, permittedlspcategories : u32, pprevpermlspcat : *mut u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCSetProviderInfo(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *const u8, infosize : usize, flags : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCGetProviderInfo32(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *mut u8, infosize : *mut usize, flags : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCGetProviderPath(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PWSTR, lpproviderdllpathlen : *mut i32, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCSetProviderInfo32(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *const u8, infosize : usize, flags : u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCUnInstallNameSpace(lpproviderid : *const windows_sys::core::GUID) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCGetProviderPath32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PWSTR, lpproviderdllpathlen : *mut i32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallNameSpace(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCUnInstallNameSpace32(lpproviderid : *const windows_sys::core::GUID) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCUpdateProvider(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallNameSpace32(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID) -> i32);
+#[cfg(feature = "Win32_System_Com")]
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallNameSpaceEx(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID, lpproviderspecific : *const super::super::System::Com:: BLOB) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCUpdateProvider32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCWriteNameSpaceOrder(lpproviderid : *mut windows_sys::core::GUID, dwnumberofentries : u32) -> i32);
+#[cfg(feature = "Win32_System_Com")]
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallNameSpaceEx32(lpszidentifier : windows_sys::core::PCWSTR, lpszpathname : windows_sys::core::PCWSTR, dwnamespace : u32, dwversion : u32, lpproviderid : *const windows_sys::core::GUID, lpproviderspecific : *const super::super::System::Com:: BLOB) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallProvider(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCWriteNameSpaceOrder32(lpproviderid : *mut windows_sys::core::GUID, dwnumberofentries : u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn WSCWriteProviderOrder(lpwdcatalogentryid : *mut u32, dwnumberofentries : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallProvider64_32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
 #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-windows_targets::link!("ws2_32.dll" "system" fn WSCWriteProviderOrder32(lpwdcatalogentryid : *mut u32, dwnumberofentries : u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn __WSAFDIsSet(fd : SOCKET, param1 : *mut FD_SET) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn accept(s : SOCKET, addr : *mut SOCKADDR, addrlen : *mut i32) -> SOCKET);
-windows_targets::link!("ws2_32.dll" "system" fn bind(s : SOCKET, name : *const SOCKADDR, namelen : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn closesocket(s : SOCKET) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn connect(s : SOCKET, name : *const SOCKADDR, namelen : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn freeaddrinfo(paddrinfo : *const ADDRINFOA));
-windows_targets::link!("ws2_32.dll" "system" fn getaddrinfo(pnodename : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, phints : *const ADDRINFOA, ppresult : *mut *mut ADDRINFOA) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn gethostbyaddr(addr : windows_sys::core::PCSTR, len : i32, r#type : i32) -> *mut HOSTENT);
-windows_targets::link!("ws2_32.dll" "system" fn gethostbyname(name : windows_sys::core::PCSTR) -> *mut HOSTENT);
-windows_targets::link!("ws2_32.dll" "system" fn gethostname(name : windows_sys::core::PSTR, namelen : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn getnameinfo(psockaddr : *const SOCKADDR, sockaddrlength : socklen_t, pnodebuffer : windows_sys::core::PSTR, nodebuffersize : u32, pservicebuffer : windows_sys::core::PSTR, servicebuffersize : u32, flags : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn getpeername(s : SOCKET, name : *mut SOCKADDR, namelen : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn getprotobyname(name : windows_sys::core::PCSTR) -> *mut PROTOENT);
-windows_targets::link!("ws2_32.dll" "system" fn getprotobynumber(number : i32) -> *mut PROTOENT);
-windows_targets::link!("ws2_32.dll" "system" fn getservbyname(name : windows_sys::core::PCSTR, proto : windows_sys::core::PCSTR) -> *mut SERVENT);
-windows_targets::link!("ws2_32.dll" "system" fn getservbyport(port : i32, proto : windows_sys::core::PCSTR) -> *mut SERVENT);
-windows_targets::link!("ws2_32.dll" "system" fn getsockname(s : SOCKET, name : *mut SOCKADDR, namelen : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn getsockopt(s : SOCKET, level : i32, optname : i32, optval : windows_sys::core::PSTR, optlen : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn htonl(hostlong : u32) -> u32);
-windows_targets::link!("ws2_32.dll" "system" fn htons(hostshort : u16) -> u16);
-windows_targets::link!("ws2_32.dll" "system" fn inet_addr(cp : windows_sys::core::PCSTR) -> u32);
-windows_targets::link!("ws2_32.dll" "system" fn inet_ntoa(r#in : IN_ADDR) -> windows_sys::core::PSTR);
-windows_targets::link!("ws2_32.dll" "system" fn inet_ntop(family : i32, paddr : *const core::ffi::c_void, pstringbuf : windows_sys::core::PSTR, stringbufsize : usize) -> windows_sys::core::PCSTR);
-windows_targets::link!("ws2_32.dll" "system" fn inet_pton(family : i32, pszaddrstring : windows_sys::core::PCSTR, paddrbuf : *mut core::ffi::c_void) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn ioctlsocket(s : SOCKET, cmd : i32, argp : *mut u32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn listen(s : SOCKET, backlog : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn ntohl(netlong : u32) -> u32);
-windows_targets::link!("ws2_32.dll" "system" fn ntohs(netshort : u16) -> u16);
-windows_targets::link!("ws2_32.dll" "system" fn recv(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : SEND_RECV_FLAGS) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn recvfrom(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : i32, from : *mut SOCKADDR, fromlen : *mut i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn select(nfds : i32, readfds : *mut FD_SET, writefds : *mut FD_SET, exceptfds : *mut FD_SET, timeout : *const TIMEVAL) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn send(s : SOCKET, buf : windows_sys::core::PCSTR, len : i32, flags : SEND_RECV_FLAGS) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn sendto(s : SOCKET, buf : windows_sys::core::PCSTR, len : i32, flags : i32, to : *const SOCKADDR, tolen : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn setsockopt(s : SOCKET, level : i32, optname : i32, optval : windows_sys::core::PCSTR, optlen : i32) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn shutdown(s : SOCKET, how : WINSOCK_SHUTDOWN_HOW) -> i32);
-windows_targets::link!("ws2_32.dll" "system" fn socket(af : i32, r#type : WINSOCK_SOCKET_TYPE, protocol : i32) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn WSCInstallProviderAndChains64_32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpszproviderdllpath32 : windows_sys::core::PCWSTR, lpszlspname : windows_sys::core::PCWSTR, dwserviceflags : u32, lpprotocolinfolist : *mut WSAPROTOCOL_INFOW, dwnumberofentries : u32, lpdwcatalogentryid : *mut u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCSetApplicationCategory(path : windows_sys::core::PCWSTR, pathlength : u32, extra : windows_sys::core::PCWSTR, extralength : u32, permittedlspcategories : u32, pprevpermlspcat : *mut u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCSetProviderInfo(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *const u8, infosize : usize, flags : u32, lperrno : *mut i32) -> i32);
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+windows_link::link!("ws2_32.dll" "system" fn WSCSetProviderInfo32(lpproviderid : *const windows_sys::core::GUID, infotype : WSC_PROVIDER_INFO_TYPE, info : *const u8, infosize : usize, flags : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCUnInstallNameSpace(lpproviderid : *const windows_sys::core::GUID) -> i32);
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+windows_link::link!("ws2_32.dll" "system" fn WSCUnInstallNameSpace32(lpproviderid : *const windows_sys::core::GUID) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCUpdateProvider(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+windows_link::link!("ws2_32.dll" "system" fn WSCUpdateProvider32(lpproviderid : *const windows_sys::core::GUID, lpszproviderdllpath : windows_sys::core::PCWSTR, lpprotocolinfolist : *const WSAPROTOCOL_INFOW, dwnumberofentries : u32, lperrno : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCWriteNameSpaceOrder(lpproviderid : *mut windows_sys::core::GUID, dwnumberofentries : u32) -> i32);
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+windows_link::link!("ws2_32.dll" "system" fn WSCWriteNameSpaceOrder32(lpproviderid : *mut windows_sys::core::GUID, dwnumberofentries : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn WSCWriteProviderOrder(lpwdcatalogentryid : *mut u32, dwnumberofentries : u32) -> i32);
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+windows_link::link!("ws2_32.dll" "system" fn WSCWriteProviderOrder32(lpwdcatalogentryid : *mut u32, dwnumberofentries : u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn __WSAFDIsSet(fd : SOCKET, param1 : *mut FD_SET) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn accept(s : SOCKET, addr : *mut SOCKADDR, addrlen : *mut i32) -> SOCKET);
+windows_link::link!("ws2_32.dll" "system" fn bind(s : SOCKET, name : *const SOCKADDR, namelen : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn closesocket(s : SOCKET) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn connect(s : SOCKET, name : *const SOCKADDR, namelen : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn freeaddrinfo(paddrinfo : *const ADDRINFOA));
+windows_link::link!("ws2_32.dll" "system" fn getaddrinfo(pnodename : windows_sys::core::PCSTR, pservicename : windows_sys::core::PCSTR, phints : *const ADDRINFOA, ppresult : *mut *mut ADDRINFOA) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn gethostbyaddr(addr : windows_sys::core::PCSTR, len : i32, r#type : i32) -> *mut HOSTENT);
+windows_link::link!("ws2_32.dll" "system" fn gethostbyname(name : windows_sys::core::PCSTR) -> *mut HOSTENT);
+windows_link::link!("ws2_32.dll" "system" fn gethostname(name : windows_sys::core::PSTR, namelen : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn getnameinfo(psockaddr : *const SOCKADDR, sockaddrlength : socklen_t, pnodebuffer : windows_sys::core::PSTR, nodebuffersize : u32, pservicebuffer : windows_sys::core::PSTR, servicebuffersize : u32, flags : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn getpeername(s : SOCKET, name : *mut SOCKADDR, namelen : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn getprotobyname(name : windows_sys::core::PCSTR) -> *mut PROTOENT);
+windows_link::link!("ws2_32.dll" "system" fn getprotobynumber(number : i32) -> *mut PROTOENT);
+windows_link::link!("ws2_32.dll" "system" fn getservbyname(name : windows_sys::core::PCSTR, proto : windows_sys::core::PCSTR) -> *mut SERVENT);
+windows_link::link!("ws2_32.dll" "system" fn getservbyport(port : i32, proto : windows_sys::core::PCSTR) -> *mut SERVENT);
+windows_link::link!("ws2_32.dll" "system" fn getsockname(s : SOCKET, name : *mut SOCKADDR, namelen : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn getsockopt(s : SOCKET, level : i32, optname : i32, optval : windows_sys::core::PSTR, optlen : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn htonl(hostlong : u32) -> u32);
+windows_link::link!("ws2_32.dll" "system" fn htons(hostshort : u16) -> u16);
+windows_link::link!("ws2_32.dll" "system" fn inet_addr(cp : windows_sys::core::PCSTR) -> u32);
+windows_link::link!("ws2_32.dll" "system" fn inet_ntoa(r#in : IN_ADDR) -> windows_sys::core::PSTR);
+windows_link::link!("ws2_32.dll" "system" fn inet_ntop(family : i32, paddr : *const core::ffi::c_void, pstringbuf : windows_sys::core::PSTR, stringbufsize : usize) -> windows_sys::core::PCSTR);
+windows_link::link!("ws2_32.dll" "system" fn inet_pton(family : i32, pszaddrstring : windows_sys::core::PCSTR, paddrbuf : *mut core::ffi::c_void) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn ioctlsocket(s : SOCKET, cmd : i32, argp : *mut u32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn listen(s : SOCKET, backlog : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn ntohl(netlong : u32) -> u32);
+windows_link::link!("ws2_32.dll" "system" fn ntohs(netshort : u16) -> u16);
+windows_link::link!("ws2_32.dll" "system" fn recv(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : SEND_RECV_FLAGS) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn recvfrom(s : SOCKET, buf : windows_sys::core::PSTR, len : i32, flags : i32, from : *mut SOCKADDR, fromlen : *mut i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn select(nfds : i32, readfds : *mut FD_SET, writefds : *mut FD_SET, exceptfds : *mut FD_SET, timeout : *const TIMEVAL) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn send(s : SOCKET, buf : windows_sys::core::PCSTR, len : i32, flags : SEND_RECV_FLAGS) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn sendto(s : SOCKET, buf : windows_sys::core::PCSTR, len : i32, flags : i32, to : *const SOCKADDR, tolen : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn setsockopt(s : SOCKET, level : i32, optname : i32, optval : windows_sys::core::PCSTR, optlen : i32) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn shutdown(s : SOCKET, how : WINSOCK_SHUTDOWN_HOW) -> i32);
+windows_link::link!("ws2_32.dll" "system" fn socket(af : i32, r#type : WINSOCK_SOCKET_TYPE, protocol : i32) -> SOCKET);
 pub const AAL5_MODE_MESSAGE: u32 = 1u32;
 pub const AAL5_MODE_STREAMING: u32 = 2u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct AAL5_PARAMETERS {
+    pub ForwardMaxCPCSSDUSize: u32,
+    pub BackwardMaxCPCSSDUSize: u32,
+    pub Mode: u8,
+    pub SSCSType: u8,
+}
 pub const AAL5_SSCS_FRAME_RELAY: u32 = 4u32;
 pub const AAL5_SSCS_NULL: u32 = 0u32;
 pub const AAL5_SSCS_SSCOP_ASSURED: u32 = 1u32;
 pub const AAL5_SSCS_SSCOP_NON_ASSURED: u32 = 2u32;
 pub const AALTYPE_5: AAL_TYPE = 5i32;
 pub const AALTYPE_USER: AAL_TYPE = 16i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct AALUSER_PARAMETERS {
+    pub UserDefined: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct AAL_PARAMETERS_IE {
+    pub AALType: AAL_TYPE,
+    pub AALSpecificParameters: AAL_PARAMETERS_IE_0,
+}
+impl Default for AAL_PARAMETERS_IE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union AAL_PARAMETERS_IE_0 {
+    pub AAL5Parameters: AAL5_PARAMETERS,
+    pub AALUserParameters: AALUSER_PARAMETERS,
+}
+impl Default for AAL_PARAMETERS_IE_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type AAL_TYPE = i32;
+pub type ADDRESS_FAMILY = u16;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOA {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_next: *mut ADDRINFOA,
+}
+impl Default for ADDRINFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX2A {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX2A,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PSTR,
+}
+impl Default for ADDRINFOEX2A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX2W {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX2W,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PWSTR,
+}
+impl Default for ADDRINFOEX2W {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX3 {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX3,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PWSTR,
+    pub ai_interfaceindex: i32,
+}
+impl Default for ADDRINFOEX3 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX4 {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX4,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PWSTR,
+    pub ai_interfaceindex: i32,
+    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
+}
+impl Default for ADDRINFOEX4 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX5 {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX5,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PWSTR,
+    pub ai_interfaceindex: i32,
+    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
+    pub ai_ttl: u32,
+}
+impl Default for ADDRINFOEX5 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEX6 {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEX5,
+    pub ai_version: i32,
+    pub ai_fqdn: windows_sys::core::PWSTR,
+    pub ai_interfaceindex: i32,
+    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
+    pub ai_ttl: u32,
+    pub ai_numservers: u32,
+    pub ai_servers: *mut ADDRINFO_DNS_SERVER,
+    pub ai_responseflags: u64,
+}
+impl Default for ADDRINFOEX6 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEXA {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEXA,
+}
+impl Default for ADDRINFOEXA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOEXW {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_blob: *mut core::ffi::c_void,
+    pub ai_bloblen: usize,
+    pub ai_provider: *mut windows_sys::core::GUID,
+    pub ai_next: *mut ADDRINFOEXW,
+}
+impl Default for ADDRINFOEXW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ADDRINFOEX_VERSION_2: u32 = 2u32;
 pub const ADDRINFOEX_VERSION_3: u32 = 3u32;
 pub const ADDRINFOEX_VERSION_4: u32 = 4u32;
 pub const ADDRINFOEX_VERSION_5: u32 = 5u32;
 pub const ADDRINFOEX_VERSION_6: u32 = 6u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFOW {
+    pub ai_flags: i32,
+    pub ai_family: i32,
+    pub ai_socktype: i32,
+    pub ai_protocol: i32,
+    pub ai_addrlen: usize,
+    pub ai_canonname: windows_sys::core::PWSTR,
+    pub ai_addr: *mut SOCKADDR,
+    pub ai_next: *mut ADDRINFOW,
+}
+impl Default for ADDRINFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ADDRINFO_DNS_SERVER {
+    pub ai_servertype: u32,
+    pub ai_flags: u64,
+    pub ai_addrlen: u32,
+    pub ai_addr: *mut SOCKADDR,
+    pub Anonymous: ADDRINFO_DNS_SERVER_0,
+}
+impl Default for ADDRINFO_DNS_SERVER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ADDRINFO_DNS_SERVER_0 {
+    pub ai_template: windows_sys::core::PWSTR,
+}
+impl Default for ADDRINFO_DNS_SERVER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ADDR_ANY: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct AFPROTOCOLS {
+    pub iAddressFamily: i32,
+    pub iProtocol: i32,
+}
 pub const AF_12844: u16 = 25u16;
 pub const AF_APPLETALK: u16 = 16u16;
 pub const AF_ATM: u16 = 22u16;
@@ -334,20 +619,181 @@ pub const AI_RETURN_TTL: u32 = 128u32;
 pub const AI_SECURE: u32 = 32768u32;
 pub const AI_SECURE_WITH_FALLBACK: u32 = 1048576u32;
 pub const AI_V4MAPPED: u32 = 2048u32;
+pub type ARP_HARDWARE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ARP_HEADER {
+    pub HardwareAddressSpace: u16,
+    pub ProtocolAddressSpace: u16,
+    pub HardwareAddressLength: u8,
+    pub ProtocolAddressLength: u8,
+    pub Opcode: u16,
+    pub SenderHardwareAddress: [u8; 1],
+}
+impl Default for ARP_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ARP_HW_802: ARP_HARDWARE_TYPE = 6i32;
 pub const ARP_HW_ENET: ARP_HARDWARE_TYPE = 1i32;
+pub type ARP_OPCODE = i32;
 pub const ARP_REQUEST: ARP_OPCODE = 1i32;
 pub const ARP_RESPONSE: ARP_OPCODE = 2i32;
 pub const ASSOCIATE_NAMERES_CONTEXT: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x59a38b67_d4fe_46e1_ba3c_87ea74ca3049);
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ASSOCIATE_NAMERES_CONTEXT_INPUT {
+    pub TransportSettingId: TRANSPORT_SETTING_ID,
+    pub Handle: u64,
+}
 pub const ATMPROTO_AAL1: u32 = 1u32;
 pub const ATMPROTO_AAL2: u32 = 2u32;
 pub const ATMPROTO_AAL34: u32 = 3u32;
 pub const ATMPROTO_AAL5: u32 = 5u32;
 pub const ATMPROTO_AALUSER: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_ADDRESS {
+    pub AddressType: u32,
+    pub NumofDigits: u32,
+    pub Addr: [u8; 20],
+}
+impl Default for ATM_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ATM_ADDR_SIZE: u32 = 20u32;
 pub const ATM_AESA: u32 = 2u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_BHLI {
+    pub HighLayerInfoType: u32,
+    pub HighLayerInfoLength: u32,
+    pub HighLayerInfo: [u8; 8],
+}
+impl Default for ATM_BHLI {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_BLLI {
+    pub Layer2Protocol: u32,
+    pub Layer2UserSpecifiedProtocol: u32,
+    pub Layer3Protocol: u32,
+    pub Layer3UserSpecifiedProtocol: u32,
+    pub Layer3IPI: u32,
+    pub SnapID: [u8; 5],
+}
+impl Default for ATM_BLLI {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_BLLI_IE {
+    pub Layer2Protocol: u32,
+    pub Layer2Mode: u8,
+    pub Layer2WindowSize: u8,
+    pub Layer2UserSpecifiedProtocol: u32,
+    pub Layer3Protocol: u32,
+    pub Layer3Mode: u8,
+    pub Layer3DefaultPacketSize: u8,
+    pub Layer3PacketWindowSize: u8,
+    pub Layer3UserSpecifiedProtocol: u32,
+    pub Layer3IPI: u32,
+    pub SnapID: [u8; 5],
+}
+impl Default for ATM_BLLI_IE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_BROADBAND_BEARER_CAPABILITY_IE {
+    pub BearerClass: u8,
+    pub TrafficType: u8,
+    pub TimingRequirements: u8,
+    pub ClippingSusceptability: u8,
+    pub UserPlaneConnectionConfig: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_CALLING_PARTY_NUMBER_IE {
+    pub ATM_Number: ATM_ADDRESS,
+    pub Presentation_Indication: u8,
+    pub Screening_Indicator: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_CAUSE_IE {
+    pub Location: u8,
+    pub Cause: u8,
+    pub DiagnosticsLength: u8,
+    pub Diagnostics: [u8; 4],
+}
+impl Default for ATM_CAUSE_IE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_CONNECTION_ID {
+    pub DeviceNumber: u32,
+    pub VPI: u32,
+    pub VCI: u32,
+}
 pub const ATM_E164: u32 = 1u32;
 pub const ATM_NSAP: u32 = 2u32;
+#[repr(C, packed(4))]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_PVC_PARAMS {
+    pub PvcConnectionId: ATM_CONNECTION_ID,
+    pub PvcQos: QOS,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_QOS_CLASS_IE {
+    pub QOSClassForward: u8,
+    pub QOSClassBackward: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_TD {
+    pub PeakCellRate_CLP0: u32,
+    pub PeakCellRate_CLP01: u32,
+    pub SustainableCellRate_CLP0: u32,
+    pub SustainableCellRate_CLP01: u32,
+    pub MaxBurstSize_CLP0: u32,
+    pub MaxBurstSize_CLP01: u32,
+    pub Tagging: windows_sys::core::BOOL,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ATM_TRAFFIC_DESCRIPTOR_IE {
+    pub Forward: ATM_TD,
+    pub Backward: ATM_TD,
+    pub BestEffort: windows_sys::core::BOOL,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ATM_TRANSIT_NETWORK_SELECTION_IE {
+    pub TypeOfNetworkId: u8,
+    pub NetworkIdPlan: u8,
+    pub NetworkIdLength: u8,
+    pub NetworkId: [u8; 1],
+}
+impl Default for ATM_TRANSIT_NETWORK_SELECTION_IE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const BASE_PROTOCOL: u32 = 1u32;
 pub const BCOB_A: u32 = 1u32;
 pub const BCOB_C: u32 = 3u32;
@@ -459,8 +905,16 @@ pub const CF_DEFER: u32 = 2u32;
 pub const CF_REJECT: u32 = 1u32;
 pub const CLIP_NOT: u32 = 0u32;
 pub const CLIP_SUS: u32 = 32u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct CMSGHDR {
+    pub cmsg_len: usize,
+    pub cmsg_level: i32,
+    pub cmsg_type: i32,
+}
 pub const COMP_EQUAL: WSAECOMPARATOR = 0i32;
 pub const COMP_NOTLESS: WSAECOMPARATOR = 1i32;
+pub type CONTROL_CHANNEL_TRIGGER_STATUS = i32;
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_HARDWARE_SLOT_ALLOCATED: CONTROL_CHANNEL_TRIGGER_STATUS = 2i32;
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_INVALID: CONTROL_CHANNEL_TRIGGER_STATUS = 0i32;
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_POLICY_ERROR: CONTROL_CHANNEL_TRIGGER_STATUS = 3i32;
@@ -468,9 +922,230 @@ pub const CONTROL_CHANNEL_TRIGGER_STATUS_SERVICE_UNAVAILABLE: CONTROL_CHANNEL_TR
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_SOFTWARE_SLOT_ALLOCATED: CONTROL_CHANNEL_TRIGGER_STATUS = 1i32;
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_SYSTEM_ERROR: CONTROL_CHANNEL_TRIGGER_STATUS = 4i32;
 pub const CONTROL_CHANNEL_TRIGGER_STATUS_TRANSPORT_DISCONNECTED: CONTROL_CHANNEL_TRIGGER_STATUS = 5i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct CSADDR_INFO {
+    pub LocalAddr: SOCKET_ADDRESS,
+    pub RemoteAddr: SOCKET_ADDRESS,
+    pub iSocketType: i32,
+    pub iProtocol: i32,
+}
 pub const DE_REUSE_SOCKET: u32 = 2u32;
 pub const DL_ADDRESS_LENGTH_MAXIMUM: u32 = 32u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_EI48 {
+    pub Byte: [u8; 3],
+}
+impl Default for DL_EI48 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_EI64 {
+    pub Byte: [u8; 5],
+}
+impl Default for DL_EI64 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_EUI48 {
+    pub Byte: [u8; 6],
+    pub Anonymous: DL_EUI48_0,
+}
+impl Default for DL_EUI48 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DL_EUI48_0 {
+    pub Oui: DL_OUI,
+    pub Ei48: DL_EI48,
+}
+impl Default for DL_EUI48_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_EUI64 {
+    pub Byte: [u8; 8],
+    pub Value: u64,
+    pub Anonymous: DL_EUI64_0,
+}
+impl Default for DL_EUI64 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DL_EUI64_0 {
+    pub Oui: DL_OUI,
+    pub Anonymous: DL_EUI64_0_0,
+}
+impl Default for DL_EUI64_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_EUI64_0_0 {
+    pub Ei64: DL_EI64,
+    pub Anonymous: DL_EUI64_0_0_0,
+}
+impl Default for DL_EUI64_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DL_EUI64_0_0_0 {
+    pub Type: u8,
+    pub Tse: u8,
+    pub Ei48: DL_EI48,
+}
+impl Default for DL_EUI64_0_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const DL_HEADER_LENGTH_MAXIMUM: u32 = 64u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union DL_OUI {
+    pub Byte: [u8; 3],
+    pub Anonymous: DL_OUI_0,
+}
+impl Default for DL_OUI {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct DL_OUI_0 {
+    pub _bitfield: u8,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct DL_TEREDO_ADDRESS {
+    pub Reserved: [u8; 6],
+    pub Anonymous: DL_TEREDO_ADDRESS_0,
+}
+impl Default for DL_TEREDO_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub union DL_TEREDO_ADDRESS_0 {
+    pub Eui64: DL_EUI64,
+    pub Anonymous: DL_TEREDO_ADDRESS_0_0,
+}
+impl Default for DL_TEREDO_ADDRESS_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct DL_TEREDO_ADDRESS_0_0 {
+    pub Flags: u16,
+    pub MappedPort: u16,
+    pub MappedAddress: IN_ADDR,
+}
+impl Default for DL_TEREDO_ADDRESS_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct DL_TEREDO_ADDRESS_PRV {
+    pub Reserved: [u8; 6],
+    pub Anonymous: DL_TEREDO_ADDRESS_PRV_0,
+}
+impl Default for DL_TEREDO_ADDRESS_PRV {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub union DL_TEREDO_ADDRESS_PRV_0 {
+    pub Eui64: DL_EUI64,
+    pub Anonymous: DL_TEREDO_ADDRESS_PRV_0_0,
+}
+impl Default for DL_TEREDO_ADDRESS_PRV_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct DL_TEREDO_ADDRESS_PRV_0_0 {
+    pub Flags: u16,
+    pub MappedPort: u16,
+    pub MappedAddress: IN_ADDR,
+    pub LocalAddress: IN_ADDR,
+    pub InterfaceIndex: u32,
+    pub LocalPort: u16,
+    pub DlDestination: DL_EUI48,
+}
+impl Default for DL_TEREDO_ADDRESS_PRV_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Kernel")]
+#[derive(Clone, Copy)]
+pub struct DL_TUNNEL_ADDRESS {
+    pub CompartmentId: super::super::System::Kernel::COMPARTMENT_ID,
+    pub ScopeId: SCOPE_ID,
+    pub IpAddress: [u8; 1],
+}
+#[cfg(feature = "Win32_System_Kernel")]
+impl Default for DL_TUNNEL_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ETHERNET_HEADER {
+    pub Destination: DL_EUI48,
+    pub Source: DL_EUI48,
+    pub Anonymous: ETHERNET_HEADER_0,
+}
+impl Default for ETHERNET_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ETHERNET_HEADER_0 {
+    pub Type: u16,
+    pub Length: u16,
+}
+impl Default for ETHERNET_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ETHERNET_TYPE_802_1AD: u32 = 34984u32;
 pub const ETHERNET_TYPE_802_1Q: u32 = 33024u32;
 pub const ETHERNET_TYPE_ARP: u32 = 2054u32;
@@ -483,6 +1158,7 @@ pub const ETH_LENGTH_OF_VLAN_HEADER: u32 = 4u32;
 pub const EXT_LEN_UNIT: u32 = 8u32;
 pub const E_WINDOW_ADVANCE_BY_TIME: eWINDOW_ADVANCE_METHOD = 1i32;
 pub const E_WINDOW_USE_AS_DATA_CACHE: eWINDOW_ADVANCE_METHOD = 2i32;
+pub type FALLBACK_INDEX = i32;
 pub const FD_ACCEPT: u32 = 8u32;
 pub const FD_ACCEPT_BIT: u32 = 3u32;
 pub const FD_ADDRESS_LIST_CHANGE_BIT: u32 = 9u32;
@@ -498,16 +1174,80 @@ pub const FD_QOS_BIT: u32 = 6u32;
 pub const FD_READ: u32 = 1u32;
 pub const FD_READ_BIT: u32 = 0u32;
 pub const FD_ROUTING_INTERFACE_CHANGE_BIT: u32 = 8u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct FD_SET {
+    pub fd_count: u32,
+    pub fd_array: [SOCKET; 64],
+}
+impl Default for FD_SET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const FD_SETSIZE: u32 = 64u32;
 pub const FD_WRITE: u32 = 2u32;
 pub const FD_WRITE_BIT: u32 = 1u32;
 pub const FIOASYNC: i32 = -2147195267i32;
 pub const FIONBIO: i32 = -2147195266i32;
 pub const FIONREAD: i32 = 1074030207i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct FLOWSPEC {
+    pub TokenRate: u32,
+    pub TokenBucketSize: u32,
+    pub PeakBandwidth: u32,
+    pub Latency: u32,
+    pub DelayVariation: u32,
+    pub ServiceType: u32,
+    pub MaxSduSize: u32,
+    pub MinimumPolicedSize: u32,
+}
 pub const FROM_PROTOCOL_INFO: i32 = -1i32;
 pub const FallbackIndexMax: FALLBACK_INDEX = 1i32;
 pub const FallbackIndexTcpFastopen: FALLBACK_INDEX = 0i32;
 pub const GAI_STRERROR_BUFFER_SIZE: u32 = 1024u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct GROUP_FILTER {
+    pub gf_interface: u32,
+    pub gf_group: SOCKADDR_STORAGE,
+    pub gf_fmode: MULTICAST_MODE_TYPE,
+    pub gf_numsrc: u32,
+    pub gf_slist: [SOCKADDR_STORAGE; 1],
+}
+impl Default for GROUP_FILTER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct GROUP_REQ {
+    pub gr_interface: u32,
+    pub gr_group: SOCKADDR_STORAGE,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct GROUP_SOURCE_REQ {
+    pub gsr_interface: u32,
+    pub gsr_group: SOCKADDR_STORAGE,
+    pub gsr_source: SOCKADDR_STORAGE,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct HOSTENT {
+    pub h_name: windows_sys::core::PSTR,
+    pub h_aliases: *mut *mut i8,
+    pub h_addrtype: i16,
+    pub h_length: i16,
+    pub h_addr_list: *mut *mut i8,
+}
+impl Default for HOSTENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IAS_ATTRIB_INT: u32 = 1u32;
 pub const IAS_ATTRIB_NO_ATTRIB: u32 = 0u32;
 pub const IAS_ATTRIB_NO_CLASS: u32 = 16u32;
@@ -517,9 +1257,11 @@ pub const IAS_MAX_ATTRIBNAME: u32 = 256u32;
 pub const IAS_MAX_CLASSNAME: u32 = 64u32;
 pub const IAS_MAX_OCTET_STRING: u32 = 1024u32;
 pub const IAS_MAX_USER_STRING: u32 = 256u32;
+pub type ICMP4_TIME_EXCEED_CODE = i32;
 pub const ICMP4_TIME_EXCEED_REASSEMBLY: ICMP4_TIME_EXCEED_CODE = 1i32;
 pub const ICMP4_TIME_EXCEED_TRANSIT: ICMP4_TIME_EXCEED_CODE = 0i32;
 pub const ICMP4_UNREACH_ADMIN: ICMP4_UNREACH_CODE = 13i32;
+pub type ICMP4_UNREACH_CODE = i32;
 pub const ICMP4_UNREACH_FRAG_NEEDED: ICMP4_UNREACH_CODE = 4i32;
 pub const ICMP4_UNREACH_HOST: ICMP4_UNREACH_CODE = 1i32;
 pub const ICMP4_UNREACH_HOST_ADMIN: ICMP4_UNREACH_CODE = 10i32;
@@ -544,8 +1286,106 @@ pub const ICMP6_PARAMPROB_NEXTHEADER: u32 = 1u32;
 pub const ICMP6_PARAMPROB_OPTION: u32 = 2u32;
 pub const ICMP6_TIME_EXCEED_REASSEMBLY: u32 = 1u32;
 pub const ICMP6_TIME_EXCEED_TRANSIT: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMPV4_ADDRESS_MASK_MESSAGE {
+    pub Header: ICMP_MESSAGE,
+    pub AddressMask: u32,
+}
+impl Default for ICMPV4_ADDRESS_MASK_MESSAGE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ICMPV4_INVALID_PREFERENCE_LEVEL: u32 = 2147483648u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMPV4_ROUTER_ADVERT_ENTRY {
+    pub RouterAdvertAddr: IN_ADDR,
+    pub PreferenceLevel: i32,
+}
+impl Default for ICMPV4_ROUTER_ADVERT_ENTRY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMPV4_ROUTER_ADVERT_HEADER {
+    pub RaHeader: ICMP_MESSAGE,
+}
+impl Default for ICMPV4_ROUTER_ADVERT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMPV4_ROUTER_SOLICIT {
+    pub RsHeader: ICMP_MESSAGE,
+}
+impl Default for ICMPV4_ROUTER_SOLICIT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMPV4_TIMESTAMP_MESSAGE {
+    pub Header: ICMP_MESSAGE,
+    pub OriginateTimestamp: u32,
+    pub ReceiveTimestamp: u32,
+    pub TransmitTimestamp: u32,
+}
+impl Default for ICMPV4_TIMESTAMP_MESSAGE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const ICMPV6_ECHO_REQUEST_FLAG_REVERSE: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMP_ERROR_INFO {
+    pub srcaddress: SOCKADDR_INET,
+    pub protocol: IPPROTO,
+    pub r#type: u8,
+    pub code: u8,
+}
+impl Default for ICMP_ERROR_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ICMP_HEADER {
+    pub Type: u8,
+    pub Code: u8,
+    pub Checksum: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ICMP_MESSAGE {
+    pub Header: ICMP_HEADER,
+    pub Data: ICMP_MESSAGE_0,
+}
+impl Default for ICMP_MESSAGE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ICMP_MESSAGE_0 {
+    pub Data32: [u32; 1],
+    pub Data16: [u16; 2],
+    pub Data8: [u8; 4],
+}
+impl Default for ICMP_MESSAGE_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IE_AALParameters: Q2931_IE_TYPE = 0i32;
 pub const IE_BHLI: Q2931_IE_TYPE = 3i32;
 pub const IE_BLLI: Q2931_IE_TYPE = 4i32;
@@ -563,7 +1403,119 @@ pub const IFF_LOOPBACK: u32 = 4u32;
 pub const IFF_MULTICAST: u32 = 16u32;
 pub const IFF_POINTTOPOINT: u32 = 8u32;
 pub const IFF_UP: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IGMPV3_QUERY_HEADER {
+    pub Type: u8,
+    pub Anonymous1: IGMPV3_QUERY_HEADER_0,
+    pub Checksum: u16,
+    pub MulticastAddress: IN_ADDR,
+    pub _bitfield: u8,
+    pub Anonymous2: IGMPV3_QUERY_HEADER_1,
+    pub SourceCount: u16,
+}
+impl Default for IGMPV3_QUERY_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IGMPV3_QUERY_HEADER_0 {
+    pub MaxRespCode: u8,
+    pub Anonymous: IGMPV3_QUERY_HEADER_0_0,
+}
+impl Default for IGMPV3_QUERY_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IGMPV3_QUERY_HEADER_0_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IGMPV3_QUERY_HEADER_1 {
+    pub QueriersQueryInterfaceCode: u8,
+    pub Anonymous: IGMPV3_QUERY_HEADER_1_0,
+}
+impl Default for IGMPV3_QUERY_HEADER_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IGMPV3_QUERY_HEADER_1_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IGMPV3_REPORT_HEADER {
+    pub Type: u8,
+    pub Reserved: u8,
+    pub Checksum: u16,
+    pub Reserved2: u16,
+    pub RecordCount: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IGMPV3_REPORT_RECORD_HEADER {
+    pub Type: u8,
+    pub AuxillaryDataLength: u8,
+    pub SourceCount: u16,
+    pub MulticastAddress: IN_ADDR,
+}
+impl Default for IGMPV3_REPORT_RECORD_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IGMP_HEADER {
+    pub Anonymous1: IGMP_HEADER_0,
+    pub Anonymous2: IGMP_HEADER_1,
+    pub Checksum: u16,
+    pub MulticastAddress: IN_ADDR,
+}
+impl Default for IGMP_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IGMP_HEADER_0 {
+    pub Anonymous: IGMP_HEADER_0_0,
+    pub VersionType: u8,
+}
+impl Default for IGMP_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IGMP_HEADER_0_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IGMP_HEADER_1 {
+    pub Reserved: u8,
+    pub MaxRespTime: u8,
+    pub Code: u8,
+}
+impl Default for IGMP_HEADER_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IGMP_LEAVE_GROUP_TYPE: u32 = 23u32;
+pub type IGMP_MAX_RESP_CODE_TYPE = i32;
 pub const IGMP_MAX_RESP_CODE_TYPE_FLOAT: IGMP_MAX_RESP_CODE_TYPE = 1i32;
 pub const IGMP_MAX_RESP_CODE_TYPE_NORMAL: IGMP_MAX_RESP_CODE_TYPE = 0i32;
 pub const IGMP_QUERY_TYPE: u32 = 17u32;
@@ -585,8 +1537,51 @@ pub const IN6ADDR_MULTICASTPREFIX_LENGTH: u32 = 8u32;
 pub const IN6ADDR_SOLICITEDNODEMULTICASTPREFIX_LENGTH: u32 = 104u32;
 pub const IN6ADDR_TEREDOPREFIX_LENGTH: u32 = 32u32;
 pub const IN6ADDR_V4MAPPEDPREFIX_LENGTH: u32 = 96u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN6_ADDR {
+    pub u: IN6_ADDR_0,
+}
+impl Default for IN6_ADDR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IN6_ADDR_0 {
+    pub Byte: [u8; 16],
+    pub Word: [u16; 8],
+}
+impl Default for IN6_ADDR_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IN6_EMBEDDEDV4_BITS_IN_BYTE: u32 = 8u32;
 pub const IN6_EMBEDDEDV4_UOCTET_POSITION: u32 = 8u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN6_PKTINFO {
+    pub ipi6_addr: IN6_ADDR,
+    pub ipi6_ifindex: u32,
+}
+impl Default for IN6_PKTINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN6_PKTINFO_EX {
+    pub pkt_info: IN6_PKTINFO,
+    pub scope_id: SCOPE_ID,
+}
+impl Default for IN6_PKTINFO_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const INADDR_ANY: u32 = 0u32;
 pub const INADDR_BROADCAST: u32 = 4294967295u32;
 pub const INADDR_LOOPBACK: u32 = 2130706433u32;
@@ -595,7 +1590,86 @@ pub const INCL_WINSOCK_API_PROTOTYPES: u32 = 1u32;
 pub const INCL_WINSOCK_API_TYPEDEFS: u32 = 0u32;
 pub const INET6_ADDRSTRLEN: u32 = 65u32;
 pub const INET_ADDRSTRLEN: u32 = 22u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INET_PORT_RANGE {
+    pub StartPort: u16,
+    pub NumberOfPorts: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INET_PORT_RESERVATION_INFORMATION {
+    pub OwningPid: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INET_PORT_RESERVATION_INSTANCE {
+    pub Reservation: INET_PORT_RANGE,
+    pub Token: INET_PORT_RESERVATION_TOKEN,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INET_PORT_RESERVATION_TOKEN {
+    pub Token: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct INTERFACE_INFO {
+    pub iiFlags: u32,
+    pub iiAddress: sockaddr_gen,
+    pub iiBroadcastAddress: sockaddr_gen,
+    pub iiNetmask: sockaddr_gen,
+}
+impl Default for INTERFACE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct INTERFACE_INFO_EX {
+    pub iiFlags: u32,
+    pub iiAddress: SOCKET_ADDRESS,
+    pub iiBroadcastAddress: SOCKET_ADDRESS,
+    pub iiNetmask: SOCKET_ADDRESS,
+}
 pub const INVALID_SOCKET: SOCKET = -1i32 as _;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN_ADDR {
+    pub S_un: IN_ADDR_0,
+}
+impl Default for IN_ADDR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IN_ADDR_0 {
+    pub S_un_b: IN_ADDR_0_0,
+    pub S_un_w: IN_ADDR_0_1,
+    pub S_addr: u32,
+}
+impl Default for IN_ADDR_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IN_ADDR_0_0 {
+    pub s_b1: u8,
+    pub s_b2: u8,
+    pub s_b3: u8,
+    pub s_b4: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IN_ADDR_0_1 {
+    pub s_w1: u16,
+    pub s_w2: u16,
+}
 pub const IN_CLASSA_HOST: u32 = 16777215u32;
 pub const IN_CLASSA_MAX: u32 = 128u32;
 pub const IN_CLASSA_NET: u32 = 4278190080u32;
@@ -610,6 +1684,36 @@ pub const IN_CLASSC_NSHIFT: u32 = 8u32;
 pub const IN_CLASSD_HOST: u32 = 268435455u32;
 pub const IN_CLASSD_NET: u32 = 4026531840u32;
 pub const IN_CLASSD_NSHIFT: u32 = 28u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN_PKTINFO {
+    pub ipi_addr: IN_ADDR,
+    pub ipi_ifindex: u32,
+}
+impl Default for IN_PKTINFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IN_PKTINFO_EX {
+    pub pkt_info: IN_PKTINFO,
+    pub scope_id: SCOPE_ID,
+}
+impl Default for IN_PKTINFO_EX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IN_RECVERR {
+    pub protocol: IPPROTO,
+    pub info: u32,
+    pub r#type: u8,
+    pub code: u8,
+}
 pub const IOCPARM_MASK: u32 = 127u32;
 pub const IOC_IN: u32 = 2147483648u32;
 pub const IOC_INOUT: u32 = 3221225472u32;
@@ -682,6 +1786,7 @@ pub const IPPORT_TIMESERVER: u32 = 37u32;
 pub const IPPORT_TTYLINK: u32 = 87u32;
 pub const IPPORT_WHOIS: u32 = 43u32;
 pub const IPPORT_WHOSERVER: u32 = 513u32;
+pub type IPPROTO = i32;
 pub const IPPROTO_AH: IPPROTO = 51i32;
 pub const IPPROTO_CBT: IPPROTO = 7i32;
 pub const IPPROTO_DSTOPTS: IPPROTO = 60i32;
@@ -719,9 +1824,148 @@ pub const IPPROTO_SCTP: IPPROTO = 132i32;
 pub const IPPROTO_ST: IPPROTO = 5i32;
 pub const IPPROTO_TCP: IPPROTO = 6i32;
 pub const IPPROTO_UDP: IPPROTO = 17i32;
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct IPTLS_METADATA {
+    pub SequenceNumber: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV4_HEADER {
+    pub Anonymous1: IPV4_HEADER_0,
+    pub Anonymous2: IPV4_HEADER_1,
+    pub TotalLength: u16,
+    pub Identification: u16,
+    pub Anonymous3: IPV4_HEADER_2,
+    pub TimeToLive: u8,
+    pub Protocol: u8,
+    pub HeaderChecksum: u16,
+    pub SourceAddress: IN_ADDR,
+    pub DestinationAddress: IN_ADDR,
+}
+impl Default for IPV4_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV4_HEADER_0 {
+    pub VersionAndHeaderLength: u8,
+    pub Anonymous: IPV4_HEADER_0_0,
+}
+impl Default for IPV4_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV4_HEADER_0_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV4_HEADER_1 {
+    pub TypeOfServiceAndEcnField: u8,
+    pub Anonymous: IPV4_HEADER_1_0,
+}
+impl Default for IPV4_HEADER_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV4_HEADER_1_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV4_HEADER_2 {
+    pub FlagsAndOffset: u16,
+    pub Anonymous: IPV4_HEADER_2_0,
+}
+impl Default for IPV4_HEADER_2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV4_HEADER_2_0 {
+    pub _bitfield: u16,
+}
 pub const IPV4_MAX_MINIMUM_MTU: u32 = 576u32;
 pub const IPV4_MINIMUM_MTU: u32 = 576u32;
 pub const IPV4_MIN_MINIMUM_MTU: u32 = 352u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV4_OPTION_HEADER {
+    pub Anonymous: IPV4_OPTION_HEADER_0,
+    pub OptionLength: u8,
+}
+impl Default for IPV4_OPTION_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV4_OPTION_HEADER_0 {
+    pub OptionType: u8,
+    pub Anonymous: IPV4_OPTION_HEADER_0_0,
+}
+impl Default for IPV4_OPTION_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV4_OPTION_HEADER_0_0 {
+    pub _bitfield: u8,
+}
+pub type IPV4_OPTION_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV4_ROUTING_HEADER {
+    pub OptionHeader: IPV4_OPTION_HEADER,
+    pub Pointer: u8,
+}
+impl Default for IPV4_ROUTING_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV4_TIMESTAMP_OPTION {
+    pub OptionHeader: IPV4_OPTION_HEADER,
+    pub Pointer: u8,
+    pub Anonymous: IPV4_TIMESTAMP_OPTION_0,
+}
+impl Default for IPV4_TIMESTAMP_OPTION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV4_TIMESTAMP_OPTION_0 {
+    pub FlagsOverflow: u8,
+    pub Anonymous: IPV4_TIMESTAMP_OPTION_0_0,
+}
+impl Default for IPV4_TIMESTAMP_OPTION_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV4_TIMESTAMP_OPTION_0_0 {
+    pub _bitfield: u8,
+}
 pub const IPV4_VERSION: u32 = 4u32;
 pub const IPV6_ADD_IFLIST: i32 = 29i32;
 pub const IPV6_ADD_MEMBERSHIP: i32 = 12i32;
@@ -732,22 +1976,150 @@ pub const IPV6_DROP_MEMBERSHIP: i32 = 13i32;
 pub const IPV6_ECN: i32 = 50i32;
 pub const IPV6_ECN_MASK: u32 = 12288u32;
 pub const IPV6_ECN_SHIFT: u32 = 12u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV6_EXTENSION_HEADER {
+    pub NextHeader: u8,
+    pub Length: u8,
+}
 pub const IPV6_FLOW_LABEL_MASK: u32 = 4294905600u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_FRAGMENT_HEADER {
+    pub NextHeader: u8,
+    pub Reserved: u8,
+    pub Anonymous: IPV6_FRAGMENT_HEADER_0,
+    pub Id: u32,
+}
+impl Default for IPV6_FRAGMENT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV6_FRAGMENT_HEADER_0 {
+    pub Anonymous: IPV6_FRAGMENT_HEADER_0_0,
+    pub OffsetAndFlags: u16,
+}
+impl Default for IPV6_FRAGMENT_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV6_FRAGMENT_HEADER_0_0 {
+    pub _bitfield: u16,
+}
 pub const IPV6_FULL_TRAFFIC_CLASS_MASK: u32 = 61455u32;
 pub const IPV6_GET_IFLIST: i32 = 33i32;
 pub const IPV6_HDRINCL: i32 = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_HEADER {
+    pub Anonymous: IPV6_HEADER_0,
+    pub PayloadLength: u16,
+    pub NextHeader: u8,
+    pub HopLimit: u8,
+    pub SourceAddress: IN6_ADDR,
+    pub DestinationAddress: IN6_ADDR,
+}
+impl Default for IPV6_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV6_HEADER_0 {
+    pub VersionClassFlow: u32,
+    pub Anonymous: IPV6_HEADER_0_0,
+}
+impl Default for IPV6_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV6_HEADER_0_0 {
+    pub _bitfield: u32,
+}
 pub const IPV6_HOPLIMIT: i32 = 21i32;
 pub const IPV6_HOPOPTS: i32 = 1i32;
 pub const IPV6_IFLIST: i32 = 28i32;
 pub const IPV6_JOIN_GROUP: i32 = 12i32;
 pub const IPV6_LEAVE_GROUP: i32 = 13i32;
 pub const IPV6_MINIMUM_MTU: u32 = 1280u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_MREQ {
+    pub ipv6mr_multiaddr: IN6_ADDR,
+    pub ipv6mr_interface: u32,
+}
+impl Default for IPV6_MREQ {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPV6_MTU: i32 = 72i32;
 pub const IPV6_MTU_DISCOVER: i32 = 71i32;
 pub const IPV6_MULTICAST_HOPS: i32 = 10i32;
 pub const IPV6_MULTICAST_IF: i32 = 9i32;
 pub const IPV6_MULTICAST_LOOP: i32 = 11i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS {
+    pub Anonymous: IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS_0,
+    pub Value: u32,
+}
+impl Default for IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS_0 {
+    pub _bitfield: u8,
+    pub Reserved2: [u8; 3],
+}
+impl Default for IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPV6_NRT_INTERFACE: i32 = 74i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV6_OPTION_HEADER {
+    pub Type: u8,
+    pub DataLength: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_OPTION_JUMBOGRAM {
+    pub Header: IPV6_OPTION_HEADER,
+    pub JumbogramLength: [u8; 4],
+}
+impl Default for IPV6_OPTION_JUMBOGRAM {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_OPTION_ROUTER_ALERT {
+    pub Header: IPV6_OPTION_HEADER,
+    pub Value: [u8; 2],
+}
+impl Default for IPV6_OPTION_ROUTER_ALERT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type IPV6_OPTION_TYPE = i32;
 pub const IPV6_PKTINFO: i32 = 19i32;
 pub const IPV6_PKTINFO_EX: i32 = 51i32;
 pub const IPV6_PROTECTION_LEVEL: i32 = 23i32;
@@ -757,6 +2129,36 @@ pub const IPV6_RECVERR: i32 = 75i32;
 pub const IPV6_RECVIF: i32 = 24i32;
 pub const IPV6_RECVRTHDR: i32 = 38i32;
 pub const IPV6_RECVTCLASS: i32 = 40i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union IPV6_ROUTER_ADVERTISEMENT_FLAGS {
+    pub Anonymous: IPV6_ROUTER_ADVERTISEMENT_FLAGS_0,
+    pub Value: u8,
+}
+impl Default for IPV6_ROUTER_ADVERTISEMENT_FLAGS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct IPV6_ROUTER_ADVERTISEMENT_FLAGS_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPV6_ROUTING_HEADER {
+    pub NextHeader: u8,
+    pub Length: u8,
+    pub RoutingType: u8,
+    pub SegmentsLeft: u8,
+    pub Reserved: [u8; 4],
+}
+impl Default for IPV6_ROUTING_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPV6_RTHDR: i32 = 32i32;
 pub const IPV6_TCLASS: i32 = 39i32;
 pub const IPV6_TRAFFIC_CLASS_MASK: u32 = 49167u32;
@@ -768,6 +2170,22 @@ pub const IPV6_VERSION: u32 = 96u32;
 pub const IPV6_WFP_REDIRECT_CONTEXT: i32 = 70i32;
 pub const IPV6_WFP_REDIRECT_RECORDS: i32 = 60i32;
 pub const IPX_ADDRESS: i32 = 16391i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPX_ADDRESS_DATA {
+    pub adapternum: i32,
+    pub netnum: [u8; 4],
+    pub nodenum: [u8; 6],
+    pub wan: bool,
+    pub status: bool,
+    pub maxpkt: i32,
+    pub linkspeed: u32,
+}
+impl Default for IPX_ADDRESS_DATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPX_ADDRESS_NOTIFY: i32 = 16396i32;
 pub const IPX_DSTYPE: i32 = 16386i32;
 pub const IPX_EXTENDED_ADDRESS: i32 = 16388i32;
@@ -777,10 +2195,51 @@ pub const IPX_GETNETINFO_NORIP: i32 = 16393i32;
 pub const IPX_IMMEDIATESPXACK: i32 = 16400i32;
 pub const IPX_MAXSIZE: i32 = 16390i32;
 pub const IPX_MAX_ADAPTER_NUM: i32 = 16397i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPX_NETNUM_DATA {
+    pub netnum: [u8; 4],
+    pub hopcount: u16,
+    pub netdelay: u16,
+    pub cardnum: i32,
+    pub router: [u8; 6],
+}
+impl Default for IPX_NETNUM_DATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPX_PTYPE: i32 = 16384i32;
 pub const IPX_RECEIVE_BROADCAST: i32 = 16399i32;
 pub const IPX_RECVHDR: i32 = 16389i32;
 pub const IPX_RERIPNETNUMBER: i32 = 16398i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IPX_SPXCONNSTATUS_DATA {
+    pub ConnectionState: u8,
+    pub WatchDogActive: u8,
+    pub LocalConnectionId: u16,
+    pub RemoteConnectionId: u16,
+    pub LocalSequenceNumber: u16,
+    pub LocalAckNumber: u16,
+    pub LocalAllocNumber: u16,
+    pub RemoteAckNumber: u16,
+    pub RemoteAllocNumber: u16,
+    pub LocalSocket: u16,
+    pub ImmediateAddress: [u8; 6],
+    pub RemoteNetwork: [u8; 4],
+    pub RemoteNode: [u8; 6],
+    pub RemoteSocket: u16,
+    pub RetransmissionCount: u16,
+    pub EstimatedRoundTripDelay: u16,
+    pub RetransmittedPackets: u16,
+    pub SuppressedPacket: u16,
+}
+impl Default for IPX_SPXCONNSTATUS_DATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IPX_SPXGETCONNECTIONSTATUS: i32 = 16395i32;
 pub const IPX_STOPFILTERPTYPE: i32 = 16387i32;
 pub const IP_ADD_IFLIST: i32 = 29i32;
@@ -799,6 +2258,43 @@ pub const IP_HDRINCL: i32 = 2i32;
 pub const IP_HOPLIMIT: i32 = 21i32;
 pub const IP_IFLIST: i32 = 28i32;
 pub const IP_MAX_MEMBERSHIPS: u32 = 20u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_MREQ {
+    pub imr_multiaddr: IN_ADDR,
+    pub imr_interface: IN_ADDR,
+}
+impl Default for IP_MREQ {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_MREQ_SOURCE {
+    pub imr_multiaddr: IN_ADDR,
+    pub imr_sourceaddr: IN_ADDR,
+    pub imr_interface: IN_ADDR,
+}
+impl Default for IP_MREQ_SOURCE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct IP_MSFILTER {
+    pub imsf_multiaddr: IN_ADDR,
+    pub imsf_interface: IN_ADDR,
+    pub imsf_fmode: MULTICAST_MODE_TYPE,
+    pub imsf_numsrc: u32,
+    pub imsf_slist: [IN_ADDR; 1],
+}
+impl Default for IP_MSFILTER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const IP_MTU: i32 = 73i32;
 pub const IP_MTU_DISCOVER: i32 = 71i32;
 pub const IP_MULTICAST_IF: i32 = 9i32;
@@ -807,6 +2303,7 @@ pub const IP_MULTICAST_TTL: i32 = 10i32;
 pub const IP_NRT_INTERFACE: i32 = 74i32;
 pub const IP_OPTIONS: i32 = 1i32;
 pub const IP_OPTION_TIMESTAMP_ADDRESS: IP_OPTION_TIMESTAMP_FLAGS = 1i32;
+pub type IP_OPTION_TIMESTAMP_FLAGS = i32;
 pub const IP_OPTION_TIMESTAMP_ONLY: IP_OPTION_TIMESTAMP_FLAGS = 0i32;
 pub const IP_OPTION_TIMESTAMP_SPECIFIC_ADDRESS: IP_OPTION_TIMESTAMP_FLAGS = 3i32;
 pub const IP_OPT_EOL: IPV4_OPTION_TYPE = 0i32;
@@ -901,6 +2398,12 @@ pub const JL_BOTH: u32 = 4u32;
 pub const JL_RECEIVER_ONLY: u32 = 2u32;
 pub const JL_SENDER_ONLY: u32 = 1u32;
 pub const LAYERED_PROTOCOL: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct LINGER {
+    pub l_onoff: u16,
+    pub l_linger: u16,
+}
 pub const LITTLEENDIAN: u32 = 1u32;
 pub const LM_BAUD_115200: u32 = 115200u32;
 pub const LM_BAUD_1152K: u32 = 1152000u32;
@@ -923,7 +2426,147 @@ pub const LM_HB1_Printer: i32 = 8i32;
 pub const LM_HB2_FileServer: i32 = 2i32;
 pub const LM_HB2_Telephony: i32 = 1i32;
 pub const LM_HB_Extension: i32 = 128i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct LM_IRPARMS {
+    pub nTXDataBytes: u32,
+    pub nRXDataBytes: u32,
+    pub nBaudRate: u32,
+    pub thresholdTime: u32,
+    pub discTime: u32,
+    pub nMSLinkTurn: u16,
+    pub nTXPackets: u8,
+    pub nRXPackets: u8,
+}
 pub const LOG2_BITS_PER_BYTE: u32 = 3u32;
+pub type LPBLOCKINGCALLBACK = Option<unsafe extern "system" fn(dwcontext: usize) -> windows_sys::core::BOOL>;
+pub type LPCONDITIONPROC = Option<unsafe extern "system" fn(lpcallerid: *mut WSABUF, lpcallerdata: *mut WSABUF, lpsqos: *mut QOS, lpgqos: *mut QOS, lpcalleeid: *mut WSABUF, lpcalleedata: *mut WSABUF, g: *mut u32, dwcallbackdata: usize) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_ACCEPTEX = Option<unsafe extern "system" fn(slistensocket: SOCKET, sacceptsocket: SOCKET, lpoutputbuffer: *mut core::ffi::c_void, dwreceivedatalength: u32, dwlocaladdresslength: u32, dwremoteaddresslength: u32, lpdwbytesreceived: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED) -> windows_sys::core::BOOL>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_CONNECTEX = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpsendbuffer: *const core::ffi::c_void, dwsenddatalength: u32, lpdwbytessent: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED) -> windows_sys::core::BOOL>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_DISCONNECTEX = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32, dwreserved: u32) -> windows_sys::core::BOOL>;
+pub type LPFN_GETACCEPTEXSOCKADDRS = Option<unsafe extern "system" fn(lpoutputbuffer: *const core::ffi::c_void, dwreceivedatalength: u32, dwlocaladdresslength: u32, dwremoteaddresslength: u32, localsockaddr: *mut *mut SOCKADDR, localsockaddrlength: *mut i32, remotesockaddr: *mut *mut SOCKADDR, remotesockaddrlength: *mut i32)>;
+pub type LPFN_NSPAPI = Option<unsafe extern "system" fn() -> u32>;
+pub type LPFN_RIOCLOSECOMPLETIONQUEUE = Option<unsafe extern "system" fn(cq: RIO_CQ)>;
+pub type LPFN_RIOCREATECOMPLETIONQUEUE = Option<unsafe extern "system" fn(queuesize: u32, notificationcompletion: *const RIO_NOTIFICATION_COMPLETION) -> RIO_CQ>;
+pub type LPFN_RIOCREATEREQUESTQUEUE = Option<unsafe extern "system" fn(socket: SOCKET, maxoutstandingreceive: u32, maxreceivedatabuffers: u32, maxoutstandingsend: u32, maxsenddatabuffers: u32, receivecq: RIO_CQ, sendcq: RIO_CQ, socketcontext: *const core::ffi::c_void) -> RIO_RQ>;
+pub type LPFN_RIODEQUEUECOMPLETION = Option<unsafe extern "system" fn(cq: RIO_CQ, array: *mut RIORESULT, arraysize: u32) -> u32>;
+pub type LPFN_RIODEREGISTERBUFFER = Option<unsafe extern "system" fn(bufferid: RIO_BUFFERID)>;
+pub type LPFN_RIONOTIFY = Option<unsafe extern "system" fn(cq: RIO_CQ) -> i32>;
+pub type LPFN_RIORECEIVE = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, flags: u32, requestcontext: *const core::ffi::c_void) -> windows_sys::core::BOOL>;
+pub type LPFN_RIORECEIVEEX = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, plocaladdress: *const RIO_BUF, premoteaddress: *const RIO_BUF, pcontrolcontext: *const RIO_BUF, pflags: *const RIO_BUF, flags: u32, requestcontext: *const core::ffi::c_void) -> i32>;
+pub type LPFN_RIOREGISTERBUFFER = Option<unsafe extern "system" fn(databuffer: windows_sys::core::PCSTR, datalength: u32) -> RIO_BUFFERID>;
+pub type LPFN_RIORESIZECOMPLETIONQUEUE = Option<unsafe extern "system" fn(cq: RIO_CQ, queuesize: u32) -> windows_sys::core::BOOL>;
+pub type LPFN_RIORESIZEREQUESTQUEUE = Option<unsafe extern "system" fn(rq: RIO_RQ, maxoutstandingreceive: u32, maxoutstandingsend: u32) -> windows_sys::core::BOOL>;
+pub type LPFN_RIOSEND = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, flags: u32, requestcontext: *const core::ffi::c_void) -> windows_sys::core::BOOL>;
+pub type LPFN_RIOSENDEX = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, plocaladdress: *const RIO_BUF, premoteaddress: *const RIO_BUF, pcontrolcontext: *const RIO_BUF, pflags: *const RIO_BUF, flags: u32, requestcontext: *const core::ffi::c_void) -> windows_sys::core::BOOL>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_TRANSMITFILE = Option<unsafe extern "system" fn(hsocket: SOCKET, hfile: super::super::Foundation::HANDLE, nnumberofbytestowrite: u32, nnumberofbytespersend: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lptransmitbuffers: *const TRANSMIT_FILE_BUFFERS, dwreserved: u32) -> windows_sys::core::BOOL>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_TRANSMITPACKETS = Option<unsafe extern "system" fn(hsocket: SOCKET, lppacketarray: *const TRANSMIT_PACKETS_ELEMENT, nelementcount: u32, nsendsize: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32) -> windows_sys::core::BOOL>;
+pub type LPFN_WSAPOLL = Option<unsafe extern "system" fn(fdarray: *mut WSAPOLLFD, nfds: u32, timeout: i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_WSARECVMSG = Option<unsafe extern "system" fn(s: SOCKET, lpmsg: *mut WSAMSG, lpdwnumberofbytesrecvd: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPFN_WSASENDMSG = Option<unsafe extern "system" fn(s: SOCKET, lpmsg: *const WSAMSG, dwflags: u32, lpnumberofbytessent: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPLOOKUPSERVICE_COMPLETION_ROUTINE = Option<unsafe extern "system" fn(dwerror: u32, dwbytes: u32, lpoverlapped: *const super::super::System::IO::OVERLAPPED)>;
+pub type LPNSPCLEANUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID) -> i32>;
+pub type LPNSPGETSERVICECLASSINFO = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpdwbufsize: *const u32, lpserviceclassinfo: *const WSASERVICECLASSINFOW) -> i32>;
+pub type LPNSPINSTALLSERVICECLASS = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassinfo: *const WSASERVICECLASSINFOW) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPNSPIOCTL = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE, dwcontrolcode: u32, lpvinbuffer: *const core::ffi::c_void, cbinbuffer: u32, lpvoutbuffer: *mut core::ffi::c_void, cboutbuffer: u32, lpcbbytesreturned: *mut u32, lpcompletion: *const WSACOMPLETION, lpthreadid: *const WSATHREADID) -> i32>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPLOOKUPSERVICEBEGIN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpqsrestrictions: *const WSAQUERYSETW, lpserviceclassinfo: *const WSASERVICECLASSINFOW, dwcontrolflags: u32, lphlookup: *mut super::super::Foundation::HANDLE) -> i32>;
+pub type LPNSPLOOKUPSERVICEEND = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE) -> i32>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPLOOKUPSERVICENEXT = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE, dwcontrolflags: u32, lpdwbufferlength: *mut u32, lpqsresults: *mut WSAQUERYSETW) -> i32>;
+pub type LPNSPREMOVESERVICECLASS = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassid: *const windows_sys::core::GUID) -> i32>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPSETSERVICE = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassinfo: *const WSASERVICECLASSINFOW, lpqsreginfo: *const WSAQUERYSETW, essoperation: WSAESETSERVICEOP, dwcontrolflags: u32) -> i32>;
+#[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
+pub type LPNSPSTARTUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpnsproutines: *mut NSP_ROUTINE) -> i32>;
+pub type LPNSPV2CLEANUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, pvclientsessionarg: *const core::ffi::c_void) -> i32>;
+pub type LPNSPV2CLIENTSESSIONRUNDOWN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, pvclientsessionarg: *const core::ffi::c_void)>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPV2LOOKUPSERVICEBEGIN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpqsrestrictions: *const WSAQUERYSET2W, dwcontrolflags: u32, lpvclientsessionarg: *const core::ffi::c_void, lphlookup: *mut super::super::Foundation::HANDLE) -> i32>;
+pub type LPNSPV2LOOKUPSERVICEEND = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE) -> i32>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPV2LOOKUPSERVICENEXTEX = Option<unsafe extern "system" fn(hasynccall: super::super::Foundation::HANDLE, hlookup: super::super::Foundation::HANDLE, dwcontrolflags: u32, lpdwbufferlength: *const u32, lpqsresults: *mut WSAQUERYSET2W)>;
+#[cfg(feature = "Win32_System_Com")]
+pub type LPNSPV2SETSERVICEEX = Option<unsafe extern "system" fn(hasynccall: super::super::Foundation::HANDLE, lpproviderid: *const windows_sys::core::GUID, lpqsreginfo: *const WSAQUERYSET2W, essoperation: WSAESETSERVICEOP, dwcontrolflags: u32, lpvclientsessionarg: *const core::ffi::c_void)>;
+pub type LPNSPV2STARTUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, ppvclientsessionarg: *mut *mut core::ffi::c_void) -> i32>;
+pub type LPSERVICE_CALLBACK_PROC = Option<unsafe extern "system" fn(lparam: super::super::Foundation::LPARAM, hasynctaskhandle: super::super::Foundation::HANDLE)>;
+pub type LPWPUCLOSEEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> windows_sys::core::BOOL>;
+pub type LPWPUCLOSESOCKETHANDLE = Option<unsafe extern "system" fn(s: SOCKET, lperrno: *mut i32) -> i32>;
+pub type LPWPUCLOSETHREAD = Option<unsafe extern "system" fn(lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWPUCOMPLETEOVERLAPPEDREQUEST = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwerror: u32, cbtransferred: u32, lperrno: *mut i32) -> i32>;
+pub type LPWPUCREATEEVENT = Option<unsafe extern "system" fn(lperrno: *mut i32) -> WSAEVENT>;
+pub type LPWPUCREATESOCKETHANDLE = Option<unsafe extern "system" fn(dwcatalogentryid: u32, dwcontext: usize, lperrno: *mut i32) -> SOCKET>;
+pub type LPWPUFDISSET = Option<unsafe extern "system" fn(s: SOCKET, fdset: *const FD_SET) -> i32>;
+pub type LPWPUGETPROVIDERPATH = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PWSTR, lpproviderdllpathlen: *mut i32, lperrno: *mut i32) -> i32>;
+pub type LPWPUMODIFYIFSHANDLE = Option<unsafe extern "system" fn(dwcatalogentryid: u32, proposedhandle: SOCKET, lperrno: *mut i32) -> SOCKET>;
+pub type LPWPUOPENCURRENTTHREAD = Option<unsafe extern "system" fn(lpthreadid: *mut WSATHREADID, lperrno: *mut i32) -> i32>;
+pub type LPWPUPOSTMESSAGE = Option<unsafe extern "system" fn(hwnd: super::super::Foundation::HWND, msg: u32, wparam: super::super::Foundation::WPARAM, lparam: super::super::Foundation::LPARAM) -> windows_sys::core::BOOL>;
+pub type LPWPUQUERYBLOCKINGCALLBACK = Option<unsafe extern "system" fn(dwcatalogentryid: u32, lplpfncallback: *mut LPBLOCKINGCALLBACK, lpdwcontext: *mut usize, lperrno: *mut i32) -> i32>;
+pub type LPWPUQUERYSOCKETHANDLECONTEXT = Option<unsafe extern "system" fn(s: SOCKET, lpcontext: *mut usize, lperrno: *mut i32) -> i32>;
+pub type LPWPUQUEUEAPC = Option<unsafe extern "system" fn(lpthreadid: *const WSATHREADID, lpfnuserapc: LPWSAUSERAPC, dwcontext: usize, lperrno: *mut i32) -> i32>;
+pub type LPWPURESETEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> windows_sys::core::BOOL>;
+pub type LPWPUSETEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> windows_sys::core::BOOL>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSAOVERLAPPED_COMPLETION_ROUTINE = Option<unsafe extern "system" fn(dwerror: u32, cbtransferred: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32)>;
+pub type LPWSAUSERAPC = Option<unsafe extern "system" fn(dwcontext: usize)>;
+pub type LPWSCDEINSTALLPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lperrno: *mut i32) -> i32>;
+pub type LPWSCENABLENSPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, fenable: windows_sys::core::BOOL) -> i32>;
+pub type LPWSCENUMPROTOCOLS = Option<unsafe extern "system" fn(lpiprotocols: *const i32, lpprotocolbuffer: *mut WSAPROTOCOL_INFOW, lpdwbufferlength: *mut u32, lperrno: *mut i32) -> i32>;
+pub type LPWSCGETPROVIDERPATH = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PWSTR, lpproviderdllpathlen: *mut i32, lperrno: *mut i32) -> i32>;
+pub type LPWSCINSTALLNAMESPACE = Option<unsafe extern "system" fn(lpszidentifier: windows_sys::core::PCWSTR, lpszpathname: windows_sys::core::PCWSTR, dwnamespace: u32, dwversion: u32, lpproviderid: *const windows_sys::core::GUID) -> i32>;
+pub type LPWSCINSTALLPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PCWSTR, lpprotocolinfolist: *const WSAPROTOCOL_INFOW, dwnumberofentries: u32, lperrno: *mut i32) -> i32>;
+pub type LPWSCUNINSTALLNAMESPACE = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID) -> i32>;
+pub type LPWSCUPDATEPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PCWSTR, lpprotocolinfolist: *const WSAPROTOCOL_INFOW, dwnumberofentries: u32, lperrno: *mut i32) -> i32>;
+pub type LPWSCWRITENAMESPACEORDER = Option<unsafe extern "system" fn(lpproviderid: *mut windows_sys::core::GUID, dwnumberofentries: u32) -> i32>;
+pub type LPWSCWRITEPROVIDERORDER = Option<unsafe extern "system" fn(lpwdcatalogentryid: *mut u32, dwnumberofentries: u32) -> i32>;
+pub type LPWSPACCEPT = Option<unsafe extern "system" fn(s: SOCKET, addr: *mut SOCKADDR, addrlen: *mut i32, lpfncondition: LPCONDITIONPROC, dwcallbackdata: usize, lperrno: *mut i32) -> SOCKET>;
+pub type LPWSPADDRESSTOSTRING = Option<unsafe extern "system" fn(lpsaaddress: *const SOCKADDR, dwaddresslength: u32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, lpszaddressstring: windows_sys::core::PWSTR, lpdwaddressstringlength: *mut u32, lperrno: *mut i32) -> i32>;
+pub type LPWSPASYNCSELECT = Option<unsafe extern "system" fn(s: SOCKET, hwnd: super::super::Foundation::HWND, wmsg: u32, levent: i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPBIND = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPCANCELBLOCKINGCALL = Option<unsafe extern "system" fn(lperrno: *mut i32) -> i32>;
+pub type LPWSPCLEANUP = Option<unsafe extern "system" fn(lperrno: *mut i32) -> i32>;
+pub type LPWSPCLOSESOCKET = Option<unsafe extern "system" fn(s: SOCKET, lperrno: *mut i32) -> i32>;
+pub type LPWSPCONNECT = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpcallerdata: *const WSABUF, lpcalleedata: *mut WSABUF, lpsqos: *const QOS, lpgqos: *const QOS, lperrno: *mut i32) -> i32>;
+pub type LPWSPDUPLICATESOCKET = Option<unsafe extern "system" fn(s: SOCKET, dwprocessid: u32, lpprotocolinfo: *mut WSAPROTOCOL_INFOW, lperrno: *mut i32) -> i32>;
+pub type LPWSPENUMNETWORKEVENTS = Option<unsafe extern "system" fn(s: SOCKET, heventobject: super::super::Foundation::HANDLE, lpnetworkevents: *mut WSANETWORKEVENTS, lperrno: *mut i32) -> i32>;
+pub type LPWSPEVENTSELECT = Option<unsafe extern "system" fn(s: SOCKET, heventobject: WSAEVENT, lnetworkevents: i32, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPGETOVERLAPPEDRESULT = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *const super::super::System::IO::OVERLAPPED, lpcbtransfer: *mut u32, fwait: windows_sys::core::BOOL, lpdwflags: *mut u32, lperrno: *mut i32) -> windows_sys::core::BOOL>;
+pub type LPWSPGETPEERNAME = Option<unsafe extern "system" fn(s: SOCKET, name: *mut SOCKADDR, namelen: *mut i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPGETQOSBYNAME = Option<unsafe extern "system" fn(s: SOCKET, lpqosname: *const WSABUF, lpqos: *mut QOS, lperrno: *mut i32) -> windows_sys::core::BOOL>;
+pub type LPWSPGETSOCKNAME = Option<unsafe extern "system" fn(s: SOCKET, name: *mut SOCKADDR, namelen: *mut i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPGETSOCKOPT = Option<unsafe extern "system" fn(s: SOCKET, level: i32, optname: i32, optval: windows_sys::core::PSTR, optlen: *mut i32, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPIOCTL = Option<unsafe extern "system" fn(s: SOCKET, dwiocontrolcode: u32, lpvinbuffer: *const core::ffi::c_void, cbinbuffer: u32, lpvoutbuffer: *mut core::ffi::c_void, cboutbuffer: u32, lpcbbytesreturned: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
+pub type LPWSPJOINLEAF = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpcallerdata: *const WSABUF, lpcalleedata: *mut WSABUF, lpsqos: *const QOS, lpgqos: *const QOS, dwflags: u32, lperrno: *mut i32) -> SOCKET>;
+pub type LPWSPLISTEN = Option<unsafe extern "system" fn(s: SOCKET, backlog: i32, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPRECV = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytesrecvd: *mut u32, lpflags: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *const i32) -> i32>;
+pub type LPWSPRECVDISCONNECT = Option<unsafe extern "system" fn(s: SOCKET, lpinbounddisconnectdata: *const WSABUF, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPRECVFROM = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytesrecvd: *mut u32, lpflags: *mut u32, lpfrom: *mut SOCKADDR, lpfromlen: *mut i32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
+pub type LPWSPSELECT = Option<unsafe extern "system" fn(nfds: i32, readfds: *mut FD_SET, writefds: *mut FD_SET, exceptfds: *mut FD_SET, timeout: *const TIMEVAL, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPSEND = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytessent: *mut u32, dwflags: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
+pub type LPWSPSENDDISCONNECT = Option<unsafe extern "system" fn(s: SOCKET, lpoutbounddisconnectdata: *const WSABUF, lperrno: *mut i32) -> i32>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPSENDTO = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytessent: *mut u32, dwflags: u32, lpto: *const SOCKADDR, itolen: i32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
+pub type LPWSPSETSOCKOPT = Option<unsafe extern "system" fn(s: SOCKET, level: i32, optname: i32, optval: windows_sys::core::PCSTR, optlen: i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPSHUTDOWN = Option<unsafe extern "system" fn(s: SOCKET, how: i32, lperrno: *mut i32) -> i32>;
+pub type LPWSPSOCKET = Option<unsafe extern "system" fn(af: i32, r#type: i32, protocol: i32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, g: u32, dwflags: u32, lperrno: *mut i32) -> SOCKET>;
+#[cfg(feature = "Win32_System_IO")]
+pub type LPWSPSTARTUP = Option<unsafe extern "system" fn(wversionrequested: u16, lpwspdata: *const WSPDATA, lpprotocolinfo: *const WSAPROTOCOL_INFOW, upcalltable: WSPUPCALLTABLE, lpproctable: *mut WSPPROC_TABLE) -> i32>;
+pub type LPWSPSTRINGTOADDRESS = Option<unsafe extern "system" fn(addressstring: windows_sys::core::PCWSTR, addressfamily: i32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, lpaddress: *mut SOCKADDR, lpaddresslength: *mut i32, lperrno: *mut i32) -> i32>;
 pub const LSP_CRYPTO_COMPRESS: u32 = 64u32;
 pub const LSP_FIREWALL: u32 = 8u32;
 pub const LSP_INBOUND_MODIFY: u32 = 16u32;
@@ -1020,6 +2663,88 @@ pub const MIB_IPPROTO_RIP: NL_ROUTE_PROTOCOL = 8i32;
 pub const MIB_IPPROTO_RPL: NL_ROUTE_PROTOCOL = 18i32;
 pub const MIT_GUID: NPI_MODULEID_TYPE = 1i32;
 pub const MIT_IF_LUID: NPI_MODULEID_TYPE = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MLDV2_QUERY_HEADER {
+    pub IcmpHeader: ICMP_HEADER,
+    pub Anonymous1: MLDV2_QUERY_HEADER_0,
+    pub Reserved: u16,
+    pub MulticastAddress: IN6_ADDR,
+    pub _bitfield: u8,
+    pub Anonymous2: MLDV2_QUERY_HEADER_1,
+    pub SourceCount: u16,
+}
+impl Default for MLDV2_QUERY_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union MLDV2_QUERY_HEADER_0 {
+    pub MaxRespCode: u16,
+    pub Anonymous: MLDV2_QUERY_HEADER_0_0,
+}
+impl Default for MLDV2_QUERY_HEADER_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MLDV2_QUERY_HEADER_0_0 {
+    pub _bitfield: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union MLDV2_QUERY_HEADER_1 {
+    pub QueriersQueryInterfaceCode: u8,
+    pub Anonymous: MLDV2_QUERY_HEADER_1_0,
+}
+impl Default for MLDV2_QUERY_HEADER_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MLDV2_QUERY_HEADER_1_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct MLDV2_REPORT_HEADER {
+    pub IcmpHeader: ICMP_HEADER,
+    pub Reserved: u16,
+    pub RecordCount: u16,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MLDV2_REPORT_RECORD_HEADER {
+    pub Type: u8,
+    pub AuxillaryDataLength: u8,
+    pub SourceCount: u16,
+    pub MulticastAddress: IN6_ADDR,
+}
+impl Default for MLDV2_REPORT_RECORD_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct MLD_HEADER {
+    pub IcmpHeader: ICMP_HEADER,
+    pub MaxRespTime: u16,
+    pub Reserved: u16,
+    pub MulticastAddress: IN6_ADDR,
+}
+impl Default for MLD_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type MLD_MAX_RESP_CODE_TYPE = i32;
 pub const MLD_MAX_RESP_CODE_TYPE_FLOAT: MLD_MAX_RESP_CODE_TYPE = 1i32;
 pub const MLD_MAX_RESP_CODE_TYPE_NORMAL: MLD_MAX_RESP_CODE_TYPE = 0i32;
 pub const MSG_BCAST: u32 = 1024u32;
@@ -1035,9 +2760,176 @@ pub const MSG_PEEK: SEND_RECV_FLAGS = 2i32;
 pub const MSG_PUSH_IMMEDIATE: SEND_RECV_FLAGS = 32i32;
 pub const MSG_TRUNC: u32 = 256u32;
 pub const MSG_WAITALL: SEND_RECV_FLAGS = 8i32;
+pub type MULTICAST_MODE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NAPI_DOMAIN_DESCRIPTION_BLOB {
+    pub AuthLevel: u32,
+    pub cchDomainName: u32,
+    pub OffsetNextDomainDescription: u32,
+    pub OffsetThisDomainName: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NAPI_PROVIDER_INSTALLATION_BLOB {
+    pub dwVersion: u32,
+    pub dwProviderType: u32,
+    pub fSupportsWildCard: u32,
+    pub cDomains: u32,
+    pub OffsetFirstDomain: u32,
+}
+pub type NAPI_PROVIDER_LEVEL = i32;
+pub type NAPI_PROVIDER_TYPE = i32;
 pub const ND_NA_FLAG_OVERRIDE: u32 = 536870912u32;
 pub const ND_NA_FLAG_ROUTER: u32 = 2147483648u32;
 pub const ND_NA_FLAG_SOLICITED: u32 = 1073741824u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_NEIGHBOR_ADVERT_HEADER {
+    pub nd_na_hdr: ICMP_MESSAGE,
+    pub nd_na_target: IN6_ADDR,
+}
+impl Default for ND_NEIGHBOR_ADVERT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_NEIGHBOR_SOLICIT_HEADER {
+    pub nd_ns_hdr: ICMP_MESSAGE,
+    pub nd_ns_target: IN6_ADDR,
+}
+impl Default for ND_NEIGHBOR_SOLICIT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_DNSSL {
+    pub nd_opt_dnssl_type: u8,
+    pub nd_opt_dnssl_len: u8,
+    pub nd_opt_dnssl_reserved: u16,
+    pub nd_opt_dnssl_lifetime: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_HDR {
+    pub nd_opt_type: u8,
+    pub nd_opt_len: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_MTU {
+    pub nd_opt_mtu_type: u8,
+    pub nd_opt_mtu_len: u8,
+    pub nd_opt_mtu_reserved: u16,
+    pub nd_opt_mtu_mtu: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_OPTION_PREFIX_INFO {
+    pub nd_opt_pi_type: u8,
+    pub nd_opt_pi_len: u8,
+    pub nd_opt_pi_prefix_len: u8,
+    pub Anonymous1: ND_OPTION_PREFIX_INFO_0,
+    pub nd_opt_pi_valid_time: u32,
+    pub nd_opt_pi_preferred_time: u32,
+    pub Anonymous2: ND_OPTION_PREFIX_INFO_1,
+    pub nd_opt_pi_prefix: IN6_ADDR,
+}
+impl Default for ND_OPTION_PREFIX_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ND_OPTION_PREFIX_INFO_0 {
+    pub nd_opt_pi_flags_reserved: u8,
+    pub Flags: ND_OPTION_PREFIX_INFO_0_0,
+}
+impl Default for ND_OPTION_PREFIX_INFO_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_PREFIX_INFO_0_0 {
+    pub _bitfield: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ND_OPTION_PREFIX_INFO_1 {
+    pub nd_opt_pi_reserved2: u32,
+    pub Anonymous: ND_OPTION_PREFIX_INFO_1_0,
+}
+impl Default for ND_OPTION_PREFIX_INFO_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_OPTION_PREFIX_INFO_1_0 {
+    pub nd_opt_pi_reserved3: [u8; 3],
+    pub nd_opt_pi_site_prefix_len: u8,
+}
+impl Default for ND_OPTION_PREFIX_INFO_1_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_RDNSS {
+    pub nd_opt_rdnss_type: u8,
+    pub nd_opt_rdnss_len: u8,
+    pub nd_opt_rdnss_reserved: u16,
+    pub nd_opt_rdnss_lifetime: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_RD_HDR {
+    pub nd_opt_rh_type: u8,
+    pub nd_opt_rh_len: u8,
+    pub nd_opt_rh_reserved1: u16,
+    pub nd_opt_rh_reserved2: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_OPTION_ROUTE_INFO {
+    pub nd_opt_ri_type: u8,
+    pub nd_opt_ri_len: u8,
+    pub nd_opt_ri_prefix_len: u8,
+    pub Anonymous: ND_OPTION_ROUTE_INFO_0,
+    pub nd_opt_ri_route_lifetime: u32,
+    pub nd_opt_ri_prefix: IN6_ADDR,
+}
+impl Default for ND_OPTION_ROUTE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union ND_OPTION_ROUTE_INFO_0 {
+    pub nd_opt_ri_flags_reserved: u8,
+    pub Flags: ND_OPTION_ROUTE_INFO_0_0,
+}
+impl Default for ND_OPTION_ROUTE_INFO_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct ND_OPTION_ROUTE_INFO_0_0 {
+    pub _bitfield: u8,
+}
+pub type ND_OPTION_TYPE = i32;
 pub const ND_OPT_ADVERTISEMENT_INTERVAL: ND_OPTION_TYPE = 7i32;
 pub const ND_OPT_DNSSL: ND_OPTION_TYPE = 31i32;
 pub const ND_OPT_DNSSL_MIN_LEN: u32 = 16u32;
@@ -1063,11 +2955,85 @@ pub const ND_RA_FLAG_HOME_AGENT: u32 = 32u32;
 pub const ND_RA_FLAG_MANAGED: u32 = 128u32;
 pub const ND_RA_FLAG_OTHER: u32 = 64u32;
 pub const ND_RA_FLAG_PREFERENCE: u32 = 24u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_REDIRECT_HEADER {
+    pub nd_rd_hdr: ICMP_MESSAGE,
+    pub nd_rd_target: IN6_ADDR,
+    pub nd_rd_dst: IN6_ADDR,
+}
+impl Default for ND_REDIRECT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_ROUTER_ADVERT_HEADER {
+    pub nd_ra_hdr: ICMP_MESSAGE,
+    pub nd_ra_reachable: u32,
+    pub nd_ra_retransmit: u32,
+}
+impl Default for ND_ROUTER_ADVERT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ND_ROUTER_SOLICIT_HEADER {
+    pub nd_rs_hdr: ICMP_MESSAGE,
+}
+impl Default for ND_ROUTER_SOLICIT_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const NETBIOS_GROUP_NAME: u32 = 1u32;
 pub const NETBIOS_NAME_LENGTH: u32 = 16u32;
 pub const NETBIOS_TYPE_QUICK_GROUP: u32 = 3u32;
 pub const NETBIOS_TYPE_QUICK_UNIQUE: u32 = 2u32;
 pub const NETBIOS_UNIQUE_NAME: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NETRESOURCE2A {
+    pub dwScope: u32,
+    pub dwType: u32,
+    pub dwUsage: u32,
+    pub dwDisplayType: u32,
+    pub lpLocalName: windows_sys::core::PSTR,
+    pub lpRemoteName: windows_sys::core::PSTR,
+    pub lpComment: windows_sys::core::PSTR,
+    pub ns_info: NS_INFOA,
+    pub ServiceType: windows_sys::core::GUID,
+    pub dwProtocols: u32,
+    pub lpiProtocols: *mut i32,
+}
+impl Default for NETRESOURCE2A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NETRESOURCE2W {
+    pub dwScope: u32,
+    pub dwType: u32,
+    pub dwUsage: u32,
+    pub dwDisplayType: u32,
+    pub lpLocalName: windows_sys::core::PWSTR,
+    pub lpRemoteName: windows_sys::core::PWSTR,
+    pub lpComment: windows_sys::core::PWSTR,
+    pub ns_info: NS_INFOA,
+    pub ServiceType: windows_sys::core::GUID,
+    pub dwProtocols: u32,
+    pub lpiProtocols: *mut i32,
+}
+impl Default for NETRESOURCE2W {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const NI_DGRAM: u32 = 16u32;
 pub const NI_MAXHOST: u32 = 1025u32;
 pub const NI_MAXSERV: u32 = 32u32;
@@ -1077,10 +3043,92 @@ pub const NI_NUMERICHOST: u32 = 2u32;
 pub const NI_NUMERICSERV: u32 = 8u32;
 pub const NLA_802_1X_LOCATION: NLA_BLOB_DATA_TYPE = 2i32;
 pub const NLA_ALLUSERS_NETWORK: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NLA_BLOB {
+    pub header: NLA_BLOB_0,
+    pub data: NLA_BLOB_1,
+}
+impl Default for NLA_BLOB {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union NLA_BLOB_1 {
+    pub rawData: [i8; 1],
+    pub interfaceData: NLA_BLOB_1_0,
+    pub locationData: NLA_BLOB_1_1,
+    pub connectivity: NLA_BLOB_1_2,
+    pub ICS: NLA_BLOB_1_3,
+}
+impl Default for NLA_BLOB_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NLA_BLOB_1_3 {
+    pub remote: NLA_BLOB_1_3_0,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NLA_BLOB_1_3_0 {
+    pub speed: u32,
+    pub r#type: u32,
+    pub state: u32,
+    pub machineName: [u16; 256],
+    pub sharedAdapterName: [u16; 256],
+}
+impl Default for NLA_BLOB_1_3_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NLA_BLOB_1_2 {
+    pub r#type: NLA_CONNECTIVITY_TYPE,
+    pub internet: NLA_INTERNET,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NLA_BLOB_1_0 {
+    pub dwType: u32,
+    pub dwSpeed: u32,
+    pub adapterName: [i8; 1],
+}
+impl Default for NLA_BLOB_1_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NLA_BLOB_1_1 {
+    pub information: [i8; 1],
+}
+impl Default for NLA_BLOB_1_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NLA_BLOB_0 {
+    pub r#type: NLA_BLOB_DATA_TYPE,
+    pub dwSize: u32,
+    pub nextOffset: u32,
+}
+pub type NLA_BLOB_DATA_TYPE = i32;
 pub const NLA_CONNECTIVITY: NLA_BLOB_DATA_TYPE = 3i32;
+pub type NLA_CONNECTIVITY_TYPE = i32;
 pub const NLA_FRIENDLY_NAME: u32 = 2u32;
 pub const NLA_ICS: NLA_BLOB_DATA_TYPE = 4i32;
 pub const NLA_INTERFACE: NLA_BLOB_DATA_TYPE = 1i32;
+pub type NLA_INTERNET = i32;
 pub const NLA_INTERNET_NO: NLA_INTERNET = 1i32;
 pub const NLA_INTERNET_UNKNOWN: NLA_INTERNET = 0i32;
 pub const NLA_INTERNET_YES: NLA_INTERNET = 2i32;
@@ -1091,14 +3139,112 @@ pub const NLA_NETWORK_UNKNOWN: NLA_CONNECTIVITY_TYPE = 3i32;
 pub const NLA_NETWORK_UNMANAGED: NLA_CONNECTIVITY_TYPE = 2i32;
 pub const NLA_RAW_DATA: NLA_BLOB_DATA_TYPE = 0i32;
 pub const NLA_SERVICE_CLASS_GUID: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x0037e515_b5c9_4a43_bada_8b48a87ad239);
+pub type NL_ADDRESS_TYPE = i32;
+pub type NL_BANDWIDTH_FLAG = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NL_BANDWIDTH_INFORMATION {
+    pub Bandwidth: u64,
+    pub Instability: u64,
+    pub BandwidthPeaked: bool,
+}
+pub type NL_DAD_STATE = i32;
+pub type NL_INTERFACE_NETWORK_CATEGORY_STATE = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NL_INTERFACE_OFFLOAD_ROD {
+    pub _bitfield: u8,
+}
+pub type NL_LINK_LOCAL_ADDRESS_BEHAVIOR = i32;
+pub type NL_NEIGHBOR_STATE = i32;
+pub type NL_NETWORK_CATEGORY = i32;
+pub type NL_NETWORK_CONNECTIVITY_COST_HINT = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NL_NETWORK_CONNECTIVITY_HINT {
+    pub ConnectivityLevel: NL_NETWORK_CONNECTIVITY_LEVEL_HINT,
+    pub ConnectivityCost: NL_NETWORK_CONNECTIVITY_COST_HINT,
+    pub ApproachingDataLimit: bool,
+    pub OverDataLimit: bool,
+    pub Roaming: bool,
+}
+pub type NL_NETWORK_CONNECTIVITY_LEVEL_HINT = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct NL_PATH_BANDWIDTH_ROD {
+    pub Bandwidth: u64,
+    pub Instability: u64,
+    pub BandwidthPeaked: bool,
+}
+pub type NL_PREFIX_ORIGIN = i32;
+pub type NL_ROUTER_DISCOVERY_BEHAVIOR = i32;
+pub type NL_ROUTE_ORIGIN = i32;
+pub type NL_ROUTE_PROTOCOL = i32;
+pub type NL_SUFFIX_ORIGIN = i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NPI_MODULEID {
+    pub Length: u16,
+    pub Type: NPI_MODULEID_TYPE,
+    pub Anonymous: NPI_MODULEID_0,
+}
+impl Default for NPI_MODULEID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union NPI_MODULEID_0 {
+    pub Guid: windows_sys::core::GUID,
+    pub IfLuid: super::super::Foundation::LUID,
+}
+impl Default for NPI_MODULEID_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type NPI_MODULEID_TYPE = i32;
 pub const NSPROTO_IPX: u32 = 1000u32;
 pub const NSPROTO_SPX: u32 = 1256u32;
 pub const NSPROTO_SPXII: u32 = 1257u32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy, Default)]
+pub struct NSPV2_ROUTINE {
+    pub cbSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub NSPv2Startup: LPNSPV2STARTUP,
+    pub NSPv2Cleanup: LPNSPV2CLEANUP,
+    pub NSPv2LookupServiceBegin: LPNSPV2LOOKUPSERVICEBEGIN,
+    pub NSPv2LookupServiceNextEx: LPNSPV2LOOKUPSERVICENEXTEX,
+    pub NSPv2LookupServiceEnd: LPNSPV2LOOKUPSERVICEEND,
+    pub NSPv2SetServiceEx: LPNSPV2SETSERVICEEX,
+    pub NSPv2ClientSessionRundown: LPNSPV2CLIENTSESSIONRUNDOWN,
+}
 pub const NSP_NOTIFY_APC: WSACOMPLETIONTYPE = 4i32;
 pub const NSP_NOTIFY_EVENT: WSACOMPLETIONTYPE = 2i32;
 pub const NSP_NOTIFY_HWND: WSACOMPLETIONTYPE = 1i32;
 pub const NSP_NOTIFY_IMMEDIATELY: WSACOMPLETIONTYPE = 0i32;
 pub const NSP_NOTIFY_PORT: WSACOMPLETIONTYPE = 3i32;
+#[repr(C)]
+#[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
+#[derive(Clone, Copy, Default)]
+pub struct NSP_ROUTINE {
+    pub cbSize: u32,
+    pub dwMajorVersion: u32,
+    pub dwMinorVersion: u32,
+    pub NSPCleanup: LPNSPCLEANUP,
+    pub NSPLookupServiceBegin: LPNSPLOOKUPSERVICEBEGIN,
+    pub NSPLookupServiceNext: LPNSPLOOKUPSERVICENEXT,
+    pub NSPLookupServiceEnd: LPNSPLOOKUPSERVICEEND,
+    pub NSPSetService: LPNSPSETSERVICE,
+    pub NSPInstallServiceClass: LPNSPINSTALLSERVICECLASS,
+    pub NSPRemoveServiceClass: LPNSPREMOVESERVICECLASS,
+    pub NSPGetServiceClassInfo: LPNSPGETSERVICECLASSINFO,
+    pub NSPIoctl: LPNSPIOCTL,
+}
 pub const NSTYPE_DYNAMIC: u32 = 2u32;
 pub const NSTYPE_ENUMERABLE: u32 = 4u32;
 pub const NSTYPE_HIERARCHICAL: u32 = 1u32;
@@ -1108,6 +3254,30 @@ pub const NS_DEFAULT: u32 = 0u32;
 pub const NS_DHCP: u32 = 6u32;
 pub const NS_DNS: u32 = 12u32;
 pub const NS_EMAIL: u32 = 37u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NS_INFOA {
+    pub dwNameSpace: u32,
+    pub dwNameSpaceFlags: u32,
+    pub lpNameSpace: windows_sys::core::PSTR,
+}
+impl Default for NS_INFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NS_INFOW {
+    pub dwNameSpace: u32,
+    pub dwNameSpaceFlags: u32,
+    pub lpNameSpace: windows_sys::core::PWSTR,
+}
+impl Default for NS_INFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const NS_LOCALNAME: u32 = 19u32;
 pub const NS_MS: u32 = 30u32;
 pub const NS_NBP: u32 = 20u32;
@@ -1120,6 +3290,20 @@ pub const NS_NLA: u32 = 15u32;
 pub const NS_NTDS: u32 = 32u32;
 pub const NS_PEER_BROWSE: u32 = 3u32;
 pub const NS_SAP: u32 = 1u32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy, Default)]
+pub struct NS_SERVICE_INFOA {
+    pub dwNameSpace: u32,
+    pub ServiceInfo: SERVICE_INFOA,
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy, Default)]
+pub struct NS_SERVICE_INFOW {
+    pub dwNameSpace: u32,
+    pub ServiceInfo: SERVICE_INFOW,
+}
 pub const NS_SLP: u32 = 5u32;
 pub const NS_STDA: u32 = 31u32;
 pub const NS_TCPIP_HOSTS: u32 = 11u32;
@@ -1213,6 +3397,7 @@ pub const PF_VOICEVIEW: u16 = 18u16;
 pub const PI_ALLOWED: u32 = 0u32;
 pub const PI_NUMBER_NOT_AVAILABLE: u32 = 128u32;
 pub const PI_RESTRICTED: u32 = 64u32;
+pub type PMTUD_STATE = i32;
 pub const POLLERR: WSAPOLL_EVENT_FLAGS = 1i16;
 pub const POLLHUP: WSAPOLL_EVENT_FLAGS = 2i16;
 pub const POLLIN: WSAPOLL_EVENT_FLAGS = 768i16;
@@ -1223,6 +3408,12 @@ pub const POLLRDBAND: WSAPOLL_EVENT_FLAGS = 512i16;
 pub const POLLRDNORM: WSAPOLL_EVENT_FLAGS = 256i16;
 pub const POLLWRBAND: WSAPOLL_EVENT_FLAGS = 32i16;
 pub const POLLWRNORM: WSAPOLL_EVENT_FLAGS = 16i16;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct PRIORITY_STATUS {
+    pub Sender: SOCKET_PRIORITY_HINT,
+    pub Receiver: SOCKET_PRIORITY_HINT,
+}
 pub const PROP_ADDRESSES: u32 = 256u32;
 pub const PROP_ALL: u32 = 2147483648u32;
 pub const PROP_COMMENT: u32 = 1u32;
@@ -1236,6 +3427,52 @@ pub const PROTECTION_LEVEL_DEFAULT: u32 = 20u32;
 pub const PROTECTION_LEVEL_EDGERESTRICTED: u32 = 20u32;
 pub const PROTECTION_LEVEL_RESTRICTED: u32 = 30u32;
 pub const PROTECTION_LEVEL_UNRESTRICTED: u32 = 10u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PROTOCOL_INFOA {
+    pub dwServiceFlags: u32,
+    pub iAddressFamily: i32,
+    pub iMaxSockAddr: i32,
+    pub iMinSockAddr: i32,
+    pub iSocketType: i32,
+    pub iProtocol: i32,
+    pub dwMessageSize: u32,
+    pub lpProtocol: windows_sys::core::PSTR,
+}
+impl Default for PROTOCOL_INFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PROTOCOL_INFOW {
+    pub dwServiceFlags: u32,
+    pub iAddressFamily: i32,
+    pub iMaxSockAddr: i32,
+    pub iMinSockAddr: i32,
+    pub iSocketType: i32,
+    pub iProtocol: i32,
+    pub dwMessageSize: u32,
+    pub lpProtocol: windows_sys::core::PWSTR,
+}
+impl Default for PROTOCOL_INFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct PROTOENT {
+    pub p_name: windows_sys::core::PSTR,
+    pub p_aliases: *mut *mut i8,
+    pub p_proto: i16,
+}
+impl Default for PROTOENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const PROTO_IP_BBN: NL_ROUTE_PROTOCOL = 12i32;
 pub const PROTO_IP_BGP: NL_ROUTE_PROTOCOL = 14i32;
 pub const PROTO_IP_CISCO: NL_ROUTE_PROTOCOL = 11i32;
@@ -1266,17 +3503,62 @@ pub const ProviderLevel_Primary: NAPI_PROVIDER_LEVEL = 2i32;
 pub const ProviderLevel_Secondary: NAPI_PROVIDER_LEVEL = 1i32;
 pub const ProviderType_Application: NAPI_PROVIDER_TYPE = 1i32;
 pub const ProviderType_Service: NAPI_PROVIDER_TYPE = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct Q2931_IE {
+    pub IEType: Q2931_IE_TYPE,
+    pub IELength: u32,
+    pub IE: [u8; 1],
+}
+impl Default for Q2931_IE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type Q2931_IE_TYPE = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct QOS {
+    pub SendingFlowspec: FLOWSPEC,
+    pub ReceivingFlowspec: FLOWSPEC,
+    pub ProviderSpecific: WSABUF,
+}
 pub const QOS_CLASS0: u32 = 0u32;
 pub const QOS_CLASS1: u32 = 1u32;
 pub const QOS_CLASS2: u32 = 2u32;
 pub const QOS_CLASS3: u32 = 3u32;
 pub const QOS_CLASS4: u32 = 4u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RCVALL_IF {
+    pub Mode: RCVALL_VALUE,
+    pub Interface: u32,
+}
 pub const RCVALL_IPLEVEL: RCVALL_VALUE = 3i32;
 pub const RCVALL_OFF: RCVALL_VALUE = 0i32;
 pub const RCVALL_ON: RCVALL_VALUE = 1i32;
 pub const RCVALL_SOCKETLEVELONLY: RCVALL_VALUE = 2i32;
+pub type RCVALL_VALUE = i32;
 pub const REAL_TIME_NOTIFICATION_CAPABILITY: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x6b59819a_5cae_492d_a901_2a3c2c50164f);
 pub const REAL_TIME_NOTIFICATION_CAPABILITY_EX: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x6843da03_154a_4616_a508_44371295f96b);
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct REAL_TIME_NOTIFICATION_SETTING_INPUT {
+    pub TransportSettingId: TRANSPORT_SETTING_ID,
+    pub BrokerEventGuid: windows_sys::core::GUID,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct REAL_TIME_NOTIFICATION_SETTING_INPUT_EX {
+    pub TransportSettingId: TRANSPORT_SETTING_ID,
+    pub BrokerEventGuid: windows_sys::core::GUID,
+    pub Unmark: bool,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct REAL_TIME_NOTIFICATION_SETTING_OUTPUT {
+    pub ChannelStatus: CONTROL_CHANNEL_TRIGGER_STATUS,
+}
 pub const RESOURCEDISPLAYTYPE_DOMAIN: RESOURCE_DISPLAY_TYPE = 1u32;
 pub const RESOURCEDISPLAYTYPE_FILE: RESOURCE_DISPLAY_TYPE = 4u32;
 pub const RESOURCEDISPLAYTYPE_GENERIC: RESOURCE_DISPLAY_TYPE = 0u32;
@@ -1284,6 +3566,7 @@ pub const RESOURCEDISPLAYTYPE_GROUP: RESOURCE_DISPLAY_TYPE = 5u32;
 pub const RESOURCEDISPLAYTYPE_SERVER: RESOURCE_DISPLAY_TYPE = 2u32;
 pub const RESOURCEDISPLAYTYPE_SHARE: RESOURCE_DISPLAY_TYPE = 3u32;
 pub const RESOURCEDISPLAYTYPE_TREE: RESOURCE_DISPLAY_TYPE = 10u32;
+pub type RESOURCE_DISPLAY_TYPE = u32;
 pub const RESULT_IS_ADDED: u32 = 16u32;
 pub const RESULT_IS_ALIAS: u32 = 1u32;
 pub const RESULT_IS_CHANGED: u32 = 32u32;
@@ -1293,24 +3576,165 @@ pub const RES_FLUSH_CACHE: u32 = 2u32;
 pub const RES_SERVICE: u32 = 4u32;
 pub const RES_SOFT_SEARCH: u32 = 1u32;
 pub const RES_UNUSED_1: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RIORESULT {
+    pub Status: i32,
+    pub BytesTransferred: u32,
+    pub SocketContext: u64,
+    pub RequestContext: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RIO_BUF {
+    pub BufferId: RIO_BUFFERID,
+    pub Offset: u32,
+    pub Length: u32,
+}
+pub type RIO_BUFFERID = isize;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RIO_CMSG_BUFFER {
+    pub TotalLength: u32,
+}
 pub const RIO_CORRUPT_CQ: u32 = 4294967295u32;
+pub type RIO_CQ = isize;
 pub const RIO_EVENT_COMPLETION: RIO_NOTIFICATION_COMPLETION_TYPE = 1i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RIO_EXTENSION_FUNCTION_TABLE {
+    pub cbSize: u32,
+    pub RIOReceive: LPFN_RIORECEIVE,
+    pub RIOReceiveEx: LPFN_RIORECEIVEEX,
+    pub RIOSend: LPFN_RIOSEND,
+    pub RIOSendEx: LPFN_RIOSENDEX,
+    pub RIOCloseCompletionQueue: LPFN_RIOCLOSECOMPLETIONQUEUE,
+    pub RIOCreateCompletionQueue: LPFN_RIOCREATECOMPLETIONQUEUE,
+    pub RIOCreateRequestQueue: LPFN_RIOCREATEREQUESTQUEUE,
+    pub RIODequeueCompletion: LPFN_RIODEQUEUECOMPLETION,
+    pub RIODeregisterBuffer: LPFN_RIODEREGISTERBUFFER,
+    pub RIONotify: LPFN_RIONOTIFY,
+    pub RIORegisterBuffer: LPFN_RIOREGISTERBUFFER,
+    pub RIOResizeCompletionQueue: LPFN_RIORESIZECOMPLETIONQUEUE,
+    pub RIOResizeRequestQueue: LPFN_RIORESIZEREQUESTQUEUE,
+}
 pub const RIO_IOCP_COMPLETION: RIO_NOTIFICATION_COMPLETION_TYPE = 2i32;
 pub const RIO_MAX_CQ_SIZE: u32 = 134217728u32;
 pub const RIO_MSG_COMMIT_ONLY: u32 = 8u32;
 pub const RIO_MSG_DEFER: u32 = 2u32;
 pub const RIO_MSG_DONT_NOTIFY: u32 = 1u32;
 pub const RIO_MSG_WAITALL: u32 = 4u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RIO_NOTIFICATION_COMPLETION {
+    pub Type: RIO_NOTIFICATION_COMPLETION_TYPE,
+    pub Anonymous: RIO_NOTIFICATION_COMPLETION_0,
+}
+impl Default for RIO_NOTIFICATION_COMPLETION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union RIO_NOTIFICATION_COMPLETION_0 {
+    pub Event: RIO_NOTIFICATION_COMPLETION_0_0,
+    pub Iocp: RIO_NOTIFICATION_COMPLETION_0_1,
+}
+impl Default for RIO_NOTIFICATION_COMPLETION_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RIO_NOTIFICATION_COMPLETION_0_0 {
+    pub EventHandle: super::super::Foundation::HANDLE,
+    pub NotifyReset: windows_sys::core::BOOL,
+}
+impl Default for RIO_NOTIFICATION_COMPLETION_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RIO_NOTIFICATION_COMPLETION_0_1 {
+    pub IocpHandle: super::super::Foundation::HANDLE,
+    pub CompletionKey: *mut core::ffi::c_void,
+    pub Overlapped: *mut core::ffi::c_void,
+}
+impl Default for RIO_NOTIFICATION_COMPLETION_0_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type RIO_NOTIFICATION_COMPLETION_TYPE = i32;
+pub type RIO_RQ = isize;
 pub const RM_ADD_RECEIVE_IF: i32 = 1008i32;
 pub const RM_DEL_RECEIVE_IF: i32 = 1009i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RM_FEC_INFO {
+    pub FECBlockSize: u16,
+    pub FECProActivePackets: u16,
+    pub FECGroupSize: u8,
+    pub fFECOnDemandParityEnabled: bool,
+}
 pub const RM_FLUSHCACHE: i32 = 1003i32;
 pub const RM_HIGH_SPEED_INTRANET_OPT: i32 = 1014i32;
 pub const RM_LATEJOIN: i32 = 1006i32;
 pub const RM_OPTIONSBASE: i32 = 1000i32;
 pub const RM_RATE_WINDOW_SIZE: i32 = 1001i32;
 pub const RM_RECEIVER_STATISTICS: i32 = 1013i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RM_RECEIVER_STATS {
+    pub NumODataPacketsReceived: u64,
+    pub NumRDataPacketsReceived: u64,
+    pub NumDuplicateDataPackets: u64,
+    pub DataBytesReceived: u64,
+    pub TotalBytesReceived: u64,
+    pub RateKBitsPerSecOverall: u64,
+    pub RateKBitsPerSecLast: u64,
+    pub TrailingEdgeSeqId: u64,
+    pub LeadingEdgeSeqId: u64,
+    pub AverageSequencesInWindow: u64,
+    pub MinSequencesInWindow: u64,
+    pub MaxSequencesInWindow: u64,
+    pub FirstNakSequenceNumber: u64,
+    pub NumPendingNaks: u64,
+    pub NumOutstandingNaks: u64,
+    pub NumDataPacketsBuffered: u64,
+    pub TotalSelectiveNaksSent: u64,
+    pub TotalParityNaksSent: u64,
+}
 pub const RM_SENDER_STATISTICS: i32 = 1005i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RM_SENDER_STATS {
+    pub DataBytesSent: u64,
+    pub TotalBytesSent: u64,
+    pub NaksReceived: u64,
+    pub NaksReceivedTooLate: u64,
+    pub NumOutstandingNaks: u64,
+    pub NumNaksAfterRData: u64,
+    pub RepairPacketsSent: u64,
+    pub BufferSpaceAvailable: u64,
+    pub TrailingEdgeSeqId: u64,
+    pub LeadingEdgeSeqId: u64,
+    pub RateKBitsPerSecOverall: u64,
+    pub RateKBitsPerSecLast: u64,
+    pub TotalODataPacketsSent: u64,
+}
 pub const RM_SENDER_WINDOW_ADVANCE_METHOD: i32 = 1004i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RM_SEND_WINDOW {
+    pub RateKbitsPerSec: u32,
+    pub WindowSizeInMSecs: u32,
+    pub WindowSizeInBytes: u32,
+}
 pub const RM_SEND_WINDOW_ADV_RATE: i32 = 1010i32;
 pub const RM_SET_MCAST_TTL: i32 = 1012i32;
 pub const RM_SET_MESSAGE_BOUNDARY: i32 = 1002i32;
@@ -1319,6 +3743,11 @@ pub const RM_USE_FEC: i32 = 1011i32;
 pub const RNRSERVICE_DELETE: WSAESETSERVICEOP = 2i32;
 pub const RNRSERVICE_DEREGISTER: WSAESETSERVICEOP = 1i32;
 pub const RNRSERVICE_REGISTER: WSAESETSERVICEOP = 0i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct RSS_SCALABILITY_INFO {
+    pub RssEnabled: bool,
+}
 pub const RouteProtocolBbn: NL_ROUTE_PROTOCOL = 12i32;
 pub const RouteProtocolBgp: NL_ROUTE_PROTOCOL = 14i32;
 pub const RouteProtocolCisco: NL_ROUTE_PROTOCOL = 11i32;
@@ -1346,6 +3775,33 @@ pub const SAP_FIELD_ABSENT: u32 = 4294967294u32;
 pub const SAP_FIELD_ANY: u32 = 4294967295u32;
 pub const SAP_FIELD_ANY_AESA_REST: u32 = 4294967291u32;
 pub const SAP_FIELD_ANY_AESA_SEL: u32 = 4294967290u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SCOPE_ID {
+    pub Anonymous: SCOPE_ID_0,
+}
+impl Default for SCOPE_ID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SCOPE_ID_0 {
+    pub Anonymous: SCOPE_ID_0_0,
+    pub Value: u32,
+}
+impl Default for SCOPE_ID_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SCOPE_ID_0_0 {
+    pub _bitfield: u32,
+}
+pub type SCOPE_LEVEL = i32;
 pub const SD_BOTH: WINSOCK_SHUTDOWN_HOW = 2i32;
 pub const SD_RECEIVE: WINSOCK_SHUTDOWN_HOW = 0i32;
 pub const SD_SEND: WINSOCK_SHUTDOWN_HOW = 1i32;
@@ -1354,20 +3810,204 @@ pub const SENDER_DEFAULT_LATE_JOINER_PERCENTAGE: u32 = 0u32;
 pub const SENDER_DEFAULT_RATE_KBITS_PER_SEC: u32 = 56u32;
 pub const SENDER_DEFAULT_WINDOW_ADV_PERCENTAGE: u32 = 15u32;
 pub const SENDER_MAX_LATE_JOINER_PERCENTAGE: u32 = 75u32;
+pub type SEND_RECV_FLAGS = i32;
+#[repr(C)]
+#[cfg(target_arch = "x86")]
+#[derive(Clone, Copy)]
+pub struct SERVENT {
+    pub s_name: windows_sys::core::PSTR,
+    pub s_aliases: *mut *mut i8,
+    pub s_port: i16,
+    pub s_proto: windows_sys::core::PSTR,
+}
+#[cfg(target_arch = "x86")]
+impl Default for SERVENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[derive(Clone, Copy)]
+pub struct SERVENT {
+    pub s_name: windows_sys::core::PSTR,
+    pub s_aliases: *mut *mut i8,
+    pub s_proto: windows_sys::core::PSTR,
+    pub s_port: i16,
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for SERVENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_ADDRESS {
+    pub dwAddressType: u32,
+    pub dwAddressFlags: u32,
+    pub dwAddressLength: u32,
+    pub dwPrincipalLength: u32,
+    pub lpAddress: *mut u8,
+    pub lpPrincipal: *mut u8,
+}
+impl Default for SERVICE_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_ADDRESSES {
+    pub dwAddressCount: u32,
+    pub Addresses: [SERVICE_ADDRESS; 1],
+}
+impl Default for SERVICE_ADDRESSES {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SERVICE_ADDRESS_FLAG_RPC_CN: u32 = 1u32;
 pub const SERVICE_ADDRESS_FLAG_RPC_DG: u32 = 2u32;
 pub const SERVICE_ADDRESS_FLAG_RPC_NB: u32 = 4u32;
 pub const SERVICE_ADD_TYPE: SET_SERVICE_OPERATION = 4u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_ASYNC_INFO {
+    pub lpServiceCallbackProc: LPSERVICE_CALLBACK_PROC,
+    pub lParam: super::super::Foundation::LPARAM,
+    pub hAsyncTaskHandle: super::super::Foundation::HANDLE,
+}
+impl Default for SERVICE_ASYNC_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SERVICE_DELETE_TYPE: SET_SERVICE_OPERATION = 5u32;
 pub const SERVICE_DEREGISTER: SET_SERVICE_OPERATION = 2u32;
 pub const SERVICE_FLAG_DEFER: u32 = 1u32;
 pub const SERVICE_FLAG_HARD: u32 = 2u32;
 pub const SERVICE_FLUSH: SET_SERVICE_OPERATION = 3u32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct SERVICE_INFOA {
+    pub lpServiceType: *mut windows_sys::core::GUID,
+    pub lpServiceName: windows_sys::core::PSTR,
+    pub lpComment: windows_sys::core::PSTR,
+    pub lpLocale: windows_sys::core::PSTR,
+    pub dwDisplayHint: RESOURCE_DISPLAY_TYPE,
+    pub dwVersion: u32,
+    pub dwTime: u32,
+    pub lpMachineName: windows_sys::core::PSTR,
+    pub lpServiceAddress: *mut SERVICE_ADDRESSES,
+    pub ServiceSpecificInfo: super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for SERVICE_INFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct SERVICE_INFOW {
+    pub lpServiceType: *mut windows_sys::core::GUID,
+    pub lpServiceName: windows_sys::core::PWSTR,
+    pub lpComment: windows_sys::core::PWSTR,
+    pub lpLocale: windows_sys::core::PWSTR,
+    pub dwDisplayHint: RESOURCE_DISPLAY_TYPE,
+    pub dwVersion: u32,
+    pub dwTime: u32,
+    pub lpMachineName: windows_sys::core::PWSTR,
+    pub lpServiceAddress: *mut SERVICE_ADDRESSES,
+    pub ServiceSpecificInfo: super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for SERVICE_INFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SERVICE_LOCAL: u32 = 4u32;
 pub const SERVICE_MULTIPLE: u32 = 1u32;
 pub const SERVICE_REGISTER: SET_SERVICE_OPERATION = 1u32;
 pub const SERVICE_RESOURCE: u32 = 1u32;
 pub const SERVICE_SERVICE: u32 = 2u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_TYPE_INFO {
+    pub dwTypeNameOffset: u32,
+    pub dwValueCount: u32,
+    pub Values: [SERVICE_TYPE_VALUE; 1],
+}
+impl Default for SERVICE_TYPE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_TYPE_INFO_ABSA {
+    pub lpTypeName: windows_sys::core::PSTR,
+    pub dwValueCount: u32,
+    pub Values: [SERVICE_TYPE_VALUE_ABSA; 1],
+}
+impl Default for SERVICE_TYPE_INFO_ABSA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_TYPE_INFO_ABSW {
+    pub lpTypeName: windows_sys::core::PWSTR,
+    pub dwValueCount: u32,
+    pub Values: [SERVICE_TYPE_VALUE_ABSW; 1],
+}
+impl Default for SERVICE_TYPE_INFO_ABSW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SERVICE_TYPE_VALUE {
+    pub dwNameSpace: u32,
+    pub dwValueType: u32,
+    pub dwValueSize: u32,
+    pub dwValueNameOffset: u32,
+    pub dwValueOffset: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_TYPE_VALUE_ABSA {
+    pub dwNameSpace: u32,
+    pub dwValueType: u32,
+    pub dwValueSize: u32,
+    pub lpValueName: windows_sys::core::PSTR,
+    pub lpValue: *mut core::ffi::c_void,
+}
+impl Default for SERVICE_TYPE_VALUE_ABSA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SERVICE_TYPE_VALUE_ABSW {
+    pub dwNameSpace: u32,
+    pub dwValueType: u32,
+    pub dwValueSize: u32,
+    pub lpValueName: windows_sys::core::PWSTR,
+    pub lpValue: *mut core::ffi::c_void,
+}
+impl Default for SERVICE_TYPE_VALUE_ABSW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SERVICE_TYPE_VALUE_CONN: windows_sys::core::PCWSTR = windows_sys::core::w!("ConnectionOriented");
 pub const SERVICE_TYPE_VALUE_CONNA: windows_sys::core::PCSTR = windows_sys::core::s!("ConnectionOriented");
 pub const SERVICE_TYPE_VALUE_CONNW: windows_sys::core::PCWSTR = windows_sys::core::w!("ConnectionOriented");
@@ -1385,6 +4025,7 @@ pub const SERVICE_TYPE_VALUE_TCPPORTW: windows_sys::core::PCWSTR = windows_sys::
 pub const SERVICE_TYPE_VALUE_UDPPORT: windows_sys::core::PCWSTR = windows_sys::core::w!("UdpPort");
 pub const SERVICE_TYPE_VALUE_UDPPORTA: windows_sys::core::PCSTR = windows_sys::core::s!("UdpPort");
 pub const SERVICE_TYPE_VALUE_UDPPORTW: windows_sys::core::PCWSTR = windows_sys::core::w!("UdpPort");
+pub type SET_SERVICE_OPERATION = u32;
 pub const SET_SERVICE_PARTIAL_SUCCESS: u32 = 1u32;
 pub const SG_CONSTRAINED_GROUP: u32 = 2u32;
 pub const SG_UNCONSTRAINED_GROUP: u32 = 1u32;
@@ -1484,26 +4125,358 @@ pub const SI_USER_NOT_SCREENED: u32 = 0u32;
 pub const SI_USER_PASSED: u32 = 1u32;
 pub const SNAP_CONTROL: u32 = 3u32;
 pub const SNAP_DSAP: u32 = 170u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SNAP_HEADER {
+    pub Dsap: u8,
+    pub Ssap: u8,
+    pub Control: u8,
+    pub Oui: [u8; 3],
+    pub Type: u16,
+}
+impl Default for SNAP_HEADER {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SNAP_OUI: u32 = 0u32;
 pub const SNAP_SSAP: u32 = 170u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR {
+    pub sa_family: ADDRESS_FAMILY,
+    pub sa_data: [i8; 14],
+}
+impl Default for SOCKADDR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKADDR_ATM {
+    pub satm_family: u16,
+    pub satm_number: ATM_ADDRESS,
+    pub satm_blli: ATM_BLLI,
+    pub satm_bhli: ATM_BHLI,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_DL {
+    pub sdl_family: ADDRESS_FAMILY,
+    pub sdl_data: [u8; 8],
+    pub sdl_zero: [u8; 4],
+}
+impl Default for SOCKADDR_DL {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IN {
+    pub sin_family: ADDRESS_FAMILY,
+    pub sin_port: u16,
+    pub sin_addr: IN_ADDR,
+    pub sin_zero: [i8; 8],
+}
+impl Default for SOCKADDR_IN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IN6 {
+    pub sin6_family: ADDRESS_FAMILY,
+    pub sin6_port: u16,
+    pub sin6_flowinfo: u32,
+    pub sin6_addr: IN6_ADDR,
+    pub Anonymous: SOCKADDR_IN6_0,
+}
+impl Default for SOCKADDR_IN6 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SOCKADDR_IN6_0 {
+    pub sin6_scope_id: u32,
+    pub sin6_scope_struct: SCOPE_ID,
+}
+impl Default for SOCKADDR_IN6_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IN6_PAIR {
+    pub SourceAddress: *mut SOCKADDR_IN6,
+    pub DestinationAddress: *mut SOCKADDR_IN6,
+}
+impl Default for SOCKADDR_IN6_PAIR {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IN6_W2KSP1 {
+    pub sin6_family: i16,
+    pub sin6_port: u16,
+    pub sin6_flowinfo: u32,
+    pub sin6_addr: IN6_ADDR,
+    pub sin6_scope_id: u32,
+}
+impl Default for SOCKADDR_IN6_W2KSP1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union SOCKADDR_INET {
+    pub Ipv4: SOCKADDR_IN,
+    pub Ipv6: SOCKADDR_IN6,
+    pub si_family: ADDRESS_FAMILY,
+}
+impl Default for SOCKADDR_INET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IPX {
+    pub sa_family: i16,
+    pub sa_netnum: [i8; 4],
+    pub sa_nodenum: [i8; 6],
+    pub sa_socket: u16,
+}
+impl Default for SOCKADDR_IPX {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_IRDA {
+    pub irdaAddressFamily: u16,
+    pub irdaDeviceID: [u8; 4],
+    pub irdaServiceName: [i8; 25],
+}
+impl Default for SOCKADDR_IRDA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_NB {
+    pub snb_family: i16,
+    pub snb_type: u16,
+    pub snb_name: [i8; 16],
+}
+impl Default for SOCKADDR_NB {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_STORAGE {
+    pub ss_family: ADDRESS_FAMILY,
+    pub __ss_pad1: [i8; 6],
+    pub __ss_align: i64,
+    pub __ss_pad2: [i8; 112],
+}
+impl Default for SOCKADDR_STORAGE {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_STORAGE_XP {
+    pub ss_family: i16,
+    pub __ss_pad1: [i8; 6],
+    pub __ss_align: i64,
+    pub __ss_pad2: [i8; 112],
+}
+impl Default for SOCKADDR_STORAGE_XP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_TP {
+    pub tp_family: u16,
+    pub tp_addr_type: u16,
+    pub tp_taddr_len: u16,
+    pub tp_tsel_len: u16,
+    pub tp_addr: [u8; 64],
+}
+impl Default for SOCKADDR_TP {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_UN {
+    pub sun_family: ADDRESS_FAMILY,
+    pub sun_path: [i8; 108],
+}
+impl Default for SOCKADDR_UN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKADDR_VNS {
+    pub sin_family: u16,
+    pub net_address: [u8; 4],
+    pub subnet_addr: [u8; 2],
+    pub port: [u8; 2],
+    pub hops: u8,
+    pub filler: [u8; 5],
+}
+impl Default for SOCKADDR_VNS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type SOCKET = usize;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKET_ADDRESS {
+    pub lpSockaddr: *mut SOCKADDR,
+    pub iSockaddrLength: i32,
+}
+impl Default for SOCKET_ADDRESS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKET_ADDRESS_LIST {
+    pub iAddressCount: i32,
+    pub Address: [SOCKET_ADDRESS; 1],
+}
+impl Default for SOCKET_ADDRESS_LIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SOCKET_DEFAULT2_QM_POLICY: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xaec2ef9c_3a4d_4d3e_8842_239942e39a47);
 pub const SOCKET_ERROR: i32 = -1i32;
 pub const SOCKET_INFO_CONNECTION_ENCRYPTED: u32 = 2u32;
 pub const SOCKET_INFO_CONNECTION_IMPERSONATED: u32 = 4u32;
 pub const SOCKET_INFO_CONNECTION_SECURED: u32 = 1u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKET_PEER_TARGET_NAME {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub PeerAddress: SOCKADDR_STORAGE,
+    pub PeerTargetNameStringLen: u32,
+    pub AllStrings: [u16; 1],
+}
+impl Default for SOCKET_PEER_TARGET_NAME {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type SOCKET_PRIORITY_HINT = i32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_Kernel")]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_PROCESSOR_AFFINITY {
+    pub Processor: super::super::System::Kernel::PROCESSOR_NUMBER,
+    pub NumaNodeId: u16,
+    pub Reserved: u16,
+}
 pub const SOCKET_QUERY_IPSEC2_ABORT_CONNECTION_ON_FIELD_CHANGE: u32 = 1u32;
 pub const SOCKET_QUERY_IPSEC2_FIELD_MASK_MM_SA_ID: u32 = 1u32;
 pub const SOCKET_QUERY_IPSEC2_FIELD_MASK_QM_SA_ID: u32 = 2u32;
+pub type SOCKET_SECURITY_PROTOCOL = i32;
 pub const SOCKET_SECURITY_PROTOCOL_DEFAULT: SOCKET_SECURITY_PROTOCOL = 0i32;
 pub const SOCKET_SECURITY_PROTOCOL_INVALID: SOCKET_SECURITY_PROTOCOL = 3i32;
 pub const SOCKET_SECURITY_PROTOCOL_IPSEC: SOCKET_SECURITY_PROTOCOL = 1i32;
 pub const SOCKET_SECURITY_PROTOCOL_IPSEC2: SOCKET_SECURITY_PROTOCOL = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_SECURITY_QUERY_INFO {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub Flags: u32,
+    pub PeerApplicationAccessTokenHandle: u64,
+    pub PeerMachineAccessTokenHandle: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_SECURITY_QUERY_INFO_IPSEC2 {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub Flags: u32,
+    pub PeerApplicationAccessTokenHandle: u64,
+    pub PeerMachineAccessTokenHandle: u64,
+    pub MmSaId: u64,
+    pub QmSaId: u64,
+    pub NegotiationWinerr: u32,
+    pub SaLookupContext: windows_sys::core::GUID,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_SECURITY_QUERY_TEMPLATE {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub PeerAddress: SOCKADDR_STORAGE,
+    pub PeerTokenAccessMask: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_SECURITY_QUERY_TEMPLATE_IPSEC2 {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub PeerAddress: SOCKADDR_STORAGE,
+    pub PeerTokenAccessMask: u32,
+    pub Flags: u32,
+    pub FieldMask: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct SOCKET_SECURITY_SETTINGS {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub SecurityFlags: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCKET_SECURITY_SETTINGS_IPSEC {
+    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
+    pub SecurityFlags: u32,
+    pub IpsecFlags: u32,
+    pub AuthipMMPolicyKey: windows_sys::core::GUID,
+    pub AuthipQMPolicyKey: windows_sys::core::GUID,
+    pub Reserved: windows_sys::core::GUID,
+    pub Reserved2: u64,
+    pub UserNameStringLen: u32,
+    pub DomainNameStringLen: u32,
+    pub PasswordStringLen: u32,
+    pub AllStrings: [u16; 1],
+}
+impl Default for SOCKET_SECURITY_SETTINGS_IPSEC {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SOCKET_SETTINGS_ALLOW_INSECURE: u32 = 2u32;
 pub const SOCKET_SETTINGS_GUARANTEE_ENCRYPTION: u32 = 1u32;
 pub const SOCKET_SETTINGS_IPSEC_ALLOW_FIRST_INBOUND_PKT_UNENCRYPTED: u32 = 4u32;
 pub const SOCKET_SETTINGS_IPSEC_OPTIONAL_PEER_NAME_VERIFICATION: u32 = 2u32;
 pub const SOCKET_SETTINGS_IPSEC_PEER_NAME_IS_RAW_FORMAT: u32 = 8u32;
 pub const SOCKET_SETTINGS_IPSEC_SKIP_FILTER_INSTANTIATION: u32 = 1u32;
+pub type SOCKET_USAGE_TYPE = i32;
 pub const SOCK_DGRAM: WINSOCK_SOCKET_TYPE = 2i32;
 pub const SOCK_NOTIFY_EVENT_ERR: u32 = 64u32;
 pub const SOCK_NOTIFY_EVENT_HANGUP: u32 = 4u32;
@@ -1518,6 +4491,21 @@ pub const SOCK_NOTIFY_REGISTER_EVENT_HANGUP: u32 = 4u32;
 pub const SOCK_NOTIFY_REGISTER_EVENT_IN: u32 = 1u32;
 pub const SOCK_NOTIFY_REGISTER_EVENT_NONE: u32 = 0u32;
 pub const SOCK_NOTIFY_REGISTER_EVENT_OUT: u32 = 2u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct SOCK_NOTIFY_REGISTRATION {
+    pub socket: SOCKET,
+    pub completionKey: *mut core::ffi::c_void,
+    pub eventFilter: u16,
+    pub operation: u8,
+    pub triggerFlags: u8,
+    pub registrationResult: u32,
+}
+impl Default for SOCK_NOTIFY_REGISTRATION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const SOCK_NOTIFY_TRIGGER_EDGE: u32 = 8u32;
 pub const SOCK_NOTIFY_TRIGGER_LEVEL: u32 = 4u32;
 pub const SOCK_NOTIFY_TRIGGER_ONESHOT: u32 = 1u32;
@@ -1596,6 +4584,7 @@ pub const SocketMaximumPriorityHintType: SOCKET_PRIORITY_HINT = 3i32;
 pub const SocketPriorityHintLow: SOCKET_PRIORITY_HINT = 1i32;
 pub const SocketPriorityHintNormal: SOCKET_PRIORITY_HINT = 2i32;
 pub const SocketPriorityHintVeryLow: SOCKET_PRIORITY_HINT = 0i32;
+pub type TCPSTATE = i32;
 pub const TCPSTATE_CLOSED: TCPSTATE = 0i32;
 pub const TCPSTATE_CLOSE_WAIT: TCPSTATE = 7i32;
 pub const TCPSTATE_CLOSING: TCPSTATE = 8i32;
@@ -1608,6 +4597,11 @@ pub const TCPSTATE_MAX: TCPSTATE = 11i32;
 pub const TCPSTATE_SYN_RCVD: TCPSTATE = 3i32;
 pub const TCPSTATE_SYN_SENT: TCPSTATE = 2i32;
 pub const TCPSTATE_TIME_WAIT: TCPSTATE = 10i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_ACK_FREQUENCY_PARAMETERS {
+    pub TcpDelayedAckFrequency: u8,
+}
 pub const TCP_ATMARK: i32 = 8i32;
 pub const TCP_BSDURGENT: i32 = 28672i32;
 pub const TCP_CONGESTION_ALGORITHM: i32 = 12i32;
@@ -1615,7 +4609,21 @@ pub const TCP_DELAY_FIN_ACK: i32 = 13i32;
 pub const TCP_EXPEDITED_1122: i32 = 2i32;
 pub const TCP_FAIL_CONNECT_ON_ICMP_ERROR: i32 = 18i32;
 pub const TCP_FASTOPEN: i32 = 15i32;
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_HDR {
+    pub th_sport: u16,
+    pub th_dport: u16,
+    pub th_seq: u32,
+    pub th_ack: u32,
+    pub _bitfield: u8,
+    pub th_flags: u8,
+    pub th_win: u16,
+    pub th_sum: u16,
+    pub th_urp: u16,
+}
 pub const TCP_ICMP_ERROR_INFO: i32 = 19i32;
+pub type TCP_ICW_LEVEL = i32;
 pub const TCP_ICW_LEVEL_AGGRESSIVE: TCP_ICW_LEVEL = 3i32;
 pub const TCP_ICW_LEVEL_COMPAT: TCP_ICW_LEVEL = 254i32;
 pub const TCP_ICW_LEVEL_DEFAULT: TCP_ICW_LEVEL = 0i32;
@@ -1623,9 +4631,75 @@ pub const TCP_ICW_LEVEL_EXPERIMENTAL: TCP_ICW_LEVEL = 4i32;
 pub const TCP_ICW_LEVEL_HIGH: TCP_ICW_LEVEL = 1i32;
 pub const TCP_ICW_LEVEL_MAX: TCP_ICW_LEVEL = 255i32;
 pub const TCP_ICW_LEVEL_VERY_HIGH: TCP_ICW_LEVEL = 2i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_ICW_PARAMETERS {
+    pub Level: TCP_ICW_LEVEL,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_INFO_v0 {
+    pub State: TCPSTATE,
+    pub Mss: u32,
+    pub ConnectionTimeMs: u64,
+    pub TimestampsEnabled: bool,
+    pub RttUs: u32,
+    pub MinRttUs: u32,
+    pub BytesInFlight: u32,
+    pub Cwnd: u32,
+    pub SndWnd: u32,
+    pub RcvWnd: u32,
+    pub RcvBuf: u32,
+    pub BytesOut: u64,
+    pub BytesIn: u64,
+    pub BytesReordered: u32,
+    pub BytesRetrans: u32,
+    pub FastRetrans: u32,
+    pub DupAcksIn: u32,
+    pub TimeoutEpisodes: u32,
+    pub SynRetrans: u8,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_INFO_v1 {
+    pub State: TCPSTATE,
+    pub Mss: u32,
+    pub ConnectionTimeMs: u64,
+    pub TimestampsEnabled: bool,
+    pub RttUs: u32,
+    pub MinRttUs: u32,
+    pub BytesInFlight: u32,
+    pub Cwnd: u32,
+    pub SndWnd: u32,
+    pub RcvWnd: u32,
+    pub RcvBuf: u32,
+    pub BytesOut: u64,
+    pub BytesIn: u64,
+    pub BytesReordered: u32,
+    pub BytesRetrans: u32,
+    pub FastRetrans: u32,
+    pub DupAcksIn: u32,
+    pub TimeoutEpisodes: u32,
+    pub SynRetrans: u8,
+    pub SndLimTransRwin: u32,
+    pub SndLimTimeRwin: u32,
+    pub SndLimBytesRwin: u64,
+    pub SndLimTransCwnd: u32,
+    pub SndLimTimeCwnd: u32,
+    pub SndLimBytesCwnd: u64,
+    pub SndLimTransSnd: u32,
+    pub SndLimTimeSnd: u32,
+    pub SndLimBytesSnd: u64,
+}
 pub const TCP_INITIAL_RTO_DEFAULT_MAX_SYN_RETRANSMISSIONS: u32 = 0u32;
 pub const TCP_INITIAL_RTO_DEFAULT_RTT: u32 = 0u32;
 pub const TCP_INITIAL_RTO_NO_SYN_RETRANSMISSIONS: u16 = 65534u16;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_INITIAL_RTO_PARAMETERS {
+    pub Rtt: u16,
+    pub MaxSynRetransmissions: u8,
+}
 pub const TCP_INITIAL_RTO_UNSPECIFIED_MAX_SYN_RETRANSMISSIONS: u16 = 65535u16;
 pub const TCP_KEEPALIVE: i32 = 3i32;
 pub const TCP_KEEPCNT: i32 = 16i32;
@@ -1641,6 +4715,70 @@ pub const TCP_OFFLOAD_NOT_PREFERRED: i32 = 1i32;
 pub const TCP_OFFLOAD_NO_PREFERENCE: i32 = 0i32;
 pub const TCP_OFFLOAD_PREFERENCE: i32 = 11i32;
 pub const TCP_OFFLOAD_PREFERRED: i32 = 2i32;
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct TCP_OPT_FASTOPEN {
+    pub Kind: u8,
+    pub Length: u8,
+    pub Cookie: [u8; 1],
+}
+impl Default for TCP_OPT_FASTOPEN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_MSS {
+    pub Kind: u8,
+    pub Length: u8,
+    pub Mss: u16,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy)]
+pub struct TCP_OPT_SACK {
+    pub Kind: u8,
+    pub Length: u8,
+    pub Block: [TCP_OPT_SACK_0; 1],
+}
+impl Default for TCP_OPT_SACK {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_SACK_0 {
+    pub Left: u32,
+    pub Right: u32,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_SACK_PERMITTED {
+    pub Kind: u8,
+    pub Length: u8,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_TS {
+    pub Kind: u8,
+    pub Length: u8,
+    pub Val: u32,
+    pub EcR: u32,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_UNKNOWN {
+    pub Kind: u8,
+    pub Length: u8,
+}
+#[repr(C, packed(1))]
+#[derive(Clone, Copy, Default)]
+pub struct TCP_OPT_WS {
+    pub Kind: u8,
+    pub Length: u8,
+    pub ShiftCnt: u8,
+}
 pub const TCP_STDURG: i32 = 6i32;
 pub const TCP_TIMESTAMPS: i32 = 10i32;
 pub const TF_DISCONNECT: u32 = 1u32;
@@ -1667,8 +4805,20 @@ pub const TH_RST: u32 = 4u32;
 pub const TH_SYN: u32 = 2u32;
 pub const TH_TAPI: u32 = 2u32;
 pub const TH_URG: u32 = 32u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TIMESTAMPING_CONFIG {
+    pub Flags: u32,
+    pub TxTimestampsBuffered: u16,
+}
 pub const TIMESTAMPING_FLAG_RX: u32 = 1u32;
 pub const TIMESTAMPING_FLAG_TX: u32 = 2u32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TIMEVAL {
+    pub tv_sec: i32,
+    pub tv_usec: i32,
+}
 pub const TNS_PLAN_CARRIER_ID_CODE: u32 = 1u32;
 pub const TNS_TYPE_NATIONAL: u32 = 64u32;
 pub const TP_DISCONNECT: u32 = 1u32;
@@ -1679,12 +4829,65 @@ pub const TP_REUSE_SOCKET: u32 = 2u32;
 pub const TP_USE_DEFAULT_WORKER: u32 = 0u32;
 pub const TP_USE_KERNEL_APC: u32 = 32u32;
 pub const TP_USE_SYSTEM_THREAD: u32 = 16u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TRANSMIT_FILE_BUFFERS {
+    pub Head: *mut core::ffi::c_void,
+    pub HeadLength: u32,
+    pub Tail: *mut core::ffi::c_void,
+    pub TailLength: u32,
+}
+impl Default for TRANSMIT_FILE_BUFFERS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TRANSMIT_PACKETS_ELEMENT {
+    pub dwElFlags: u32,
+    pub cLength: u32,
+    pub Anonymous: TRANSMIT_PACKETS_ELEMENT_0,
+}
+impl Default for TRANSMIT_PACKETS_ELEMENT {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union TRANSMIT_PACKETS_ELEMENT_0 {
+    pub Anonymous: TRANSMIT_PACKETS_ELEMENT_0_0,
+    pub pBuffer: *mut core::ffi::c_void,
+}
+impl Default for TRANSMIT_PACKETS_ELEMENT_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TRANSMIT_PACKETS_ELEMENT_0_0 {
+    pub nFileOffset: i64,
+    pub hFile: super::super::Foundation::HANDLE,
+}
+impl Default for TRANSMIT_PACKETS_ELEMENT_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct TRANSPORT_SETTING_ID {
+    pub Guid: windows_sys::core::GUID,
+}
 pub const TR_END_TO_END: u32 = 1u32;
 pub const TR_NOIND: u32 = 0u32;
 pub const TR_NO_END_TO_END: u32 = 2u32;
 pub const TT_CBR: u32 = 4u32;
 pub const TT_NOIND: u32 = 0u32;
 pub const TT_VBR: u32 = 8u32;
+pub type TUNNEL_SUB_TYPE = i32;
 pub const TUNNEL_SUB_TYPE_CP: TUNNEL_SUB_TYPE = 1i32;
 pub const TUNNEL_SUB_TYPE_HA: TUNNEL_SUB_TYPE = 3i32;
 pub const TUNNEL_SUB_TYPE_IPTLS: TUNNEL_SUB_TYPE = 2i32;
@@ -1697,14 +4900,317 @@ pub const UDP_SEND_MSG_SIZE: i32 = 2i32;
 pub const UNIX_PATH_MAX: u32 = 108u32;
 pub const UP_P2MP: u32 = 1u32;
 pub const UP_P2P: u32 = 0u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct VLAN_TAG {
+    pub Anonymous: VLAN_TAG_0,
+    pub Type: u16,
+}
+impl Default for VLAN_TAG {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union VLAN_TAG_0 {
+    pub Tag: u16,
+    pub Anonymous: VLAN_TAG_0_0,
+}
+impl Default for VLAN_TAG_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct VLAN_TAG_0_0 {
+    pub _bitfield: u16,
+}
 pub const VNSPROTO_IPC: u32 = 1u32;
 pub const VNSPROTO_RELIABLE_IPC: u32 = 2u32;
 pub const VNSPROTO_SPP: u32 = 3u32;
 pub const WCE_AF_IRDA: u32 = 22u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WCE_DEVICELIST {
+    pub numDevice: u32,
+    pub Device: [WCE_IRDA_DEVICE_INFO; 1],
+}
+impl Default for WCE_DEVICELIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WCE_IRDA_DEVICE_INFO {
+    pub irdaDeviceID: [u8; 4],
+    pub irdaDeviceName: [i8; 22],
+    pub Reserved: [u8; 2],
+}
+impl Default for WCE_IRDA_DEVICE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WCE_PF_IRDA: u32 = 22u32;
 pub const WINDOWS_AF_IRDA: u32 = 26u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_DEVICELIST {
+    pub numDevice: u32,
+    pub Device: [WINDOWS_IRDA_DEVICE_INFO; 1],
+}
+impl Default for WINDOWS_DEVICELIST {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_QUERY {
+    pub irdaDeviceID: [u8; 4],
+    pub irdaClassName: [i8; 64],
+    pub irdaAttribName: [i8; 256],
+    pub irdaAttribType: u32,
+    pub irdaAttribute: WINDOWS_IAS_QUERY_0,
+}
+impl Default for WINDOWS_IAS_QUERY {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union WINDOWS_IAS_QUERY_0 {
+    pub irdaAttribInt: i32,
+    pub irdaAttribOctetSeq: WINDOWS_IAS_QUERY_0_0,
+    pub irdaAttribUsrStr: WINDOWS_IAS_QUERY_0_1,
+}
+impl Default for WINDOWS_IAS_QUERY_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_QUERY_0_0 {
+    pub Len: u32,
+    pub OctetSeq: [u8; 1024],
+}
+impl Default for WINDOWS_IAS_QUERY_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_QUERY_0_1 {
+    pub Len: u32,
+    pub CharSet: u32,
+    pub UsrStr: [u8; 256],
+}
+impl Default for WINDOWS_IAS_QUERY_0_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_SET {
+    pub irdaClassName: [i8; 64],
+    pub irdaAttribName: [i8; 256],
+    pub irdaAttribType: u32,
+    pub irdaAttribute: WINDOWS_IAS_SET_0,
+}
+impl Default for WINDOWS_IAS_SET {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union WINDOWS_IAS_SET_0 {
+    pub irdaAttribInt: i32,
+    pub irdaAttribOctetSeq: WINDOWS_IAS_SET_0_0,
+    pub irdaAttribUsrStr: WINDOWS_IAS_SET_0_1,
+}
+impl Default for WINDOWS_IAS_SET_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_SET_0_0 {
+    pub Len: u16,
+    pub OctetSeq: [u8; 1024],
+}
+impl Default for WINDOWS_IAS_SET_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IAS_SET_0_1 {
+    pub Len: u8,
+    pub CharSet: u8,
+    pub UsrStr: [u8; 256],
+}
+impl Default for WINDOWS_IAS_SET_0_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WINDOWS_IRDA_DEVICE_INFO {
+    pub irdaDeviceID: [u8; 4],
+    pub irdaDeviceName: [i8; 22],
+    pub irdaDeviceHints1: u8,
+    pub irdaDeviceHints2: u8,
+    pub irdaCharSet: u8,
+}
+impl Default for WINDOWS_IRDA_DEVICE_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WINDOWS_PF_IRDA: u32 = 26u32;
+pub type WINSOCK_SHUTDOWN_HOW = i32;
+pub type WINSOCK_SOCKET_TYPE = i32;
 pub const WSABASEERR: WSA_ERROR = 10000i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSABUF {
+    pub len: u32,
+    pub buf: windows_sys::core::PSTR,
+}
+impl Default for WSABUF {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSACOMPLETION {
+    pub Type: WSACOMPLETIONTYPE,
+    pub Parameters: WSACOMPLETION_0,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub union WSACOMPLETION_0 {
+    pub WindowMessage: WSACOMPLETION_0_0,
+    pub Event: WSACOMPLETION_0_1,
+    pub Apc: WSACOMPLETION_0_2,
+    pub Port: WSACOMPLETION_0_3,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSACOMPLETION_0_2 {
+    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
+    pub lpfnCompletionProc: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION_0_2 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSACOMPLETION_0_1 {
+    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION_0_1 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSACOMPLETION_0_3 {
+    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
+    pub hPort: super::super::Foundation::HANDLE,
+    pub Key: usize,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION_0_3 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSACOMPLETION_0_0 {
+    pub hWnd: super::super::Foundation::HWND,
+    pub uMsg: u32,
+    pub context: super::super::Foundation::WPARAM,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSACOMPLETION_0_0 {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type WSACOMPLETIONTYPE = i32;
+#[repr(C)]
+#[cfg(target_arch = "x86")]
+#[derive(Clone, Copy)]
+pub struct WSADATA {
+    pub wVersion: u16,
+    pub wHighVersion: u16,
+    pub szDescription: [i8; 257],
+    pub szSystemStatus: [i8; 129],
+    pub iMaxSockets: u16,
+    pub iMaxUdpDg: u16,
+    pub lpVendorInfo: windows_sys::core::PSTR,
+}
+#[cfg(target_arch = "x86")]
+impl Default for WSADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+#[derive(Clone, Copy)]
+pub struct WSADATA {
+    pub wVersion: u16,
+    pub wHighVersion: u16,
+    pub iMaxSockets: u16,
+    pub iMaxUdpDg: u16,
+    pub lpVendorInfo: windows_sys::core::PSTR,
+    pub szDescription: [i8; 257],
+    pub szSystemStatus: [i8; 129],
+}
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
+impl Default for WSADATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSADESCRIPTION_LEN: u32 = 256u32;
 pub const WSAEACCES: WSA_ERROR = 10013i32;
 pub const WSAEADDRINUSE: WSA_ERROR = 10048i32;
@@ -1713,6 +5219,7 @@ pub const WSAEAFNOSUPPORT: WSA_ERROR = 10047i32;
 pub const WSAEALREADY: WSA_ERROR = 10037i32;
 pub const WSAEBADF: WSA_ERROR = 10009i32;
 pub const WSAECANCELLED: WSA_ERROR = 10103i32;
+pub type WSAECOMPARATOR = i32;
 pub const WSAECONNABORTED: WSA_ERROR = 10053i32;
 pub const WSAECONNREFUSED: WSA_ERROR = 10061i32;
 pub const WSAECONNRESET: WSA_ERROR = 10054i32;
@@ -1749,12 +5256,14 @@ pub const WSAEPROTOTYPE: WSA_ERROR = 10041i32;
 pub const WSAEPROVIDERFAILEDINIT: WSA_ERROR = 10106i32;
 pub const WSAEREFUSED: WSA_ERROR = 10112i32;
 pub const WSAEREMOTE: WSA_ERROR = 10071i32;
+pub type WSAESETSERVICEOP = i32;
 pub const WSAESHUTDOWN: WSA_ERROR = 10058i32;
 pub const WSAESOCKTNOSUPPORT: WSA_ERROR = 10044i32;
 pub const WSAESTALE: WSA_ERROR = 10070i32;
 pub const WSAETIMEDOUT: WSA_ERROR = 10060i32;
 pub const WSAETOOMANYREFS: WSA_ERROR = 10059i32;
 pub const WSAEUSERS: WSA_ERROR = 10068i32;
+pub type WSAEVENT = isize;
 pub const WSAEWOULDBLOCK: WSA_ERROR = 10035i32;
 pub const WSAHOST_NOT_FOUND: WSA_ERROR = 11001i32;
 pub const WSAID_ACCEPTEX: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xb5367df1_cbac_11cf_95ca_00805f48a192);
@@ -1767,17 +5276,392 @@ pub const WSAID_TRANSMITPACKETS: windows_sys::core::GUID = windows_sys::core::GU
 pub const WSAID_WSAPOLL: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0x18c76f85_dc66_4964_972e_23c27238312b);
 pub const WSAID_WSARECVMSG: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xf689d7c8_6f1f_436b_8a53_e54fe351c322);
 pub const WSAID_WSASENDMSG: windows_sys::core::GUID = windows_sys::core::GUID::from_u128(0xa441e712_754f_43ca_84a7_0dee44cf606d);
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSAMSG {
+    pub name: *mut SOCKADDR,
+    pub namelen: i32,
+    pub lpBuffers: *mut WSABUF,
+    pub dwBufferCount: u32,
+    pub Control: WSABUF,
+    pub dwFlags: u32,
+}
+impl Default for WSAMSG {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSANAMESPACE_INFOA {
+    pub NSProviderId: windows_sys::core::GUID,
+    pub dwNameSpace: u32,
+    pub fActive: windows_sys::core::BOOL,
+    pub dwVersion: u32,
+    pub lpszIdentifier: windows_sys::core::PSTR,
+}
+impl Default for WSANAMESPACE_INFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSANAMESPACE_INFOEXA {
+    pub NSProviderId: windows_sys::core::GUID,
+    pub dwNameSpace: u32,
+    pub fActive: windows_sys::core::BOOL,
+    pub dwVersion: u32,
+    pub lpszIdentifier: windows_sys::core::PSTR,
+    pub ProviderSpecific: super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSANAMESPACE_INFOEXA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSANAMESPACE_INFOEXW {
+    pub NSProviderId: windows_sys::core::GUID,
+    pub dwNameSpace: u32,
+    pub fActive: windows_sys::core::BOOL,
+    pub dwVersion: u32,
+    pub lpszIdentifier: windows_sys::core::PWSTR,
+    pub ProviderSpecific: super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSANAMESPACE_INFOEXW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSANAMESPACE_INFOW {
+    pub NSProviderId: windows_sys::core::GUID,
+    pub dwNameSpace: u32,
+    pub fActive: windows_sys::core::BOOL,
+    pub dwVersion: u32,
+    pub lpszIdentifier: windows_sys::core::PWSTR,
+}
+impl Default for WSANAMESPACE_INFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSANETWORKEVENTS {
+    pub lNetworkEvents: i32,
+    pub iErrorCode: [i32; 10],
+}
+impl Default for WSANETWORKEVENTS {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSANOTINITIALISED: WSA_ERROR = 10093i32;
 pub const WSANO_DATA: WSA_ERROR = 11004i32;
 pub const WSANO_RECOVERY: WSA_ERROR = 11003i32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSANSCLASSINFOA {
+    pub lpszName: windows_sys::core::PSTR,
+    pub dwNameSpace: u32,
+    pub dwValueType: u32,
+    pub dwValueSize: u32,
+    pub lpValue: *mut core::ffi::c_void,
+}
+impl Default for WSANSCLASSINFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSANSCLASSINFOW {
+    pub lpszName: windows_sys::core::PWSTR,
+    pub dwNameSpace: u32,
+    pub dwValueType: u32,
+    pub dwValueSize: u32,
+    pub lpValue: *mut core::ffi::c_void,
+}
+impl Default for WSANSCLASSINFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSAPOLLDATA {
+    pub result: i32,
+    pub fds: u32,
+    pub timeout: i32,
+    pub fdArray: [WSAPOLLFD; 1],
+}
+impl Default for WSAPOLLDATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct WSAPOLLFD {
+    pub fd: SOCKET,
+    pub events: WSAPOLL_EVENT_FLAGS,
+    pub revents: WSAPOLL_EVENT_FLAGS,
+}
+pub type WSAPOLL_EVENT_FLAGS = i16;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSAPROTOCOLCHAIN {
+    pub ChainLen: i32,
+    pub ChainEntries: [u32; 7],
+}
+impl Default for WSAPROTOCOLCHAIN {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSAPROTOCOL_INFOA {
+    pub dwServiceFlags1: u32,
+    pub dwServiceFlags2: u32,
+    pub dwServiceFlags3: u32,
+    pub dwServiceFlags4: u32,
+    pub dwProviderFlags: u32,
+    pub ProviderId: windows_sys::core::GUID,
+    pub dwCatalogEntryId: u32,
+    pub ProtocolChain: WSAPROTOCOLCHAIN,
+    pub iVersion: i32,
+    pub iAddressFamily: i32,
+    pub iMaxSockAddr: i32,
+    pub iMinSockAddr: i32,
+    pub iSocketType: i32,
+    pub iProtocol: i32,
+    pub iProtocolMaxOffset: i32,
+    pub iNetworkByteOrder: i32,
+    pub iSecurityScheme: i32,
+    pub dwMessageSize: u32,
+    pub dwProviderReserved: u32,
+    pub szProtocol: [i8; 256],
+}
+impl Default for WSAPROTOCOL_INFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSAPROTOCOL_INFOW {
+    pub dwServiceFlags1: u32,
+    pub dwServiceFlags2: u32,
+    pub dwServiceFlags3: u32,
+    pub dwServiceFlags4: u32,
+    pub dwProviderFlags: u32,
+    pub ProviderId: windows_sys::core::GUID,
+    pub dwCatalogEntryId: u32,
+    pub ProtocolChain: WSAPROTOCOLCHAIN,
+    pub iVersion: i32,
+    pub iAddressFamily: i32,
+    pub iMaxSockAddr: i32,
+    pub iMinSockAddr: i32,
+    pub iSocketType: i32,
+    pub iProtocol: i32,
+    pub iProtocolMaxOffset: i32,
+    pub iNetworkByteOrder: i32,
+    pub iSecurityScheme: i32,
+    pub dwMessageSize: u32,
+    pub dwProviderReserved: u32,
+    pub szProtocol: [u16; 256],
+}
+impl Default for WSAPROTOCOL_INFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSAPROTOCOL_LEN: u32 = 255u32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSAQUERYSET2A {
+    pub dwSize: u32,
+    pub lpszServiceInstanceName: windows_sys::core::PSTR,
+    pub lpVersion: *mut WSAVERSION,
+    pub lpszComment: windows_sys::core::PSTR,
+    pub dwNameSpace: u32,
+    pub lpNSProviderId: *mut windows_sys::core::GUID,
+    pub lpszContext: windows_sys::core::PSTR,
+    pub dwNumberOfProtocols: u32,
+    pub lpafpProtocols: *mut AFPROTOCOLS,
+    pub lpszQueryString: windows_sys::core::PSTR,
+    pub dwNumberOfCsAddrs: u32,
+    pub lpcsaBuffer: *mut CSADDR_INFO,
+    pub dwOutputFlags: u32,
+    pub lpBlob: *mut super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSAQUERYSET2A {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSAQUERYSET2W {
+    pub dwSize: u32,
+    pub lpszServiceInstanceName: windows_sys::core::PWSTR,
+    pub lpVersion: *mut WSAVERSION,
+    pub lpszComment: windows_sys::core::PWSTR,
+    pub dwNameSpace: u32,
+    pub lpNSProviderId: *mut windows_sys::core::GUID,
+    pub lpszContext: windows_sys::core::PWSTR,
+    pub dwNumberOfProtocols: u32,
+    pub lpafpProtocols: *mut AFPROTOCOLS,
+    pub lpszQueryString: windows_sys::core::PWSTR,
+    pub dwNumberOfCsAddrs: u32,
+    pub lpcsaBuffer: *mut CSADDR_INFO,
+    pub dwOutputFlags: u32,
+    pub lpBlob: *mut super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSAQUERYSET2W {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSAQUERYSETA {
+    pub dwSize: u32,
+    pub lpszServiceInstanceName: windows_sys::core::PSTR,
+    pub lpServiceClassId: *mut windows_sys::core::GUID,
+    pub lpVersion: *mut WSAVERSION,
+    pub lpszComment: windows_sys::core::PSTR,
+    pub dwNameSpace: u32,
+    pub lpNSProviderId: *mut windows_sys::core::GUID,
+    pub lpszContext: windows_sys::core::PSTR,
+    pub dwNumberOfProtocols: u32,
+    pub lpafpProtocols: *mut AFPROTOCOLS,
+    pub lpszQueryString: windows_sys::core::PSTR,
+    pub dwNumberOfCsAddrs: u32,
+    pub lpcsaBuffer: *mut CSADDR_INFO,
+    pub dwOutputFlags: u32,
+    pub lpBlob: *mut super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSAQUERYSETA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_Com")]
+#[derive(Clone, Copy)]
+pub struct WSAQUERYSETW {
+    pub dwSize: u32,
+    pub lpszServiceInstanceName: windows_sys::core::PWSTR,
+    pub lpServiceClassId: *mut windows_sys::core::GUID,
+    pub lpVersion: *mut WSAVERSION,
+    pub lpszComment: windows_sys::core::PWSTR,
+    pub dwNameSpace: u32,
+    pub lpNSProviderId: *mut windows_sys::core::GUID,
+    pub lpszContext: windows_sys::core::PWSTR,
+    pub dwNumberOfProtocols: u32,
+    pub lpafpProtocols: *mut AFPROTOCOLS,
+    pub lpszQueryString: windows_sys::core::PWSTR,
+    pub dwNumberOfCsAddrs: u32,
+    pub lpcsaBuffer: *mut CSADDR_INFO,
+    pub dwOutputFlags: u32,
+    pub lpBlob: *mut super::super::System::Com::BLOB,
+}
+#[cfg(feature = "Win32_System_Com")]
+impl Default for WSAQUERYSETW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy)]
+pub struct WSASENDMSG {
+    pub lpMsg: *mut WSAMSG,
+    pub dwFlags: u32,
+    pub lpNumberOfBytesSent: *mut u32,
+    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
+    pub lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
+}
+#[cfg(feature = "Win32_System_IO")]
+impl Default for WSASENDMSG {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSASERVICECLASSINFOA {
+    pub lpServiceClassId: *mut windows_sys::core::GUID,
+    pub lpszServiceClassName: windows_sys::core::PSTR,
+    pub dwCount: u32,
+    pub lpClassInfos: *mut WSANSCLASSINFOA,
+}
+impl Default for WSASERVICECLASSINFOA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSASERVICECLASSINFOW {
+    pub lpServiceClassId: *mut windows_sys::core::GUID,
+    pub lpszServiceClassName: windows_sys::core::PWSTR,
+    pub dwCount: u32,
+    pub lpClassInfos: *mut WSANSCLASSINFOW,
+}
+impl Default for WSASERVICECLASSINFOW {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSASERVICE_NOT_FOUND: WSA_ERROR = 10108i32;
 pub const WSASYSCALLFAILURE: WSA_ERROR = 10107i32;
 pub const WSASYSNOTREADY: WSA_ERROR = 10091i32;
 pub const WSASYS_STATUS_LEN: u32 = 128u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSATHREADID {
+    pub ThreadHandle: super::super::Foundation::HANDLE,
+    pub Reserved: usize,
+}
+impl Default for WSATHREADID {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSATRY_AGAIN: WSA_ERROR = 11002i32;
 pub const WSATYPE_NOT_FOUND: WSA_ERROR = 10109i32;
 pub const WSAVERNOTSUPPORTED: WSA_ERROR = 10092i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct WSAVERSION {
+    pub dwVersion: u32,
+    pub ecHow: WSAECOMPARATOR,
+}
+pub type WSA_COMPATIBILITY_BEHAVIOR_ID = i32;
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct WSA_COMPATIBILITY_MODE {
+    pub BehaviorId: WSA_COMPATIBILITY_BEHAVIOR_ID,
+    pub TargetOsVersion: u32,
+}
+pub type WSA_ERROR = i32;
 pub const WSA_E_CANCELLED: WSA_ERROR = 10111i32;
 pub const WSA_E_NO_MORE: WSA_ERROR = 10110i32;
 pub const WSA_FLAG_ACCESS_SYSTEM_SECURITY: u32 = 64u32;
@@ -1830,8 +5714,86 @@ pub const WSA_WAIT_EVENT_0: WSA_ERROR = 0i32;
 pub const WSA_WAIT_FAILED: u32 = 4294967295u32;
 pub const WSA_WAIT_IO_COMPLETION: WSA_ERROR = 192i32;
 pub const WSA_WAIT_TIMEOUT: u32 = 258u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSC_PROVIDER_AUDIT_INFO {
+    pub RecordSize: u32,
+    pub Reserved: *mut core::ffi::c_void,
+}
+impl Default for WSC_PROVIDER_AUDIT_INFO {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
+pub type WSC_PROVIDER_INFO_TYPE = i32;
 pub const WSK_SO_BASE: u32 = 16384u32;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WSPDATA {
+    pub wVersion: u16,
+    pub wHighVersion: u16,
+    pub szDescription: [u16; 256],
+}
+impl Default for WSPDATA {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub const WSPDESCRIPTION_LEN: u32 = 255u32;
+#[repr(C)]
+#[cfg(feature = "Win32_System_IO")]
+#[derive(Clone, Copy, Default)]
+pub struct WSPPROC_TABLE {
+    pub lpWSPAccept: LPWSPACCEPT,
+    pub lpWSPAddressToString: LPWSPADDRESSTOSTRING,
+    pub lpWSPAsyncSelect: LPWSPASYNCSELECT,
+    pub lpWSPBind: LPWSPBIND,
+    pub lpWSPCancelBlockingCall: LPWSPCANCELBLOCKINGCALL,
+    pub lpWSPCleanup: LPWSPCLEANUP,
+    pub lpWSPCloseSocket: LPWSPCLOSESOCKET,
+    pub lpWSPConnect: LPWSPCONNECT,
+    pub lpWSPDuplicateSocket: LPWSPDUPLICATESOCKET,
+    pub lpWSPEnumNetworkEvents: LPWSPENUMNETWORKEVENTS,
+    pub lpWSPEventSelect: LPWSPEVENTSELECT,
+    pub lpWSPGetOverlappedResult: LPWSPGETOVERLAPPEDRESULT,
+    pub lpWSPGetPeerName: LPWSPGETPEERNAME,
+    pub lpWSPGetSockName: LPWSPGETSOCKNAME,
+    pub lpWSPGetSockOpt: LPWSPGETSOCKOPT,
+    pub lpWSPGetQOSByName: LPWSPGETQOSBYNAME,
+    pub lpWSPIoctl: LPWSPIOCTL,
+    pub lpWSPJoinLeaf: LPWSPJOINLEAF,
+    pub lpWSPListen: LPWSPLISTEN,
+    pub lpWSPRecv: LPWSPRECV,
+    pub lpWSPRecvDisconnect: LPWSPRECVDISCONNECT,
+    pub lpWSPRecvFrom: LPWSPRECVFROM,
+    pub lpWSPSelect: LPWSPSELECT,
+    pub lpWSPSend: LPWSPSEND,
+    pub lpWSPSendDisconnect: LPWSPSENDDISCONNECT,
+    pub lpWSPSendTo: LPWSPSENDTO,
+    pub lpWSPSetSockOpt: LPWSPSETSOCKOPT,
+    pub lpWSPShutdown: LPWSPSHUTDOWN,
+    pub lpWSPSocket: LPWSPSOCKET,
+    pub lpWSPStringToAddress: LPWSPSTRINGTOADDRESS,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct WSPUPCALLTABLE {
+    pub lpWPUCloseEvent: LPWPUCLOSEEVENT,
+    pub lpWPUCloseSocketHandle: LPWPUCLOSESOCKETHANDLE,
+    pub lpWPUCreateEvent: LPWPUCREATEEVENT,
+    pub lpWPUCreateSocketHandle: LPWPUCREATESOCKETHANDLE,
+    pub lpWPUFDIsSet: LPWPUFDISSET,
+    pub lpWPUGetProviderPath: LPWPUGETPROVIDERPATH,
+    pub lpWPUModifyIFSHandle: LPWPUMODIFYIFSHANDLE,
+    pub lpWPUPostMessage: LPWPUPOSTMESSAGE,
+    pub lpWPUQueryBlockingCallback: LPWPUQUERYBLOCKINGCALLBACK,
+    pub lpWPUQuerySocketHandleContext: LPWPUQUERYSOCKETHANDLECONTEXT,
+    pub lpWPUQueueApc: LPWPUQUEUEAPC,
+    pub lpWPUResetEvent: LPWPURESETEVENT,
+    pub lpWPUSetEvent: LPWPUSETEVENT,
+    pub lpWPUOpenCurrentThread: LPWPUOPENCURRENTTHREAD,
+    pub lpWPUCloseThread: LPWPUCLOSETHREAD,
+}
 pub const WSS_OPERATION_IN_PROGRESS: i32 = 259i32;
 pub const WsaBehaviorAll: WSA_COMPATIBILITY_BEHAVIOR_ID = 0i32;
 pub const WsaBehaviorAutoTuning: WSA_COMPATIBILITY_BEHAVIOR_ID = 2i32;
@@ -1874,2751 +5836,7 @@ pub const _BIG_ENDIAN: u32 = 4321u32;
 pub const _LITTLE_ENDIAN: u32 = 1234u32;
 pub const _PDP_ENDIAN: u32 = 3412u32;
 pub const _SS_MAXSIZE: u32 = 128u32;
-pub type AAL_TYPE = i32;
-pub type ADDRESS_FAMILY = u16;
-pub type ARP_HARDWARE_TYPE = i32;
-pub type ARP_OPCODE = i32;
-pub type CONTROL_CHANNEL_TRIGGER_STATUS = i32;
-pub type FALLBACK_INDEX = i32;
-pub type ICMP4_TIME_EXCEED_CODE = i32;
-pub type ICMP4_UNREACH_CODE = i32;
-pub type IGMP_MAX_RESP_CODE_TYPE = i32;
-pub type IPPROTO = i32;
-pub type IPV4_OPTION_TYPE = i32;
-pub type IPV6_OPTION_TYPE = i32;
-pub type IP_OPTION_TIMESTAMP_FLAGS = i32;
-pub type MLD_MAX_RESP_CODE_TYPE = i32;
-pub type MULTICAST_MODE_TYPE = i32;
-pub type NAPI_PROVIDER_LEVEL = i32;
-pub type NAPI_PROVIDER_TYPE = i32;
-pub type ND_OPTION_TYPE = i32;
-pub type NLA_BLOB_DATA_TYPE = i32;
-pub type NLA_CONNECTIVITY_TYPE = i32;
-pub type NLA_INTERNET = i32;
-pub type NL_ADDRESS_TYPE = i32;
-pub type NL_BANDWIDTH_FLAG = i32;
-pub type NL_DAD_STATE = i32;
-pub type NL_INTERFACE_NETWORK_CATEGORY_STATE = i32;
-pub type NL_LINK_LOCAL_ADDRESS_BEHAVIOR = i32;
-pub type NL_NEIGHBOR_STATE = i32;
-pub type NL_NETWORK_CATEGORY = i32;
-pub type NL_NETWORK_CONNECTIVITY_COST_HINT = i32;
-pub type NL_NETWORK_CONNECTIVITY_LEVEL_HINT = i32;
-pub type NL_PREFIX_ORIGIN = i32;
-pub type NL_ROUTER_DISCOVERY_BEHAVIOR = i32;
-pub type NL_ROUTE_ORIGIN = i32;
-pub type NL_ROUTE_PROTOCOL = i32;
-pub type NL_SUFFIX_ORIGIN = i32;
-pub type NPI_MODULEID_TYPE = i32;
-pub type PMTUD_STATE = i32;
-pub type Q2931_IE_TYPE = i32;
-pub type RCVALL_VALUE = i32;
-pub type RESOURCE_DISPLAY_TYPE = u32;
-pub type RIO_NOTIFICATION_COMPLETION_TYPE = i32;
-pub type SCOPE_LEVEL = i32;
-pub type SEND_RECV_FLAGS = i32;
-pub type SET_SERVICE_OPERATION = u32;
-pub type SOCKET_PRIORITY_HINT = i32;
-pub type SOCKET_SECURITY_PROTOCOL = i32;
-pub type SOCKET_USAGE_TYPE = i32;
-pub type TCPSTATE = i32;
-pub type TCP_ICW_LEVEL = i32;
-pub type TUNNEL_SUB_TYPE = i32;
-pub type WINSOCK_SHUTDOWN_HOW = i32;
-pub type WINSOCK_SOCKET_TYPE = i32;
-pub type WSACOMPLETIONTYPE = i32;
-pub type WSAECOMPARATOR = i32;
-pub type WSAESETSERVICEOP = i32;
-pub type WSAPOLL_EVENT_FLAGS = i16;
-pub type WSA_COMPATIBILITY_BEHAVIOR_ID = i32;
-pub type WSA_ERROR = i32;
-pub type WSC_PROVIDER_INFO_TYPE = i32;
 pub type eWINDOW_ADVANCE_METHOD = i32;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct AAL5_PARAMETERS {
-    pub ForwardMaxCPCSSDUSize: u32,
-    pub BackwardMaxCPCSSDUSize: u32,
-    pub Mode: u8,
-    pub SSCSType: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct AALUSER_PARAMETERS {
-    pub UserDefined: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct AAL_PARAMETERS_IE {
-    pub AALType: AAL_TYPE,
-    pub AALSpecificParameters: AAL_PARAMETERS_IE_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union AAL_PARAMETERS_IE_0 {
-    pub AAL5Parameters: AAL5_PARAMETERS,
-    pub AALUserParameters: AALUSER_PARAMETERS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOA {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_next: *mut ADDRINFOA,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX2A {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX2A,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX2W {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX2W,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX3 {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX3,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PWSTR,
-    pub ai_interfaceindex: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX4 {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX4,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PWSTR,
-    pub ai_interfaceindex: i32,
-    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX5 {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX5,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PWSTR,
-    pub ai_interfaceindex: i32,
-    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
-    pub ai_ttl: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEX6 {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEX5,
-    pub ai_version: i32,
-    pub ai_fqdn: windows_sys::core::PWSTR,
-    pub ai_interfaceindex: i32,
-    pub ai_resolutionhandle: super::super::Foundation::HANDLE,
-    pub ai_ttl: u32,
-    pub ai_numservers: u32,
-    pub ai_servers: *mut ADDRINFO_DNS_SERVER,
-    pub ai_responseflags: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEXA {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEXA,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOEXW {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_blob: *mut core::ffi::c_void,
-    pub ai_bloblen: usize,
-    pub ai_provider: *mut windows_sys::core::GUID,
-    pub ai_next: *mut ADDRINFOEXW,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFOW {
-    pub ai_flags: i32,
-    pub ai_family: i32,
-    pub ai_socktype: i32,
-    pub ai_protocol: i32,
-    pub ai_addrlen: usize,
-    pub ai_canonname: windows_sys::core::PWSTR,
-    pub ai_addr: *mut SOCKADDR,
-    pub ai_next: *mut ADDRINFOW,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ADDRINFO_DNS_SERVER {
-    pub ai_servertype: u32,
-    pub ai_flags: u64,
-    pub ai_addrlen: u32,
-    pub ai_addr: *mut SOCKADDR,
-    pub Anonymous: ADDRINFO_DNS_SERVER_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ADDRINFO_DNS_SERVER_0 {
-    pub ai_template: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct AFPROTOCOLS {
-    pub iAddressFamily: i32,
-    pub iProtocol: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ARP_HEADER {
-    pub HardwareAddressSpace: u16,
-    pub ProtocolAddressSpace: u16,
-    pub HardwareAddressLength: u8,
-    pub ProtocolAddressLength: u8,
-    pub Opcode: u16,
-    pub SenderHardwareAddress: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ASSOCIATE_NAMERES_CONTEXT_INPUT {
-    pub TransportSettingId: TRANSPORT_SETTING_ID,
-    pub Handle: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_ADDRESS {
-    pub AddressType: u32,
-    pub NumofDigits: u32,
-    pub Addr: [u8; 20],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_BHLI {
-    pub HighLayerInfoType: u32,
-    pub HighLayerInfoLength: u32,
-    pub HighLayerInfo: [u8; 8],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_BLLI {
-    pub Layer2Protocol: u32,
-    pub Layer2UserSpecifiedProtocol: u32,
-    pub Layer3Protocol: u32,
-    pub Layer3UserSpecifiedProtocol: u32,
-    pub Layer3IPI: u32,
-    pub SnapID: [u8; 5],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_BLLI_IE {
-    pub Layer2Protocol: u32,
-    pub Layer2Mode: u8,
-    pub Layer2WindowSize: u8,
-    pub Layer2UserSpecifiedProtocol: u32,
-    pub Layer3Protocol: u32,
-    pub Layer3Mode: u8,
-    pub Layer3DefaultPacketSize: u8,
-    pub Layer3PacketWindowSize: u8,
-    pub Layer3UserSpecifiedProtocol: u32,
-    pub Layer3IPI: u32,
-    pub SnapID: [u8; 5],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_BROADBAND_BEARER_CAPABILITY_IE {
-    pub BearerClass: u8,
-    pub TrafficType: u8,
-    pub TimingRequirements: u8,
-    pub ClippingSusceptability: u8,
-    pub UserPlaneConnectionConfig: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_CALLING_PARTY_NUMBER_IE {
-    pub ATM_Number: ATM_ADDRESS,
-    pub Presentation_Indication: u8,
-    pub Screening_Indicator: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_CAUSE_IE {
-    pub Location: u8,
-    pub Cause: u8,
-    pub DiagnosticsLength: u8,
-    pub Diagnostics: [u8; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_CONNECTION_ID {
-    pub DeviceNumber: u32,
-    pub VPI: u32,
-    pub VCI: u32,
-}
-#[repr(C, packed(4))]
-#[derive(Clone, Copy)]
-pub struct ATM_PVC_PARAMS {
-    pub PvcConnectionId: ATM_CONNECTION_ID,
-    pub PvcQos: QOS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_QOS_CLASS_IE {
-    pub QOSClassForward: u8,
-    pub QOSClassBackward: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_TD {
-    pub PeakCellRate_CLP0: u32,
-    pub PeakCellRate_CLP01: u32,
-    pub SustainableCellRate_CLP0: u32,
-    pub SustainableCellRate_CLP01: u32,
-    pub MaxBurstSize_CLP0: u32,
-    pub MaxBurstSize_CLP01: u32,
-    pub Tagging: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_TRAFFIC_DESCRIPTOR_IE {
-    pub Forward: ATM_TD,
-    pub Backward: ATM_TD,
-    pub BestEffort: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ATM_TRANSIT_NETWORK_SELECTION_IE {
-    pub TypeOfNetworkId: u8,
-    pub NetworkIdPlan: u8,
-    pub NetworkIdLength: u8,
-    pub NetworkId: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct CMSGHDR {
-    pub cmsg_len: usize,
-    pub cmsg_level: i32,
-    pub cmsg_type: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct CSADDR_INFO {
-    pub LocalAddr: SOCKET_ADDRESS,
-    pub RemoteAddr: SOCKET_ADDRESS,
-    pub iSocketType: i32,
-    pub iProtocol: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_EI48 {
-    pub Byte: [u8; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_EI64 {
-    pub Byte: [u8; 5],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_EUI48 {
-    pub Byte: [u8; 6],
-    pub Anonymous: DL_EUI48_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DL_EUI48_0 {
-    pub Oui: DL_OUI,
-    pub Ei48: DL_EI48,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_EUI64 {
-    pub Byte: [u8; 8],
-    pub Value: u64,
-    pub Anonymous: DL_EUI64_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DL_EUI64_0 {
-    pub Oui: DL_OUI,
-    pub Anonymous: DL_EUI64_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_EUI64_0_0 {
-    pub Ei64: DL_EI64,
-    pub Anonymous: DL_EUI64_0_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DL_EUI64_0_0_0 {
-    pub Type: u8,
-    pub Tse: u8,
-    pub Ei48: DL_EI48,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union DL_OUI {
-    pub Byte: [u8; 3],
-    pub Anonymous: DL_OUI_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct DL_OUI_0 {
-    pub _bitfield: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct DL_TEREDO_ADDRESS {
-    pub Reserved: [u8; 6],
-    pub Anonymous: DL_TEREDO_ADDRESS_0,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub union DL_TEREDO_ADDRESS_0 {
-    pub Eui64: DL_EUI64,
-    pub Anonymous: DL_TEREDO_ADDRESS_0_0,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct DL_TEREDO_ADDRESS_0_0 {
-    pub Flags: u16,
-    pub MappedPort: u16,
-    pub MappedAddress: IN_ADDR,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct DL_TEREDO_ADDRESS_PRV {
-    pub Reserved: [u8; 6],
-    pub Anonymous: DL_TEREDO_ADDRESS_PRV_0,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub union DL_TEREDO_ADDRESS_PRV_0 {
-    pub Eui64: DL_EUI64,
-    pub Anonymous: DL_TEREDO_ADDRESS_PRV_0_0,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct DL_TEREDO_ADDRESS_PRV_0_0 {
-    pub Flags: u16,
-    pub MappedPort: u16,
-    pub MappedAddress: IN_ADDR,
-    pub LocalAddress: IN_ADDR,
-    pub InterfaceIndex: u32,
-    pub LocalPort: u16,
-    pub DlDestination: DL_EUI48,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Kernel")]
-#[derive(Clone, Copy)]
-pub struct DL_TUNNEL_ADDRESS {
-    pub CompartmentId: super::super::System::Kernel::COMPARTMENT_ID,
-    pub ScopeId: SCOPE_ID,
-    pub IpAddress: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ETHERNET_HEADER {
-    pub Destination: DL_EUI48,
-    pub Source: DL_EUI48,
-    pub Anonymous: ETHERNET_HEADER_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ETHERNET_HEADER_0 {
-    pub Type: u16,
-    pub Length: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct FD_SET {
-    pub fd_count: u32,
-    pub fd_array: [SOCKET; 64],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct FLOWSPEC {
-    pub TokenRate: u32,
-    pub TokenBucketSize: u32,
-    pub PeakBandwidth: u32,
-    pub Latency: u32,
-    pub DelayVariation: u32,
-    pub ServiceType: u32,
-    pub MaxSduSize: u32,
-    pub MinimumPolicedSize: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct GROUP_FILTER {
-    pub gf_interface: u32,
-    pub gf_group: SOCKADDR_STORAGE,
-    pub gf_fmode: MULTICAST_MODE_TYPE,
-    pub gf_numsrc: u32,
-    pub gf_slist: [SOCKADDR_STORAGE; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct GROUP_REQ {
-    pub gr_interface: u32,
-    pub gr_group: SOCKADDR_STORAGE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct GROUP_SOURCE_REQ {
-    pub gsr_interface: u32,
-    pub gsr_group: SOCKADDR_STORAGE,
-    pub gsr_source: SOCKADDR_STORAGE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct HOSTENT {
-    pub h_name: windows_sys::core::PSTR,
-    pub h_aliases: *mut *mut i8,
-    pub h_addrtype: i16,
-    pub h_length: i16,
-    pub h_addr_list: *mut *mut i8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV4_ADDRESS_MASK_MESSAGE {
-    pub Header: ICMP_MESSAGE,
-    pub AddressMask: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV4_ROUTER_ADVERT_ENTRY {
-    pub RouterAdvertAddr: IN_ADDR,
-    pub PreferenceLevel: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV4_ROUTER_ADVERT_HEADER {
-    pub RaHeader: ICMP_MESSAGE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV4_ROUTER_SOLICIT {
-    pub RsHeader: ICMP_MESSAGE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMPV4_TIMESTAMP_MESSAGE {
-    pub Header: ICMP_MESSAGE,
-    pub OriginateTimestamp: u32,
-    pub ReceiveTimestamp: u32,
-    pub TransmitTimestamp: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMP_ERROR_INFO {
-    pub srcaddress: SOCKADDR_INET,
-    pub protocol: IPPROTO,
-    pub r#type: u8,
-    pub code: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMP_HEADER {
-    pub Type: u8,
-    pub Code: u8,
-    pub Checksum: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ICMP_MESSAGE {
-    pub Header: ICMP_HEADER,
-    pub Data: ICMP_MESSAGE_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ICMP_MESSAGE_0 {
-    pub Data32: [u32; 1],
-    pub Data16: [u16; 2],
-    pub Data8: [u8; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMPV3_QUERY_HEADER {
-    pub Type: u8,
-    pub Anonymous1: IGMPV3_QUERY_HEADER_0,
-    pub Checksum: u16,
-    pub MulticastAddress: IN_ADDR,
-    pub _bitfield: u8,
-    pub Anonymous2: IGMPV3_QUERY_HEADER_1,
-    pub SourceCount: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IGMPV3_QUERY_HEADER_0 {
-    pub MaxRespCode: u8,
-    pub Anonymous: IGMPV3_QUERY_HEADER_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMPV3_QUERY_HEADER_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IGMPV3_QUERY_HEADER_1 {
-    pub QueriersQueryInterfaceCode: u8,
-    pub Anonymous: IGMPV3_QUERY_HEADER_1_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMPV3_QUERY_HEADER_1_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMPV3_REPORT_HEADER {
-    pub Type: u8,
-    pub Reserved: u8,
-    pub Checksum: u16,
-    pub Reserved2: u16,
-    pub RecordCount: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMPV3_REPORT_RECORD_HEADER {
-    pub Type: u8,
-    pub AuxillaryDataLength: u8,
-    pub SourceCount: u16,
-    pub MulticastAddress: IN_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMP_HEADER {
-    pub Anonymous1: IGMP_HEADER_0,
-    pub Anonymous2: IGMP_HEADER_1,
-    pub Checksum: u16,
-    pub MulticastAddress: IN_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IGMP_HEADER_0 {
-    pub Anonymous: IGMP_HEADER_0_0,
-    pub VersionType: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IGMP_HEADER_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IGMP_HEADER_1 {
-    pub Reserved: u8,
-    pub MaxRespTime: u8,
-    pub Code: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN6_ADDR {
-    pub u: IN6_ADDR_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IN6_ADDR_0 {
-    pub Byte: [u8; 16],
-    pub Word: [u16; 8],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN6_PKTINFO {
-    pub ipi6_addr: IN6_ADDR,
-    pub ipi6_ifindex: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN6_PKTINFO_EX {
-    pub pkt_info: IN6_PKTINFO,
-    pub scope_id: SCOPE_ID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INET_PORT_RANGE {
-    pub StartPort: u16,
-    pub NumberOfPorts: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INET_PORT_RESERVATION_INFORMATION {
-    pub OwningPid: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INET_PORT_RESERVATION_INSTANCE {
-    pub Reservation: INET_PORT_RANGE,
-    pub Token: INET_PORT_RESERVATION_TOKEN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INET_PORT_RESERVATION_TOKEN {
-    pub Token: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_INFO {
-    pub iiFlags: u32,
-    pub iiAddress: sockaddr_gen,
-    pub iiBroadcastAddress: sockaddr_gen,
-    pub iiNetmask: sockaddr_gen,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct INTERFACE_INFO_EX {
-    pub iiFlags: u32,
-    pub iiAddress: SOCKET_ADDRESS,
-    pub iiBroadcastAddress: SOCKET_ADDRESS,
-    pub iiNetmask: SOCKET_ADDRESS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_ADDR {
-    pub S_un: IN_ADDR_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IN_ADDR_0 {
-    pub S_un_b: IN_ADDR_0_0,
-    pub S_un_w: IN_ADDR_0_1,
-    pub S_addr: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_ADDR_0_0 {
-    pub s_b1: u8,
-    pub s_b2: u8,
-    pub s_b3: u8,
-    pub s_b4: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_ADDR_0_1 {
-    pub s_w1: u16,
-    pub s_w2: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_PKTINFO {
-    pub ipi_addr: IN_ADDR,
-    pub ipi_ifindex: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_PKTINFO_EX {
-    pub pkt_info: IN_PKTINFO,
-    pub scope_id: SCOPE_ID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IN_RECVERR {
-    pub protocol: IPPROTO,
-    pub info: u32,
-    pub r#type: u8,
-    pub code: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct IPTLS_METADATA {
-    pub SequenceNumber: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_HEADER {
-    pub Anonymous1: IPV4_HEADER_0,
-    pub Anonymous2: IPV4_HEADER_1,
-    pub TotalLength: u16,
-    pub Identification: u16,
-    pub Anonymous3: IPV4_HEADER_2,
-    pub TimeToLive: u8,
-    pub Protocol: u8,
-    pub HeaderChecksum: u16,
-    pub SourceAddress: IN_ADDR,
-    pub DestinationAddress: IN_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV4_HEADER_0 {
-    pub VersionAndHeaderLength: u8,
-    pub Anonymous: IPV4_HEADER_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_HEADER_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV4_HEADER_1 {
-    pub TypeOfServiceAndEcnField: u8,
-    pub Anonymous: IPV4_HEADER_1_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_HEADER_1_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV4_HEADER_2 {
-    pub FlagsAndOffset: u16,
-    pub Anonymous: IPV4_HEADER_2_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_HEADER_2_0 {
-    pub _bitfield: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_OPTION_HEADER {
-    pub Anonymous: IPV4_OPTION_HEADER_0,
-    pub OptionLength: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV4_OPTION_HEADER_0 {
-    pub OptionType: u8,
-    pub Anonymous: IPV4_OPTION_HEADER_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_OPTION_HEADER_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_ROUTING_HEADER {
-    pub OptionHeader: IPV4_OPTION_HEADER,
-    pub Pointer: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_TIMESTAMP_OPTION {
-    pub OptionHeader: IPV4_OPTION_HEADER,
-    pub Pointer: u8,
-    pub Anonymous: IPV4_TIMESTAMP_OPTION_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV4_TIMESTAMP_OPTION_0 {
-    pub FlagsOverflow: u8,
-    pub Anonymous: IPV4_TIMESTAMP_OPTION_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV4_TIMESTAMP_OPTION_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_EXTENSION_HEADER {
-    pub NextHeader: u8,
-    pub Length: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_FRAGMENT_HEADER {
-    pub NextHeader: u8,
-    pub Reserved: u8,
-    pub Anonymous: IPV6_FRAGMENT_HEADER_0,
-    pub Id: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV6_FRAGMENT_HEADER_0 {
-    pub Anonymous: IPV6_FRAGMENT_HEADER_0_0,
-    pub OffsetAndFlags: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_FRAGMENT_HEADER_0_0 {
-    pub _bitfield: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_HEADER {
-    pub Anonymous: IPV6_HEADER_0,
-    pub PayloadLength: u16,
-    pub NextHeader: u8,
-    pub HopLimit: u8,
-    pub SourceAddress: IN6_ADDR,
-    pub DestinationAddress: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV6_HEADER_0 {
-    pub VersionClassFlow: u32,
-    pub Anonymous: IPV6_HEADER_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_HEADER_0_0 {
-    pub _bitfield: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_MREQ {
-    pub ipv6mr_multiaddr: IN6_ADDR,
-    pub ipv6mr_interface: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS {
-    pub Anonymous: IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS_0,
-    pub Value: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS_0 {
-    pub _bitfield: u8,
-    pub Reserved2: [u8; 3],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_OPTION_HEADER {
-    pub Type: u8,
-    pub DataLength: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_OPTION_JUMBOGRAM {
-    pub Header: IPV6_OPTION_HEADER,
-    pub JumbogramLength: [u8; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_OPTION_ROUTER_ALERT {
-    pub Header: IPV6_OPTION_HEADER,
-    pub Value: [u8; 2],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union IPV6_ROUTER_ADVERTISEMENT_FLAGS {
-    pub Anonymous: IPV6_ROUTER_ADVERTISEMENT_FLAGS_0,
-    pub Value: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_ROUTER_ADVERTISEMENT_FLAGS_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPV6_ROUTING_HEADER {
-    pub NextHeader: u8,
-    pub Length: u8,
-    pub RoutingType: u8,
-    pub SegmentsLeft: u8,
-    pub Reserved: [u8; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPX_ADDRESS_DATA {
-    pub adapternum: i32,
-    pub netnum: [u8; 4],
-    pub nodenum: [u8; 6],
-    pub wan: super::super::Foundation::BOOLEAN,
-    pub status: super::super::Foundation::BOOLEAN,
-    pub maxpkt: i32,
-    pub linkspeed: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPX_NETNUM_DATA {
-    pub netnum: [u8; 4],
-    pub hopcount: u16,
-    pub netdelay: u16,
-    pub cardnum: i32,
-    pub router: [u8; 6],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IPX_SPXCONNSTATUS_DATA {
-    pub ConnectionState: u8,
-    pub WatchDogActive: u8,
-    pub LocalConnectionId: u16,
-    pub RemoteConnectionId: u16,
-    pub LocalSequenceNumber: u16,
-    pub LocalAckNumber: u16,
-    pub LocalAllocNumber: u16,
-    pub RemoteAckNumber: u16,
-    pub RemoteAllocNumber: u16,
-    pub LocalSocket: u16,
-    pub ImmediateAddress: [u8; 6],
-    pub RemoteNetwork: [u8; 4],
-    pub RemoteNode: [u8; 6],
-    pub RemoteSocket: u16,
-    pub RetransmissionCount: u16,
-    pub EstimatedRoundTripDelay: u16,
-    pub RetransmittedPackets: u16,
-    pub SuppressedPacket: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_MREQ {
-    pub imr_multiaddr: IN_ADDR,
-    pub imr_interface: IN_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_MREQ_SOURCE {
-    pub imr_multiaddr: IN_ADDR,
-    pub imr_sourceaddr: IN_ADDR,
-    pub imr_interface: IN_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct IP_MSFILTER {
-    pub imsf_multiaddr: IN_ADDR,
-    pub imsf_interface: IN_ADDR,
-    pub imsf_fmode: MULTICAST_MODE_TYPE,
-    pub imsf_numsrc: u32,
-    pub imsf_slist: [IN_ADDR; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct LINGER {
-    pub l_onoff: u16,
-    pub l_linger: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct LM_IRPARMS {
-    pub nTXDataBytes: u32,
-    pub nRXDataBytes: u32,
-    pub nBaudRate: u32,
-    pub thresholdTime: u32,
-    pub discTime: u32,
-    pub nMSLinkTurn: u16,
-    pub nTXPackets: u8,
-    pub nRXPackets: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLDV2_QUERY_HEADER {
-    pub IcmpHeader: ICMP_HEADER,
-    pub Anonymous1: MLDV2_QUERY_HEADER_0,
-    pub Reserved: u16,
-    pub MulticastAddress: IN6_ADDR,
-    pub _bitfield: u8,
-    pub Anonymous2: MLDV2_QUERY_HEADER_1,
-    pub SourceCount: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union MLDV2_QUERY_HEADER_0 {
-    pub MaxRespCode: u16,
-    pub Anonymous: MLDV2_QUERY_HEADER_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLDV2_QUERY_HEADER_0_0 {
-    pub _bitfield: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union MLDV2_QUERY_HEADER_1 {
-    pub QueriersQueryInterfaceCode: u8,
-    pub Anonymous: MLDV2_QUERY_HEADER_1_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLDV2_QUERY_HEADER_1_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLDV2_REPORT_HEADER {
-    pub IcmpHeader: ICMP_HEADER,
-    pub Reserved: u16,
-    pub RecordCount: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLDV2_REPORT_RECORD_HEADER {
-    pub Type: u8,
-    pub AuxillaryDataLength: u8,
-    pub SourceCount: u16,
-    pub MulticastAddress: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct MLD_HEADER {
-    pub IcmpHeader: ICMP_HEADER,
-    pub MaxRespTime: u16,
-    pub Reserved: u16,
-    pub MulticastAddress: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NAPI_DOMAIN_DESCRIPTION_BLOB {
-    pub AuthLevel: u32,
-    pub cchDomainName: u32,
-    pub OffsetNextDomainDescription: u32,
-    pub OffsetThisDomainName: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NAPI_PROVIDER_INSTALLATION_BLOB {
-    pub dwVersion: u32,
-    pub dwProviderType: u32,
-    pub fSupportsWildCard: u32,
-    pub cDomains: u32,
-    pub OffsetFirstDomain: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_NEIGHBOR_ADVERT_HEADER {
-    pub nd_na_hdr: ICMP_MESSAGE,
-    pub nd_na_target: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_NEIGHBOR_SOLICIT_HEADER {
-    pub nd_ns_hdr: ICMP_MESSAGE,
-    pub nd_ns_target: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_DNSSL {
-    pub nd_opt_dnssl_type: u8,
-    pub nd_opt_dnssl_len: u8,
-    pub nd_opt_dnssl_reserved: u16,
-    pub nd_opt_dnssl_lifetime: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_HDR {
-    pub nd_opt_type: u8,
-    pub nd_opt_len: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_MTU {
-    pub nd_opt_mtu_type: u8,
-    pub nd_opt_mtu_len: u8,
-    pub nd_opt_mtu_reserved: u16,
-    pub nd_opt_mtu_mtu: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_PREFIX_INFO {
-    pub nd_opt_pi_type: u8,
-    pub nd_opt_pi_len: u8,
-    pub nd_opt_pi_prefix_len: u8,
-    pub Anonymous1: ND_OPTION_PREFIX_INFO_0,
-    pub nd_opt_pi_valid_time: u32,
-    pub nd_opt_pi_preferred_time: u32,
-    pub Anonymous2: ND_OPTION_PREFIX_INFO_1,
-    pub nd_opt_pi_prefix: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ND_OPTION_PREFIX_INFO_0 {
-    pub nd_opt_pi_flags_reserved: u8,
-    pub Flags: ND_OPTION_PREFIX_INFO_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_PREFIX_INFO_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ND_OPTION_PREFIX_INFO_1 {
-    pub nd_opt_pi_reserved2: u32,
-    pub Anonymous: ND_OPTION_PREFIX_INFO_1_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_PREFIX_INFO_1_0 {
-    pub nd_opt_pi_reserved3: [u8; 3],
-    pub nd_opt_pi_site_prefix_len: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_RDNSS {
-    pub nd_opt_rdnss_type: u8,
-    pub nd_opt_rdnss_len: u8,
-    pub nd_opt_rdnss_reserved: u16,
-    pub nd_opt_rdnss_lifetime: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_RD_HDR {
-    pub nd_opt_rh_type: u8,
-    pub nd_opt_rh_len: u8,
-    pub nd_opt_rh_reserved1: u16,
-    pub nd_opt_rh_reserved2: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_ROUTE_INFO {
-    pub nd_opt_ri_type: u8,
-    pub nd_opt_ri_len: u8,
-    pub nd_opt_ri_prefix_len: u8,
-    pub Anonymous: ND_OPTION_ROUTE_INFO_0,
-    pub nd_opt_ri_route_lifetime: u32,
-    pub nd_opt_ri_prefix: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union ND_OPTION_ROUTE_INFO_0 {
-    pub nd_opt_ri_flags_reserved: u8,
-    pub Flags: ND_OPTION_ROUTE_INFO_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_OPTION_ROUTE_INFO_0_0 {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_REDIRECT_HEADER {
-    pub nd_rd_hdr: ICMP_MESSAGE,
-    pub nd_rd_target: IN6_ADDR,
-    pub nd_rd_dst: IN6_ADDR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_ROUTER_ADVERT_HEADER {
-    pub nd_ra_hdr: ICMP_MESSAGE,
-    pub nd_ra_reachable: u32,
-    pub nd_ra_retransmit: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct ND_ROUTER_SOLICIT_HEADER {
-    pub nd_rs_hdr: ICMP_MESSAGE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NETRESOURCE2A {
-    pub dwScope: u32,
-    pub dwType: u32,
-    pub dwUsage: u32,
-    pub dwDisplayType: u32,
-    pub lpLocalName: windows_sys::core::PSTR,
-    pub lpRemoteName: windows_sys::core::PSTR,
-    pub lpComment: windows_sys::core::PSTR,
-    pub ns_info: NS_INFOA,
-    pub ServiceType: windows_sys::core::GUID,
-    pub dwProtocols: u32,
-    pub lpiProtocols: *mut i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NETRESOURCE2W {
-    pub dwScope: u32,
-    pub dwType: u32,
-    pub dwUsage: u32,
-    pub dwDisplayType: u32,
-    pub lpLocalName: windows_sys::core::PWSTR,
-    pub lpRemoteName: windows_sys::core::PWSTR,
-    pub lpComment: windows_sys::core::PWSTR,
-    pub ns_info: NS_INFOA,
-    pub ServiceType: windows_sys::core::GUID,
-    pub dwProtocols: u32,
-    pub lpiProtocols: *mut i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB {
-    pub header: NLA_BLOB_1,
-    pub data: NLA_BLOB_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union NLA_BLOB_0 {
-    pub rawData: [i8; 1],
-    pub interfaceData: NLA_BLOB_0_2,
-    pub locationData: NLA_BLOB_0_3,
-    pub connectivity: NLA_BLOB_0_1,
-    pub ICS: NLA_BLOB_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_0_0 {
-    pub remote: NLA_BLOB_0_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_0_0_0 {
-    pub speed: u32,
-    pub r#type: u32,
-    pub state: u32,
-    pub machineName: [u16; 256],
-    pub sharedAdapterName: [u16; 256],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_0_1 {
-    pub r#type: NLA_CONNECTIVITY_TYPE,
-    pub internet: NLA_INTERNET,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_0_2 {
-    pub dwType: u32,
-    pub dwSpeed: u32,
-    pub adapterName: [i8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_0_3 {
-    pub information: [i8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NLA_BLOB_1 {
-    pub r#type: NLA_BLOB_DATA_TYPE,
-    pub dwSize: u32,
-    pub nextOffset: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NL_BANDWIDTH_INFORMATION {
-    pub Bandwidth: u64,
-    pub Instability: u64,
-    pub BandwidthPeaked: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NL_INTERFACE_OFFLOAD_ROD {
-    pub _bitfield: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NL_NETWORK_CONNECTIVITY_HINT {
-    pub ConnectivityLevel: NL_NETWORK_CONNECTIVITY_LEVEL_HINT,
-    pub ConnectivityCost: NL_NETWORK_CONNECTIVITY_COST_HINT,
-    pub ApproachingDataLimit: super::super::Foundation::BOOLEAN,
-    pub OverDataLimit: super::super::Foundation::BOOLEAN,
-    pub Roaming: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NL_PATH_BANDWIDTH_ROD {
-    pub Bandwidth: u64,
-    pub Instability: u64,
-    pub BandwidthPeaked: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NPI_MODULEID {
-    pub Length: u16,
-    pub Type: NPI_MODULEID_TYPE,
-    pub Anonymous: NPI_MODULEID_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union NPI_MODULEID_0 {
-    pub Guid: windows_sys::core::GUID,
-    pub IfLuid: super::super::Foundation::LUID,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct NSPV2_ROUTINE {
-    pub cbSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub NSPv2Startup: LPNSPV2STARTUP,
-    pub NSPv2Cleanup: LPNSPV2CLEANUP,
-    pub NSPv2LookupServiceBegin: LPNSPV2LOOKUPSERVICEBEGIN,
-    pub NSPv2LookupServiceNextEx: LPNSPV2LOOKUPSERVICENEXTEX,
-    pub NSPv2LookupServiceEnd: LPNSPV2LOOKUPSERVICEEND,
-    pub NSPv2SetServiceEx: LPNSPV2SETSERVICEEX,
-    pub NSPv2ClientSessionRundown: LPNSPV2CLIENTSESSIONRUNDOWN,
-}
-#[repr(C)]
-#[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
-#[derive(Clone, Copy)]
-pub struct NSP_ROUTINE {
-    pub cbSize: u32,
-    pub dwMajorVersion: u32,
-    pub dwMinorVersion: u32,
-    pub NSPCleanup: LPNSPCLEANUP,
-    pub NSPLookupServiceBegin: LPNSPLOOKUPSERVICEBEGIN,
-    pub NSPLookupServiceNext: LPNSPLOOKUPSERVICENEXT,
-    pub NSPLookupServiceEnd: LPNSPLOOKUPSERVICEEND,
-    pub NSPSetService: LPNSPSETSERVICE,
-    pub NSPInstallServiceClass: LPNSPINSTALLSERVICECLASS,
-    pub NSPRemoveServiceClass: LPNSPREMOVESERVICECLASS,
-    pub NSPGetServiceClassInfo: LPNSPGETSERVICECLASSINFO,
-    pub NSPIoctl: LPNSPIOCTL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NS_INFOA {
-    pub dwNameSpace: u32,
-    pub dwNameSpaceFlags: u32,
-    pub lpNameSpace: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NS_INFOW {
-    pub dwNameSpace: u32,
-    pub dwNameSpaceFlags: u32,
-    pub lpNameSpace: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct NS_SERVICE_INFOA {
-    pub dwNameSpace: u32,
-    pub ServiceInfo: SERVICE_INFOA,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct NS_SERVICE_INFOW {
-    pub dwNameSpace: u32,
-    pub ServiceInfo: SERVICE_INFOW,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PRIORITY_STATUS {
-    pub Sender: SOCKET_PRIORITY_HINT,
-    pub Receiver: SOCKET_PRIORITY_HINT,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PROTOCOL_INFOA {
-    pub dwServiceFlags: u32,
-    pub iAddressFamily: i32,
-    pub iMaxSockAddr: i32,
-    pub iMinSockAddr: i32,
-    pub iSocketType: i32,
-    pub iProtocol: i32,
-    pub dwMessageSize: u32,
-    pub lpProtocol: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PROTOCOL_INFOW {
-    pub dwServiceFlags: u32,
-    pub iAddressFamily: i32,
-    pub iMaxSockAddr: i32,
-    pub iMinSockAddr: i32,
-    pub iSocketType: i32,
-    pub iProtocol: i32,
-    pub dwMessageSize: u32,
-    pub lpProtocol: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct PROTOENT {
-    pub p_name: windows_sys::core::PSTR,
-    pub p_aliases: *mut *mut i8,
-    pub p_proto: i16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct Q2931_IE {
-    pub IEType: Q2931_IE_TYPE,
-    pub IELength: u32,
-    pub IE: [u8; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct QOS {
-    pub SendingFlowspec: FLOWSPEC,
-    pub ReceivingFlowspec: FLOWSPEC,
-    pub ProviderSpecific: WSABUF,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RCVALL_IF {
-    pub Mode: RCVALL_VALUE,
-    pub Interface: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct REAL_TIME_NOTIFICATION_SETTING_INPUT {
-    pub TransportSettingId: TRANSPORT_SETTING_ID,
-    pub BrokerEventGuid: windows_sys::core::GUID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct REAL_TIME_NOTIFICATION_SETTING_INPUT_EX {
-    pub TransportSettingId: TRANSPORT_SETTING_ID,
-    pub BrokerEventGuid: windows_sys::core::GUID,
-    pub Unmark: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct REAL_TIME_NOTIFICATION_SETTING_OUTPUT {
-    pub ChannelStatus: CONTROL_CHANNEL_TRIGGER_STATUS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIORESULT {
-    pub Status: i32,
-    pub BytesTransferred: u32,
-    pub SocketContext: u64,
-    pub RequestContext: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_BUF {
-    pub BufferId: RIO_BUFFERID,
-    pub Offset: u32,
-    pub Length: u32,
-}
-pub type RIO_BUFFERID = isize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_CMSG_BUFFER {
-    pub TotalLength: u32,
-}
-pub type RIO_CQ = isize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_EXTENSION_FUNCTION_TABLE {
-    pub cbSize: u32,
-    pub RIOReceive: LPFN_RIORECEIVE,
-    pub RIOReceiveEx: LPFN_RIORECEIVEEX,
-    pub RIOSend: LPFN_RIOSEND,
-    pub RIOSendEx: LPFN_RIOSENDEX,
-    pub RIOCloseCompletionQueue: LPFN_RIOCLOSECOMPLETIONQUEUE,
-    pub RIOCreateCompletionQueue: LPFN_RIOCREATECOMPLETIONQUEUE,
-    pub RIOCreateRequestQueue: LPFN_RIOCREATEREQUESTQUEUE,
-    pub RIODequeueCompletion: LPFN_RIODEQUEUECOMPLETION,
-    pub RIODeregisterBuffer: LPFN_RIODEREGISTERBUFFER,
-    pub RIONotify: LPFN_RIONOTIFY,
-    pub RIORegisterBuffer: LPFN_RIOREGISTERBUFFER,
-    pub RIOResizeCompletionQueue: LPFN_RIORESIZECOMPLETIONQUEUE,
-    pub RIOResizeRequestQueue: LPFN_RIORESIZEREQUESTQUEUE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_NOTIFICATION_COMPLETION {
-    pub Type: RIO_NOTIFICATION_COMPLETION_TYPE,
-    pub Anonymous: RIO_NOTIFICATION_COMPLETION_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union RIO_NOTIFICATION_COMPLETION_0 {
-    pub Event: RIO_NOTIFICATION_COMPLETION_0_0,
-    pub Iocp: RIO_NOTIFICATION_COMPLETION_0_1,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_NOTIFICATION_COMPLETION_0_0 {
-    pub EventHandle: super::super::Foundation::HANDLE,
-    pub NotifyReset: super::super::Foundation::BOOL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RIO_NOTIFICATION_COMPLETION_0_1 {
-    pub IocpHandle: super::super::Foundation::HANDLE,
-    pub CompletionKey: *mut core::ffi::c_void,
-    pub Overlapped: *mut core::ffi::c_void,
-}
-pub type RIO_RQ = isize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RM_FEC_INFO {
-    pub FECBlockSize: u16,
-    pub FECProActivePackets: u16,
-    pub FECGroupSize: u8,
-    pub fFECOnDemandParityEnabled: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RM_RECEIVER_STATS {
-    pub NumODataPacketsReceived: u64,
-    pub NumRDataPacketsReceived: u64,
-    pub NumDuplicateDataPackets: u64,
-    pub DataBytesReceived: u64,
-    pub TotalBytesReceived: u64,
-    pub RateKBitsPerSecOverall: u64,
-    pub RateKBitsPerSecLast: u64,
-    pub TrailingEdgeSeqId: u64,
-    pub LeadingEdgeSeqId: u64,
-    pub AverageSequencesInWindow: u64,
-    pub MinSequencesInWindow: u64,
-    pub MaxSequencesInWindow: u64,
-    pub FirstNakSequenceNumber: u64,
-    pub NumPendingNaks: u64,
-    pub NumOutstandingNaks: u64,
-    pub NumDataPacketsBuffered: u64,
-    pub TotalSelectiveNaksSent: u64,
-    pub TotalParityNaksSent: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RM_SENDER_STATS {
-    pub DataBytesSent: u64,
-    pub TotalBytesSent: u64,
-    pub NaksReceived: u64,
-    pub NaksReceivedTooLate: u64,
-    pub NumOutstandingNaks: u64,
-    pub NumNaksAfterRData: u64,
-    pub RepairPacketsSent: u64,
-    pub BufferSpaceAvailable: u64,
-    pub TrailingEdgeSeqId: u64,
-    pub LeadingEdgeSeqId: u64,
-    pub RateKBitsPerSecOverall: u64,
-    pub RateKBitsPerSecLast: u64,
-    pub TotalODataPacketsSent: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RM_SEND_WINDOW {
-    pub RateKbitsPerSec: u32,
-    pub WindowSizeInMSecs: u32,
-    pub WindowSizeInBytes: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct RSS_SCALABILITY_INFO {
-    pub RssEnabled: super::super::Foundation::BOOLEAN,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SCOPE_ID {
-    pub Anonymous: SCOPE_ID_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SCOPE_ID_0 {
-    pub Anonymous: SCOPE_ID_0_0,
-    pub Value: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SCOPE_ID_0_0 {
-    pub _bitfield: u32,
-}
-#[repr(C)]
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy)]
-pub struct SERVENT {
-    pub s_name: windows_sys::core::PSTR,
-    pub s_aliases: *mut *mut i8,
-    pub s_proto: windows_sys::core::PSTR,
-    pub s_port: i16,
-}
-#[repr(C)]
-#[cfg(target_arch = "x86")]
-#[derive(Clone, Copy)]
-pub struct SERVENT {
-    pub s_name: windows_sys::core::PSTR,
-    pub s_aliases: *mut *mut i8,
-    pub s_port: i16,
-    pub s_proto: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_ADDRESS {
-    pub dwAddressType: u32,
-    pub dwAddressFlags: u32,
-    pub dwAddressLength: u32,
-    pub dwPrincipalLength: u32,
-    pub lpAddress: *mut u8,
-    pub lpPrincipal: *mut u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_ADDRESSES {
-    pub dwAddressCount: u32,
-    pub Addresses: [SERVICE_ADDRESS; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_ASYNC_INFO {
-    pub lpServiceCallbackProc: LPSERVICE_CALLBACK_PROC,
-    pub lParam: super::super::Foundation::LPARAM,
-    pub hAsyncTaskHandle: super::super::Foundation::HANDLE,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct SERVICE_INFOA {
-    pub lpServiceType: *mut windows_sys::core::GUID,
-    pub lpServiceName: windows_sys::core::PSTR,
-    pub lpComment: windows_sys::core::PSTR,
-    pub lpLocale: windows_sys::core::PSTR,
-    pub dwDisplayHint: RESOURCE_DISPLAY_TYPE,
-    pub dwVersion: u32,
-    pub dwTime: u32,
-    pub lpMachineName: windows_sys::core::PSTR,
-    pub lpServiceAddress: *mut SERVICE_ADDRESSES,
-    pub ServiceSpecificInfo: super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct SERVICE_INFOW {
-    pub lpServiceType: *mut windows_sys::core::GUID,
-    pub lpServiceName: windows_sys::core::PWSTR,
-    pub lpComment: windows_sys::core::PWSTR,
-    pub lpLocale: windows_sys::core::PWSTR,
-    pub dwDisplayHint: RESOURCE_DISPLAY_TYPE,
-    pub dwVersion: u32,
-    pub dwTime: u32,
-    pub lpMachineName: windows_sys::core::PWSTR,
-    pub lpServiceAddress: *mut SERVICE_ADDRESSES,
-    pub ServiceSpecificInfo: super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_INFO {
-    pub dwTypeNameOffset: u32,
-    pub dwValueCount: u32,
-    pub Values: [SERVICE_TYPE_VALUE; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_INFO_ABSA {
-    pub lpTypeName: windows_sys::core::PSTR,
-    pub dwValueCount: u32,
-    pub Values: [SERVICE_TYPE_VALUE_ABSA; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_INFO_ABSW {
-    pub lpTypeName: windows_sys::core::PWSTR,
-    pub dwValueCount: u32,
-    pub Values: [SERVICE_TYPE_VALUE_ABSW; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_VALUE {
-    pub dwNameSpace: u32,
-    pub dwValueType: u32,
-    pub dwValueSize: u32,
-    pub dwValueNameOffset: u32,
-    pub dwValueOffset: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_VALUE_ABSA {
-    pub dwNameSpace: u32,
-    pub dwValueType: u32,
-    pub dwValueSize: u32,
-    pub lpValueName: windows_sys::core::PSTR,
-    pub lpValue: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SERVICE_TYPE_VALUE_ABSW {
-    pub dwNameSpace: u32,
-    pub dwValueType: u32,
-    pub dwValueSize: u32,
-    pub lpValueName: windows_sys::core::PWSTR,
-    pub lpValue: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SNAP_HEADER {
-    pub Dsap: u8,
-    pub Ssap: u8,
-    pub Control: u8,
-    pub Oui: [u8; 3],
-    pub Type: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR {
-    pub sa_family: ADDRESS_FAMILY,
-    pub sa_data: [i8; 14],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_ATM {
-    pub satm_family: u16,
-    pub satm_number: ATM_ADDRESS,
-    pub satm_blli: ATM_BLLI,
-    pub satm_bhli: ATM_BHLI,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_DL {
-    pub sdl_family: ADDRESS_FAMILY,
-    pub sdl_data: [u8; 8],
-    pub sdl_zero: [u8; 4],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IN {
-    pub sin_family: ADDRESS_FAMILY,
-    pub sin_port: u16,
-    pub sin_addr: IN_ADDR,
-    pub sin_zero: [i8; 8],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IN6 {
-    pub sin6_family: ADDRESS_FAMILY,
-    pub sin6_port: u16,
-    pub sin6_flowinfo: u32,
-    pub sin6_addr: IN6_ADDR,
-    pub Anonymous: SOCKADDR_IN6_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SOCKADDR_IN6_0 {
-    pub sin6_scope_id: u32,
-    pub sin6_scope_struct: SCOPE_ID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IN6_PAIR {
-    pub SourceAddress: *mut SOCKADDR_IN6,
-    pub DestinationAddress: *mut SOCKADDR_IN6,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IN6_W2KSP1 {
-    pub sin6_family: i16,
-    pub sin6_port: u16,
-    pub sin6_flowinfo: u32,
-    pub sin6_addr: IN6_ADDR,
-    pub sin6_scope_id: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union SOCKADDR_INET {
-    pub Ipv4: SOCKADDR_IN,
-    pub Ipv6: SOCKADDR_IN6,
-    pub si_family: ADDRESS_FAMILY,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IPX {
-    pub sa_family: i16,
-    pub sa_netnum: [i8; 4],
-    pub sa_nodenum: [i8; 6],
-    pub sa_socket: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_IRDA {
-    pub irdaAddressFamily: u16,
-    pub irdaDeviceID: [u8; 4],
-    pub irdaServiceName: [i8; 25],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_NB {
-    pub snb_family: i16,
-    pub snb_type: u16,
-    pub snb_name: [i8; 16],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_STORAGE {
-    pub ss_family: ADDRESS_FAMILY,
-    pub __ss_pad1: [i8; 6],
-    pub __ss_align: i64,
-    pub __ss_pad2: [i8; 112],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_STORAGE_XP {
-    pub ss_family: i16,
-    pub __ss_pad1: [i8; 6],
-    pub __ss_align: i64,
-    pub __ss_pad2: [i8; 112],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_TP {
-    pub tp_family: u16,
-    pub tp_addr_type: u16,
-    pub tp_taddr_len: u16,
-    pub tp_tsel_len: u16,
-    pub tp_addr: [u8; 64],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_UN {
-    pub sun_family: ADDRESS_FAMILY,
-    pub sun_path: [i8; 108],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKADDR_VNS {
-    pub sin_family: u16,
-    pub net_address: [u8; 4],
-    pub subnet_addr: [u8; 2],
-    pub port: [u8; 2],
-    pub hops: u8,
-    pub filler: [u8; 5],
-}
-pub type SOCKET = usize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_ADDRESS {
-    pub lpSockaddr: *mut SOCKADDR,
-    pub iSockaddrLength: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_ADDRESS_LIST {
-    pub iAddressCount: i32,
-    pub Address: [SOCKET_ADDRESS; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_PEER_TARGET_NAME {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub PeerAddress: SOCKADDR_STORAGE,
-    pub PeerTargetNameStringLen: u32,
-    pub AllStrings: [u16; 1],
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Kernel")]
-#[derive(Clone, Copy)]
-pub struct SOCKET_PROCESSOR_AFFINITY {
-    pub Processor: super::super::System::Kernel::PROCESSOR_NUMBER,
-    pub NumaNodeId: u16,
-    pub Reserved: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_QUERY_INFO {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub Flags: u32,
-    pub PeerApplicationAccessTokenHandle: u64,
-    pub PeerMachineAccessTokenHandle: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_QUERY_INFO_IPSEC2 {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub Flags: u32,
-    pub PeerApplicationAccessTokenHandle: u64,
-    pub PeerMachineAccessTokenHandle: u64,
-    pub MmSaId: u64,
-    pub QmSaId: u64,
-    pub NegotiationWinerr: u32,
-    pub SaLookupContext: windows_sys::core::GUID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_QUERY_TEMPLATE {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub PeerAddress: SOCKADDR_STORAGE,
-    pub PeerTokenAccessMask: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_QUERY_TEMPLATE_IPSEC2 {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub PeerAddress: SOCKADDR_STORAGE,
-    pub PeerTokenAccessMask: u32,
-    pub Flags: u32,
-    pub FieldMask: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_SETTINGS {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub SecurityFlags: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCKET_SECURITY_SETTINGS_IPSEC {
-    pub SecurityProtocol: SOCKET_SECURITY_PROTOCOL,
-    pub SecurityFlags: u32,
-    pub IpsecFlags: u32,
-    pub AuthipMMPolicyKey: windows_sys::core::GUID,
-    pub AuthipQMPolicyKey: windows_sys::core::GUID,
-    pub Reserved: windows_sys::core::GUID,
-    pub Reserved2: u64,
-    pub UserNameStringLen: u32,
-    pub DomainNameStringLen: u32,
-    pub PasswordStringLen: u32,
-    pub AllStrings: [u16; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct SOCK_NOTIFY_REGISTRATION {
-    pub socket: SOCKET,
-    pub completionKey: *mut core::ffi::c_void,
-    pub eventFilter: u16,
-    pub operation: u8,
-    pub triggerFlags: u8,
-    pub registrationResult: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TCP_ACK_FREQUENCY_PARAMETERS {
-    pub TcpDelayedAckFrequency: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_HDR {
-    pub th_sport: u16,
-    pub th_dport: u16,
-    pub th_seq: u32,
-    pub th_ack: u32,
-    pub _bitfield: u8,
-    pub th_flags: u8,
-    pub th_win: u16,
-    pub th_sum: u16,
-    pub th_urp: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TCP_ICW_PARAMETERS {
-    pub Level: TCP_ICW_LEVEL,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TCP_INFO_v0 {
-    pub State: TCPSTATE,
-    pub Mss: u32,
-    pub ConnectionTimeMs: u64,
-    pub TimestampsEnabled: super::super::Foundation::BOOLEAN,
-    pub RttUs: u32,
-    pub MinRttUs: u32,
-    pub BytesInFlight: u32,
-    pub Cwnd: u32,
-    pub SndWnd: u32,
-    pub RcvWnd: u32,
-    pub RcvBuf: u32,
-    pub BytesOut: u64,
-    pub BytesIn: u64,
-    pub BytesReordered: u32,
-    pub BytesRetrans: u32,
-    pub FastRetrans: u32,
-    pub DupAcksIn: u32,
-    pub TimeoutEpisodes: u32,
-    pub SynRetrans: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TCP_INFO_v1 {
-    pub State: TCPSTATE,
-    pub Mss: u32,
-    pub ConnectionTimeMs: u64,
-    pub TimestampsEnabled: super::super::Foundation::BOOLEAN,
-    pub RttUs: u32,
-    pub MinRttUs: u32,
-    pub BytesInFlight: u32,
-    pub Cwnd: u32,
-    pub SndWnd: u32,
-    pub RcvWnd: u32,
-    pub RcvBuf: u32,
-    pub BytesOut: u64,
-    pub BytesIn: u64,
-    pub BytesReordered: u32,
-    pub BytesRetrans: u32,
-    pub FastRetrans: u32,
-    pub DupAcksIn: u32,
-    pub TimeoutEpisodes: u32,
-    pub SynRetrans: u8,
-    pub SndLimTransRwin: u32,
-    pub SndLimTimeRwin: u32,
-    pub SndLimBytesRwin: u64,
-    pub SndLimTransCwnd: u32,
-    pub SndLimTimeCwnd: u32,
-    pub SndLimBytesCwnd: u64,
-    pub SndLimTransSnd: u32,
-    pub SndLimTimeSnd: u32,
-    pub SndLimBytesSnd: u64,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TCP_INITIAL_RTO_PARAMETERS {
-    pub Rtt: u16,
-    pub MaxSynRetransmissions: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_FASTOPEN {
-    pub Kind: u8,
-    pub Length: u8,
-    pub Cookie: [u8; 1],
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_MSS {
-    pub Kind: u8,
-    pub Length: u8,
-    pub Mss: u16,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_SACK {
-    pub Kind: u8,
-    pub Length: u8,
-    pub Block: [TCP_OPT_SACK_0; 1],
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_SACK_0 {
-    pub Left: u32,
-    pub Right: u32,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_SACK_PERMITTED {
-    pub Kind: u8,
-    pub Length: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_TS {
-    pub Kind: u8,
-    pub Length: u8,
-    pub Val: u32,
-    pub EcR: u32,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_UNKNOWN {
-    pub Kind: u8,
-    pub Length: u8,
-}
-#[repr(C, packed(1))]
-#[derive(Clone, Copy)]
-pub struct TCP_OPT_WS {
-    pub Kind: u8,
-    pub Length: u8,
-    pub ShiftCnt: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TIMESTAMPING_CONFIG {
-    pub Flags: u32,
-    pub TxTimestampsBuffered: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TIMEVAL {
-    pub tv_sec: i32,
-    pub tv_usec: i32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TRANSMIT_FILE_BUFFERS {
-    pub Head: *mut core::ffi::c_void,
-    pub HeadLength: u32,
-    pub Tail: *mut core::ffi::c_void,
-    pub TailLength: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TRANSMIT_PACKETS_ELEMENT {
-    pub dwElFlags: u32,
-    pub cLength: u32,
-    pub Anonymous: TRANSMIT_PACKETS_ELEMENT_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union TRANSMIT_PACKETS_ELEMENT_0 {
-    pub Anonymous: TRANSMIT_PACKETS_ELEMENT_0_0,
-    pub pBuffer: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TRANSMIT_PACKETS_ELEMENT_0_0 {
-    pub nFileOffset: i64,
-    pub hFile: super::super::Foundation::HANDLE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct TRANSPORT_SETTING_ID {
-    pub Guid: windows_sys::core::GUID,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct VLAN_TAG {
-    pub Anonymous: VLAN_TAG_0,
-    pub Type: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union VLAN_TAG_0 {
-    pub Tag: u16,
-    pub Anonymous: VLAN_TAG_0_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct VLAN_TAG_0_0 {
-    pub _bitfield: u16,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WCE_DEVICELIST {
-    pub numDevice: u32,
-    pub Device: [WCE_IRDA_DEVICE_INFO; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WCE_IRDA_DEVICE_INFO {
-    pub irdaDeviceID: [u8; 4],
-    pub irdaDeviceName: [i8; 22],
-    pub Reserved: [u8; 2],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_DEVICELIST {
-    pub numDevice: u32,
-    pub Device: [WINDOWS_IRDA_DEVICE_INFO; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_QUERY {
-    pub irdaDeviceID: [u8; 4],
-    pub irdaClassName: [i8; 64],
-    pub irdaAttribName: [i8; 256],
-    pub irdaAttribType: u32,
-    pub irdaAttribute: WINDOWS_IAS_QUERY_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union WINDOWS_IAS_QUERY_0 {
-    pub irdaAttribInt: i32,
-    pub irdaAttribOctetSeq: WINDOWS_IAS_QUERY_0_0,
-    pub irdaAttribUsrStr: WINDOWS_IAS_QUERY_0_1,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_QUERY_0_0 {
-    pub Len: u32,
-    pub OctetSeq: [u8; 1024],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_QUERY_0_1 {
-    pub Len: u32,
-    pub CharSet: u32,
-    pub UsrStr: [u8; 256],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_SET {
-    pub irdaClassName: [i8; 64],
-    pub irdaAttribName: [i8; 256],
-    pub irdaAttribType: u32,
-    pub irdaAttribute: WINDOWS_IAS_SET_0,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub union WINDOWS_IAS_SET_0 {
-    pub irdaAttribInt: i32,
-    pub irdaAttribOctetSeq: WINDOWS_IAS_SET_0_0,
-    pub irdaAttribUsrStr: WINDOWS_IAS_SET_0_1,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_SET_0_0 {
-    pub Len: u16,
-    pub OctetSeq: [u8; 1024],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IAS_SET_0_1 {
-    pub Len: u8,
-    pub CharSet: u8,
-    pub UsrStr: [u8; 256],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WINDOWS_IRDA_DEVICE_INFO {
-    pub irdaDeviceID: [u8; 4],
-    pub irdaDeviceName: [i8; 22],
-    pub irdaDeviceHints1: u8,
-    pub irdaDeviceHints2: u8,
-    pub irdaCharSet: u8,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSABUF {
-    pub len: u32,
-    pub buf: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSACOMPLETION {
-    pub Type: WSACOMPLETIONTYPE,
-    pub Parameters: WSACOMPLETION_0,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub union WSACOMPLETION_0 {
-    pub WindowMessage: WSACOMPLETION_0_3,
-    pub Event: WSACOMPLETION_0_1,
-    pub Apc: WSACOMPLETION_0_0,
-    pub Port: WSACOMPLETION_0_2,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSACOMPLETION_0_0 {
-    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
-    pub lpfnCompletionProc: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSACOMPLETION_0_1 {
-    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSACOMPLETION_0_2 {
-    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
-    pub hPort: super::super::Foundation::HANDLE,
-    pub Key: usize,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSACOMPLETION_0_3 {
-    pub hWnd: super::super::Foundation::HWND,
-    pub uMsg: u32,
-    pub context: super::super::Foundation::WPARAM,
-}
-#[repr(C)]
-#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec", target_arch = "x86_64"))]
-#[derive(Clone, Copy)]
-pub struct WSADATA {
-    pub wVersion: u16,
-    pub wHighVersion: u16,
-    pub iMaxSockets: u16,
-    pub iMaxUdpDg: u16,
-    pub lpVendorInfo: windows_sys::core::PSTR,
-    pub szDescription: [i8; 257],
-    pub szSystemStatus: [i8; 129],
-}
-#[repr(C)]
-#[cfg(target_arch = "x86")]
-#[derive(Clone, Copy)]
-pub struct WSADATA {
-    pub wVersion: u16,
-    pub wHighVersion: u16,
-    pub szDescription: [i8; 257],
-    pub szSystemStatus: [i8; 129],
-    pub iMaxSockets: u16,
-    pub iMaxUdpDg: u16,
-    pub lpVendorInfo: windows_sys::core::PSTR,
-}
-pub type WSAEVENT = isize;
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAMSG {
-    pub name: *mut SOCKADDR,
-    pub namelen: i32,
-    pub lpBuffers: *mut WSABUF,
-    pub dwBufferCount: u32,
-    pub Control: WSABUF,
-    pub dwFlags: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSANAMESPACE_INFOA {
-    pub NSProviderId: windows_sys::core::GUID,
-    pub dwNameSpace: u32,
-    pub fActive: super::super::Foundation::BOOL,
-    pub dwVersion: u32,
-    pub lpszIdentifier: windows_sys::core::PSTR,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSANAMESPACE_INFOEXA {
-    pub NSProviderId: windows_sys::core::GUID,
-    pub dwNameSpace: u32,
-    pub fActive: super::super::Foundation::BOOL,
-    pub dwVersion: u32,
-    pub lpszIdentifier: windows_sys::core::PSTR,
-    pub ProviderSpecific: super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSANAMESPACE_INFOEXW {
-    pub NSProviderId: windows_sys::core::GUID,
-    pub dwNameSpace: u32,
-    pub fActive: super::super::Foundation::BOOL,
-    pub dwVersion: u32,
-    pub lpszIdentifier: windows_sys::core::PWSTR,
-    pub ProviderSpecific: super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSANAMESPACE_INFOW {
-    pub NSProviderId: windows_sys::core::GUID,
-    pub dwNameSpace: u32,
-    pub fActive: super::super::Foundation::BOOL,
-    pub dwVersion: u32,
-    pub lpszIdentifier: windows_sys::core::PWSTR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSANETWORKEVENTS {
-    pub lNetworkEvents: i32,
-    pub iErrorCode: [i32; 10],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSANSCLASSINFOA {
-    pub lpszName: windows_sys::core::PSTR,
-    pub dwNameSpace: u32,
-    pub dwValueType: u32,
-    pub dwValueSize: u32,
-    pub lpValue: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSANSCLASSINFOW {
-    pub lpszName: windows_sys::core::PWSTR,
-    pub dwNameSpace: u32,
-    pub dwValueType: u32,
-    pub dwValueSize: u32,
-    pub lpValue: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAPOLLDATA {
-    pub result: i32,
-    pub fds: u32,
-    pub timeout: i32,
-    pub fdArray: [WSAPOLLFD; 1],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAPOLLFD {
-    pub fd: SOCKET,
-    pub events: WSAPOLL_EVENT_FLAGS,
-    pub revents: WSAPOLL_EVENT_FLAGS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAPROTOCOLCHAIN {
-    pub ChainLen: i32,
-    pub ChainEntries: [u32; 7],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAPROTOCOL_INFOA {
-    pub dwServiceFlags1: u32,
-    pub dwServiceFlags2: u32,
-    pub dwServiceFlags3: u32,
-    pub dwServiceFlags4: u32,
-    pub dwProviderFlags: u32,
-    pub ProviderId: windows_sys::core::GUID,
-    pub dwCatalogEntryId: u32,
-    pub ProtocolChain: WSAPROTOCOLCHAIN,
-    pub iVersion: i32,
-    pub iAddressFamily: i32,
-    pub iMaxSockAddr: i32,
-    pub iMinSockAddr: i32,
-    pub iSocketType: i32,
-    pub iProtocol: i32,
-    pub iProtocolMaxOffset: i32,
-    pub iNetworkByteOrder: i32,
-    pub iSecurityScheme: i32,
-    pub dwMessageSize: u32,
-    pub dwProviderReserved: u32,
-    pub szProtocol: [i8; 256],
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAPROTOCOL_INFOW {
-    pub dwServiceFlags1: u32,
-    pub dwServiceFlags2: u32,
-    pub dwServiceFlags3: u32,
-    pub dwServiceFlags4: u32,
-    pub dwProviderFlags: u32,
-    pub ProviderId: windows_sys::core::GUID,
-    pub dwCatalogEntryId: u32,
-    pub ProtocolChain: WSAPROTOCOLCHAIN,
-    pub iVersion: i32,
-    pub iAddressFamily: i32,
-    pub iMaxSockAddr: i32,
-    pub iMinSockAddr: i32,
-    pub iSocketType: i32,
-    pub iProtocol: i32,
-    pub iProtocolMaxOffset: i32,
-    pub iNetworkByteOrder: i32,
-    pub iSecurityScheme: i32,
-    pub dwMessageSize: u32,
-    pub dwProviderReserved: u32,
-    pub szProtocol: [u16; 256],
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSAQUERYSET2A {
-    pub dwSize: u32,
-    pub lpszServiceInstanceName: windows_sys::core::PSTR,
-    pub lpVersion: *mut WSAVERSION,
-    pub lpszComment: windows_sys::core::PSTR,
-    pub dwNameSpace: u32,
-    pub lpNSProviderId: *mut windows_sys::core::GUID,
-    pub lpszContext: windows_sys::core::PSTR,
-    pub dwNumberOfProtocols: u32,
-    pub lpafpProtocols: *mut AFPROTOCOLS,
-    pub lpszQueryString: windows_sys::core::PSTR,
-    pub dwNumberOfCsAddrs: u32,
-    pub lpcsaBuffer: *mut CSADDR_INFO,
-    pub dwOutputFlags: u32,
-    pub lpBlob: *mut super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSAQUERYSET2W {
-    pub dwSize: u32,
-    pub lpszServiceInstanceName: windows_sys::core::PWSTR,
-    pub lpVersion: *mut WSAVERSION,
-    pub lpszComment: windows_sys::core::PWSTR,
-    pub dwNameSpace: u32,
-    pub lpNSProviderId: *mut windows_sys::core::GUID,
-    pub lpszContext: windows_sys::core::PWSTR,
-    pub dwNumberOfProtocols: u32,
-    pub lpafpProtocols: *mut AFPROTOCOLS,
-    pub lpszQueryString: windows_sys::core::PWSTR,
-    pub dwNumberOfCsAddrs: u32,
-    pub lpcsaBuffer: *mut CSADDR_INFO,
-    pub dwOutputFlags: u32,
-    pub lpBlob: *mut super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSAQUERYSETA {
-    pub dwSize: u32,
-    pub lpszServiceInstanceName: windows_sys::core::PSTR,
-    pub lpServiceClassId: *mut windows_sys::core::GUID,
-    pub lpVersion: *mut WSAVERSION,
-    pub lpszComment: windows_sys::core::PSTR,
-    pub dwNameSpace: u32,
-    pub lpNSProviderId: *mut windows_sys::core::GUID,
-    pub lpszContext: windows_sys::core::PSTR,
-    pub dwNumberOfProtocols: u32,
-    pub lpafpProtocols: *mut AFPROTOCOLS,
-    pub lpszQueryString: windows_sys::core::PSTR,
-    pub dwNumberOfCsAddrs: u32,
-    pub lpcsaBuffer: *mut CSADDR_INFO,
-    pub dwOutputFlags: u32,
-    pub lpBlob: *mut super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_Com")]
-#[derive(Clone, Copy)]
-pub struct WSAQUERYSETW {
-    pub dwSize: u32,
-    pub lpszServiceInstanceName: windows_sys::core::PWSTR,
-    pub lpServiceClassId: *mut windows_sys::core::GUID,
-    pub lpVersion: *mut WSAVERSION,
-    pub lpszComment: windows_sys::core::PWSTR,
-    pub dwNameSpace: u32,
-    pub lpNSProviderId: *mut windows_sys::core::GUID,
-    pub lpszContext: windows_sys::core::PWSTR,
-    pub dwNumberOfProtocols: u32,
-    pub lpafpProtocols: *mut AFPROTOCOLS,
-    pub lpszQueryString: windows_sys::core::PWSTR,
-    pub dwNumberOfCsAddrs: u32,
-    pub lpcsaBuffer: *mut CSADDR_INFO,
-    pub dwOutputFlags: u32,
-    pub lpBlob: *mut super::super::System::Com::BLOB,
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSASENDMSG {
-    pub lpMsg: *mut WSAMSG,
-    pub dwFlags: u32,
-    pub lpNumberOfBytesSent: *mut u32,
-    pub lpOverlapped: *mut super::super::System::IO::OVERLAPPED,
-    pub lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSASERVICECLASSINFOA {
-    pub lpServiceClassId: *mut windows_sys::core::GUID,
-    pub lpszServiceClassName: windows_sys::core::PSTR,
-    pub dwCount: u32,
-    pub lpClassInfos: *mut WSANSCLASSINFOA,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSASERVICECLASSINFOW {
-    pub lpServiceClassId: *mut windows_sys::core::GUID,
-    pub lpszServiceClassName: windows_sys::core::PWSTR,
-    pub dwCount: u32,
-    pub lpClassInfos: *mut WSANSCLASSINFOW,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSATHREADID {
-    pub ThreadHandle: super::super::Foundation::HANDLE,
-    pub Reserved: usize,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSAVERSION {
-    pub dwVersion: u32,
-    pub ecHow: WSAECOMPARATOR,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSA_COMPATIBILITY_MODE {
-    pub BehaviorId: WSA_COMPATIBILITY_BEHAVIOR_ID,
-    pub TargetOsVersion: u32,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSC_PROVIDER_AUDIT_INFO {
-    pub RecordSize: u32,
-    pub Reserved: *mut core::ffi::c_void,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSPDATA {
-    pub wVersion: u16,
-    pub wHighVersion: u16,
-    pub szDescription: [u16; 256],
-}
-#[repr(C)]
-#[cfg(feature = "Win32_System_IO")]
-#[derive(Clone, Copy)]
-pub struct WSPPROC_TABLE {
-    pub lpWSPAccept: LPWSPACCEPT,
-    pub lpWSPAddressToString: LPWSPADDRESSTOSTRING,
-    pub lpWSPAsyncSelect: LPWSPASYNCSELECT,
-    pub lpWSPBind: LPWSPBIND,
-    pub lpWSPCancelBlockingCall: LPWSPCANCELBLOCKINGCALL,
-    pub lpWSPCleanup: LPWSPCLEANUP,
-    pub lpWSPCloseSocket: LPWSPCLOSESOCKET,
-    pub lpWSPConnect: LPWSPCONNECT,
-    pub lpWSPDuplicateSocket: LPWSPDUPLICATESOCKET,
-    pub lpWSPEnumNetworkEvents: LPWSPENUMNETWORKEVENTS,
-    pub lpWSPEventSelect: LPWSPEVENTSELECT,
-    pub lpWSPGetOverlappedResult: LPWSPGETOVERLAPPEDRESULT,
-    pub lpWSPGetPeerName: LPWSPGETPEERNAME,
-    pub lpWSPGetSockName: LPWSPGETSOCKNAME,
-    pub lpWSPGetSockOpt: LPWSPGETSOCKOPT,
-    pub lpWSPGetQOSByName: LPWSPGETQOSBYNAME,
-    pub lpWSPIoctl: LPWSPIOCTL,
-    pub lpWSPJoinLeaf: LPWSPJOINLEAF,
-    pub lpWSPListen: LPWSPLISTEN,
-    pub lpWSPRecv: LPWSPRECV,
-    pub lpWSPRecvDisconnect: LPWSPRECVDISCONNECT,
-    pub lpWSPRecvFrom: LPWSPRECVFROM,
-    pub lpWSPSelect: LPWSPSELECT,
-    pub lpWSPSend: LPWSPSEND,
-    pub lpWSPSendDisconnect: LPWSPSENDDISCONNECT,
-    pub lpWSPSendTo: LPWSPSENDTO,
-    pub lpWSPSetSockOpt: LPWSPSETSOCKOPT,
-    pub lpWSPShutdown: LPWSPSHUTDOWN,
-    pub lpWSPSocket: LPWSPSOCKET,
-    pub lpWSPStringToAddress: LPWSPSTRINGTOADDRESS,
-}
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct WSPUPCALLTABLE {
-    pub lpWPUCloseEvent: LPWPUCLOSEEVENT,
-    pub lpWPUCloseSocketHandle: LPWPUCLOSESOCKETHANDLE,
-    pub lpWPUCreateEvent: LPWPUCREATEEVENT,
-    pub lpWPUCreateSocketHandle: LPWPUCREATESOCKETHANDLE,
-    pub lpWPUFDIsSet: LPWPUFDISSET,
-    pub lpWPUGetProviderPath: LPWPUGETPROVIDERPATH,
-    pub lpWPUModifyIFSHandle: LPWPUMODIFYIFSHANDLE,
-    pub lpWPUPostMessage: LPWPUPOSTMESSAGE,
-    pub lpWPUQueryBlockingCallback: LPWPUQUERYBLOCKINGCALLBACK,
-    pub lpWPUQuerySocketHandleContext: LPWPUQUERYSOCKETHANDLECONTEXT,
-    pub lpWPUQueueApc: LPWPUQUEUEAPC,
-    pub lpWPUResetEvent: LPWPURESETEVENT,
-    pub lpWPUSetEvent: LPWPUSETEVENT,
-    pub lpWPUOpenCurrentThread: LPWPUOPENCURRENTTHREAD,
-    pub lpWPUCloseThread: LPWPUCLOSETHREAD,
-}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct netent {
@@ -4627,12 +5845,22 @@ pub struct netent {
     pub n_addrtype: i16,
     pub n_net: u32,
 }
+impl Default for netent {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union sockaddr_gen {
     pub Address: SOCKADDR,
     pub AddressIn: SOCKADDR_IN,
     pub AddressIn6: sockaddr_in6_old,
+}
+impl Default for sockaddr_gen {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
 }
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -4642,145 +5870,22 @@ pub struct sockaddr_in6_old {
     pub sin6_flowinfo: u32,
     pub sin6_addr: IN6_ADDR,
 }
+impl Default for sockaddr_in6_old {
+    fn default() -> Self {
+        unsafe { core::mem::zeroed() }
+    }
+}
 pub type socklen_t = i32;
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct sockproto {
     pub sp_family: u16,
     pub sp_protocol: u16,
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct tcp_keepalive {
     pub onoff: u32,
     pub keepalivetime: u32,
     pub keepaliveinterval: u32,
 }
-pub type LPBLOCKINGCALLBACK = Option<unsafe extern "system" fn(dwcontext: usize) -> super::super::Foundation::BOOL>;
-pub type LPCONDITIONPROC = Option<unsafe extern "system" fn(lpcallerid: *mut WSABUF, lpcallerdata: *mut WSABUF, lpsqos: *mut QOS, lpgqos: *mut QOS, lpcalleeid: *mut WSABUF, lpcalleedata: *mut WSABUF, g: *mut u32, dwcallbackdata: usize) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_ACCEPTEX = Option<unsafe extern "system" fn(slistensocket: SOCKET, sacceptsocket: SOCKET, lpoutputbuffer: *mut core::ffi::c_void, dwreceivedatalength: u32, dwlocaladdresslength: u32, dwremoteaddresslength: u32, lpdwbytesreceived: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED) -> super::super::Foundation::BOOL>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_CONNECTEX = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpsendbuffer: *const core::ffi::c_void, dwsenddatalength: u32, lpdwbytessent: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED) -> super::super::Foundation::BOOL>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_DISCONNECTEX = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32, dwreserved: u32) -> super::super::Foundation::BOOL>;
-pub type LPFN_GETACCEPTEXSOCKADDRS = Option<unsafe extern "system" fn(lpoutputbuffer: *const core::ffi::c_void, dwreceivedatalength: u32, dwlocaladdresslength: u32, dwremoteaddresslength: u32, localsockaddr: *mut *mut SOCKADDR, localsockaddrlength: *mut i32, remotesockaddr: *mut *mut SOCKADDR, remotesockaddrlength: *mut i32)>;
-pub type LPFN_NSPAPI = Option<unsafe extern "system" fn() -> u32>;
-pub type LPFN_RIOCLOSECOMPLETIONQUEUE = Option<unsafe extern "system" fn(cq: RIO_CQ)>;
-pub type LPFN_RIOCREATECOMPLETIONQUEUE = Option<unsafe extern "system" fn(queuesize: u32, notificationcompletion: *const RIO_NOTIFICATION_COMPLETION) -> RIO_CQ>;
-pub type LPFN_RIOCREATEREQUESTQUEUE = Option<unsafe extern "system" fn(socket: SOCKET, maxoutstandingreceive: u32, maxreceivedatabuffers: u32, maxoutstandingsend: u32, maxsenddatabuffers: u32, receivecq: RIO_CQ, sendcq: RIO_CQ, socketcontext: *const core::ffi::c_void) -> RIO_RQ>;
-pub type LPFN_RIODEQUEUECOMPLETION = Option<unsafe extern "system" fn(cq: RIO_CQ, array: *mut RIORESULT, arraysize: u32) -> u32>;
-pub type LPFN_RIODEREGISTERBUFFER = Option<unsafe extern "system" fn(bufferid: RIO_BUFFERID)>;
-pub type LPFN_RIONOTIFY = Option<unsafe extern "system" fn(cq: RIO_CQ) -> i32>;
-pub type LPFN_RIORECEIVE = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, flags: u32, requestcontext: *const core::ffi::c_void) -> super::super::Foundation::BOOL>;
-pub type LPFN_RIORECEIVEEX = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, plocaladdress: *const RIO_BUF, premoteaddress: *const RIO_BUF, pcontrolcontext: *const RIO_BUF, pflags: *const RIO_BUF, flags: u32, requestcontext: *const core::ffi::c_void) -> i32>;
-pub type LPFN_RIOREGISTERBUFFER = Option<unsafe extern "system" fn(databuffer: windows_sys::core::PCSTR, datalength: u32) -> RIO_BUFFERID>;
-pub type LPFN_RIORESIZECOMPLETIONQUEUE = Option<unsafe extern "system" fn(cq: RIO_CQ, queuesize: u32) -> super::super::Foundation::BOOL>;
-pub type LPFN_RIORESIZEREQUESTQUEUE = Option<unsafe extern "system" fn(rq: RIO_RQ, maxoutstandingreceive: u32, maxoutstandingsend: u32) -> super::super::Foundation::BOOL>;
-pub type LPFN_RIOSEND = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, flags: u32, requestcontext: *const core::ffi::c_void) -> super::super::Foundation::BOOL>;
-pub type LPFN_RIOSENDEX = Option<unsafe extern "system" fn(socketqueue: RIO_RQ, pdata: *const RIO_BUF, databuffercount: u32, plocaladdress: *const RIO_BUF, premoteaddress: *const RIO_BUF, pcontrolcontext: *const RIO_BUF, pflags: *const RIO_BUF, flags: u32, requestcontext: *const core::ffi::c_void) -> super::super::Foundation::BOOL>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_TRANSMITFILE = Option<unsafe extern "system" fn(hsocket: SOCKET, hfile: super::super::Foundation::HANDLE, nnumberofbytestowrite: u32, nnumberofbytespersend: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lptransmitbuffers: *const TRANSMIT_FILE_BUFFERS, dwreserved: u32) -> super::super::Foundation::BOOL>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_TRANSMITPACKETS = Option<unsafe extern "system" fn(hsocket: SOCKET, lppacketarray: *const TRANSMIT_PACKETS_ELEMENT, nelementcount: u32, nsendsize: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32) -> super::super::Foundation::BOOL>;
-pub type LPFN_WSAPOLL = Option<unsafe extern "system" fn(fdarray: *mut WSAPOLLFD, nfds: u32, timeout: i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_WSARECVMSG = Option<unsafe extern "system" fn(s: SOCKET, lpmsg: *mut WSAMSG, lpdwnumberofbytesrecvd: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPFN_WSASENDMSG = Option<unsafe extern "system" fn(s: SOCKET, lpmsg: *const WSAMSG, dwflags: u32, lpnumberofbytessent: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPLOOKUPSERVICE_COMPLETION_ROUTINE = Option<unsafe extern "system" fn(dwerror: u32, dwbytes: u32, lpoverlapped: *const super::super::System::IO::OVERLAPPED)>;
-pub type LPNSPCLEANUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID) -> i32>;
-pub type LPNSPGETSERVICECLASSINFO = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpdwbufsize: *const u32, lpserviceclassinfo: *const WSASERVICECLASSINFOW) -> i32>;
-pub type LPNSPINSTALLSERVICECLASS = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassinfo: *const WSASERVICECLASSINFOW) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPNSPIOCTL = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE, dwcontrolcode: u32, lpvinbuffer: *const core::ffi::c_void, cbinbuffer: u32, lpvoutbuffer: *mut core::ffi::c_void, cboutbuffer: u32, lpcbbytesreturned: *mut u32, lpcompletion: *const WSACOMPLETION, lpthreadid: *const WSATHREADID) -> i32>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPLOOKUPSERVICEBEGIN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpqsrestrictions: *const WSAQUERYSETW, lpserviceclassinfo: *const WSASERVICECLASSINFOW, dwcontrolflags: u32, lphlookup: *mut super::super::Foundation::HANDLE) -> i32>;
-pub type LPNSPLOOKUPSERVICEEND = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE) -> i32>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPLOOKUPSERVICENEXT = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE, dwcontrolflags: u32, lpdwbufferlength: *mut u32, lpqsresults: *mut WSAQUERYSETW) -> i32>;
-pub type LPNSPREMOVESERVICECLASS = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassid: *const windows_sys::core::GUID) -> i32>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPSETSERVICE = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpserviceclassinfo: *const WSASERVICECLASSINFOW, lpqsreginfo: *const WSAQUERYSETW, essoperation: WSAESETSERVICEOP, dwcontrolflags: u32) -> i32>;
-#[cfg(all(feature = "Win32_System_Com", feature = "Win32_System_IO"))]
-pub type LPNSPSTARTUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpnsproutines: *mut NSP_ROUTINE) -> i32>;
-pub type LPNSPV2CLEANUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, pvclientsessionarg: *const core::ffi::c_void) -> i32>;
-pub type LPNSPV2CLIENTSESSIONRUNDOWN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, pvclientsessionarg: *const core::ffi::c_void)>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPV2LOOKUPSERVICEBEGIN = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpqsrestrictions: *const WSAQUERYSET2W, dwcontrolflags: u32, lpvclientsessionarg: *const core::ffi::c_void, lphlookup: *mut super::super::Foundation::HANDLE) -> i32>;
-pub type LPNSPV2LOOKUPSERVICEEND = Option<unsafe extern "system" fn(hlookup: super::super::Foundation::HANDLE) -> i32>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPV2LOOKUPSERVICENEXTEX = Option<unsafe extern "system" fn(hasynccall: super::super::Foundation::HANDLE, hlookup: super::super::Foundation::HANDLE, dwcontrolflags: u32, lpdwbufferlength: *const u32, lpqsresults: *mut WSAQUERYSET2W)>;
-#[cfg(feature = "Win32_System_Com")]
-pub type LPNSPV2SETSERVICEEX = Option<unsafe extern "system" fn(hasynccall: super::super::Foundation::HANDLE, lpproviderid: *const windows_sys::core::GUID, lpqsreginfo: *const WSAQUERYSET2W, essoperation: WSAESETSERVICEOP, dwcontrolflags: u32, lpvclientsessionarg: *const core::ffi::c_void)>;
-pub type LPNSPV2STARTUP = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, ppvclientsessionarg: *mut *mut core::ffi::c_void) -> i32>;
-pub type LPSERVICE_CALLBACK_PROC = Option<unsafe extern "system" fn(lparam: super::super::Foundation::LPARAM, hasynctaskhandle: super::super::Foundation::HANDLE)>;
-pub type LPWPUCLOSEEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> super::super::Foundation::BOOL>;
-pub type LPWPUCLOSESOCKETHANDLE = Option<unsafe extern "system" fn(s: SOCKET, lperrno: *mut i32) -> i32>;
-pub type LPWPUCLOSETHREAD = Option<unsafe extern "system" fn(lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWPUCOMPLETEOVERLAPPEDREQUEST = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwerror: u32, cbtransferred: u32, lperrno: *mut i32) -> i32>;
-pub type LPWPUCREATEEVENT = Option<unsafe extern "system" fn(lperrno: *mut i32) -> WSAEVENT>;
-pub type LPWPUCREATESOCKETHANDLE = Option<unsafe extern "system" fn(dwcatalogentryid: u32, dwcontext: usize, lperrno: *mut i32) -> SOCKET>;
-pub type LPWPUFDISSET = Option<unsafe extern "system" fn(s: SOCKET, fdset: *const FD_SET) -> i32>;
-pub type LPWPUGETPROVIDERPATH = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PWSTR, lpproviderdllpathlen: *mut i32, lperrno: *mut i32) -> i32>;
-pub type LPWPUMODIFYIFSHANDLE = Option<unsafe extern "system" fn(dwcatalogentryid: u32, proposedhandle: SOCKET, lperrno: *mut i32) -> SOCKET>;
-pub type LPWPUOPENCURRENTTHREAD = Option<unsafe extern "system" fn(lpthreadid: *mut WSATHREADID, lperrno: *mut i32) -> i32>;
-pub type LPWPUPOSTMESSAGE = Option<unsafe extern "system" fn(hwnd: super::super::Foundation::HWND, msg: u32, wparam: super::super::Foundation::WPARAM, lparam: super::super::Foundation::LPARAM) -> super::super::Foundation::BOOL>;
-pub type LPWPUQUERYBLOCKINGCALLBACK = Option<unsafe extern "system" fn(dwcatalogentryid: u32, lplpfncallback: *mut LPBLOCKINGCALLBACK, lpdwcontext: *mut usize, lperrno: *mut i32) -> i32>;
-pub type LPWPUQUERYSOCKETHANDLECONTEXT = Option<unsafe extern "system" fn(s: SOCKET, lpcontext: *mut usize, lperrno: *mut i32) -> i32>;
-pub type LPWPUQUEUEAPC = Option<unsafe extern "system" fn(lpthreadid: *const WSATHREADID, lpfnuserapc: LPWSAUSERAPC, dwcontext: usize, lperrno: *mut i32) -> i32>;
-pub type LPWPURESETEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> super::super::Foundation::BOOL>;
-pub type LPWPUSETEVENT = Option<unsafe extern "system" fn(hevent: WSAEVENT, lperrno: *mut i32) -> super::super::Foundation::BOOL>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSAOVERLAPPED_COMPLETION_ROUTINE = Option<unsafe extern "system" fn(dwerror: u32, cbtransferred: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, dwflags: u32)>;
-pub type LPWSAUSERAPC = Option<unsafe extern "system" fn(dwcontext: usize)>;
-pub type LPWSCDEINSTALLPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lperrno: *mut i32) -> i32>;
-pub type LPWSCENABLENSPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, fenable: super::super::Foundation::BOOL) -> i32>;
-pub type LPWSCENUMPROTOCOLS = Option<unsafe extern "system" fn(lpiprotocols: *const i32, lpprotocolbuffer: *mut WSAPROTOCOL_INFOW, lpdwbufferlength: *mut u32, lperrno: *mut i32) -> i32>;
-pub type LPWSCGETPROVIDERPATH = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PWSTR, lpproviderdllpathlen: *mut i32, lperrno: *mut i32) -> i32>;
-pub type LPWSCINSTALLNAMESPACE = Option<unsafe extern "system" fn(lpszidentifier: windows_sys::core::PCWSTR, lpszpathname: windows_sys::core::PCWSTR, dwnamespace: u32, dwversion: u32, lpproviderid: *const windows_sys::core::GUID) -> i32>;
-pub type LPWSCINSTALLPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PCWSTR, lpprotocolinfolist: *const WSAPROTOCOL_INFOW, dwnumberofentries: u32, lperrno: *mut i32) -> i32>;
-pub type LPWSCUNINSTALLNAMESPACE = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID) -> i32>;
-pub type LPWSCUPDATEPROVIDER = Option<unsafe extern "system" fn(lpproviderid: *const windows_sys::core::GUID, lpszproviderdllpath: windows_sys::core::PCWSTR, lpprotocolinfolist: *const WSAPROTOCOL_INFOW, dwnumberofentries: u32, lperrno: *mut i32) -> i32>;
-pub type LPWSCWRITENAMESPACEORDER = Option<unsafe extern "system" fn(lpproviderid: *mut windows_sys::core::GUID, dwnumberofentries: u32) -> i32>;
-pub type LPWSCWRITEPROVIDERORDER = Option<unsafe extern "system" fn(lpwdcatalogentryid: *mut u32, dwnumberofentries: u32) -> i32>;
-pub type LPWSPACCEPT = Option<unsafe extern "system" fn(s: SOCKET, addr: *mut SOCKADDR, addrlen: *mut i32, lpfncondition: LPCONDITIONPROC, dwcallbackdata: usize, lperrno: *mut i32) -> SOCKET>;
-pub type LPWSPADDRESSTOSTRING = Option<unsafe extern "system" fn(lpsaaddress: *const SOCKADDR, dwaddresslength: u32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, lpszaddressstring: windows_sys::core::PWSTR, lpdwaddressstringlength: *mut u32, lperrno: *mut i32) -> i32>;
-pub type LPWSPASYNCSELECT = Option<unsafe extern "system" fn(s: SOCKET, hwnd: super::super::Foundation::HWND, wmsg: u32, levent: i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPBIND = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPCANCELBLOCKINGCALL = Option<unsafe extern "system" fn(lperrno: *mut i32) -> i32>;
-pub type LPWSPCLEANUP = Option<unsafe extern "system" fn(lperrno: *mut i32) -> i32>;
-pub type LPWSPCLOSESOCKET = Option<unsafe extern "system" fn(s: SOCKET, lperrno: *mut i32) -> i32>;
-pub type LPWSPCONNECT = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpcallerdata: *const WSABUF, lpcalleedata: *mut WSABUF, lpsqos: *const QOS, lpgqos: *const QOS, lperrno: *mut i32) -> i32>;
-pub type LPWSPDUPLICATESOCKET = Option<unsafe extern "system" fn(s: SOCKET, dwprocessid: u32, lpprotocolinfo: *mut WSAPROTOCOL_INFOW, lperrno: *mut i32) -> i32>;
-pub type LPWSPENUMNETWORKEVENTS = Option<unsafe extern "system" fn(s: SOCKET, heventobject: super::super::Foundation::HANDLE, lpnetworkevents: *mut WSANETWORKEVENTS, lperrno: *mut i32) -> i32>;
-pub type LPWSPEVENTSELECT = Option<unsafe extern "system" fn(s: SOCKET, heventobject: WSAEVENT, lnetworkevents: i32, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPGETOVERLAPPEDRESULT = Option<unsafe extern "system" fn(s: SOCKET, lpoverlapped: *const super::super::System::IO::OVERLAPPED, lpcbtransfer: *mut u32, fwait: super::super::Foundation::BOOL, lpdwflags: *mut u32, lperrno: *mut i32) -> super::super::Foundation::BOOL>;
-pub type LPWSPGETPEERNAME = Option<unsafe extern "system" fn(s: SOCKET, name: *mut SOCKADDR, namelen: *mut i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPGETQOSBYNAME = Option<unsafe extern "system" fn(s: SOCKET, lpqosname: *const WSABUF, lpqos: *mut QOS, lperrno: *mut i32) -> super::super::Foundation::BOOL>;
-pub type LPWSPGETSOCKNAME = Option<unsafe extern "system" fn(s: SOCKET, name: *mut SOCKADDR, namelen: *mut i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPGETSOCKOPT = Option<unsafe extern "system" fn(s: SOCKET, level: i32, optname: i32, optval: windows_sys::core::PSTR, optlen: *mut i32, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPIOCTL = Option<unsafe extern "system" fn(s: SOCKET, dwiocontrolcode: u32, lpvinbuffer: *const core::ffi::c_void, cbinbuffer: u32, lpvoutbuffer: *mut core::ffi::c_void, cboutbuffer: u32, lpcbbytesreturned: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
-pub type LPWSPJOINLEAF = Option<unsafe extern "system" fn(s: SOCKET, name: *const SOCKADDR, namelen: i32, lpcallerdata: *const WSABUF, lpcalleedata: *mut WSABUF, lpsqos: *const QOS, lpgqos: *const QOS, dwflags: u32, lperrno: *mut i32) -> SOCKET>;
-pub type LPWSPLISTEN = Option<unsafe extern "system" fn(s: SOCKET, backlog: i32, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPRECV = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytesrecvd: *mut u32, lpflags: *mut u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *const i32) -> i32>;
-pub type LPWSPRECVDISCONNECT = Option<unsafe extern "system" fn(s: SOCKET, lpinbounddisconnectdata: *const WSABUF, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPRECVFROM = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytesrecvd: *mut u32, lpflags: *mut u32, lpfrom: *mut SOCKADDR, lpfromlen: *mut i32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
-pub type LPWSPSELECT = Option<unsafe extern "system" fn(nfds: i32, readfds: *mut FD_SET, writefds: *mut FD_SET, exceptfds: *mut FD_SET, timeout: *const TIMEVAL, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPSEND = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytessent: *mut u32, dwflags: u32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
-pub type LPWSPSENDDISCONNECT = Option<unsafe extern "system" fn(s: SOCKET, lpoutbounddisconnectdata: *const WSABUF, lperrno: *mut i32) -> i32>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPSENDTO = Option<unsafe extern "system" fn(s: SOCKET, lpbuffers: *const WSABUF, dwbuffercount: u32, lpnumberofbytessent: *mut u32, dwflags: u32, lpto: *const SOCKADDR, itolen: i32, lpoverlapped: *mut super::super::System::IO::OVERLAPPED, lpcompletionroutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE, lpthreadid: *const WSATHREADID, lperrno: *mut i32) -> i32>;
-pub type LPWSPSETSOCKOPT = Option<unsafe extern "system" fn(s: SOCKET, level: i32, optname: i32, optval: windows_sys::core::PCSTR, optlen: i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPSHUTDOWN = Option<unsafe extern "system" fn(s: SOCKET, how: i32, lperrno: *mut i32) -> i32>;
-pub type LPWSPSOCKET = Option<unsafe extern "system" fn(af: i32, r#type: i32, protocol: i32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, g: u32, dwflags: u32, lperrno: *mut i32) -> SOCKET>;
-#[cfg(feature = "Win32_System_IO")]
-pub type LPWSPSTARTUP = Option<unsafe extern "system" fn(wversionrequested: u16, lpwspdata: *const WSPDATA, lpprotocolinfo: *const WSAPROTOCOL_INFOW, upcalltable: WSPUPCALLTABLE, lpproctable: *mut WSPPROC_TABLE) -> i32>;
-pub type LPWSPSTRINGTOADDRESS = Option<unsafe extern "system" fn(addressstring: windows_sys::core::PCWSTR, addressfamily: i32, lpprotocolinfo: *const WSAPROTOCOL_INFOW, lpaddress: *mut SOCKADDR, lpaddresslength: *mut i32, lperrno: *mut i32) -> i32>;

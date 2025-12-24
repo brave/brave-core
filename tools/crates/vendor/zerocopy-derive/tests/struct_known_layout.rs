@@ -1,65 +1,122 @@
-// Copyright 2022 The Fuchsia Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// Copyright 2023 The Fuchsia Authors
+//
+// Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
+// <LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0>, or the MIT
+// license <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your option.
+// This file may not be copied, modified, or distributed except according to
+// those terms.
 
+// See comment in `include.rs` for why we disable the prelude.
+#![no_implicit_prelude]
 #![allow(warnings)]
 
-#[macro_use]
-mod util;
+extern crate rustversion;
 
-use std::{marker::PhantomData, option::IntoIter};
+include!("include.rs");
 
-use {
-    static_assertions::assert_impl_all,
-    zerocopy::{DstLayout, KnownLayout},
-};
-
-use crate::util::AU16;
-
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 struct Zst;
 
-assert_impl_all!(Zst: KnownLayout);
+util_assert_impl_all!(Zst: imp::KnownLayout);
 
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 struct One {
     a: bool,
 }
 
-assert_impl_all!(One: KnownLayout);
+util_assert_impl_all!(One: imp::KnownLayout);
 
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 struct Two {
     a: bool,
     b: Zst,
 }
 
-assert_impl_all!(Two: KnownLayout);
+util_assert_impl_all!(Two: imp::KnownLayout);
 
-#[derive(KnownLayout)]
-struct TypeParams<'a, T, I: Iterator> {
+#[derive(imp::KnownLayout)]
+struct TypeParams<'a, T, I: imp::Iterator> {
     a: I::Item,
     b: u8,
-    c: PhantomData<&'a [u8]>,
-    d: PhantomData<&'static str>,
-    e: PhantomData<String>,
+    c: imp::PhantomData<&'a [::core::primitive::u8]>,
+    d: imp::PhantomData<&'static ::core::primitive::str>,
+    e: imp::PhantomData<imp::String>,
     f: T,
 }
 
-assert_impl_all!(TypeParams<'static, (), IntoIter<()>>: KnownLayout);
-assert_impl_all!(TypeParams<'static, AU16, IntoIter<()>>: KnownLayout);
+util_assert_impl_all!(TypeParams<'static, (), imp::IntoIter<()>>: imp::KnownLayout);
+util_assert_impl_all!(TypeParams<'static, util::AU16, imp::IntoIter<()>>: imp::KnownLayout);
 
 // Deriving `KnownLayout` should work if the struct has bounded parameters.
+//
+// N.B. We limit this test to rustc >= 1.62, since earlier versions of rustc ICE
+// when `KnownLayout` is derived on a `repr(C)` struct whose trailing field
+// contains non-static lifetimes.
+#[rustversion::since(1.62)]
+const _: () = {
+    #[derive(imp::KnownLayout)]
+    #[repr(C)]
+    struct WithParams<'a: 'b, 'b: 'a, T: 'a + 'b + imp::KnownLayout, const N: usize>(
+        [T; N],
+        imp::PhantomData<&'a &'b ()>,
+    )
+    where
+        'a: 'b,
+        'b: 'a,
+        T: 'a + 'b + imp::KnownLayout;
 
-#[derive(KnownLayout)]
+    util_assert_impl_all!(WithParams<'static, 'static, u8, 42>: imp::KnownLayout);
+};
+
+const _: () = {
+    // Similar to the previous test, except that the trailing field contains
+    // only static lifetimes. This is exercisable on all supported toolchains.
+
+    #[derive(imp::KnownLayout)]
+    #[repr(C)]
+    struct WithParams<'a: 'b, 'b: 'a, T: 'a + 'b + imp::KnownLayout, const N: usize>(
+        &'a &'b [T; N],
+        imp::PhantomData<&'static ()>,
+    )
+    where
+        'a: 'b,
+        'b: 'a,
+        T: 'a + 'b + imp::KnownLayout;
+
+    util_assert_impl_all!(WithParams<'static, 'static, u8, 42>: imp::KnownLayout);
+};
+
+// Deriving `KnownLayout` should work if the struct references `Self`. See
+// #2116.
+
+#[derive(imp::KnownLayout)]
 #[repr(C)]
-struct WithParams<'a: 'b, 'b: 'a, const N: usize, T: 'a + 'b + KnownLayout>(
-    [T; N],
-    PhantomData<&'a &'b ()>,
-)
-where
-    'a: 'b,
-    'b: 'a,
-    T: 'a + 'b + KnownLayout;
+struct WithSelfReference {
+    leading: [u8; Self::N],
+    trailing: [[u8; Self::N]],
+}
 
-assert_impl_all!(WithParams<'static, 'static, 42, u8>: KnownLayout);
+impl WithSelfReference {
+    const N: usize = 42;
+}
+
+util_assert_impl_all!(WithSelfReference: imp::KnownLayout);
+
+// Deriving `KnownLayout` should work with generic `repr(packed)` types. See
+// #2302.
+
+#[derive(imp::KnownLayout)]
+#[repr(C, packed)]
+struct Packet<P> {
+    payload: P,
+}
+
+util_assert_impl_all!(Packet<imp::u8>: imp::KnownLayout);
+
+#[derive(imp::KnownLayout)]
+#[repr(C)]
+struct RawIdentifier {
+    r#type: u8,
+}
+
+util_assert_impl_all!(RawIdentifier: imp::KnownLayout);

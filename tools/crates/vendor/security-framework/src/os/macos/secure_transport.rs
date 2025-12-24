@@ -8,8 +8,8 @@ use std::slice;
 
 use crate::base::Result;
 use crate::certificate::SecCertificate;
+use crate::cvt;
 use crate::secure_transport::{MidHandshakeSslStream, SslContext};
-use crate::{cvt, AsInner};
 
 /// An extension trait adding OSX specific functionality to the `SslContext`
 /// type.
@@ -83,7 +83,7 @@ macro_rules! impl_options {
                 unsafe {
                     cvt(SSLSetSessionOption(self.as_inner(),
                                             $opt,
-                                            value as ::core_foundation::base::Boolean))
+                                            ::core_foundation::base::Boolean::from(value)))
                 }
             }
 
@@ -203,6 +203,7 @@ mod test {
     use crate::test::certificate;
 
     #[test]
+    #[ignore = "needs certs re-generated"]
     fn server_client() {
         let listener = p!(TcpListener::bind("localhost:0"));
         let port = p!(listener.local_addr()).port();

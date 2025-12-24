@@ -1,46 +1,50 @@
-// Copyright 2022 The Fuchsia Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// Copyright 2023 The Fuchsia Authors
+//
+// Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
+// <LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0>, or the MIT
+// license <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your option.
+// This file may not be copied, modified, or distributed except according to
+// those terms.
 
+// See comment in `include.rs` for why we disable the prelude.
+#![no_implicit_prelude]
 #![allow(warnings)]
 
-mod util;
+include!("include.rs");
 
-use {core::marker::PhantomData, static_assertions::assert_impl_all, zerocopy::KnownLayout};
-
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 enum Foo {
     A,
 }
 
-assert_impl_all!(Foo: KnownLayout);
+util_assert_impl_all!(Foo: imp::KnownLayout);
 
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 enum Bar {
     A = 0,
 }
 
-assert_impl_all!(Bar: KnownLayout);
+util_assert_impl_all!(Bar: imp::KnownLayout);
 
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 enum Baz {
     A = 1,
     B = 0,
 }
 
-assert_impl_all!(Baz: KnownLayout);
+util_assert_impl_all!(Baz: imp::KnownLayout);
 
 // Deriving `KnownLayout` should work if the enum has bounded parameters.
 
-#[derive(KnownLayout)]
+#[derive(imp::KnownLayout)]
 #[repr(C)]
-enum WithParams<'a: 'b, 'b: 'a, const N: usize, T: 'a + 'b + KnownLayout>
+enum WithParams<'a: 'b, 'b: 'a, T: 'a + 'b + imp::KnownLayout, const N: usize>
 where
     'a: 'b,
     'b: 'a,
-    T: 'a + 'b + KnownLayout,
+    T: 'a + 'b + imp::KnownLayout,
 {
-    Variant([T; N], PhantomData<&'a &'b ()>),
+    Variant([T; N], imp::PhantomData<&'a &'b ()>),
 }
 
-assert_impl_all!(WithParams<'static, 'static, 42, u8>: KnownLayout);
+util_assert_impl_all!(WithParams<'static, 'static, u8, 42>: imp::KnownLayout);

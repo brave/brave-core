@@ -1,62 +1,71 @@
 //! `GraphMap<N, E, Ty>` is a graph datastructure where node values are mapping
 //! keys.
 
-use indexmap::map::Keys;
-use indexmap::map::{Iter as IndexMapIter, IterMut as IndexMapIterMut};
-use indexmap::IndexMap;
-use std::cmp::Ordering;
+use alloc::vec::Vec;
+use core::{
+    cmp::Ordering,
+    fmt,
+    hash::{self, BuildHasher, Hash},
+    iter::{Copied, FromIterator},
+    marker::PhantomData,
+    mem,
+    ops::{Deref, Index, IndexMut},
+    slice::Iter,
+};
+
+use hashbrown::HashSet;
+use indexmap::{
+    map::{Iter as IndexMapIter, IterMut as IndexMapIterMut, Keys},
+    IndexMap,
+};
+
+use crate::{
+    data,
+    graph::{node_index, Graph},
+    visit, Directed, Direction, EdgeType, Incoming, IntoWeightedEdge, Outgoing, Undirected,
+};
+
+#[cfg(feature = "std")]
 use std::collections::hash_map::RandomState;
-use std::collections::HashSet;
-use std::fmt;
-use std::hash::{self, BuildHasher, Hash};
-use std::iter::Copied;
-use std::iter::FromIterator;
-use std::marker::PhantomData;
-use std::mem;
-use std::ops::{Deref, Index, IndexMut};
-use std::slice::Iter;
-
-use crate::{Directed, Direction, EdgeType, Incoming, Outgoing, Undirected};
-
-use crate::graph::node_index;
-use crate::graph::Graph;
-use crate::visit;
-use crate::IntoWeightedEdge;
 
 #[cfg(feature = "rayon")]
-use indexmap::map::rayon::{ParIter, ParIterMut, ParKeys};
-#[cfg(feature = "rayon")]
-use rayon::prelude::*;
+use {
+    indexmap::map::rayon::{ParIter, ParIterMut, ParKeys},
+    rayon::prelude::*,
+};
 
 /// A `GraphMap` with undirected edges.
 ///
 /// For example, an edge between *1* and *2* is equivalent to an edge between
 /// *2* and *1*.
-pub type UnGraphMap<N, E> = GraphMap<N, E, Undirected>;
+pub type UnGraphMap<N, E, #[cfg(not(feature = "std"))] S, #[cfg(feature = "std")] S = RandomState> =
+    GraphMap<N, E, Undirected, S>;
 /// A `GraphMap` with directed edges.
 ///
 /// For example, an edge from *1* to *2* is distinct from an edge from *2* to
 /// *1*.
-pub type DiGraphMap<N, E> = GraphMap<N, E, Directed>;
+pub type DiGraphMap<N, E, #[cfg(not(feature = "std"))] S, #[cfg(feature = "std")] S = RandomState> =
+    GraphMap<N, E, Directed, S>;
 
 /// `GraphMap<N, E, Ty>` is a graph datastructure using an associative array
 /// of its node weights `N`.
 ///
 /// It uses an combined adjacency list and sparse adjacency matrix
-/// representation, using **O(|V| + |E|)** space, and allows testing for edge
+/// representation, using **O(|V| + |E|)** space where V is the set of nodes
+/// and E is the set of edges, and allows testing for edge
 /// existence in constant time.
 ///
 /// `GraphMap` is parameterized over:
 ///
 /// - Associated data `N` for nodes and `E` for edges, called *weights*.
 /// - The node weight `N` must implement `Copy` and will be used as node
-/// identifier, duplicated into several places in the data structure.
-/// It must be suitable as a hash table key (implementing `Eq + Hash`).
-/// The node type must also implement `Ord` so that the implementation can
-/// order the pair (`a`, `b`) for an edge connecting any two nodes `a` and `b`.
+///   identifier, duplicated into several places in the data structure.
+///   It must be suitable as a hash table key (implementing `Eq + Hash`).
+///   The node type must also implement `Ord` so that the implementation can
+///   order the pair (`a`, `b`) for an edge connecting any two nodes `a` and `b`.
 /// - `E` can be of arbitrary type.
 /// - Edge type `Ty` that determines whether the graph edges are directed or
-/// undirected.
+///   undirected.
 ///
 /// You can use the type aliases `UnGraphMap` and `DiGraphMap` for convenience.
 ///
@@ -64,8 +73,13 @@ pub type DiGraphMap<N, E> = GraphMap<N, E, Directed>;
 ///
 /// Depends on crate feature `graphmap` (default).
 #[derive(Clone)]
-pub struct GraphMap<N, E, Ty, S = RandomState>
-where
+pub struct GraphMap<
+    N,
+    E,
+    Ty,
+    #[cfg(not(feature = "std"))] S,
+    #[cfg(feature = "std")] S = RandomState,
+> where
     S: BuildHasher,
 {
     nodes: IndexMap<N, Vec<(N, CompactDirection)>, S>,
@@ -161,7 +175,7 @@ where
     /// Deserializes into a new `GraphMap` from the same format as the standard
     /// `Graph`. Needs feature `serde-1`.
     ///
-    /// **Warning**: When deseralizing a graph that was not originally a `GraphMap`,
+    /// **Warning**: When deserializing a graph that was not originally a `GraphMap`,
     /// the restrictions from [`from_graph`](#method.from_graph) apply.
     ///
     /// Note: The edge weights have to be `Clone` for this to work.
@@ -176,8 +190,6 @@ where
 
 impl<N, E, Ty, S> GraphMap<N, E, Ty, S>
 where
-    N: NodeTrait,
-    Ty: EdgeType,
     S: BuildHasher,
 {
     /// Create a new `GraphMap`
@@ -211,7 +223,14 @@ where
             ty: PhantomData,
         }
     }
+}
 
+impl<N, E, Ty, S> GraphMap<N, E, Ty, S>
+where
+    N: NodeTrait,
+    Ty: EdgeType,
+    S: BuildHasher,
+{
     /// Return the current node and edge capacity of the graph.
     pub fn capacity(&self) -> (usize, usize) {
         (self.nodes.capacity(), self.edges.capacity())
@@ -282,7 +301,9 @@ where
         n
     }
 
-    /// Return `true` if node `n` was removed.
+    /// Remove node `n` from the graph.
+    ///
+    /// Return `true` if it did exist.
     ///
     /// Computes in **O(V)** time, due to the removal of edges with other nodes.
     pub fn remove_node(&mut self, n: N) -> bool {
@@ -323,7 +344,7 @@ where
     /// // Create a GraphMap with directed edges, and add one edge to it
     /// use petgraph::graphmap::DiGraphMap;
     ///
-    /// let mut g = DiGraphMap::new();
+    /// let mut g = DiGraphMap::<_, _>::new();
     /// g.add_edge("x", "y", -1);
     /// assert_eq!(g.node_count(), 2);
     /// assert_eq!(g.edge_count(), 1);
@@ -386,7 +407,7 @@ where
     /// // Create a GraphMap with undirected edges, and add and remove an edge.
     /// use petgraph::graphmap::UnGraphMap;
     ///
-    /// let mut g = UnGraphMap::new();
+    /// let mut g = UnGraphMap::<_, _>::new();
     /// g.add_edge("x", "y", -1);
     ///
     /// let edge_data = g.remove_edge("y", "x");
@@ -439,7 +460,7 @@ where
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `N`.
-    pub fn neighbors(&self, a: N) -> Neighbors<N, Ty> {
+    pub fn neighbors(&self, a: N) -> Neighbors<'_, N, Ty> {
         Neighbors {
             iter: match self.nodes.get(&a) {
                 Some(neigh) => neigh.iter(),
@@ -459,7 +480,7 @@ where
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `N`.
-    pub fn neighbors_directed(&self, a: N, dir: Direction) -> NeighborsDirected<N, Ty> {
+    pub fn neighbors_directed(&self, a: N, dir: Direction) -> NeighborsDirected<'_, N, Ty> {
         NeighborsDirected {
             iter: match self.nodes.get(&a) {
                 Some(neigh) => neigh.iter(),
@@ -479,7 +500,7 @@ where
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `(N, N, &E)`.
-    pub fn edges(&self, a: N) -> Edges<N, E, Ty, S> {
+    pub fn edges(&self, a: N) -> Edges<'_, N, E, Ty, S> {
         Edges {
             from: a,
             iter: self.neighbors(a),
@@ -499,7 +520,7 @@ where
     ///
     /// Produces an empty iterator if the node doesn't exist.<br>
     /// Iterator element type is `(N, N, &E)`.
-    pub fn edges_directed(&self, a: N, dir: Direction) -> EdgesDirected<N, E, Ty, S> {
+    pub fn edges_directed(&self, a: N, dir: Direction) -> EdgesDirected<'_, N, E, Ty, S> {
         EdgesDirected {
             from: a,
             iter: self.neighbors_directed(a, dir),
@@ -523,7 +544,7 @@ where
     /// Return an iterator over all edges of the graph with their weight in arbitrary order.
     ///
     /// Iterator element type is `(N, N, &E)`
-    pub fn all_edges(&self) -> AllEdges<N, E, Ty> {
+    pub fn all_edges(&self) -> AllEdges<'_, N, E, Ty> {
         AllEdges {
             inner: self.edges.iter(),
             ty: self.ty,
@@ -534,7 +555,7 @@ where
     /// to their weight.
     ///
     /// Iterator element type is `(N, N, &mut E)`
-    pub fn all_edges_mut(&mut self) -> AllEdgesMut<N, E, Ty> {
+    pub fn all_edges_mut(&mut self) -> AllEdgesMut<'_, N, E, Ty> {
         AllEdgesMut {
             inner: self.edges.iter_mut(),
             ty: self.ty,
@@ -546,7 +567,7 @@ where
     ///
     /// Iterator element type is `(N, N, &E)`
     #[cfg(feature = "rayon")]
-    pub fn par_all_edges(&self) -> ParAllEdges<N, E, Ty>
+    pub fn par_all_edges(&self) -> ParAllEdges<'_, N, E, Ty>
     where
         N: Send + Sync,
         E: Sync,
@@ -562,7 +583,7 @@ where
     ///
     /// Iterator element type is `(N, N, &mut E)`
     #[cfg(feature = "rayon")]
-    pub fn par_all_edges_mut(&mut self) -> ParAllEdgesMut<N, E, Ty>
+    pub fn par_all_edges_mut(&mut self) -> ParAllEdgesMut<'_, N, E, Ty>
     where
         N: Send + Sync,
         E: Send,
@@ -580,10 +601,11 @@ where
     ///    node weights in the resulting `Graph`, too.
     /// 2. Note that the index type is user-chosen.
     ///
-    /// Computes in **O(|V| + |E|)** time (average).
+    /// Computes in **O(|V| + |E|)** time (average) where V is the set of nodes and E is the set of edges.
     ///
     /// **Panics** if the number of nodes or edges does not fit with
     /// the resulting graph's index type.
+    #[track_caller]
     pub fn into_graph<Ix>(self) -> Graph<N, E, Ty, Ix>
     where
         Ix: crate::graph::IndexType,
@@ -697,7 +719,7 @@ where
     ty: PhantomData<Ty>,
 }
 
-impl<'a, N, Ty> Iterator for Neighbors<'a, N, Ty>
+impl<N, Ty> Iterator for Neighbors<'_, N, Ty>
 where
     N: NodeTrait,
     Ty: EdgeType,
@@ -734,7 +756,7 @@ where
     ty: PhantomData<Ty>,
 }
 
-impl<'a, N, Ty> Iterator for NeighborsDirected<'a, N, Ty>
+impl<N, Ty> Iterator for NeighborsDirected<'_, N, Ty>
 where
     N: NodeTrait,
     Ty: EdgeType,
@@ -768,8 +790,14 @@ where
 }
 
 #[derive(Debug, Clone)]
-pub struct Edges<'a, N, E: 'a, Ty, S = RandomState>
-where
+pub struct Edges<
+    'a,
+    N,
+    E: 'a,
+    Ty,
+    #[cfg(not(feature = "std"))] S,
+    #[cfg(feature = "std")] S = RandomState,
+> where
     N: 'a + NodeTrait,
     Ty: EdgeType,
     S: BuildHasher,
@@ -790,7 +818,7 @@ where
     fn next(&mut self) -> Option<Self::Item> {
         self.iter.next().map(|b| {
             let a = self.from;
-            match self.edges.get(&GraphMap::<N, E, Ty>::edge_key(a, b)) {
+            match self.edges.get(&GraphMap::<N, E, Ty, S>::edge_key(a, b)) {
                 None => unreachable!(),
                 Some(edge) => (a, b, edge),
             }
@@ -802,8 +830,14 @@ where
 }
 
 #[derive(Debug, Clone)]
-pub struct EdgesDirected<'a, N, E: 'a, Ty, S = RandomState>
-where
+pub struct EdgesDirected<
+    'a,
+    N,
+    E: 'a,
+    Ty,
+    #[cfg(not(feature = "std"))] S,
+    #[cfg(feature = "std")] S = RandomState,
+> where
     N: 'a + NodeTrait,
     Ty: EdgeType,
     S: BuildHasher,
@@ -828,7 +862,7 @@ where
             if self.dir == Direction::Incoming {
                 mem::swap(&mut a, &mut b);
             }
-            match self.edges.get(&GraphMap::<N, E, Ty>::edge_key(a, b)) {
+            match self.edges.get(&GraphMap::<N, E, Ty, S>::edge_key(a, b)) {
                 None => unreachable!(),
                 Some(edge) => (a, b, edge),
             }
@@ -980,8 +1014,6 @@ where
 /// Create a new empty `GraphMap`.
 impl<N, E, Ty, S> Default for GraphMap<N, E, Ty, S>
 where
-    N: NodeTrait,
-    Ty: EdgeType,
     S: BuildHasher + Default,
 {
     fn default() -> Self {
@@ -997,8 +1029,8 @@ where
 /// with the `Cell<T>` being `TypedArena` allocated.
 pub struct Ptr<'b, T: 'b>(pub &'b T);
 
-impl<'b, T> Copy for Ptr<'b, T> {}
-impl<'b, T> Clone for Ptr<'b, T> {
+impl<T> Copy for Ptr<'_, T> {}
+impl<T> Clone for Ptr<'_, T> {
     fn clone(&self) -> Self {
         *self
     }
@@ -1030,23 +1062,23 @@ impl<'b, T> Ord for Ptr<'b, T> {
     }
 }
 
-impl<'b, T> Deref for Ptr<'b, T> {
+impl<T> Deref for Ptr<'_, T> {
     type Target = T;
     fn deref(&self) -> &T {
         self.0
     }
 }
 
-impl<'b, T> Eq for Ptr<'b, T> {}
+impl<T> Eq for Ptr<'_, T> {}
 
-impl<'b, T> Hash for Ptr<'b, T> {
+impl<T> Hash for Ptr<'_, T> {
     fn hash<H: hash::Hasher>(&self, st: &mut H) {
         let ptr = (self.0) as *const T;
         ptr.hash(st)
     }
 }
 
-impl<'b, T: fmt::Debug> fmt::Debug for Ptr<'b, T> {
+impl<T: fmt::Debug> fmt::Debug for Ptr<'_, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.0.fmt(f)
     }
@@ -1200,13 +1232,12 @@ where
         self.node_count()
     }
     fn to_index(&self, ix: Self::NodeId) -> usize {
-        self.nodes.get_index_of(&ix).unwrap()
+        self.nodes.get_index_of(&ix).expect("node not found")
     }
     fn from_index(&self, ix: usize) -> Self::NodeId {
         assert!(
             ix < self.nodes.len(),
-            "The requested index {} is out-of-bounds.",
-            ix
+            "The requested index {ix} is out-of-bounds."
         );
         let (&key, _) = self.nodes.get_index(ix).unwrap();
         key
@@ -1256,14 +1287,13 @@ where
     }
 
     fn to_index(&self, ix: Self::EdgeId) -> usize {
-        self.edges.get_index_of(&ix).unwrap()
+        self.edges.get_index_of(&ix).expect("edge not found")
     }
 
     fn from_index(&self, ix: usize) -> Self::EdgeId {
         assert!(
             ix < self.edges.len(),
-            "The requested index {} is out-of-bounds.",
-            ix
+            "The requested index {ix} is out-of-bounds."
         );
         let (&key, _) = self.edges.get_index(ix).unwrap();
         key
@@ -1335,6 +1365,22 @@ where
     }
 }
 
+impl<N, E, Ty, S> data::DataMap for GraphMap<N, E, Ty, S>
+where
+    N: Copy + Ord + Hash,
+    Ty: EdgeType,
+    S: BuildHasher,
+{
+    fn edge_weight(&self, id: Self::EdgeId) -> Option<&Self::EdgeWeight> {
+        self.edge_weight(id.0, id.1)
+    }
+
+    fn node_weight(&self, id: Self::NodeId) -> Option<&Self::NodeWeight> {
+        // Technically `id` is already the weight for `GraphMap`, but since we need to return a reference, this is a O(1) borrowing alternative:
+        self.nodes.get_key_value(&id).map(|(k, _)| k)
+    }
+}
+
 /// A [ParallelIterator] over this graph's nodes.
 #[cfg(feature = "rayon")]
 pub struct ParNodes<'a, N>
@@ -1345,7 +1391,7 @@ where
 }
 
 #[cfg(feature = "rayon")]
-impl<'a, N> ParallelIterator for ParNodes<'a, N>
+impl<N> ParallelIterator for ParNodes<'_, N>
 where
     N: NodeTrait + Send + Sync,
 {
@@ -1364,7 +1410,7 @@ where
 }
 
 #[cfg(feature = "rayon")]
-impl<'a, N> IndexedParallelIterator for ParNodes<'a, N>
+impl<N> IndexedParallelIterator for ParNodes<'_, N>
 where
     N: NodeTrait + Send + Sync,
 {
@@ -1419,7 +1465,7 @@ where
 }
 
 #[cfg(feature = "rayon")]
-impl<'a, N, E, Ty> IndexedParallelIterator for ParAllEdges<'a, N, E, Ty>
+impl<N, E, Ty> IndexedParallelIterator for ParAllEdges<'_, N, E, Ty>
 where
     N: NodeTrait + Send + Sync,
     E: Sync,
@@ -1477,7 +1523,7 @@ where
 }
 
 #[cfg(feature = "rayon")]
-impl<'a, N, E, Ty> IndexedParallelIterator for ParAllEdgesMut<'a, N, E, Ty>
+impl<N, E, Ty> IndexedParallelIterator for ParAllEdgesMut<'_, N, E, Ty>
 where
     N: NodeTrait + Send + Sync,
     E: Send,

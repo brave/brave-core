@@ -25,6 +25,8 @@ pub struct Outcome {
     pub username: Option<String>,
     /// The password to use in the identity, if set.
     pub password: Option<String>,
+    /// An OAuth refresh token that may accompany a password. It is to be treated confidentially, just like the password.
+    pub oauth_refresh_token: Option<String>,
     /// If set, the helper asked to stop the entire process, whether the identity is complete or not.
     pub quit: bool,
     /// A handle to the action to perform next in another call to [`helper::invoke()`][crate::helper::invoke()].
@@ -42,7 +44,11 @@ impl Outcome {
         self.username
             .take()
             .zip(self.password.take())
-            .map(|(username, password)| gix_sec::identity::Account { username, password })
+            .map(|(username, password)| gix_sec::identity::Account {
+                username,
+                password,
+                oauth_refresh_token: self.oauth_refresh_token.take(),
+            })
     }
 }
 
@@ -131,7 +137,7 @@ impl Action {
     }
 }
 
-/// A handle to [store][NextAction::store()] or [erase][NextAction::erase()] the outcome of the initial action.
+/// A handle to [store](NextAction::store()) or [erase](NextAction::erase()) the outcome of the initial action.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct NextAction {
     previous_output: BString,

@@ -1,9 +1,9 @@
 use core::fmt::{self, Write};
-use core::mem::{size_of, transmute};
 use core::slice::from_raw_parts;
 use libc::c_char;
+use object::NativeEndian as NE;
 
-extern "C" {
+unsafe extern "C" {
     // dl_iterate_phdr takes a callback that will receive a dl_phdr_info pointer
     // for every DSO that has been linked into the process. dl_iterate_phdr also
     // ensures that the dynamic linker is locked from start to finish of the
@@ -118,12 +118,7 @@ const NT_GNU_BUILD_ID: u32 = 3;
 
 // Elf_Nhdr represents an ELF note header in the endianness of the target.
 #[allow(non_camel_case_types)]
-#[repr(C)]
-struct Elf_Nhdr {
-    n_namesz: u32,
-    n_descsz: u32,
-    n_type: u32,
-}
+type Elf_Nhdr = object::elf::NoteHeader32<NE>;
 
 // Note represents an ELF note (header + contents). The name is left as a u8
 // slice because it is not always null terminated and rust makes it easy enough
@@ -148,7 +143,7 @@ impl<'a> NoteIter<'a> {
     // can be anything but the range must be valid for this to be safe.
     unsafe fn new(base: *const u8, size: usize) -> Self {
         NoteIter {
-            base: from_raw_parts(base, size),
+            base: unsafe { from_raw_parts(base, size) },
             error: false,
         }
     }
@@ -176,19 +171,15 @@ fn take_bytes_align4<'a>(num: usize, bytes: &mut &'a [u8]) -> Option<&'a [u8]> {
     Some(out)
 }
 
-// This function has no real invariants the caller must uphold other than
-// perhaps that 'bytes' should be aligned for performance (and on some
-// architectures correctness). The values in the Elf_Nhdr fields might
-// be nonsense but this function ensures no such thing.
+/// This function has no invariants the caller must uphold, but
+/// it will return `None`, without mutating, if `bytes` has insufficient size or alignment.
+/// If this returns `Some(nhdr)`, then `bytes` was and remains 4-byte-aligned.
+/// The values in the Elf_Nhdr fields might be nonsense.
 fn take_nhdr<'a>(bytes: &mut &'a [u8]) -> Option<&'a Elf_Nhdr> {
-    if size_of::<Elf_Nhdr>() > bytes.len() {
-        return None;
-    }
-    // This is safe as long as there is enough space and we just confirmed that
-    // in the if statement above so this should not be unsafe.
-    let out = unsafe { transmute::<*const u8, &'a Elf_Nhdr>(bytes.as_ptr()) };
-    // Note that sice_of::<Elf_Nhdr>() is always 4-byte aligned.
-    *bytes = &bytes[size_of::<Elf_Nhdr>()..];
+    let (out, rest) = object::pod::from_bytes::<Elf_Nhdr>(bytes).ok()?;
+    // Note that size_of::<Elf_Nhdr>() is always a multiple of 4-bytes, so the
+    // 4-byte alignment is maintained.
+    *bytes = rest;
     Some(out)
 }
 
@@ -196,7 +187,7 @@ impl<'a> Iterator for NoteIter<'a> {
     type Item = Note<'a>;
     fn next(&mut self) -> Option<Self::Item> {
         // Check if we've reached the end.
-        if self.base.len() == 0 || self.error {
+        if self.base.is_empty() || self.error {
             return None;
         }
         // We transmute out an nhdr but we carefully consider the resulting
@@ -204,12 +195,12 @@ impl<'a> Iterator for NoteIter<'a> {
         // decisions based on the type. So even if we get out complete garbage
         // we should still be safe.
         let nhdr = take_nhdr(&mut self.base)?;
-        let name = take_bytes_align4(nhdr.n_namesz as usize, &mut self.base)?;
-        let desc = take_bytes_align4(nhdr.n_descsz as usize, &mut self.base)?;
+        let name = take_bytes_align4(nhdr.n_namesz.get(NE) as usize, &mut self.base)?;
+        let desc = take_bytes_align4(nhdr.n_descsz.get(NE) as usize, &mut self.base)?;
         Some(Note {
             name: name,
             desc: desc,
-            tipe: nhdr.n_type,
+            tipe: nhdr.n_type.get(NE),
         })
     }
 }

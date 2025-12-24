@@ -13,13 +13,17 @@
 edition = "2018"
 rust-version = "1.60.0"
 name = "ahash"
-version = "0.8.11"
+version = "0.8.12"
 authors = ["Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"]
-build = "./build.rs"
+build = "build.rs"
 exclude = [
     "/smhasher",
     "/benchmark_tools",
 ]
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A non-cryptographic hash function using AES-NI for high performance"
 documentation = "https://docs.rs/ahash"
 readme = "README.md"
@@ -75,6 +79,18 @@ doctest = true
 bench = true
 doc = true
 
+[[test]]
+name = "bench"
+path = "tests/bench.rs"
+
+[[test]]
+name = "map_tests"
+path = "tests/map_tests.rs"
+
+[[test]]
+name = "nopanic"
+path = "tests/nopanic.rs"
+
 [[bench]]
 name = "ahash"
 path = "tests/bench.rs"
@@ -85,10 +101,6 @@ name = "map"
 path = "tests/map_tests.rs"
 harness = false
 
-[dependencies.atomic-polyfill]
-version = "1.0.1"
-optional = true
-
 [dependencies.cfg-if]
 version = "1.0"
 
@@ -97,7 +109,11 @@ version = "0.1.17"
 optional = true
 
 [dependencies.getrandom]
-version = "0.2.7"
+version = "0.3.1"
+optional = true
+
+[dependencies.portable-atomic]
+version = "1.0.0"
 optional = true
 
 [dependencies.serde]
@@ -105,7 +121,7 @@ version = "1.0.117"
 optional = true
 
 [dependencies.zerocopy]
-version = "0.7.31"
+version = "0.8.24"
 features = ["simd"]
 default-features = false
 
@@ -148,8 +164,8 @@ version = "0.9.4"
 
 [features]
 atomic-polyfill = [
-    "dep:atomic-polyfill",
-    "once_cell/atomic-polyfill",
+    "dep:portable-atomic",
+    "once_cell/critical-section",
 ]
 compile-time-rng = ["const-random"]
 default = [
@@ -161,7 +177,7 @@ no-rng = []
 runtime-rng = ["getrandom"]
 std = []
 
-[target."cfg(not(all(target_arch = \"arm\", target_os = \"none\")))".dependencies.once_cell]
+[target.'cfg(not(all(target_arch = "arm", target_os = "none")))'.dependencies.once_cell]
 version = "1.18.0"
 features = ["alloc"]
 default-features = false

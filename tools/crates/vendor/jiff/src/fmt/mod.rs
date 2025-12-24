@@ -5,6 +5,164 @@ Note that for most use cases, you should be using the corresponding
 [`Display`](std::fmt::Display) or [`FromStr`](std::str::FromStr) trait
 implementations for printing and parsing respectively. The APIs in this module
 provide more configurable support for printing and parsing.
+
+# Tables of examples
+
+The tables below attempt to show some examples of datetime and duration
+formatting, along with names and links to relevant routines and types. The
+point of these tables is to give a general overview of the formatting and
+parsing functionality in these sub-modules.
+
+## Support for `FromStr` and `Display`
+
+This table lists the formats supported by the [`FromStr`] and [`Display`]
+trait implementations on the datetime and duration types in Jiff.
+
+In all of these cases, the trait implementations are mere conveniences for
+functionality provided by the [`temporal`] sub-module (and, in a couple cases,
+the [`friendly`] sub-module). The sub-modules provide lower level control
+(such as parsing from `&[u8]`) and more configuration (such as controlling the
+disambiguation strategy used when parsing zoned datetime [RFC-9557] strings).
+
+| Example | Format | Links |
+| ------- | ------ | ----- |
+| `2025-08-20T17:35:00Z` | [RFC-3339] | [`Timestamp`] |
+| `2025-08-20T17:35:00-05` | [RFC-3339] | [`FromStr`] impl and<br>[`Timestamp::display_with_offset`] |
+| `2025-08-20T17:35:00+02[Poland]` | [RFC-9557] | [`Zoned`] |
+| `2025-08-20T17:35:00+02:00[+02:00]` | [RFC-9557] | [`Zoned`] |
+| `2025-08-20T17:35:00` | [ISO-8601] | [`civil::DateTime`] |
+| `2025-08-20` | [ISO-8601] | [`civil::Date`] |
+| `17:35:00` | [ISO-8601] | [`civil::Time`] |
+| `P1Y2M3W4DT5H6M7S` | [ISO-8601], [Temporal] | [`Span`] |
+| `PT1H2M3S` | [ISO-8601] | [`SignedDuration`], [`Span`] |
+| `PT1H2M3.123456789S` | [ISO-8601] | [`SignedDuration`], [`Span`] |
+| `1d 2h 3m 5s` | [`friendly`] | [`FromStr`] impl and alternative [`Display`]<br>via `{:#}` for [`SignedDuration`], [`Span`] |
+
+Note that for datetimes like `2025-08-20T17:35:00`, the following variants are
+also accepted:
+
+```text
+2025-08-20 17:35:00
+2025-08-20T17:35:00.123456789
+2025-08-20T17:35
+2025-08-20T17
+```
+
+This applies to RFC 3339 and RFC 9557 timestamps as well.
+
+Also, for ISO 8601 durations, the unit designator labels are matched
+case insensitively. For example, `PT1h2m3s` is recognized by Jiff.
+
+## The "friendly" duration format
+
+This table lists a few examples of the [`friendly`] duration format. Briefly,
+it is a bespoke format for Jiff, but is meant to match similar bespoke formats
+used elsewhere and be easier to read than the standard ISO 8601 duration
+format.
+
+All examples below can be parsed via a [`Span`]'s [`FromStr`] trait
+implementation. All examples with units no bigger than hours can be parsed via
+a [`SignedDuration`]'s [`FromStr`] trait implementation. This table otherwise
+shows the options for printing durations in the format shown.
+
+| Example | Print configuration |
+| ------- | ------------------- |
+| `1year 2months` | [`Designator::Verbose`] via [`SpanPrinter::designator`] |
+| `1yr 2mos` | [`Designator::Short`] via [`SpanPrinter::designator`] |
+| `1y 2mo` | [`Designator::Compact`] via [`SpanPrinter::designator`] (default) |
+| `1h2m3s` | [`Spacing::None`] via [`SpanPrinter::spacing`] |
+| `1h 2m 3s` | [`Spacing::BetweenUnits`] via [`SpanPrinter::spacing`] (default) |
+| `1 h 2 m 3 s` | [`Spacing::BetweenUnitsAndDesignators`] via [`SpanPrinter::spacing`] |
+| `2d 3h ago` | [`Direction::Auto`] via [`SpanPrinter::direction`] (default) |
+| `-2d 3h` | [`Direction::Sign`] via [`SpanPrinter::direction`] |
+| `+2d 3h` | [`Direction::ForceSign`] via [`SpanPrinter::direction`] |
+| `2d 3h ago` | [`Direction::Suffix`] via [`SpanPrinter::direction`] |
+| `9.123456789s` | [`FractionalUnit::Second`] via [`SpanPrinter::fractional`] |
+| `1y, 2mo` | [`SpanPrinter::comma_after_designator`] |
+| `15d 02:59:15.123` | [`SpanPrinter::hours_minutes_seconds`] |
+
+## Bespoke datetime formats via `strptime` and `strftime`
+
+Every datetime type has bespoke formatting routines defined on it. For
+example, [`Zoned::strptime`] and [`civil::Date::strftime`]. Additionally, the
+[`strtime`] sub-module also provides convenience routines, [`strtime::format`]
+and [`strtime::parse`], where the former is generic over any datetime type in
+Jiff and the latter provides a [`BrokenDownTime`] for granular parsing.
+
+| Example | Format string |
+| ------- | ------------- |
+| `2025-05-20` | `%Y-%m-%d` |
+| `2025-05-20` | `%F` |
+| `2025-W21-2` | `%G-W%V-%u` |
+| `05/20/25` | `%m/%d/%y` |
+| `Monday, February 10, 2025 at 9:01pm -0500` | `%A, %B %d, %Y at %-I:%M%P %z` |
+| `Monday, February 10, 2025 at 9:01pm EST` | `%A, %B %d, %Y at %-I:%M%P %Z` |
+| `Monday, February 10, 2025 at 9:01pm America/New_York` | `%A, %B %d, %Y at %-I:%M%P %Q` |
+
+The specific conversion specifiers supported are documented in the [`strtime`]
+sub-module. While precise POSIX compatibility is not guaranteed, the conversion
+specifiers are generally meant to match prevailing implementations. (Although
+there are many such implementations and they each tend to have their own quirks
+and features.)
+
+## RFC 2822 parsing and printing
+
+[RFC-2822] support is provided by the [`rfc2822`] sub-module.
+
+| Example | Links |
+| ------- | ----- |
+| `Thu, 29 Feb 2024 05:34 -0500` | [`rfc2822::parse`] and [`rfc2822::to_string`] |
+| `Thu, 01 Jan 1970 00:00:01 GMT` | [`DateTimePrinter::timestamp_to_rfc9110_string`] |
+
+[Temporal]: https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar
+[ISO-8601]: https://www.iso.org/iso-8601-date-and-time-format.html
+[RFC-3339]: https://www.rfc-editor.org/rfc/rfc3339
+[RFC-9557]: https://www.rfc-editor.org/rfc/rfc9557.html
+[ISO-8601]: https://www.iso.org/iso-8601-date-and-time-format.html
+[RFC-2822]: https://datatracker.ietf.org/doc/html/rfc2822
+[RFC-9110]: https://datatracker.ietf.org/doc/html/rfc9110#section-5.6.7-15
+[`Display`]: std::fmt::Display
+[`FromStr`]: std::str::FromStr
+[`friendly`]: crate::fmt::friendly
+[`temporal`]: crate::fmt::temporal
+[`rfc2822`]: crate::fmt::rfc2822
+[`strtime`]: crate::fmt::strtime
+[`civil::DateTime`]: crate::civil::DateTime
+[`civil::Date`]: crate::civil::Date
+[`civil::Date::strftime`]: crate::civil::Date::strftime
+[`civil::Time`]: crate::civil::Time
+[`SignedDuration`]: crate::SignedDuration
+[`Span`]: crate::Span
+[`Timestamp`]: crate::Timestamp
+[`Timestamp::display_with_offset`]: crate::Timestamp::display_with_offset
+[`Zoned`]: crate::Zoned
+[`Zoned::strptime`]: crate::Zoned::strptime
+
+[`Designator::Verbose`]: crate::fmt::friendly::Designator::Verbose
+[`Designator::Short`]: crate::fmt::friendly::Designator::Short
+[`Designator::Compact`]: crate::fmt::friendly::Designator::Compact
+[`Spacing::None`]: crate::fmt::friendly::Spacing::None
+[`Spacing::BetweenUnits`]: crate::fmt::friendly::Spacing::BetweenUnits
+[`Spacing::BetweenUnitsAndDesignators`]: crate::fmt::friendly::Spacing::BetweenUnitsAndDesignators
+[`Direction::Auto`]: crate::fmt::friendly::Direction::Auto
+[`Direction::Sign`]: crate::fmt::friendly::Direction::Sign
+[`Direction::ForceSign`]: crate::fmt::friendly::Direction::ForceSign
+[`Direction::Suffix`]: crate::fmt::friendly::Direction::Suffix
+[`FractionalUnit::Second`]: crate::fmt::friendly::FractionalUnit::Second
+[`SpanPrinter::designator`]: crate::fmt::friendly::SpanPrinter::designator
+[`SpanPrinter::spacing`]: crate::fmt::friendly::SpanPrinter::spacing
+[`SpanPrinter::direction`]: crate::fmt::friendly::SpanPrinter::direction
+[`SpanPrinter::fractional`]: crate::fmt::friendly::SpanPrinter::fractional
+[`SpanPrinter::comma_after_designator`]: crate::fmt::friendly::SpanPrinter::comma_after_designator
+[`SpanPrinter::hours_minutes_seconds`]: crate::fmt::friendly::SpanPrinter::hours_minutes_seconds
+
+[`BrokenDownTime`]: crate::fmt::strtime::BrokenDownTime
+[`strtime::parse`]: crate::fmt::strtime::parse
+[`strtime::format`]: crate::fmt::strtime::format
+
+[`rfc2822::parse`]: crate::fmt::rfc2822::parse
+[`rfc2822::to_string`]: crate::fmt::rfc2822::to_string
+[`DateTimePrinter::timestamp_to_rfc9110_string`]: crate::fmt::rfc2822::DateTimePrinter::timestamp_to_rfc9110_string
 */
 
 use crate::{
@@ -38,6 +196,17 @@ pub(crate) struct Parsed<'i, V> {
     input: &'i [u8],
 }
 
+impl<'i, V> Parsed<'i, V> {
+    #[inline]
+    fn and_then<U>(
+        self,
+        map: impl FnOnce(V) -> Result<U, Error>,
+    ) -> Result<Parsed<'i, U>, Error> {
+        let Parsed { value, input } = self;
+        Ok(Parsed { value: map(value)?, input })
+    }
+}
+
 impl<'i, V: core::fmt::Display> Parsed<'i, V> {
     /// Ensures that the parsed value represents the entire input. This occurs
     /// precisely when the `input` on this parsed value is empty.
@@ -53,6 +222,32 @@ impl<'i, V: core::fmt::Display> Parsed<'i, V> {
             "parsed value '{value}', but unparsed input {unparsed:?} \
              remains (expected no unparsed input)",
             value = self.value,
+            unparsed = escape::Bytes(self.input),
+        ))
+    }
+}
+
+impl<'i, V> Parsed<'i, V> {
+    /// Ensures that the parsed value represents the entire input. This occurs
+    /// precisely when the `input` on this parsed value is empty.
+    ///
+    /// This is useful when one expects a parsed value to consume the entire
+    /// input, and to consider it an error if it doesn't.
+    ///
+    /// This is like `Parsed::into_full`, but lets the caller provide a custom
+    /// `Display` implementation.
+    #[inline]
+    fn into_full_with(
+        self,
+        display: impl core::fmt::Display,
+    ) -> Result<V, Error> {
+        if self.input.is_empty() {
+            return Ok(self.value);
+        }
+        Err(err!(
+            "parsed value '{value}', but unparsed input {unparsed:?} \
+             remains (expected no unparsed input)",
+            value = display,
             unparsed = escape::Bytes(self.input),
         ))
     }
@@ -233,15 +428,26 @@ impl<W: Write> core::fmt::Write for StdFmtWrite<W> {
 /// types. Those types could perhaps be exposed if there was strong demand,
 /// but I'm skeptical.
 trait WriteExt: Write {
-    /// Write the given number as a decimal using ASCII digits to this buffer.
-    /// The given formatter controls how the decimal is formatted.
+    /// Write the given number as a signed decimal using ASCII digits to this
+    /// buffer. The given formatter controls how the decimal is formatted.
     #[inline]
     fn write_int(
         &mut self,
         formatter: &DecimalFormatter,
         n: impl Into<i64>,
     ) -> Result<(), Error> {
-        self.write_decimal(&Decimal::new(formatter, n.into()))
+        self.write_decimal(&formatter.format_signed(n.into()))
+    }
+
+    /// Write the given number as an unsigned decimal using ASCII digits to
+    /// this buffer. The given formatter controls how the decimal is formatted.
+    #[inline]
+    fn write_uint(
+        &mut self,
+        formatter: &DecimalFormatter,
+        n: impl Into<u64>,
+    ) -> Result<(), Error> {
+        self.write_decimal(&formatter.format_unsigned(n.into()))
     }
 
     /// Write the given fractional number using ASCII digits to this buffer.
@@ -250,7 +456,7 @@ trait WriteExt: Write {
     fn write_fraction(
         &mut self,
         formatter: &FractionalFormatter,
-        n: impl Into<i64>,
+        n: impl Into<u32>,
     ) -> Result<(), Error> {
         self.write_fractional(&Fractional::new(formatter, n.into()))
     }

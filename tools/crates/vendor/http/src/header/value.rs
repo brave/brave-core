@@ -5,7 +5,7 @@ use std::error::Error;
 use std::fmt::Write;
 use std::hash::{Hash, Hasher};
 use std::str::FromStr;
-use std::{cmp, fmt, mem, str};
+use std::{cmp, fmt, str};
 
 use crate::header::name::HeaderName;
 
@@ -15,7 +15,7 @@ use crate::header::name::HeaderName;
 /// HTTP spec allows for a header value to contain opaque bytes as well. In this
 /// case, the header field value is not able to be represented as a string.
 ///
-/// To handle this, the `HeaderValue` is useable as a type and can be compared
+/// To handle this, the `HeaderValue` is usable as a type and can be compared
 /// with strings and implements `Debug`. A `to_str` fn is provided that returns
 /// an `Err` if the header value contains non visible ascii characters.
 #[derive(Clone)]
@@ -51,27 +51,6 @@ impl HeaderValue {
     /// This function panics if the argument contains invalid header value
     /// characters.
     ///
-    /// Until [Allow panicking in constants](https://github.com/rust-lang/rfcs/pull/2345)
-    /// makes its way into stable, the panic message at compile-time is
-    /// going to look cryptic, but should at least point at your header value:
-    ///
-    /// ```text
-    /// error: any use of this value will cause an error
-    ///   --> http/src/header/value.rs:67:17
-    ///    |
-    /// 67 |                 ([] as [u8; 0])[0]; // Invalid header value
-    ///    |                 ^^^^^^^^^^^^^^^^^^
-    ///    |                 |
-    ///    |                 index out of bounds: the length is 0 but the index is 0
-    ///    |                 inside `HeaderValue::from_static` at http/src/header/value.rs:67:17
-    ///    |                 inside `INVALID_HEADER` at src/main.rs:73:33
-    ///    |
-    ///   ::: src/main.rs:73:1
-    ///    |
-    /// 73 | const INVALID_HEADER: HeaderValue = HeaderValue::from_static("жsome value");
-    ///    | ----------------------------------------------------------------------------
-    /// ```
-    ///
     /// # Examples
     ///
     /// ```
@@ -80,19 +59,12 @@ impl HeaderValue {
     /// assert_eq!(val, "hello");
     /// ```
     #[inline]
-    #[allow(unconditional_panic)] // required for the panic circumvention
     pub const fn from_static(src: &'static str) -> HeaderValue {
         let bytes = src.as_bytes();
         let mut i = 0;
         while i < bytes.len() {
             if !is_visible_ascii(bytes[i]) {
-                // TODO: When msrv is bumped to larger than 1.57, this should be
-                // replaced with `panic!` macro.
-                // https://blog.rust-lang.org/2021/12/02/Rust-1.57.0.html#panic-in-const-contexts
-                //
-                // See the panics section of this method's document for details.
-                #[allow(clippy::no_effect, clippy::out_of_bounds_indexing)]
-                ([] as [u8; 0])[0]; // Invalid header value
+                panic!("HeaderValue::from_static with invalid bytes")
             }
             i += 1;
         }
@@ -424,27 +396,7 @@ macro_rules! from_integers {
     ($($name:ident: $t:ident => $max_len:expr),*) => {$(
         impl From<$t> for HeaderValue {
             fn from(num: $t) -> HeaderValue {
-                let mut buf = if mem::size_of::<BytesMut>() - 1 < $max_len {
-                    // On 32bit platforms, BytesMut max inline size
-                    // is 15 bytes, but the $max_len could be bigger.
-                    //
-                    // The likelihood of the number *actually* being
-                    // that big is very small, so only allocate
-                    // if the number needs that space.
-                    //
-                    // The largest decimal number in 15 digits:
-                    // It wold be 10.pow(15) - 1, but this is a constant
-                    // version.
-                    if num as u64 > 999_999_999_999_999_999 {
-                        BytesMut::with_capacity($max_len)
-                    } else {
-                        // fits inline...
-                        BytesMut::new()
-                    }
-                } else {
-                    // full value fits inline, so don't allocate!
-                    BytesMut::new()
-                };
+                let mut buf = BytesMut::with_capacity($max_len);
                 let _ = buf.write_str(::itoa::Buffer::new().format(num));
                 HeaderValue {
                     inner: buf.freeze(),

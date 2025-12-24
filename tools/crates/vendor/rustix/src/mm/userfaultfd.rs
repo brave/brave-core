@@ -11,7 +11,7 @@ use crate::{backend, io};
 
 pub use backend::mm::types::UserfaultfdFlags;
 
-/// `userfaultfd(flags)`
+/// `userfaultfd(flags)`—Create userspace page-fault handler.
 ///
 /// # Safety
 ///

@@ -177,7 +177,7 @@ much detail." You can remove this by rounding the `Span` to the nearest half
 hour before printing:
 
 ```
-use jiff::{civil, RoundMode, ToSpan, Unit, ZonedDifference};
+use jiff::{civil, RoundMode, Unit, ZonedDifference};
 
 let commented_at = civil::date(2024, 8, 1).at(19, 29, 13, 123_456_789).in_tz("US/Eastern")?;
 let now = civil::date(2024, 12, 26).at(12, 49, 0, 0).in_tz("US/Eastern")?;
@@ -427,7 +427,7 @@ use jiff::{civil, Span};
 
 let span: Span = "1 month".parse()?;
 // converts to signed duration
-let sdur = span.to_jiff_duration(civil::date(2024, 5, 1))?;
+let sdur = span.to_duration(civil::date(2024, 5, 1))?;
 // converts to standard library unsigned duration
 let dur = Duration::try_from(sdur)?;
 // exactly 31 days where each day is 24 hours long.
@@ -435,7 +435,7 @@ assert_eq!(dur, Duration::from_secs(31 * 24 * 60 * 60));
 
 // Now change the reference date and notice that the
 // resulting duration is changed but still correct.
-let sdur = span.to_jiff_duration(civil::date(2024, 6, 1))?;
+let sdur = span.to_duration(civil::date(2024, 6, 1))?;
 let dur = Duration::try_from(sdur)?;
 // exactly 30 days where each day is 24 hours long.
 assert_eq!(dur, Duration::from_secs(30 * 24 * 60 * 60));
@@ -512,11 +512,11 @@ intuitive things you'd expect to work will work.
 # Internationalization
 
 Currently, only US English unit designator labels are supported. In general,
-Jiff resists trying to solve the internationalization problem in favor of
-punting it to a crate like [`icu`](https://docs.rs/icu). Jiff _could_ adopt
-unit designator labels for other languages, but it's not totally clear whether
-that's the right path to follow given the complexity of internationalization.
-If you'd like to discuss it, please
+Jiff resists trying to solve the internationalization problem in favor
+of punting it to another crate, such as [`icu`] via [`jiff-icu`]. Jiff
+_could_ adopt unit designator labels for other languages, but it's not
+totally clear whether that's the right path to follow given the complexity
+of internationalization. If you'd like to discuss it, please
 [file an issue](https://github.com/BurntSushi/jiff/issues).
 
 # Grammar
@@ -688,6 +688,8 @@ should support a "reasonable" range of values.
 
 [`humantime`]: https://docs.rs/humantime
 [`humantime-serde`]: https://docs.rs/humantime-serde
+[`icu`]: https://docs.rs/icu
+[`jiff-icu`]: https://docs.rs/jiff-icu
 */
 
 pub use self::{

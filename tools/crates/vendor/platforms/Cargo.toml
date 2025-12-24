@@ -12,19 +12,18 @@
 [package]
 edition = "2018"
 name = "platforms"
-version = "3.5.0"
+version = "3.7.0"
 authors = [
     "Tony Arcieri <bascule@gmail.com>",
     'Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>',
 ]
 build = false
 exclude = [
-    "platforms-data-gen/",
-    "markdown-table-gen/",
     "README.header.md",
     "platform-support.md",
     "regenerate-platforms-crate.sh",
 ]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -50,6 +49,10 @@ license = "Apache-2.0 OR MIT"
 repository = "https://github.com/rustsec/rustsec"
 resolver = "2"
 
+[features]
+default = ["std"]
+std = []
+
 [lib]
 name = "platforms"
 path = "src/lib.rs"
@@ -57,7 +60,3 @@ path = "src/lib.rs"
 [dependencies.serde]
 version = "1"
 optional = true
-
-[features]
-default = ["std"]
-std = []

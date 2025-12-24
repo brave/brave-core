@@ -25,7 +25,7 @@ impl input::Entry {
     }
     /// The amount of bytes this entry may consume in a pack data file
     pub fn bytes_in_pack(&self) -> u64 {
-        self.header_size as u64 + self.compressed_size
+        u64::from(self.header_size) + self.compressed_size
     }
 
     /// Update our CRC value by recalculating it from our header and compressed data.
@@ -54,12 +54,12 @@ fn compress_data(obj: &gix_object::Data<'_>) -> Result<Vec<u8>, input::Error> {
     let mut out = gix_features::zlib::stream::deflate::Write::new(Vec::new());
     if let Err(err) = std::io::copy(&mut &*obj.data, &mut out) {
         match err.kind() {
-            std::io::ErrorKind::Other => return Err(input::Error::Io(err)),
+            std::io::ErrorKind::Other => return Err(input::Error::Io(err.into())),
             err => {
-                unreachable!("Should never see other errors than zlib, but got {:?}", err,)
+                unreachable!("Should never see other errors than zlib, but got {:?}", err)
             }
         }
-    };
+    }
     out.flush().expect("zlib flush should never fail");
     Ok(out.into_inner())
 }

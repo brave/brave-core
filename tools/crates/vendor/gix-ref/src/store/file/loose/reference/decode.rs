@@ -66,7 +66,7 @@ impl Reference {
     }
 }
 
-fn parse(i: &mut &[u8]) -> PResult<MaybeUnsafeState> {
+fn parse(i: &mut &[u8]) -> ModalResult<MaybeUnsafeState> {
     if let Some(_ref_prefix) = opt(terminated("ref: ", take_while(0.., b' '))).parse_next(i)? {
         terminated(take_while(0.., |b| b != b'\r' && b != b'\n'), opt(newline))
             .map(|path| MaybeUnsafeState::UnvalidatedPath(path.into()))

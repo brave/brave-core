@@ -37,9 +37,9 @@ impl<'a> Parts<'a> {
         }
 
         let toml_end = advisory_data.find("\n```").ok_or_else(|| {
-            format_err!(
+            Error::new(
                 ErrorKind::Parse,
-                "couldn't find end of TOML front matter in advisory"
+                "couldn't find end of TOML front matter in advisory",
             )
         })?;
 
@@ -54,9 +54,9 @@ impl<'a> Parts<'a> {
         }
 
         let next_newline = markdown.find('\n').ok_or_else(|| {
-            format_err!(
+            Error::new(
                 ErrorKind::Parse,
-                "no Markdown body (i.e. description) found"
+                "no Markdown body (i.e. description) found",
             )
         })?;
 

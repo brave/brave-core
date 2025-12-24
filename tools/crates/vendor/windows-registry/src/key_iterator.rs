@@ -1,5 +1,4 @@
 use super::*;
-use core::ptr::{null, null_mut};
 
 /// An iterator of registry key names.
 pub struct KeyIterator<'a> {
@@ -38,7 +37,7 @@ impl<'a> KeyIterator<'a> {
     }
 }
 
-impl<'a> Iterator for KeyIterator<'a> {
+impl Iterator for KeyIterator<'_> {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {

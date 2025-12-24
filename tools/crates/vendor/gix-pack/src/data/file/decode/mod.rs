@@ -1,10 +1,8 @@
 use std::collections::TryReserveError;
 
 ///
-#[allow(clippy::empty_docs)]
 pub mod entry;
 ///
-#[allow(clippy::empty_docs)]
 pub mod header;
 
 /// Returned by [`File::decode_header()`][crate::data::File::decode_header()],
@@ -21,6 +19,8 @@ pub enum Error {
     EntryType(#[from] crate::data::entry::decode::Error),
     #[error("Entry too large to fit in memory")]
     OutOfMemory,
+    #[error(transparent)]
+    Delta(#[from] crate::data::delta::apply::Error),
 }
 
 impl From<TryReserveError> for Error {

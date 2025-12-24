@@ -14,6 +14,42 @@ mod access {
     use crate::protocol::Context;
 
     impl Context {
+        /// Clear all fields that are considered secret.
+        pub fn clear_secrets(&mut self) {
+            let Context {
+                protocol: _,
+                host: _,
+                path: _,
+                username: _,
+                password,
+                oauth_refresh_token,
+                password_expiry_utc: _,
+                url: _,
+                quit: _,
+            } = self;
+
+            *password = None;
+            *oauth_refresh_token = None;
+        }
+        /// Replace existing secrets with the word `<redacted>`.
+        pub fn redacted(mut self) -> Self {
+            let Context {
+                protocol: _,
+                host: _,
+                path: _,
+                username: _,
+                password,
+                oauth_refresh_token,
+                password_expiry_utc: _,
+                url: _,
+                quit: _,
+            } = &mut self;
+            for secret in [password, oauth_refresh_token].into_iter().flatten() {
+                *secret = "<redacted>".into();
+            }
+            self
+        }
+
         /// Convert all relevant fields into a URL for consumption.
         pub fn to_url(&self) -> Option<BString> {
             use bstr::{ByteSlice, ByteVec};
@@ -56,7 +92,11 @@ mod mutate {
         /// normally this isn't the case.
         #[allow(clippy::result_large_err)]
         pub fn destructure_url_in_place(&mut self, use_http_path: bool) -> Result<&mut Self, protocol::Error> {
-            let url = gix_url::parse(self.url.as_ref().ok_or(protocol::Error::UrlMissing)?.as_ref())?;
+            if self.url.is_none() {
+                self.url = Some(self.to_url().ok_or(protocol::Error::UrlMissing)?);
+            }
+
+            let url = gix_url::parse(self.url.as_ref().expect("URL is present after check above").as_ref())?;
             self.protocol = Some(url.scheme.as_str().into());
             self.username = url.user().map(ToOwned::to_owned);
             self.password = url.password().map(ToOwned::to_owned);

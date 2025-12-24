@@ -1,12 +1,9 @@
-cfg_if::cfg_if! {
-    if #[cfg(any(unix, target_os = "redox", target_os = "wasi"))] {
-        mod unix;
-        pub use self::unix::*;
-    } else if #[cfg(windows)] {
-        mod windows;
-        pub use self::windows::*;
-    } else {
-        mod other;
-        pub use self::other::*;
-    }
-}
+#[cfg_attr(any(unix, target_os = "redox", target_os = "wasi"), path = "unix.rs")]
+#[cfg_attr(windows, path = "windows.rs")]
+#[cfg_attr(
+    not(any(unix, target_os = "redox", target_os = "wasi", windows)),
+    path = "other.rs"
+)]
+mod platform;
+
+pub use self::platform::*;

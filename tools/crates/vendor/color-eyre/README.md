@@ -57,8 +57,7 @@ color-eyre = { version = "0.6", default-features = false }
 color-eyre defaults to capturing span traces. This is because `SpanTrace`
 capture is significantly cheaper than `Backtrace` capture. However, like
 backtraces, span traces are most useful for debugging applications, and it's
-not uncommon to want to disable span trace capture by default to keep noise out
-developer.
+not uncommon to want to disable span trace capture by default to keep noise out.
 
 To disable span trace capture you must explicitly set one of the env variables
 that regulate `SpanTrace` capture to `"0"`:
@@ -211,9 +210,9 @@ For an example of how to setup custom filters, check out [`examples/custom_filte
 [`eyre::Result`]: https://docs.rs/eyre/*/eyre/type.Result.html
 [`Handler`]: https://docs.rs/color-eyre/*/color_eyre/struct.Handler.html
 [`examples/usage.rs`]: https://github.com/eyre-rs/color-eyre/blob/master/examples/usage.rs
-[`examples/custom_filter.rs`]: https://github.com/eyre-rs/eyre/tree/master/color-eyre/blob/master/examples/custom_filter.rs
-[`examples/custom_section.rs`]: https://github.com/eyre-rs/eyre/tree/master/color-eyre/blob/master/examples/custom_section.rs
-[`examples/multiple_errors.rs`]: https://github.com/eyre-rs/eyre/tree/master/color-eyre/blob/master/examples/multiple_errors.rs
+[`examples/custom_filter.rs`]: https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/custom_filter.rs
+[`examples/custom_section.rs`]: https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/custom_section.rs
+[`examples/multiple_errors.rs`]: https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/multiple_errors.rs
 
 #### License
 

@@ -1,5 +1,58 @@
 # Changelog
 
+## [2.4.2](https://github.com/zip-rs/zip2/compare/v2.4.1...v2.4.2) - 2025-03-18
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- `deep_copy_file` produced a mangled file header on big-endian platforms (#309)
+
+## [2.4.1](https://github.com/zip-rs/zip2/compare/v2.4.0...v2.4.1) - 2025-03-17
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- type issue in test
+- double as_ref().canonicalize()?
+- CI failures
+- Create directory for extraction if necessary ([#314](https://github.com/zip-rs/zip2/pull/314))
+
+## [2.4.0](https://github.com/zip-rs/zip2/compare/v2.3.0...v2.4.0) - 2025-03-17
+
+### <!-- 0 -->🚀 Features
+
+- `ZipArchive::root_dir` and `ZipArchive::extract_unwrapped_root_dir` ([#304](https://github.com/zip-rs/zip2/pull/304))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- wasm build failure due to a missing use statement  ([#313](https://github.com/zip-rs/zip2/pull/313))
+
+## [2.3.0](https://github.com/zip-rs/zip2/compare/v2.2.3...v2.3.0) - 2025-03-16
+
+### <!-- 0 -->🚀 Features
+
+- Add support for NTFS extra field ([#279](https://github.com/zip-rs/zip2/pull/279))
+
+### <!-- 1 -->🐛 Bug Fixes
+
+- *(test)* Conditionalize a zip64 doctest ([#308](https://github.com/zip-rs/zip2/pull/308))
+- fix failing tests, remove symlink loop check
+- Canonicalize output path to avoid false negatives
+- Symlink handling in stream extraction
+- Canonicalize output paths and symlink targets, and ensure they descend from the destination
+
+### <!-- 7 -->⚙️ Miscellaneous Tasks
+
+- Fix clippy and cargo fmt warnings ([#310](https://github.com/zip-rs/zip2/pull/310))
+
+## [2.2.3](https://github.com/zip-rs/zip2/compare/v2.2.2...v2.2.3) - 2025-02-26
+
+### <!-- 2 -->🚜 Refactor
+
+- Change the inner structure of `DateTime` (#267)
+
+### <!-- 7 -->⚙️ Miscellaneous Tasks
+
+- cargo fix --edition
+
 ## [2.2.2](https://github.com/zip-rs/zip2/compare/v2.2.1...v2.2.2) - 2024-12-16
 
 ### <!-- 1 -->🐛 Bug Fixes

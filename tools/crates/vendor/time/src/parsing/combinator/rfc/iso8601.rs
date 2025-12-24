@@ -2,8 +2,9 @@
 //!
 //! [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
 
-use core::num::{NonZeroU16, NonZeroU8};
+use core::num::NonZero;
 
+#[allow(unused_imports, reason = "MSRV of 1.87")]
 use num_conv::prelude::*;
 
 use crate::parsing::combinator::{any_digit, ascii_char, exactly_n_digits, first_match, sign};
@@ -24,17 +25,20 @@ pub(crate) enum ExtendedKind {
 
 impl ExtendedKind {
     /// Is it possible that the format is extended?
+    #[inline]
     pub(crate) const fn maybe_extended(self) -> bool {
         matches!(self, Self::Extended | Self::Unknown)
     }
 
     /// Is the format known for certain to be extended?
+    #[inline]
     pub(crate) const fn is_extended(self) -> bool {
         matches!(self, Self::Extended)
     }
 
     /// If the kind is `Unknown`, make it `Basic`. Otherwise, do nothing. Returns `Some` if and only
     /// if the kind is now `Basic`.
+    #[inline]
     pub(crate) fn coerce_basic(&mut self) -> Option<()> {
         match self {
             Self::Basic => Some(()),
@@ -48,6 +52,7 @@ impl ExtendedKind {
 
     /// If the kind is `Unknown`, make it `Extended`. Otherwise, do nothing. Returns `Some` if and
     /// only if the kind is now `Extended`.
+    #[inline]
     pub(crate) fn coerce_extended(&mut self) -> Option<()> {
         match self {
             Self::Basic => None,
@@ -61,6 +66,7 @@ impl ExtendedKind {
 }
 
 /// Parse a possibly expanded year.
+#[inline]
 pub(crate) fn year(input: &[u8]) -> Option<ParsedItem<'_, i32>> {
     Some(match sign(input) {
         Some(ParsedItem(input, sign)) => exactly_n_digits::<6, u32>(input)?.map(|val| {
@@ -76,6 +82,7 @@ pub(crate) fn year(input: &[u8]) -> Option<ParsedItem<'_, i32>> {
 }
 
 /// Parse a month.
+#[inline]
 pub(crate) fn month(input: &[u8]) -> Option<ParsedItem<'_, Month>> {
     first_match(
         [
@@ -97,16 +104,19 @@ pub(crate) fn month(input: &[u8]) -> Option<ParsedItem<'_, Month>> {
 }
 
 /// Parse a week number.
-pub(crate) fn week(input: &[u8]) -> Option<ParsedItem<'_, NonZeroU8>> {
+#[inline]
+pub(crate) fn week(input: &[u8]) -> Option<ParsedItem<'_, NonZero<u8>>> {
     exactly_n_digits::<2, _>(input)
 }
 
 /// Parse a day of the month.
-pub(crate) fn day(input: &[u8]) -> Option<ParsedItem<'_, NonZeroU8>> {
+#[inline]
+pub(crate) fn day(input: &[u8]) -> Option<ParsedItem<'_, NonZero<u8>>> {
     exactly_n_digits::<2, _>(input)
 }
 
 /// Parse a day of the week.
+#[inline]
 pub(crate) fn dayk(input: &[u8]) -> Option<ParsedItem<'_, Weekday>> {
     first_match(
         [
@@ -123,16 +133,19 @@ pub(crate) fn dayk(input: &[u8]) -> Option<ParsedItem<'_, Weekday>> {
 }
 
 /// Parse a day of the year.
-pub(crate) fn dayo(input: &[u8]) -> Option<ParsedItem<'_, NonZeroU16>> {
+#[inline]
+pub(crate) fn dayo(input: &[u8]) -> Option<ParsedItem<'_, NonZero<u16>>> {
     exactly_n_digits::<3, _>(input)
 }
 
 /// Parse the hour.
+#[inline]
 pub(crate) fn hour(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
     exactly_n_digits::<2, _>(input)
 }
 
 /// Parse the minute.
+#[inline]
 pub(crate) fn min(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
     exactly_n_digits::<2, _>(input)
 }
@@ -143,6 +156,7 @@ pub(crate) fn min(input: &[u8]) -> Option<ParsedItem<'_, u8>> {
 /// least one digit must follow.
 ///
 /// The return type is a tuple of the integer part and optional fraction part.
+#[inline]
 pub(crate) fn float(input: &[u8]) -> Option<ParsedItem<'_, (u8, Option<f64>)>> {
     // Two digits before the decimal.
     let ParsedItem(input, integer_part) = match input {
@@ -172,6 +186,7 @@ pub(crate) fn float(input: &[u8]) -> Option<ParsedItem<'_, (u8, Option<f64>)>> {
 }
 
 /// Parse a "decimal sign", which is either a comma or a period.
+#[inline]
 fn decimal_sign(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
     ascii_char::<b'.'>(input).or_else(|| ascii_char::<b','>(input))
 }

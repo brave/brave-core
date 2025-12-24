@@ -1,6 +1,7 @@
 #![allow(clippy::result_large_err)]
 use std::{borrow::Cow, path::PathBuf, time::Duration};
 
+use gix_config::file::Metadata;
 use gix_lock::acquire::Fail;
 
 use crate::{
@@ -100,6 +101,51 @@ impl Cache {
         Ok(out)
     }
 
+    #[cfg(feature = "merge")]
+    pub(crate) fn merge_drivers(&self) -> Result<Vec<gix_merge::blob::Driver>, config::merge::drivers::Error> {
+        let mut out = Vec::<gix_merge::blob::Driver>::new();
+        for section in self
+            .resolved
+            .sections_by_name("merge")
+            .into_iter()
+            .flatten()
+            .filter(|s| (self.filter_config_section)(s.meta()))
+        {
+            let Some(name) = section.header().subsection_name().filter(|n| !n.is_empty()) else {
+                continue;
+            };
+
+            let driver = match out.iter_mut().find(|d| d.name == name) {
+                Some(existing) => existing,
+                None => {
+                    out.push(gix_merge::blob::Driver {
+                        name: name.into(),
+                        display_name: name.into(),
+                        ..Default::default()
+                    });
+                    out.last_mut().expect("just pushed")
+                }
+            };
+
+            if let Some(command) = section.value(config::tree::Merge::DRIVER_COMMAND.name) {
+                driver.command = command.into_owned();
+            }
+            if let Some(recursive_name) = section.value(config::tree::Merge::DRIVER_RECURSIVE.name) {
+                driver.recursive = Some(recursive_name.into_owned());
+            }
+        }
+        Ok(out)
+    }
+
+    #[cfg(feature = "merge")]
+    pub(crate) fn merge_pipeline_options(
+        &self,
+    ) -> Result<gix_merge::blob::pipeline::Options, config::merge::pipeline_options::Error> {
+        Ok(gix_merge::blob::pipeline::Options {
+            large_file_threshold_bytes: self.big_file_threshold()?,
+        })
+    }
+
     #[cfg(feature = "blob-diff")]
     pub(crate) fn diff_pipeline_options(
         &self,
@@ -111,13 +157,12 @@ impl Cache {
     }
 
     #[cfg(feature = "blob-diff")]
-    pub(crate) fn diff_renames(&self) -> Result<Option<gix_diff::Rewrites>, crate::diff::new_rewrites::Error> {
+    pub(crate) fn diff_renames(&self) -> Result<(Option<gix_diff::Rewrites>, bool), crate::diff::new_rewrites::Error> {
         self.diff_renames
             .get_or_try_init(|| crate::diff::new_rewrites(&self.resolved, self.lenient_config))
             .copied()
     }
 
-    #[cfg(feature = "blob-diff")]
     pub(crate) fn big_file_threshold(&self) -> Result<u64, config::unsigned_integer::Error> {
         Ok(self
             .resolved
@@ -136,7 +181,7 @@ impl Cache {
             .user_agent
             .get_or_init(|| {
                 self.resolved
-                    .string(Gitoxide::USER_AGENT.logical_name().as_str())
+                    .string(&Gitoxide::USER_AGENT)
                     .map_or_else(|| crate::env::agent().into(), |s| s.to_string())
             })
             .to_owned();
@@ -251,7 +296,7 @@ impl Cache {
         })
     }
 
-    #[cfg(feature = "index")]
+    #[cfg(any(feature = "index", feature = "tree-editor"))]
     pub(crate) fn protect_options(&self) -> Result<gix_validate::path::component::Options, config::boolean::Error> {
         const IS_WINDOWS: bool = cfg!(windows);
         const IS_MACOS: bool = cfg!(target_os = "macos");
@@ -304,7 +349,7 @@ impl Cache {
             if let Ok(mut head) = repo.head() {
                 let ctx = filters.driver_context_mut();
                 ctx.ref_name = head.referent_name().map(|name| name.as_bstr().to_owned());
-                ctx.treeish = head.peel_to_commit_in_place().ok().map(|commit| commit.id);
+                ctx.treeish = head.peel_to_commit().ok().map(|commit| commit.id);
             }
             filters
         };
@@ -340,6 +385,18 @@ impl Cache {
     }
 
     #[cfg(feature = "excludes")]
+    pub(crate) fn ignore_pattern_parser(&self) -> Result<gix_ignore::search::Ignore, config::boolean::Error> {
+        Ok(gix_ignore::search::Ignore {
+            support_precious: boolean(
+                self,
+                "gitoxide.parsePrecious",
+                &config::tree::Gitoxide::PARSE_PRECIOUS,
+                false,
+            )?,
+        })
+    }
+
+    #[cfg(feature = "excludes")]
     pub(crate) fn assemble_exclude_globals(
         &self,
         git_dir: &std::path::Path,
@@ -351,11 +408,13 @@ impl Cache {
             Some(user_path) => Some(user_path),
             None => self.xdg_config_path("ignore")?,
         };
+        let parse_ignore = self.ignore_pattern_parser()?;
         Ok(gix_worktree::stack::state::Ignore::new(
             overrides.unwrap_or_default(),
-            gix_ignore::Search::from_git_dir(git_dir, excludes_file, buf)?,
+            gix_ignore::Search::from_git_dir(git_dir, excludes_file, buf, parse_ignore)?,
             None,
             source,
+            parse_ignore,
         ))
     }
     // TODO: at least one test, maybe related to core.attributesFile configuration.
@@ -465,7 +524,7 @@ impl Cache {
 pub(crate) fn trusted_file_path<'config>(
     config: &'config gix_config::File<'_>,
     key: impl gix_config::AsKey,
-    filter: &mut gix_config::file::MetadataFilter,
+    filter: impl FnMut(&Metadata) -> bool,
     lenient_config: bool,
     environment: crate::open::permissions::Environment,
 ) -> Option<Result<Cow<'config, std::path::Path>, gix_config::path::interpolate::Error>> {

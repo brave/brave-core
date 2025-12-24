@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.71"
 name = "mio"
-version = "1.0.3"
+version = "1.1.1"
 authors = [
     "Carl Lerche <me@carllerche.com>",
     "Thomas de Zeeuw <thomasdezeeuw@gmail.com>",
@@ -55,7 +55,7 @@ rustdoc-args = [
 targets = [
     "aarch64-apple-ios",
     "aarch64-linux-android",
-    "wasm32-wasi",
+    "wasm32-wasip1",
     "x86_64-apple-darwin",
     "x86_64-pc-windows-gnu",
     "x86_64-pc-windows-msvc",
@@ -74,6 +74,16 @@ features = [
     "os-ext",
     "net",
 ]
+
+[features]
+default = ["log"]
+net = []
+os-ext = [
+    "os-poll",
+    "windows-sys/Win32_System_Pipes",
+    "windows-sys/Win32_Security",
+]
+os-poll = []
 
 [lib]
 name = "mio"
@@ -108,36 +118,26 @@ version = "0.4.8"
 optional = true
 
 [dev-dependencies.env_logger]
-version = "0.9.3"
+version = "0.11"
 default-features = false
 
 [dev-dependencies.rand]
-version = "0.8"
-
-[features]
-default = ["log"]
-net = []
-os-ext = [
-    "os-poll",
-    "windows-sys/Win32_System_Pipes",
-    "windows-sys/Win32_Security",
-]
-os-poll = []
+version = "0.9"
 
 [target.'cfg(target_os = "hermit")'.dependencies.libc]
-version = "0.2.159"
+version = "0.2.178"
 
 [target.'cfg(target_os = "wasi")'.dependencies.libc]
-version = "0.2.159"
+version = "0.2.178"
 
 [target.'cfg(target_os = "wasi")'.dependencies.wasi]
 version = "0.11.0"
 
 [target."cfg(unix)".dependencies.libc]
-version = "0.2.159"
+version = "0.2.178"
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = "0.52"
+version = "0.61"
 features = [
     "Wdk_Foundation",
     "Wdk_Storage_FileSystem",
@@ -145,6 +145,7 @@ features = [
     "Win32_Foundation",
     "Win32_Networking_WinSock",
     "Win32_Storage_FileSystem",
+    "Win32_Security",
     "Win32_System_IO",
     "Win32_System_WindowsProgramming",
 ]

@@ -2,12 +2,16 @@ use std::process::Command;
 
 use log::trace;
 
-use crate::{bitness, uname::uname, Bitness, Info, Type, Version};
+use crate::{
+    bitness,
+    uname::{uname, UnameField},
+    Bitness, Info, Type, Version,
+};
 
 pub fn current_platform() -> Info {
     trace!("dragonfly::current_platform is called");
 
-    let version = uname("-r")
+    let version = uname(UnameField::Release)
         .map(Version::from_string)
         .unwrap_or_else(|| Version::Unknown);
 
