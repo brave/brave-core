@@ -15,7 +15,7 @@ inline constexpr char kSidebarItemTypeKey[] = "type";
 inline constexpr char kSidebarItemBuiltInItemTypeKey[] = "built_in_item_type";
 inline constexpr char kSidebarItemTitleKey[] = "title";
 inline constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
-inline constexpr int kDefaultSidePanelWidth = 320;
+inline constexpr int kDefaultSidePanelWidth = 400;
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 // list is provided from chrome layer.
