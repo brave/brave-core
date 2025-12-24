@@ -16,22 +16,14 @@ class BraveExtensionMenuItemView : public ExtensionMenuItemView {
   METADATA_HEADER(BraveExtensionMenuItemView, ExtensionMenuItemView)
 
  public:
-  BraveExtensionMenuItemView(
-      Browser* browser,
-      bool is_enterprise,
-      ToolbarActionViewModel* controller,
-      base::RepeatingCallback<void(bool)> site_access_toggle_callback,
-      views::Button::PressedCallback site_permissions_button_callback);
+  BraveExtensionMenuItemView(Browser* browser,
+                             std::unique_ptr<ToolbarActionViewModel> view_model,
+                             bool allow_pinning);
 
   ~BraveExtensionMenuItemView() override;
 
   // ExtensionMenuItemView:
-  void UpdateContextMenuButton(bool is_action_pinned) override;
   void UpdatePinButton(bool is_force_pinned, bool is_pinned) override;
-  void OnThemeChanged() override;
-
- private:
-  void UpdatePinButtonIcon();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSION_MENU_ITEM_VIEW_H_
