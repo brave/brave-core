@@ -26,12 +26,8 @@ if (rootDir.includes(' ')) {
 
 const envConfig = new EnvConfig(braveCoreDir)
 
-const getPackageConfig = (key) => {
-  return envConfig.getPackageConfig(key)
-}
-
-const getEnvConfig = (key, defaultValue = undefined) => {
-  return envConfig.get(key, defaultValue)
+const getEnvConfig = (keyPath, defaultValue = undefined) => {
+  return envConfig.get(keyPath, defaultValue)
 }
 
 const readArgsGn = (srcDir, outputDir) => {
@@ -79,7 +75,7 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const getBraveVersion = (ignorePatchVersionNumber) => {
-  const braveVersion = getPackageConfig(['version'])
+  const braveVersion = envConfig.getPackageVersion()
   if (!ignorePatchVersionNumber) {
     return braveVersion
   }

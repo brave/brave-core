@@ -88,12 +88,7 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      expect(envConfig.getPackageConfig(['version'])).toBe('1.2.3')
-      expect(
-        envConfig.getPackageConfig(['projects', 'chrome', 'version']),
-      ).toBe('120.0.0')
-      expect(envConfig.getPackageConfig(['TEST', 'VALUE'])).toBe(undefined)
-      expect(envConfig.get(['version'])).toBe('1.2.3')
+      expect(envConfig.getPackageVersion()).toBe('1.2.3')
       expect(envConfig.get(['projects', 'chrome', 'version'])).toBe('120.0.0')
       expect(envConfig.get(['TEST', 'VALUE'])).toBe('hello')
     })
@@ -114,7 +109,7 @@ describe('EnvConfig', () => {
     })
   })
 
-  describe('getPackageConfig', () => {
+  describe('get without .env', () => {
     let envConfig
 
     beforeEach(() => {
@@ -128,28 +123,27 @@ describe('EnvConfig', () => {
           },
         },
       }
-      mockFiles[envPath] = ''
 
       envConfig = new EnvConfig(configDir)
     })
 
-    it('should retrieve nested config values', () => {
-      const result = envConfig.getPackageConfig(['projects', 'chrome', 'tag'])
-      expect(result).toBe('120.0.0')
-    })
-
-    it('should retrieve top-level config values', () => {
-      const result = envConfig.getPackageConfig(['version'])
+    it('should retrieve version', () => {
+      const result = envConfig.getPackageVersion()
       expect(result).toBe('1.2.3')
     })
 
+    it('should retrieve config values', () => {
+      const result = envConfig.get(['projects', 'chrome', 'tag'])
+      expect(result).toBe('120.0.0')
+    })
+
     it('should return undefined for non-existent keys', () => {
-      const result = envConfig.getPackageConfig(['nonexistent', 'key'])
+      const result = envConfig.get(['nonexistent', 'key'])
       expect(result).toBeUndefined()
     })
 
     it('should return undefined when path traverses non-object', () => {
-      const result = envConfig.getPackageConfig(['version', 'nested'])
+      const result = envConfig.get(['config', 'nested'])
       expect(result).toBeUndefined()
     })
   })
@@ -165,6 +159,7 @@ describe('EnvConfig', () => {
         },
       }
       mockFiles[envPath] = [
+        'version=4.5.6',
         'STRING_VALUE=hello',
         'NUMBER_VALUE=42',
         'BOOL_VALUE=true',
@@ -178,6 +173,11 @@ describe('EnvConfig', () => {
       ]
 
       envConfig = new EnvConfig(configDir)
+    })
+
+    it('version should not override package.json version', () => {
+      const result = envConfig.getPackageVersion()
+      expect(result).toBe('1.2.3')
     })
 
     it('should retrieve string values from .env', () => {
@@ -244,7 +244,7 @@ describe('EnvConfig', () => {
 
       expect(() => {
         envConfig.get(['TEST', 'KEY'], 'default2')
-      }).toThrow(/was called with a different defaultValue before/)
+      }).toThrow(/was requested with a different defaultValue/)
     })
 
     it('should allow same key with same default value', () => {
@@ -451,8 +451,7 @@ describe('EnvConfig', () => {
 
       const envConfig = new EnvConfig(configDir)
 
-      const result = envConfig.getPackageConfig([])
-      expect(result).toEqual({ version: '1.0.0', root: 'value' })
+      expect(() => envConfig.get([])).toThrow('keyPath must not be empty')
     })
 
     it('should handle undefined and null values correctly', () => {
