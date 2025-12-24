@@ -5,17 +5,17 @@
 
 #include "chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h"
 
-#include "brave/browser/ui/views/extensions/brave_extension_menu_item_view.h"
+#include "brave/browser/ui/views/extensions/brave_extensions_menu_entry_view.h"
 
 #define BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM        \
   {                                                                            \
-    auto item = std::make_unique<BraveExtensionMenuItemView>(                  \
-        browser_, menu_item.is_enterprise, action_model,                       \
+    auto item = std::make_unique<BraveExtensionsMenuEntryView>(                \
+        browser_, entry_state.is_enterprise, action_model,                     \
         base::BindRepeating(&ExtensionsMenuHandler::OnExtensionToggleSelected, \
                             base::Unretained(menu_handler_), extension_id),    \
         base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
                             base::Unretained(menu_handler_), extension_id));   \
-    item->Update(menu_item);                                                   \
+    item->Update(entry_state);                                                 \
     menu_items_->AddChildViewAt(std::move(item), index);                       \
     return;                                                                    \
   }

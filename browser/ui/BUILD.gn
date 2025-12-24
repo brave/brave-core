@@ -561,6 +561,8 @@ source_set("ui") {
       "views/dialog_footnote_utils.h",
       "views/extensions/brave_extension_menu_item_view.cc",
       "views/extensions/brave_extension_menu_item_view.h",
+      "views/extensions/brave_extensions_menu_entry_view.cc",
+      "views/extensions/brave_extensions_menu_entry_view.h",
       "views/extensions/brave_extensions_menu_main_page_view.cc",
       "views/extensions/brave_extensions_menu_main_page_view.h",
       "views/frame/brave_browser_root_view.cc",
