@@ -24,7 +24,8 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
       return urlObj.toString();
     } catch (e) {
       // If URL parsing fails, try simple string replacement
-      return url.replace(/[?&]autoplay=1/gi, '').replace(/autoplay=1[&]?/gi, '');
+      return url.replace(/[?&]autoplay=1/gi, '')
+        .replace(/autoplay=1[&]?/gi, '');
     }
   }
 
@@ -87,7 +88,9 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
           return originalPlay();
         }
         // Otherwise, return a rejected promise
-        return Promise.reject(new DOMException('The play() request id denied by autoplay blocking.', 'NotAllowedError'));
+        const message = 'The play() request id denied by autoplay blocking.'
+        const error = 'NotAllowedError'
+        return Promise.reject(new DOMException(message, error));
       });
     }
   }
@@ -139,7 +142,9 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
   // Intercept iframe src attribute changes via setAttribute
   const originalSetAttribute = Element.prototype.setAttribute;
   Element.prototype.setAttribute = $(function(name, value) {
-    if (name === 'src' && this.tagName === 'IFRAME' && typeof value === 'string') {
+    if (name === 'src' &&
+        this.tagName === 'IFRAME' &&
+        typeof value === 'string') {
       const newValue = removeAutoplayFromURL(value);
       originalSetAttribute.call(this, name, newValue);
       sanitizeIframe(this);
@@ -150,7 +155,8 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
 
   // Intercept direct property assignment to src
   const iframeProto = HTMLIFrameElement.prototype;
-  const originalSrcDescriptor = Object.getOwnPropertyDescriptor(iframeProto, 'src');
+  const originalSrcDescriptor = Object.getOwnPropertyDescriptor(iframeProto,
+                                                                'src');
   if (originalSrcDescriptor) {
     Object.defineProperty(iframeProto, 'src', {
       get: $(function() {
