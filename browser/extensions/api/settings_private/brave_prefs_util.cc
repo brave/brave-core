@@ -34,7 +34,7 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
-#include "components/search_engines/search_engines_pref_names.h"
+//#include "components/search_engines/search_engines_pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -122,10 +122,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_rewards::prefs::kShowLocationBarButton] =
-      settings_api::PrefType::kBoolean;
-
-  // Search engine prefs
-  (*s_brave_allowlist)[prefs::kAddOpenSearchEngines] =
       settings_api::PrefType::kBoolean;
 
   // autofill prefs
