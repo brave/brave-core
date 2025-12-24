@@ -17,7 +17,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_data.h"
@@ -63,7 +62,7 @@ std::string GetSyncCodeValidationErrorString(
       return "OK";
   }
   NOTREACHED() << "Unexpected value for TimeLimitedWords::ValidationStatus: "
-               << base::to_underlying(validation_result);
+               << std::to_underlying(validation_result);
 }
 
 }  // namespace
@@ -226,7 +225,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
 
   if (!qr_image.has_value()) {
     VLOG(1) << "QR code generator failure: "
-            << base::to_underlying(qr_image.error());
+            << std::to_underlying(qr_image.error());
     ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }

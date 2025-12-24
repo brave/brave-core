@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 
+#include <utility>
+
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -45,7 +46,7 @@ bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type) {
   }
 
   NOTREACHED() << "Unexpected value for mojom::AdType: "
-               << base::to_underlying(mojom_ad_type);
+               << std::to_underlying(mojom_ad_type);
 }
 
 bool ShouldResumePageLand(int32_t tab_id) {

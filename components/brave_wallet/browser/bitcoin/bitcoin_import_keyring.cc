@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -36,11 +35,11 @@ bool BitcoinImportKeyring::AddAccount(uint32_t account,
   }
 
   if (IsTestnet() &&
-      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kVprv)) {
+      parsed_key->version != std::to_underlying(ExtendedKeyVersion::kVprv)) {
     return false;
   }
   if (!IsTestnet() &&
-      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kZprv)) {
+      parsed_key->version != std::to_underlying(ExtendedKeyVersion::kZprv)) {
     return false;
   }
 
