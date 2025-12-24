@@ -1,3 +1,8 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 // securityOrigin is predefined by translate_script.cc.
 const securityOriginHost = new URL(securityOrigin).host
 
@@ -6,27 +11,27 @@ const securityOriginHost = new URL(securityOrigin).host
 // 2. adjust static paths to use braveTranslateStaticPath.
 const rewriteUrl = (url) => {
   try {
-    let new_url = new URL(url)
-    if (new_url.pathname === '/translate_a/t') {
+    let newUrl = new URL(url)
+    if (newUrl.pathname === '/translate_a/t') {
       // useGoogleTranslateEndpoint is predefined by translate_script.cc.
       // It's used only for local testing to disable the redirection of
       // translation requests.
       if (useGoogleTranslateEndpoint) {
         // Remove API key
-        new_url.searchParams.set('key', '')
+        newUrl.searchParams.set('key', '')
 
         // Leave the domain unchanged (translate.googleapis.com).
-        return new_url.toString()
+        return newUrl.toString()
       }
     } else {
       // braveTranslateStaticPath is predefined by translate_script.cc.
-      new_url.pathname = new_url.pathname.replace(
+      newUrl.pathname = newUrl.pathname.replace(
         '/translate_static/',
         braveTranslateStaticPath,
       )
     }
-    new_url.host = securityOriginHost
-    return new_url.toString()
+    newUrl.host = securityOriginHost
+    return newUrl.toString()
   } catch {
     return url
   }
