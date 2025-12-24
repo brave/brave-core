@@ -17,7 +17,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time_delta_from_string.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -592,7 +591,7 @@ std::string_view ToString(mojom::NewTabPageAdMetricType value) {
   }
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "
-               << base::to_underlying(value);
+               << std::to_underlying(value);
 }
 
 }  // namespace brave_ads

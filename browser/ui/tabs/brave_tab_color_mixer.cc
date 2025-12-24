@@ -5,12 +5,13 @@
 
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
+#include <utility>
+
 #include "base/containers/fixed_flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -73,8 +74,8 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
     return default_color;
   }
 
-  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
-  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
 
   constexpr auto kHSLShiftMap =
       base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
@@ -96,7 +97,7 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
       });
 
   const color_utils::HSL& shift =
-      kHSLShiftMap.at(default_color_id).at(base::to_underlying(key.color_mode));
+      kHSLShiftMap.at(default_color_id).at(std::to_underlying(key.color_mode));
   return color_utils::HSLShift(default_color, shift);
 }
 
@@ -109,8 +110,8 @@ SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
     return default_color;
   }
 
-  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
-  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(std::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
 
   // Derive split view tile backgrounds similarly to hovered tab backgrounds,
   // keeping the original hue while adjusting saturation and lightness
@@ -126,7 +127,7 @@ SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
       });
 
   const color_utils::HSL& shift =
-      kHSLShiftMap.at(default_color_id).at(base::to_underlying(key.color_mode));
+      kHSLShiftMap.at(default_color_id).at(std::to_underlying(key.color_mode));
   return color_utils::HSLShift(default_color, shift);
 }
 
