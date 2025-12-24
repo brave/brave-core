@@ -26,9 +26,9 @@ const Log = require('./logging')
  *   3. Default values provided by caller (lowest priority)
  */
 class EnvConfig {
-  /** Package.json config merged with version.
-   *  @type {{config: Record<string, any>, version: string}}  */
-  #packageConfig
+  /** Package.json object.
+   *  @type {Record<string, any>}  */
+  #packageJson
   /** Raw variables from .env files.
    *  @type {Record<string, string>}  */
   #dotenvConfig
@@ -46,22 +46,14 @@ class EnvConfig {
    * files
    */
   constructor(configDir) {
-    this.#packageConfig = this.#loadPackageConfig(configDir)
+    this.#packageJson = this.#loadPackageJson(configDir)
     this.#dotenvConfig = this.#loadDotenvConfig(configDir)
 
     this.#envConfigTyped = {}
     this.#seenDefaultValues = {}
-  }
 
-  /**
-   * Retrieves a value from package.json configuration.
-   *
-   * @param {string[]} keyPath - Array of keys forming the path to the config
-   * value (e.g., ['projects', 'chrome', 'version'])
-   * @returns {*} The configuration value, or undefined if not found
-   */
-  getPackageConfig(keyPath) {
-    return keyPath.reduce((obj, subkey) => obj?.[subkey], this.#packageConfig)
+    assert.equal(getConfigValueType(this.#packageJson.version), 'String')
+    assert.equal(getConfigValueType(this.#packageJson.config), 'Object')
   }
 
   /**
@@ -87,6 +79,7 @@ class EnvConfig {
    * @throws {Error} If .env value cannot be parsed or has wrong type
    */
   get(keyPath, defaultValue) {
+    assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
     const keyJoined = keyPath.join('_')
 
     // Check already processed value first.
@@ -94,7 +87,7 @@ class EnvConfig {
       assert.deepStrictEqual(
         defaultValue,
         this.#seenDefaultValues[keyJoined],
-        `EnvConfig.get for key ${keyJoined} was called with a different defaultValue before`,
+        `EnvConfig for key ${keyJoined} was requested with a different defaultValue`,
       )
       return this.#envConfigTyped[keyJoined]
     }
@@ -102,21 +95,59 @@ class EnvConfig {
     // Store the default value for the key to check for mismatches on subsequent
     // calls to the same key.
     this.#seenDefaultValues[keyJoined] = defaultValue
+    const expectedValueType = getConfigValueType(defaultValue)
 
     const dotenvConfigValue = this.#getDotenvConfig(
       keyJoined,
-      getConfigValueType(defaultValue),
+      expectedValueType,
     )
     if (dotenvConfigValue !== undefined) {
       return (this.#envConfigTyped[keyJoined] = dotenvConfigValue)
     }
 
-    const packageConfigValue = this.getPackageConfig(keyPath)
+    const packageConfigValue = this.#getPackageConfig(
+      keyPath,
+      expectedValueType,
+    )
     if (packageConfigValue !== undefined) {
       return (this.#envConfigTyped[keyJoined] = packageConfigValue)
     }
 
     return (this.#envConfigTyped[keyJoined] = defaultValue)
+  }
+
+  /**
+   * Returns the package version from package.json.
+   *
+   * @returns {string} The package version
+   */
+  getPackageVersion() {
+    return this.#packageJson.version
+  }
+
+  /**
+   * Retrieves a value from package.json "config" value.
+   *
+   * @param {string[]} keyPath - Array of keys forming the path to the config
+   * value (e.g., ['projects', 'chrome', 'tag'])
+   * @param {ConfigValueType} expectedValueType - Expected type of the value
+   * @returns {*} The config value, or undefined if not found
+   */
+  #getPackageConfig(keyPath, expectedValueType) {
+    const packageConfigValue = keyPath.reduce(
+      (obj, subkey) => obj?.[subkey],
+      this.#packageJson.config,
+    )
+    if (packageConfigValue === undefined) {
+      return undefined
+    }
+
+    this.#validateValueType(
+      keyPath.join('_') + ' (from package.json)',
+      packageConfigValue,
+      expectedValueType,
+    )
+    return packageConfigValue
   }
 
   /**
@@ -158,34 +189,48 @@ class EnvConfig {
       process.exit(1)
     }
 
-    // Validate the parsed value against the expected value type.
-    const dotenvConfigValueType = getConfigValueType(dotenvConfigValueParsed)
-    if (dotenvConfigValueType !== expectedValueType) {
-      Log.error(
-        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${dotenvConfigValueType}`,
-      )
-      process.exit(1)
-    }
+    this.#validateValueType(
+      keyJoined + ' (from .env)',
+      dotenvConfigValueParsed,
+      expectedValueType,
+    )
 
     return dotenvConfigValueParsed
   }
 
   /**
-   * Loads package.json configuration from the specified directory.
-   * Merges the config section with version information.
+   * Validates the value against the expected value type.
+   *
+   * @private
+   * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
+   * @param {*} value - The value to validate
+   * @param {ConfigValueType} expectedValueType - Expected type of the value
+   */
+  #validateValueType(keyJoined, value, expectedValueType) {
+    if (expectedValueType === 'Undefined') {
+      return
+    }
+
+    const valueType = getConfigValueType(value)
+    if (valueType !== expectedValueType) {
+      Log.error(
+        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
+      )
+      process.exit(1)
+    }
+  }
+
+  /**
+   * Loads package.json file from the specified directory.
    *
    * @private
    * @param {string} configDir - Directory containing package.json
+   * @returns {Record<string, any>} The parsed package.json
    */
-  #loadPackageConfig(configDir) {
-    const configAbsolutePath = path.join(configDir, 'package.json')
-    const packageJsonContent = fs.readFileSync(configAbsolutePath, 'utf8')
-    const packages = JSON.parse(packageJsonContent)
-
-    // packages.config should include version string.
-    return Object.assign({}, packages.config, {
-      version: packages.version,
-    })
+  #loadPackageJson(configDir) {
+    const packageJsonPath = path.join(configDir, 'package.json')
+    const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8')
+    return JSON.parse(packageJsonContent)
   }
 
   /**
