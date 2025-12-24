@@ -26,6 +26,7 @@ with brave_chromium_utils.sys_path('//tools/rust'):
     CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
                          'cargo' + ('.exe' if sys.platform == 'win32' else ''))
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
+FILTER_CHECKSUM_PATTERNS = ['.git', '*/.git']
 
 
 def setup_workspace():
@@ -141,6 +142,56 @@ def create_dependency_placeholders():
                     print(f"Created placeholder for: {dir_path}")
 
 
+def filter_cargo_checksums():
+    """Filter .cargo-checksum.json files to remove unwanted entries."""
+    vendor_path = Path('vendor')
+
+    if not vendor_path.exists():
+        return
+
+    def matches_any_filter_pattern(file_path):
+        """Check if a file path matches any of the filter patterns."""
+        return any(
+            fnmatch.fnmatch(file_path, pattern)
+            for pattern in FILTER_CHECKSUM_PATTERNS)
+
+    # Iterate through all vendored packages
+    for package_dir in vendor_path.iterdir():
+        if not package_dir.is_dir():
+            continue
+
+        checksum_file = package_dir / '.cargo-checksum.json'
+        if not checksum_file.exists():
+            continue
+
+        # Read the checksum file
+        with open(checksum_file, 'r') as f:
+            checksum_data = json.load(f)
+
+        if 'files' not in checksum_data:
+            continue
+
+        # Filter out entries matching the patterns
+        original_count = len(checksum_data['files'])
+        filtered_files = {
+            file_path: checksum
+            for file_path, checksum in checksum_data['files'].items()
+            if not matches_any_filter_pattern(file_path)
+        }
+
+        removed_count = original_count - len(filtered_files)
+        if removed_count > 0:
+            checksum_data['files'] = filtered_files
+
+            # Write back the filtered checksum file
+            with open(checksum_file, 'w') as f:
+                json.dump(checksum_data, f)
+
+            print(
+                f"Filtered {removed_count} entries from {package_dir.name}/.cargo-checksum.json"
+            )
+
+
 def create_cargo_config():
     # Create .cargo directory and write config.toml
     cargo_config = {
@@ -169,6 +220,7 @@ def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_workspace()
     add_dependencies()
+    filter_cargo_checksums()
     create_dependency_placeholders()
     create_cargo_config()
 
