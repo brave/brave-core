@@ -243,6 +243,26 @@ void BraveTabStrip::EnterTabRenameModeAt(int index) {
   static_cast<BraveTab*>(tab)->EnterRenameMode();
 }
 
+bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
+  // Basically we don't want to layout pinned tabs in grid when vertical tabs
+  // are floating. Otherwise, pinned tabs would jump to the top of tab strip
+  // when mouse hovers over the pinned tabs, and requires extra mouse movement
+  // to reach the desired tab.
+  bool should_layout_pinned_tabs_in_grid = !IsVerticalTabsFloating();
+
+  if (!should_layout_pinned_tabs_in_grid &&
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
+    // Even when in floating mode, we layout pinned tabs in a grid when
+    // "Hide Completely When Collapsed" is enabled. In this case, pinned tabs
+    // are not visible at all, so we don't need to care about the jumping issue.
+    should_layout_pinned_tabs_in_grid =
+        controller_->GetProfile()->GetPrefs()->GetBoolean(
+            brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+  }
+
+  return should_layout_pinned_tabs_in_grid;
+}
+
 void BraveTabStrip::UpdateOrientation() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowser();

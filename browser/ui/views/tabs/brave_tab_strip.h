@@ -24,6 +24,8 @@ class BraveTabStrip : public TabStrip {
 
   void EnterTabRenameModeAt(int index);
 
+  bool ShouldShowPinnedTabsInGrid() const;
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;

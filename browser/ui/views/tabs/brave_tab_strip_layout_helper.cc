@@ -77,16 +77,9 @@ int GetTabCornerRadius(const Tab& tab) {
 void CalculatePinnedTabsBoundsInGrid(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
-    bool is_floating_mode,
     std::vector<gfx::Rect>* result) {
   DCHECK(tabs.size());
   DCHECK(result);
-
-  if (is_floating_mode) {
-    // In floating mode, we should lay out pinned tabs vertically so that tabs
-    // underneath the mouse cursor wouldn't move.
-    return;
-  }
 
   const int pinned_tab_count =
       std::ranges::count_if(tabs, [](const TabWidthConstraints& tab) {
@@ -169,7 +162,7 @@ void CalculatePinnedTabsBoundsInGrid(
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
     const std::vector<TabWidthConstraints>& tabs,
     std::optional<int> width,
-    bool is_floating_mode) {
+    bool should_layout_pinned_tabs_in_grid) {
   // We can return LayoutDomain::kInactiveWidthEqualsActiveWidth always because
   // vertical tab uses same width for active and inactive tabs.
   if (tabs.empty()) {
@@ -178,7 +171,9 @@ std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
   }
 
   std::vector<gfx::Rect> bounds;
-  CalculatePinnedTabsBoundsInGrid(tabs, width, is_floating_mode, &bounds);
+  if (should_layout_pinned_tabs_in_grid) {
+    CalculatePinnedTabsBoundsInGrid(tabs, width, &bounds);
+  }
   CalculateVerticalLayout(tabs, width, &bounds);
 
   DCHECK_EQ(tabs.size(), bounds.size());
