@@ -5,11 +5,32 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
+namespace {
+
+base::expected<PolkadotChainMetadata, std::string> ParseChainMetadataReponse(
+    base::optional_ref<const std::string> chain_name,
+    base::optional_ref<const std::string> err_str) {
+  if (err_str) {
+    return base::unexpected(*err_str);
+  }
+
+  CHECK(chain_name);
+  auto chain_metadata = PolkadotChainMetadata::FromChainName(*chain_name);
+  if (!chain_metadata) {
+    return base::unexpected(
+        "Failed to parse metadata for the provided chain spec.");
+  }
+
+  return base::ok(std::move(*chain_metadata));
+}
+
+}  // namespace
 
 PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
@@ -22,6 +43,32 @@ PolkadotWalletService::PolkadotWalletService(
 }
 
 PolkadotWalletService::~PolkadotWalletService() = default;
+
+void PolkadotWalletService::GetChainMetadata(
+    std::string_view chain_id,
+    GetChainMetadataCallback callback) {
+  CHECK(IsPolkadotNetwork(chain_id));
+
+  if (chain_id == mojom::kPolkadotTestnet) {
+    if (testnet_chain_metadata_) {
+      return std::move(callback).Run(*testnet_chain_metadata_);
+    } else {
+      // Testnet chain metadata isn't ready yet, defer execution of the
+      // callback.
+      testnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    }
+  }
+
+  if (chain_id == mojom::kPolkadotMainnet) {
+    if (mainnet_chain_metadata_) {
+      return std::move(callback).Run(*mainnet_chain_metadata_);
+    } else {
+      // Mainnet chain metadata isn't ready yet, defer execution of the
+      // callback.
+      mainnet_chain_metadata_callbacks_.push_back(std::move(callback));
+    }
+  }
+}
 
 void PolkadotWalletService::Bind(
     mojo::PendingReceiver<mojom::PolkadotWalletService> receiver) {
@@ -50,6 +97,49 @@ void PolkadotWalletService::GetAccountBalance(
 
   polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
                                             std::move(callback));
+}
+
+void PolkadotWalletService::Unlocked() {
+  InitializeChainMetadata();
+}
+
+void PolkadotWalletService::InitializeChainMetadata() {
+  if (testnet_chain_metadata_ && mainnet_chain_metadata_) {
+    return;
+  }
+
+  polkadot_substrate_rpc_.GetChainName(
+      mojom::kPolkadotTestnet,
+      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotTestnet));
+
+  polkadot_substrate_rpc_.GetChainName(
+      mojom::kPolkadotMainnet,
+      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotMainnet));
+}
+
+void PolkadotWalletService::OnInitializeChainMetadata(
+    std::string_view chain_id,
+    const std::optional<std::string>& chain_name,
+    const std::optional<std::string>& err_str) {
+  CHECK(IsPolkadotNetwork(chain_id));
+
+  if (chain_id == mojom::kPolkadotTestnet) {
+    testnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
+    for (auto& callback : testnet_chain_metadata_callbacks_) {
+      std::move(callback).Run(*testnet_chain_metadata_);
+    }
+    testnet_chain_metadata_callbacks_.clear();
+  }
+
+  if (chain_id == mojom::kPolkadotMainnet) {
+    mainnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
+    for (auto& callback : mainnet_chain_metadata_callbacks_) {
+      std::move(callback).Run(*mainnet_chain_metadata_);
+    }
+    mainnet_chain_metadata_callbacks_.clear();
+  }
 }
 
 }  // namespace brave_wallet
