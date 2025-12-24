@@ -16,12 +16,14 @@
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
 #include "ui/views/controls/scroll_view.h"
+#include "ui/views/controls/scrollbar/scroll_bar.h"
 
 namespace views {
 class ScrollView;
 }  // namespace views
 
-class BraveTabContainer : public TabContainerImpl {
+class BraveTabContainer : public TabContainerImpl,
+                          public views::ScrollBarController {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
   BraveTabContainer(TabContainerController& controller,
@@ -57,6 +59,7 @@ class BraveTabContainer : public TabContainerImpl {
   void SetTabSlotVisibility() override;
   void InvalidateIdealBounds() override;
   void Layout(PassKey) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
@@ -78,6 +81,12 @@ class BraveTabContainer : public TabContainerImpl {
   void HandleDragUpdate(
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
+
+  // views::ScrollBarController:
+  void ScrollToPosition(views::ScrollBar* source, int position) override;
+  int GetScrollIncrement(views::ScrollBar* source,
+                         bool is_page,
+                         bool is_positive) override;
 
  private:
   class DropArrow {
@@ -144,12 +153,22 @@ class BraveTabContainer : public TabContainerImpl {
   // Returns the maximum scroll offset for unpinned tabs.
   int GetMaxScrollOffset() const;
 
+  // Returns the total height of unpinned tabs including margins.
+  int GetUnpinnedTabsTotalHeight() const;
+
+  // Returns the viewport height available for unpinned tabs.
+  // This excludes the pinned tabs area if any pinned tabs exist.
+  int GetUnpinnedTabsViewportHeight() const;
+
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
   // Used to sets the clip path for child views (tabs, group views and etc).
   void UpdateClipPathForChildren(views::View* view,
                                  int pinned_tabs_area_bottom);
+
+  // Updates clip path for all tabs and group views.
+  void UpdateClipPathForAllChildren();
 
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);
@@ -171,6 +190,8 @@ class BraveTabContainer : public TabContainerImpl {
   const raw_ref<TabContainerController, DanglingUntriaged> controller_;
 
   std::unique_ptr<DropArrow> drop_arrow_;
+
+  raw_ptr<views::ScrollBar> scroll_bar_;
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;
