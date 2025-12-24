@@ -12,6 +12,11 @@ const path = require('path')
 const Log = require('./logging')
 
 /**
+ * Type name for supported configuration values.
+ * @typedef {'Undefined'|'Null'|'String'|'Number'|'Boolean'|'Array'|'Object'} ConfigValueType
+ */
+
+/**
  * EnvConfig - Unified configuration loader for Brave build system
  *
  * This class manages all configuration loading for the Brave build system,
@@ -26,7 +31,7 @@ class EnvConfig {
   #packageConfig
   /** Raw variables from .env files.
    *  @type {Record<string, string>}  */
-  #envConfig
+  #dotenvConfig
   /** Parsed and typed config values cache.
    *  @type {Record<string, any>}  */
   #envConfigTyped
@@ -42,7 +47,7 @@ class EnvConfig {
    */
   constructor(configDir) {
     this.#packageConfig = this.#loadPackageConfig(configDir)
-    this.#envConfig = this.#loadEnvConfig(configDir)
+    this.#dotenvConfig = this.#loadDotenvConfig(configDir)
 
     this.#envConfigTyped = {}
     this.#seenDefaultValues = {}
@@ -75,13 +80,13 @@ class EnvConfig {
    * - For other types, parses .env value as JSON and validates type matches
    *
    * @param {string[]} keyPath - Array of keys forming the config path
-   * @param {*} defaultValue - Default value if config not found;also determines
-   * expected type
+   * @param {*} defaultValue - Default value if config not found; also
+   * determines expected type
    * @returns {*} The configuration value with appropriate type
    * @throws {AssertionError} If called with different defaultValue for same key
    * @throws {Error} If .env value cannot be parsed or has wrong type
    */
-  getEnvConfig(keyPath, defaultValue) {
+  get(keyPath, defaultValue) {
     const keyJoined = keyPath.join('_')
 
     // Check already processed value first.
@@ -89,7 +94,7 @@ class EnvConfig {
       assert.deepStrictEqual(
         defaultValue,
         this.#seenDefaultValues[keyJoined],
-        `getEnvConfig for key ${keyJoined} was called with a different defaultValue before`,
+        `EnvConfig.get for key ${keyJoined} was called with a different defaultValue before`,
       )
       return this.#envConfigTyped[keyJoined]
     }
@@ -98,45 +103,12 @@ class EnvConfig {
     // calls to the same key.
     this.#seenDefaultValues[keyJoined] = defaultValue
 
-    // Look for .env value.
-    const envConfigValue = this.#envConfig[keyJoined]
-    if (envConfigValue !== undefined) {
-      // Parse as JSON or return a string if no default value is provided.
-      if (defaultValue === undefined) {
-        try {
-          return (this.#envConfigTyped[keyJoined] = JSON.parse(envConfigValue))
-        } catch (e) {
-          return (this.#envConfigTyped[keyJoined] = envConfigValue)
-        }
-      }
-
-      // Use the value as is if the default value is a string.
-      const defaultValueType = getValueType(defaultValue)
-      if (defaultValueType === 'String') {
-        return (this.#envConfigTyped[keyJoined] = envConfigValue)
-      }
-
-      // Parse as JSON if the default value is not a string.
-      let envConfigValueParsed
-      try {
-        envConfigValueParsed = JSON.parse(envConfigValue)
-      } catch (e) {
-        Log.error(
-          `${keyJoined} value is not JSON-parseable: ${envConfigValue}\n${e.message}`,
-        )
-        process.exit(1)
-      }
-
-      // Validate the parsed value against the default value type.
-      const envConfigValueType = getValueType(envConfigValueParsed)
-      if (envConfigValueType !== defaultValueType) {
-        Log.error(
-          `${keyJoined} value type is invalid: expected ${defaultValueType}, got ${envConfigValueType}`,
-        )
-        process.exit(1)
-      }
-
-      return (this.#envConfigTyped[keyJoined] = envConfigValueParsed)
+    const dotenvConfigValue = this.#getDotenvConfig(
+      keyJoined,
+      getConfigValueType(defaultValue),
+    )
+    if (dotenvConfigValue !== undefined) {
+      return (this.#envConfigTyped[keyJoined] = dotenvConfigValue)
     }
 
     const packageConfigValue = this.getPackageConfig(keyPath)
@@ -145,6 +117,57 @@ class EnvConfig {
     }
 
     return (this.#envConfigTyped[keyJoined] = defaultValue)
+  }
+
+  /**
+   * Retrieves and parses a value from .env configuration.
+   *
+   * @private
+   * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
+   * @param {ConfigValueType} expectedValueType - Expected type of the value
+   * @returns {*} The parsed configuration value, or undefined if not found
+   */
+  #getDotenvConfig(keyJoined, expectedValueType) {
+    const dotenvConfigValue = this.#dotenvConfig[keyJoined]
+    if (dotenvConfigValue === undefined) {
+      return undefined
+    }
+
+    // Parse as JSON or return a string if no default value is provided.
+    if (expectedValueType === 'Undefined') {
+      try {
+        return JSON.parse(dotenvConfigValue)
+      } catch (e) {
+        return dotenvConfigValue
+      }
+    }
+
+    // Use the value as is if the expected value type is a string.
+    if (expectedValueType === 'String') {
+      return dotenvConfigValue
+    }
+
+    // Parse as JSON if the expected value type is not a string.
+    let dotenvConfigValueParsed
+    try {
+      dotenvConfigValueParsed = JSON.parse(dotenvConfigValue)
+    } catch (e) {
+      Log.error(
+        `${keyJoined} value is not JSON-parseable: ${dotenvConfigValue}\n${e.message}`,
+      )
+      process.exit(1)
+    }
+
+    // Validate the parsed value against the expected value type.
+    const dotenvConfigValueType = getConfigValueType(dotenvConfigValueParsed)
+    if (dotenvConfigValueType !== expectedValueType) {
+      Log.error(
+        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${dotenvConfigValueType}`,
+      )
+      process.exit(1)
+    }
+
+    return dotenvConfigValueParsed
   }
 
   /**
@@ -173,20 +196,20 @@ class EnvConfig {
    * @private
    * @param {string} configDir - Directory containing .env file
    */
-  #loadEnvConfig(configDir) {
-    const envConfig = {}
+  #loadDotenvConfig(configDir) {
+    const dotenvConfig = {}
     // Parse {configDir}/.env with all included env files.
-    const envConfigPath = path.join(configDir, '.env')
-    if (fs.existsSync(envConfigPath)) {
-      dotenvPopulateWithIncludes(envConfig, envConfigPath)
+    const dotenvConfigPath = path.join(configDir, '.env')
+    if (fs.existsSync(dotenvConfigPath)) {
+      dotenvPopulateWithIncludes(dotenvConfig, dotenvConfigPath)
     } else {
       // The .env file is used by `gn gen`. Create it if it doesn't exist.
       const defaultEnvConfigContent =
         '# This is a placeholder .env config file for the build system.\n'
         + '# See for details: https://github.com/brave/brave-browser/wiki/Build-configuration\n'
-      fs.writeFileSync(envConfigPath, defaultEnvConfigContent)
+      fs.writeFileSync(dotenvConfigPath, defaultEnvConfigContent)
     }
-    return envConfig
+    return dotenvConfig
   }
 }
 
@@ -241,20 +264,19 @@ function dotenvPopulateWithIncludes(processEnv, envPath) {
 }
 
 /**
- * Returns a string representing the type of a JSON-parseable value. Throws an
- * error if the value is not a JSON-parseable type.
+ * Returns a string representing the type of a value. Throws an error if the
+ * value is not a supported value type.
  *
  * @param {*} value - Value to get the type of
- * @returns {'undefined'|'null'|'String'|'Number'|'Boolean'|'Array'|'Object'}
- * Type name
- * @throws {AssertionError} If value is not a JSON-parseable type
+ * @returns {ConfigValueType} Type name
+ * @throws {AssertionError} If type name is not a supported value type
  */
-function getValueType(value) {
+function getConfigValueType(value) {
   if (value === undefined) {
-    return 'undefined'
+    return 'Undefined'
   }
   if (value === null) {
-    return 'null'
+    return 'Null'
   }
 
   const typeName = value.constructor.name
@@ -263,7 +285,7 @@ function getValueType(value) {
   const validTypes = ['String', 'Number', 'Boolean', 'Array', 'Object']
   assert(
     validTypes.includes(typeName),
-    `Unsupported type: ${typeName}. Only JSON-parseable types are allowed (string, number, boolean, null, array, object).`,
+    `Unsupported type: ${typeName}. Only ${validTypes.join(', ')} are allowed.`,
   )
 
   return typeName

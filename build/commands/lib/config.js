@@ -31,7 +31,7 @@ const getPackageConfig = (key) => {
 }
 
 const getEnvConfig = (key, defaultValue = undefined) => {
-  return envConfig.getEnvConfig(key, defaultValue)
+  return envConfig.get(key, defaultValue)
 }
 
 const readArgsGn = (srcDir, outputDir) => {
