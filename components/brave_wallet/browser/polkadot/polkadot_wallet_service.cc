@@ -48,7 +48,6 @@ void PolkadotWalletService::GetChainMetadata(
     std::string_view chain_id,
     GetChainMetadataCallback callback) {
   CHECK(IsPolkadotNetwork(chain_id));
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (chain_id == mojom::kPolkadotTestnet) {
     if (testnet_chain_metadata_) {
@@ -105,8 +104,6 @@ void PolkadotWalletService::Unlocked() {
 }
 
 void PolkadotWalletService::InitializeChainMetadata() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   polkadot_substrate_rpc_.GetChainName(
       mojom::kPolkadotTestnet,
       base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
@@ -122,7 +119,6 @@ void PolkadotWalletService::OnInitializeChainMetadata(
     std::string_view chain_id,
     const std::optional<std::string>& chain_name,
     const std::optional<std::string>& err_str) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(IsPolkadotNetwork(chain_id));
 
   if (chain_id == mojom::kPolkadotTestnet) {
