@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -115,7 +114,7 @@ void MockBuildChannel(BuildChannelType type) {
   }
 
   NOTREACHED() << "Unexpected value for BuildChannelType: "
-               << base::to_underlying(type);
+               << std::to_underlying(type);
 }
 
 void MockAllowJavaScript(bool allow_javascript) {
