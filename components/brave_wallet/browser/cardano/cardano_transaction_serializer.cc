@@ -25,9 +25,11 @@ namespace {
 constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
 constexpr int kFeeSearchMaxIterations = 10;
 
+// Setup empty witness set based on number of different addresses corresponding
+// to inputs.
 void SetupDummyWitnessSet(CardanoTransaction& tx) {
-  tx.SetWitnesses(
-      std::vector<CardanoTransaction::TxWitness>(tx.inputs().size()));
+  tx.SetWitnesses(std::vector<CardanoTransaction::TxWitness>(
+      tx.GetInputAddresses().size()));
 }
 
 }  // namespace

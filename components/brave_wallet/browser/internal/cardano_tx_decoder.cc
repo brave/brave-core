@@ -8,6 +8,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
 #include "base/containers/to_vector.h"
@@ -249,6 +250,12 @@ CardanoTxDecoder::DecodedTx::DecodedTx(DecodedTx&&) = default;
 
 CardanoTxDecoder::CardanoTxDecoder() = default;
 CardanoTxDecoder::~CardanoTxDecoder() = default;
+
+// static
+void CardanoTxDecoder::SetUseSetTagForTesting(bool enable) {
+  CHECK_IS_TEST();
+  use_set_tag_for_testing(enable);  // IN-TEST
+}
 
 // static
 std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransaction(

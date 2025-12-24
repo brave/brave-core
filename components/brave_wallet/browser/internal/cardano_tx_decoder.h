@@ -111,6 +111,10 @@ class CardanoTxDecoder {
   CardanoTxDecoder();
   ~CardanoTxDecoder();
 
+  // Do not use CBOR Tag for encoding some Cardano values. Need this for legacy
+  // tests.
+  static void SetUseSetTagForTesting(bool enable);
+
   // Returns CBOR encoded transaction.
   static std::optional<std::vector<uint8_t>> EncodeTransaction(
       const SerializableTx& tx);
