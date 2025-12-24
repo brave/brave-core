@@ -87,6 +87,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_ads::RegisterLocalStatePrefs(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
+  brave_stats::RegisterLocalStatePrefsForMigration(registry);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
@@ -131,6 +132,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(prefs);
   ntp_background_images::NTPBackgroundImagesService::
       MigrateObsoleteLocalStatePrefs(prefs);
+  brave_stats::MigrateObsoleteLocalStatePrefs(prefs);
 }
 
 }  // namespace brave
