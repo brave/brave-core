@@ -39,7 +39,7 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
     const src = iframe.getAttribute('src') || iframe.src || '';
     // We are focused on YouTube for now.
     // If and when we encounter other embeds where iOS's
-    // mediaTypesRequiringUserActionForPlayback = .all the we will handle
+    // mediaTypesRequiringUserActionForPlayback = .all then we will handle
     // them separately here.
     const isYouTube = src.includes('youtube.com/embed') ||
                       src.includes('youtu.be') ||
@@ -71,27 +71,6 @@ window.__firefox__.includeOnce("AutoplayBlocking", function($) {
     // Remove autoplay attribute
     if (video.hasAttribute('autoplay')) {
       video.removeAttribute('autoplay');
-    }
-
-    // If video is already playing, pause it
-    if (!video.paused) {
-      video.pause();
-    }
-
-    // Override play() to require user interaction
-    if (!video.__braveAutoplayBlocked) {
-      video.__braveAutoplayBlocked = true;
-      const originalPlay = video.play.bind(video);
-      video.play = $(function() {
-        // Only allow play if user has interacted with the page
-        if (document.hasUserActivation || document.activeElement === video) {
-          return originalPlay();
-        }
-        // Otherwise, return a rejected promise
-        const message = 'The play() request id denied by autoplay blocking.'
-        const error = 'NotAllowedError'
-        return Promise.reject(new DOMException(message, error));
-      });
     }
   }
 
