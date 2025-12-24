@@ -99,8 +99,7 @@ bool BravePrivacySandboxSettings::MaySendAttributionReport(
 bool BravePrivacySandboxSettings::
     IsAttributionReportingTransitionalDebuggingAllowed(
         const url::Origin& top_frame_origin,
-        const url::Origin& reporting_origin,
-        bool& can_bypass) const {
+        const url::Origin& reporting_origin) const {
   return false;
 }
 
