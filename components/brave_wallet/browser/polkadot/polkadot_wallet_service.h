@@ -54,7 +54,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                         GetChainMetadataCallback callback);
 
  private:
-  /*KeyringServiceObserverBase*/
+  // KeyringServiceObserverBase:
   void Unlocked() override;
 
   // Initialize the metadata structures associated with each specified chain
