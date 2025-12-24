@@ -22,6 +22,7 @@ source_set("user_education") {
     "//base",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/user_education",
+    "//components/feature_engagement/public",
     "//components/user_education/common",
   ]
 }
@@ -43,6 +44,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/user_education",
     "//chrome/test:test_support",
+    "//components/feature_engagement/public",
     "//components/user_education/common",
     "//components/user_education/test",
     "//content/test:test_support",

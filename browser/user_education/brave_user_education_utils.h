@@ -10,10 +10,9 @@ class UserEducationService;
 
 namespace brave {
 
-// Suppresses "New" badges for specific features by manipulating badge data to
-// exceed policy limits. This ensures badges never appear for features we want
-// to suppress. Called during profile initialization.
-void SuppressNewBadgesForFeatures(UserEducationService* service);
+// Suppresses user education elements (New badges and IPH promos) for features
+// that Brave doesn't want to promote. Called during profile initialization.
+void SuppressUserEducation(UserEducationService* service);
 
 }  // namespace brave
 

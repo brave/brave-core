@@ -9,6 +9,11 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/user_education/user_education_service.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/feature_engagement/public/feature_constants.h"
+#include "components/user_education/common/feature_promo/feature_promo_lifecycle.h"
+#include "components/user_education/common/feature_promo/feature_promo_result.h"
+#include "components/user_education/common/feature_promo/feature_promo_specification.h"
+#include "components/user_education/common/new_badge/new_badge_policy.h"
 #include "components/user_education/common/user_education_data.h"
 #include "components/user_education/test/test_user_education_storage_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -24,7 +29,10 @@ class BraveUserEducationUtilsTest : public testing::Test {
   void SetUp() override {
     // Enable the features we want to test
     feature_list_.InitWithFeatures(
-        {features::kSideBySide, features::kSideBySideLinkMenuNewBadge}, {});
+        {features::kSideBySide, features::kSideBySideLinkMenuNewBadge,
+         feature_engagement::kIPHSideBySidePinnableFeature,
+         feature_engagement::kIPHSideBySideTabSwitchFeature},
+        {});
     profile_ = std::make_unique<TestingProfile>();
     service_ = std::make_unique<UserEducationService>(profile_.get(),
                                                       /*allows_promos=*/true);
@@ -48,7 +56,7 @@ TEST_F(BraveUserEducationUtilsTest, SuppressesBadgesForSideBySideFeature) {
   EXPECT_EQ(0, initial_data.used_count);
 
   // Call the function to suppress badges
-  SuppressNewBadgesForFeatures(service_.get());
+  SuppressUserEducation(service_.get());
 
   // Verify badge data has been modified to suppress the badge
   user_education::NewBadgeData suppressed_data =
@@ -63,7 +71,7 @@ TEST_F(BraveUserEducationUtilsTest, SuppressesBadgesForSideBySideFeature) {
 TEST_F(BraveUserEducationUtilsTest,
        SuppressesBadgesForSideBySideLinkMenuFeature) {
   // Call the function to suppress badges
-  SuppressNewBadgesForFeatures(service_.get());
+  SuppressUserEducation(service_.get());
 
   // Verify kSideBySideLinkMenuNewBadge is also suppressed
   auto& storage = service_->user_education_storage_service();
@@ -77,7 +85,7 @@ TEST_F(BraveUserEducationUtilsTest,
 
 TEST_F(BraveUserEducationUtilsTest, HandlesNullService) {
   // Should not crash with null service
-  SuppressNewBadgesForFeatures(nullptr);
+  SuppressUserEducation(nullptr);
   // Test passes if no crash occurs
 }
 
@@ -94,7 +102,7 @@ TEST_F(BraveUserEducationUtilsTest, PreservesExistingFeatureEnabledTime) {
   base::Time original_time = initial_data.feature_enabled_time;
 
   // Call suppress function
-  SuppressNewBadgesForFeatures(service_.get());
+  SuppressUserEducation(service_.get());
 
   // Verify the enabled time was preserved
   user_education::NewBadgeData suppressed_data =
@@ -107,7 +115,7 @@ TEST_F(BraveUserEducationUtilsTest, PreservesExistingFeatureEnabledTime) {
 
 TEST_F(BraveUserEducationUtilsTest, InitializesFeatureEnabledTimeWhenNull) {
   // Call suppress function with fresh data (null enabled time)
-  SuppressNewBadgesForFeatures(service_.get());
+  SuppressUserEducation(service_.get());
 
   auto& storage = service_->user_education_storage_service();
   user_education::NewBadgeData data =
@@ -116,6 +124,97 @@ TEST_F(BraveUserEducationUtilsTest, InitializesFeatureEnabledTimeWhenNull) {
   // Should have initialized the enabled time
   EXPECT_FALSE(data.feature_enabled_time.is_null());
   EXPECT_LE(data.feature_enabled_time, base::Time::Now());
+}
+
+TEST_F(BraveUserEducationUtilsTest, SuppressesIPHForSideBySidePinnableFeature) {
+  auto& storage = service_->user_education_storage_service();
+
+  // Verify initial state - promo should not be dismissed
+  auto initial_data =
+      storage.ReadPromoData(feature_engagement::kIPHSideBySidePinnableFeature);
+  EXPECT_FALSE(initial_data.has_value());
+
+  // Call the function to suppress promos
+  SuppressUserEducation(service_.get());
+
+  // Verify promo data has been modified to suppress the promo
+  auto suppressed_data =
+      storage.ReadPromoData(feature_engagement::kIPHSideBySidePinnableFeature);
+
+  ASSERT_TRUE(suppressed_data.has_value());
+  EXPECT_TRUE(suppressed_data->is_dismissed);
+}
+
+TEST_F(BraveUserEducationUtilsTest,
+       SuppressesIPHForSideBySideTabSwitchFeature) {
+  auto& storage = service_->user_education_storage_service();
+
+  // Verify initial state - promo should not be dismissed
+  auto initial_data =
+      storage.ReadPromoData(feature_engagement::kIPHSideBySideTabSwitchFeature);
+  EXPECT_FALSE(initial_data.has_value());
+
+  // Call the function to suppress promos
+  SuppressUserEducation(service_.get());
+
+  // Verify promo data has been modified to suppress the promo
+  auto suppressed_data =
+      storage.ReadPromoData(feature_engagement::kIPHSideBySideTabSwitchFeature);
+
+  ASSERT_TRUE(suppressed_data.has_value());
+  EXPECT_TRUE(suppressed_data->is_dismissed);
+}
+
+TEST_F(BraveUserEducationUtilsTest, BadgePolicyShouldNotShowAfterSuppression) {
+  SuppressUserEducation(service_.get());
+
+  auto& storage = service_->user_education_storage_service();
+  user_education::NewBadgeData data =
+      storage.ReadNewBadgeData(features::kSideBySide);
+
+  // Verify that NewBadgePolicy returns false for suppressed data
+  user_education::NewBadgePolicy policy;
+  EXPECT_FALSE(policy.ShouldShowNewBadge(data, storage));
+}
+
+TEST_F(BraveUserEducationUtilsTest, PromoShouldBePermanentlyDismissed) {
+  SuppressUserEducation(service_.get());
+
+  auto& storage = service_->user_education_storage_service();
+
+  // Set profile creation time to the past to avoid new profile grace period.
+  storage.set_profile_creation_time_for_testing(base::Time::Now() -
+                                                base::Days(30));
+
+  // Create a lifecycle to verify CanShow() returns kPermanentlyDismissed.
+  user_education::FeaturePromoLifecycle lifecycle(
+      &storage,
+      /*promo_key=*/"", &feature_engagement::kIPHSideBySidePinnableFeature,
+      user_education::FeaturePromoSpecification::PromoType::kToast,
+      user_education::FeaturePromoSpecification::PromoSubtype::kNormal,
+      /*num_rotating_entries=*/0);
+
+  EXPECT_EQ(user_education::FeaturePromoResult::kPermanentlyDismissed,
+            lifecycle.CanShow());
+}
+
+TEST_F(BraveUserEducationUtilsTest, PromoBlockedByNewProfile) {
+  // Don't suppress - just test that new profiles block promos.
+  auto& storage = service_->user_education_storage_service();
+
+  // Profile creation time defaults to now (new profile).
+  storage.set_profile_creation_time_for_testing(base::Time::Now());
+
+  user_education::FeaturePromoLifecycle lifecycle(
+      &storage,
+      /*promo_key=*/"", &feature_engagement::kIPHSideBySidePinnableFeature,
+      user_education::FeaturePromoSpecification::PromoType::kToast,
+      user_education::FeaturePromoSpecification::PromoSubtype::kNormal,
+      /*num_rotating_entries=*/0);
+
+  // New profiles should block normal promos during grace period.
+  EXPECT_EQ(user_education::FeaturePromoResult::kBlockedByNewProfile,
+            lifecycle.CanShow());
 }
 
 }  // namespace brave

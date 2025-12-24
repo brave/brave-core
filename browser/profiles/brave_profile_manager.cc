@@ -191,9 +191,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  // Suppress "New" badges for specific Brave features by setting badge data
-  // to exceed policy limits during profile initialization
-  brave::SuppressNewBadgesForFeatures(
+  // Suppress user education elements (New badges and IPH promos) for features
+  // that Brave doesn't want to promote.
+  brave::SuppressUserEducation(
       UserEducationServiceFactory::GetForBrowserContext(profile));
 #endif
 
