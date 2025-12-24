@@ -6,7 +6,7 @@ index ae0964539b36830ec117a8c748e1c893d42f843d..1696f70392e55594d029161a5bb52af5
          Type.LOCAL_NETWORK_ACCESS,
          Type.WINDOW_MANAGEMENT,
          Type.AUTO_PICTURE_IN_PICTURE,
-+        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS,
++        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN,
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
@@ -15,7 +15,7 @@ index ae0964539b36830ec117a8c748e1c893d42f843d..1696f70392e55594d029161a5bb52af5
  
          /** Number of handled categories used for calculating array sizes. */
 -        int NUM_ENTRIES = 38;
-+        int AUTOPLAY = 38; int BRAVE_GOOGLE_SIGN_IN = 39; int BRAVE_LOCALHOST_ACCESS = 40; int NUM_ENTRIES = 41;
++        int AUTOPLAY = 38; int BRAVE_GOOGLE_SIGN_IN = 39; int NUM_ENTRIES = 40;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

@@ -24,7 +24,6 @@ public abstract class BraveFeatureList {
             "BraveVPNLinkSubscriptionAndroidUI";
     public static final String DEBOUNCE = "BraveDebounce";
     public static final String BRAVE_GOOGLE_SIGN_IN_PERMISSION = "BraveGoogleSignInPermission";
-    public static final String BRAVE_LOCALHOST_PERMISSION = "BraveLocalhostPermission";
     public static final String BRAVE_PLAYLIST = "Playlist";
     public static final String HTTPS_BY_DEFAULT = "HttpsByDefault";
     public static final String BRAVE_FORGET_FIRST_PARTY_STORAGE = "BraveForgetFirstPartyStorage";
