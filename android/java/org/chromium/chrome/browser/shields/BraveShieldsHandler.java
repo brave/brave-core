@@ -172,6 +172,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private View mBottomDivider;
     private ImageView mToggleIcon;
     private LinearLayout mShredSiteDataLayout;
+    private LinearLayout mAutoShredOptionsLayout;
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsHelper mIconFetcher;
@@ -504,6 +505,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mBottomDivider = mToggleLayout.findViewById(R.id.bottom_divider);
         mToggleIcon = mToggleLayout.findViewById(R.id.toggle_favicon);
         mShredSiteDataLayout = mPopupView.findViewById(R.id.brave_shields_shred_site_data_layout_id);
+        mAutoShredOptionsLayout = mPopupView.findViewById(R.id.brave_shields_auto_shred_options_layout_id);
     }
 
     private void setUpMainLayout() {
@@ -820,6 +822,13 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                 = mShredSiteDataLayout.findViewById(R.id.brave_shields_auto_shred_site_data_layout_id);
         
         braveShieldsAutoShredItemLayout.setBackground(null);
+        braveShieldsAutoShredItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mShredSiteDataLayout.setVisibility(View.GONE);
+                    mAutoShredOptionsLayout.setVisibility(View.VISIBLE);
+                }
+            });
 
         // Autoshred menu item's icon
         ImageView braveShieldsAutoShredButtonIcon = braveShieldsAutoShredItemLayout.findViewById(R.id.toggle_button_icon);
@@ -837,6 +846,69 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             braveShieldsAutoShredSiteDataShieldsIcon.setColorFilter(
                     mContext.getColor(R.color.default_icon_color_baseline));
 
+        // Auto shred options layout
+        TextView autoShredOptionTitle = mAutoShredOptionsLayout.findViewById(R.id.option_title);
+            autoShredOptionTitle.setText("Auto Shred");
+        TextView autoShredOptionText = mAutoShredOptionsLayout.findViewById(R.id.option_text);
+            autoShredOptionText.setText("Site tabs closed");
+        ImageView mAutoShredOptionsBackButton = mAutoShredOptionsLayout.findViewById(R.id.back_button);
+            mAutoShredOptionsBackButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAutoShredOptionsLayout.setVisibility(View.GONE);
+                    mShredSiteDataLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        RadioButton autoShredOption1 = mAutoShredOptionsLayout.findViewById(R.id.option1);
+            autoShredOption1.setText("Never");
+        RadioButton autoShredOption2 = mAutoShredOptionsLayout.findViewById(R.id.option2);
+            autoShredOption2.setText("Site tab closed");
+        RadioButton autoShredOption3 = mAutoShredOptionsLayout.findViewById(R.id.option3);
+            autoShredOption3.setText("App close");
+        Button autoShredDoneButton = mAutoShredOptionsLayout.findViewById(R.id.done_button);
+            autoShredDoneButton.setOnClickListener(mDoneClickListener);
+
+        // Handle Auto shred options selection
+        RadioGroup autoShredOptionGroup =
+                    mAutoShredOptionsLayout.findViewById(R.id.options_radio_group);
+            autoShredOptionGroup.setOnCheckedChangeListener(
+                    new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            RadioButton checkedRadioButton =
+                                    (RadioButton) group.findViewById(checkedId);
+                            boolean isChecked = checkedRadioButton.isChecked();
+                            if (isChecked) {
+                                if (checkedId == R.id.option1) {
+                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                    //         layout, BraveShieldsContentSettings.BLOCK_RESOURCE,
+                                    //         false);
+                                } else if (checkedId == R.id.option2) {
+                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                    //         layout,
+                                    //         layout.equals(
+                                    //                 BraveShieldsContentSettings
+                                    //                         .RESOURCE_IDENTIFIER_FINGERPRINTING)
+                                    //                 ? BraveShieldsContentSettings.DEFAULT
+                                    //                 : BraveShieldsContentSettings
+                                    //                           .BLOCK_THIRDPARTY_RESOURCE,
+                                    //         false);
+                                } else if (checkedId == R.id.option3) {
+                                    // BraveShieldsContentSettings.setShieldsValue(mProfile, mUrlSpec,
+                                    //         layout, BraveShieldsContentSettings.ALLOW_RESOURCE,
+                                    //         false);
+                                }
+                                if (null != mMenuObserver) {
+                                    mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                                }
+                            }
+                        }
+                    });
+    }
+
+    private void setupAutoShredOptionsLayout() {
+        mShredSiteDataLayout.setVisibility(View.GONE);
+        mAutoShredOptionsLayout.setVisibility(View.VISIBLE);
     }
 
     private void setUpSwitchLayouts() {
