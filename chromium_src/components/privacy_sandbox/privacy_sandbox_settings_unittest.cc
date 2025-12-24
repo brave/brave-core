@@ -113,10 +113,6 @@ class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
               GetCookieDeprecationExperimentCurrentEligibility,
               (),
               (const, override));
-  MOCK_METHOD(bool,
-              AreThirdPartyCookiesBlockedByCookieDeprecationExperiment,
-              (),
-              (const, override));
 };
 
 class PrivacySandboxSettingsTest : public testing::Test {
