@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/profile_helper.h"
 #include "chrome/common/pref_names.h"
@@ -105,8 +106,9 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   }
 
   void WaitForAllBrowsersToClose() {
-    while (!BrowserList::GetInstance()->empty())
+    while (!GlobalBrowserCollection::GetInstance()->IsEmpty()) {
       ui_test_utils::WaitForBrowserToClose();
+    }
   }
 
   void SetClosingBrowserCallbackAndWait() {
