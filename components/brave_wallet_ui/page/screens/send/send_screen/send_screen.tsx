@@ -246,7 +246,11 @@ export const SendScreen = React.memo(() => {
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
     && getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShielding
-
+  const isUnshieldingFunds =
+    tokenFromParams
+    && tokenFromParams.coin === BraveWallet.CoinType.ZEC
+    && getZCashTransactionTypeResult.txType
+      === BraveWallet.ZCashTxType.kUnshielding
   // memos & computed
   const sendAmountValidationError: SendAmountValidationErrorType | undefined =
     React.useMemo(() => {
@@ -695,6 +699,16 @@ export const SendScreen = React.memo(() => {
                     </ShieldingFundsAlert>
                   </Row>
                 )}
+                {isUnshieldingFunds && (
+                  <Row
+                    width='100%'
+                    padding='16px 0px 0px 0px'
+                  >
+                    <ShieldingFundsAlert type='info'>
+                      {getLocale('braveWalletUnshieldingFundsAlertDescription')}
+                    </ShieldingFundsAlert>
+                  </Row>
+                )}
               </Column>
               <ReviewButtonRow width='100%'>
                 <LeoSquaredButton
@@ -718,6 +732,7 @@ export const SendScreen = React.memo(() => {
                       insufficientFundsError,
                       isAccountSyncing,
                       isShieldingFunds,
+                      isUnshieldingFunds,
                     ),
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
@@ -772,6 +787,7 @@ function getReviewButtonText(
   insufficientFundsError: boolean,
   isAccountSyncing?: boolean,
   isShieldingFunds?: boolean,
+  isUnshieldingFunds?: boolean,
 ) {
   if (sendAmountValidationError === 'fromAmountDecimalsOverflow') {
     return 'braveWalletDecimalPlacesError'
@@ -787,6 +803,9 @@ function getReviewButtonText(
   }
   if (isShieldingFunds) {
     return 'braveWalletReviewShield'
+  }
+  if (isUnshieldingFunds) {
+    return 'braveWalletReviewUnshield'
   }
 
   return 'braveWalletReviewSend'
