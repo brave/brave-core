@@ -309,14 +309,18 @@ exports.update = () => {
   ])
 
   let explicitSourceFiles = new Set()
-  if (config.targetOS === 'mac') {
-    // Set proper branding file name based on channel.
-    let brandingFileName = 'BRANDING'
-    if (config.channel) {
-      brandingFileName = brandingFileName + '.' + config.channel
-    }
+  for (const branding of ['brave', 'brave_origin']) {
+    // Set proper branding file.
+    const brandingSource = path.join(
+      braveAppDir,
+      'theme',
+      branding,
+      config.channel ? `BRANDING.${config.channel}` : 'BRANDING',
+    )
+    const brandingDest = path.join(chromeAppDir, 'theme', branding, 'BRANDING')
+    explicitSourceFiles[brandingDest] = brandingSource
 
-    for (const branding of ['brave', 'brave_origin']) {
+    if (config.targetOS === 'mac') {
       // Set proper mac app icon for channel to chrome/app/theme/mac/app.icns.
       // Each channel's app icons are stored in
       // brave/app/theme/$channel/app.icns.
@@ -358,21 +362,6 @@ exports.update = () => {
         'Assets.car',
       )
       explicitSourceFiles[assetCatalogDest] = assetCatalogSource
-
-      // Set proper branding file.
-      const brandingSource = path.join(
-        braveAppDir,
-        'theme',
-        branding,
-        brandingFileName,
-      )
-      const brandingDest = path.join(
-        chromeAppDir,
-        'theme',
-        branding,
-        'BRANDING',
-      )
-      explicitSourceFiles[brandingDest] = brandingSource
     }
   }
 
