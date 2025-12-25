@@ -285,8 +285,6 @@ void BraveTabStrip::UpdateOrientation() {
     SetAvailableWidthCallback(base::NullCallback());
   }
 
-  static_cast<BraveTabContainer*>(&tab_container_.get())
-      ->SetUnpinnedTabScrollEnabled(using_vertical_tabs);
   hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
 
   if (const auto active_index = GetActiveIndex(); active_index) {
