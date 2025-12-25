@@ -11,6 +11,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -76,10 +77,12 @@ namespace speedreader {
 class SpeedreaderRewriterService;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 namespace brave_ads {
 class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 class BraveBrowserProcess {
  public:
@@ -107,7 +110,10 @@ class BraveBrowserProcess {
   virtual p3a::P3AService* p3a_service() = 0;
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;
   virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   virtual brave_ads::BraveStatsHelper* ads_brave_stats_helper() = 0;
+  virtual brave_ads::ResourceComponent* resource_component() = 0;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   virtual ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() = 0;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -118,7 +124,6 @@ class BraveBrowserProcess {
   virtual brave_vpn::BraveVPNConnectionManager*
   brave_vpn_connection_manager() = 0;
 #endif
-  virtual brave_ads::ResourceComponent* resource_component() = 0;
   virtual misc_metrics::ProcessMiscMetrics* process_misc_metrics() = 0;
 };
 

@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
@@ -18,8 +17,7 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
@@ -52,6 +50,12 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
@@ -130,7 +134,11 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::RegisterLocalStatePrefsForMigration(registry);
+#endif
+
   ntp_background_images::NTPBackgroundImagesService::
       RegisterLocalStatePrefsForMigration(registry);
 }
@@ -220,8 +228,12 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   brave_ads::RegisterLocalStatePrefs(registry);
+#endif
+
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
   brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
