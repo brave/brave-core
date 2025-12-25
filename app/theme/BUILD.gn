@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
@@ -12,7 +13,10 @@ assert(!is_android)
 brave_grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
-  defines += [ "enable_playlist_webui=$enable_playlist_webui" ]
+  defines += [
+    "enable_playlist_webui=$enable_playlist_webui",
+    "is_brave_origin_branded=$is_brave_origin_branded",
+  ]
   outputs = [
     "grit/brave_theme_resources.h",
     "grit/brave_theme_resources_map.cc",
