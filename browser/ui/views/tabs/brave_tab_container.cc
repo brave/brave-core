@@ -120,7 +120,8 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 }
 
 views::ScrollView::ScrollBarMode BraveTabContainer::GetScrollBarMode() const {
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return views::ScrollView::ScrollBarMode::kDisabled;
   }
 
@@ -228,7 +229,8 @@ void BraveTabContainer::EnterTabClosingMode(std::optional<int> override_width,
 }
 
 bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
-  if (IsUnpinnedTabScrollEnabled() && !tab->data().pinned && !tab->dragging()) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
+      !tab->data().pinned && !tab->dragging()) {
     // Only show tab if it is within pinned tab area.
     if (auto tab_index = tabs_view_model_.GetIndexOfView(tab)) {
       const auto tab_bottom =
@@ -295,8 +297,9 @@ void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
 }
 
 void BraveTabContainer::UpdateLayoutOrientation() {
-  layout_helper_->set_use_vertical_tabs(
-      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
+  bool enabled =
+      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
+  layout_helper_->set_use_vertical_tabs(enabled);
   layout_helper_->set_tab_strip(
       static_cast<TabStrip*>(base::to_address(tab_slot_controller_)));
 
@@ -304,6 +307,28 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   const int tab_count = GetTabCount();
   for (int i = 0; i < tab_count; ++i) {
     GetTabAtModelIndex(i)->UpdateInsets();
+  }
+
+  if (enabled) {
+    scroll_offset_ = 0;
+  } else {
+    // Resets clip paths of tabs and group views.
+    for (int i = layout_helper_->GetPinnedTabCount(); i < GetTabCount(); ++i) {
+      UpdateClipPathForChildren(GetTabAtModelIndex(i), 0);
+    }
+
+    for (auto& [_, group_views] : group_views_) {
+      for (auto* view : std::initializer_list<views::View*>{
+               group_views->header(), group_views->underline(),
+               group_views->highlight(), group_views->drag_underline()}) {
+        UpdateClipPathForChildren(view, 0);
+      }
+    }
+  }
+
+  // As the tab style varies per orientation, we should update all tabs' style.
+  for (int i = 0; i < GetTabCount(); ++i) {
+    views::AsViewClass<BraveTab>(GetTabAtModelIndex(i))->UpdateTabStyle();
   }
 
   InvalidateLayout();
@@ -486,7 +511,8 @@ void BraveTabContainer::InvalidateIdealBounds() {
 }
 
 void BraveTabContainer::Layout(PassKey) {
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     LayoutSuperclass<TabContainerImpl>(this);
     return;
   }
@@ -528,7 +554,9 @@ void BraveTabContainer::Layout(PassKey) {
 }
 
 void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
-  if (!IsUnpinnedTabScrollEnabled() || tab->data().pinned) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()) ||
+      tab->data().pinned) {
     return;
   }
 
@@ -570,6 +598,18 @@ void BraveTabContainer::UpdateScrollBarVisibility() {
   NOTIMPLEMENTED();
 }
 
+bool BraveTabContainer::HandleVerticalScroll(int y_offset) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
+      y_offset != 0) {
+    // Only handle vertical scroll
+    int new_offset = scroll_offset_ - y_offset;
+    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
+    SetScrollOffset(new_offset);
+    return true;
+  }
+  return false;
+}
+
 void BraveTabContainer::OnSplitCreated(const std::vector<int>& indices) {
   UpdateTabsBorderInSplitTab(indices);
 }
@@ -583,13 +623,16 @@ void BraveTabContainer::OnSplitContentsChanged(
   UpdateTabsBorderInSplitTab(indices);
 }
 
+bool BraveTabContainer::OnMouseWheel(const ui::MouseWheelEvent& event) {
+  if (HandleVerticalScroll(event.y_offset())) {
+    return true;
+  }
+
+  return TabContainerImpl::OnMouseWheel(event);
+}
+
 void BraveTabContainer::OnScrollEvent(ui::ScrollEvent* event) {
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
-      IsUnpinnedTabScrollEnabled() && event->y_offset() != 0) {
-    // Only handle vertical scroll
-    int new_offset = scroll_offset_ - static_cast<int>(event->y_offset());
-    new_offset = std::clamp(new_offset, 0, GetMaxScrollOffset());
-    SetScrollOffset(new_offset);
+  if (HandleVerticalScroll(event->y_offset())) {
     event->SetHandled();
     return;
   }
@@ -641,7 +684,8 @@ bool BraveTabContainer::IsPointInTab(
 void BraveTabContainer::UpdateIdealBounds() {
   TabContainerImpl::UpdateIdealBounds();
 
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return;
   }
 
@@ -669,7 +713,8 @@ void BraveTabContainer::UpdateIdealBounds() {
 void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
   TabContainerImpl::OnTabSlotAnimationProgressed(view);
 
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return;
   }
 
@@ -686,7 +731,8 @@ void BraveTabContainer::OnTabSlotAnimationProgressed(TabSlotView* view) {
 void BraveTabContainer::SetActiveTab(std::optional<size_t> prev_active_index,
                                      std::optional<size_t> new_active_index) {
   TabContainerImpl::SetActiveTab(prev_active_index, new_active_index);
-  if (IsUnpinnedTabScrollEnabled() && new_active_index.has_value()) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
+      new_active_index.has_value()) {
     ScrollTabToBeVisible(GetTabAtModelIndex(*new_active_index));
   }
 }
@@ -1026,7 +1072,8 @@ int BraveTabContainer::GetPinnedTabsAreaBottom() const {
 }
 
 void BraveTabContainer::SetScrollOffset(int offset) {
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return;
   }
 
@@ -1041,7 +1088,8 @@ void BraveTabContainer::SetScrollOffset(int offset) {
 }
 
 int BraveTabContainer::GetMaxScrollOffset() const {
-  if (!IsUnpinnedTabScrollEnabled()) {
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return 0;
   }
 
@@ -1118,7 +1166,7 @@ int BraveTabContainer::GetMaxScrollOffset() const {
 }
 
 void BraveTabContainer::ClampScrollOffset() {
-  if (IsUnpinnedTabScrollEnabled()) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     SetScrollOffset(std::clamp(scroll_offset_, 0, GetMaxScrollOffset()));
   }
 }
@@ -1162,40 +1210,6 @@ void BraveTabContainer::MoveTab(int from_model_index, int to_model_index) {
   // So we need to update insets here as well.
   TabContainerImpl::MoveTab(from_model_index, to_model_index);
   GetTabAtModelIndex(to_model_index)->UpdateInsets();
-}
-
-void BraveTabContainer::SetUnpinnedTabScrollEnabled(bool enabled) {
-  if (unpinned_tab_scroll_enabled_ == enabled) {
-    return;
-  }
-
-  unpinned_tab_scroll_enabled_ = enabled;
-  if (enabled) {
-    scroll_offset_ = 0;
-    InvalidateLayout();
-  } else {
-    // Resets clip paths of tabs and group views.
-    for (int i = layout_helper_->GetPinnedTabCount(); i < GetTabCount(); ++i) {
-      UpdateClipPathForChildren(GetTabAtModelIndex(i), 0);
-    }
-
-    for (auto& [_, group_views] : group_views_) {
-      for (auto* view : std::initializer_list<views::View*>{
-               group_views->header(), group_views->underline(),
-               group_views->highlight(), group_views->drag_underline()}) {
-        UpdateClipPathForChildren(view, 0);
-      }
-    }
-  }
-
-  // As the tab style varies per orientation, we should update all tabs' style.
-  for (int i = 0; i < GetTabCount(); ++i) {
-    views::AsViewClass<BraveTab>(GetTabAtModelIndex(i))->UpdateTabStyle();
-  }
-}
-
-bool BraveTabContainer::IsUnpinnedTabScrollEnabled() const {
-  return unpinned_tab_scroll_enabled_;
 }
 
 BEGIN_METADATA(BraveTabContainer)

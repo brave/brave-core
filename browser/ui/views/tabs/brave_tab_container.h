@@ -30,10 +30,6 @@ class BraveTabContainer : public TabContainerImpl {
                     TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
 
-  // Enables or disables scrolling in the tab container for pinned tabs
-  void SetUnpinnedTabScrollEnabled(bool enabled);
-  bool IsUnpinnedTabScrollEnabled() const;
-
   // Calling this will freeze this view's layout. When the returned closure
   // runs, layout will be unlocked and run immediately.
   // This is to avoid accessing invalid index during reconstruction
@@ -64,6 +60,7 @@ class BraveTabContainer : public TabContainerImpl {
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
+  bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
   void OnScrollEvent(ui::ScrollEvent* event) override;
   views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
   bool IsPointInTab(Tab* tab,
@@ -160,6 +157,10 @@ class BraveTabContainer : public TabContainerImpl {
   // Show or hide scrollbar based on the preference
   void UpdateScrollBarVisibility();
 
+  // Handles vertical scroll input for unpinned tabs. Returns true if the scroll
+  // was handled.
+  bool HandleVerticalScroll(int y_offset);
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContextBase> drag_context_;
@@ -184,7 +185,6 @@ class BraveTabContainer : public TabContainerImpl {
   // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
   // value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
-  bool unpinned_tab_scroll_enabled_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
