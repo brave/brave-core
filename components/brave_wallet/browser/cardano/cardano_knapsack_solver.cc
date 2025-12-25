@@ -26,9 +26,11 @@ constexpr int kCardanoKnapsackSolverIterations = 1000;
 
 CardanoKnapsackSolver::CardanoKnapsackSolver(
     CardanoTransaction base_transaction,
+    CardanoAddress change_address,
     cardano_rpc::EpochParameters latest_epoch_parameters,
     std::vector<CardanoTransaction::TxInput> inputs)
     : base_transaction_(std::move(base_transaction)),
+      change_address_(std::move(change_address)),
       latest_epoch_parameters_(std::move(latest_epoch_parameters)),
       inputs_(std::move(inputs)) {}
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
@@ -96,7 +98,7 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
 base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   DCHECK_EQ(base_transaction_.inputs().size(), 0u);
   DCHECK(base_transaction_.TargetOutput());
-  DCHECK(base_transaction_.ChangeOutput());
+  DCHECK(!base_transaction_.ChangeOutput());
   DCHECK(!base_transaction_.sending_max_amount());
 
   if (!CardanoTransactionSerializer().ValidateMinValue(
@@ -106,14 +108,15 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
 
   // Try to find the best transaction with a change output which receives a
   // fee surplus.
-  RunSolverForTransaction(base_transaction_);
+  auto tx_with_change = base_transaction_;
+  tx_with_change.SetupChangeOutput(change_address_);
+  RunSolverForTransaction(tx_with_change);
 
   // Drop the change output from the transaction and try to find the best
   // transaction again. Might find a transaction with a slightly higher fee
   // but still less than the cost of having a change output.
-  auto no_change_transaction = base_transaction_;
-  no_change_transaction.ClearChangeOutput();
-  RunSolverForTransaction(no_change_transaction);
+  auto tx_no_change = base_transaction_;
+  RunSolverForTransaction(tx_no_change);
 
   if (!current_best_solution_) {
     return base::unexpected(WalletInsufficientBalanceErrorMessage());

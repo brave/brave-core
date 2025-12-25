@@ -46,6 +46,11 @@ class CardanoTransactionSerializer {
       const CardanoTransaction& base_tx,
       const cardano_rpc::EpochParameters& epoch_parameters);
 
+  // Calculates minimum ADA required for the output.
+  static std::optional<uint64_t> CalcMinAdaRequired(
+      const CardanoTransaction::TxOutput& output,
+      const cardano_rpc::EpochParameters& epoch_parameters);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(CardanoTransactionSerializerTest,
                            CalcMinAdaRequired);
@@ -56,11 +61,6 @@ class CardanoTransactionSerializer {
   // Calculates minimum transaction fee based on its size and epoch parameters.
   static std::optional<uint64_t> CalcMinTransactionFee(
       const CardanoTransaction& tx,
-      const cardano_rpc::EpochParameters& epoch_parameters);
-
-  // Calculates minimum ADA required for the output.
-  static std::optional<uint64_t> CalcMinAdaRequired(
-      const CardanoTransaction::TxOutput& output,
       const cardano_rpc::EpochParameters& epoch_parameters);
 
   static std::optional<uint64_t> CalcRequiredCoin(

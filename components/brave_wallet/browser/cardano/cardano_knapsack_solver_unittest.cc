@@ -9,10 +9,10 @@
 
 #include "base/containers/span.h"
 #include "base/rand_util.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -55,38 +55,27 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
     target_output.address = transaction.to();
     transaction.AddOutput(std::move(target_output));
 
-    CardanoTransaction::TxOutput change_output;
-    change_output.type = CardanoTransaction::TxOutputType::kChange;
-    change_output.amount = 0;
-    change_output.address = *CardanoAddress::FromString(
-        keyring_
-            .GetAddress(
-                0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal, 456))
-            ->address_string);
-    transaction.AddOutput(std::move(change_output));
-
     return transaction;
   }
 
-  CardanoTransaction::TxInput MakeMockTxInput(uint64_t amount, uint32_t index) {
-    auto address =
-        keyring_
-            .GetAddress(
-                0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, index))
-            ->address_string;
+  CardanoTransaction::TxInput MakeMockTxInput(uint64_t amount) {
+    uint32_t id = next_input_id_++;
+    auto address = keyring_
+                       .GetAddress(0, mojom::CardanoKeyId(
+                                          mojom::CardanoKeyRole::kExternal, 0))
+                       ->address_string;
 
     CardanoTransaction::TxInput tx_input;
     tx_input.utxo_address = *CardanoAddress::FromString(address);
-    std::string txid_fake = address + base::NumberToString(amount);
     tx_input.utxo_outpoint.txid =
-        crypto::hash::Sha256(base::as_byte_span(txid_fake));
-    tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid.back();
+        crypto::hash::Sha256(base::byte_span_from_ref(id));
+    tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
     tx_input.utxo_value = amount;
 
     return tx_input;
   }
 
-  uint64_t send_amount() const { return 1000001; }
+  uint64_t send_amount() const { return 1'000'001; }
   uint64_t min_fee_coefficient() const { return 44; }
   uint64_t min_fee_constant() const { return 155381; }
   uint64_t coins_per_utxo_size() const { return 4310; }
@@ -98,14 +87,25 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
   }
   uint32_t dust_change_threshold() const { return 969750; }
 
+  CardanoAddress GetChangeAddress() {
+    return *CardanoAddress::FromString(
+        keyring_
+            .GetAddress(
+                0, mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal, 456))
+            ->address_string);
+  }
+
   CardanoHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
                             mojom::KeyringId::kCardanoMainnet};
+
+  uint32_t next_input_id_ = 30;
 };
 
 TEST_F(CardanoKnapsackSolverUnitTest, NoInputs) {
   auto base_tx = MakeMockTransaction(send_amount());
 
-  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), {});
+  CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                               latest_epoch_parameters(), {});
 
   // Can't send exactly what we have as we need to add some fee.
   EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), solver.Solve().error());
@@ -115,8 +115,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NotEnoughInputsForFee) {
   auto base_tx = MakeMockTransaction(send_amount());
 
   std::vector<CardanoTransaction::TxInput> inputs;
-  inputs.push_back(MakeMockTxInput(send_amount(), 0));
-  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+  inputs.push_back(MakeMockTxInput(send_amount()));
+  CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                               latest_epoch_parameters(), inputs);
 
   // Can't send exact amount of coin we have as we need to add some fee.
   EXPECT_EQ(WalletInsufficientBalanceErrorMessage(), solver.Solve().error());
@@ -133,8 +134,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
   {
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -151,8 +153,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
   {
     uint32_t total_input = send_amount() + min_fee - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     // We have a bit less than send amount + fee. Can't create transaction.
     ASSERT_FALSE(tx.has_value());
@@ -162,8 +165,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
   {
     uint32_t total_input = send_amount() + min_fee + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
 
     // We have a bit more than send amount - min_fee. Can't create transaction
@@ -185,8 +189,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
   {
     uint32_t total_input = send_amount() + min_fee + dust_change_threshold();
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -205,8 +210,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     uint32_t total_input =
         send_amount() + min_fee + dust_change_threshold() - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
 
     // We have slightly less than needed for change output, so it is not created
@@ -219,8 +225,9 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     uint32_t total_input =
         send_amount() + min_fee + dust_change_threshold() + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
-    inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+    inputs.push_back(MakeMockTxInput(total_input));
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -236,27 +243,112 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
         *tx, latest_epoch_parameters()));
   }
 }
-
-// TODO(https://github.com/brave/brave-browser/issues/45692): Enable this test
-TEST_F(CardanoKnapsackSolverUnitTest, DISABLED_RandomTest) {
+TEST_F(CardanoKnapsackSolverUnitTest, RandomTest) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
   uint64_t total_inputs = 0;
 
-  for (int i = 0; i < 100; ++i) {
-    auto input =
-        MakeMockTxInput(base::RandInt(1, 10000000), base::RandInt(0, 10));
+  for (int i = 0; i < 50; ++i) {
+    auto input = MakeMockTxInput(base::RandInt(1000000, 100000000));
     total_inputs += input.utxo_value;
     inputs.push_back(std::move(input));
   }
 
   auto base_tx = MakeMockTransaction(total_inputs / 2);
 
-  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
+  CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                               latest_epoch_parameters(), inputs);
   auto tx = solver.Solve();
   ASSERT_TRUE(tx.has_value());
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       *tx, latest_epoch_parameters()));
+}
+
+TEST_F(CardanoKnapsackSolverUnitTest, TokensGoToChange) {
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  std::vector<CardanoTransaction::TxInput> inputs;
+
+  inputs.push_back(MakeMockTxInput(1'000'000));
+  inputs.back().utxo_tokens[foo_token] = 1'000'000'000;
+  inputs.back().utxo_tokens[bar_token] = 1'000'000'000;
+  inputs.back().utxo_tokens[baz_token] = 1'000'000'000;
+
+  inputs.push_back(MakeMockTxInput(1'000'000));
+  inputs.back().utxo_tokens[foo_token] = 10;
+  inputs.back().utxo_tokens[bar_token] = 100'000'000;
+
+  inputs.push_back(MakeMockTxInput(1'000'000));
+  inputs.back().utxo_tokens[foo_token] = 1;
+
+  inputs.push_back(MakeMockTxInput(1'000'000));
+
+  {
+    uint32_t total_input = 1'000'000 * 3;
+
+    uint32_t fee =
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 447u);
+    EXPECT_EQ(fee, 175049u);
+
+    auto base_tx = MakeMockTransaction(send_amount());
+
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
+    auto tx = solver.Solve();
+    ASSERT_TRUE(tx.has_value());
+
+    EXPECT_EQ(tx->fee(), fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
+    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
+    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->amount, total_input - send_amount() - fee);
+
+    // First input is not picked as it would produce larger tx and require more
+    // fee.
+    EXPECT_FALSE(tx->ChangeOutput()->tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 11u);
+    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 100'000'000u);
+
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
+  }
+
+  // Remove input with no tokens.
+  inputs.pop_back();
+
+  {
+    uint32_t total_input = 1'000'000 * 3;
+
+    uint32_t fee =
+        MinFeeForTxSize(min_fee_coefficient(), min_fee_constant(), 460u);
+    EXPECT_EQ(fee, 175621u);
+
+    auto base_tx = MakeMockTransaction(send_amount());
+
+    CardanoKnapsackSolver solver(base_tx, GetChangeAddress(),
+                                 latest_epoch_parameters(), inputs);
+    auto tx = solver.Solve();
+    ASSERT_TRUE(tx.has_value());
+
+    EXPECT_EQ(tx->fee(), fee);
+    EXPECT_EQ(tx->GetTotalInputsAmount().ValueOrDie(), total_input);
+    EXPECT_EQ(tx->GetTotalOutputsAmount().ValueOrDie(), total_input - fee);
+    EXPECT_EQ(tx->TargetOutput()->amount, send_amount());
+    EXPECT_TRUE(tx->TargetOutput()->tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->amount, total_input - send_amount() - fee);
+
+    // First input is now picked.
+    EXPECT_FALSE(tx->ChangeOutput()->tokens.empty());
+    EXPECT_EQ(tx->ChangeOutput()->tokens[foo_token], 1'000'000'011u);
+    EXPECT_EQ(tx->ChangeOutput()->tokens[bar_token], 1'100'000'000u);
+    EXPECT_EQ(tx->ChangeOutput()->tokens[baz_token], 1'000'000'000u);
+
+    EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+        *tx, latest_epoch_parameters()));
+  }
 }
 
 }  // namespace brave_wallet

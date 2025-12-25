@@ -26,6 +26,7 @@ namespace brave_wallet {
 class CardanoKnapsackSolver {
  public:
   CardanoKnapsackSolver(CardanoTransaction base_transaction,
+                        CardanoAddress change_address,
                         cardano_rpc::EpochParameters latest_epoch_parameters,
                         std::vector<CardanoTransaction::TxInput> inputs);
   ~CardanoKnapsackSolver();
@@ -36,6 +37,8 @@ class CardanoKnapsackSolver {
  private:
   // Initial transaction we are trying to find inputs for.
   CardanoTransaction base_transaction_;
+  // Change address in case we need to send change.
+  CardanoAddress change_address_;
   // Best transaction(lesser fee) found so far.
   std::optional<CardanoTransaction> current_best_solution_;
   // Current state of blockchain. Used to calculate fee.

@@ -17,6 +17,7 @@ namespace brave_wallet {
 class CardanoMaxSendSolver {
  public:
   CardanoMaxSendSolver(CardanoTransaction base_transaction,
+                       CardanoAddress change_address,
                        cardano_rpc::EpochParameters latest_epoch_parameters,
                        std::vector<CardanoTransaction::TxInput> inputs);
   ~CardanoMaxSendSolver();
@@ -27,6 +28,8 @@ class CardanoMaxSendSolver {
  private:
   // Initial transaction we are trying to find inputs for.
   CardanoTransaction base_transaction_;
+  // Change address in case we need to send change.
+  CardanoAddress change_address_;
   // Current state of blockchain. Used to calculate fee.
   cardano_rpc::EpochParameters latest_epoch_parameters_;
   // Set of possible inputs to pick for transaction.
