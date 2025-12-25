@@ -27,10 +27,7 @@ class EnvConfig {
   /** Raw variables from .env files.
    *  @type {Record<string, string>}  */
   #dotenvConfig
-  /** Parsed and typed config values cache.
-   *  @type {Record<string, any>}  */
-  #envConfigTyped
-  /** Stored default values for validation.
+  /** Stored default values for assertions on the same key requests.
    *  @type {Record<string, any>}  */
   #seenDefaultValues
 
@@ -48,17 +45,12 @@ class EnvConfig {
   constructor(configDir) {
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
     this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
-
-    this.#envConfigTyped = {}
     this.#seenDefaultValues = {}
-
-    assert.equal(EnvConfig.#getValueType(this.#packageJson.version), 'String')
-    assert.equal(EnvConfig.#getValueType(this.#packageJson.config), 'Object')
   }
 
   /**
    * Retrieves a configuration value from .env files or package.json with type
-   * validation and caching.
+   * validation.
    *
    * The method looks up configuration in this order:
    *   1. .env file values (key parts joined with '_', e.g.,
@@ -82,19 +74,7 @@ class EnvConfig {
     assert.notEqual(keyPath.length, 0, 'keyPath must not be empty')
     const keyJoined = keyPath.join('_')
 
-    // Check already processed value first.
-    if (keyJoined in this.#envConfigTyped) {
-      assert.deepStrictEqual(
-        defaultValue,
-        this.#seenDefaultValues[keyJoined],
-        `EnvConfig for key ${keyJoined} was requested with a different defaultValue`,
-      )
-      return this.#envConfigTyped[keyJoined]
-    }
-
-    // Store the default value for the key to check for mismatches on subsequent
-    // calls to the same key.
-    this.#seenDefaultValues[keyJoined] = defaultValue
+    this.#assertDefaultValueIsSame(keyJoined, defaultValue)
     const expectedValueType = EnvConfig.#getValueType(defaultValue)
 
     const dotenvConfigValue = this.#getDotenvConfig(
@@ -102,7 +82,7 @@ class EnvConfig {
       expectedValueType,
     )
     if (dotenvConfigValue !== undefined) {
-      return (this.#envConfigTyped[keyJoined] = dotenvConfigValue)
+      return dotenvConfigValue
     }
 
     const packageConfigValue = this.#getPackageConfig(
@@ -110,10 +90,10 @@ class EnvConfig {
       expectedValueType,
     )
     if (packageConfigValue !== undefined) {
-      return (this.#envConfigTyped[keyJoined] = packageConfigValue)
+      return packageConfigValue
     }
 
-    return (this.#envConfigTyped[keyJoined] = defaultValue)
+    return defaultValue
   }
 
   /**
@@ -143,9 +123,9 @@ class EnvConfig {
     }
 
     EnvConfig.#validateValueType(
-      keyPath.join('_') + ' (from package.json)',
       packageConfigValue,
       expectedValueType,
+      () => `${keyPath.join('_')} (from package.json)`,
     )
     return packageConfigValue
   }
@@ -190,11 +170,10 @@ class EnvConfig {
     }
 
     EnvConfig.#validateValueType(
-      keyJoined + ' (from .env)',
       dotenvConfigValueParsed,
       expectedValueType,
+      () => `${keyJoined} (from .env)`,
     )
-
     return dotenvConfigValueParsed
   }
 
@@ -208,7 +187,18 @@ class EnvConfig {
   static #loadPackageJson(configDir) {
     const packageJsonPath = path.join(configDir, 'package.json')
     const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8')
-    return JSON.parse(packageJsonContent)
+    const packageJson = JSON.parse(packageJsonContent)
+    EnvConfig.#validateValueType(
+      packageJson.version,
+      'String',
+      () => 'package.json version',
+    )
+    EnvConfig.#validateValueType(
+      packageJson.config,
+      'Object',
+      () => 'package.json config',
+    )
+    return packageJson
   }
 
   /**
@@ -286,14 +276,34 @@ class EnvConfig {
   }
 
   /**
+   * Asserts that the defaultValue is the same as the previous one.
+   *
+   * @private
+   * @param {string} key - The key (e.g., 'projects_chrome_tag')
+   * @param {*} defaultValue - The default value to assert
+   */
+  #assertDefaultValueIsSame(key, defaultValue) {
+    if (key in this.#seenDefaultValues) {
+      assert.deepStrictEqual(
+        defaultValue,
+        this.#seenDefaultValues[key],
+        `EnvConfig for key ${key} was requested with a different defaultValue`,
+      )
+    } else {
+      this.#seenDefaultValues[key] = defaultValue
+    }
+  }
+
+  /**
    * Validates the value against the expected value type.
    *
    * @private
-   * @param {string} keyJoined - The joined key path (e.g., 'projects_chrome_tag')
    * @param {*} value - The value to validate
    * @param {ConfigValueType} expectedValueType - Expected type of the value
+   * @param {function(): string} valueDescCallback - Callback to get the
+   * description of the value
    */
-  static #validateValueType(keyJoined, value, expectedValueType) {
+  static #validateValueType(value, expectedValueType, valueDescCallback) {
     if (expectedValueType === 'Undefined') {
       return
     }
@@ -301,7 +311,7 @@ class EnvConfig {
     const valueType = EnvConfig.#getValueType(value)
     if (valueType !== expectedValueType) {
       Log.error(
-        `${keyJoined} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
+        `${valueDescCallback()} value type is invalid: expected ${expectedValueType}, got ${valueType}`,
       )
       process.exit(1)
     }
