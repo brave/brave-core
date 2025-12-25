@@ -91,11 +91,11 @@ class TestReadEnvConfigAsDict(unittest.TestCase):
         self.assertIn(include_file_path.replace("\\", "/"),
                       result['include_env'])
 
-    def test_json_value(self):
-        content = 'JSON_KEY={"key": "value"}'
+    def test_unsupported_value_types(self):
+        content = 'OBJECT={"key": "value"}\nLIST=[1, 2, 3]\nFLOAT=1.23'
         file_path = self.create_temp_file(content)
         result = read_env_config_as_dict(file_path)
-        self.assert_env_config_value(result, 'JSON_KEY', {"key": "value"})
+        self.assertEqual(len(result), 0)
 
     def test_bool_value(self):
         content = 'BOOL_KEY=true'
@@ -127,6 +127,12 @@ class TestReadEnvConfigAsDict(unittest.TestCase):
         file_path = self.create_temp_file(content)
         result = read_env_config_as_dict(file_path)
         self.assert_env_config_value(result, 'MULTILINE_KEY', 'line1\nline2')
+
+    def test_multiline_string_singlequotes(self):
+        content = """MULTILINE_KEY='line1\n"line2"'"""
+        file_path = self.create_temp_file(content)
+        result = read_env_config_as_dict(file_path)
+        self.assert_env_config_value(result, 'MULTILINE_KEY', 'line1\n"line2"')
 
     def test_invalid_keys(self):
         content = """
