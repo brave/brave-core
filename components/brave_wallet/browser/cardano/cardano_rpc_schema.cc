@@ -13,8 +13,9 @@ namespace brave_wallet::cardano_rpc {
 namespace {
 
 constexpr char kNativeLovelaceToken[] = "lovelace";
+constexpr size_t kCardanoScriptHashSize = 28u;
 
-}
+}  // namespace
 
 // static
 std::optional<EpochParameters> EpochParameters::FromBlockfrostApiValue(
@@ -61,6 +62,13 @@ std::optional<Block> Block::FromBlockfrostApiValue(
   return result;
 }
 
+UnspentOutput::UnspentOutput() = default;
+UnspentOutput::UnspentOutput(const UnspentOutput&) = default;
+UnspentOutput::UnspentOutput(UnspentOutput&&) = default;
+UnspentOutput& UnspentOutput::operator=(const UnspentOutput&) = default;
+UnspentOutput& UnspentOutput::operator=(UnspentOutput&&) = default;
+UnspentOutput::~UnspentOutput() = default;
+
 // static
 std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
     CardanoAddress address_to,
@@ -80,12 +88,30 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
   }
   bool found_lovelace = false;
   for (const auto& asset : api_unspent_output->amount) {
+    uint64_t amount = 0;
+    if (!base::StringToUint64(asset.quantity, &amount)) {
+      return std::nullopt;
+    }
+
     if (asset.unit == kNativeLovelaceToken) {
-      if (!base::StringToUint64(asset.quantity, &result.lovelace_amount)) {
+      if (found_lovelace) {
         return std::nullopt;
       }
+      result.lovelace_amount = amount;
       found_lovelace = true;
-      break;
+    } else {
+      TokenId token_id;
+      if (!base::HexStringToBytes(asset.unit, &token_id)) {
+        return std::nullopt;
+      }
+      // Fixed-size policy_id and non-empty name.
+      if (token_id.size() < kCardanoScriptHashSize + 1u) {
+        return std::nullopt;
+      }
+
+      if (!result.tokens.emplace(std::move(token_id), amount).second) {
+        return std::nullopt;
+      }
     }
   }
 
