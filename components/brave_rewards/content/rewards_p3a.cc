@@ -7,12 +7,16 @@
 
 #include "base/check_op.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/monthly_storage.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 namespace brave_rewards::p3a {
 
@@ -75,6 +79,7 @@ void RecordRewardsPageViews(PrefService* prefs, bool new_view) {
 }
 
 void RecordAdTypesEnabled(PrefService* prefs) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!prefs->GetBoolean(prefs::kEnabled)) {
     UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 8);
     return;
@@ -89,12 +94,15 @@ void RecordAdTypesEnabled(PrefService* prefs) {
   int answer =
       (search_result_enabled << 2) | (notification_enabled << 1) | ntp_enabled;
   UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, answer, 8);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RecordSearchResultAdsOptinChange(PrefService* prefs) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds)) {
     UMA_HISTOGRAM_BOOLEAN(kSearchResultAdsOptinHistogramName, true);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RecordAdsHistoryView() {

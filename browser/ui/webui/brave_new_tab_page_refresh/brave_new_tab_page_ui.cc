@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -22,6 +21,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
@@ -31,6 +31,10 @@
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -102,10 +106,14 @@ void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<
         ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
         receiver) {
-  auto* profile = Profile::FromWebUI(web_ui());
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      brave_ads::AdsServiceFactory::GetForProfile(profile));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui()))
+#else
+      nullptr
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  );
   rich_media_ad_event_handler_->Bind(std::move(receiver));
 }
 
@@ -122,8 +130,12 @@ void BraveNewTabPageUI::BindInterface(
   rewards_page_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
       std::move(receiver), nullptr,
       brave_rewards::RewardsServiceFactory::GetForProfile(profile),
-      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
-      profile->GetPrefs());
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+      nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+      nullptr, profile->GetPrefs());
 }
 
 void BraveNewTabPageUI::BindInterface(

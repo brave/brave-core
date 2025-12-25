@@ -34,7 +34,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 #include "brave/components/brave_rewards/content/logging.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
@@ -74,6 +74,10 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -276,6 +280,7 @@ void RewardsServiceImpl::Init(
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   profile_pref_change_registrar_.Init(prefs_);
   profile_pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
@@ -290,9 +295,11 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       brave_ads::prefs::kOptedInToSearchResultAds,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
       key == brave_ads::prefs::kOptedInToNotificationAds ||
@@ -305,9 +312,11 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
         base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AExternalWallet,
                        AsWeakPtr(), false, true));
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsServiceImpl::CheckPreferences() {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
     // If the user has enabled Ads, but the "enabled" pref is missing, set the
     // "enabled" pref to true.
@@ -315,6 +324,7 @@ void RewardsServiceImpl::CheckPreferences() {
       prefs_->SetBoolean(prefs::kEnabled, true);
     }
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   if (prefs_->GetUserPrefValue(prefs::kEnabled)) {
     // If the "enabled" pref is set, then start the background Rewards
@@ -322,6 +332,7 @@ void RewardsServiceImpl::CheckPreferences() {
     StartEngineProcessIfNecessary();
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // If Rewards is enabled and the user has a linked account, then ensure that
   // the "search result ads enabled" pref has the appropriate default value.
   if (prefs_->GetBoolean(prefs::kEnabled) &&
@@ -329,6 +340,7 @@ void RewardsServiceImpl::CheckPreferences() {
       !prefs_->HasPrefPath(brave_ads::prefs::kOptedInToSearchResultAds)) {
     prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void RewardsServiceImpl::StartEngineProcessIfNecessary() {
@@ -424,8 +436,10 @@ void RewardsServiceImpl::CreateRewardsWallet(
         self->prefs_->SetBoolean(prefs::kEnabled, true);
         self->prefs_->SetString(prefs::kUserVersion,
                                 prefs::kCurrentUserVersion);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
         self->prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
                                  true);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
         // Set the user's current ToS version.
         self->prefs_->SetInteger(
@@ -1943,9 +1957,11 @@ void RewardsServiceImpl::OnFilesDeletedForCompleteReset(
 }
 
 void RewardsServiceImpl::ExternalWalletConnected() {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // When the user connects an external wallet, turn off search result ads since
   // users cannot earn BAT for them yet. The user can turn them on manually.
   prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   for (auto& observer : observers_) {
     observer.OnExternalWalletConnected();
   }

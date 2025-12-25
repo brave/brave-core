@@ -3,14 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_utility_importer_sources = []
 brave_utility_importer_deps = []
-brave_utility_importer_public_deps = [
-  "//brave/components/services/bat_ads:lib",
-  "//brave/components/services/bat_rewards:lib",
-]
+brave_utility_importer_public_deps =
+    [ "//brave/components/services/bat_rewards:lib" ]
 
 if (!is_android) {
   brave_utility_importer_sources += [
@@ -32,6 +31,11 @@ if (!is_android) {
     "//components/user_data_importer/common",
     "//components/webdata/common",
   ]
+}
+
+if (enable_brave_ads) {
+  brave_utility_importer_public_deps +=
+      [ "//brave/components/services/bat_ads:lib" ]
 }
 
 if (enable_tor) {

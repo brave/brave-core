@@ -30,6 +30,7 @@ source_set("browser_process") {
   sources = [ "brave_browser_process.h" ]
 
   deps = [
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/local_ai/common",
     "//brave/components/request_otr/common/buildflags",

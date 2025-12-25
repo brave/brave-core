@@ -13,6 +13,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/buildflag.h"
@@ -52,7 +53,9 @@ class BraveStatsUpdaterParams {
   std::string GetWeekOfInstallationParam() const;
   std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   std::string GetAdsEnabledParam() const;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   std::string GetProcessArchParam() const;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   std::string GetWalletEnabledParam() const;
