@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
@@ -14,7 +15,6 @@ brave_browser_perf_sources = [
 
 brave_browser_perf_deps = [
   "//base",
-  "//brave/components/brave_ads/core",
   "//brave/components/brave_news/common/buildflags",
   "//brave/components/brave_rewards/content",
   "//brave/components/brave_shields/content/browser",
@@ -22,6 +22,10 @@ brave_browser_perf_deps = [
   "//brave/components/brave_shields/core/common/",
   "//components/prefs",
 ]
+
+if (enable_brave_ads) {
+  brave_browser_perf_deps += [ "//brave/components/brave_ads/core" ]
+}
 
 if (enable_speedreader) {
   brave_browser_perf_deps += [ "//brave/components/speedreader" ]

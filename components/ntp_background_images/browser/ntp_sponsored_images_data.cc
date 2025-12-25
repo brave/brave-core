@@ -12,12 +12,16 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/uuid.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace ntp_background_images {
 
@@ -153,10 +157,12 @@ std::optional<Campaign> MaybeParseCampaign(
         continue;
       }
       creative.logo.destination_url = *target_url;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
       if (!brave_ads::ShouldSupportUrl(GURL(creative.logo.destination_url))) {
         // Target URL is not supported.
         continue;
       }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
       // Wallpaper.
       const base::Value::Dict* const wallpaper_dict =

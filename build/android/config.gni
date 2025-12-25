@@ -8,6 +8,7 @@ import("//brave/android/brave_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 declare_args() {
@@ -143,8 +144,11 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/youtube_script_injector/BraveYouTubeScriptInjectorNativeHelper.java",
-  "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
 ]
+
+if (enable_brave_ads) {
+  brave_jni_headers_sources += [ "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java" ]
+}
 
 if (enable_brave_wallet) {
   brave_jni_headers_sources += [

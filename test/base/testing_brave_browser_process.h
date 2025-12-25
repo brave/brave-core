@@ -17,6 +17,7 @@
 #include <string>
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 
 namespace brave_shields {
 class AdBlockService;
@@ -69,14 +70,16 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
+  brave_ads::ResourceComponent* resource_component() override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-  brave_ads::ResourceComponent* resource_component() override;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
   void SetBraveVPNConnectionManagerForTesting(

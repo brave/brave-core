@@ -9,11 +9,15 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#endif
 
 namespace settings {
 
@@ -61,10 +65,12 @@ void BraveClearBrowsingDataHandler::HandleGetBraveRewardsEnabled(
 
 void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
     const base::Value::List& /*args*/) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (auto* ads_service =
           brave_ads::AdsServiceFactory::GetForProfile(profile_)) {
     ads_service->ClearData(/*intentional*/ base::DoNothing());
   }
+#endif
 }
 
 void BraveClearBrowsingDataHandler::OnRewardsEnabledPreferenceChanged() {

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//testing/test.gni")
 
@@ -53,8 +54,8 @@ source_set("browser_tests") {
     deps += [
       "//brave/app:command_ids",
       "//brave/browser",
-      "//brave/browser/brave_ads",
       "//brave/browser/brave_rewards:util",
+      "//brave/components/brave_ads/buildflags",
       "//brave/components/brave_rewards/content",
       "//brave/components/brave_rewards/core/buildflags",
       "//brave/components/brave_rewards/core/engine",
@@ -67,6 +68,10 @@ source_set("browser_tests") {
       "//components/policy/core/common:test_support",
       "//components/user_prefs",
     ]
+
+    if (enable_brave_ads) {
+      deps += [ "//brave/browser/brave_ads" ]
+    }
   }
 
   if (toolkit_views) {

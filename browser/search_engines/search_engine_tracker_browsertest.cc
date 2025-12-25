@@ -9,7 +9,6 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -28,6 +27,10 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  public:
@@ -256,9 +259,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryDefaultEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 1);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectUniqueSample(kWebDiscoveryAndAdsMetric, 0, 3);
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 1, 1);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectBucketCount(kWebDiscoveryDefaultEngineMetric,
                                        SearchEngineP3A::kDuckDuckGo, 2);
 
@@ -267,8 +272,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryDefaultEngineMetric,
                                        INT_MAX - 1, 2);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 0, 4);
   histogram_tester_->ExpectTotalCount(kWebDiscoveryAndAdsMetric, 5);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   histogram_tester_->ExpectTotalCount(kWebDiscoveryDefaultEngineMetric, 5);
 }
 #endif

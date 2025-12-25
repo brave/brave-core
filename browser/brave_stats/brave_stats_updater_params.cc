@@ -14,7 +14,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -24,6 +24,10 @@
 #include "content/public/common/content_switches.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 namespace brave_stats {
 
@@ -98,10 +102,12 @@ std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
   return referral_promo_code_.empty() ? "none" : referral_promo_code_;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
   return BooleanToString(stats_pref_service_->GetBoolean(
       brave_ads::prefs::kEnabledForLastProfile));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
   if (arch_ == ProcessArch::kArchSkip) {
@@ -201,8 +207,10 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
                                          GetDateOfInstallationParam());
   update_url =
       net::AppendQueryParameter(update_url, "ref", GetReferralCodeParam());
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   update_url =
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
   return update_url;

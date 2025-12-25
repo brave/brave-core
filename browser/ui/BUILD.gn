@@ -8,6 +8,7 @@ import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
@@ -61,7 +62,6 @@ source_set("ui") {
   deps = [
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
-    "//brave/browser/brave_ads",
     "//brave/browser/brave_origin",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
@@ -69,6 +69,8 @@ source_set("ui") {
     "//brave/browser/ui/webui/brave_account",
     "//brave/browser/ui/webui/email_aliases",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_ads/core/browser/service",
 
     # Unconditional for gn check since the mojom header is included
     # in brave_new_tab_ui.h (guarded by ENABLE_BRAVE_NEWS buildflag).
@@ -203,6 +205,14 @@ source_set("ui") {
       "//brave/components/ai_rewriter/common",
       "//brave/components/ai_rewriter/resources/page:generated_resources",
       "//components/web_modal",
+    ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_ads/core",
     ]
   }
 
@@ -808,7 +818,6 @@ source_set("ui") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
-    "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
@@ -819,8 +828,6 @@ source_set("ui") {
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
@@ -1003,11 +1010,14 @@ source_set("ui") {
     ]
 
     deps += [
-      "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
+
+    if (enable_brave_ads) {
+      deps += [ "//brave/browser/ui/views/brave_ads" ]
+    }
   }
 
   if (enable_text_recognition) {
