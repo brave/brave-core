@@ -136,6 +136,7 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
+  bool IsWebPanelContents(content::WebContents* contents) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -210,6 +211,7 @@ class BraveBrowserView : public BrowserView,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
+  bool MaybeUpdateSplitView(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
                                             bool visible) override;

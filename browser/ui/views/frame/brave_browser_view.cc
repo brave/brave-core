@@ -26,7 +26,9 @@
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
@@ -292,13 +294,13 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  const int active_tab_index = model->active_index();
-
-  if (active_tab_index == TabStripModel::kNoTab) {
+  if (TabStripModel::kNoTab == model->active_index()) {
     return false;
   }
 
-  return model->IsActiveTabSplit();
+  // Use rounded corners when browser view shows split view.
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
@@ -525,8 +527,8 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return GetBraveMultiContentsView()
-        ->GetActiveContentsContainerView()
+    return BraveContentsContainerView::From(
+               GetBraveMultiContentsView()->GetActiveContentsContainerView())
         ->reader_mode_toolbar();
   }
 
@@ -574,8 +576,8 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
     // Need to update inactive split tabs' reader mode toolbar because
     // it's also visible.
-    auto* contents_container =
-        GetBraveMultiContentsView()->GetInactiveContentsContainerView();
+    auto* contents_container = BraveContentsContainerView::From(
+        GetBraveMultiContentsView()->GetInactiveContentsContainerView());
     auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
     reader_mode_toolbar->SetVisible(
         is_distilled(contents_container->contents_view()->web_contents()));
@@ -860,10 +862,39 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
       << "This method is supposed to be called only for the active web "
          "contents";
 
+  // In BrowserView::MaybeUpdateDevtools(), there is assumption that
+  // split tab is active when MultiContentsView shows split view now.
+  // But, it could not when web panel is active and split view is opened
+  // together. Early return to avoid crash from that.
+  if (IsWebPanelContents(web_contents) && IsInSplitView()) {
+    return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
+        GetActiveContentsContainerView(), web_contents, false);
+  }
+
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
 
   UpdateWebViewRoundedCorners();
   return result;
+}
+
+bool BraveBrowserView::MaybeUpdateSplitView(
+    content::WebContents* web_contents) {
+  if (!multi_contents_view_) {
+    return BrowserView::MaybeUpdateSplitView(web_contents);
+  }
+
+  // Don't need to update split view state if |web_contents| is web panel.
+  // In BrowserView::MaybeUpdateSplitView(), there is assumption that
+  // split tab is active when MultiContentsView shows split view now.
+  // But, it could not when web panel is active and split view is opened
+  // together. Early return to avoid crash from that. If |web_contents| is not
+  // related with split tab, don't need to call base class' method.
+  if (IsWebPanelContents(web_contents) &&
+      multi_contents_view_->IsInSplitView()) {
+    return false;
+  }
+
+  return BrowserView::MaybeUpdateSplitView(web_contents);
 }
 
 void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
@@ -903,7 +934,9 @@ void BraveBrowserView::UpdateContentsShadowVisibility() {
   // Fixed by hiding contents shadow when split view is active.
   // As split view has another border around contents, we don't need
   // contents shadow.
-  if (browser()->tab_strip_model()->IsActiveTabSplit()) {
+  if (browser()->tab_strip_model()->IsActiveTabSplit() ||
+      (sidebar::IsWebPanelFeatureEnabled() &&
+       GetBraveMultiContentsView()->IsWebPanelVisible())) {
     show_contents_shadow = false;
   }
 
@@ -996,9 +1029,12 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
-  UpdateRoundedCornersUI();
-
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  // Update UI after active tab changing is handled because
+  // ShouldUseBraveWebViewRoundedCornersForContents() check split view UI for
+  // rounded corners.
+  UpdateRoundedCornersUI();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
@@ -1106,6 +1142,21 @@ void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
     sidebar_container_view_->ShowSidebarOnMouseOver(
         gfx::PointF(display::Screen::Get()->GetCursorScreenPoint()));
   }
+}
+
+bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
+  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
+    return false;
+  }
+
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    if (auto* web_panel_controller =
+            sidebar_controller->GetWebPanelController()) {
+      return web_panel_controller->panel_contents() == contents;
+    }
+  }
+
+  return false;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

@@ -62,8 +62,11 @@ BraveContentsContainerView* BraveContentsContainerView::From(
 }
 
 BraveContentsContainerView::BraveContentsContainerView(
-    BrowserView* browser_view)
-    : ContentsContainerView(browser_view), browser_view_(*browser_view) {
+    BrowserView* browser_view,
+    bool for_web_panel)
+    : ContentsContainerView(browser_view),
+      browser_view_(*browser_view),
+      for_web_panel_(for_web_panel) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
   reader_mode_toolbar_ =
@@ -85,9 +88,23 @@ BraveContentsContainerView::BraveContentsContainerView(
     container_outline_ = AddChildView(
         std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
   }
+
+  if (for_web_panel_) {
+    // tool bar's menu button is only valid for split view.
+    BraveMultiContentsViewMiniToolbar::From(mini_toolbar_)->HideMenuButton();
+  }
 }
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
+
+bool BraveContentsContainerView::IsActive() const {
+  auto* web_contents = contents_view_->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
+}
 
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
@@ -101,8 +118,16 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   container_outline_->SetVisible(false);
   UpdateBorderRoundedCorners();
 
-  if (!is_in_split) {
+  if (!is_in_split && !for_web_panel_) {
     return;
+  }
+
+  if (for_web_panel_) {
+    // Hide toolbar when active.
+    // When web panel is active, there is no UI in toolbar as
+    // web panel's toolbar doesn't have menu button.
+    mini_toolbar_->UpdateState(IsActive(), /*is_highlighted*/ false);
+    mini_toolbar_->SetVisible(!IsActive());
   }
 
   // Draw active/inactive outlines around the contents areas and updates mini

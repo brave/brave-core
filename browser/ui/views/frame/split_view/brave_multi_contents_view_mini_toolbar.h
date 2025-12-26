@@ -17,12 +17,17 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   using MultiContentsViewMiniToolbar::MultiContentsViewMiniToolbar;
   ~BraveMultiContentsViewMiniToolbar() override;
 
+  static BraveMultiContentsViewMiniToolbar* From(
+      MultiContentsViewMiniToolbar* toolbar);
+
   // View:
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
   // MultiContentsViewMiniToolbar:
   void UpdateState(bool is_active, bool is_highlighted) override;
   void OnPaint(gfx::Canvas* canvas) override;
+
+  void HideMenuButton();
 
  private:
   int GetOutlineThickness() const;

@@ -1162,10 +1162,11 @@ class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
 
   // Don't cache as it changes whenever active tab changes.
   ReaderModeToolbarView* GetSecondaryToolbar() {
-      return brave_browser_view()
-          ->GetBraveMultiContentsView()
-          ->GetInactiveContentsContainerView()
-          ->reader_mode_toolbar();
+    return BraveContentsContainerView::From(
+               brave_browser_view()
+                   ->GetBraveMultiContentsView()
+                   ->GetInactiveContentsContainerView())
+        ->reader_mode_toolbar();
   }
 
   views::View* GetSecondaryContentsContainer() {
