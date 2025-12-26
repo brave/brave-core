@@ -3,18 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/psst/browser/core/brave_psst_utils.h"
+#include "brave/components/psst/browser/core/psst_settings_service.h"
 
-#include <optional>
-#include <string_view>
-
-#include "base/strings/string_util.h"
-#include "base/values.h"
-#include "brave/components/psst/common/psst_metadata_schema.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "url/gurl.h"
-#include "url/origin.h"
-#include "url/url_constants.h"
 
 namespace psst {
 
@@ -46,11 +37,16 @@ base::Value::Dict CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
 
 }  // namespace
 
-std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
-    HostContentSettingsMap* map,
+PsstSettingsService::PsstSettingsService(
+    HostContentSettingsMap& host_content_settings_map)
+    : host_content_settings_map_(host_content_settings_map) {}
+
+PsstSettingsService::~PsstSettingsService() = default;
+
+std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
     const url::Origin& origin,
     std::string_view user_id) {
-  auto metadata_objects = map->GetWebsiteSetting(
+  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
       origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
   auto* metadata_objects_dict = metadata_objects.GetIfDict();
   if (!metadata_objects_dict) {
@@ -65,12 +61,12 @@ std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
-void SetPsstWebsiteSettings(HostContentSettingsMap* map,
-                            const url::Origin& origin,
-                            ConsentStatus consent_status,
-                            int script_version,
-                            std::string_view user_id,
-                            base::Value::List urls_to_skip) {
+void PsstSettingsService::SetPsstWebsiteSettings(
+    const url::Origin& origin,
+    ConsentStatus consent_status,
+    int script_version,
+    std::string_view user_id,
+    base::Value::List urls_to_skip) {
   auto psst_metadata = PsstWebsiteSettings::FromValue(
       base::Value::Dict()
           .Set(kUserIdSettingsKey, user_id)
@@ -81,17 +77,17 @@ void SetPsstWebsiteSettings(HostContentSettingsMap* map,
     return;
   }
 
-  SetPsstWebsiteSettings(map, origin, std::move(*psst_metadata));
+  SetPsstWebsiteSettings(origin, std::move(*psst_metadata));
 }
 
-void SetPsstWebsiteSettings(HostContentSettingsMap* map,
-                            const url::Origin& origin,
-                            PsstWebsiteSettings psst_metadata) {
+void PsstSettingsService::SetPsstWebsiteSettings(
+    const url::Origin& origin,
+    PsstWebsiteSettings psst_metadata) {
   if (origin.scheme() != url::kHttpsScheme) {
     return;
   }
 
-  auto metadata_objects = map->GetWebsiteSetting(
+  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
       origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
 
   const auto user_id = psst_metadata.user_id;
@@ -99,11 +95,11 @@ void SetPsstWebsiteSettings(HostContentSettingsMap* map,
   if (metadata_objects_dict) {
     metadata_objects_dict->Set(
         user_id, CreatePsstSettingsObject(std::move(psst_metadata)));
-    map->SetWebsiteSettingDefaultScope(
+    host_content_settings_map_->SetWebsiteSettingDefaultScope(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
         base::Value(std::move(*metadata_objects_dict)));
   } else {
-    map->SetWebsiteSettingDefaultScope(
+    host_content_settings_map_->SetWebsiteSettingDefaultScope(
         origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
         base::Value(base::Value::Dict().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
