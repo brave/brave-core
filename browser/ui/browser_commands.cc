@@ -149,7 +149,7 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 
 /**
  * @note This function creates a default filename like
- * "bookmarks_10_31_24.html", for example, if the date was October 31, 2024.
+ * `bookmarks_2025_12_15.html`, for example, if the date is December 15, 2025.
  *
  * @note This function mimics the behavior of a function with the same name in
  * the Chromium source code.
@@ -158,11 +158,12 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
  * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
  */
 base::FilePath GetDefaultFilepathForBookmarkExport() {
-  std::string bookmarks_MM_DD_YY = l10n_util::GetStringFUTF8(
+  std::string bookmarks_yyyy_MM_dd = l10n_util::GetStringFUTF8(
       IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
-      base::TimeFormatShortDateNumeric(base::Time::Now()));
+      base::UTF8ToUTF16(base::UnlocalizedTimeFormatWithPattern(
+          base::Time::Now(), "yyyy_MM_dd")));
 
-  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_MM_DD_YY);
+  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_yyyy_MM_dd);
   base::FilePath::StringType path_str = path.value();
   base::i18n::ReplaceIllegalCharactersInPath(&path_str, '_');
   base::FilePath default_path;
