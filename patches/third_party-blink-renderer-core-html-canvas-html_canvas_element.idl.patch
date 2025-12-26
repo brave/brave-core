@@ -1,13 +1,13 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index c93d109e472211a1002f4b52edf6ebb8e3f4b00a..a0c6bbab2c410c977d3ed67ce309c21aa38c8af4 100644
+index dcd5c3349775da59c644b829a86948586574952f..5702e2e43b5e98d58a9a6e7c03e6e8beb56d37ad 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -50,7 +50,7 @@ dictionary CanvasElementHitTestRegion {
- 
+@@ -39,7 +39,7 @@
      [RuntimeEnabled=CanvasDrawElement] attribute boolean layoutSubtree;
+     [RuntimeEnabled=CanvasDrawElement, RaisesException] DOMMatrix getElementTransform(Element element, DOMMatrix draw_transform);
  
--    [HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
+-    [MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
++    [CallWith=ScriptState, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
  
-     [HighEntropy, MeasureAs=CanvasToBlob, RaisesException] void toBlob(BlobCallback _callback, optional DOMString type = "image/png", optional any quality);
+     [MeasureAs=CanvasToBlob, RaisesException] void toBlob(BlobCallback _callback, optional DOMString type = "image/png", optional any quality);
  

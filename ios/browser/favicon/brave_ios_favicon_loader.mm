@@ -109,9 +109,6 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
     faviconBlockHandler(attributes);
   };
 
-  // First, return a default image.
-  faviconBlockHandler([FaviconAttributes attributesWithDefaultImage]);
-
   // Now fetch the favicon image.
   GetIconRawBitmapForPageUrl(favicon_service_, page_url,
                              scale * min_size_in_points, scale * size_in_points,

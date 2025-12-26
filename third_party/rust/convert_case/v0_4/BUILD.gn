@@ -28,6 +28,8 @@ cargo_crate("lib") {
   cargo_pkg_repository = "https://github.com/rutrum/convert-case"
   cargo_pkg_version = "0.4.0"
 
+  allow_unsafe = false
+
   rustenv = []
   rustflags = []
 

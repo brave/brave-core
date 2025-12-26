@@ -15,6 +15,11 @@
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
+#include "ui/views/controls/scroll_view.h"
+
+namespace views {
+class ScrollView;
+}  // namespace views
 
 class BraveTabContainer : public TabContainerImpl {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
@@ -22,9 +27,12 @@ class BraveTabContainer : public TabContainerImpl {
   BraveTabContainer(TabContainerController& controller,
                     TabHoverCardController* hover_card_controller,
                     TabDragContextBase* drag_context,
-                    TabSlotController& tab_slot_controller,
-                    views::View* scroll_contents_view);
+                    TabSlotController& tab_slot_controller);
   ~BraveTabContainer() override;
+
+  // Enables or disables scrolling in the tab container for pinned tabs
+  void SetUnpinnedTabScrollEnabled(bool enabled);
+  bool IsUnpinnedTabScrollEnabled() const;
 
   // Calling this will freeze this view's layout. When the returned closure
   // runs, layout will be unlocked and run immediately.
@@ -32,6 +40,9 @@ class BraveTabContainer : public TabContainerImpl {
   // of TabContainer. In addition, we can avoid redundant layout as a side
   // effect.
   base::OnceClosure LockLayout();
+
+  // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
+  views::ScrollView::ScrollBarMode GetScrollBarMode() const;
 
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
@@ -53,6 +64,16 @@ class BraveTabContainer : public TabContainerImpl {
   void OnSplitCreated(const std::vector<int>& indices) override;
   void OnSplitRemoved(const std::vector<int>& indices) override;
   void OnSplitContentsChanged(const std::vector<int>& indices) override;
+  void OnScrollEvent(ui::ScrollEvent* event) override;
+  views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
+  bool IsPointInTab(Tab* tab,
+                    const gfx::Point& point_in_tabstrip_coords) override;
+  void UpdateIdealBounds() override;
+  void OnTabSlotAnimationProgressed(TabSlotView* view) override;
+  void SetActiveTab(std::optional<size_t> prev_active_index,
+                    std::optional<size_t> new_active_index) override;
+  void SetTabPinned(int model_index, TabPinned pinned) override;
+  void MoveTab(int from_model_index, int to_model_index) override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
@@ -113,8 +134,31 @@ class BraveTabContainer : public TabContainerImpl {
                           bool drop_in_group,
                           bool* is_beneath);
 
-  bool IsPinnedTabContainer() const;
   void UpdateTabsBorderInSplitTab(const std::vector<int>& indices);
+
+  // Returns the bottom y-coordinate of the pinned tabs area.
+  // This is used to visible rect of unpinned tabs.
+  int GetPinnedTabsAreaBottom() const;
+
+  // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
+  // a layout.
+  void SetScrollOffset(int offset);
+
+  // Returns the maximum scroll offset for unpinned tabs.
+  int GetMaxScrollOffset() const;
+
+  // Clamp the current scroll_offset_ within valid range.
+  void ClampScrollOffset();
+
+  // Used to sets the clip path for child views (tabs, group views and etc).
+  void UpdateClipPathForChildren(views::View* view,
+                                 int pinned_tabs_area_bottom);
+
+  // Update scroll offset to make the given tab visible.
+  void ScrollTabToBeVisible(Tab* tab);
+
+  // Show or hide scrollbar based on the preference
+  void UpdateScrollBarVisibility();
 
   base::flat_set<Tab*> closing_tabs_;
 
@@ -130,11 +174,17 @@ class BraveTabContainer : public TabContainerImpl {
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;
   BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember should_show_scroll_bar_;
 
   bool layout_locked_ = false;
 
   // Size we last laid out at.
-  gfx::Size last_layout_size_;
+  std::optional<gfx::Size> last_layout_size_;
+
+  // Manual vertical scroll offset for unpinned tabs. Do not manupulate this
+  // value directly. Use SetScrollOffset() instead.
+  int scroll_offset_ = 0;
+  bool unpinned_tab_scroll_enabled_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

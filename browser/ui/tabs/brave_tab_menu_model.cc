@@ -13,6 +13,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,6 +21,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
@@ -37,18 +39,8 @@ BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    containers::ContainersMenuModel::Delegate& containers_delegate,
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-    int index,
-    bool is_vertical_tab)
-    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index),
-      is_vertical_tab_(is_vertical_tab)
-#if BUILDFLAG(ENABLE_CONTAINERS)
-      ,
-      containers_menu_model_delegate_(containers_delegate)
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-{
+    int index)
+    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
   auto* web_contents = tab_strip_model->GetWebContentsAt(index);
   CHECK(web_contents);
   Browser* browser = chrome::FindBrowserWithTab(web_contents);
@@ -57,12 +49,9 @@ BraveTabMenuModel::BraveTabMenuModel(
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser->profile());
 
-  auto indices = static_cast<BraveTabStripModel*>(tab_strip_model)
-                     ->GetTabIndicesForCommandAt(index);
-  all_muted_ = std::all_of(
-      indices.begin(), indices.end(), [&tab_strip_model](int index) {
-        return tab_strip_model->GetWebContentsAt(index)->IsAudioMuted();
-      });
+  auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
+  auto indices = model->GetTabIndicesForCommandAt(index);
+  all_muted_ = model->GetAllTabsMuted(indices);
   Build(browser, tab_strip_model, index, indices);
 }
 
@@ -88,7 +77,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
 }
 
 std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
-  if (!is_vertical_tab_) {
+  if (!tab_menu_model_delegate_->ShouldShowVerticalTab()) {
     return TabMenuModel::GetLabelAt(index);
   }
 
@@ -130,31 +119,39 @@ void BraveTabMenuModel::Build(Browser* browser,
       GetIndexOfCommandId(TabStripModel::CommandToggleSiteMuted);
 
   auto toggle_tab_mute_label = l10n_util::GetPluralStringFUTF16(
-      all_muted() ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
-                  : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
+      all_muted_ ? IDS_TAB_CXMENU_SOUND_UNMUTE_TAB
+                 : IDS_TAB_CXMENU_SOUND_MUTE_TAB,
       selected_tab_count);
-  InsertItemAt(mute_site_index.value_or(GetItemCount()), CommandToggleTabMuted,
-               toggle_tab_mute_label);
+  InsertItemAt(mute_site_index.value_or(GetItemCount()),
+               TabStripModel::CommandToggleTabMuted, toggle_tab_mute_label);
 
-  AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
-  AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
-  AddItemWithStringId(CommandBringAllTabsToThisWindow,
-                      IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
+  AddItemWithStringId(TabStripModel::CommandRestoreTab,
+                      GetRestoreTabCommandStringId());
+  AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
+                      IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+
+  if (brave::CanBringAllTabs(browser)) {
+    AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
+                        IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
+  }
 
   AddSeparator(ui::NORMAL_SEPARATOR);
-  AddCheckItemWithStringId(CommandShowVerticalTabs,
-                           IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+
+  if (tabs::utils::SupportsVerticalTabs(browser)) {
+    AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
+                             IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+  }
 
   auto close_other_tabs_index =
       GetIndexOfCommandId(TabStripModel::CommandCloseOtherTabs);
   InsertItemWithStringIdAt(close_other_tabs_index.value_or(GetItemCount()),
-                           CommandCloseDuplicateTabs,
+                           TabStripModel::CommandCloseDuplicateTabs,
                            IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     BuildItemForContainers(*browser->profile()->GetPrefs(), tab_strip_model,
-                           containers_menu_model_delegate_.get(), indices);
+                           indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -185,7 +182,6 @@ void BraveTabMenuModel::Build(Browser* browser,
 void BraveTabMenuModel::BuildItemForContainers(
     const PrefService& prefs,
     TabStripModel* tab_strip_model,
-    containers::ContainersMenuModel::Delegate& containers_delegate,
     const std::vector<int>& indices) {
   // There are multiple command ids that could be used to find the right
   // insertion point for the containers submenu. The command ids could be absent
@@ -204,8 +200,8 @@ void BraveTabMenuModel::BuildItemForContainers(
   index = *index + 1;
 
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
-      containers_delegate, prefs);
-  InsertSubMenuWithStringIdAt(*index, CommandOpenInContainer,
+      *tab_menu_model_delegate_->GetContainersMenuModelDelegate(), prefs);
+  InsertSubMenuWithStringIdAt(*index, TabStripModel::CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());
 }
@@ -221,5 +217,6 @@ void BraveTabMenuModel::BuildItemForCustomization(
   }
 
   const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
-  InsertItemWithStringIdAt(index, CommandRenameTab, IDS_TAB_CXMENU_RENAME_TAB);
+  InsertItemWithStringIdAt(index, TabStripModel::CommandRenameTab,
+                           IDS_TAB_CXMENU_RENAME_TAB);
 }

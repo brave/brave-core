@@ -73,8 +73,7 @@
 -PinnedToolbarActionsContainerTest.*
 
 # Disabling signin promo tests as Brave does not support them.
--ShowSigninPromoTestExplicitBrowserSignin.*
--ShowSigninPromoTestWithFeatureFlags.*
+-ShowSigninPromoTest*.*
 
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
@@ -119,12 +118,7 @@
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
--PasswordChangeDelegateImplTest.LoginPasswordFormIsLogged
--PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
--PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
--PasswordChangeDelegateImplTest.OtpDetectionProcessedFieldNotFocusableSkip
--PasswordChangeDelegateImplTest.PasswordChangeFlowCanceled
--PasswordChangeDelegateImplTest.WaitingForAgreement
+-PasswordChangeDelegateImplTest.*
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -306,6 +300,7 @@
 
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
@@ -330,6 +325,8 @@
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
+-GeneratedSafeBrowsingPrefTest.ManagementState
+-GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
@@ -458,10 +455,12 @@
 
 # These tests fail on CI but pass locally, due to directory security
 # restrictions on the CI nodes
+-All/WebAppUninstallCommandSourceTest.RunTestForUninstallSource/*
 -WebAppRegistrarTest.AppsInstalledByUserMetric
 -WebAppRegistrarTest.GetApps
 -WebAppSyncBridgeTest.ApplyIncrementalSyncChanges_AddSyncAppsWithOverlappingPolicyApps
 -WebAppSyncBridgeTest.CommitUpdate_DeleteSyncAppWithOverlappingPolicyApp
+-WebAppUninstallCommandTest.*
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
@@ -659,13 +658,31 @@
 # includes entries not supported by Brave (i.e. "@gemini").
 -OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
 
-# This test fails because ContextualTasksContextService cannot be created
-# because it depends on PageEmbeddingsService being created and that service
-# is not created because we disable kHistoryEmbeddings.
+# These tests fail because ContextualTasksContextService cannot be created
+# because it depends on PageEmbeddingsService being created and that service is
+# not created because we disable kHistoryEmbeddings.
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+-PageEmbeddingsServiceTest.*
+
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode which leads to
+# AreFoldersForAccountStorageAllowed() failing a CHECK
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotAProduct/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotInCollection/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHShown/1
+
+# Read anything is disabled
+-All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
 
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
+
+# These tests fail because it's expected that the generated tabs have
+# suggestions like "Ask Google about this tab", whereas our results have
+# suggestions like "Ask Brave about this tab"
+-ActionChipGeneratorTest.*
+-ActionChipGeneratorTests/*.*/*
+-ActionChipGeneratorWithNoRecentTabTest.GenerateStaticChipsWhenHistorySyncIsOptOut
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

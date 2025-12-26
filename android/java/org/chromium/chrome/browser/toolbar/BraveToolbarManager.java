@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
+import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -73,6 +74,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator
 import org.chromium.chrome.browser.toolbar.bottom.BraveScrollingBottomViewResourceFrameLayout;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator.VisibilityDelegate;
 import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
@@ -84,7 +86,9 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
@@ -167,6 +171,7 @@ public class BraveToolbarManager extends ToolbarManager
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
             TopUiThemeColorProvider topUiThemeColorProvider,
+            @Nullable AdjustedTopUiThemeColorProvider adjustedTopUiThemeColorProvider,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             List<ButtonDataProvider> buttonDataProviders,
@@ -183,6 +188,7 @@ public class BraveToolbarManager extends ToolbarManager
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier,
             WindowAndroid windowAndroid,
+            OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController,
@@ -201,11 +207,12 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
             ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
-            MenuButtonCoordinator.@Nullable VisibilityDelegate menuButtonVisibilityDelegate,
+            @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
             ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
             @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
-            PageZoomManager pageZoomManager) {
+            PageZoomManager pageZoomManager,
+            SnackbarManager snackbarManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -216,6 +223,7 @@ public class BraveToolbarManager extends ToolbarManager
                 compositorViewHolder,
                 urlFocusChangedCallback,
                 topUiThemeColorProvider,
+                adjustedTopUiThemeColorProvider,
                 tabObscuringHandler,
                 shareDelegateSupplier,
                 buttonDataProviders,
@@ -232,6 +240,7 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxFocusStateSupplier,
                 promoShownOneshotSupplier,
                 windowAndroid,
+                chromeAndroidTaskSupplier,
                 isInOverviewModeSupplier,
                 modalDialogManagerSupplier,
                 statusBarColorController,
@@ -254,7 +263,8 @@ public class BraveToolbarManager extends ToolbarManager
                 topControlsStacker,
                 topInsetCoordinatorSupplier,
                 xrSpaceModeObservableSupplier,
-                pageZoomManager);
+                pageZoomManager,
+                snackbarManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

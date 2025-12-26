@@ -162,11 +162,11 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
   // Wait for commander to process the input and update results
   WaitUntil(base::BindLambdaForTesting([&]() {
     return commander()->GetResultSetId() >= 1 &&
-           commander()->GetItems().size() == 4u;
+           commander()->GetItems().size() == 5u;
   }));
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(4u, items.size());
+  ASSERT_EQ(5u, items.size());
   // For localized IDS_NEW_TAB string, remove & accelerator
   std::u16string expected_new_tab = l10n_util::GetStringUTF16(IDS_NEW_TAB);
   std::u16string::size_type pos = expected_new_tab.find(u"&");
@@ -191,15 +191,17 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
   // Wait for commander to process the input and update results
   WaitUntil(base::BindLambdaForTesting([&]() {
     return commander()->GetResultSetId() >= 1 &&
-           commander()->GetItems().size() == 3u;
+           commander()->GetItems().size() == 4u;
   }));
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(3u, items.size());
+  ASSERT_EQ(4u, items.size());
   EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_WINDOW_PIN_TAB), items[0].title);
   EXPECT_EQ(l10n_util::GetStringUTF16(IDS_COMMANDER_PIN_TAB), items[1].title);
   EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_WINDOW_CLOSE_UNPINNED_TABS),
             items[2].title);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TAB_CXMENU_NEW_SPLIT_WITH_CURRENT),
+            items[3].title);
 
   commander()->SelectCommand(1, 1);
   EXPECT_LE(2, commander()->GetResultSetId());

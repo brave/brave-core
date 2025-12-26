@@ -25,6 +25,8 @@ cargo_crate("lib") {
       "https://github.com/RustCrypto/utils/tree/master/zeroize/derive"
   cargo_pkg_version = "1.3.3"
 
+  allow_unsafe = false
+
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",

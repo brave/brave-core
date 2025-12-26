@@ -21,6 +21,7 @@
 -InputFileParsersTest.ParseCertificatesFileInvalidName
 -InputFileParsersTest.ParseCertificatesFileInvalidTimestamp
 -InputFileParsersTest.ParseJSON
+-ParseProxyListFuzzer.TestOneInput
 -ProofVerifierChromiumTest.IsFatalErrorSetForFatalError
 -ProofVerifierChromiumTest.PKPAndCTBothTested
 -ProofVerifierChromiumTest.PKPBypassFlagSet

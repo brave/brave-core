@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/signin_promo_util.cc b/chrome/browser/signin/signin_promo_util.cc
-index dca4fa5defb8e1490241a98e868d913a9fc23815..1409cb2b08d8fa5e2a73969952da82bd3bbce68a 100644
+index 2ec0ff7d0a03dd88f40b57001f61c13ae3422e73..37f448ab0082450b62476de88c77b43d04029df8 100644
 --- a/chrome/browser/signin/signin_promo_util.cc
 +++ b/chrome/browser/signin/signin_promo_util.cc
-@@ -273,6 +273,7 @@ bool ShouldShowPromoBasedOnImpressionOrDismissalCount(Profile& profile,
+@@ -377,6 +377,7 @@ bool ShouldShowPromoBasedOnImpressionOrDismissalCount(Profile& profile,
  // `ShouldShowAddressSignInPromo` and `ShouldShowPasswordSignInPromo`).
  // `profile` is the profile of the tab the promo would be shown on.
  bool ShouldShowSignInPromoCommon(Profile& profile, SignInPromoType type) {

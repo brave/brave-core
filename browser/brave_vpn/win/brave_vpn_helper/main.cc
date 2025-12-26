@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/logging/logging_settings.h"
 #include "base/process/memory.h"
 #include "base/win/process_startup_helper.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"

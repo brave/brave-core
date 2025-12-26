@@ -139,13 +139,10 @@ void PermissionContextBase::DecidePermission(
   pending_requests_.erase(pending_request);
 }
 
-void PermissionContextBase::CleanUpRequest(
-    content::WebContents* web_contents,
-    const PermissionRequestID& id,
-    bool embedded_permission_element_initiated) {
+void PermissionContextBase::CleanUpRequest(content::WebContents* web_contents,
+                                           const PermissionRequestID& id) {
   if (!IsGroupedPermissionType(content_settings_type())) {
-    PermissionContextBase_ChromiumImpl::CleanUpRequest(
-        web_contents, id, embedded_permission_element_initiated);
+    PermissionContextBase_ChromiumImpl::CleanUpRequest(web_contents, id);
     return;
   }
 

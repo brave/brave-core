@@ -11,8 +11,6 @@
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
-class BraveTabContextMenuContents;
-
 class BraveBrowserTabStripController : public BrowserTabStripController {
  public:
   BraveBrowserTabStripController(TabStripModel* model,
@@ -25,7 +23,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
       const BraveBrowserTabStripController&) = delete;
   ~BraveBrowserTabStripController() override;
 
-  const std::optional<int> GetModelIndexOf(Tab* tab);
+  Browser* browser() const { return browser_view_->browser(); }
 
   // Enters rename mode for the tab at the given index. This only affects UI
   // side.
@@ -35,16 +33,18 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
-  // BrowserTabStripController overrides:
-  void ShowContextMenuForTab(Tab* tab,
-                             const gfx::Point& p,
-                             ui::mojom::MenuSourceType source_type) override;
-  void ExecuteCommandForTab(TabStripModel::ContextMenuCommand command_id,
-                            const Tab* tab) override;
+  bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
+                              const Tab* tab);
 
- private:
-  // If non-NULL it means we're showing a menu for the tab.
-  std::unique_ptr<BraveTabContextMenuContents> context_menu_contents_;
+  // BrowserTabStripController overrides:
+  void ExecuteContextMenuCommand(int index,
+                                 TabStripModel::ContextMenuCommand command_id,
+                                 int event_flags) override;
+  bool IsContextMenuCommandChecked(
+      TabStripModel::ContextMenuCommand command_id) override;
+  bool IsContextMenuCommandEnabled(
+      int index,
+      TabStripModel::ContextMenuCommand command_id) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

@@ -54,6 +54,7 @@ source_set("browser_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/views/frame",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",
