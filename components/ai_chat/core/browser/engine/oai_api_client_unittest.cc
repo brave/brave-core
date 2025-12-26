@@ -479,6 +479,24 @@ INSTANTIATE_TEST_SUITE_P(
                           kTestContent},
             std::nullopt},
         ContentBlockSerializationTestParam{
+            "PageText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewPageTextContentBlock(
+                  mojom::PageTextContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "VideoTranscript", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewVideoTranscriptContentBlock(
+                  mojom::VideoTranscriptContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
             "ChangeTone", base::BindRepeating([]() {
               return mojom::ContentBlock::NewChangeToneContentBlock(
                   mojom::ChangeToneContentBlock::New("", "casual"));
@@ -514,7 +532,15 @@ INSTANTIATE_TEST_SUITE_P(
                   mojom::SimpleRequestContentBlock::New(
                       mojom::SimpleRequestType::kExpand));
             }),
-            "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt}),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestQuestions));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT},
+            std::nullopt}),
     [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
       return info.param.name;
     });
