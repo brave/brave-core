@@ -601,7 +601,7 @@ export const PortfolioOverview = () => {
                           <PercentBubble isDown={isPortfolioDown}>
                             {hidePortfolioBalances
                               ? '*****'
-                              : percentageChangeDisplay}
+                              : `${percentageChangeDisplay}%`}
                           </PercentBubble>
                         </>
                       ) : (
