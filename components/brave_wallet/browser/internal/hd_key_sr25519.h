@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
 #include <array>
+#include <vector>
 
 #include "base/containers/span.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -17,8 +18,10 @@ struct CxxSchnorrkelKeyPair;
 
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/index.html#constants
 inline constexpr size_t kSr25519SeedSize = 32;
+inline constexpr size_t kSr25519SecretKeySize = 64;
 inline constexpr size_t kSr25519PublicKeySize = 32;
 inline constexpr size_t kSr25519SignatureSize = 64;
+inline constexpr size_t kSr25519Pkcs8Size = 117;
 
 // This class implements basic sr25519 functionality, which is a scheme for
 // signing and key derivation using Schnorr signatures, using Ristretto as a
@@ -44,6 +47,13 @@ class HDKeySr25519 {
 
   // Get the public key portion of the keypair as a simple 32-byte array.
   std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey() const;
+  // Get the secret key portion of the keypair as a simple 32-byte array.
+  std::array<uint8_t, kSr25519SecretKeySize> GetSecretKey() const;
+
+  // Get the export key in PKCS8 format for export purposes.
+  // Returns a vector containing PAIR_HDR + secretKey + PAIR_DIV + publicKey
+  // (117 bytes total).
+  std::array<uint8_t, kSr25519Pkcs8Size> GetExportKeyPkcs8() const;
 
   // Sign the provided binary blob and get the 64-byte signature that can be
   // used for verification.

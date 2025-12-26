@@ -31,4 +31,8 @@ specific_include_rules = {
   "bip39\.cc": [
     "+brave/third_party/bip39wally-core-native/include",
   ],
+  "scrypt_utils\.cc": [
+    "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
+  ],
 }
+

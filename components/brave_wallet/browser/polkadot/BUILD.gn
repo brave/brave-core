@@ -8,7 +8,10 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 generated_types("generated_polkadot_substrate_rpc_responses") {
   sources = [ "polkadot_substrate_rpc_responses.idl" ]
   root_namespace = "brave_wallet::polkadot_substrate_rpc_responses"
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/vendor/bat-native-tweetnacl:tweetnacl",
+  ]
   visibility = [
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:test_support",

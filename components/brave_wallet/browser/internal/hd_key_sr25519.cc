@@ -45,6 +45,16 @@ std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() const {
   return keypair_->get_public_key();
 }
 
+std::array<uint8_t, kSr25519SecretKeySize> HDKeySr25519::GetSecretKey() const {
+  CHECK(IsBoxNonNull(keypair_));
+  return keypair_->get_secret_key();
+}
+
+std::array<uint8_t, kSr25519Pkcs8Size> HDKeySr25519::GetExportKeyPkcs8() const {
+  CHECK(IsBoxNonNull(keypair_));
+  return keypair_->get_export_key_pkcs8();
+}
+
 std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
     base::span<const uint8_t> msg) const {
   CHECK(IsBoxNonNull(keypair_));
