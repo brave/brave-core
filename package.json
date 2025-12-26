@@ -205,6 +205,7 @@
     "@mozilla/readability": "0.6.0",
     "@reduxjs/toolkit": "1.8.6",
     "@solana/web3.js": "1.98.2",
+    "@tanstack/react-query": "5.80.7",
     "@trezor/connect": "9.6.4",
     "@trezor/connect-web": "9.6.4",
     "array-move": "2.2.2",
