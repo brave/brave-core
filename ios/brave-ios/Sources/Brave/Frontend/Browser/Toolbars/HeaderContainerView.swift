@@ -27,6 +27,10 @@ class HeaderContainerView: UIView {
   /// Container view for both the expanded & collapsed variants of the bar
   let contentView = UIView()
 
+  /// The background view placed behind the content view, use this to show/hide the background as
+  /// needed (for instance when showing a unified toolbar blur behind on the main browser)
+  let backgroundView = UIView()
+
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
 
@@ -35,11 +39,15 @@ class HeaderContainerView: UIView {
 
     super.init(frame: .zero)
 
+    addSubview(backgroundView)
     addSubview(contentView)
     contentView.addSubview(expandedBarStackView)
     contentView.addSubview(collapsedBarContainerView)
     addSubview(line)
 
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -88,7 +96,7 @@ class HeaderContainerView: UIView {
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
     line.backgroundColor = browserColors.dividerSubtle
-    backgroundColor = browserColors.chromeBackground
+    backgroundView.backgroundColor = browserColors.chromeBackground
   }
 
   @available(*, unavailable)
