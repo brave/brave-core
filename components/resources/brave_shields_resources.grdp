@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_shields/resources/icon.png" type="BINDATA" />
-  <include name="IDR_BRAVE_SHIELDS_ICON_64_DISABLED" file="../brave_shields/resources/icon-off.png" type="BINDATA" />
+  <if expr="not is_brave_origin_branded">
+    <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_shields/resources/icon.png" type="BINDATA" />
+    <include name="IDR_BRAVE_SHIELDS_ICON_64_DISABLED" file="../brave_shields/resources/icon-off.png" type="BINDATA" />
+  </if>
+  <if expr="is_brave_origin_branded">
+    <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_shields/resources/brave_origin/icon.png" type="BINDATA" />
+    <include name="IDR_BRAVE_SHIELDS_ICON_64_DISABLED" file="../brave_shields/resources/brave_origin/icon-off.png" type="BINDATA" />
+  </if>
   <include name="IDR_SHIELDS_PANEL_HTML" file="../brave_shields/resources/panel/brave_shields.html" type="BINDATA" />
 </grit-part>
