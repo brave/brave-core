@@ -54,6 +54,9 @@ export interface Props {
   yPosition?: number
 }
 
+const HELP_CENTER_URL =
+  'https://support.brave.app/hc/categories/360001062531-Wallet'
+
 export const WalletSettingsMenu = (props: Props) => {
   const { onClosePopup, yPosition } = props
 
@@ -116,18 +119,24 @@ export const WalletSettingsMenu = (props: Props) => {
   }, [selectedNetwork, onClosePopup])
 
   const onClickHelpCenter = React.useCallback(() => {
-    chrome.tabs.create(
-      {
-        url: 'https://support.brave.app/hc/categories/360001062531-Wallet',
-      },
-      () => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message,
-          )
-        }
-      },
-    )
+    if (chrome.tabs !== undefined) {
+      chrome.tabs.create(
+        {
+          url: HELP_CENTER_URL,
+        },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: ' + chrome.runtime.lastError.message,
+            )
+          }
+        },
+      )
+    } else {
+      // Tabs.create is desktop specific. Using window.open for mobile
+      window.open(HELP_CENTER_URL, '_blank', 'noopener noreferrer')
+    }
+
     if (onClosePopup) {
       onClosePopup()
     }
