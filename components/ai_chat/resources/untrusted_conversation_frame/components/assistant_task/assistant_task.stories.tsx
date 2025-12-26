@@ -62,6 +62,12 @@ export const _AssistantTask = {
   },
 }
 
+// <if expr="is_desktop">
+console.log('is_desktop')
+// <else>
+console.log('is_not_desktop')
+// </if>
+
 export default {
   title: 'Chat/Chat',
   component: AssistantTask,
