@@ -77,7 +77,11 @@ public class QuickActions: NSObject {
         handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
       } else {
         if Preferences.Privacy.privateBrowsingLock.value {
-          browserViewController.askForLocalAuthentication(viewType: .external) {
+          guard let windowProtection = browserViewController.windowProtection else { return }
+          browserViewController.askForLocalAuthentication(
+            using: windowProtection,
+            viewType: .external
+          ) {
             [weak self] success, _ in
             if success {
               self?.handleOpenNewTab(

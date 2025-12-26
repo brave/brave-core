@@ -70,20 +70,24 @@ public class AuthenticationController: LoadingViewController {
       return
     }
 
-    if !windowProtection.isPassCodeAvailable {
-      if viewType == .tabTray {
-        completion?(false, LAError.passcodeNotSet)
-      } else {
-        showSetPasscodeError(viewType: viewType) {
-          completion?(false, LAError.passcodeNotSet)
-        }
-      }
-    } else {
-      windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false,
-        viewType: viewType
-      ) { status, error in
+    askForLocalAuthentication(
+      using: windowProtection,
+      errorOnNoPasscode: true,
+      viewType: viewType
+    ) { [weak self] status, error in
+      guard let error = error, error == .passcodeNotSet else {
+        // There's no error we care about so carry on.
         completion?(status, error)
+        return
+      }
+
+      // Handle passcode not set error
+      if viewType != .tabTray, let self = self {
+        self.showSetPasscodeError(viewType: viewType) {
+          completion?(false, .passcodeNotSet)
+        }
+      } else {
+        completion?(false, .passcodeNotSet)
       }
     }
   }

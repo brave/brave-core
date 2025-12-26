@@ -149,7 +149,9 @@ public enum NavigationPath: Equatable {
         )
       } else {
         if Preferences.Privacy.privateBrowsingLock.value {
-          bvc.askForLocalAuthentication(viewType: .external) { [weak bvc] success, _ in
+          guard let windowProtection = bvc.windowProtection else { return }
+          bvc.askForLocalAuthentication(using: windowProtection, viewType: .external) {
+            [weak bvc] success, _ in
             if success {
               bvc?.openBlankNewTab(
                 attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,

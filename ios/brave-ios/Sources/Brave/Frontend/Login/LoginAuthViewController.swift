@@ -81,16 +81,22 @@ class LoginAuthViewController: UITableViewController {
       return
     }
 
-    if !windowProtection.isPassCodeAvailable {
-      showSetPasscodeError {
-        completion?(false, .passcodeNotSet)
-      }
-    } else {
-      windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false,
-        viewType: .passwords
-      ) { status, error in
+    askForLocalAuthentication(
+      using: windowProtection,
+      errorOnNoPasscode: true,
+      viewType: .passwords
+    ) { [weak self] status, error in
+      guard let error = error, error == .passcodeNotSet else {
+        // No passcode related error to handle so carry on
         completion?(status, error)
+        return
+      }
+
+      // Handle passcode not set error
+      if let self = self {
+        self.showSetPasscodeError { completion?(false, .passcodeNotSet) }
+      } else {
+        completion?(false, .passcodeNotSet)
       }
     }
   }
