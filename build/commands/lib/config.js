@@ -202,8 +202,13 @@ const Config = function () {
   ])
   this.gclientFile = path.join(this.rootDir, '.gclient')
   this.gclientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.disableGclientConfigUpdate = getEnvConfig([
+    'disable_gclient_config_update',
+    false,
+  ])
   this.gclientCustomDeps = getEnvConfig(['gclient_custom_deps'], {})
   this.gclientCustomVars = getEnvConfig(['gclient_custom_vars'], {})
+  this.gclientGlobalVars = getEnvConfig(['gclient_global_vars'], {})
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
