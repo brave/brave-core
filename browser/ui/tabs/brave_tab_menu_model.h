@@ -42,7 +42,6 @@ class BraveTabMenuModel : public TabMenuModel {
 
   // TabMenuModel:
   std::u16string GetLabelAt(size_t index) const override;
-  bool IsNewFeatureAt(size_t index) const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveTabMenuBrowserTest,

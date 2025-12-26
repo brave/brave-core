@@ -23,7 +23,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
@@ -91,21 +90,6 @@ std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
   }
 
   return TabMenuModel::GetLabelAt(index);
-}
-
-bool BraveTabMenuModel::IsNewFeatureAt(size_t index) const {
-  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
-    const auto id = GetCommandIdAt(index);
-
-    // Don't show new badge for split view commands.
-    if (id == TabStripModel::CommandSwapWithActiveSplit ||
-        id == TabStripModel::CommandAddToSplit ||
-        id == TabStripModel::CommandArrangeSplit) {
-      return false;
-    }
-  }
-
-  return TabMenuModel::IsNewFeatureAt(index);
 }
 
 void BraveTabMenuModel::Build(Browser* browser,
