@@ -14,7 +14,6 @@ brave_browser_ntp_background_images_deps = [
   "//base",
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
-  "//brave/components/brave_ads/browser",
   "//brave/components/brave_stats/browser",
   "//brave/components/constants",
   "//brave/components/ntp_background_images/browser",
@@ -30,6 +29,11 @@ brave_browser_ntp_background_images_deps = [
   "//components/prefs",
   "//content/public/browser",
 ]
+
+if (enable_brave_ads) {
+  brave_browser_ntp_background_images_deps +=
+      [ "//brave/components/brave_ads/browser" ]
+}
 
 if (enable_custom_background) {
   brave_browser_ntp_background_images_deps +=

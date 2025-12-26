@@ -9,9 +9,9 @@
 #include "base/process/launch.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
@@ -36,6 +36,10 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/api/cookies/cookies_api.h"
@@ -195,7 +199,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
   // Ambient Auth should be disabled
   EXPECT_FALSE(AmbientAuthenticationTestHelper::IsAmbientAuthAllowedForProfile(
       tor_profile));

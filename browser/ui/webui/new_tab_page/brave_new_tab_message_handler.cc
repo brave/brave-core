@@ -18,12 +18,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/values.h"
-#include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -45,6 +43,12 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
+#include "brave/components/brave_ads/core/public/ads_util.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -160,10 +164,11 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
     content::WebUIDataSource* source,
     Profile* profile,
     bool was_restored) {
-  //
-  // Initial Values
-  // Should only contain data that is static
-  //
+//
+// Initial Values
+// Should only contain data that is static
+//
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
   // For safety, default |is_ads_supported_locale_| to true. Better to have
   // false positive than falsen egative,
@@ -177,6 +182,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
                      is_ads_supported_locale);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
@@ -188,7 +194,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
 BraveNewTabMessageHandler::BraveNewTabMessageHandler(Profile* profile,
                                                      bool was_restored)
     : profile_(profile), was_restored_(was_restored), weak_ptr_factory_(this) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 BraveNewTabMessageHandler::~BraveNewTabMessageHandler() = default;
@@ -485,6 +493,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
     const base::Value::List& args) {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   AllowJavascript();
   if (args.size() != 1) {
     LOG(ERROR) << "Invalid input";
@@ -518,6 +527,7 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
       placement_id ? *placement_id : "",
       creative_instance_id ? *creative_instance_id : "",
       target_url ? *target_url : "", metric_type);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 void BraveNewTabMessageHandler::HandleGetWallpaperData(
@@ -552,6 +562,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Even though we show sponsored image, we should pass "Background wallpaper"
   // data so that NTP customization menu can know which wallpaper is selected by
   // users.
@@ -583,6 +594,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
   ResolveJavascriptCallback(args[0], wallpaper);
 }
 

@@ -19,8 +19,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
@@ -93,6 +92,11 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
@@ -338,8 +342,10 @@ void RegisterProfilePrefsForMigration(
   // Added 2023-11
   brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
+#endif
 
   // Added 2024-04
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -568,7 +574,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   }
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::RegisterProfilePrefs(registry);
+#endif
   brave_rewards::RegisterProfilePrefs(registry);
 
   webcompat_reporter::prefs::RegisterProfilePrefs(registry);

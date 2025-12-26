@@ -8,9 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "brave/components/services/bat_rewards/rewards_engine_factory.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -23,6 +22,11 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/services/bat_ads/bat_ads_service_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -52,10 +56,12 @@ auto RunRewardsEngineFactory(
       std::move(receiver));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 auto RunBatAdsService(
     mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 auto RunBraveWalletUtilsService(
@@ -83,7 +89,9 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
 
   services.Add(RunRewardsEngineFactory);
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   services.Add(RunBatAdsService);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   services.Add(RunBraveWalletUtilsService);

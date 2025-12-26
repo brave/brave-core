@@ -3,13 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("ntp_background") {
   sources = [
-    "new_tab_takeover_infobar_delegate.cc",
-    "new_tab_takeover_infobar_delegate.h",
     "view_counter_service_factory.cc",
     "view_counter_service_factory.h",
   ]
@@ -18,9 +17,8 @@ source_set("ntp_background") {
     "//base",
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser:browser_process",
-    "//brave/browser/brave_ads",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_ads/core/browser/service",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",
     "//brave/components/infobars/core",
@@ -44,6 +42,19 @@ source_set("ntp_background") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_brave_ads) {
+    sources += [
+      "new_tab_takeover_infobar_delegate.cc",
+      "new_tab_takeover_infobar_delegate.h",
+    ]
+
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_ads/core/public:headers",
+    ]
+  }
 
   if (enable_custom_background) {
     sources += [
@@ -69,25 +80,30 @@ source_set("ntp_background") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "new_tab_takeover_infobar_delegate_unittest.cc" ]
+  sources = []
 
   deps = [
     ":ntp_background",
     "//base",
-    "//brave/browser:browser_process",
-    "//brave/components/brave_ads/core/public:headers",
-    "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_rewards/core",
-    "//brave/components/ntp_background_images/browser",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/p3a",
     "//chrome/test:test_support",
-    "//components/infobars/content",
-    "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_brave_ads) {
+    sources += [ "new_tab_takeover_infobar_delegate_unittest.cc" ]
+
+    deps += [
+      "//brave/browser:browser_process",
+      "//brave/components/brave_rewards/core",
+      "//brave/components/ntp_background_images/browser",
+      "//brave/components/ntp_background_images/common",
+      "//components/infobars/content",
+      "//components/prefs:test_support",
+      "//testing/gmock",
+    ]
+  }
 
   if (enable_custom_background) {
     sources += [
@@ -95,10 +111,7 @@ source_set("unit_tests") {
       "ntp_background_prefs_unittest.cc",
     ]
 
-    deps += [
-      "//brave/components/constants",
-      "//chrome/test:test_support",
-    ]
+    deps += [ "//brave/components/constants" ]
   }
 }
 

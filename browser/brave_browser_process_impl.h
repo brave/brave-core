@@ -12,6 +12,7 @@
 #include "base/sequence_checker.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -74,10 +75,12 @@ namespace speedreader {
 class SpeedreaderRewriterService;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
 namespace brave_ads {
 class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 namespace ai_chat {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -125,10 +128,12 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
+  brave_ads::ResourceComponent* resource_component() override;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
-  brave_ads::ResourceComponent* resource_component() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
@@ -194,7 +199,11 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
   std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
+  std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
@@ -207,7 +216,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
-  std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
   std::unique_ptr<DayZeroBrowserUIExptManager>
