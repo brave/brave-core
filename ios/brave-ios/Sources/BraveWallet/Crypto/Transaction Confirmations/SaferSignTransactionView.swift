@@ -32,6 +32,10 @@ struct SaferSignTransactionView: View {
 
   /// The token being swapped for.
   let toToken: BraveWallet.BlockchainToken?
+  /// The network for `toToken`. This value could be different from `network`
+  /// For example, a bridge tx is to swap from a token on a chain to another token on another chain
+  /// The reason we need this property is because `toToken` is sometimes nil for bridge tx
+  let toNetwork: BraveWallet.NetworkInfo?
   /// The contract address of the to token
   let toTokenContractAddress: String?
   /// Minimum amount being bought of the `toToken`.
@@ -55,6 +59,7 @@ struct SaferSignTransactionView: View {
     fromTokenContractAddress: String?,
     fromAmount: String?,
     toToken: BraveWallet.BlockchainToken?,
+    toNetwork: BraveWallet.NetworkInfo?,
     toTokenContractAddress: String?,
     minBuyAmount: String?
   ) {
@@ -67,6 +72,7 @@ struct SaferSignTransactionView: View {
     self.fromTokenContractAddress = fromTokenContractAddress
     self.fromAmount = fromAmount
     self.toToken = toToken
+    self.toNetwork = toNetwork
     self.toTokenContractAddress = toTokenContractAddress
     self.minBuyAmount = minBuyAmount
   }
@@ -161,11 +167,11 @@ struct SaferSignTransactionView: View {
         title: "\(minBuyAmount ?? "") \(toToken?.symbol ?? "")",
         subTitle: String.localizedStringWithFormat(
           Strings.Wallet.swapConfirmationNetworkDesc,
-          network?.chainName ?? ""
+          toNetwork?.chainName ?? ""
         ),
         token: toToken,
         tokenContractAddress: toTokenContractAddress,
-        network: network,
+        network: toNetwork,
         assetIconSize: assetIconSize,
         maxAssetIconSize: maxAssetIconSize,
         assetNetworkIconSize: assetNetworkIconSize,
@@ -305,6 +311,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
             fromTokenContractAddress: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
             fromAmount: "1",
             toToken: .previewDaiToken,
+            toNetwork: .mockMainnet,
             toTokenContractAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
             minBuyAmount: "0.994798"
           )
