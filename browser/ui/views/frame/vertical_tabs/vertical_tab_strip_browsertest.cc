@@ -54,6 +54,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
+#include "ui/views/test/views_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -532,10 +533,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
   // Test if every tabs are laid out inside tab strip region -------------------
   // This is a regression test for
   // https://github.com/brave/brave-browser/issues/28084
+  const auto region_view_bounds =
+      GetBoundsInScreen(region_view, region_view->GetLocalBounds());
   for (int i = 0; i < model->count(); i++) {
     auto* tab = GetTabAt(browser(), i);
-    EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
-                    .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
+    const auto tab_bounds = GetBoundsInScreen(tab, tab->GetLocalBounds());
+    EXPECT_TRUE(region_view_bounds.Contains(tab_bounds))
+        << "Region view bounds: " << region_view_bounds.ToString()
+        << " vs. Tab bounds: " << tab_bounds.ToString();
   }
 }
 
@@ -558,7 +563,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   browser_view()->tabstrip()->StopAnimating();
 
-  int contents_view_height = region_view->contents_view_->height();
+  int contents_view_height = region_view->original_region_view_->height();
   AppendTab(browser());
   browser_view()->tabstrip()->StopAnimating();
 
@@ -567,7 +572,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->contents_view_->height() == contents_view_height;
+    return region_view->original_region_view_->height() == contents_view_height;
   }));
 
   AppendTab(browser());
@@ -578,7 +583,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region_view->contents_view_->height() == contents_view_height;
+    return region_view->original_region_view_->height() == contents_view_height;
   }));
 }
 
