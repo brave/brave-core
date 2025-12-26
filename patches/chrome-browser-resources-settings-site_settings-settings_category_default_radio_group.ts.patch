@@ -6,7 +6,7 @@ index 1ad00705bb9c003c7bae916ec96d622758cacd48..6dcd4972d65884362984a3fbd666821e
        case ContentSettingsTypes.WEB_PRINTING:
          // "Ask" vs "Blocked".
          return ContentSetting.ASK;
-+      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA:  case ContentSettingsTypes.CARDANO: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS: case ContentSettingsTypes.BRAVE_OPEN_AI_CHAT: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;
++      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA:  case ContentSettingsTypes.CARDANO: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.BRAVE_OPEN_AI_CHAT: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;
        default:
          assertNotReached('Invalid category: ' + this.category);
      }

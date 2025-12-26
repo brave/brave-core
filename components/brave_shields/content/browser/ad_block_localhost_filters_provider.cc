@@ -9,19 +9,13 @@
 #include <vector>
 
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-#include "components/prefs/pref_service.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace brave_shields {
 
 namespace {
 
-void AddDATBufferToFilterSet(DATFileDataBuffer buffer,
-                             rust::Box<adblock::FilterSet>* filter_set) {
-  (*filter_set)->add_filter_list(buffer);
-}
-
-constexpr char kLocalhostBadfilters[] = R"(
+constexpr uint8_t kLocalhostBadfilters[] = R"(
 ||0.0.0.0^$third-party,domain=~[::]|~[::ffff:0:0],badfilter
 ||[::]^$third-party,domain=~0.0.0.0|~[::ffff:0:0],badfilter
 ||[::ffff:0:0]^$third-party,domain=~0.0.0.0|~[::],badfilter
@@ -31,6 +25,12 @@ constexpr char kLocalhostBadfilters[] = R"(
 ||[::ffff:7f00:1]^$third-party,domain=~localhost|~127.0.0.1|~[::1],badfilter
 )";
 
+void AddDATBufferToFilterSet(rust::Box<adblock::FilterSet>* filter_set) {
+  (*filter_set)
+      ->add_filter_list(std::vector<uint8_t>(std::begin(kLocalhostBadfilters),
+                                             std::end(kLocalhostBadfilters)));
+}
+
 }  // namespace
 
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider(
@@ -39,7 +39,7 @@ AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider(
   NotifyObservers(engine_is_default_);
 }
 
-AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {}
+AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() = default;
 
 std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
@@ -50,14 +50,10 @@ void AdBlockLocalhostFiltersProvider::LoadFilterSet(
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  auto buffer = std::vector<unsigned char>(std::begin(kLocalhostBadfilters),
-                                           std::end(kLocalhostBadfilters));
-
   // PostTask so this has an async return to match other loaders
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(std::move(cb),
-                     base::BindOnce(&AddDATBufferToFilterSet, buffer)));
+      base::BindOnce(std::move(cb), base::BindOnce(&AddDATBufferToFilterSet)));
 }
 
 }  // namespace brave_shields
