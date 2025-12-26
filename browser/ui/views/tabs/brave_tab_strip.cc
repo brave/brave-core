@@ -122,7 +122,7 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   // chrome/browser/flag-metadata.json.
   const SkColor background_color = TabStyle::Get()->GetTabBackgroundColor(
       TabStyle::TabSelectionState::kActive, /*hovered=*/false,
-      /*frame_active*/ true, *GetColorProvider());
+      /*frame_active*/ true, GetColorProvider());
   const SkColor frame_color =
       controller_->GetFrameColor(BrowserFrameActiveState::kActive);
   const float contrast_ratio =
@@ -148,10 +148,9 @@ void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
   TabStrip::UpdateHoverCard(tab, update_type);
 }
 
-void BraveTabStrip::MaybeStartDrag(
-    TabSlotView* source,
-    const ui::LocatedEvent& event,
-    const ui::ListSelectionModel& original_selection) {
+void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
+                                   const ui::LocatedEvent& event,
+                                   ui::ListSelectionModel original_selection) {
   if (ShouldShowVerticalTabs()) {
     // When it's vertical tab strip, all the dragged tabs are either pinned or
     // unpinned.

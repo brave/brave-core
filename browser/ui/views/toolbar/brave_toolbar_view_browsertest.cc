@@ -29,7 +29,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -276,8 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   // Check loaded in sidebar.
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
-  auto* side_panel_coordinator =
-      browser()->GetFeatures().side_panel_coordinator();
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing(
       SidePanelEntry::PanelType::kContent));
   button->ButtonPressed();
@@ -325,12 +323,12 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonVisibility_GuestProfile) {
   // Open a Guest window.
-  EXPECT_EQ(1U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
 
   // Retrieve the new Guest profile.
   Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
@@ -353,16 +351,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatDisabled,
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   // As we don't use divider in toolbar, it should be null always.
   EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
-  // Check toolbar corner radius is always 8 regardless of active tab index.
-  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
@@ -415,12 +403,12 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonTextWithOTRTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
   // Open a Guest window.
-  EXPECT_EQ(1U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
 
   // Retrieve the new Guest profile.
   Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
@@ -452,7 +440,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(true, is_avatar_button_shown());
 
   // Open the new profile
-  EXPECT_EQ(1U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(1U, chrome::GetTotalBrowserCount());
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::OpenBrowserWindowForProfile(
       base::DoNothing(),
@@ -460,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       /*is_new_profile=*/true, /*open_command_line_urls=*/false, &new_profile);
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
-  EXPECT_EQ(2U, BrowserList::GetInstance()->size());
+  EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
 
   // Check it's shown in second profile
   Browser* browser = chrome::FindAnyBrowser(&new_profile, true);

@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
@@ -52,13 +52,13 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
-            @NonNull Supplier<Toolbar> toolbarSupplier,
+            Supplier<Toolbar> toolbarSupplier,
             long embeddingSurfaceCreatedTimeNs,
-            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout,
+            FeedSwipeRefreshLayout swipeRefreshLayout,
             boolean overScrollDisabled,
             @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate,
-            @NonNull ObservableSupplier<Integer> tabStripHeightSupplier,
+            NonNullObservableSupplier<Integer> tabStripHeightSupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
         super(
                 activity,

@@ -1,10 +1,10 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 708d3db9a2b7dad11d7e1f094cdc4705ed9077db..b87bd1f9df3c4690105558e5978a8a4c2f1d4689 100644
+index eaccd0678a3f4cec435807c61943a9324f70c2c6..014b206ca9ff986085ae8ccb7250a59fc7a50151 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -250,6 +250,7 @@ static_library("utility") {
+@@ -251,6 +251,7 @@ static_library("utility") {
    if (enable_on_device_translation) {
-     deps += [ "//components/services/on_device_translation:on_device_translation_service" ]
+     deps += [ "//components/on_device_translation/service:on_device_translation_service" ]
    }
 +  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
  }

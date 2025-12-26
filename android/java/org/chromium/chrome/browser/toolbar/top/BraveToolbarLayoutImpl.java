@@ -98,7 +98,6 @@ import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
-import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -1603,7 +1602,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,
-            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             @Nullable Supplier<Integer> incognitoWindowCountSupplier) {
@@ -1620,7 +1618,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 backButtonCoordinator,
                 forwardButtonCoordinator,
                 homeButtonDisplay,
-                extensionToolbarCoordinator,
                 themeColorProvider,
                 incognitoStateProvider,
                 incognitoWindowCountSupplier);

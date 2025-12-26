@@ -1,8 +1,8 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index cf36ecf5f4e61d71564cf17b7143cfe10d0a1dd8..e3dcc67bd661d9b86d98c120f4affd08794f33a1 100755
+index 7e93cb1672570c8f49a6fbad123129ac4586b542..479580f06f719af9e779c920fd61d864f4f5a73c 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
-@@ -1728,5 +1728,6 @@ def _WriteAppRestrictions(policies, policy_atomic_groups, target_platform, f,
+@@ -1732,5 +1732,6 @@ def _WriteAppRestrictions(policies, policy_atomic_groups, target_platform, f,
    f.write('</restrictions>')
  
  

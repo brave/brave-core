@@ -6,8 +6,8 @@
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 
 #include <unordered_map>
+#include <utility>
 
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -31,8 +31,8 @@ TEST_F(ContainersIconGeneratorUnitTest, GetVectorIconFromIconType_BasicIcons) {
            {mojom::Icon::kPrivate, kLeoContainerPrivateIcon},
            {mojom::Icon::kMessaging, kLeoContainerMessagingIcon}});
 
-  for (int i = base::to_underlying(mojom::Icon::kMinValue);
-       i <= base::to_underlying(mojom::Icon::kMaxValue); ++i) {
+  for (int i = std::to_underlying(mojom::Icon::kMinValue);
+       i <= std::to_underlying(mojom::Icon::kMaxValue); ++i) {
     mojom::Icon icon = static_cast<mojom::Icon>(i);
     auto it = icon_to_vector_icon_map.find(icon);
     EXPECT_NE(it, icon_to_vector_icon_map.end());
@@ -51,10 +51,10 @@ TEST_F(ContainersIconGeneratorUnitTest,
        GetVectorIconFromIconType_OutOfRangeValue) {
   // Test that an out-of-range value returns the default icon without crashing.
   EXPECT_EQ(&GetVectorIconFromIconType(static_cast<mojom::Icon>(
-                base::to_underlying(mojom::Icon::kMaxValue) + 1)),
+                std::to_underlying(mojom::Icon::kMaxValue) + 1)),
             &kLeoContainerPersonalIcon);
   EXPECT_EQ(&GetVectorIconFromIconType(static_cast<mojom::Icon>(
-                base::to_underlying(mojom::Icon::kMinValue) - 1)),
+                std::to_underlying(mojom::Icon::kMinValue) - 1)),
             &kLeoContainerPersonalIcon);
 }
 

@@ -458,7 +458,7 @@ class BraveVerticalTabStripRegionView::MouseWatcher : public ui::EventObserver {
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
     BrowserView* browser_view,
-    TabStripRegionView* region_view)
+    HorizontalTabStripRegionView* region_view)
     : views::AnimationDelegateViews(this),
       browser_view_(browser_view),
       browser_(browser_view->browser()),
@@ -702,7 +702,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
   if (last_state_ == State::kFloating && state_ == State::kExpanded) {
     // In this case we need to lay out pinned tabs so that they need to hide
     // title and close button.
-    for (int i = 0; i < tab_strip->GetModelPinnedTabCount(); ++i) {
+    for (int i = 0; i < tab_strip->NumPinnedTabsInModel(); ++i) {
       tab_strip->tab_at(i)->InvalidateLayout();
     }
   }
@@ -1048,7 +1048,7 @@ void BraveVerticalTabStripRegionView::AnimationEnded(
 
 void BraveVerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
-  auto* original_ntb = original_region_view_->GetNewTabButton();
+  auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);

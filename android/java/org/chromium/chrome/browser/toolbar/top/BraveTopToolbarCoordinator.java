@@ -12,9 +12,11 @@ import android.view.View.OnLongClickListener;
 import androidx.annotation.ColorInt;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -29,7 +31,6 @@ import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -53,7 +54,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private final ToolbarLayout mBraveToolbarLayout;
     private final MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomControlsVisible;
-    private final ObservableSupplier<Integer> mConstraintsProxy;
+    private final NullableObservableSupplier<@BrowserControlsState Integer> mConstraintsProxy;
     private final ToolbarControlContainer mControlContainer;
     private boolean mInTabSwitcherMode;
 
@@ -76,7 +77,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
-            ObservableSupplier<@Nullable Integer> constraintsSupplier,
+            NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
@@ -86,12 +87,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
-            ObservableSupplier<@Nullable Tab> tabSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
             ObservableSupplier<Boolean> toolbarNavControlsEnabledSupplier,
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,
-            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
             TopControlsStacker topControlsStacker,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<Integer> incognitoWindowCountSupplier) {
@@ -128,7 +128,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 backButtonCoordinator,
                 forwardButtonCoordinator,
                 homeButtonDisplay,
-                extensionToolbarCoordinator,
                 topControlsStacker,
                 browserControlsStateProvider,
                 incognitoWindowCountSupplier);
@@ -204,7 +203,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         return mIsBottomControlsVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
     }
 
-    public ObservableSupplier<Integer> getConstraintsProxy() {
+    public NullableObservableSupplier<@BrowserControlsState Integer> getConstraintsProxy() {
         return mConstraintsProxy;
     }
 

@@ -5,8 +5,9 @@
 
 #include "brave/browser/metrics/metrics_reporting_util.h"
 
+#include <utility>
+
 #include "base/notreached.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/metrics/brave_metrics_service_accessor.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -29,7 +30,7 @@ bool GetDefaultPrefValueForMetricsReporting() {
       return false;
   }
   NOTREACHED() << "Unexpected value for channel: "
-               << base::to_underlying(channel);
+               << std::to_underlying(channel);
 }
 
 bool ShouldShowCrashReportPermissionAskDialog() {

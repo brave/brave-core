@@ -947,6 +947,7 @@ test("brave_browser_tests") {
     "//chrome/browser/sync",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/hats",
@@ -966,6 +967,7 @@ test("brave_browser_tests") {
     "//components/country_codes",
     "//components/crx_file",
     "//components/embedder_support",
+    "//components/feed:feature_list",
     "//components/gcm_driver:gcm_buildflags",
     "//components/history_clusters/core",
     "//components/infobars/content",
@@ -1115,6 +1117,8 @@ test("brave_browser_tests") {
   }
   if (is_android) {
     deps += [ "//brave/components/brave_mobile_subscription/renderer/android:browser_tests" ]
+  } else {
+    deps += [ "//chrome/browser/ui/browser_window:create_browser_window" ]
   }
 
   if (enable_crash_dialog) {

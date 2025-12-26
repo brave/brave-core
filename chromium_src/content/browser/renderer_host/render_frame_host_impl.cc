@@ -16,13 +16,6 @@
     return *ephemeral_storage_token;                               \
   }
 
-#define BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED \
-  if (GetContentClient()                                                                                  \
-          ->browser()                                                                                     \
-          ->CanThirdPartyStoragePartitioningBeDisabled(                                                   \
-              GetBrowserContext(),                                                                        \
-              main_frame_for_storage_partitioning->GetLastCommittedOrigin()))
-
 #define BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW \
   params->no_javascript_access = no_javascript_access;
 
@@ -33,7 +26,6 @@
 #undef BindTrustTokenQueryAnswerer
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_NONCE
-#undef BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
 
 namespace content {

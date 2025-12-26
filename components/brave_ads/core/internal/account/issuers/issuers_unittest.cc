@@ -72,8 +72,8 @@ TEST_F(BraveAdsIssuersTest,
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
-         /*response_body=*/net::GetHttpReasonPhrase(
-             net::HTTP_INTERNAL_SERVER_ERROR)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR))},
         {net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -99,7 +99,8 @@ TEST_F(BraveAdsIssuersTest, DoNotRetryAfterHttpForbiddenResponseStatusCode) {
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_FORBIDDEN,
-         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN)},
+         /*response_body=*/std::string(
+             net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN))},
         {net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
   test::MockUrlResponses(ads_client_mock_, url_responses);

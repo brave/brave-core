@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_dispatcher.cc b/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
-index 33c0d26ad3a5fde100e8934b5d57f50ed66dd654..fbed8fee8e087d9ee0e9e030459c09f7b7cbe9b4 100644
+index 46495b3e2ffaecdac93c193ff15a0f1f43f2268f..4c039b58189ddcd317f8fd63db0cbeb082cc8622 100644
 --- a/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_dispatcher.cc
-@@ -405,7 +405,7 @@ inline void EventDispatcher::DispatchEventPostProcess(
+@@ -440,7 +440,7 @@ inline void EventDispatcher::DispatchEventPostProcess(
    // Call default event handlers. While the DOM does have a concept of
    // preventing default handling, the detail of which handlers are called is an
    // internal implementation detail and not part of the DOM.

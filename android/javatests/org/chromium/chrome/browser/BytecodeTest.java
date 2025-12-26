@@ -44,10 +44,14 @@ import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
+import org.chromium.base.supplier.SettableObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -81,7 +85,6 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.infobar.InfoBarContainerView;
-import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
@@ -138,7 +141,6 @@ import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor.UiState;
 import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.extensions.ExtensionToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.HomeButtonDisplay;
@@ -928,6 +930,17 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/settings/SettingsIntentUtil",
+                        "createIntent",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        String.class,
+                        Bundle.class,
+                        boolean.class,
+                        String.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
                         "showNotification",
                         MethodModifier.REGULAR,
@@ -1364,8 +1377,7 @@ public class BytecodeTest {
                         boolean.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
-                        Supplier.class,
-                        MultiInstanceManager.class));
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1492,7 +1504,7 @@ public class BytecodeTest {
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
+                        NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1520,7 +1532,7 @@ public class BytecodeTest {
                         Supplier.class,
                         HistoryDelegate.class,
                         boolean.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
@@ -1529,12 +1541,11 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class,
-                        ObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         ObservableSupplier.class,
                         BackButtonCoordinator.class,
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
-                        ExtensionToolbarCoordinator.class,
                         TopControlsStacker.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class));
@@ -1832,7 +1843,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        ObservableSupplierImpl.class,
+                        SettableObservableSupplier.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1842,7 +1853,7 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        ManualFillingComponentSupplier.class,
+                        ObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
@@ -1901,7 +1912,7 @@ public class BytecodeTest {
                         RecyclerView.class,
                         DragReorderableRecyclerViewAdapter.class,
                         boolean.class,
-                        ObservableSupplierImpl.class,
+                        SettableNonNullObservableSupplier.class,
                         Profile.class,
                         BookmarkUndoController.class,
                         ModelList.class,

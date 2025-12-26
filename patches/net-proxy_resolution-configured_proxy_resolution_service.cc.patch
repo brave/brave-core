@@ -1,5 +1,5 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index d3df2a885a5ed42245a4c9ad35af0a0fcd777aab..d17fff8241405494ec2a0204ee1b0a35178143f6 100644
+index 5febe93426dc147285c47e6aa7ccc0058c2e4c29..6c2a7de95c90bf887e016a795a689edebaa13ee3 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
 @@ -1005,6 +1005,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(

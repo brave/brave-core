@@ -69,8 +69,8 @@
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -310,7 +310,8 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         std::make_unique<ReaderModeToolbarView>(browser_->profile()));
     contents_container_->SetLayoutManager(
         std::make_unique<BraveContentsLayoutManager>(
-            contents_container_view_, lens_overlay_view_, reader_mode_toolbar_,
+            GetActiveContentsContainerView(), lens_overlay_view_,
+            reader_mode_toolbar_,
             /*scrim_view=*/nullptr));
   }
 #endif
@@ -348,7 +349,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         RemoveChildViewT(contents_height_side_panel_.get());
     sidebar_container_view_ =
         AddChildView(std::make_unique<SidebarContainerView>(
-            browser_, browser_->GetFeatures().side_panel_coordinator(),
+            browser_, SidePanelCoordinator::From(browser_),
             std::move(original_side_panel)));
     contents_height_side_panel_ = sidebar_container_view_->side_panel();
 
@@ -1193,10 +1194,11 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
         }
       };
 
-  if (contents_container_view_) {
-    update_corner_radius(contents_container_view_->contents_view(),
-                         contents_container_view_->devtools_web_view(),
-                         contents_container_view_->devtools_docked_placement(),
+  auto* contents_container_view = GetActiveContentsContainerView();
+  if (contents_container_view) {
+    update_corner_radius(contents_container_view->contents_view(),
+                         contents_container_view->devtools_web_view(),
+                         contents_container_view->devtools_docked_placement(),
                          corners);
   }
 }

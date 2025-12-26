@@ -10,14 +10,13 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
 namespace base {
 class Value;
 }  // namespace base
 
 namespace brave_wallet {
-
-class ZCashTransaction;
 
 class ZCashTxMeta : public TxMeta {
  public:

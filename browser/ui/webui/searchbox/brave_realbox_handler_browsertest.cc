@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 
+#include "base/test/bind.h"
 #include "base/time/time.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -40,8 +41,13 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
 
   void OnAutocompleteAccept(const GURL& url, const std::u16string& keyword) {
     mojo::Remote<searchbox::mojom::PageHandler> remote_page_handler;
-    RealboxHandler handler(remote_page_handler.BindNewPipeAndPassReceiver(),
-                           browser()->profile(), contents());
+    RealboxHandler handler(
+        remote_page_handler.BindNewPipeAndPassReceiver(), browser()->profile(),
+        contents(),
+        base::BindLambdaForTesting(
+            []() -> contextual_search::ContextualSearchSessionHandle* {
+              return nullptr;
+            }));
     AutocompleteMatch match;
     match.keyword = keyword;
     handler.omnibox_controller()->client()->OnAutocompleteAccept(

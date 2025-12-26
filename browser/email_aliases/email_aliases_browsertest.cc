@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/test/run_until.h"
@@ -511,9 +512,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
   // Prepare auth token
-  EmailAliasesAuth auth(
-      browser()->profile()->GetPrefs(),
-      test::GetEncryptor(g_browser_process->os_crypt_async()));
+  EmailAliasesAuth auth(browser()->profile()->GetPrefs(),
+                        test::GetEncryptor(g_browser_process->os_crypt_async()),
+                        base::DoNothing());
   auth.SetAuthEmail(kSuccessEmail);
   auth.SetAuthToken("success_token");
 

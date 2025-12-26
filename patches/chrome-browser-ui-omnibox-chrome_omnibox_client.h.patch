@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/chrome_omnibox_client.h b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
-index c83e92627a9a80a64d279d26c0c0d468b948cd95..261d42017f7fb6d05524256d88a54e845a67034c 100644
+index 635f5be271457d8c94f7f38d32d04ab47aab0f55..073e048cb6f0cad239e60defea7b091b45d6bb03 100644
 --- a/chrome/browser/ui/omnibox/chrome_omnibox_client.h
 +++ b/chrome/browser/ui/omnibox/chrome_omnibox_client.h
 @@ -27,7 +27,7 @@ namespace omnibox {

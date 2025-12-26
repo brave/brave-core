@@ -12,6 +12,7 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -247,7 +248,8 @@ TEST_F(EmailAliasesServiceTest, SessionPreserved) {
   EXPECT_TRUE(observer->WaitFor(AuthenticationStatus::kAuthenticated));
 
   // Prefs contain values.
-  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()));
+  EmailAliasesAuth auth(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                        base::DoNothing());
   EXPECT_EQ("test@example.com", auth.GetAuthEmail());
   EXPECT_EQ("auth456", auth.CheckAndGetAuthToken());
 
@@ -510,7 +512,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   }
 
   void SetupAuth(bool auth = true) {
-    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()));
+    EmailAliasesAuth settings(&prefs_, test::GetEncryptor(os_crypt_.get()),
+                              base::DoNothing());
     settings.SetAuthEmail("test@example.com");
     if (auth) {
       settings.SetAuthToken("token456");

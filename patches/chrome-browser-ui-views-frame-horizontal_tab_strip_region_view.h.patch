@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
+index ab247c1467fb9d99ce9a85c6180a4193b725b908..65e756134735ffaea3db4ef3f2d063eb339609db 100644
+--- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
++++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
+@@ -28,7 +28,7 @@ class TabSearchPositionMetricsLogger;
+ 
+ // Container for the tabstrip and the other views sharing space with it -
+ // with the exception of the caption buttons.
+-class HorizontalTabStripRegionView final : public TabStripRegionView {
++class HorizontalTabStripRegionView : public TabStripRegionView {
+   METADATA_HEADER(HorizontalTabStripRegionView, views::AccessiblePaneView)
+ 
+  public:

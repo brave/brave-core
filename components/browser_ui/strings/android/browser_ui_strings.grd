@@ -1017,6 +1017,9 @@
       <message name="IDS_FONT_SIZE_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font size.">
         Text scaling set to <ph name="TEXT_SCALING">%1$s<ex>100%</ex></ph>
       </message>
+      <message name="IDS_FONT_FAMILY_LEXEND_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font family to Lexend.">
+        Font Lexend
+      </message>
       <message name="IDS_FONT_FAMILY_SANS_SERIF_ACCESSIBILITY_LABEL" desc="Accessibility label for control to allow user to change font family to sans serif.">
         Font Sans Serif
       </message>
@@ -1337,6 +1340,28 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_BUTTON" desc="Text on the clickable button on the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
         Notify me
+      </message>
+
+      <!-- Setup List strings -->
+
+      <!-- Setup list Enhanced Safe Browsing promo strings -->
+      <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_TITLE" desc="Title of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
+        Enhance your security
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_ENHANCED_SAFE_BROWSING_DESCRIPTION" desc="Description of the enhanced safe browsing promo that invites users to turn on enhanced safe browsing in the educational tip module on NTP.">
+        Get Brave’s strongest protection against online threats
+      </message>
+
+      <!-- Setup list Address Bar Placement promo strings -->
+      <message name="IDS_EDUCATIONAL_TIP_ADDRESS_BAR_PLACEMENT_TITLE" desc="Title of the address bar placement promo that invites users to choose address bar position in the educational tip module on NTP.">
+        Choose address bar position
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_ADDRESS_BAR_PLACEMENT_DESCRIPTION" desc="Description of the address bar placement promo that invites users to choose address bar position in the educational tip module on NTP.">
+        Switch the position to customize your browsing experience
+      </message>
+
+      <message name="IDS_EDUCATIONAL_TIP_BUTTON_GO_TO_SETTINGS" desc="Text on the clickable button for promos that invites users to adjust settings in the educational tip module on NTP.">
+        Go to settings
       </message>
 
       <!-- Safety Hub Magic Stack strings -->

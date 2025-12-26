@@ -59,8 +59,7 @@ class AIChatGlobalSidePanelBrowserTest
 
  protected:
   void OpenSidePanelAndVerify(Browser* browser) {
-    auto* side_panel_coordinator =
-        browser->GetFeatures().side_panel_coordinator();
+    auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     ASSERT_TRUE(side_panel_coordinator);
 
     side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
@@ -74,8 +73,7 @@ class AIChatGlobalSidePanelBrowserTest
   }
 
   bool IsSidePanelOpen(Browser* browser) {
-    auto* side_panel_coordinator =
-        browser->GetFeatures().side_panel_coordinator();
+    auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     if (!side_panel_coordinator) {
       return false;
     }
@@ -90,8 +88,7 @@ class AIChatGlobalSidePanelBrowserTest
   bool IsGlobalSidePanel(Browser* browser) {
     // Test global behavior by checking if sidepanel stays open when switching
     // tabs
-    auto* side_panel_coordinator =
-        browser->GetFeatures().side_panel_coordinator();
+    auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     EXPECT_TRUE(side_panel_coordinator);
 
     // Ensure we have at least one tab

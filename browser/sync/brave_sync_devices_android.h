@@ -34,7 +34,7 @@ class BraveSyncDevicesAndroid : public syncer::DeviceInfoTracker::Observer {
   base::android::ScopedJavaLocalRef<jstring> GetSyncDeviceListJson(JNIEnv* env);
 
   void DeleteDevice(JNIEnv* env,
-                    const base::android::JavaParamRef<jstring>& device_guid);
+                    const base::android::JavaRef<jstring>& device_guid);
 
  private:
   // syncer::DeviceInfoTracker::Observer

@@ -21,7 +21,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
 #include "base/threading/thread_restrictions.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/proto_conversion.h"
@@ -843,7 +842,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     BindAndEncryptOptionalString(insert_or_update_statement, index++,
                                  content->url.spec());
     insert_or_update_statement.BindInt(
-        index++, base::to_underlying(content->content_type));
+        index++, std::to_underlying(content->content_type));
     BindAndEncryptOptionalString(insert_or_update_statement, index++,
                                  content_text);
     insert_or_update_statement.BindInt(index++,
@@ -943,9 +942,9 @@ bool AIChatDatabase::AddConversationEntry(
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->prompt);
   insert_conversation_entry_statement.BindInt(
-      index++, base::to_underlying(entry->character_type));
+      index++, std::to_underlying(entry->character_type));
   insert_conversation_entry_statement.BindInt(
-      index++, base::to_underlying(entry->action_type));
+      index++, std::to_underlying(entry->action_type));
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->selected_text);
   BindOptionalString(insert_conversation_entry_statement, index++,

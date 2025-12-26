@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"

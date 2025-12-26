@@ -39,7 +39,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_context_menu_controller.h"
@@ -233,8 +233,8 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  TabStripRegionView* tab_strip_region_view() {
-    return views::AsViewClass<TabStripRegionView>(
+  HorizontalTabStripRegionView* tab_strip_region_view() {
+    return views::AsViewClass<HorizontalTabStripRegionView>(
         BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
   }
 
@@ -320,13 +320,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_FALSE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(
+      tab_strip_region_view()->new_tab_button_for_testing()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -739,22 +742,8 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
             ->tabstrip()
             ->controller());
 
-    auto context_menu_controller = std::make_unique<TabContextMenuController>(
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandChecked,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandEnabled,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::IsContextMenuCommandAlerted,
-            base::Unretained(controller)),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::ExecuteContextMenuCommand,
-            base::Unretained(controller), tab_index),
-        base::BindRepeating(
-            &BraveBrowserTabStripController::GetContextMenuAccelerator,
-            base::Unretained(controller)));
+    auto context_menu_controller =
+        std::make_unique<TabContextMenuController>(tab_index, controller);
 
     return context_menu_controller;
   }
@@ -891,7 +880,7 @@ class VerticalTabStripDragAndDropBrowserTest
   }
 
   bool IsDraggingTabStrip(Browser* b) {
-    return GetTabStrip(b)->GetDragContext()->IsDragSessionActive();
+    return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
   // VerticalTabStripBrowserTest:
