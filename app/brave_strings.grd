@@ -531,6 +531,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Brave is unresponsive. Relaunch now?
         </message>
       </if>
+      <!-- General app failure messages -->
+      <if expr="not is_chromeos and not is_android">
+        <message name="IDS_COULDNT_STARTUP_PROFILE_ERROR" desc="Error displayed when Brave cannot start because profiles were not opened correctly.">
+          Cannot start Brave because something went wrong when opening your profile. Try to restart Brave.
+        </message>
+      </if>
       <!-- Sharing messages -->
       <message name="IDS_BROWSER_SHARING_CLICK_TO_CALL_DIALOG_HELP_TEXT_NO_DEVICES" desc="The label to be shown as a help text of the dialog when user click on a phone number, if there are no phones to choose from.">
         To send a number from here to your Android phone, sign in to Brave on both devices.
@@ -1129,6 +1135,9 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- NTP strings -->
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
+        Your Brave
+      </message>
       <if expr="_is_chrome_for_testing_branded">
         <then>
           <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="Label for button on the New Tab Page that opens dialog to customize Brave for Testing browser.">
@@ -1144,6 +1153,19 @@ Brave is unable to recover your settings.
       <message name="IDS_NTP_MODULES_SETUP_LIST_TITLE" desc="Title shown at the top of the Setup List card.">
         Make Brave Yours
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_LABEL" desc="The label for the button for resetting theme back to default chrome in the New Tab Page customize chrome side panel.">
+        Reset to Default Brave
+      </message>
+
+      <!-- New Tab Page browser feature promotions. -->
+      <if expr="not is_android">
+        <message name="IDS_NTP_CUSTOMIZATION_PROMO" desc="The text shown in the body of the New Tab Page browser customization promotion">
+          Customize Brave to give your browser a new look
+        </message>
+        <message name="IDS_NTP_SIGN_IN_PROMO_WITH_BOOKMARKS" desc="The text shown in the body of the New Tab Page sign in promotion">
+          Sign in to Brave to get your passwords, bookmarks, and more on all your devices
+        </message>
+      </if>
 
       <!-- Customize Brave Auto Promo Strings -->
       <message name="IDS_IPH_CUSTOMIZE_CHROME_AUTO_OPEN_BODY" desc="The description of the IPH to auto open Customize Brave">
@@ -1306,7 +1328,7 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Profile Menu -->
-      <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
+      <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" meaning="Button" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
         Sign in to Brave
       </message>
       <message name="IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME" desc="Placeholder profile name, used when the user did not enter a name for their profile.">
@@ -1983,6 +2005,10 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_CSB_DESCRIPTION" desc="Text that is shown in the Lens permission bubble, giving examples of what Lens can do and informing uawea what information will be sent to the server. Includes placeholder for learn more link.">
           When you use Image Search, the page title, URL, and content, including PDFs, are sent to the server. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
+        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_NON_BLOCKING_DESCRIPTION" translateable="false" desc="Text that is shown in the Lens non-blocking privacy notice, giving examples of what Lens can do and informing users what information will be sent to Brave. Includes placeholder for learn more link.">
+          When you open Image Search, the page title, URL, and content, including PDFs, will automatically be sent to the server. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
+        </message>
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_DESCRIPTION" desc="Text that is shown in the Lens permission bubble, giving examples of what Lens can do and informing users that their screenshot will be sent to the server. Includes placeholder for learn more link.">
           Identify things or places and copy or translate text. When you use Image Search, a screenshot of the page is sent to the server. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
@@ -1997,6 +2023,14 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_TAB_TO_CONTINUE" desc="Instructs the user to press Tab to begin using the feature.">
           Tab to continue
+        </message>
+        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_GOT_IT" translateable="false" desc="Text on button in privacy notice, indicating that user understands that information will be sent to Brave.">
+          Got it
+        </message>
+        <!-- TODO(crbug.com/467451572): Remove non-translateable flag. -->
+        <message name="IDS_LENS_PERMISSION_BUBBLE_DIALOG_REMIND_ME_LATER" translateable="false" desc="Text on button to dismiss privacy notice, indicating that the privacy notice will be shown again later.">
+          Remind me later
         </message>
 
         <!-- Title Case Dependent -->
@@ -2282,7 +2316,7 @@ Brave is unable to recover your settings.
         </message>
 
         <!-- First Run Experience -->
-        <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+        <message name="IDS_FRE_SIGN_IN_TITLE_0" meaning="Title" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
           Sign in to Brave
         </message>
 
@@ -2749,6 +2783,12 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_SETTINGS_GLIC_ROW_LABEL" translateable="false" desc="Label of the Glic row button on the AI settings page leading to the Glic subpage.">
           Gemini in Brave
+        </message>
+        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen">
+          Let Brave browse for you
+        </message>
+        <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does">
+          Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
         </message>
 
         <!-- Profile Picker Glic version-->
