@@ -16,7 +16,9 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
+#include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/omnibox/browser/vector_icons.h"
 #include "ui/gfx/vector_icon_types.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -113,6 +115,15 @@ inline constexpr BraveAction kShowBraveNews = {
     .icon = kLeoRssIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
+inline constexpr BraveAction kShowShareMenuAction = {
+    .id = side_panel::customize_chrome::mojom::ActionId::kShowShareMenu,
+    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SHARE_MENU,
+    .anchor = side_panel::customize_chrome::mojom::ActionId::
+        kShowShareMenu,  // assign id of itself to append to the end of the list
+    .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
+    .pref_name = prefs::kPinShareMenuButton,
+    .icon = omnibox::kShareChromeRefreshIcon};
+
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
                            const BraveAction*>({
@@ -131,6 +142,7 @@ inline constexpr auto kBraveActions =
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
         {kShowBraveNews.id, &kShowBraveNews},
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+        {kShowShareMenuAction.id, &kShowShareMenuAction},
     });
 
 }  // namespace customize_chrome

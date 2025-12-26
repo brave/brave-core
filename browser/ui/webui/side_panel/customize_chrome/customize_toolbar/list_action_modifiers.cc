@@ -19,6 +19,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -62,6 +63,10 @@ void AddActionsForAddressBarCategory(Profile* profile,
     brave_actions.push_back(kShowBraveNews);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+  if (!sharing_hub::SharingIsDisabledByPolicy(profile)) {
+    brave_actions.push_back(kShowShareMenuAction);
+  }
 }
 
 }  // namespace
@@ -179,6 +184,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   // Address bar
   //   kShowReward
   //   kShowBraveNews
+  //   kShowShareMenu
   auto* prefs = user_prefs::UserPrefs::Get(web_contents.GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
