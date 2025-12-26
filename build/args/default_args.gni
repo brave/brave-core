@@ -1,0 +1,58 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Merges default args with user-defined args and generates `$target_name.json`
+# in the output directory. The template is intended to be used from args.gn to
+# generate json and then forward variables from it into args.gn.
+template("default_args") {
+  assert(defined(invoker.target_os), "target_os is required")
+  assert(defined(invoker.target_cpu), "target_cpu is required")
+
+  # Please provide a reason when you are adding new default args.
+  default_args = {
+    # Import platform-agnostic Brave defaults.
+    import("//brave/build/args/brave_defaults.gni")
+
+    # Import platform-specific defaults based on target OS.
+    if (invoker.target_os != "ios") {
+      # All non-iOS platforms use Blink.
+      import("//brave/build/args/blink_platform_defaults.gni")
+      if (invoker.target_os == "android") {
+        import("//brave/build/args/android_defaults.gni")
+      } else {
+        # Desktop platforms (mac, linux, win).
+        import("//brave/build/args/desktop_defaults.gni")
+      }
+    } else {
+      import("//brave/build/args/ios_defaults.gni")
+    }
+
+    if (defined(invoker.is_asan) && invoker.is_asan) {
+      # Improve stack traces in ASAN builds.
+      enable_full_stack_frames_for_profiling = true
+
+      # Enable additional checks in V8 to detect heap corruption.
+      v8_enable_verify_heap = true
+    }
+
+    if ((defined(invoker.is_asan) && invoker.is_asan) ||
+        (defined(invoker.is_ubsan) && invoker.is_ubsan) ||
+        (defined(invoker.is_msan) && invoker.is_msan)) {
+      # Temporarily disabling dcheck_always_on for sanitizer builds, as there
+      # are some serious reports coming back. It is necessary to first stabilize
+      # these sanitizers with this flag before using the default.
+      dcheck_always_on = false
+    }
+  }
+
+  # Merge default args with user-defined args. The user-defined args will
+  # override the default args.
+  merged_args = {
+    forward_variables_from(default_args, "*")
+    forward_variables_from(invoker, "*", [ "target_name" ])
+  }
+
+  write_file("$root_build_dir/$target_name.json", merged_args, "json")
+}
