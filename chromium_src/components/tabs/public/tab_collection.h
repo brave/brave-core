@@ -14,18 +14,19 @@
 
 // Make static version of GetPassKey() and GetChildren() available for
 // TreeTabNode to build/flatten tree tabs.
-#define OnTabRemovedFromTree()                                                \
-  OnTabRemovedFromTab_Unused() {}                                             \
-                                                                              \
- protected:                                                                   \
-  static base::PassKey<TabCollection> GetPassKeyStatic() {                    \
-    return {};                                                                \
-  }                                                                           \
-  static const ChildrenVector& GetChildrenStatic(TabCollection& collection) { \
-    return collection.GetChildren();                                          \
-  }                                                                           \
-                                                                              \
- public:                                                                      \
+#define OnTabRemovedFromTree()                             \
+  OnTabRemovedFromTab_Unused() {}                          \
+                                                           \
+ protected:                                                \
+  static base::PassKey<TabCollection> GetPassKeyStatic() { \
+    return {};                                             \
+  }                                                        \
+  static const ChildrenVector& GetChildrenStatic(          \
+      const TabCollection& collection) {                   \
+    return collection.GetChildren();                       \
+  }                                                        \
+                                                           \
+ public:                                                   \
   void OnTabRemovedFromTree()
 
 #endif  // !BUILDFLAG(IS_ANDROID)

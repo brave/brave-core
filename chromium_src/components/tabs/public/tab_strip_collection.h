@@ -10,10 +10,18 @@
 // especially in the case of tree tabs.
 #define RemoveTabAtIndexRecursive(...)             \
   RemoveTabAtIndexRecursive_Chromium(__VA_ARGS__); \
-  std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(__VA_ARGS__)
+  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(__VA_ARGS__)
+
+// Make methods virtual for BraveTabStripCollection.
+#define AddTabRecursive virtual AddTabRecursive
+#define MoveTabRecursive virtual MoveTabRecursive
+#define MoveTabsRecursive virtual MoveTabsRecursive
 
 #include <components/tabs/public/tab_strip_collection.h>  // IWYU pragma: export
 
+#undef MoveTabsRecursive
+#undef MoveTabRecursive
+#undef AddTabRecursive
 #undef RemoveTabAtIndexRecursive
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_TABS_PUBLIC_TAB_STRIP_COLLECTION_H_

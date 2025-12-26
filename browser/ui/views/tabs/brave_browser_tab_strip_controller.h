@@ -35,6 +35,8 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
 
   bool IsCommandEnabledForTab(TabStripModel::ContextMenuCommand command_id,
                               const Tab* tab);
+  // BrowserTabStripController overrides:
+  void OnTreeTabChanged(const TreeTabChange& change) override;
 
   // BrowserTabStripController overrides:
   void ExecuteContextMenuCommand(int index,
