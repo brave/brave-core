@@ -6,7 +6,7 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
-import newsGraphic from '../../assets/news_graphic.svg'
+import newsPreviewImage from '../../assets/news_preview.svg'
 
 export const style = scoped.css`
   & {
@@ -20,36 +20,6 @@ export const style = scoped.css`
     font: ${font.components.buttonSmall};
   }
 
-  .opt-in {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    .graphic {
-      background-image: url(${newsGraphic});
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center center;
-      width: 56px;
-      align-self: stretch;
-    }
-
-    .text {
-      flex: 1 1 auto;
-      font: ${font.default.semibold};
-      color: ${color.text.primary};
-    }
-
-    .actions {
-      padding: 0 8px;
-
-      leo-button {
-        --leo-button-color: rgba(255, 255, 255, 0.20);
-        white-space: nowrap;
-      }
-    }
-  }
-
   .peek {
     flex: 1 1 auto;
     display: flex;
@@ -57,15 +27,19 @@ export const style = scoped.css`
     gap: 12px;
     text-decoration: none;
 
-    img {
+    .article-image {
       min-width: 71px;
       width: 71px;
       height: 48px;
       object-fit: cover;
       object-position: center top;
       border-radius: 4px;
+    }
+
+    img {
       opacity: 0;
       transition: opacity 400ms ease-in-out;
+
       &.loaded {
         opacity: 1;
       }
@@ -91,6 +65,13 @@ export const style = scoped.css`
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
+  }
+
+  .preview .article-image {
+    background-image: url(${newsPreviewImage});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
   }
 
   .loading {
