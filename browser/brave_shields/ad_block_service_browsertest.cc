@@ -3327,22 +3327,24 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoCosmeticFiltersOnSpeedreaderPage) {
 }
 #endif
 
-class AdBlockOnlyModeFilterListsTest : public AdBlockServiceTest {
+class AdblockOnlyModeFilterListsTest : public AdBlockServiceTest {
  public:
-  AdBlockOnlyModeFilterListsTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kAdblockOnlyMode);
+  AdblockOnlyModeFilterListsTest() {
+    feature_list_.InitWithFeatures(
+        {brave_shields::features::kAdblockOnlyMode,
+         brave_shields::features::kBraveAdblockShowHiddenComponents},
+        {});
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
-                       CheckEnabledFilterLists) {
+IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
+                       CookieListDisabledByAdblockOnlyMode) {
   InstallRegionalAdBlockComponent(brave_shields::kCookieListUuid, true);
 
-  // AdBlockOnlyMode is disabled by default, so all filter lists are enabled.
+  // Adblock-Only mode is disabled by default, so all filter lists are enabled.
   {
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kDefaultAdblockFiltersListUuid));
@@ -3350,11 +3352,13 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
         brave_shields::kCookieListUuid));
 
     const auto lists = component_service_manager()->GetRegionalLists();
-    ASSERT_EQ(1UL, lists.size());
+    ASSERT_EQ(2UL, lists.size());
     EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
   }
 
-  // Enable AdBlockOnlyMode and check if lists other than default are disabled.
+  // Enable Adblock-Only mode and check if lists other than default are
+  // disabled.
   {
     local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
                               true);
@@ -3365,11 +3369,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
         brave_shields::kCookieListUuid));
 
     const auto lists = component_service_manager()->GetRegionalLists();
-    ASSERT_EQ(1UL, lists.size());
-    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+    ASSERT_EQ(2UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(false, *lists[1].GetDict().FindBool("enabled"));
   }
 
-  // Disable AdBlockOnlyMode and check that all filter lists are enabled.
+  // Disable Adblock-Only mode and check that all filter lists are enabled.
   {
     local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
                               false);
@@ -3380,15 +3385,63 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
         brave_shields::kCookieListUuid));
 
     const auto lists = component_service_manager()->GetRegionalLists();
-    ASSERT_EQ(1UL, lists.size());
+    ASSERT_EQ(2UL, lists.size());
     EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+    EXPECT_EQ(true, *lists[1].GetDict().FindBool("enabled"));
   }
 }
 
-class AdBlockOnlyModeFilterListsWithFeatureDisabledTest
+IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsTest,
+                       DefaultAdblockFilterListEnabledByAdblockOnlyMode) {
+  // Disable the default adblock filter list
+  component_service_manager()->EnableFilterList(
+      brave_shields::kDefaultAdblockFiltersListUuid, false);
+
+  // Check that the default adblock filter list is disabled.
+  {
+    EXPECT_FALSE(component_service_manager()->IsFilterListEnabled(
+        brave_shields::kDefaultAdblockFiltersListUuid));
+
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(1UL, lists.size());
+    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+  }
+
+  // Enable Adblock-Only mode and check that the default adblock filter list is
+  // enabled.
+  {
+    local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                              true);
+
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
+        brave_shields::kDefaultAdblockFiltersListUuid));
+
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(1UL, lists.size());
+    EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
+  }
+
+  // Disable Adblock-Only mode and check that the default adblock filter list is
+  // disabled.
+  {
+    local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                              false);
+
+    EXPECT_FALSE(component_service_manager()->IsFilterListEnabled(
+        brave_shields::kDefaultAdblockFiltersListUuid));
+    EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
+        brave_shields::kCookieListUuid));
+
+    const auto lists = component_service_manager()->GetRegionalLists();
+    ASSERT_EQ(1UL, lists.size());
+    EXPECT_EQ(false, *lists[0].GetDict().FindBool("enabled"));
+  }
+}
+
+class AdblockOnlyModeFilterListsWithFeatureDisabledTest
     : public AdBlockServiceTest {
  public:
-  AdBlockOnlyModeFilterListsWithFeatureDisabledTest() {
+  AdblockOnlyModeFilterListsWithFeatureDisabledTest() {
     feature_list_.InitAndDisableFeature(
         brave_shields::features::kAdblockOnlyMode);
   }
@@ -3397,11 +3450,11 @@ class AdBlockOnlyModeFilterListsWithFeatureDisabledTest
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsWithFeatureDisabledTest,
-                       CheckEnabledFilterLists) {
+IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFilterListsWithFeatureDisabledTest,
+                       CookieListNotDisabled) {
   InstallRegionalAdBlockComponent(brave_shields::kCookieListUuid, true);
 
-  // Check filters lists before AdBlockOnlyMode preference is enabled.
+  // Check filters lists before Adblock-Only mode preference is enabled.
   {
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         brave_shields::kDefaultAdblockFiltersListUuid));
@@ -3413,7 +3466,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsWithFeatureDisabledTest,
     EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
   }
 
-  // Enabling AdBlockOnlyMode preference does not affect filters lists
+  // Enabling Adblock-Only mode preference does not affect filters lists
   // because the feature is disabled.
   {
     local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
