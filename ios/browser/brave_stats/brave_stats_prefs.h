@@ -7,10 +7,13 @@
 #define BRAVE_IOS_BROWSER_BRAVE_STATS_BRAVE_STATS_PREFS_H_
 
 class PrefRegistrySimple;
+class PrefService;
 
 namespace brave_stats {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
 }  // namespace brave_stats
 

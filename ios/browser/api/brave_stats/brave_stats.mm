@@ -6,12 +6,9 @@
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
 #include "base/memory/raw_ptr.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
@@ -51,30 +48,8 @@ NSString* const kWebcompatReportEndpoint =
   _localPrefs->SetBoolean(kStatsReportingEnabled, statsReportingEnabled);
 }
 
-- (NSDictionary<NSString*, NSString*>*)walletParams {
-  auto wallet_last_unlocked =
-      _localPrefs->GetTime(brave_wallet::kBraveWalletLastUnlockTime);
-  auto last_reported_wallet_unlock =
-      _localPrefs->GetTime(brave_wallet::kBraveWalletPingReportedUnlockTime);
-  uint8_t usage_bitset = 0;
-  if (wallet_last_unlocked > last_reported_wallet_unlock) {
-    usage_bitset = brave_stats::UsageBitfieldFromTimestamp(
-        wallet_last_unlocked, last_reported_wallet_unlock);
-  }
-  return @{
-    @"wallet2" : base::SysUTF8ToNSString(base::NumberToString(usage_bitset))
-  };
-}
-
 - (BOOL)isNotificationAdsEnabled {
   return _profilePrefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
-}
-
-- (void)notifyStatsPingSent {
-  auto wallet_last_unlocked =
-      _localPrefs->GetTime(brave_wallet::kBraveWalletLastUnlockTime);
-  _localPrefs->SetTime(brave_wallet::kBraveWalletPingReportedUnlockTime,
-                       wallet_last_unlocked);
 }
 
 @end

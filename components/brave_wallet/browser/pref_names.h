@@ -34,7 +34,8 @@ inline constexpr char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 inline constexpr char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
-inline constexpr char kBraveWalletPingReportedUnlockTime[] =
+// Deprecated 12/2025
+inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
     "brave.wallet.wallet_report_unlock_time_ping";
 inline constexpr char kBraveWalletP3ANFTGalleryUsed[] =
     "brave.wallet.wallet_p3a_nft_gallery_used";
