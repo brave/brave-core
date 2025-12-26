@@ -7,9 +7,6 @@ import * as React from 'react'
 import { Route, useHistory, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-// Options
-import { ExploreNavOptions } from '../../../../options/nav-options'
-
 // types
 import { WalletRoutes } from '../../../../constants/types'
 import {
@@ -25,10 +22,6 @@ import {
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
-import {
-  SegmentedControlsWrapperMarket,
-  SegmentedControlsWrapperWeb3,
-} from './style'
 import { DefaultPageWrapper } from '../../../shared/style'
 
 // components
@@ -51,11 +44,7 @@ import {
   WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { MarketAsset } from '../market/market_asset'
-import { ExploreWeb3View } from '../explore_web3/explore_web3'
 import { NftCollection } from '../nfts/components/nft_collection'
-import {
-  SegmentedControl, //
-} from '../../../shared/segmented_control/segmented_control'
 import {
   PageNotFound, //
 } from '../../../../page/screens/page_not_found/page_not_found'
@@ -185,12 +174,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             useCardInPanel={true}
           >
             <DefaultPageWrapper>
-              <SegmentedControlsWrapperMarket>
-                <SegmentedControl
-                  maxWidth='384px'
-                  navOptions={ExploreNavOptions}
-                />
-              </SegmentedControlsWrapperMarket>
               <MarketView />
             </DefaultPageWrapper>
           </WalletPageWrapper>
@@ -203,29 +186,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper wrapContentInBox={true}>
             <DefaultPageWrapper>
               <MarketAsset />
-            </DefaultPageWrapper>
-          </WalletPageWrapper>
-        </Route>
-
-        {/* Web3 */}
-        <Route
-          path={WalletRoutes.Web3}
-          exact={true}
-        >
-          <WalletPageWrapper
-            wrapContentInBox
-            cardHeader={<ExploreWeb3Header />}
-            useCardInPanel={true}
-            noCardPadding
-          >
-            <DefaultPageWrapper>
-              <SegmentedControlsWrapperWeb3>
-                <SegmentedControl
-                  maxWidth='384px'
-                  navOptions={ExploreNavOptions}
-                />
-              </SegmentedControlsWrapperWeb3>
-              <ExploreWeb3View />
             </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>
