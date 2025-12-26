@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.cc b/chrome/browser/ui/views/frame/multi_contents_view.cc
-index 6b7b9bbb863e41165d7acabeaf7b62be8d3d4f1c..338d54dd40f9e590ad07c3a22834f3e9776a007e 100644
+index 347a370e959e788bb2f61bff7a7be965c8546e40..cdb75d1cad604f5e41460c495f98a6a6f970d721 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.cc
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.cc
-@@ -69,7 +69,7 @@ MultiContentsView::MultiContentsView(
+@@ -73,7 +73,7 @@ MultiContentsView::MultiContentsView(
        AddChildView(std::make_unique<MultiContentsBackgroundView>(browser_view));
  
    contents_container_views_.push_back(
@@ -11,7 +11,7 @@ index 6b7b9bbb863e41165d7acabeaf7b62be8d3d4f1c..338d54dd40f9e590ad07c3a22834f3e9
    contents_container_views_[0]
        ->contents_view()
        ->set_is_primary_web_contents_for_window(true);
-@@ -78,7 +78,7 @@ MultiContentsView::MultiContentsView(
+@@ -82,7 +82,7 @@ MultiContentsView::MultiContentsView(
    resize_area_->SetVisible(false);
  
    contents_container_views_.push_back(

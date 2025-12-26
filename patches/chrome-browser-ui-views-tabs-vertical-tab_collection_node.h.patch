@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/vertical/tab_collection_node.h b/chrome/browser/ui/views/tabs/vertical/tab_collection_node.h
-index 9ff8adcd682c026e055cfd53cff489b1abc7a0d7..0849ac52a26754e93fa04c9c0c2ff607b3d1486e 100644
+index 54b34f038e537cc960239e99a3c426f943861e69..1f4d39911e33f5f3dbd5e8160fe55a69777257ac 100644
 --- a/chrome/browser/ui/views/tabs/vertical/tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/vertical/tab_collection_node.h
 @@ -27,7 +27,7 @@ class TabCollectionNode {

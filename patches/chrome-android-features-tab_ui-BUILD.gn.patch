@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/BUILD.gn b/chrome/android/features/tab_ui/BUILD.gn
-index f3c97ff346c376b1fd1a0a0417938dce06a88406..5e9a2f5c072c6f9552b92448cb2d625ee94fac8a 100644
+index c800b11cd4b31a70dc93bc8efb688ef0ad873320..3fc3295eb61f15a001d855b0dc4ee0f39b954b91 100644
 --- a/chrome/android/features/tab_ui/BUILD.gn
 +++ b/chrome/android/features/tab_ui/BUILD.gn
 @@ -131,6 +131,7 @@ android_resources("java_resources") {
